@@ -674,13 +674,27 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                                     ),
                                   ),
                                   const SizedBox(height: 2),
-                                  Text(
-                                    '${item.rarity} • ${item.category}',
-                                    style: theme.bodySmall.override(
-                                      font: GoogleFonts.inter(),
-                                      color: theme.secondaryText,
-                                      letterSpacing: 0,
-                                    ),
+                                  Wrap(
+                                    spacing: 8,
+                                    runSpacing: 6,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    children: [
+                                      QuestwellRarityPixelBadge(
+                                        rarity: item.rarity,
+                                        compact: true,
+                                      ),
+                                      Text(
+                                        item.category.toUpperCase(),
+                                        style: theme.labelSmall.override(
+                                          font: GoogleFonts.inter(
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          color: theme.secondaryText,
+                                          letterSpacing: .7,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   if (item.requiredArchetype != null) ...[
                                     const SizedBox(height: 3),
