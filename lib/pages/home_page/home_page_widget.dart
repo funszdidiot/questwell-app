@@ -584,19 +584,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            width: 44,
-                            height: 44,
-                            decoration: BoxDecoration(
-                              color: theme.primaryBackground,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              hasWins
-                                  ? Icons.auto_graph_outlined
-                                  : Icons.wb_sunny_outlined,
-                              color: theme.primary,
-                            ),
+                          QuestwellStatusPixelBadge(
+                            kind: 'momentum',
+                            size: 44,
+                            active: hasWins,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -752,19 +743,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        width: 44,
-                        height: 44,
-                        decoration: BoxDecoration(
-                          color: theme.secondaryBackground,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          _campfireMode
-                              ? Icons.local_fire_department_outlined
-                              : Icons.bolt_outlined,
-                          color: theme.primary,
-                        ),
+                      QuestwellStatusPixelBadge(
+                        kind: 'campfire',
+                        size: 44,
+                        active: _campfireMode,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
