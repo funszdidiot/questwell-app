@@ -582,16 +582,14 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                         ),
                         child: Row(
                           children: [
-                            Container(
-                              width: 46,
-                              height: 46,
-                              decoration: BoxDecoration(
-                                color: theme.primaryBackground,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Icon(
-                                _iconForCategory(item.category),
-                                color: theme.primary,
+                            QuestwellItemPixelArt(
+                              slug: item.slug,
+                              category: item.category,
+                              archetype: item.requiredArchetype,
+                              size: 54,
+                              locked: _classLocked(
+                                item,
+                                data.profile.adventurerArchetype,
                               ),
                             ),
                             const SizedBox(width: 12),
