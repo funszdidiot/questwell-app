@@ -173,4 +173,11 @@ class QuestwellCosmeticService {
       params: {'p_cosmetic_id': cosmeticId},
     );
   }
+
+  static Future<void> unequip(String cosmeticId) async {
+    await SupaFlow.client.rpc(
+      'unequip_cosmetic',
+      params: {'p_cosmetic_id': cosmeticId},
+    );
+  }
 }
