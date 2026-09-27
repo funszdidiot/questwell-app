@@ -211,8 +211,18 @@ class _StatCard extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: theme.secondaryBackground,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.alternate),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: const Color(0xFF8E6B35),
+          width: 2,
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x55322018),
+            offset: Offset(3, 3),
+            blurRadius: 0,
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,8 +271,20 @@ class _WinCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: theme.secondaryBackground,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: theme.alternate),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: isBoss
+              ? const Color(0xFFE87947)
+              : const Color(0xFF8E6B35),
+          width: 2,
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x55322018),
+            offset: Offset(3, 3),
+            blurRadius: 0,
+          ),
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
