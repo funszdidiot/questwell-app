@@ -98,29 +98,67 @@ class QuestwellRetroPanel extends StatelessWidget {
       decoration: const BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Color(0x77000000),
+            color: Color(0x88000000),
             blurRadius: 0,
-            offset: Offset(5, 5),
+            offset: Offset(6, 6),
           ),
         ],
       ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF0D0C11),
-          border: Border.all(color: accent, width: 3),
-        ),
-        child: Container(
-          margin: const EdgeInsets.all(4),
-          padding: padding,
-          decoration: BoxDecoration(
-            color: background,
-            border: Border.all(
-              color: const Color(0xFF4C3A24),
-              width: 2,
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFF0D0C11),
+              border: Border.all(color: accent, width: 3),
+            ),
+            child: Container(
+              margin: const EdgeInsets.all(5),
+              padding: padding,
+              decoration: BoxDecoration(
+                color: background,
+                border: Border.all(
+                  color: const Color(0xFF5B4227),
+                  width: 2,
+                ),
+              ),
+              child: child,
             ),
           ),
-          child: child,
-        ),
+          for (final alignment in const [
+            Alignment.topLeft,
+            Alignment.topRight,
+            Alignment.bottomLeft,
+            Alignment.bottomRight,
+          ])
+            Align(
+              alignment: alignment,
+              child: Container(
+                width: 13,
+                height: 13,
+                margin: const EdgeInsets.all(2),
+                color: const Color(0xFFF1C75B),
+                child: Center(
+                  child: Container(
+                    width: 5,
+                    height: 5,
+                    color: const Color(0xFF8E6B35),
+                  ),
+                ),
+              ),
+            ),
+          Positioned(
+            left: 24,
+            right: 24,
+            top: 2,
+            child: Container(height: 2, color: const Color(0xFF6A4C2C)),
+          ),
+          Positioned(
+            left: 24,
+            right: 24,
+            bottom: 2,
+            child: Container(height: 2, color: const Color(0xFF6A4C2C)),
+          ),
+        ],
       ),
     );
   }
@@ -181,14 +219,24 @@ class _PixelCorner extends StatelessWidget {
 }
 
 class QuestwellHearthPixelScene extends StatelessWidget {
-  const QuestwellHearthPixelScene({super.key, this.height = 170});
+  const QuestwellHearthPixelScene({
+    super.key,
+    this.height = 170,
+    this.archetype = 'wanderer',
+  });
+
   final double height;
+  final String archetype;
 
   @override
   Widget build(BuildContext context) {
     return QuestwellPixelFrame(
       height: height,
-      child: CustomPaint(painter: _HearthPainter()),
+      child: CustomPaint(
+        painter: _HearthPainter(
+          palette: QuestwellPixelPalette.forClass(archetype),
+        ),
+      ),
     );
   }
 }
@@ -696,6 +744,9 @@ class QuestwellBossPixelArt extends StatelessWidget {
 }
 
 class _HearthPainter extends CustomPainter {
+  _HearthPainter({required this.palette});
+  final List<Color> palette;
+
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()..isAntiAlias = false;
@@ -819,6 +870,17 @@ class _HearthPainter extends CustomPainter {
     px(size.width * .642, size.height * .785, 2, const Color(0xFFF7E58E));
     px(size.width * .652, size.height * .785, 2, const Color(0xFFF7E58E));
 
+    // Class banner and trophy shelf bring the Adventurer into the room.
+    rect(size.width * .815, size.height * .52, size.width * .12, size.height * .05, const Color(0xFF6A4328));
+    rect(size.width * .835, size.height * .33, size.width * .08, size.height * .17, palette[1]);
+    rect(size.width * .846, size.height * .35, size.width * .058, size.height * .11, palette.first);
+    px(size.width * .873, size.height * .385, 6, palette.last);
+    rect(size.width * .455, size.height * .675, size.width * .14, 5, const Color(0xFF8E6B35));
+    p.color = const Color(0xFFF1C75B);
+    canvas.drawCircle(Offset(size.width * .485, size.height * .65), 5, p);
+    canvas.drawCircle(Offset(size.width * .565, size.height * .65), 5, p);
+    rect(size.width * .515, size.height * .625, size.width * .025, size.height * .045, palette.last);
+
     // Lanterns with brackets and glow pixels.
     for (final x in [size.width * .42, size.width * .61, size.width * .95]) {
       rect(x, size.height * .07, 4, 18, const Color(0xFF6C442C));
@@ -830,7 +892,8 @@ class _HearthPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _HearthPainter oldDelegate) =>
+      oldDelegate.palette != palette;
 }
 
 class _NavIconPainter extends CustomPainter {
