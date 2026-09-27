@@ -1,5 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_chronicle_service.dart';
+import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -106,6 +107,8 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                     letterSpacing: 0,
                   ),
                 ),
+                const SizedBox(height: 16),
+                const QuestwellChroniclePixelScene(height: 135),
                 const SizedBox(height: 18),
                 Wrap(
                   spacing: 10,
