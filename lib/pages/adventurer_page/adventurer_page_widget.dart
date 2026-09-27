@@ -138,7 +138,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                                   child: Icon(
                                     Icons.auto_awesome,
                                     size: 124,
-                                    color: theme.primary.withValues(alpha: 0.15),
+                                    color: theme.primary.withOpacity(0.15),
                                   ),
                                 ),
                               ),
