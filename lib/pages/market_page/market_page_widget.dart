@@ -254,9 +254,9 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                QuestwellClassPixelPortrait(
+                QuestwellMarketPixelScene(
                   archetype: data.profile.adventurerArchetype,
-                  height: 120,
+                  height: 145,
                 ),
                 const SizedBox(height: 14),
                 Text(
