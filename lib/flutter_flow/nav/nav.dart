@@ -119,6 +119,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: ChroniclePageWidget.routeName,
           path: ChroniclePageWidget.routePath,
           builder: (context, params) => ChroniclePageWidget(),
+        ),
+        FFRoute(
+          name: ExpeditionPageWidget.routeName,
+          path: ExpeditionPageWidget.routePath,
+          builder: (context, params) => ExpeditionPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
