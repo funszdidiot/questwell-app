@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import '/services/questwell_task_service.dart';
 import '/services/questwell_cosmetic_service.dart';
+import '/services/questwell_chronicle_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_page_model.dart';
@@ -30,6 +31,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   bool _onboardingCompleted = true;
   bool _creatingStarterQuest = false;
   late Future<QuestwellCosmeticsSnapshot> _homeSnapshotFuture;
+  late Future<ChronicleSnapshot> _momentumFuture;
 
   @override
   void initState() {
@@ -40,6 +42,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   void _loadHomeData() {
     _homeSnapshotFuture = QuestwellCosmeticService.load();
+    _momentumFuture = QuestwellChronicleService.load();
     _homeSnapshotFuture.then((data) {
       if (!mounted) return;
       if (_campfireMode != data.profile.campfireMode ||
@@ -510,6 +513,85 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 ),
                               ),
                             ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 18),
+                FutureBuilder<ChronicleSnapshot>(
+                  future: _momentumFuture,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const SizedBox.shrink();
+                    }
+
+                    final momentum = snapshot.data!;
+                    final hasWins = momentum.weekWins > 0;
+
+                    return Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: theme.secondaryBackground,
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(color: theme.alternate),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 44,
+                            height: 44,
+                            decoration: BoxDecoration(
+                              color: theme.primaryBackground,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              hasWins
+                                  ? Icons.auto_graph_outlined
+                                  : Icons.wb_sunny_outlined,
+                              color: theme.primary,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  hasWins
+                                      ? 'Momentum is building'
+                                      : 'Fresh start',
+                                  style: theme.titleMedium.override(
+                                    font: GoogleFonts.interTight(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    letterSpacing: 0,
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  hasWins
+                                      ? '${momentum.weekWins} win${momentum.weekWins == 1 ? '' : 's'} this week • ${momentum.bossesDefeated} boss${momentum.bossesDefeated == 1 ? '' : 'es'} defeated'
+                                      : 'Welcome back. No catching up required. Pick one thing.',
+                                  style: theme.bodySmall.override(
+                                    font: GoogleFonts.inter(),
+                                    color: theme.secondaryText,
+                                    letterSpacing: 0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              await context.pushNamed(
+                                ChroniclePageWidget.routeName,
+                              );
+                              if (mounted) setState(_loadHomeData);
+                            },
+                            child: const Text('Chronicle'),
                           ),
                         ],
                       ),
