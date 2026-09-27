@@ -45,6 +45,7 @@ class QuestwellCosmetic {
     required this.premium,
     required this.assetKey,
     required this.requiredArchetype,
+    required this.unlockMethod,
     required this.owned,
     required this.equipped,
   });
@@ -59,6 +60,7 @@ class QuestwellCosmetic {
   final bool premium;
   final String? assetKey;
   final String? requiredArchetype;
+  final String unlockMethod;
   final bool owned;
   final bool equipped;
 
@@ -77,6 +79,7 @@ class QuestwellCosmetic {
       premium: premium,
       assetKey: assetKey,
       requiredArchetype: requiredArchetype,
+      unlockMethod: unlockMethod,
       owned: owned ?? this.owned,
       equipped: equipped ?? this.equipped,
     );
@@ -98,6 +101,7 @@ class QuestwellCosmetic {
       premium: json['premium'] == true,
       assetKey: json['asset_key']?.toString(),
       requiredArchetype: json['required_archetype']?.toString(),
+      unlockMethod: json['unlock_method']?.toString() ?? 'shop',
       owned: owned,
       equipped: equipped,
     );
@@ -131,7 +135,7 @@ class QuestwellCosmeticService {
           .single(),
       SupaFlow.client
           .from('cosmetics')
-          .select('id,slug,name,category,rarity,description,price,premium,asset_key,required_archetype')
+          .select('id,slug,name,category,rarity,description,price,premium,asset_key,required_archetype,unlock_method')
           .eq('active', true)
           .order('price'),
       SupaFlow.client
@@ -224,6 +228,16 @@ class QuestwellCosmeticService {
         .from('users')
         .update({'onboarding_completed': true})
         .eq('id', uid);
+  }
+
+  static Future<String> claimClassMasteryReward() async {
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) {
+      throw StateError('Authentication required.');
+    }
+
+    final response = await SupaFlow.client.rpc('claim_class_mastery_reward');
+    return response.toString();
   }
 
   static Future<void> setAdventurerArchetype(String archetype) async {
