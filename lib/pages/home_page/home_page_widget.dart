@@ -580,6 +580,50 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               ],
                             ),
                           ],
+                          const SizedBox(height: 12),
+                          const QuestwellPixelDivider(
+                            accent: Color(0xFF6A4C2C),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'CLASS COLLECTION',
+                            style: theme.labelSmall.override(
+                              font: GoogleFonts.pressStart2p(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              fontSize: 8,
+                              color: const Color(0xFFD6A84B),
+                              letterSpacing: .8,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              for (final item in data.cosmetics.where(
+                                (item) =>
+                                    item.requiredArchetype ==
+                                        profile.adventurerArchetype &&
+                                    item.unlockMethod == 'shop',
+                              ).take(3))
+                                Opacity(
+                                  opacity: item.owned ? 1 : .38,
+                                  child: QuestwellItemPixelArt(
+                                    slug: item.slug,
+                                    category: item.category,
+                                    archetype: item.requiredArchetype,
+                                    size: 46,
+                                    locked: !item.owned,
+                                  ),
+                                ),
+                              if (classMastered)
+                                QuestwellRelicPixelArt(
+                                  archetype: profile.adventurerArchetype,
+                                  size: 46,
+                                ),
+                            ],
+                          ),
                         ],
                       ),
                     );
