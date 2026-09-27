@@ -64,16 +64,92 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Quest complete! +${reward.xpAwarded} XP  •  +${reward.coinsAwarded} coins',
-          ),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      final previousLevel = ((reward.totalXp - reward.xpAwarded) ~/ 100) + 1;
+      final newLevel = (reward.totalXp ~/ 100) + 1;
+      final leveledUp = newLevel > previousLevel;
 
       setState(() {});
+
+      await showDialog<void>(
+        context: context,
+        builder: (dialogContext) {
+          final dialogTheme = FlutterFlowTheme.of(dialogContext);
+          return AlertDialog(
+            backgroundColor: dialogTheme.secondaryBackground,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Row(
+              children: [
+                Icon(
+                  leveledUp ? Icons.auto_awesome : Icons.task_alt,
+                  color: dialogTheme.primary,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    leveledUp ? 'Level Up!' : 'Quest Complete!',
+                    style: dialogTheme.titleLarge.override(
+                      font: GoogleFonts.interTight(
+                        fontWeight: FontWeight.w700,
+                      ),
+                      letterSpacing: 0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  leveledUp
+                      ? 'Your adventurer reached Level $newLevel.'
+                      : 'A small win became real momentum.',
+                  style: dialogTheme.bodyMedium.override(
+                    font: GoogleFonts.inter(),
+                    color: dialogTheme.secondaryText,
+                    letterSpacing: 0,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    _RewardChip(
+                      icon: Icons.auto_awesome,
+                      label: '+${reward.xpAwarded} XP',
+                    ),
+                    _RewardChip(
+                      icon: Icons.monetization_on_outlined,
+                      label: '+${reward.coinsAwarded} coins',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  'Balance: ${reward.coinBalance} coins • ${reward.totalXp} total XP',
+                  style: dialogTheme.labelMedium.override(
+                    font: GoogleFonts.inter(
+                      fontWeight: FontWeight.w600,
+                    ),
+                    color: dialogTheme.secondaryText,
+                    letterSpacing: 0,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(leveledUp ? 'Continue Adventure' : 'Claim Win'),
+              ),
+            ],
+          );
+        },
+      );
     } catch (error) {
       if (!mounted) return;
 
