@@ -129,7 +129,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
             const SizedBox(height: 18),
             QuestwellExpeditionPixelScene(
               height: 155,
-              campfire: false,
+              campfire: _finished,
             ),
             const SizedBox(height: 22),
             Container(
@@ -155,13 +155,16 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                       ),
                       Column(
                         children: [
-                          Icon(
-                            _finished
-                                ? Icons.flag_outlined
-                                : Icons.explore_outlined,
-                            color: theme.primary,
-                            size: 34,
-                          ),
+                          _finished
+                              ? const QuestwellStatusPixelBadge(
+                                  kind: 'campfire',
+                                  size: 34,
+                                  active: true,
+                                )
+                              : const QuestwellNavPixelIcon(
+                                  kind: 'expedition',
+                                  size: 34,
+                                ),
                           const SizedBox(height: 8),
                           Text(
                             _timeLabel,
@@ -263,7 +266,11 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.local_fire_department_outlined, color: theme.primary),
+                  const QuestwellStatusPixelBadge(
+                    kind: 'campfire',
+                    size: 34,
+                    active: false,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
