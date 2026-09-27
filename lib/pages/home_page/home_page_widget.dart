@@ -387,7 +387,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     letterSpacing: 0,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 10),
+                const QuestwellPixelDivider(
+                  accent: Color(0xFF6A4C2C),
+                ),
+                const SizedBox(height: 12),
                 FutureBuilder<QuestwellCosmeticsSnapshot>(
                   future: _homeSnapshotFuture,
                   builder: (context, snapshot) {
@@ -403,13 +407,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   future: _homeSnapshotFuture,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      return Container(
-                        padding: const EdgeInsets.all(18),
-                        decoration: BoxDecoration(
-                          color: theme.secondaryBackground,
-                          borderRadius: BorderRadius.circular(18),
-                          border: Border.all(color: theme.alternate),
-                        ),
+                      return QuestwellRetroPanel(
+                        padding: const EdgeInsets.all(14),
+                        accent: const Color(0xFFE87947),
+                        background: const Color(0xFF1A1512),
                         child: Row(
                           children: [
                             Icon(Icons.cloud_off_outlined, color: theme.primary),
@@ -433,13 +434,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     }
 
                     if (!snapshot.hasData) {
-                      return Container(
-                        height: 104,
-                        decoration: BoxDecoration(
-                          color: theme.secondaryBackground,
-                          borderRadius: BorderRadius.circular(18),
+                      return const QuestwellRetroPanel(
+                        padding: EdgeInsets.all(20),
+                        accent: Color(0xFF8E6B35),
+                        child: SizedBox(
+                          height: 64,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
                         ),
-                        child: const Center(child: CircularProgressIndicator()),
                       );
                     }
 
@@ -502,25 +505,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           const SizedBox(width: 7),
                                           Container(
                                             padding: const EdgeInsets.symmetric(
-                                              horizontal: 8,
-                                              vertical: 3,
+                                              horizontal: 7,
+                                              vertical: 4,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: theme.primaryBackground,
-                                              borderRadius:
-                                                  BorderRadius.circular(999),
+                                              color: const Color(0xFF0D0C11),
                                               border: Border.all(
-                                                color: theme.primary,
+                                                color: const Color(0xFFF1C75B),
+                                                width: 2,
                                               ),
                                             ),
                                             child: Text(
                                               'MASTERED',
                                               style: theme.labelSmall.override(
-                                                font: GoogleFonts.inter(
+                                                font: GoogleFonts.pressStart2p(
                                                   fontWeight: FontWeight.w700,
                                                 ),
-                                                color: theme.primary,
-                                                letterSpacing: 0.8,
+                                                fontSize: 7,
+                                                color: const Color(0xFFF1C75B),
+                                                letterSpacing: .6,
                                               ),
                                             ),
                                           ),
@@ -882,13 +885,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      return Container(
-                        padding: const EdgeInsets.all(18),
-                        decoration: BoxDecoration(
-                          color: theme.secondaryBackground,
-                          borderRadius: BorderRadius.circular(18),
-                          border: Border.all(color: theme.alternate),
-                        ),
+                      return QuestwellRetroPanel(
+                        padding: const EdgeInsets.all(14),
+                        accent: const Color(0xFFE87947),
+                        background: const Color(0xFF1A1512),
                         child: Row(
                           children: [
                             Icon(Icons.cloud_off_outlined, color: theme.primary),
