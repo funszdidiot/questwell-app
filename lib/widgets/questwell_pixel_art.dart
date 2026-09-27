@@ -20,6 +20,105 @@ class QuestwellPixelPalette {
   }
 }
 
+class QuestwellPixelDivider extends StatelessWidget {
+  const QuestwellPixelDivider({
+    super.key,
+    this.accent = const Color(0xFF8E6B35),
+  });
+
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 12,
+      child: Row(
+        children: [
+          Container(width: 8, height: 8, color: const Color(0xFFF1C75B)),
+          Expanded(
+            child: Container(height: 2, color: accent),
+          ),
+          Container(width: 8, height: 8, color: const Color(0xFFF1C75B)),
+        ],
+      ),
+    );
+  }
+}
+
+class QuestwellRetroMenuButton extends StatelessWidget {
+  const QuestwellRetroMenuButton({
+    super.key,
+    required this.label,
+    required this.kind,
+    required this.onTap,
+    this.accent = const Color(0xFF8E6B35),
+    this.compact = false,
+  });
+
+  final String label;
+  final String kind;
+  final VoidCallback? onTap;
+  final Color accent;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onTap != null;
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      label: label,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          height: compact ? 44 : 50,
+          padding: EdgeInsets.symmetric(horizontal: compact ? 10 : 14),
+          decoration: BoxDecoration(
+            color: enabled
+                ? const Color(0xFF15141B)
+                : const Color(0xFF26262B),
+            border: Border.all(
+              color: enabled ? accent : const Color(0xFF55565C),
+              width: 2,
+            ),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x77000000),
+                blurRadius: 0,
+                offset: Offset(3, 3),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              QuestwellNavPixelIcon(
+                kind: kind,
+                size: compact ? 18 : 20,
+              ),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  label.toUpperCase(),
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: enabled
+                        ? const Color(0xFFF2E7CE)
+                        : const Color(0xFF77787E),
+                    fontSize: compact ? 9 : 10,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: .7,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class QuestwellPixelToggle extends StatelessWidget {
   const QuestwellPixelToggle({
     super.key,
