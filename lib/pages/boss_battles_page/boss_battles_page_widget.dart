@@ -580,13 +580,11 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                         ],
                       ),
                       const SizedBox(height: 7),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(2),
-                        child: LinearProgressIndicator(
-                          value: battle.completed ? 0 : 1 - battle.progress,
-                          minHeight: 12,
-                          backgroundColor: theme.primaryBackground,
-                        ),
+                      QuestwellPixelMeter(
+                        value: battle.completed ? 0 : 1 - battle.progress,
+                        kind: 'hp',
+                        height: 18,
+                        segments: 14,
                       ),
                       if (!battle.completed && remainingSteps.isNotEmpty) ...[
                         const SizedBox(height: 16),
