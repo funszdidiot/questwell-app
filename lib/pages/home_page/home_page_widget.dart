@@ -547,35 +547,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                           ),
                           const SizedBox(height: 7),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '$xpIntoLevel / 100 XP to next level',
-                                style: theme.labelSmall.override(
-                                  font: GoogleFonts.inter(),
-                                  color: theme.secondaryText,
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  equipped.isEmpty
-                                      ? 'No gear equipped'
-                                      : equipped
-                                          .take(2)
-                                          .map((item) => item.name)
-                                          .join(' • '),
-                                  textAlign: TextAlign.end,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.labelSmall.override(
-                                    font: GoogleFonts.inter(),
-                                    color: theme.secondaryText,
-                                    letterSpacing: 0,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          Text(
+                            '$xpIntoLevel / 100 XP to next level',
+                            style: theme.labelSmall.override(
+                              font: GoogleFonts.inter(),
+                              color: theme.secondaryText,
+                              letterSpacing: 0,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            equipped.isEmpty
+                                ? 'No gear equipped'
+                                : 'Equipped: ${equipped.take(3).map((item) => item.name).join(' • ')}',
+                            softWrap: true,
+                            style: theme.labelSmall.override(
+                              font: GoogleFonts.inter(),
+                              color: theme.secondaryText,
+                              letterSpacing: 0,
+                            ),
                           ),
                         ],
                       ),
@@ -924,6 +914,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 color: theme.secondaryText,
                                 letterSpacing: 0,
                               ),
+                            ),
+                            const SizedBox(height: 14),
+                            OutlinedButton.icon(
+                              onPressed: () async {
+                                await context.pushNamed(
+                                  AddTaskPageWidget.routeName,
+                                );
+                                if (mounted) setState(_loadHomeData);
+                              },
+                              icon: const Icon(Icons.add_task, size: 18),
+                              label: const Text('Add a Quest'),
                             ),
                           ],
                         ),
