@@ -82,6 +82,36 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     }
   }
 
+  String _archetypeDescription(String value) {
+    switch (value) {
+      case 'scholar':
+        return 'Turns curiosity into clarity. Built for notes, research, and thoughtful progress.';
+      case 'scout':
+        return 'Finds the shortest useful path and keeps moving when the route changes.';
+      case 'alchemist':
+        return 'Experiments, adjusts, and turns messy ingredients into workable momentum.';
+      case 'guardian':
+        return 'Protects attention, steadies the room, and makes space for what matters.';
+      default:
+        return 'Follows curiosity without needing a perfect map. Flexible by design.';
+    }
+  }
+
+  String _masteryRelicName(String value) {
+    switch (value) {
+      case 'scholar':
+        return 'Scholar Seal';
+      case 'scout':
+        return 'Scout Compass';
+      case 'alchemist':
+        return 'Alchemist Phial';
+      case 'guardian':
+        return 'Guardian Crest';
+      default:
+        return 'Wanderer Star Map';
+    }
+  }
+
   IconData _archetypeIcon(String value) {
     switch (value) {
       case 'scholar':
@@ -429,6 +459,71 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                         label: Text(_archetypeLabel(value)),
                       ),
                   ],
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: theme.secondaryBackground,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: theme.alternate),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: theme.primaryBackground,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Icon(
+                          _archetypeIcon(data.profile.adventurerArchetype),
+                          color: theme.primary,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${_archetypeLabel(data.profile.adventurerArchetype)} Path',
+                              style: theme.titleMedium.override(
+                                font: GoogleFonts.interTight(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              _archetypeDescription(
+                                data.profile.adventurerArchetype,
+                              ),
+                              style: theme.bodySmall.override(
+                                font: GoogleFonts.inter(),
+                                color: theme.secondaryText,
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Mastery relic: ${_masteryRelicName(data.profile.adventurerArchetype)}',
+                              style: theme.labelMedium.override(
+                                font: GoogleFonts.inter(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                color: theme.primary,
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Container(
