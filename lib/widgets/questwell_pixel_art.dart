@@ -87,6 +87,29 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellStatusPixelBadge extends StatelessWidget {
+  const QuestwellStatusPixelBadge({
+    super.key,
+    required this.kind,
+    this.size = 44,
+    this.active = true,
+  });
+
+  final String kind;
+  final double size;
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.square(
+      dimension: size,
+      child: CustomPaint(
+        painter: _StatusBadgePainter(kind: kind, active: active),
+      ),
+    );
+  }
+}
+
 class QuestwellQuestBoardPixelArt extends StatelessWidget {
   const QuestwellQuestBoardPixelArt({
     super.key,
@@ -360,6 +383,59 @@ class _HearthPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _StatusBadgePainter extends CustomPainter {
+  _StatusBadgePainter({required this.kind, required this.active});
+  final String kind;
+  final bool active;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    rect(0, 0, size.width, size.height, const Color(0xFF111419));
+    final gold = active ? const Color(0xFFF1C75B) : const Color(0xFF7A7D84);
+    final violet = active ? const Color(0xFF7654D8) : const Color(0xFF50535A);
+    final ember = active ? const Color(0xFFE87947) : const Color(0xFF66686D);
+
+    if (kind == 'momentum') {
+      // Rising stair + spark.
+      rect(size.width * .18, size.height * .63, size.width * .15, size.height * .16, violet);
+      rect(size.width * .36, size.height * .49, size.width * .15, size.height * .30, violet);
+      rect(size.width * .54, size.height * .33, size.width * .15, size.height * .46, violet);
+      rect(size.width * .72, size.height * .20, size.width * .09, size.height * .59, violet);
+      rect(size.width * .68, size.height * .12, 4, 9, gold);
+      rect(size.width * .57, size.height * .20, 9, 4, gold);
+      rect(size.width * .77, size.height * .20, 9, 4, gold);
+    } else if (kind == 'campfire') {
+      // Logs + layered pixel flame.
+      rect(size.width * .20, size.height * .68, size.width * .60, size.height * .10, const Color(0xFF7A4A2E));
+      rect(size.width * .29, size.height * .58, size.width * .42, size.height * .12, const Color(0xFF9B6236));
+      rect(size.width * .34, size.height * .34, size.width * .32, size.height * .34, ember);
+      rect(size.width * .42, size.height * .20, size.width * .18, size.height * .42, gold);
+      rect(size.width * .47, size.height * .32, size.width * .09, size.height * .28, const Color(0xFFFFE39A));
+    } else {
+      // Generic quest star.
+      rect(size.width * .46, size.height * .14, size.width * .08, size.height * .72, gold);
+      rect(size.width * .14, size.height * .46, size.width * .72, size.height * .08, gold);
+      rect(size.width * .28, size.height * .28, size.width * .44, size.height * .44, violet);
+    }
+
+    // Pixel border.
+    rect(0, 0, size.width, 2, const Color(0xFF8E6B35));
+    rect(0, size.height - 2, size.width, 2, const Color(0xFF8E6B35));
+    rect(0, 0, 2, size.height, const Color(0xFF8E6B35));
+    rect(size.width - 2, 0, 2, size.height, const Color(0xFF8E6B35));
+  }
+
+  @override
+  bool shouldRepaint(covariant _StatusBadgePainter oldDelegate) =>
+      oldDelegate.kind != kind || oldDelegate.active != active;
 }
 
 class _QuestBoardPainter extends CustomPainter {
