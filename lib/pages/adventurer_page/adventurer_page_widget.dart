@@ -194,6 +194,15 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
           final data = snapshot.data!;
           final equipped = data.cosmetics.where((item) => item.equipped).toList();
           final owned = data.cosmetics.where((item) => item.owned).toList();
+          final classCollection = data.cosmetics
+              .where(
+                (item) =>
+                    item.requiredArchetype ==
+                    data.profile.adventurerArchetype,
+              )
+              .toList();
+          final ownedClassItems =
+              classCollection.where((item) => item.owned).length;
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -379,6 +388,56 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                         label: Text(_archetypeLabel(value)),
                       ),
                   ],
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: theme.secondaryBackground,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: theme.alternate),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        ownedClassItems == classCollection.length &&
+                                classCollection.isNotEmpty
+                            ? Icons.workspace_premium_outlined
+                            : Icons.inventory_2_outlined,
+                        color: theme.primary,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${_archetypeLabel(data.profile.adventurerArchetype)} Collection',
+                              style: theme.titleMedium.override(
+                                font: GoogleFonts.interTight(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              classCollection.isEmpty
+                                  ? 'No exclusive gear yet.'
+                                  : ownedClassItems == classCollection.length
+                                      ? 'Collection complete — every class-exclusive item is yours.'
+                                      : '$ownedClassItems of ${classCollection.length} class-exclusive items unlocked',
+                              style: theme.bodySmall.override(
+                                font: GoogleFonts.inter(),
+                                color: theme.secondaryText,
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 22),
                 Text(
