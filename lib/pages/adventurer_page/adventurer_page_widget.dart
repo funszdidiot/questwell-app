@@ -174,6 +174,73 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     }
   }
 
+  Future<void> _requestArchetypeChange(
+    String archetype,
+    QuestwellCosmeticsSnapshot data,
+  ) async {
+    if (archetype == data.profile.adventurerArchetype || _savingArchetype) {
+      return;
+    }
+
+    final incompatible = data.cosmetics
+        .where(
+          (item) =>
+              item.equipped &&
+              item.requiredArchetype != null &&
+              item.requiredArchetype != archetype,
+        )
+        .toList();
+
+    if (incompatible.isNotEmpty) {
+      final preview = incompatible
+          .take(3)
+          .map((item) => item.name)
+          .join(', ');
+      final remaining = incompatible.length - 3;
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) {
+          final dialogTheme = FlutterFlowTheme.of(dialogContext);
+          return AlertDialog(
+            backgroundColor: dialogTheme.secondaryBackground,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: Text(
+              'Change to ${_archetypeLabel(archetype)}?',
+              style: dialogTheme.titleLarge.override(
+                font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                letterSpacing: 0,
+              ),
+            ),
+            content: Text(
+              '$preview${remaining > 0 ? ' and $remaining more' : ''} will be unequipped because that gear belongs to another class. You will still own it.',
+              style: dialogTheme.bodyMedium.override(
+                font: GoogleFonts.inter(),
+                color: dialogTheme.secondaryText,
+                letterSpacing: 0,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: const Text('Keep Current Class'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                child: const Text('Change Class'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmed != true || !mounted) return;
+    }
+
+    await _chooseArchetype(archetype);
+  }
+
   bool _classLocked(
     QuestwellCosmetic cosmetic,
     String currentArchetype,
@@ -383,7 +450,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             data.profile.adventurerArchetype == value,
                         onSelected: _savingArchetype
                             ? null
-                            : (_) => _chooseArchetype(value),
+                            : (_) => _requestArchetypeChange(value, data),
                         avatar: Icon(
                           _archetypeIcon(value),
                           size: 17,
