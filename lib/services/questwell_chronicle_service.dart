@@ -52,11 +52,6 @@ class QuestwellChronicleService {
           .eq('user_id', uid)
           .eq('status', 'completed')
           .order('completed_at', ascending: false),
-      SupaFlow.client
-          .from('reward_events')
-          .select('event_type,xp_amount,coin_amount,created_at')
-          .eq('user_id', uid)
-          .order('created_at', ascending: false),
     ]);
 
     final wins = <ChronicleWin>[];
@@ -97,15 +92,10 @@ class QuestwellChronicleService {
 
     wins.sort((a, b) => b.completedAt.compareTo(a.completedAt));
 
-    var totalXpEarned = 0;
-    var totalCoinsEarned = 0;
-    for (final raw in responses[2] as List) {
-      final row = Map<String, dynamic>.from(raw as Map);
-      final xp = (row['xp_amount'] as num?)?.toInt() ?? 0;
-      final coins = (row['coin_amount'] as num?)?.toInt() ?? 0;
-      if (xp > 0) totalXpEarned += xp;
-      if (coins > 0) totalCoinsEarned += coins;
-    }
+    final totalXpEarned =
+        wins.fold<int>(0, (total, win) => total + win.xp);
+    final totalCoinsEarned =
+        wins.fold<int>(0, (total, win) => total + win.coins);
 
     final now = DateTime.now();
     final startOfWeek = DateTime(now.year, now.month, now.day)
