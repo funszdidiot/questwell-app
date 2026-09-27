@@ -388,7 +388,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const QuestwellHearthPixelScene(height: 170),
+                const QuestwellHearthPixelScene(height: 195),
                 const SizedBox(height: 16),
                 FutureBuilder<QuestwellCosmeticsSnapshot>(
                   future: _homeSnapshotFuture,
@@ -450,15 +450,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
                     return QuestwellRetroPanel(
                       padding: const EdgeInsets.all(16),
-                      accent: const Color(0xFF8E6B35),
+                      accent: const Color(0xFFB98245),
+                      background: const Color(0xFF1A1714),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              QuestwellRelicPixelArt(
+                              QuestwellClassMiniSprite(
                                 archetype: profile.adventurerArchetype,
-                                size: 48,
+                                size: 58,
                               ),
                               const SizedBox(width: 12),
                               Expanded(
@@ -554,6 +555,22 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               letterSpacing: 0,
                             ),
                           ),
+                          if (equipped.isNotEmpty) ...[
+                            const SizedBox(height: 10),
+                            Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: [
+                                for (final item in equipped.take(4))
+                                  QuestwellItemPixelArt(
+                                    slug: item.slug,
+                                    category: item.category,
+                                    archetype: item.requiredArchetype,
+                                    size: 42,
+                                  ),
+                              ],
+                            ),
+                          ],
                         ],
                       ),
                     );
@@ -572,7 +589,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
                     return QuestwellRetroPanel(
                       padding: const EdgeInsets.all(14),
-                      accent: const Color(0xFF8E6B35),
+                      accent: const Color(0xFFD6A84B),
+                      background: const Color(0xFF171A20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -591,11 +609,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ? 'Momentum is building'
                                       : 'Fresh start',
                                   style: theme.titleMedium.override(
-                                    font: GoogleFonts.pressStart2p(
-                                      fontWeight: FontWeight.w700,
+                                    font: GoogleFonts.interTight(
+                                      fontWeight: FontWeight.w800,
                                     ),
-                                    fontSize: 11,
-                                    letterSpacing: 0.2,
+                                    fontSize: 18,
+                                    letterSpacing: 0,
                                   ),
                                 ),
                                 const SizedBox(height: 3),
@@ -728,8 +746,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       ? const Color(0xFFE87947)
                       : const Color(0xFF8E6B35),
                   background: _campfireMode
-                      ? const Color(0xFF1A1512)
-                      : const Color(0xFF15141B),
+                      ? const Color(0xFF241712)
+                      : const Color(0xFF171A20),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
