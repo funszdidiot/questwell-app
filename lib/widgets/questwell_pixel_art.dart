@@ -366,6 +366,29 @@ class QuestwellItemPixelArt extends StatelessWidget {
   }
 }
 
+class QuestwellBossSigilPixelArt extends StatelessWidget {
+  const QuestwellBossSigilPixelArt({
+    super.key,
+    required this.bossType,
+    this.size = 50,
+  });
+
+  final String bossType;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return QuestwellPixelFrame(
+      height: size,
+      background: const Color(0xFF14131A),
+      child: SizedBox.square(
+        dimension: size,
+        child: CustomPaint(painter: _BossSigilPainter(bossType)),
+      ),
+    );
+  }
+}
+
 class QuestwellBossPixelArt extends StatelessWidget {
   const QuestwellBossPixelArt({
     super.key,
@@ -1197,6 +1220,92 @@ class _ItemPainter extends CustomPainter {
       oldDelegate.slug != slug ||
       oldDelegate.category != category ||
       oldDelegate.locked != locked;
+}
+
+class _BossSigilPainter extends CustomPainter {
+  _BossSigilPainter(this.bossType);
+  final String bossType;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    rect(0, 0, size.width, size.height, const Color(0xFF14131A));
+    final ember = const Color(0xFFE87947);
+    final violet = const Color(0xFF7654D8);
+    final paper = const Color(0xFFD8C7A3);
+    final teal = const Color(0xFF4AA89A);
+
+    switch (bossType) {
+      case 'meeting_mimic':
+        rect(size.width * .20, size.height * .24, size.width * .60, size.height * .52, violet);
+        rect(size.width * .30, size.height * .35, size.width * .14, size.height * .14, paper);
+        rect(size.width * .56, size.height * .35, size.width * .14, size.height * .14, paper);
+        rect(size.width * .43, size.height * .58, size.width * .14, 5, ember);
+        break;
+      case 'spreadsheet_slime':
+        p.color = teal;
+        canvas.drawCircle(Offset(size.width * .50, size.height * .56), size.width * .25, p);
+        rect(size.width * .25, size.height * .58, size.width * .50, size.height * .15, teal);
+        rect(size.width * .37, size.height * .48, 5, 5, paper);
+        rect(size.width * .58, size.height * .48, 5, 5, paper);
+        break;
+      case 'calendar_kraken':
+        rect(size.width * .22, size.height * .18, size.width * .56, size.height * .58, const Color(0xFF8A5A35));
+        rect(size.width * .28, size.height * .30, size.width * .44, size.height * .32, paper);
+        for (var i = 0; i < 4; i++) {
+          rect(size.width * (.33 + (i % 2) * .20), size.height * (.36 + (i ~/ 2) * .14), 6, 6, ember);
+        }
+        break;
+      case 'printer_poltergeist':
+        rect(size.width * .20, size.height * .30, size.width * .60, size.height * .38, const Color(0xFF5E6670));
+        rect(size.width * .30, size.height * .14, size.width * .40, size.height * .28, paper);
+        rect(size.width * .30, size.height * .62, size.width * .40, size.height * .20, paper);
+        rect(size.width * .64, size.height * .43, 6, 6, ember);
+        break;
+      case 'notification_swarm':
+        for (var i = 0; i < 7; i++) {
+          final x = size.width * (.16 + (i * .11) % .62);
+          final y = size.height * (.18 + ((i * 3) % 5) * .12);
+          rect(x, y, 9, 9, i.isEven ? ember : violet);
+        }
+        break;
+      case 'ticket_troll':
+        rect(size.width * .24, size.height * .24, size.width * .52, size.height * .52, const Color(0xFF4A5D3C));
+        rect(size.width * .31, size.height * .37, 6, 6, paper);
+        rect(size.width * .61, size.height * .37, 6, 6, paper);
+        rect(size.width * .40, size.height * .58, size.width * .20, 5, ember);
+        break;
+      case 'update_dragon':
+        final wing = Path()
+          ..moveTo(size.width * .20, size.height * .66)
+          ..lineTo(size.width * .35, size.height * .24)
+          ..lineTo(size.width * .48, size.height * .62)
+          ..lineTo(size.width * .64, size.height * .22)
+          ..lineTo(size.width * .80, size.height * .68)
+          ..close();
+        p.color = const Color(0xFF9B3B36);
+        canvas.drawPath(wing, p);
+        rect(size.width * .46, size.height * .44, 6, 6, paper);
+        rect(size.width * .56, size.height * .44, 6, 6, paper);
+        break;
+      default:
+        // Inbox Hydra - three paper heads.
+        for (var i = 0; i < 3; i++) {
+          final x = size.width * (.18 + i * .24);
+          rect(x, size.height * (.25 + (i % 2) * .10), size.width * .18, size.height * .34, paper);
+          rect(x + size.width * .05, size.height * (.43 + (i % 2) * .10), 5, 5, ember);
+        }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _BossSigilPainter oldDelegate) =>
+      oldDelegate.bossType != bossType;
 }
 
 class _BossPainter extends CustomPainter {
