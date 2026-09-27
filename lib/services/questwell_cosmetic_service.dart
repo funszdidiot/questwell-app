@@ -6,12 +6,14 @@ class QuestwellProfile {
     required this.totalXp,
     required this.coinBalance,
     required this.currentEnergyMode,
+    required this.onboardingCompleted,
   });
 
   final int level;
   final int totalXp;
   final int coinBalance;
   final String currentEnergyMode;
+  final bool onboardingCompleted;
 
   bool get campfireMode => currentEnergyMode == 'campfire';
 
@@ -22,6 +24,7 @@ class QuestwellProfile {
       coinBalance: (json['coin_balance'] as num?)?.toInt() ?? 0,
       currentEnergyMode:
           json['current_energy_mode']?.toString() ?? 'normal',
+      onboardingCompleted: json['onboarding_completed'] == true,
     );
   }
 }
@@ -115,7 +118,7 @@ class QuestwellCosmeticService {
     final responses = await Future.wait([
       SupaFlow.client
           .from('users')
-          .select('level,total_xp,coin_balance,current_energy_mode')
+          .select('level,total_xp,coin_balance,current_energy_mode,onboarding_completed')
           .eq('id', uid)
           .single(),
       SupaFlow.client
@@ -200,6 +203,18 @@ class QuestwellCosmeticService {
     await SupaFlow.client
         .from('users')
         .update({'current_energy_mode': mode})
+        .eq('id', uid);
+  }
+
+  static Future<void> completeOnboarding() async {
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) {
+      throw StateError('Authentication required.');
+    }
+
+    await SupaFlow.client
+        .from('users')
+        .update({'onboarding_completed': true})
         .eq('id', uid);
   }
 }
