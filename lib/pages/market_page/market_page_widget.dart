@@ -443,13 +443,24 @@ class _MarketCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 3),
-                Text(
-                  '$rarityLabel • ${cosmetic.category}',
-                  style: theme.labelMedium.override(
-                    font: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                    color: theme.secondaryText,
-                    letterSpacing: 0,
-                  ),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    QuestwellRarityPixelBadge(
+                      rarity: cosmetic.rarity,
+                      compact: true,
+                    ),
+                    Text(
+                      cosmetic.category.toUpperCase(),
+                      style: theme.labelSmall.override(
+                        font: GoogleFonts.inter(fontWeight: FontWeight.w700),
+                        color: theme.secondaryText,
+                        letterSpacing: .7,
+                      ),
+                    ),
+                  ],
                 ),
                 if (cosmetic.requiredArchetype != null) ...[
                   const SizedBox(height: 5),
