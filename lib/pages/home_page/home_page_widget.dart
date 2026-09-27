@@ -974,116 +974,82 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                const SizedBox(height: 12),
-                FilledButton.icon(
-                  onPressed: () async {
+                const SizedBox(height: 18),
+                const QuestwellPixelDivider(
+                  accent: Color(0xFF8E6B35),
+                ),
+                const SizedBox(height: 10),
+                QuestwellRetroMenuButton(
+                  label: 'Start an Expedition',
+                  kind: 'expedition',
+                  accent: const Color(0xFF4AA89A),
+                  onTap: () async {
                     await context.pushNamed(ExpeditionPageWidget.routeName);
                     if (mounted) setState(_loadHomeData);
                   },
-                  icon: const QuestwellNavPixelIcon(
-                    kind: 'expedition',
-                    size: 20,
-                  ),
-                  label: const Text('Start an Expedition'),
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(48),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () async {
-                          await context.pushNamed(BossBattlesPageWidget.routeName);
+                      child: QuestwellRetroMenuButton(
+                        label: 'Boss Battles',
+                        kind: 'boss',
+                        compact: true,
+                        accent: const Color(0xFFE87947),
+                        onTap: () async {
+                          await context.pushNamed(
+                            BossBattlesPageWidget.routeName,
+                          );
                           if (mounted) setState(_loadHomeData);
                         },
-                        icon: const QuestwellNavPixelIcon(
-                          kind: 'boss',
-                          size: 20,
-                        ),
-                        label: const Text('Boss Battles'),
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(48),
-                          foregroundColor: theme.primaryText,
-                          side: BorderSide(color: theme.primary),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () async {
-                          await context.pushNamed(ChroniclePageWidget.routeName);
+                      child: QuestwellRetroMenuButton(
+                        label: 'Chronicle',
+                        kind: 'chronicle',
+                        compact: true,
+                        accent: const Color(0xFF7654D8),
+                        onTap: () async {
+                          await context.pushNamed(
+                            ChroniclePageWidget.routeName,
+                          );
                           if (mounted) setState(_loadHomeData);
                         },
-                        icon: const QuestwellNavPixelIcon(
-                          kind: 'chronicle',
-                          size: 20,
-                        ),
-                        label: const Text('Chronicle'),
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(48),
-                          foregroundColor: theme.primaryText,
-                          side: BorderSide(color: theme.alternate),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () async {
-                          await context.pushNamed(AdventurerPageWidget.routeName);
+                      child: QuestwellRetroMenuButton(
+                        label: 'Adventurer',
+                        kind: 'adventurer',
+                        compact: true,
+                        accent: const Color(0xFF4AA89A),
+                        onTap: () async {
+                          await context.pushNamed(
+                            AdventurerPageWidget.routeName,
+                          );
                           if (mounted) setState(_loadHomeData);
                         },
-                        icon: const QuestwellNavPixelIcon(
-                          kind: 'adventurer',
-                          size: 20,
-                        ),
-                        label: const Text('Adventurer'),
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(46),
-                          foregroundColor: theme.primaryText,
-                          side: BorderSide(color: theme.alternate),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () async {
+                      child: QuestwellRetroMenuButton(
+                        label: 'Market',
+                        kind: 'market',
+                        compact: true,
+                        accent: const Color(0xFFD6A84B),
+                        onTap: () async {
                           await context.pushNamed(MarketPageWidget.routeName);
                           if (mounted) setState(_loadHomeData);
                         },
-                        icon: const QuestwellNavPixelIcon(
-                          kind: 'market',
-                          size: 20,
-                        ),
-                        label: const Text('Market'),
-                        style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(46),
-                          foregroundColor: theme.primaryText,
-                          side: BorderSide(color: theme.alternate),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
                       ),
                     ),
                   ],
