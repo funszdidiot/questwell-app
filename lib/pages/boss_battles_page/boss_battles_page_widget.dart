@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_boss_service.dart';
 import '/services/questwell_cosmetic_service.dart';
+import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -341,6 +342,33 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       body: FutureBuilder<List<QuestwellBossBattle>>(
         future: _future,
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(28),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.cloud_off_outlined, size: 48, color: theme.primary),
+                    const SizedBox(height: 12),
+                    Text(
+                      'The office monsters slipped away.',
+                      style: theme.titleMedium.override(
+                        font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                        letterSpacing: 0,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextButton(
+                      onPressed: () => setState(_refresh),
+                      child: const Text('Try Again'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -453,6 +481,11 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      QuestwellBossPixelArt(
+                        bossType: battle.bossType,
+                        height: 132,
+                      ),
+                      const SizedBox(height: 14),
                       Row(
                         children: [
                           Container(
