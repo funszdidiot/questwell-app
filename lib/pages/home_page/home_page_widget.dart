@@ -253,6 +253,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const QuestwellVictoryPixelArt(
+                  height: 100,
+                  bossVictory: false,
+                ),
+                const SizedBox(height: 14),
                 Text(
                   firstWin
                       ? 'That is the loop: do one real thing, earn progress, and keep the momentum.'
