@@ -6,3 +6,4 @@ export '/pages/market_page/market_page_widget.dart' show MarketPageWidget;
 export '/pages/adventurer_page/adventurer_page_widget.dart'
     show AdventurerPageWidget;
 export '/pages/boss_battles_page/boss_battles_page_widget.dart' show BossBattlesPageWidget;
+export '/pages/chronicle_page/chronicle_page_widget.dart' show ChroniclePageWidget;
