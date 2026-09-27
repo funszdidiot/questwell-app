@@ -55,33 +55,52 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
           if (snapshot.hasError) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(28),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.menu_book_outlined, size: 52, color: theme.primary),
-                    const SizedBox(height: 12),
-                    Text(
-                      'The Chronicle could not be opened.',
-                      textAlign: TextAlign.center,
-                      style: theme.titleMedium.override(
-                        font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                        letterSpacing: 0,
+                padding: const EdgeInsets.all(24),
+                child: QuestwellRetroPanel(
+                  padding: const EdgeInsets.all(16),
+                  accent: const Color(0xFFE87947),
+                  background: const Color(0xFF1A1512),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const QuestwellNavPixelIcon(
+                        kind: 'chronicle',
+                        size: 42,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextButton(
-                      onPressed: () => setState(_refresh),
-                      child: const Text('Try Again'),
-                    ),
-                  ],
+                      const SizedBox(height: 12),
+                      Text(
+                        'CHRONICLE UNAVAILABLE',
+                        textAlign: TextAlign.center,
+                        style: theme.titleMedium.override(
+                          font: GoogleFonts.pressStart2p(
+                            fontWeight: FontWeight.w700,
+                          ),
+                          fontSize: 10,
+                          letterSpacing: .3,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextButton(
+                        onPressed: () => setState(_refresh),
+                        child: const Text('TRY AGAIN'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
           }
 
           if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: SizedBox(
+                width: 220,
+                child: QuestwellRetroPanel(
+                  padding: EdgeInsets.all(20),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              ),
+            );
           }
 
           final data = snapshot.data!;
@@ -211,25 +230,13 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
 
-    return Container(
+    return SizedBox(
       width: 156,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: theme.secondaryBackground,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-          color: const Color(0xFF8E6B35),
-          width: 2,
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x55322018),
-            offset: Offset(3, 3),
-            blurRadius: 0,
-          ),
-        ],
-      ),
-      child: Column(
+      child: QuestwellRetroPanel(
+        padding: const EdgeInsets.all(12),
+        accent: const Color(0xFF8E6B35),
+        background: const Color(0xFF171A20),
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           icon == Icons.monetization_on_outlined
@@ -258,6 +265,7 @@ class _StatCard extends StatelessWidget {
           ),
         ],
       ),
+      ),
     );
   }
 }
@@ -272,25 +280,12 @@ class _WinCard extends StatelessWidget {
     final theme = FlutterFlowTheme.of(context);
     final isBoss = win.kind == 'boss';
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.secondaryBackground,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-          color: isBoss
-              ? const Color(0xFFE87947)
-              : const Color(0xFF8E6B35),
-          width: 2,
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x55322018),
-            offset: Offset(3, 3),
-            blurRadius: 0,
-          ),
-        ],
-      ),
+    return QuestwellRetroPanel(
+      padding: const EdgeInsets.all(14),
+      accent: isBoss
+          ? const Color(0xFFE87947)
+          : const Color(0xFF8E6B35),
+      background: const Color(0xFF171A20),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
