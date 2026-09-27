@@ -459,18 +459,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         children: [
                           Row(
                             children: [
-                              Container(
-                                width: 48,
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  color: theme.primaryBackground,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  _archetypeIcon(profile.adventurerArchetype),
-                                  color: theme.primary,
-                                  size: 26,
-                                ),
+                              QuestwellRelicPixelArt(
+                                archetype: profile.adventurerArchetype,
+                                size: 48,
                               ),
                               const SizedBox(width: 12),
                               Expanded(
