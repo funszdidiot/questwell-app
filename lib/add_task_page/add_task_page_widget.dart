@@ -126,6 +126,11 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                const QuestwellQuestBoardPixelArt(
+                  height: 110,
+                  clear: false,
+                ),
+                const SizedBox(height: 16),
                 Text(
                   'What needs to get done?',
                   style: theme.headlineSmall.override(
@@ -223,7 +228,12 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                 const SizedBox(height: 24),
                 FilledButton.icon(
                   onPressed: _saving ? null : _saveQuest,
-                  icon: Icon(_saving ? Icons.hourglass_top : Icons.add_task),
+                  icon: _saving
+                      ? const Icon(Icons.hourglass_top)
+                      : const QuestwellNavPixelIcon(
+                          kind: 'quest',
+                          size: 20,
+                        ),
                   label: Text(_saving ? 'Adding Quest...' : 'Add to Quest Board'),
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(52),
