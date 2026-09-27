@@ -180,7 +180,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         backgroundColor: theme.primaryBackground,
         body: SafeArea(
           top: true,
-          child: Padding(
+          child: SingleChildScrollView(
             padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -337,7 +337,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         .eqOrNull('user_id', currentUserUid)
                         .eqOrNull('status', 'open')
                         .order('created_at', ascending: true),
-                    limit: 1,
+                    limit: 3,
                   ),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
@@ -348,9 +348,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     }
 
                     final tasks = snapshot.data!;
-                    final task = tasks.elementAtOrNull(0);
 
-                    if (task == null) {
+                    if (tasks.isEmpty) {
                       return Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
@@ -383,83 +382,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       );
                     }
 
-                    return Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: theme.secondaryBackground,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(
-                          color: theme.alternate,
-                          width: 1,
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _frictionLabel(task.frictionLevel),
-                            style: theme.labelMedium.override(
-                              font: GoogleFonts.inter(
-                                fontWeight: FontWeight.w600,
-                              ),
-                              color: theme.secondaryText,
-                              letterSpacing: 0,
-                            ),
+                    return Column(
+                      children: [
+                        for (var index = 0; index < tasks.length; index++) ...[
+                          _QuestCard(
+                            task: tasks[index],
+                            frictionLabel: _frictionLabel(tasks[index].frictionLevel),
+                            completing: _completingTask,
+                            featured: index == 0,
+                            onComplete: () => _completeTask(tasks[index]),
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            (task.title?.trim().isNotEmpty ?? false)
-                                ? task.title!
-                                : 'Untitled quest',
-                            style: theme.titleLarge.override(
-                              font: GoogleFonts.interTight(
-                                fontWeight: FontWeight.w700,
-                              ),
-                              letterSpacing: 0,
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: [
-                              _RewardChip(
-                                icon: Icons.auto_awesome,
-                                label: '+${task.xpValue ?? 0} XP',
-                              ),
-                              _RewardChip(
-                                icon: Icons.monetization_on_outlined,
-                                label: '+${task.coinValue ?? 0} coins',
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 18),
-                          FFButtonWidget(
-                            onPressed: _completingTask
-                                ? null
-                                : () async => _completeTask(task),
-                            text: _completingTask
-                                ? 'Completing...'
-                                : 'Complete Quest',
-                            options: FFButtonOptions(
-                              width: double.infinity,
-                              height: 48,
-                              padding:
-                                  const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
-                              color: theme.primary,
-                              textStyle: theme.titleSmall.override(
-                                font: GoogleFonts.interTight(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                color: Colors.white,
-                                letterSpacing: 0,
-                              ),
-                              elevation: 0,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
+                          if (index != tasks.length - 1)
+                            const SizedBox(height: 10),
                         ],
-                      ),
+                      ],
                     );
                   },
                 ),
@@ -531,6 +467,109 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+
+class _QuestCard extends StatelessWidget {
+  const _QuestCard({
+    required this.task,
+    required this.frictionLabel,
+    required this.completing,
+    required this.featured,
+    required this.onComplete,
+  });
+
+  final TasksRow task;
+  final String frictionLabel;
+  final bool completing;
+  final bool featured;
+  final VoidCallback onComplete;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = FlutterFlowTheme.of(context);
+
+    return Container(
+      padding: EdgeInsets.all(featured ? 20 : 16),
+      decoration: BoxDecoration(
+        color: theme.secondaryBackground,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: featured ? theme.primary : theme.alternate,
+          width: featured ? 1.5 : 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (featured)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(
+                'NEXT UP',
+                style: theme.labelSmall.override(
+                  font: GoogleFonts.inter(fontWeight: FontWeight.w700),
+                  color: theme.primary,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ),
+          Text(
+            frictionLabel,
+            style: theme.labelMedium.override(
+              font: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              color: theme.secondaryText,
+              letterSpacing: 0,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            (task.title?.trim().isNotEmpty ?? false)
+                ? task.title!
+                : 'Untitled quest',
+            style: (featured ? theme.titleLarge : theme.titleMedium).override(
+              font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+              letterSpacing: 0,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _RewardChip(
+                icon: Icons.auto_awesome,
+                label: '+${task.xpValue ?? 0} XP',
+              ),
+              _RewardChip(
+                icon: Icons.monetization_on_outlined,
+                label: '+${task.coinValue ?? 0} coins',
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          FFButtonWidget(
+            onPressed: completing ? null : onComplete,
+            text: completing ? 'Completing...' : 'Complete Quest',
+            options: FFButtonOptions(
+              width: double.infinity,
+              height: featured ? 48 : 44,
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
+              color: featured ? theme.primary : theme.primaryBackground,
+              textStyle: theme.titleSmall.override(
+                font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                color: featured ? Colors.white : theme.primaryText,
+                letterSpacing: 0,
+              ),
+              elevation: 0,
+              borderSide: featured ? null : BorderSide(color: theme.alternate),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ],
       ),
     );
   }
