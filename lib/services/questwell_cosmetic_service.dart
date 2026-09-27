@@ -5,17 +5,23 @@ class QuestwellProfile {
     required this.level,
     required this.totalXp,
     required this.coinBalance,
+    required this.currentEnergyMode,
   });
 
   final int level;
   final int totalXp;
   final int coinBalance;
+  final String currentEnergyMode;
+
+  bool get campfireMode => currentEnergyMode == 'campfire';
 
   factory QuestwellProfile.fromJson(Map<String, dynamic> json) {
     return QuestwellProfile(
       level: (json['level'] as num?)?.toInt() ?? 1,
       totalXp: (json['total_xp'] as num?)?.toInt() ?? 0,
       coinBalance: (json['coin_balance'] as num?)?.toInt() ?? 0,
+      currentEnergyMode:
+          json['current_energy_mode']?.toString() ?? 'normal',
     );
   }
 }
@@ -109,7 +115,7 @@ class QuestwellCosmeticService {
     final responses = await Future.wait([
       SupaFlow.client
           .from('users')
-          .select('level,total_xp,coin_balance')
+          .select('level,total_xp,coin_balance,current_energy_mode')
           .eq('id', uid)
           .single(),
       SupaFlow.client
@@ -179,5 +185,21 @@ class QuestwellCosmeticService {
       'unequip_cosmetic',
       params: {'p_cosmetic_id': cosmeticId},
     );
+  }
+
+  static Future<void> setEnergyMode(String mode) async {
+    if (mode != 'normal' && mode != 'campfire') {
+      throw ArgumentError.value(mode, 'mode', 'Unsupported energy mode');
+    }
+
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) {
+      throw StateError('Authentication required.');
+    }
+
+    await SupaFlow.client
+        .from('users')
+        .update({'current_energy_mode': mode})
+        .eq('id', uid);
   }
 }
