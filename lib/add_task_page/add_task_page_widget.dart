@@ -112,10 +112,13 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
           elevation: 0,
           foregroundColor: theme.primaryText,
           title: Text(
-            'Add Quest',
+            'ADD QUEST',
             style: theme.titleLarge.override(
-              font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-              letterSpacing: 0,
+              font: GoogleFonts.pressStart2p(
+                fontWeight: FontWeight.w700,
+              ),
+              fontSize: 14,
+              letterSpacing: .4,
             ),
           ),
         ),
@@ -132,10 +135,13 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'What needs to get done?',
+                  'WHAT NEEDS TO GET DONE?',
                   style: theme.headlineSmall.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: -0.25,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 13,
+                    letterSpacing: .3,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -159,12 +165,18 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                     fillColor: theme.secondaryBackground,
                     contentPadding: const EdgeInsets.all(16),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: theme.alternate),
-                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(
+                        color: Color(0xFF8E6B35),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(2),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: theme.primary, width: 1.5),
-                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFF1C75B),
+                        width: 3,
+                      ),
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
                   style: theme.bodyLarge.override(
@@ -174,10 +186,13 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                 ),
                 const SizedBox(height: 26),
                 Text(
-                  'How hard does this feel right now?',
+                  'HOW HARD DOES THIS FEEL?',
                   style: theme.titleLarge.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 12,
+                    letterSpacing: .3,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -238,7 +253,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(52),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
                 ),
