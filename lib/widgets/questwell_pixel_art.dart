@@ -223,28 +223,26 @@ class QuestwellRetroPanel extends StatelessWidget {
               child: child,
             ),
           ),
-          for (final alignment in const [
-            Alignment.topLeft,
-            Alignment.topRight,
-            Alignment.bottomLeft,
-            Alignment.bottomRight,
-          ])
-            Align(
-              alignment: alignment,
-              child: Container(
-                width: 13,
-                height: 13,
-                margin: const EdgeInsets.all(2),
-                color: const Color(0xFFF1C75B),
-                child: Center(
-                  child: Container(
-                    width: 5,
-                    height: 5,
-                    color: const Color(0xFF8E6B35),
-                  ),
-                ),
-              ),
-            ),
+          Positioned(
+            left: 2,
+            top: 2,
+            child: _RetroCorner(),
+          ),
+          Positioned(
+            right: 2,
+            top: 2,
+            child: _RetroCorner(),
+          ),
+          Positioned(
+            left: 2,
+            bottom: 2,
+            child: _RetroCorner(),
+          ),
+          Positioned(
+            right: 2,
+            bottom: 2,
+            child: _RetroCorner(),
+          ),
           Positioned(
             left: 24,
             right: 24,
@@ -256,6 +254,29 @@ class QuestwellRetroPanel extends StatelessWidget {
             right: 24,
             bottom: 2,
             child: Container(height: 2, color: const Color(0xFF6A4C2C)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RetroCorner extends StatelessWidget {
+  const _RetroCorner();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 13,
+      height: 13,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(color: const Color(0xFFF1C75B)),
+          Container(
+            width: 5,
+            height: 5,
+            color: const Color(0xFF8E6B35),
           ),
         ],
       ),
