@@ -30,6 +30,7 @@ class QuestwellBossBattle {
     required this.status,
     required this.rewardXp,
     required this.rewardCoins,
+    required this.bossType,
     required this.steps,
   });
 
@@ -38,6 +39,7 @@ class QuestwellBossBattle {
   final String status;
   final int rewardXp;
   final int rewardCoins;
+  final String bossType;
   final List<QuestwellBossStep> steps;
 
   int get completedSteps => steps.where((step) => step.completed).length;
@@ -56,6 +58,7 @@ class QuestwellBossBattle {
       status: json['status']?.toString() ?? 'open',
       rewardXp: (json['reward_xp'] as num?)?.toInt() ?? 100,
       rewardCoins: (json['reward_coins'] as num?)?.toInt() ?? 50,
+      bossType: json['boss_type']?.toString() ?? 'inbox_hydra',
       steps: steps,
     );
   }
@@ -87,7 +90,7 @@ class QuestwellBossService {
     final responses = await Future.wait([
       SupaFlow.client
           .from('boss_battles')
-          .select('id,title,status,reward_xp,reward_coins,created_at')
+          .select('id,title,status,reward_xp,reward_coins,boss_type,created_at')
           .eq('user_id', uid)
           .order('created_at', ascending: true),
       SupaFlow.client
@@ -124,6 +127,7 @@ class QuestwellBossService {
   static Future<String> createBattle({
     required String title,
     required List<String> steps,
+    String bossType = 'inbox_hydra',
   }) async {
     final response = await SupaFlow.client.rpc(
       'create_boss_battle',
@@ -132,6 +136,7 @@ class QuestwellBossService {
         'p_steps': steps,
         'p_reward_xp': 100,
         'p_reward_coins': 50,
+        'p_boss_type': bossType,
       },
     );
     return response?.toString() ?? '';
