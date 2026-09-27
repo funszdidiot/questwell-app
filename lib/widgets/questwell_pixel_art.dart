@@ -87,6 +87,27 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellNavPixelIcon extends StatelessWidget {
+  const QuestwellNavPixelIcon({
+    super.key,
+    required this.kind,
+    this.size = 20,
+  });
+
+  final String kind;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.square(
+      dimension: size,
+      child: CustomPaint(
+        painter: _NavIconPainter(kind: kind),
+      ),
+    );
+  }
+}
+
 class QuestwellCurrencyPixelIcon extends StatelessWidget {
   const QuestwellCurrencyPixelIcon({
     super.key,
@@ -516,6 +537,83 @@ class _HearthPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _NavIconPainter extends CustomPainter {
+  _NavIconPainter({required this.kind});
+  final String kind;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    final gold = const Color(0xFFF1C75B);
+    final violet = const Color(0xFF7654D8);
+    final teal = const Color(0xFF4AA89A);
+    final ember = const Color(0xFFE87947);
+    final paper = const Color(0xFFD8C7A3);
+
+    switch (kind) {
+      case 'expedition':
+        final mountain = Path()
+          ..moveTo(size.width * .08, size.height * .78)
+          ..lineTo(size.width * .38, size.height * .26)
+          ..lineTo(size.width * .56, size.height * .56)
+          ..lineTo(size.width * .72, size.height * .32)
+          ..lineTo(size.width * .94, size.height * .78)
+          ..close();
+        p.color = teal;
+        canvas.drawPath(mountain, p);
+        rect(size.width * .43, size.height * .53, size.width * .08, size.height * .36, gold);
+        break;
+      case 'boss':
+        rect(size.width * .18, size.height * .28, size.width * .64, size.height * .44, ember);
+        rect(size.width * .28, size.height * .20, size.width * .12, size.height * .14, ember);
+        rect(size.width * .60, size.height * .20, size.width * .12, size.height * .14, ember);
+        rect(size.width * .32, size.height * .42, 4, 4, paper);
+        rect(size.width * .62, size.height * .42, 4, 4, paper);
+        break;
+      case 'chronicle':
+        rect(size.width * .18, size.height * .16, size.width * .64, size.height * .68, violet);
+        rect(size.width * .27, size.height * .22, size.width * .08, size.height * .56, gold);
+        rect(size.width * .42, size.height * .33, size.width * .30, 4, paper);
+        rect(size.width * .42, size.height * .48, size.width * .24, 4, paper);
+        rect(size.width * .42, size.height * .63, size.width * .28, 4, paper);
+        break;
+      case 'adventurer':
+        p.color = const Color(0xFFD9A56E);
+        canvas.drawCircle(Offset(size.width * .50, size.height * .32), size.width * .16, p);
+        rect(size.width * .30, size.height * .48, size.width * .40, size.height * .36, teal);
+        rect(size.width * .22, size.height * .52, size.width * .10, size.height * .25, teal);
+        rect(size.width * .68, size.height * .52, size.width * .10, size.height * .25, teal);
+        break;
+      case 'market':
+        for (var i = 0; i < 4; i++) {
+          rect(
+            size.width * (.12 + i * .19),
+            size.height * .15,
+            size.width * .18,
+            size.height * .18,
+            i.isEven ? ember : paper,
+          );
+        }
+        rect(size.width * .14, size.height * .34, size.width * .72, size.height * .48, const Color(0xFF7B4F2B));
+        rect(size.width * .28, size.height * .47, size.width * .18, size.height * .20, gold);
+        rect(size.width * .56, size.height * .47, size.width * .18, size.height * .20, teal);
+        break;
+      default:
+        rect(size.width * .46, size.height * .10, size.width * .08, size.height * .80, gold);
+        rect(size.width * .10, size.height * .46, size.width * .80, size.height * .08, gold);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _NavIconPainter oldDelegate) =>
+      oldDelegate.kind != kind;
 }
 
 class _CurrencyPainter extends CustomPainter {
