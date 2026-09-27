@@ -108,28 +108,90 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                   child: Column(
                     children: [
                       Container(
-                        width: 132,
-                        height: 132,
+                        width: 170,
+                        height: 170,
                         decoration: BoxDecoration(
                           color: theme.primaryBackground,
-                          borderRadius: BorderRadius.circular(28),
+                          borderRadius: BorderRadius.circular(32),
+                          border: Border.all(color: theme.alternate),
                         ),
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            Icon(
-                              Icons.person_outline,
-                              size: 74,
-                              color: theme.primary,
+                            if (equipped.any((item) => item.category == 'room'))
+                              Positioned.fill(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(14),
+                                  child: Icon(
+                                    Icons.window_outlined,
+                                    size: 130,
+                                    color: theme.primary.withValues(alpha: 0.10),
+                                  ),
+                                ),
+                              ),
+                            Container(
+                              width: 88,
+                              height: 108,
+                              decoration: BoxDecoration(
+                                color: theme.secondaryBackground,
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              child: Icon(
+                                equipped.any((item) => item.category == 'outfit')
+                                    ? Icons.person
+                                    : Icons.person_outline,
+                                size: 76,
+                                color: theme.primary,
+                              ),
                             ),
+                            if (equipped.any((item) => item.slug == 'round-scholar-glasses'))
+                              Positioned(
+                                top: 57,
+                                child: Icon(
+                                  Icons.visibility_outlined,
+                                  size: 34,
+                                  color: theme.primaryText,
+                                ),
+                              ),
+                            if (equipped.any((item) => item.slug == 'tiny-wizard-hat'))
+                              Positioned(
+                                top: 15,
+                                child: Transform.rotate(
+                                  angle: -0.15,
+                                  child: Icon(
+                                    Icons.change_history,
+                                    size: 42,
+                                    color: theme.primary,
+                                  ),
+                                ),
+                              ),
+                            if (equipped.any((item) => item.slug == 'leather-satchel'))
+                              Positioned(
+                                left: 26,
+                                bottom: 28,
+                                child: Icon(
+                                  Icons.work_outline,
+                                  size: 30,
+                                  color: theme.secondaryText,
+                                ),
+                              ),
                             if (equipped.any((item) => item.category == 'familiar'))
                               Positioned(
-                                right: 15,
-                                bottom: 15,
-                                child: Icon(
-                                  Icons.pets,
-                                  size: 28,
-                                  color: theme.secondaryText,
+                                right: 18,
+                                bottom: 18,
+                                child: Container(
+                                  width: 42,
+                                  height: 42,
+                                  decoration: BoxDecoration(
+                                    color: theme.secondaryBackground,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: theme.alternate),
+                                  ),
+                                  child: Icon(
+                                    Icons.pets,
+                                    size: 24,
+                                    color: theme.primary,
+                                  ),
                                 ),
                               ),
                             if (equipped.any((item) => item.category == 'effect'))
@@ -137,8 +199,8 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                                 child: IgnorePointer(
                                   child: Icon(
                                     Icons.auto_awesome,
-                                    size: 124,
-                                    color: theme.primary.withValues(alpha: 0.15),
+                                    size: 155,
+                                    color: theme.primary.withValues(alpha: 0.18),
                                   ),
                                 ),
                               ),
