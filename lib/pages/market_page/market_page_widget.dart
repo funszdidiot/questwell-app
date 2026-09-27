@@ -181,15 +181,21 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
           final currentClassItems = data.cosmetics
               .where(
                 (item) =>
+                    item.unlockMethod == 'shop' &&
                     item.requiredArchetype == data.profile.adventurerArchetype,
               )
               .toList();
           final generalItems = data.cosmetics
-              .where((item) => item.requiredArchetype == null)
+              .where(
+                (item) =>
+                    item.unlockMethod == 'shop' &&
+                    item.requiredArchetype == null,
+              )
               .toList();
           final otherClassItems = data.cosmetics
               .where(
                 (item) =>
+                    item.unlockMethod == 'shop' &&
                     item.requiredArchetype != null &&
                     item.requiredArchetype != data.profile.adventurerArchetype,
               )
