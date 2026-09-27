@@ -388,7 +388,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const QuestwellHearthPixelScene(height: 195),
+                FutureBuilder<QuestwellCosmeticsSnapshot>(
+                  future: _homeSnapshotFuture,
+                  builder: (context, snapshot) {
+                    return QuestwellHearthPixelScene(
+                      height: 205,
+                      archetype:
+                          snapshot.data?.profile.adventurerArchetype ?? 'wanderer',
+                    );
+                  },
+                ),
                 const SizedBox(height: 16),
                 FutureBuilder<QuestwellCosmeticsSnapshot>(
                   future: _homeSnapshotFuture,
@@ -481,7 +490,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       children: [
                                         Flexible(
                                           child: Text(
-                                            'Level ${profile.level} ${_archetypeLabel(profile.adventurerArchetype)}',
+                                            'LEVEL ${profile.level}  •  ${_archetypeLabel(profile.adventurerArchetype).toUpperCase()}',
                                             style: theme.bodyMedium.override(
                                               font: GoogleFonts.inter(),
                                               color: theme.secondaryText,
@@ -630,14 +639,18 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               ],
                             ),
                           ),
-                          TextButton(
+                          IconButton(
+                            tooltip: 'Open Chronicle',
                             onPressed: () async {
                               await context.pushNamed(
                                 ChroniclePageWidget.routeName,
                               );
                               if (mounted) setState(_loadHomeData);
                             },
-                            child: const Text('Chronicle'),
+                            icon: const QuestwellNavPixelIcon(
+                              kind: 'chronicle',
+                              size: 28,
+                            ),
                           ),
                         ],
                       ),
