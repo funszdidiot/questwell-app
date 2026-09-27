@@ -1126,13 +1126,24 @@ class _QuestCard extends StatelessWidget {
                 ),
               ),
             ),
-          Text(
-            frictionLabel,
-            style: theme.labelMedium.override(
-              font: GoogleFonts.inter(fontWeight: FontWeight.w600),
-              color: theme.secondaryText,
-              letterSpacing: 0,
-            ),
+          Row(
+            children: [
+              QuestwellFrictionPixelBadge(
+                level: task.frictionLevel ?? 0,
+                size: 34,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  frictionLabel,
+                  style: theme.labelMedium.override(
+                    font: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                    color: theme.secondaryText,
+                    letterSpacing: 0,
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 6),
           Text(
