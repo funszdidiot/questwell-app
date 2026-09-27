@@ -20,6 +20,64 @@ class QuestwellPixelPalette {
   }
 }
 
+class QuestwellPixelToggle extends StatelessWidget {
+  const QuestwellPixelToggle({
+    super.key,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final bool value;
+  final ValueChanged<bool>? onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onChanged != null;
+    return Semantics(
+      toggled: value,
+      button: true,
+      child: GestureDetector(
+        onTap: enabled ? () => onChanged!(!value) : null,
+        child: Container(
+          width: 58,
+          height: 30,
+          padding: const EdgeInsets.all(3),
+          decoration: BoxDecoration(
+            color: const Color(0xFF0D0C11),
+            border: Border.all(
+              color: value
+                  ? const Color(0xFFF1C75B)
+                  : const Color(0xFF5A5B62),
+              width: 2,
+            ),
+          ),
+          child: Row(
+            children: [
+              if (value) const Spacer(),
+              Container(
+                width: 22,
+                height: 20,
+                decoration: BoxDecoration(
+                  color: enabled
+                      ? (value
+                          ? const Color(0xFFE87947)
+                          : const Color(0xFFB9B9B9))
+                      : const Color(0xFF595A60),
+                  border: Border.all(
+                    color: const Color(0xFFF2E7CE),
+                    width: 2,
+                  ),
+                ),
+              ),
+              if (!value) const Spacer(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class QuestwellRetroPanel extends StatelessWidget {
   const QuestwellRetroPanel({
     super.key,
