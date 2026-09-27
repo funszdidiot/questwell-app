@@ -1,5 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_boss_service.dart';
+import '/services/questwell_cosmetic_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,15 +17,27 @@ class BossBattlesPageWidget extends StatefulWidget {
 class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
   late Future<List<QuestwellBossBattle>> _future;
   String? _busyStepId;
+  bool _campfireMode = false;
 
   @override
   void initState() {
     super.initState();
     _refresh();
+    _loadCampfireMode();
   }
 
   void _refresh() {
     _future = QuestwellBossService.loadBattles();
+  }
+
+  Future<void> _loadCampfireMode() async {
+    try {
+      final data = await QuestwellCosmeticService.load();
+      if (!mounted) return;
+      setState(() => _campfireMode = data.profile.campfireMode);
+    } catch (_) {
+      // Boss Battles still works if profile mode cannot be loaded.
+    }
   }
 
   String _bossName(String type) {
@@ -333,6 +346,11 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
           }
 
           final battles = snapshot.data!;
+          final openBattles =
+              battles.where((battle) => !battle.completed).toList();
+          final visibleBattles = _campfireMode && openBattles.isNotEmpty
+              ? openBattles.take(1).toList()
+              : battles;
 
           if (battles.isEmpty) {
             return Center(
@@ -375,14 +393,49 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
           return RefreshIndicator(
             onRefresh: () async {
               setState(_refresh);
-              await _future;
+              await Future.wait([
+                _future,
+                _loadCampfireMode(),
+              ]);
             },
             child: ListView.separated(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 100),
-              itemCount: battles.length,
+              itemCount: visibleBattles.length + (_campfireMode ? 1 : 0),
               separatorBuilder: (_, __) => const SizedBox(height: 14),
               itemBuilder: (context, index) {
-                final battle = battles[index];
+                if (_campfireMode && index == 0) {
+                  return Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: theme.secondaryBackground,
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(color: theme.primary),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.local_fire_department_outlined,
+                          color: theme.primary,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            'Campfire Mode: one boss, one attack. The rest can wait.',
+                            style: theme.bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                              ),
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                final battle =
+                    visibleBattles[index - (_campfireMode ? 1 : 0)];
                 final remainingSteps =
                     battle.steps.where((step) => !step.completed).toList();
 
@@ -468,7 +521,8 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                       ),
                       if (!battle.completed && remainingSteps.isNotEmpty) ...[
                         const SizedBox(height: 16),
-                        for (final step in remainingSteps.take(3)) ...[
+                        for (final step in remainingSteps
+                            .take(_campfireMode ? 1 : 3)) ...[
                           Row(
                             children: [
                               Expanded(
