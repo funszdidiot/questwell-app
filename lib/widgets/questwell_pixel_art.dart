@@ -514,6 +514,34 @@ class QuestwellExpeditionPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellClassMiniSprite extends StatelessWidget {
+  const QuestwellClassMiniSprite({
+    super.key,
+    required this.archetype,
+    this.size = 58,
+  });
+
+  final String archetype;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return QuestwellPixelFrame(
+      height: size,
+      background: QuestwellPixelPalette.forClass(archetype).first,
+      child: SizedBox.square(
+        dimension: size,
+        child: CustomPaint(
+          painter: _ClassMiniPainter(
+            archetype: archetype,
+            palette: QuestwellPixelPalette.forClass(archetype),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class QuestwellClassPixelPortrait extends StatelessWidget {
   const QuestwellClassPixelPortrait({
     super.key,
@@ -1349,6 +1377,70 @@ class _ExpeditionPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _ExpeditionPainter oldDelegate) =>
       oldDelegate.campfire != campfire;
+}
+
+class _ClassMiniPainter extends CustomPainter {
+  _ClassMiniPainter({
+    required this.archetype,
+    required this.palette,
+  });
+
+  final String archetype;
+  final List<Color> palette;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    rect(0, 0, size.width, size.height, palette.first);
+    rect(0, size.height * .78, size.width, size.height * .22, const Color(0xFF17151A));
+
+    // Tiny star pixels.
+    rect(size.width * .12, size.height * .16, 3, 3, palette.last);
+    rect(size.width * .78, size.height * .22, 3, 3, palette.last);
+    rect(size.width * .69, size.height * .10, 2, 2, const Color(0xFFF2E7CE));
+
+    final cx = size.width * .50;
+    // Legs, body, face.
+    rect(cx - size.width * .14, size.height * .62, size.width * .10, size.height * .20, const Color(0xFF2B211D));
+    rect(cx + size.width * .04, size.height * .62, size.width * .10, size.height * .20, const Color(0xFF2B211D));
+    rect(cx - size.width * .20, size.height * .38, size.width * .40, size.height * .34, palette[1]);
+    rect(cx - size.width * .14, size.height * .23, size.width * .28, size.height * .20, const Color(0xFFD9A56E));
+    rect(cx - size.width * .16, size.height * .19, size.width * .32, size.height * .07, const Color(0xFF2B241F));
+
+    switch (archetype) {
+      case 'scholar':
+        rect(cx - size.width * .24, size.height * .13, size.width * .48, size.height * .05, palette.last);
+        rect(cx + size.width * .16, size.height * .47, size.width * .23, size.height * .18, const Color(0xFF6B3C84));
+        rect(cx + size.width * .20, size.height * .51, size.width * .15, 3, palette.last);
+        break;
+      case 'scout':
+        rect(cx - size.width * .20, size.height * .16, size.width * .40, size.height * .08, const Color(0xFF375E37));
+        rect(cx + size.width * .25, size.height * .34, 3, size.height * .34, palette.last);
+        break;
+      case 'alchemist':
+        rect(cx - size.width * .14, size.height * .27, size.width * .10, 4, palette.last);
+        rect(cx + size.width * .04, size.height * .27, size.width * .10, 4, palette.last);
+        rect(cx + size.width * .23, size.height * .46, size.width * .08, size.height * .18, const Color(0xFFB8EAF1));
+        rect(cx + size.width * .18, size.height * .59, size.width * .18, size.height * .12, const Color(0xFF75D65D));
+        break;
+      case 'guardian':
+        rect(cx - size.width * .30, size.height * .39, size.width * .10, size.height * .33, const Color(0xFF742525));
+        rect(cx + size.width * .22, size.height * .43, size.width * .22, size.height * .25, palette.last);
+        break;
+      default:
+        rect(cx - size.width * .33, size.height * .42, size.width * .13, size.height * .25, const Color(0xFF6D5333));
+        rect(cx + size.width * .28, size.height * .20, 3, size.height * .56, palette.last);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ClassMiniPainter oldDelegate) =>
+      oldDelegate.archetype != archetype;
 }
 
 class _ClassPortraitPainter extends CustomPainter {
