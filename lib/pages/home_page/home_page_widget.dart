@@ -7,6 +7,7 @@ import '/index.dart';
 import '/services/questwell_task_service.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/services/questwell_chronicle_service.dart';
+import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_page_model.dart';
@@ -380,7 +381,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     letterSpacing: 0,
                   ),
                 ),
-                const SizedBox(height: 22),
+                const SizedBox(height: 16),
+                const QuestwellHearthPixelScene(height: 170),
+                const SizedBox(height: 16),
                 FutureBuilder<QuestwellCosmeticsSnapshot>(
                   future: _homeSnapshotFuture,
                   builder: (context, snapshot) {
