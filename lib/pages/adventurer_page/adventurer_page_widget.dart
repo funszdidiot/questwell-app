@@ -46,6 +46,25 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     }
   }
 
+  Future<void> _unequip(QuestwellCosmetic cosmetic) async {
+    if (_busyCosmeticId != null) return;
+    setState(() => _busyCosmeticId = cosmetic.id);
+
+    try {
+      await QuestwellCosmeticService.unequip(cosmetic.id);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${cosmetic.name} unequipped.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      setState(_refresh);
+    } finally {
+      if (mounted) setState(() => _busyCosmeticId = null);
+    }
+  }
+
   IconData _iconForCategory(String category) {
     switch (category) {
       case 'familiar':
@@ -330,12 +349,13 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             ),
                             const SizedBox(width: 10),
                             OutlinedButton(
-                              onPressed: item.equipped ||
-                                      _busyCosmeticId == item.id
+                              onPressed: _busyCosmeticId == item.id
                                   ? null
-                                  : () => _equip(item),
+                                  : item.equipped
+                                      ? () => _unequip(item)
+                                      : () => _equip(item),
                               child: Text(
-                                item.equipped ? 'Equipped' : 'Equip',
+                                item.equipped ? 'Unequip' : 'Equip',
                               ),
                             ),
                           ],
