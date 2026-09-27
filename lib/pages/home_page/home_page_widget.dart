@@ -592,24 +592,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Offstage(
-                  offstage: true,
-                  child: OutlinedButton.icon(
-                  onPressed: () =>
-                      context.pushNamed(BossBattlesPageWidget.routeName),
-                  icon: const Icon(Icons.sports_mma_outlined),
-                  label: const Text('Boss Battles'),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(48),
-                    foregroundColor: theme.primaryText,
-                    side: BorderSide(color: theme.primary),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                ),
-                ),
-                const SizedBox(height: 12),
                 Row(
                   children: [
                     Expanded(
