@@ -20,6 +20,54 @@ class QuestwellPixelPalette {
   }
 }
 
+class QuestwellRetroPanel extends StatelessWidget {
+  const QuestwellRetroPanel({
+    super.key,
+    required this.child,
+    this.padding = const EdgeInsets.all(16),
+    this.accent = const Color(0xFF8E6B35),
+    this.background = const Color(0xFF15141B),
+  });
+
+  final Widget child;
+  final EdgeInsets padding;
+  final Color accent;
+  final Color background;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Color(0x77000000),
+            blurRadius: 0,
+            offset: Offset(5, 5),
+          ),
+        ],
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF0D0C11),
+          border: Border.all(color: accent, width: 3),
+        ),
+        child: Container(
+          margin: const EdgeInsets.all(4),
+          padding: padding,
+          decoration: BoxDecoration(
+            color: background,
+            border: Border.all(
+              color: const Color(0xFF4C3A24),
+              width: 2,
+            ),
+          ),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
 class QuestwellPixelFrame extends StatelessWidget {
   const QuestwellPixelFrame({
     super.key,
@@ -569,55 +617,129 @@ class _HearthPainter extends CustomPainter {
       p.color = color;
       canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
     }
+    void px(double x, double y, double s, Color color) =>
+        rect(x, y, s, s, color);
 
-    rect(0, 0, size.width, size.height, const Color(0xFF101827));
-    rect(0, size.height * .62, size.width, size.height * .38, const Color(0xFF4A2D1D));
-
-    // Moonlit window.
-    rect(size.width * .66, 12, size.width * .28, size.height * .46, const Color(0xFF193B65));
-    rect(size.width * .68, 14, size.width * .24, size.height * .42, const Color(0xFF315F8E));
-    p.color = const Color(0xFFF7E58E);
-    canvas.drawCircle(Offset(size.width * .85, 34), 12, p);
-
-    // Fireplace.
-    rect(size.width * .06, size.height * .25, size.width * .34, size.height * .60, const Color(0xFF6C442C));
-    rect(size.width * .10, size.height * .38, size.width * .26, size.height * .37, const Color(0xFF1F1613));
-    rect(size.width * .14, size.height * .58, size.width * .18, size.height * .13, const Color(0xFFEE7A24));
-    rect(size.width * .18, size.height * .48, size.width * .10, size.height * .19, const Color(0xFFF6B83F));
-    rect(size.width * .21, size.height * .43, size.width * .05, size.height * .20, const Color(0xFFFFE07A));
-
-    // Bookshelf.
-    rect(size.width * .44, size.height * .16, size.width * .17, size.height * .48, const Color(0xFF5A361F));
-    for (var row = 0; row < 3; row++) {
-      rect(size.width * .46, size.height * (.20 + row * .13), size.width * .13, 4, const Color(0xFFB98245));
-      for (var book = 0; book < 5; book++) {
-        final colors = [
-          const Color(0xFF7A2830),
-          const Color(0xFF285C4D),
-          const Color(0xFF374F82),
-          const Color(0xFF8B6530),
-          const Color(0xFF6E3C72),
-        ];
-        rect(
-          size.width * (.46 + book * .025),
-          size.height * (.21 + row * .13),
-          size.width * .018,
-          size.height * .09,
-          colors[(row + book) % colors.length],
-        );
+    // Back wall with layered stone/wood depth.
+    rect(0, 0, size.width, size.height, const Color(0xFF111827));
+    for (var row = 0; row < 5; row++) {
+      for (var col = 0; col < 12; col++) {
+        final x = col * size.width / 12;
+        final y = row * size.height * .115;
+        final shade = (row + col).isEven
+            ? const Color(0xFF17243A)
+            : const Color(0xFF142033);
+        rect(x, y, size.width / 12 - 1, size.height * .11 - 1, shade);
       }
     }
 
-    // Rug + sleeping cat silhouette.
-    rect(size.width * .46, size.height * .72, size.width * .30, size.height * .15, const Color(0xFF305449));
-    rect(size.width * .54, size.height * .74, size.width * .14, size.height * .07, const Color(0xFFD38A43));
-    rect(size.width * .64, size.height * .71, size.width * .04, size.height * .07, const Color(0xFFD38A43));
+    // Timber beams.
+    rect(0, size.height * .57, size.width, 7, const Color(0xFF6A4328));
+    rect(size.width * .41, 0, 7, size.height * .58, const Color(0xFF53321F));
+    rect(size.width * .78, 0, 7, size.height * .58, const Color(0xFF53321F));
 
-    // Lantern pixels.
-    for (final x in [size.width * .43, size.width * .61, size.width * .94]) {
-      rect(x, size.height * .08, 5, 20, const Color(0xFF7B4F24));
-      rect(x - 5, size.height * .16, 15, 20, const Color(0xFFF1B64B));
-      rect(x - 2, size.height * .19, 9, 9, const Color(0xFFFFE29A));
+    // Floorboards, with alternating highlights/shadows.
+    rect(0, size.height * .61, size.width, size.height * .39, const Color(0xFF4A2D1D));
+    for (var i = 0; i < 10; i++) {
+      final y = size.height * (.63 + i * .038);
+      rect(0, y, size.width, 2, i.isEven ? const Color(0xFF6A4328) : const Color(0xFF351E15));
+    }
+    for (var i = 0; i < 12; i++) {
+      final x = size.width * (i / 12);
+      rect(x, size.height * .61, 2, size.height * .39, const Color(0xFF3C2519));
+    }
+
+    // Rainy window with stone sill, moon, stars and rain streaks.
+    rect(size.width * .67, size.height * .08, size.width * .27, size.height * .40, const Color(0xFF0B1220));
+    rect(size.width * .69, size.height * .10, size.width * .23, size.height * .35, const Color(0xFF244A73));
+    rect(size.width * .70, size.height * .11, size.width * .105, size.height * .34, const Color(0xFF315F8E));
+    rect(size.width * .815, size.height * .11, size.width * .095, size.height * .34, const Color(0xFF2A557E));
+    p.color = const Color(0xFFF7E58E);
+    canvas.drawCircle(Offset(size.width * .865, size.height * .20), 11, p);
+    for (var i = 0; i < 8; i++) {
+      final x = size.width * (.71 + (i % 4) * .05);
+      final y = size.height * (.15 + (i ~/ 4) * .14);
+      rect(x, y, 2, 7, const Color(0xFF8CC6DD));
+      rect(x + 2, y + 7, 2, 5, const Color(0xFF5E9FBE));
+    }
+    rect(size.width * .66, size.height * .46, size.width * .29, 7, const Color(0xFF6B4B32));
+
+    // Fireplace masonry with multi-tone bricks.
+    rect(size.width * .04, size.height * .20, size.width * .35, size.height * .64, const Color(0xFF5E3C2A));
+    for (var row = 0; row < 5; row++) {
+      for (var col = 0; col < 4; col++) {
+        final x = size.width * (.055 + col * .08 + (row.isOdd ? .04 : 0));
+        final y = size.height * (.22 + row * .105);
+        rect(x, y, size.width * .07, size.height * .085,
+            (row + col).isEven ? const Color(0xFF81563A) : const Color(0xFF70482F));
+      }
+    }
+    rect(size.width * .095, size.height * .37, size.width * .25, size.height * .33, const Color(0xFF1A1110));
+    rect(size.width * .11, size.height * .61, size.width * .22, size.height * .07, const Color(0xFF793C1F));
+    rect(size.width * .14, size.height * .55, size.width * .16, size.height * .12, const Color(0xFFEE7A24));
+    rect(size.width * .17, size.height * .47, size.width * .10, size.height * .18, const Color(0xFFF6B83F));
+    rect(size.width * .20, size.height * .42, size.width * .05, size.height * .19, const Color(0xFFFFE07A));
+    // Ember pixels.
+    px(size.width * .12, size.height * .50, 4, const Color(0xFFFFA12D));
+    px(size.width * .29, size.height * .48, 3, const Color(0xFFFFD86B));
+
+    // Detailed bookshelf and objects.
+    rect(size.width * .44, size.height * .16, size.width * .17, size.height * .48, const Color(0xFF4C2D1D));
+    rect(size.width * .455, size.height * .18, size.width * .14, size.height * .44, const Color(0xFF2D1D19));
+    final colors = [
+      const Color(0xFF8B3042),
+      const Color(0xFF2E6D59),
+      const Color(0xFF456A9A),
+      const Color(0xFFAA7A34),
+      const Color(0xFF76508A),
+      const Color(0xFFB2563D),
+    ];
+    for (var row = 0; row < 3; row++) {
+      rect(size.width * .455, size.height * (.29 + row * .13), size.width * .14, 4, const Color(0xFFB98245));
+      for (var book = 0; book < 6; book++) {
+        final bx = size.width * (.462 + book * .022);
+        final bh = size.height * (.065 + ((book + row) % 3) * .012);
+        rect(bx, size.height * (.215 + row * .13), size.width * .016, bh, colors[(row * 2 + book) % colors.length]);
+        rect(bx + 1, size.height * (.22 + row * .13), 2, bh - 7, const Color(0x55FFFFFF));
+      }
+    }
+    // Potion bottle on top shelf.
+    rect(size.width * .50, size.height * .12, size.width * .02, size.height * .035, const Color(0xFFB7E86A));
+    rect(size.width * .495, size.height * .145, size.width * .03, size.height * .05, const Color(0xFF2F9B8F));
+
+    // Rug with border pattern.
+    rect(size.width * .42, size.height * .73, size.width * .32, size.height * .17, const Color(0xFF193E39));
+    rect(size.width * .435, size.height * .745, size.width * .29, size.height * .14, const Color(0xFF2E665A));
+    for (var i = 0; i < 7; i++) {
+      px(size.width * (.45 + i * .037), size.height * .76, 4, const Color(0xFFD6A84B));
+      px(size.width * (.45 + i * .037), size.height * .85, 4, const Color(0xFFD6A84B));
+    }
+
+    // Small adventurer near the hearth: boots, cloak, head and satchel.
+    rect(size.width * .755, size.height * .57, size.width * .055, size.height * .17, const Color(0xFF173B2B));
+    rect(size.width * .74, size.height * .60, size.width * .025, size.height * .12, const Color(0xFF477A4C));
+    rect(size.width * .80, size.height * .60, size.width * .025, size.height * .12, const Color(0xFF477A4C));
+    p.color = const Color(0xFFD7A16B);
+    canvas.drawCircle(Offset(size.width * .782, size.height * .53), 8, p);
+    rect(size.width * .765, size.height * .49, size.width * .038, 5, const Color(0xFF38271E));
+    rect(size.width * .745, size.height * .66, size.width * .025, size.height * .045, const Color(0xFF8B6530));
+    rect(size.width * .755, size.height * .73, size.width * .02, size.height * .06, const Color(0xFF2B211D));
+    rect(size.width * .795, size.height * .73, size.width * .02, size.height * .06, const Color(0xFF2B211D));
+
+    // Cat with eyes and tail instead of abstract silhouette.
+    rect(size.width * .55, size.height * .79, size.width * .10, size.height * .045, const Color(0xFFC67D3E));
+    rect(size.width * .63, size.height * .77, size.width * .035, size.height * .055, const Color(0xFFD38A43));
+    rect(size.width * .655, size.height * .75, size.width * .02, size.height * .045, const Color(0xFFD38A43));
+    px(size.width * .642, size.height * .785, 2, const Color(0xFFF7E58E));
+    px(size.width * .652, size.height * .785, 2, const Color(0xFFF7E58E));
+
+    // Lanterns with brackets and glow pixels.
+    for (final x in [size.width * .42, size.width * .61, size.width * .95]) {
+      rect(x, size.height * .07, 4, 18, const Color(0xFF6C442C));
+      rect(x - 6, size.height * .145, 16, 22, const Color(0xFFB97B2D));
+      rect(x - 3, size.height * .17, 10, 11, const Color(0xFFFFE29A));
+      px(x - 9, size.height * .185, 3, const Color(0xFF8E6B35));
+      px(x + 10, size.height * .185, 3, const Color(0xFF8E6B35));
     }
   }
 
