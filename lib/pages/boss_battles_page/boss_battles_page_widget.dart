@@ -122,12 +122,23 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   ),
                 ],
               ),
-              content: Text(
-                '${_bossName(battle.bossType)} is down. +${result.xpAwarded} XP • +${result.coinsAwarded} coins',
-                style: theme.bodyMedium.override(
-                  font: GoogleFonts.inter(),
-                  letterSpacing: 0,
-                ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const QuestwellVictoryPixelArt(
+                    height: 100,
+                    bossVictory: true,
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    '${_bossName(battle.bossType)} is down. +${result.xpAwarded} XP • +${result.coinsAwarded} coins',
+                    style: theme.bodyMedium.override(
+                      font: GoogleFonts.inter(),
+                      letterSpacing: 0,
+                    ),
+                  ),
+                ],
               ),
               actions: [
                 TextButton(
