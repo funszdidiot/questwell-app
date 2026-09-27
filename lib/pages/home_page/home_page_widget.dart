@@ -166,6 +166,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     }
   }
 
+  IconData _archetypeIcon(String value) {
+    switch (value) {
+      case 'scholar':
+        return Icons.menu_book_outlined;
+      case 'scout':
+        return Icons.explore_outlined;
+      case 'alchemist':
+        return Icons.science_outlined;
+      case 'guardian':
+        return Icons.shield_outlined;
+      default:
+        return Icons.hiking_outlined;
+    }
+  }
+
   String _frictionLabel(int? level) {
     switch (level) {
       case 1:
@@ -414,6 +429,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     final profile = data.profile;
                     final equipped =
                         data.cosmetics.where((item) => item.equipped).toList();
+                    final classMastered = data.cosmetics.any(
+                      (item) =>
+                          item.requiredArchetype ==
+                              profile.adventurerArchetype &&
+                          item.unlockMethod == 'class_mastery' &&
+                          item.owned,
+                    );
                     final xpIntoLevel = profile.totalXp % 100;
                     final progress = xpIntoLevel / 100.0;
 
@@ -437,7 +459,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
-                                  Icons.shield_outlined,
+                                  _archetypeIcon(profile.adventurerArchetype),
                                   color: theme.primary,
                                   size: 26,
                                 ),
@@ -457,13 +479,46 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ),
                                     ),
                                     const SizedBox(height: 2),
-                                    Text(
-                                      'Level ${profile.level} ${_archetypeLabel(profile.adventurerArchetype)}',
-                                      style: theme.bodyMedium.override(
-                                        font: GoogleFonts.inter(),
-                                        color: theme.secondaryText,
-                                        letterSpacing: 0,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            'Level ${profile.level} ${_archetypeLabel(profile.adventurerArchetype)}',
+                                            style: theme.bodyMedium.override(
+                                              font: GoogleFonts.inter(),
+                                              color: theme.secondaryText,
+                                              letterSpacing: 0,
+                                            ),
+                                          ),
+                                        ),
+                                        if (classMastered) ...[
+                                          const SizedBox(width: 7),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 3,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: theme.primaryBackground,
+                                              borderRadius:
+                                                  BorderRadius.circular(999),
+                                              border: Border.all(
+                                                color: theme.primary,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              'MASTERED',
+                                              style: theme.labelSmall.override(
+                                                font: GoogleFonts.inter(
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                                color: theme.primary,
+                                                letterSpacing: 0.8,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ],
                                     ),
                                   ],
                                 ),
