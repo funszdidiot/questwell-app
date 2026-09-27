@@ -217,7 +217,13 @@ class _StatCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: theme.primary, size: 20),
+          icon == Icons.monetization_on_outlined
+              ? const QuestwellCurrencyPixelIcon(kind: 'coin', size: 22)
+              : icon == Icons.auto_awesome_outlined
+                  ? const QuestwellCurrencyPixelIcon(kind: 'xp', size: 22)
+                  : icon == Icons.sports_mma_outlined
+                      ? const QuestwellNavPixelIcon(kind: 'boss', size: 22)
+                      : const QuestwellNavPixelIcon(kind: 'quest', size: 22),
           const SizedBox(height: 10),
           Text(
             value,
@@ -261,17 +267,9 @@ class _WinCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: theme.primaryBackground,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              isBoss ? Icons.sports_mma_outlined : Icons.task_alt_outlined,
-              color: theme.primary,
-            ),
+          QuestwellNavPixelIcon(
+            kind: isBoss ? 'boss' : 'quest',
+            size: 42,
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -304,13 +302,51 @@ class _WinCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  '+${win.xp} XP • +${win.coins} coins',
-                  style: theme.labelMedium.override(
-                    font: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                    color: theme.secondaryText,
-                    letterSpacing: 0,
-                  ),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 6,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const QuestwellCurrencyPixelIcon(
+                          kind: 'xp',
+                          size: 16,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          '+${win.xp} XP',
+                          style: theme.labelMedium.override(
+                            font: GoogleFonts.inter(
+                              fontWeight: FontWeight.w600,
+                            ),
+                            color: theme.secondaryText,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const QuestwellCurrencyPixelIcon(
+                          kind: 'coin',
+                          size: 16,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          '+${win.coins} coins',
+                          style: theme.labelMedium.override(
+                            font: GoogleFonts.inter(
+                              fontWeight: FontWeight.w600,
+                            ),
+                            color: theme.secondaryText,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
