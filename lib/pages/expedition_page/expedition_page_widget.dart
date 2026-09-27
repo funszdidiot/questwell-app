@@ -141,56 +141,70 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
               ),
               child: Column(
                 children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      SizedBox(
-                        width: 210,
-                        height: 210,
-                        child: CircularProgressIndicator(
-                          value: progress.clamp(0.0, 1.0),
-                          strokeWidth: 10,
-                          backgroundColor: theme.primaryBackground,
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF17151A),
+                      border: Border.all(
+                        color: const Color(0xFF8E6B35),
+                        width: 3,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x55322018),
+                          offset: Offset(4, 4),
+                          blurRadius: 0,
                         ),
-                      ),
-                      Column(
-                        children: [
-                          _finished
-                              ? const QuestwellStatusPixelBadge(
-                                  kind: 'campfire',
-                                  size: 34,
-                                  active: true,
-                                )
-                              : const QuestwellNavPixelIcon(
-                                  kind: 'expedition',
-                                  size: 34,
-                                ),
-                          const SizedBox(height: 8),
-                          Text(
-                            _timeLabel,
-                            style: theme.displaySmall.override(
-                              font: GoogleFonts.interTight(
-                                fontWeight: FontWeight.w700,
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        _finished
+                            ? const QuestwellStatusPixelBadge(
+                                kind: 'campfire',
+                                size: 38,
+                                active: true,
+                              )
+                            : const QuestwellNavPixelIcon(
+                                kind: 'expedition',
+                                size: 38,
                               ),
-                              letterSpacing: -1,
+                        const SizedBox(height: 10),
+                        Text(
+                          _timeLabel,
+                          style: theme.displaySmall.override(
+                            font: GoogleFonts.interTight(
+                              fontWeight: FontWeight.w800,
                             ),
+                            color: const Color(0xFFF2E7CE),
+                            letterSpacing: 1.5,
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            _finished
-                                ? 'Expedition complete'
-                                : _running
-                                    ? 'Stay with the quest'
-                                    : 'Ready when you are',
-                            style: theme.bodySmall.override(
-                              font: GoogleFonts.inter(),
-                              color: theme.secondaryText,
-                              letterSpacing: 0,
+                        ),
+                        const SizedBox(height: 10),
+                        QuestwellPixelMeter(
+                          value: progress,
+                          kind: 'xp',
+                          height: 20,
+                          segments: 16,
+                        ),
+                        const SizedBox(height: 9),
+                        Text(
+                          _finished
+                              ? 'EXPEDITION COMPLETE'
+                              : _running
+                                  ? 'STAY WITH THE QUEST'
+                                  : 'READY WHEN YOU ARE',
+                          style: theme.labelSmall.override(
+                            font: GoogleFonts.inter(
+                              fontWeight: FontWeight.w800,
                             ),
+                            color: const Color(0xFFD8C7A3),
+                            letterSpacing: 1.2,
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 24),
                   Wrap(
