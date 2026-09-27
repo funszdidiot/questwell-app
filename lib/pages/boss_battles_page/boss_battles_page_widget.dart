@@ -288,12 +288,25 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                         return;
                       }
 
-                      await QuestwellBossService.createBattle(
-                        title: title,
-                        steps: steps,
-                        bossType: bossType,
-                      );
-                      if (context.mounted) Navigator.of(context).pop(true);
+                      try {
+                        await QuestwellBossService.createBattle(
+                          title: title,
+                          steps: steps,
+                          bossType: bossType,
+                        );
+                        if (context.mounted) {
+                          Navigator.of(context).pop(true);
+                        }
+                      } catch (_) {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Could not start this Boss Battle. Please try again.',
+                            ),
+                          ),
+                        );
+                      }
                     },
                     icon: const Icon(Icons.sports_mma_outlined),
                     label: const Text('Start Boss Battle'),
