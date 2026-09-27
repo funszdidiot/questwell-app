@@ -87,6 +87,28 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellVictoryPixelArt extends StatelessWidget {
+  const QuestwellVictoryPixelArt({
+    super.key,
+    this.height = 110,
+    this.bossVictory = false,
+  });
+
+  final double height;
+  final bool bossVictory;
+
+  @override
+  Widget build(BuildContext context) {
+    return QuestwellPixelFrame(
+      height: height,
+      background: const Color(0xFF17151A),
+      child: CustomPaint(
+        painter: _VictoryPainter(bossVictory: bossVictory),
+      ),
+    );
+  }
+}
+
 class QuestwellChroniclePixelScene extends StatelessWidget {
   const QuestwellChroniclePixelScene({
     super.key,
@@ -295,6 +317,81 @@ class _HearthPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _VictoryPainter extends CustomPainter {
+  _VictoryPainter({required this.bossVictory});
+  final bool bossVictory;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    rect(0, 0, size.width, size.height, const Color(0xFF17151A));
+
+    // Radiating reward particles.
+    final sparkColors = [
+      const Color(0xFFF1C75B),
+      const Color(0xFFB98CFF),
+      const Color(0xFF6DD9C2),
+      const Color(0xFFE87947),
+    ];
+    for (var i = 0; i < 22; i++) {
+      final x = ((i * 47) % 97) / 97 * size.width;
+      final y = ((i * 31) % 83) / 83 * size.height;
+      final s = i % 3 == 0 ? 5.0 : 3.0;
+      rect(x, y, s, s, sparkColors[i % sparkColors.length]);
+    }
+
+    // Coin.
+    p.color = const Color(0xFFF1C75B);
+    canvas.drawCircle(
+      Offset(size.width * .27, size.height * .53),
+      size.height * .21,
+      p,
+    );
+    p.color = const Color(0xFF8D6424);
+    canvas.drawCircle(
+      Offset(size.width * .27, size.height * .53),
+      size.height * .12,
+      p,
+    );
+    rect(size.width * .255, size.height * .43, size.width * .03, size.height * .20, const Color(0xFFF1C75B));
+
+    // XP crystal / defeated boss crest.
+    if (bossVictory) {
+      final shield = Path()
+        ..moveTo(size.width * .68, size.height * .27)
+        ..lineTo(size.width * .80, size.height * .36)
+        ..lineTo(size.width * .77, size.height * .66)
+        ..lineTo(size.width * .68, size.height * .78)
+        ..lineTo(size.width * .59, size.height * .66)
+        ..lineTo(size.width * .56, size.height * .36)
+        ..close();
+      p.color = const Color(0xFFB64735);
+      canvas.drawPath(shield, p);
+      rect(size.width * .655, size.height * .42, size.width * .05, size.height * .20, const Color(0xFFF1C75B));
+      rect(size.width * .61, size.height * .49, size.width * .14, size.height * .05, const Color(0xFFF1C75B));
+    } else {
+      final crystal = Path()
+        ..moveTo(size.width * .68, size.height * .24)
+        ..lineTo(size.width * .78, size.height * .48)
+        ..lineTo(size.width * .68, size.height * .77)
+        ..lineTo(size.width * .58, size.height * .48)
+        ..close();
+      p.color = const Color(0xFF8D65D6);
+      canvas.drawPath(crystal, p);
+      rect(size.width * .665, size.height * .32, size.width * .03, size.height * .32, const Color(0xFFDCC9FF));
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _VictoryPainter oldDelegate) =>
+      oldDelegate.bossVictory != bossVictory;
 }
 
 class _ChroniclePainter extends CustomPainter {
