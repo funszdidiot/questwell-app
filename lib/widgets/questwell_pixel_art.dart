@@ -87,6 +87,28 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellExpeditionPixelScene extends StatelessWidget {
+  const QuestwellExpeditionPixelScene({
+    super.key,
+    this.height = 150,
+    this.campfire = false,
+  });
+
+  final double height;
+  final bool campfire;
+
+  @override
+  Widget build(BuildContext context) {
+    return QuestwellPixelFrame(
+      height: height,
+      background: const Color(0xFF101827),
+      child: CustomPaint(
+        painter: _ExpeditionPainter(campfire: campfire),
+      ),
+    );
+  }
+}
+
 class QuestwellClassPixelPortrait extends StatelessWidget {
   const QuestwellClassPixelPortrait({
     super.key,
@@ -222,6 +244,101 @@ class _HearthPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _ExpeditionPainter extends CustomPainter {
+  _ExpeditionPainter({required this.campfire});
+  final bool campfire;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    rect(0, 0, size.width, size.height, const Color(0xFF101827));
+    rect(0, size.height * .68, size.width, size.height * .32, const Color(0xFF203A2D));
+
+    // Moon / sun.
+    p.color = campfire ? const Color(0xFFE7D67A) : const Color(0xFFF4CB67);
+    canvas.drawCircle(
+      Offset(size.width * .80, size.height * .23),
+      size.height * .11,
+      p,
+    );
+
+    // Mountain silhouettes.
+    final back = Path()
+      ..moveTo(0, size.height * .70)
+      ..lineTo(size.width * .18, size.height * .36)
+      ..lineTo(size.width * .33, size.height * .67)
+      ..lineTo(size.width * .50, size.height * .25)
+      ..lineTo(size.width * .70, size.height * .68)
+      ..lineTo(size.width, size.height * .42)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+    p.color = const Color(0xFF31506A);
+    canvas.drawPath(back, p);
+
+    final front = Path()
+      ..moveTo(0, size.height * .82)
+      ..lineTo(size.width * .24, size.height * .58)
+      ..lineTo(size.width * .42, size.height * .80)
+      ..lineTo(size.width * .61, size.height * .52)
+      ..lineTo(size.width * .80, size.height * .82)
+      ..lineTo(size.width, size.height * .60)
+      ..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)
+      ..close();
+    p.color = const Color(0xFF17362A);
+    canvas.drawPath(front, p);
+
+    // Trail.
+    final trail = Path()
+      ..moveTo(size.width * .38, size.height)
+      ..quadraticBezierTo(
+        size.width * .48,
+        size.height * .79,
+        size.width * .56,
+        size.height * .68,
+      )
+      ..quadraticBezierTo(
+        size.width * .62,
+        size.height * .60,
+        size.width * .66,
+        size.height * .52,
+      )
+      ..lineTo(size.width * .70, size.height * .55)
+      ..quadraticBezierTo(
+        size.width * .61,
+        size.height * .72,
+        size.width * .55,
+        size.height,
+      )
+      ..close();
+    p.color = const Color(0xFFB98A4B);
+    canvas.drawPath(trail, p);
+
+    if (campfire) {
+      rect(size.width * .15, size.height * .75, size.width * .12, 7, const Color(0xFF6B4528));
+      rect(size.width * .19, size.height * .68, size.width * .06, size.height * .13, const Color(0xFFF09A2A));
+      rect(size.width * .205, size.height * .63, size.width * .03, size.height * .14, const Color(0xFFFFD35A));
+    }
+
+    // Stars.
+    for (var i = 0; i < 16; i++) {
+      final x = (i * 43 % 91) / 91 * size.width;
+      final y = (i * 29 % 57) / 57 * size.height * .42;
+      rect(x, y, 2, 2, const Color(0xFFD7E6F7));
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ExpeditionPainter oldDelegate) =>
+      oldDelegate.campfire != campfire;
 }
 
 class _ClassPortraitPainter extends CustomPainter {
