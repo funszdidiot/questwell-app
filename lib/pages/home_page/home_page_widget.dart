@@ -303,14 +303,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   letterSpacing: 0,
                                 ),
                               ),
-                              Text(
-                                equipped.isEmpty
-                                    ? 'No gear equipped'
-                                    : '${equipped.length} equipped',
-                                style: theme.labelSmall.override(
-                                  font: GoogleFonts.inter(),
-                                  color: theme.secondaryText,
-                                  letterSpacing: 0,
+                              Flexible(
+                                child: Text(
+                                  equipped.isEmpty
+                                      ? 'No gear equipped'
+                                      : equipped
+                                          .take(2)
+                                          .map((item) => item.name)
+                                          .join(' • '),
+                                  textAlign: TextAlign.end,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.labelSmall.override(
+                                    font: GoogleFonts.inter(),
+                                    color: theme.secondaryText,
+                                    letterSpacing: 0,
+                                  ),
                                 ),
                               ),
                             ],
