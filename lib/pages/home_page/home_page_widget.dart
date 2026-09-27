@@ -529,13 +529,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ],
                           ),
                           const SizedBox(height: 14),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(999),
-                            child: LinearProgressIndicator(
-                              value: progress,
-                              minHeight: 8,
-                              backgroundColor: theme.primaryBackground,
-                            ),
+                          QuestwellPixelMeter(
+                            value: progress,
+                            kind: 'xp',
+                            height: 16,
+                            segments: 12,
                           ),
                           const SizedBox(height: 7),
                           Text(
