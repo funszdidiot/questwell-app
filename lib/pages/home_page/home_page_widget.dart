@@ -659,13 +659,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
                 if (!_onboardingCompleted) ...[
                   const SizedBox(height: 18),
-                  Container(
-                    padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                      color: theme.secondaryBackground,
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: theme.primary, width: 1.4),
-                    ),
+                  QuestwellRetroPanel(
+                    padding: const EdgeInsets.all(16),
+                    accent: const Color(0xFFF1C75B),
+                    background: const Color(0xFF1A1714),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -884,12 +881,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         : tasks.take(3).toList();
 
                     if (visibleTasks.isEmpty) {
-                      return Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: theme.secondaryBackground,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
+                      return QuestwellRetroPanel(
+                        padding: const EdgeInsets.all(16),
+                        accent: const Color(0xFF8E6B35),
+                        background: const Color(0xFF171A20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -924,8 +919,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 );
                                 if (mounted) setState(_loadHomeData);
                               },
-                              icon: const Icon(Icons.add_task, size: 18),
-                              label: const Text('Add a Quest'),
+                              icon: const QuestwellNavPixelIcon(
+                                kind: 'quest',
+                                size: 18,
+                              ),
+                              label: const Text('ADD A QUEST'),
                             ),
                           ],
                         ),
@@ -969,8 +967,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       letterSpacing: 0,
                     ),
                     elevation: 0,
-                    borderSide: BorderSide(
-                      color: theme.alternate,
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8E6B35),
+                      width: 2,
                     ),
                     borderRadius: BorderRadius.circular(2),
                   ),
@@ -989,7 +988,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(48),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
                 ),
@@ -1012,7 +1011,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           foregroundColor: theme.primaryText,
                           side: BorderSide(color: theme.primary),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
                       ),
@@ -1034,7 +1033,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           foregroundColor: theme.primaryText,
                           side: BorderSide(color: theme.alternate),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
                       ),
@@ -1060,7 +1059,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           foregroundColor: theme.primaryText,
                           side: BorderSide(color: theme.alternate),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
                       ),
@@ -1082,7 +1081,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           foregroundColor: theme.primaryText,
                           side: BorderSide(color: theme.alternate),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(2),
                           ),
                         ),
                       ),
@@ -1167,7 +1166,8 @@ class _QuestCard extends StatelessWidget {
                 ? task.title!
                 : 'Untitled quest',
             style: (featured ? theme.titleLarge : theme.titleMedium).override(
-              font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+              font: GoogleFonts.interTight(fontWeight: FontWeight.w800),
+              color: featured ? const Color(0xFFF2E7CE) : theme.primaryText,
               letterSpacing: 0,
             ),
           ),
@@ -1189,7 +1189,7 @@ class _QuestCard extends StatelessWidget {
           const SizedBox(height: 14),
           FFButtonWidget(
             onPressed: completing ? null : onComplete,
-            text: completing ? 'Completing...' : 'Complete Quest',
+            text: completing ? 'COMPLETING...' : 'COMPLETE QUEST',
             options: FFButtonOptions(
               width: double.infinity,
               height: featured ? 48 : 44,
@@ -1202,7 +1202,7 @@ class _QuestCard extends StatelessWidget {
               ),
               elevation: 0,
               borderSide: featured ? null : BorderSide(color: theme.alternate),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(2),
             ),
           ),
         ],
