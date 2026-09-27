@@ -87,6 +87,24 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellChroniclePixelScene extends StatelessWidget {
+  const QuestwellChroniclePixelScene({
+    super.key,
+    this.height = 135,
+  });
+
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return QuestwellPixelFrame(
+      height: height,
+      background: const Color(0xFF17151A),
+      child: CustomPaint(painter: _ChroniclePainter()),
+    );
+  }
+}
+
 class QuestwellExpeditionPixelScene extends StatelessWidget {
   const QuestwellExpeditionPixelScene({
     super.key,
@@ -240,6 +258,65 @@ class _HearthPainter extends CustomPainter {
       rect(x - 5, size.height * .16, 15, 20, const Color(0xFFF1B64B));
       rect(x - 2, size.height * .19, 9, 9, const Color(0xFFFFE29A));
     }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _ChroniclePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    rect(0, 0, size.width, size.height, const Color(0xFF17151A));
+    rect(0, size.height * .72, size.width, size.height * .28, const Color(0xFF4B2E1F));
+
+    // Shelves.
+    rect(size.width * .05, size.height * .30, size.width * .90, 7, const Color(0xFF8E6B35));
+    rect(size.width * .05, size.height * .66, size.width * .90, 7, const Color(0xFF8E6B35));
+
+    // Chronicle books.
+    final bookColors = [
+      const Color(0xFF5E2E5F),
+      const Color(0xFF2E5F4B),
+      const Color(0xFF35527A),
+      const Color(0xFF7A4A2E),
+      const Color(0xFF6B3B2E),
+    ];
+    for (var i = 0; i < 10; i++) {
+      final x = size.width * (.09 + i * .075);
+      final h = size.height * (.18 + (i % 3) * .035);
+      rect(x, size.height * .30 - h, size.width * .045, h, bookColors[i % bookColors.length]);
+      rect(x + 3, size.height * .30 - h + 5, size.width * .028, 3, const Color(0xFFD8B464));
+    }
+
+    // Trophy / boss skull.
+    rect(size.width * .70, size.height * .40, size.width * .12, size.height * .16, const Color(0xFFD8C7A3));
+    rect(size.width * .72, size.height * .54, size.width * .08, size.height * .08, const Color(0xFF8E6B35));
+    rect(size.width * .725, size.height * .44, 5, 5, const Color(0xFF17151A));
+    rect(size.width * .77, size.height * .44, 5, 5, const Color(0xFF17151A));
+
+    // Coins and XP spark.
+    p.color = const Color(0xFFF1C75B);
+    canvas.drawCircle(Offset(size.width * .18, size.height * .53), size.height * .08, p);
+    canvas.drawCircle(Offset(size.width * .25, size.height * .56), size.height * .06, p);
+    for (var i = 0; i < 7; i++) {
+      final a = i * math.pi * 2 / 7;
+      rect(
+        size.width * .49 + math.cos(a) * 24,
+        size.height * .50 + math.sin(a) * 22,
+        4,
+        4,
+        const Color(0xFFB98CFF),
+      );
+    }
+    rect(size.width * .485, size.height * .45, 10, 28, const Color(0xFF7B4BC0));
+    rect(size.width * .46, size.height * .49, 30, 8, const Color(0xFF7B4BC0));
   }
 
   @override
