@@ -87,6 +87,92 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellParchmentPanel extends StatelessWidget {
+  const QuestwellParchmentPanel({
+    super.key,
+    required this.child,
+    this.padding = const EdgeInsets.all(16),
+    this.selected = false,
+  });
+
+  final Widget child;
+  final EdgeInsets padding;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: padding,
+      decoration: BoxDecoration(
+        color: const Color(0xFFF0E2BD),
+        border: Border.all(
+          color: selected
+              ? const Color(0xFFF1C75B)
+              : const Color(0xFF9A7B50),
+          width: selected ? 3 : 2,
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x55322018),
+            offset: Offset(3, 3),
+            blurRadius: 0,
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+}
+
+class QuestwellPixelMeter extends StatelessWidget {
+  const QuestwellPixelMeter({
+    super.key,
+    required this.value,
+    this.height = 18,
+    this.segments = 12,
+    this.kind = 'xp',
+  });
+
+  final double value;
+  final double height;
+  final int segments;
+  final String kind;
+
+  @override
+  Widget build(BuildContext context) {
+    final clamped = value.clamp(0.0, 1.0);
+    final active = (clamped * segments).round();
+    final activeColor = kind == 'hp'
+        ? const Color(0xFFE87947)
+        : kind == 'coin'
+            ? const Color(0xFFF1C75B)
+            : const Color(0xFF8D65D6);
+
+    return Container(
+      height: height,
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: const Color(0xFF111419),
+        border: Border.all(color: const Color(0xFF8E6B35), width: 2),
+      ),
+      child: Row(
+        children: [
+          for (var i = 0; i < segments; i++) ...[
+            Expanded(
+              child: Container(
+                color: i < active
+                    ? activeColor
+                    : const Color(0xFF2B2A31),
+              ),
+            ),
+            if (i != segments - 1) const SizedBox(width: 2),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
 class QuestwellNavPixelIcon extends StatelessWidget {
   const QuestwellNavPixelIcon({
     super.key,
