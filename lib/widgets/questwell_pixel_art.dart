@@ -87,6 +87,27 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellFrictionPixelBadge extends StatelessWidget {
+  const QuestwellFrictionPixelBadge({
+    super.key,
+    required this.level,
+    this.size = 42,
+  });
+
+  final int level;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.square(
+      dimension: size,
+      child: CustomPaint(
+        painter: _FrictionPainter(level: level),
+      ),
+    );
+  }
+}
+
 class QuestwellVictoryPixelArt extends StatelessWidget {
   const QuestwellVictoryPixelArt({
     super.key,
@@ -317,6 +338,83 @@ class _HearthPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _FrictionPainter extends CustomPainter {
+  _FrictionPainter({required this.level});
+  final int level;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    final colors = <int, Color>{
+      1: const Color(0xFF4C8B5B),
+      2: const Color(0xFFB58A3A),
+      3: const Color(0xFFB65C3B),
+      4: const Color(0xFF7D3E85),
+    };
+    final color = colors[level] ?? const Color(0xFF5B6575);
+
+    p.color = const Color(0xFF17151A);
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), p);
+    p.color = color;
+    canvas.drawRect(Rect.fromLTWH(3, 3, size.width - 6, size.height - 6), p);
+
+    final center = Offset(size.width / 2, size.height / 2);
+    p.color = const Color(0xFFFFE5A0);
+
+    switch (level) {
+      case 1:
+        canvas.drawCircle(center, size.width * .16, p);
+        break;
+      case 2:
+        canvas.drawRect(
+          Rect.fromCenter(
+            center: center,
+            width: size.width * .34,
+            height: size.height * .12,
+          ),
+          p,
+        );
+        break;
+      case 3:
+        final tri = Path()
+          ..moveTo(center.dx, size.height * .22)
+          ..lineTo(size.width * .75, size.height * .72)
+          ..lineTo(size.width * .25, size.height * .72)
+          ..close();
+        canvas.drawPath(tri, p);
+        p.color = const Color(0xFF17151A);
+        canvas.drawRect(
+          Rect.fromCenter(
+            center: Offset(center.dx, size.height * .54),
+            width: 4,
+            height: size.height * .18,
+          ),
+          p,
+        );
+        break;
+      default:
+        for (var i = 0; i < 8; i++) {
+          final a = i * math.pi / 4;
+          final start = Offset(
+            center.dx + math.cos(a) * size.width * .10,
+            center.dy + math.sin(a) * size.height * .10,
+          );
+          final end = Offset(
+            center.dx + math.cos(a) * size.width * .28,
+            center.dy + math.sin(a) * size.height * .28,
+          );
+          p.strokeWidth = 4;
+          canvas.drawLine(start, end, p);
+        }
+        canvas.drawCircle(center, size.width * .11, p);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _FrictionPainter oldDelegate) =>
+      oldDelegate.level != level;
 }
 
 class _VictoryPainter extends CustomPainter {
