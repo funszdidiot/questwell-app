@@ -115,6 +115,14 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     }
   }
 
+  bool _classLocked(
+    QuestwellCosmetic cosmetic,
+    String currentArchetype,
+  ) {
+    return cosmetic.requiredArchetype != null &&
+        cosmetic.requiredArchetype != currentArchetype;
+  }
+
   IconData _iconForCategory(String category) {
     switch (category) {
       case 'familiar':
@@ -468,18 +476,47 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                                       letterSpacing: 0,
                                     ),
                                   ),
+                                  if (item.requiredArchetype != null) ...[
+                                    const SizedBox(height: 3),
+                                    Text(
+                                      '${_archetypeLabel(item.requiredArchetype!)} only',
+                                      style: theme.labelSmall.override(
+                                        font: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        color: _classLocked(
+                                          item,
+                                          data.profile.adventurerArchetype,
+                                        )
+                                            ? theme.secondaryText
+                                            : theme.primary,
+                                        letterSpacing: 0,
+                                      ),
+                                    ),
+                                  ],
                                 ],
                               ),
                             ),
                             const SizedBox(width: 10),
                             OutlinedButton(
-                              onPressed: _busyCosmeticId == item.id
+                              onPressed: _busyCosmeticId == item.id ||
+                                      _classLocked(
+                                        item,
+                                        data.profile.adventurerArchetype,
+                                      )
                                   ? null
                                   : item.equipped
                                       ? () => _unequip(item)
                                       : () => _equip(item),
                               child: Text(
-                                item.equipped ? 'Unequip' : 'Equip',
+                                _classLocked(
+                                  item,
+                                  data.profile.adventurerArchetype,
+                                )
+                                    ? 'Class locked'
+                                    : item.equipped
+                                        ? 'Unequip'
+                                        : 'Equip',
                               ),
                             ),
                           ],
