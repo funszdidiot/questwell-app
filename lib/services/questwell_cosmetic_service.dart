@@ -7,6 +7,7 @@ class QuestwellProfile {
     required this.coinBalance,
     required this.currentEnergyMode,
     required this.onboardingCompleted,
+    required this.adventurerArchetype,
   });
 
   final int level;
@@ -14,6 +15,7 @@ class QuestwellProfile {
   final int coinBalance;
   final String currentEnergyMode;
   final bool onboardingCompleted;
+  final String adventurerArchetype;
 
   bool get campfireMode => currentEnergyMode == 'campfire';
 
@@ -25,6 +27,8 @@ class QuestwellProfile {
       currentEnergyMode:
           json['current_energy_mode']?.toString() ?? 'normal',
       onboardingCompleted: json['onboarding_completed'] == true,
+      adventurerArchetype:
+          json['adventurer_archetype']?.toString() ?? 'wanderer',
     );
   }
 }
@@ -118,7 +122,7 @@ class QuestwellCosmeticService {
     final responses = await Future.wait([
       SupaFlow.client
           .from('users')
-          .select('level,total_xp,coin_balance,current_energy_mode,onboarding_completed')
+          .select('level,total_xp,coin_balance,current_energy_mode,onboarding_completed,adventurer_archetype')
           .eq('id', uid)
           .single(),
       SupaFlow.client
@@ -215,6 +219,34 @@ class QuestwellCosmeticService {
     await SupaFlow.client
         .from('users')
         .update({'onboarding_completed': true})
+        .eq('id', uid);
+  }
+
+  static Future<void> setAdventurerArchetype(String archetype) async {
+    const allowed = {
+      'scholar',
+      'scout',
+      'alchemist',
+      'guardian',
+      'wanderer',
+    };
+
+    if (!allowed.contains(archetype)) {
+      throw ArgumentError.value(
+        archetype,
+        'archetype',
+        'Unsupported adventurer archetype',
+      );
+    }
+
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) {
+      throw StateError('Authentication required.');
+    }
+
+    await SupaFlow.client
+        .from('users')
+        .update({'adventurer_archetype': archetype})
         .eq('id', uid);
   }
 }
