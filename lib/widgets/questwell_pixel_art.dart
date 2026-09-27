@@ -87,6 +87,28 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellQuestBoardPixelArt extends StatelessWidget {
+  const QuestwellQuestBoardPixelArt({
+    super.key,
+    this.height = 105,
+    this.clear = false,
+  });
+
+  final double height;
+  final bool clear;
+
+  @override
+  Widget build(BuildContext context) {
+    return QuestwellPixelFrame(
+      height: height,
+      background: const Color(0xFF17151A),
+      child: CustomPaint(
+        painter: _QuestBoardPainter(clear: clear),
+      ),
+    );
+  }
+}
+
 class QuestwellFrictionPixelBadge extends StatelessWidget {
   const QuestwellFrictionPixelBadge({
     super.key,
@@ -338,6 +360,64 @@ class _HearthPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _QuestBoardPainter extends CustomPainter {
+  _QuestBoardPainter({required this.clear});
+  final bool clear;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    rect(0, 0, size.width, size.height, const Color(0xFF17151A));
+
+    // Wooden notice board.
+    rect(size.width * .10, size.height * .16, size.width * .80, size.height * .66, const Color(0xFF6A4328));
+    rect(size.width * .13, size.height * .20, size.width * .74, size.height * .58, const Color(0xFF8A5A35));
+
+    if (clear) {
+      // One waiting parchment and a tiny hopeful sparkle.
+      rect(size.width * .34, size.height * .31, size.width * .32, size.height * .34, const Color(0xFFD8C7A3));
+      rect(size.width * .39, size.height * .40, size.width * .22, 4, const Color(0xFF9A7B50));
+      rect(size.width * .39, size.height * .49, size.width * .16, 4, const Color(0xFF9A7B50));
+      p.color = const Color(0xFFF1C75B);
+      canvas.drawCircle(Offset(size.width * .74, size.height * .30), 5, p);
+      rect(size.width * .735, size.height * .19, 4, 10, const Color(0xFFF1C75B));
+      rect(size.width * .735, size.height * .38, 4, 10, const Color(0xFFF1C75B));
+      rect(size.width * .68, size.height * .285, 10, 4, const Color(0xFFF1C75B));
+      rect(size.width * .79, size.height * .285, 10, 4, const Color(0xFFF1C75B));
+    } else {
+      final papers = [
+        const Color(0xFFD8C7A3),
+        const Color(0xFFC8B78F),
+        const Color(0xFFE3D7B9),
+      ];
+      for (var i = 0; i < 3; i++) {
+        final x = size.width * (.19 + i * .22);
+        final y = size.height * (.27 + (i % 2) * .09);
+        rect(x, y, size.width * .18, size.height * .30, papers[i]);
+        rect(x + size.width * .03, y + size.height * .09, size.width * .12, 4, const Color(0xFF9A7B50));
+        rect(x + size.width * .03, y + size.height * .17, size.width * .09, 4, const Color(0xFF9A7B50));
+        p.color = const Color(0xFFB74A3A);
+        canvas.drawCircle(Offset(x + size.width * .09, y - 2), 4, p);
+      }
+    }
+
+    // Bottom hooks / tiny lanterns.
+    rect(size.width * .19, size.height * .82, 4, size.height * .12, const Color(0xFF8E6B35));
+    rect(size.width * .79, size.height * .82, 4, size.height * .12, const Color(0xFF8E6B35));
+    rect(size.width * .15, size.height * .89, size.width * .10, size.height * .07, const Color(0xFFF1B64B));
+    rect(size.width * .75, size.height * .89, size.width * .10, size.height * .07, const Color(0xFFF1B64B));
+  }
+
+  @override
+  bool shouldRepaint(covariant _QuestBoardPainter oldDelegate) =>
+      oldDelegate.clear != clear;
 }
 
 class _FrictionPainter extends CustomPainter {
