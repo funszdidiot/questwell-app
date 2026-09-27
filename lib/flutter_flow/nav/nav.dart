@@ -99,6 +99,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: AddTaskPageWidget.routeName,
           path: AddTaskPageWidget.routePath,
           builder: (context, params) => AddTaskPageWidget(),
+        ),
+        FFRoute(
+          name: MarketPageWidget.routeName,
+          path: MarketPageWidget.routePath,
+          builder: (context, params) => MarketPageWidget(),
+        ),
+        FFRoute(
+          name: AdventurerPageWidget.routeName,
+          path: AdventurerPageWidget.routePath,
+          builder: (context, params) => AdventurerPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

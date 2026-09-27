@@ -43,7 +43,7 @@ dependencies:
   google_fonts: 6.3.3
   gotrue: 2.12.0
   hive: 2.2.3
-  intl: 0.20.2
+  intl: ^0.20.3
   json_path: 0.7.2
   page_transition: 2.1.0
   path_provider: 2.1.4
