@@ -317,6 +317,36 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 FutureBuilder<QuestwellCosmeticsSnapshot>(
                   future: _homeSnapshotFuture,
                   builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Container(
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: theme.secondaryBackground,
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(color: theme.alternate),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.cloud_off_outlined, color: theme.primary),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                'The Hearth could not refresh right now.',
+                                style: theme.bodyMedium.override(
+                                  font: GoogleFonts.inter(),
+                                  letterSpacing: 0,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => setState(_loadHomeData),
+                              child: const Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
                     if (!snapshot.hasData) {
                       return Container(
                         height: 104,
@@ -716,8 +746,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   children: [
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () =>
-                            context.pushNamed(BossBattlesPageWidget.routeName),
+                        onPressed: () async {
+                          await context.pushNamed(BossBattlesPageWidget.routeName);
+                          if (mounted) setState(_loadHomeData);
+                        },
                         icon: const Icon(Icons.sports_mma_outlined),
                         label: const Text('Boss Battles'),
                         style: OutlinedButton.styleFrom(
@@ -733,8 +765,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     const SizedBox(width: 10),
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () =>
-                            context.pushNamed(ChroniclePageWidget.routeName),
+                        onPressed: () async {
+                          await context.pushNamed(ChroniclePageWidget.routeName);
+                          if (mounted) setState(_loadHomeData);
+                        },
                         icon: const Icon(Icons.menu_book_outlined),
                         label: const Text('Chronicle'),
                         style: OutlinedButton.styleFrom(
@@ -754,8 +788,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   children: [
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () =>
-                            context.pushNamed(AdventurerPageWidget.routeName),
+                        onPressed: () async {
+                          await context.pushNamed(AdventurerPageWidget.routeName);
+                          if (mounted) setState(_loadHomeData);
+                        },
                         icon: const Icon(Icons.person_outline),
                         label: const Text('Adventurer'),
                         style: OutlinedButton.styleFrom(
@@ -771,8 +807,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     const SizedBox(width: 10),
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () =>
-                            context.pushNamed(MarketPageWidget.routeName),
+                        onPressed: () async {
+                          await context.pushNamed(MarketPageWidget.routeName);
+                          if (mounted) setState(_loadHomeData);
+                        },
                         icon: const Icon(Icons.storefront_outlined),
                         label: const Text('Market'),
                         style: OutlinedButton.styleFrom(
