@@ -136,10 +136,13 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
         elevation: 0,
         foregroundColor: theme.primaryText,
         title: Text(
-          'The Market',
+          'THE MARKET',
           style: theme.titleLarge.override(
-            font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-            letterSpacing: 0,
+            font: GoogleFonts.pressStart2p(
+              fontWeight: FontWeight.w700,
+            ),
+            fontSize: 14,
+            letterSpacing: .4,
           ),
         ),
       ),
@@ -210,18 +213,13 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
               children: [
-                Container(
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    color: theme.secondaryBackground,
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: theme.alternate),
-                  ),
+                QuestwellRetroPanel(
+                  padding: const EdgeInsets.all(16),
+                  accent: const Color(0xFFF1C75B),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.monetization_on_outlined,
-                        color: theme.primary,
+                      const QuestwellCurrencyPixelIcon(
+                        kind: 'coin',
                         size: 28,
                       ),
                       const SizedBox(width: 12),
@@ -260,10 +258,13 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                 ),
                 const SizedBox(height: 14),
                 Text(
-                  '${_archetypeLabel(data.profile.adventurerArchetype)} Collection',
+                  '${_archetypeLabel(data.profile.adventurerArchetype).toUpperCase()} COLLECTION',
                   style: theme.titleLarge.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 13,
+                    letterSpacing: .3,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -292,10 +293,13 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Guild Goods',
+                  'GUILD GOODS',
                   style: theme.titleLarge.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 13,
+                    letterSpacing: .3,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -325,10 +329,13 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                 if (otherClassItems.isNotEmpty) ...[
                   const SizedBox(height: 10),
                   Text(
-                    'Other Class Collections',
+                    'OTHER CLASS COLLECTIONS',
                     style: theme.titleLarge.override(
-                      font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                      letterSpacing: 0,
+                      font: GoogleFonts.pressStart2p(
+                        fontWeight: FontWeight.w700,
+                      ),
+                      fontSize: 12,
+                      letterSpacing: .2,
                     ),
                   ),
                   const SizedBox(height: 6),
