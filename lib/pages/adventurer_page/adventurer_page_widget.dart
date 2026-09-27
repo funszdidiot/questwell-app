@@ -1,5 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_cosmetic_service.dart';
+import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -292,100 +293,34 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                   ),
                   child: Column(
                     children: [
-                      Container(
-                        width: 170,
-                        height: 170,
-                        decoration: BoxDecoration(
-                          color: theme.primaryBackground,
-                          borderRadius: BorderRadius.circular(32),
-                          border: Border.all(color: theme.alternate),
-                        ),
+                      SizedBox(
+                        width: double.infinity,
                         child: Stack(
-                          alignment: Alignment.center,
                           children: [
-                            if (equipped.any((item) => item.category == 'room'))
-                              Positioned.fill(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(14),
-                                  child: Icon(
-                                    Icons.window_outlined,
-                                    size: 130,
-                                    color: theme.primary.withValues(alpha: 0.10),
-                                  ),
-                                ),
-                              ),
-                            Container(
-                              width: 88,
-                              height: 108,
-                              decoration: BoxDecoration(
-                                color: theme.secondaryBackground,
-                                borderRadius: BorderRadius.circular(40),
-                              ),
-                              child: Icon(
-                                equipped.any((item) => item.category == 'outfit')
-                                    ? Icons.person
-                                    : Icons.person_outline,
-                                size: 76,
-                                color: theme.primary,
-                              ),
+                            QuestwellClassPixelPortrait(
+                              archetype: data.profile.adventurerArchetype,
+                              height: 190,
+                              showRelic: masteryOwned,
                             ),
-                            if (equipped.any((item) => item.slug == 'round-scholar-glasses'))
+                            if (equipped.isNotEmpty)
                               Positioned(
-                                top: 57,
-                                child: Icon(
-                                  Icons.visibility_outlined,
-                                  size: 34,
-                                  color: theme.primaryText,
-                                ),
-                              ),
-                            if (equipped.any((item) => item.slug == 'tiny-wizard-hat'))
-                              Positioned(
-                                top: 15,
-                                child: Transform.rotate(
-                                  angle: -0.15,
-                                  child: Icon(
-                                    Icons.change_history,
-                                    size: 42,
-                                    color: theme.primary,
-                                  ),
-                                ),
-                              ),
-                            if (equipped.any((item) => item.slug == 'leather-satchel'))
-                              Positioned(
-                                left: 26,
-                                bottom: 28,
-                                child: Icon(
-                                  Icons.work_outline,
-                                  size: 30,
-                                  color: theme.secondaryText,
-                                ),
-                              ),
-                            if (equipped.any((item) => item.category == 'familiar'))
-                              Positioned(
-                                right: 18,
-                                bottom: 18,
+                                right: 10,
+                                top: 10,
                                 child: Container(
-                                  width: 42,
-                                  height: 42,
-                                  decoration: BoxDecoration(
-                                    color: theme.secondaryBackground,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(color: theme.alternate),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 9,
+                                    vertical: 5,
                                   ),
-                                  child: Icon(
-                                    Icons.pets,
-                                    size: 24,
-                                    color: theme.primary,
-                                  ),
-                                ),
-                              ),
-                            if (equipped.any((item) => item.category == 'effect'))
-                              Positioned.fill(
-                                child: IgnorePointer(
-                                  child: Icon(
-                                    Icons.auto_awesome,
-                                    size: 155,
-                                    color: theme.primary.withValues(alpha: 0.18),
+                                  color: const Color(0xDD17151A),
+                                  child: Text(
+                                    '${equipped.length} equipped',
+                                    style: theme.labelSmall.override(
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      color: const Color(0xFFF1C75B),
+                                      letterSpacing: 0,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -471,17 +406,9 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        width: 44,
-                        height: 44,
-                        decoration: BoxDecoration(
-                          color: theme.primaryBackground,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Icon(
-                          _archetypeIcon(data.profile.adventurerArchetype),
-                          color: theme.primary,
-                        ),
+                      QuestwellRelicPixelArt(
+                        archetype: data.profile.adventurerArchetype,
+                        size: 58,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
