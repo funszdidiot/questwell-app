@@ -148,6 +148,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     super.dispose();
   }
 
+  String _archetypeLabel(String value) {
+    switch (value) {
+      case 'scholar':
+        return 'Scholar';
+      case 'scout':
+        return 'Scout';
+      case 'alchemist':
+        return 'Alchemist';
+      case 'guardian':
+        return 'Guardian';
+      default:
+        return 'Wanderer';
+    }
+  }
+
   String _frictionLabel(int? level) {
     switch (level) {
       case 1:
@@ -406,7 +421,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      'Level ${profile.level} Adventurer',
+                                      'Level ${profile.level} ${_archetypeLabel(profile.adventurerArchetype)}',
                                       style: theme.bodyMedium.override(
                                         font: GoogleFonts.inter(),
                                         color: theme.secondaryText,
