@@ -5,3 +5,4 @@ export '/add_task_page/add_task_page_widget.dart' show AddTaskPageWidget;
 export '/pages/market_page/market_page_widget.dart' show MarketPageWidget;
 export '/pages/adventurer_page/adventurer_page_widget.dart'
     show AdventurerPageWidget;
+export '/pages/boss_battles_page/boss_battles_page_widget.dart' show BossBattlesPageWidget;
