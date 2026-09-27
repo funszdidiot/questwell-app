@@ -2,6 +2,7 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'add_task_page_model.dart';
@@ -189,7 +190,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                   title: 'Easy',
                   subtitle: 'I can probably just do it.',
                   reward: '+10 XP • +5 coins',
-                  icon: Icons.check_circle_outline,
+                  level: 1,
                   onTap: () => _selectFriction(1, 10, 5),
                 ),
                 const SizedBox(height: 10),
@@ -198,7 +199,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                   title: 'Annoying',
                   subtitle: 'Not hard. I just do not want to.',
                   reward: '+20 XP • +10 coins',
-                  icon: Icons.sentiment_neutral_outlined,
+                  level: 2,
                   onTap: () => _selectFriction(2, 20, 10),
                 ),
                 const SizedBox(height: 10),
@@ -207,7 +208,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                   title: 'Hard to Start',
                   subtitle: 'I keep circling it instead of beginning.',
                   reward: '+35 XP • +18 coins',
-                  icon: Icons.hourglass_top_outlined,
+                  level: 3,
                   onTap: () => _selectFriction(3, 35, 18),
                 ),
                 const SizedBox(height: 10),
@@ -216,7 +217,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                   title: 'Brain Says Absolutely Not',
                   subtitle: 'This task has developed its own weather system.',
                   reward: '+60 XP • +30 coins',
-                  icon: Icons.thunderstorm_outlined,
+                  level: 4,
                   onTap: () => _selectFriction(4, 60, 30),
                 ),
                 const SizedBox(height: 24),
@@ -246,7 +247,7 @@ class _FrictionChoice extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.reward,
-    required this.icon,
+    required this.level,
     required this.onTap,
   });
 
@@ -254,7 +255,7 @@ class _FrictionChoice extends StatelessWidget {
   final String title;
   final String subtitle;
   final String reward;
-  final IconData icon;
+  final int level;
   final VoidCallback onTap;
 
   @override
@@ -277,14 +278,9 @@ class _FrictionChoice extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
-              width: 42,
-              height: 42,
-              decoration: BoxDecoration(
-                color: theme.primaryBackground,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: theme.primary),
+            QuestwellFrictionPixelBadge(
+              level: level,
+              size: 44,
             ),
             const SizedBox(width: 12),
             Expanded(
