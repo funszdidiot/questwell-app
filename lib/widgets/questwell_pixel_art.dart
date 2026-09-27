@@ -87,6 +87,27 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellCurrencyPixelIcon extends StatelessWidget {
+  const QuestwellCurrencyPixelIcon({
+    super.key,
+    required this.kind,
+    this.size = 18,
+  });
+
+  final String kind;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.square(
+      dimension: size,
+      child: CustomPaint(
+        painter: _CurrencyPainter(kind: kind),
+      ),
+    );
+  }
+}
+
 class QuestwellRarityPixelBadge extends StatelessWidget {
   const QuestwellRarityPixelBadge({
     super.key,
@@ -495,6 +516,58 @@ class _HearthPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _CurrencyPainter extends CustomPainter {
+  _CurrencyPainter({required this.kind});
+  final String kind;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    if (kind == 'coin') {
+      p.color = const Color(0xFFF1C75B);
+      canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2),
+        size.shortestSide * .42,
+        p,
+      );
+      p.color = const Color(0xFF8D6424);
+      canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2),
+        size.shortestSide * .25,
+        p,
+      );
+      rect(size.width * .46, size.height * .25, size.width * .08, size.height * .50, const Color(0xFFF7DB7D));
+    } else {
+      final crystal = Path()
+        ..moveTo(size.width * .50, size.height * .04)
+        ..lineTo(size.width * .90, size.height * .42)
+        ..lineTo(size.width * .62, size.height * .94)
+        ..lineTo(size.width * .38, size.height * .94)
+        ..lineTo(size.width * .10, size.height * .42)
+        ..close();
+      p.color = const Color(0xFF8D65D6);
+      canvas.drawPath(crystal, p);
+      final shine = Path()
+        ..moveTo(size.width * .50, size.height * .14)
+        ..lineTo(size.width * .60, size.height * .44)
+        ..lineTo(size.width * .50, size.height * .73)
+        ..lineTo(size.width * .43, size.height * .42)
+        ..close();
+      p.color = const Color(0xFFDCC9FF);
+      canvas.drawPath(shine, p);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _CurrencyPainter oldDelegate) =>
+      oldDelegate.kind != kind;
 }
 
 class _StatusBadgePainter extends CustomPainter {
