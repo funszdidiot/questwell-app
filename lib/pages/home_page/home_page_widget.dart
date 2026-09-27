@@ -1196,7 +1196,11 @@ class _RewardChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: theme.primary),
+          icon == Icons.monetization_on_outlined
+              ? const QuestwellCurrencyPixelIcon(kind: 'coin', size: 17)
+              : icon == Icons.auto_awesome
+                  ? const QuestwellCurrencyPixelIcon(kind: 'xp', size: 17)
+                  : Icon(icon, size: 16, color: theme.primary),
           const SizedBox(width: 6),
           Text(
             label,
