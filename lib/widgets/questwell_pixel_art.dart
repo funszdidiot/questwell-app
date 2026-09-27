@@ -180,6 +180,39 @@ class QuestwellRelicPixelArt extends StatelessWidget {
   }
 }
 
+class QuestwellItemPixelArt extends StatelessWidget {
+  const QuestwellItemPixelArt({
+    super.key,
+    required this.slug,
+    required this.category,
+    this.archetype,
+    this.size = 62,
+    this.locked = false,
+  });
+
+  final String slug;
+  final String category;
+  final String? archetype;
+  final double size;
+  final bool locked;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = QuestwellPixelPalette.forClass(archetype ?? 'wanderer');
+    return SizedBox.square(
+      dimension: size,
+      child: CustomPaint(
+        painter: _ItemPainter(
+          slug: slug,
+          category: category,
+          palette: palette,
+          locked: locked,
+        ),
+      ),
+    );
+  }
+}
+
 class QuestwellBossPixelArt extends StatelessWidget {
   const QuestwellBossPixelArt({
     super.key,
@@ -581,6 +614,173 @@ class _RelicPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _RelicPainter oldDelegate) =>
       oldDelegate.archetype != archetype;
+}
+
+class _ItemPainter extends CustomPainter {
+  _ItemPainter({
+    required this.slug,
+    required this.category,
+    required this.palette,
+    required this.locked,
+  });
+
+  final String slug;
+  final String category;
+  final List<Color> palette;
+  final bool locked;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    rect(0, 0, size.width, size.height, const Color(0xFF17151A));
+    rect(3, 3, size.width - 6, size.height - 6, palette.first);
+
+    final gold = palette.last;
+    final accent = palette[1];
+    final paper = const Color(0xFFD8C7A3);
+    final leather = const Color(0xFF8B5A32);
+    final teal = const Color(0xFF76D7C4);
+
+    if (slug.contains('grimoire') || slug.contains('seal')) {
+      rect(size.width * .24, size.height * .20, size.width * .52, size.height * .58, const Color(0xFF6A337C));
+      rect(size.width * .29, size.height * .24, size.width * .06, size.height * .50, gold);
+      rect(size.width * .43, size.height * .35, size.width * .27, 5, paper);
+      rect(size.width * .43, size.height * .47, size.width * .20, 5, paper);
+      rect(size.width * .43, size.height * .59, size.width * .24, 5, paper);
+    } else if (slug.contains('owl')) {
+      p.color = const Color(0xFFB77A3A);
+      canvas.drawCircle(Offset(size.width * .50, size.height * .47), size.width * .24, p);
+      rect(size.width * .29, size.height * .20, size.width * .13, size.height * .18, const Color(0xFF7A4C2B));
+      rect(size.width * .58, size.height * .20, size.width * .13, size.height * .18, const Color(0xFF7A4C2B));
+      rect(size.width * .36, size.height * .40, 8, 8, const Color(0xFFFFE07A));
+      rect(size.width * .58, size.height * .40, 8, 8, const Color(0xFFFFE07A));
+      rect(size.width * .47, size.height * .50, 6, 9, gold);
+    } else if (slug.contains('boot')) {
+      rect(size.width * .23, size.height * .21, size.width * .20, size.height * .45, leather);
+      rect(size.width * .49, size.height * .25, size.width * .20, size.height * .41, leather);
+      rect(size.width * .17, size.height * .61, size.width * .30, size.height * .14, const Color(0xFF3B2A20));
+      rect(size.width * .43, size.height * .61, size.width * .30, size.height * .14, const Color(0xFF3B2A20));
+      rect(size.width * .27, size.height * .32, size.width * .12, 4, gold);
+      rect(size.width * .53, size.height * .36, size.width * .12, 4, gold);
+    } else if (slug.contains('fox')) {
+      p.color = const Color(0xFFD77A32);
+      canvas.drawCircle(Offset(size.width * .48, size.height * .48), size.width * .22, p);
+      final ears = Path()
+        ..moveTo(size.width * .30, size.height * .34)
+        ..lineTo(size.width * .35, size.height * .12)
+        ..lineTo(size.width * .44, size.height * .35)
+        ..moveTo(size.width * .54, size.height * .35)
+        ..lineTo(size.width * .64, size.height * .12)
+        ..lineTo(size.width * .70, size.height * .36);
+      p.style = PaintingStyle.stroke;
+      p.strokeWidth = 8;
+      p.color = const Color(0xFFD77A32);
+      canvas.drawPath(ears, p);
+      p.style = PaintingStyle.fill;
+      rect(size.width * .37, size.height * .44, 6, 6, const Color(0xFF17151A));
+      rect(size.width * .57, size.height * .44, 6, 6, const Color(0xFF17151A));
+      rect(size.width * .46, size.height * .56, 8, 6, const Color(0xFF17151A));
+    } else if (slug.contains('tonic') || slug.contains('phial')) {
+      rect(size.width * .43, size.height * .15, size.width * .15, size.height * .18, gold);
+      rect(size.width * .36, size.height * .30, size.width * .29, size.height * .10, paper);
+      p.color = teal;
+      canvas.drawCircle(Offset(size.width * .50, size.height * .58), size.width * .23, p);
+      rect(size.width * .34, size.height * .57, size.width * .32, size.height * .18, const Color(0xFF42B883));
+      rect(size.width * .42, size.height * .48, 5, 5, const Color(0xFFD9FFD0));
+      rect(size.width * .57, size.height * .56, 4, 4, const Color(0xFFD9FFD0));
+    } else if (slug.contains('slime')) {
+      p.color = const Color(0xFF55D7CB);
+      canvas.drawCircle(Offset(size.width * .50, size.height * .56), size.width * .25, p);
+      rect(size.width * .25, size.height * .58, size.width * .50, size.height * .16, const Color(0xFF55D7CB));
+      rect(size.width * .39, size.height * .51, 6, 6, const Color(0xFF173B2B));
+      rect(size.width * .58, size.height * .51, 6, 6, const Color(0xFF173B2B));
+    } else if (slug.contains('mantle')) {
+      final path = Path()
+        ..moveTo(size.width * .50, size.height * .16)
+        ..lineTo(size.width * .72, size.height * .32)
+        ..lineTo(size.width * .67, size.height * .78)
+        ..lineTo(size.width * .50, size.height * .67)
+        ..lineTo(size.width * .33, size.height * .78)
+        ..lineTo(size.width * .28, size.height * .32)
+        ..close();
+      p.color = const Color(0xFFA53A32);
+      canvas.drawPath(path, p);
+      rect(size.width * .47, size.height * .20, size.width * .06, size.height * .50, gold);
+    } else if (slug.contains('lantern')) {
+      rect(size.width * .40, size.height * .15, size.width * .20, size.height * .10, gold);
+      rect(size.width * .31, size.height * .28, size.width * .38, size.height * .42, const Color(0xFFB47A2B));
+      rect(size.width * .38, size.height * .34, size.width * .24, size.height * .28, const Color(0xFFFFD76A));
+      rect(size.width * .39, size.height * .11, size.width * .22, 5, const Color(0xFF8E6B35));
+    } else if (slug.contains('satchel')) {
+      rect(size.width * .25, size.height * .34, size.width * .50, size.height * .40, leather);
+      rect(size.width * .31, size.height * .26, size.width * .38, size.height * .16, const Color(0xFF6A4328));
+      rect(size.width * .46, size.height * .44, size.width * .10, size.height * .10, gold);
+      p.style = PaintingStyle.stroke;
+      p.strokeWidth = 5;
+      p.color = gold;
+      canvas.drawArc(
+        Rect.fromLTWH(size.width * .29, size.height * .15, size.width * .42, size.height * .35),
+        math.pi,
+        math.pi,
+        false,
+        p,
+      );
+      p.style = PaintingStyle.fill;
+    } else if (slug.contains('moth')) {
+      p.color = const Color(0xFFA8E36D);
+      canvas.drawOval(Rect.fromCenter(center: Offset(size.width * .38, size.height * .48), width: size.width * .30, height: size.height * .38), p);
+      canvas.drawOval(Rect.fromCenter(center: Offset(size.width * .62, size.height * .48), width: size.width * .30, height: size.height * .38), p);
+      rect(size.width * .47, size.height * .31, size.width * .06, size.height * .36, const Color(0xFF6F8D3A));
+      rect(size.width * .31, size.height * .43, 5, 5, gold);
+      rect(size.width * .65, size.height * .43, 5, 5, gold);
+    } else if (slug.contains('compass') || slug.contains('map')) {
+      p.style = PaintingStyle.stroke;
+      p.strokeWidth = 5;
+      p.color = gold;
+      canvas.drawCircle(Offset(size.width * .50, size.height * .50), size.width * .25, p);
+      canvas.drawLine(Offset(size.width * .50, size.height * .27), Offset(size.width * .58, size.height * .56), p);
+      canvas.drawLine(Offset(size.width * .58, size.height * .56), Offset(size.width * .38, size.height * .49), p);
+      p.style = PaintingStyle.fill;
+    } else if (category == 'familiar') {
+      p.color = accent;
+      canvas.drawCircle(Offset(size.width * .50, size.height * .48), size.width * .23, p);
+      rect(size.width * .39, size.height * .43, 6, 6, gold);
+      rect(size.width * .58, size.height * .43, 6, 6, gold);
+    } else {
+      // Universal guild-good sigil.
+      p.color = gold;
+      canvas.drawCircle(Offset(size.width * .50, size.height * .50), size.width * .24, p);
+      rect(size.width * .46, size.height * .28, size.width * .08, size.height * .44, const Color(0xFF17151A));
+      rect(size.width * .29, size.height * .46, size.width * .42, size.height * .08, const Color(0xFF17151A));
+    }
+
+    if (locked) {
+      rect(0, 0, size.width, size.height, const Color(0x88000000));
+      rect(size.width * .40, size.height * .45, size.width * .20, size.height * .23, const Color(0xFF101114));
+      p.style = PaintingStyle.stroke;
+      p.strokeWidth = 4;
+      p.color = const Color(0xFFD8C7A3);
+      canvas.drawArc(
+        Rect.fromLTWH(size.width * .39, size.height * .25, size.width * .22, size.height * .30),
+        math.pi,
+        math.pi,
+        false,
+        p,
+      );
+      p.style = PaintingStyle.fill;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ItemPainter oldDelegate) =>
+      oldDelegate.slug != slug ||
+      oldDelegate.category != category ||
+      oldDelegate.locked != locked;
 }
 
 class _BossPainter extends CustomPainter {
