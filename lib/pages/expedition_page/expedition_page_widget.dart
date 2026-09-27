@@ -98,10 +98,13 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
         elevation: 0,
         foregroundColor: theme.primaryText,
         title: Text(
-          'Expedition',
+          'EXPEDITION',
           style: theme.titleLarge.override(
-            font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-            letterSpacing: 0,
+            font: GoogleFonts.pressStart2p(
+              fontWeight: FontWeight.w700,
+            ),
+            fontSize: 14,
+            letterSpacing: .4,
           ),
         ),
       ),
@@ -111,10 +114,13 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
           padding: const EdgeInsets.fromLTRB(20, 18, 20, 32),
           children: [
             Text(
-              'Set out. Do one thing.',
+              'SET OUT. DO ONE THING.',
               style: theme.headlineSmall.override(
-                font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                letterSpacing: -0.25,
+                font: GoogleFonts.pressStart2p(
+                  fontWeight: FontWeight.w700,
+                ),
+                fontSize: 14,
+                letterSpacing: .3,
               ),
             ),
             const SizedBox(height: 6),
@@ -132,13 +138,10 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
               campfire: _finished,
             ),
             const SizedBox(height: 22),
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: theme.secondaryBackground,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: theme.alternate),
-              ),
+            QuestwellRetroPanel(
+              padding: const EdgeInsets.all(18),
+              accent: const Color(0xFF8E6B35),
+              background: const Color(0xFF15141B),
               child: Column(
                 children: [
                   Container(
@@ -249,7 +252,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                           style: FilledButton.styleFrom(
                             minimumSize: const Size.fromHeight(50),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(2),
                             ),
                           ),
                         ),
@@ -270,13 +273,9 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
               ),
             ),
             const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.secondaryBackground,
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: theme.alternate),
-              ),
+            QuestwellRetroPanel(
+              padding: const EdgeInsets.all(14),
+              accent: const Color(0xFF8E6B35),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
