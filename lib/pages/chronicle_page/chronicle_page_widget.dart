@@ -39,10 +39,13 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
         elevation: 0,
         foregroundColor: theme.primaryText,
         title: Text(
-          'Chronicle',
+          'CHRONICLE',
           style: theme.titleLarge.override(
-            font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-            letterSpacing: 0,
+            font: GoogleFonts.pressStart2p(
+              fontWeight: FontWeight.w700,
+            ),
+            fontSize: 14,
+            letterSpacing: .4,
           ),
         ),
       ),
@@ -92,10 +95,13 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
               padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
               children: [
                 Text(
-                  'Your wins live here.',
+                  'YOUR WINS LIVE HERE',
                   style: theme.headlineSmall.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: -0.25,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 14,
+                    letterSpacing: .4,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -138,21 +144,20 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'Recent Wins',
+                  'RECENT WINS',
                   style: theme.titleLarge.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 13,
+                    letterSpacing: .3,
                   ),
                 ),
                 const SizedBox(height: 12),
                 if (data.wins.isEmpty)
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: theme.secondaryBackground,
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: theme.alternate),
-                    ),
+                  QuestwellRetroPanel(
+                    padding: const EdgeInsets.all(18),
+                    accent: const Color(0xFF8E6B35),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
