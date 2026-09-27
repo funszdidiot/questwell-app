@@ -423,14 +423,12 @@ class _MarketCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 54,
-            height: 54,
-            decoration: BoxDecoration(
-              color: theme.primaryBackground,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(icon, color: theme.primary, size: 28),
+          QuestwellItemPixelArt(
+            slug: cosmetic.slug,
+            category: cosmetic.category,
+            archetype: cosmetic.requiredArchetype,
+            size: 62,
+            locked: classLocked,
           ),
           const SizedBox(width: 14),
           Expanded(
