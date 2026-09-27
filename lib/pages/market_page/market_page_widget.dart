@@ -178,6 +178,22 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
           }
 
           final data = snapshot.data!;
+          final currentClassItems = data.cosmetics
+              .where(
+                (item) =>
+                    item.requiredArchetype == data.profile.adventurerArchetype,
+              )
+              .toList();
+          final generalItems = data.cosmetics
+              .where((item) => item.requiredArchetype == null)
+              .toList();
+          final otherClassItems = data.cosmetics
+              .where(
+                (item) =>
+                    item.requiredArchetype != null &&
+                    item.requiredArchetype != data.profile.adventurerArchetype,
+              )
+              .toList();
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -232,7 +248,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'Guild Goods',
+                  '${_archetypeLabel(data.profile.adventurerArchetype)} Collection',
                   style: theme.titleLarge.override(
                     font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
                     letterSpacing: 0,
@@ -240,7 +256,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Cosmetics only. Your productivity never depends on what you buy.',
+                  'Exclusive gear for your current Adventurer class.',
                   style: theme.bodyMedium.override(
                     font: GoogleFonts.inter(),
                     color: theme.secondaryText,
@@ -248,7 +264,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                   ),
                 ),
                 const SizedBox(height: 14),
-                ...data.cosmetics.map(
+                ...currentClassItems.map(
                   (cosmetic) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: _MarketCard(
@@ -262,6 +278,72 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
+                Text(
+                  'Guild Goods',
+                  style: theme.titleLarge.override(
+                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                    letterSpacing: 0,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Available to every class. Cosmetics only — productivity never depends on what you buy.',
+                  style: theme.bodyMedium.override(
+                    font: GoogleFonts.inter(),
+                    color: theme.secondaryText,
+                    letterSpacing: 0,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                ...generalItems.map(
+                  (cosmetic) => Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: _MarketCard(
+                      cosmetic: cosmetic,
+                      currentArchetype: data.profile.adventurerArchetype,
+                      busy: _busyCosmeticId == cosmetic.id,
+                      icon: _iconForCategory(cosmetic.category),
+                      onPurchase: () => _purchase(cosmetic),
+                      onEquip: () => _equip(cosmetic),
+                      onUnequip: () => _unequip(cosmetic),
+                    ),
+                  ),
+                ),
+                if (otherClassItems.isNotEmpty) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    'Other Class Collections',
+                    style: theme.titleLarge.override(
+                      font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'You can browse these, but they stay locked unless you change class.',
+                    style: theme.bodyMedium.override(
+                      font: GoogleFonts.inter(),
+                      color: theme.secondaryText,
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  ...otherClassItems.map(
+                    (cosmetic) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _MarketCard(
+                        cosmetic: cosmetic,
+                        currentArchetype: data.profile.adventurerArchetype,
+                        busy: _busyCosmeticId == cosmetic.id,
+                        icon: _iconForCategory(cosmetic.category),
+                        onPurchase: () => _purchase(cosmetic),
+                        onEquip: () => _equip(cosmetic),
+                        onUnequip: () => _unequip(cosmetic),
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           );
