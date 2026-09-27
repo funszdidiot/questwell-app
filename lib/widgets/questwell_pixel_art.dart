@@ -87,6 +87,71 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class QuestwellRarityPixelBadge extends StatelessWidget {
+  const QuestwellRarityPixelBadge({
+    super.key,
+    required this.rarity,
+    this.compact = false,
+  });
+
+  final String rarity;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    final normalized = rarity.toLowerCase();
+    final color = switch (normalized) {
+      'uncommon' => const Color(0xFF4F9C65),
+      'rare' => const Color(0xFF4E78C8),
+      'epic' => const Color(0xFF8A55C8),
+      'legendary' => const Color(0xFFD99B35),
+      _ => const Color(0xFF7A7F87),
+    };
+
+    final label = rarity.isEmpty
+        ? 'Common'
+        : '${rarity[0].toUpperCase()}${rarity.substring(1)}';
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: compact ? 7 : 9,
+        vertical: compact ? 4 : 5,
+      ),
+      decoration: BoxDecoration(
+        color: const Color(0xFF17151A),
+        border: Border.all(color: color, width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: color.withValues(alpha: .22),
+            blurRadius: 0,
+            offset: const Offset(2, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: compact ? 7 : 8,
+            height: compact ? 7 : 8,
+            color: color,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            label.toUpperCase(),
+            style: TextStyle(
+              color: color,
+              fontSize: compact ? 9 : 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: .8,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class QuestwellStatusPixelBadge extends StatelessWidget {
   const QuestwellStatusPixelBadge({
     super.key,
