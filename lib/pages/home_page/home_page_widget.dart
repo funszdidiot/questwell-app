@@ -888,6 +888,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const QuestwellQuestBoardPixelArt(
+                              height: 100,
+                              clear: true,
+                            ),
+                            const SizedBox(height: 14),
                             Text(
                               'The quest board is clear.',
                               style: theme.titleMedium.override(
