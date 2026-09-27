@@ -274,17 +274,26 @@ class _FrictionChoice extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(6),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 160),
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: theme.secondaryBackground,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(6),
           border: Border.all(
-            color: selected ? theme.primary : theme.alternate,
-            width: selected ? 1.8 : 1,
+            color: selected
+                ? const Color(0xFFF1C75B)
+                : const Color(0xFF8E6B35),
+            width: selected ? 3 : 2,
           ),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x55322018),
+              offset: Offset(3, 3),
+              blurRadius: 0,
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -314,19 +323,60 @@ class _FrictionChoice extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    reward,
-                    style: theme.labelMedium.override(
-                      font: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                      color: theme.primary,
-                      letterSpacing: 0,
-                    ),
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 6,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const QuestwellCurrencyPixelIcon(
+                            kind: 'xp',
+                            size: 15,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            reward.split(' • ').first,
+                            style: theme.labelMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              color: theme.primary,
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const QuestwellCurrencyPixelIcon(
+                            kind: 'coin',
+                            size: 15,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            reward.split(' • ').last,
+                            style: theme.labelMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              color: theme.primary,
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
             if (selected)
-              Icon(Icons.check_circle, color: theme.primary),
+              const QuestwellNavPixelIcon(
+                kind: 'quest',
+                size: 28,
+              ),
           ],
         ),
       ),
