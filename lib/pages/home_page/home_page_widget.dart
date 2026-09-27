@@ -369,12 +369,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Questwell',
+                  'QUESTWELL',
                   style: theme.headlineMedium.override(
-                    font: GoogleFonts.interTight(
+                    font: GoogleFonts.pressStart2p(
                       fontWeight: FontWeight.w700,
                     ),
-                    letterSpacing: -0.5,
+                    fontSize: 24,
+                    letterSpacing: 0.6,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -447,13 +448,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     final xpIntoLevel = profile.totalXp % 100;
                     final progress = xpIntoLevel / 100.0;
 
-                    return Container(
-                      padding: const EdgeInsets.all(18),
-                      decoration: BoxDecoration(
-                        color: theme.secondaryBackground,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: theme.alternate),
-                      ),
+                    return QuestwellRetroPanel(
+                      padding: const EdgeInsets.all(16),
+                      accent: const Color(0xFF8E6B35),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -469,12 +466,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'The Hearth',
+                                      'THE HEARTH',
                                       style: theme.titleMedium.override(
-                                        font: GoogleFonts.interTight(
+                                        font: GoogleFonts.pressStart2p(
                                           fontWeight: FontWeight.w700,
                                         ),
-                                        letterSpacing: 0,
+                                        fontSize: 13,
+                                        letterSpacing: 0.4,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
@@ -572,13 +570,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     final momentum = snapshot.data!;
                     final hasWins = momentum.weekWins > 0;
 
-                    return Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: theme.secondaryBackground,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: theme.alternate),
-                      ),
+                    return QuestwellRetroPanel(
+                      padding: const EdgeInsets.all(14),
+                      accent: const Color(0xFF8E6B35),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -597,10 +591,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ? 'Momentum is building'
                                       : 'Fresh start',
                                   style: theme.titleMedium.override(
-                                    font: GoogleFonts.interTight(
+                                    font: GoogleFonts.pressStart2p(
                                       fontWeight: FontWeight.w700,
                                     ),
-                                    letterSpacing: 0,
+                                    fontSize: 11,
+                                    letterSpacing: 0.2,
                                   ),
                                 ),
                                 const SizedBox(height: 3),
@@ -727,17 +722,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ],
                 const SizedBox(height: 18),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: _campfireMode
-                        ? theme.secondaryBackground
-                        : theme.primaryBackground,
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(
-                      color: _campfireMode ? theme.primary : theme.alternate,
-                    ),
-                  ),
+                QuestwellRetroPanel(
+                  padding: const EdgeInsets.all(14),
+                  accent: _campfireMode
+                      ? const Color(0xFFE87947)
+                      : const Color(0xFF8E6B35),
+                  background: _campfireMode
+                      ? const Color(0xFF1A1512)
+                      : const Color(0xFF15141B),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -752,12 +744,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Campfire Mode',
+                              'CAMPFIRE MODE',
                               style: theme.titleMedium.override(
-                                font: GoogleFonts.interTight(
+                                font: GoogleFonts.pressStart2p(
                                   fontWeight: FontWeight.w700,
                                 ),
-                                letterSpacing: 0,
+                                fontSize: 11,
+                                letterSpacing: 0.2,
                               ),
                             ),
                             const SizedBox(height: 3),
@@ -775,7 +768,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Switch.adaptive(
+                      QuestwellPixelToggle(
                         value: _campfireMode,
                         onChanged: _changingEnergyMode
                             ? null
@@ -786,12 +779,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  _campfireMode ? 'One Small Win' : 'Your Next Win',
+                  _campfireMode ? 'ONE SMALL WIN' : 'YOUR NEXT WIN',
                   style: theme.titleLarge.override(
-                    font: GoogleFonts.interTight(
+                    font: GoogleFonts.pressStart2p(
                       fontWeight: FontWeight.w700,
                     ),
-                    letterSpacing: 0,
+                    fontSize: 15,
+                    letterSpacing: 0.4,
                   ),
                 ),
                 if (_campfireMode) ...[
@@ -947,7 +941,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     borderSide: BorderSide(
                       color: theme.alternate,
                     ),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -1093,16 +1087,12 @@ class _QuestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
 
-    return Container(
-      padding: EdgeInsets.all(featured ? 20 : 16),
-      decoration: BoxDecoration(
-        color: theme.secondaryBackground,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: featured ? theme.primary : theme.alternate,
-          width: featured ? 1.5 : 1,
-        ),
-      ),
+    return QuestwellRetroPanel(
+      padding: EdgeInsets.all(featured ? 18 : 14),
+      accent: featured
+          ? const Color(0xFFF1C75B)
+          : const Color(0xFF8E6B35),
+      background: const Color(0xFF15141B),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1112,9 +1102,12 @@ class _QuestCard extends StatelessWidget {
               child: Text(
                 'NEXT UP',
                 style: theme.labelSmall.override(
-                  font: GoogleFonts.inter(fontWeight: FontWeight.w700),
-                  color: theme.primary,
-                  letterSpacing: 1.2,
+                  font: GoogleFonts.pressStart2p(
+                    fontWeight: FontWeight.w700,
+                  ),
+                  fontSize: 8,
+                  color: const Color(0xFFF1C75B),
+                  letterSpacing: 1.0,
                 ),
               ),
             ),
@@ -1203,8 +1196,11 @@ class _RewardChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsetsDirectional.fromSTEB(10, 7, 10, 7),
       decoration: BoxDecoration(
-        color: theme.primaryBackground,
-        borderRadius: BorderRadius.circular(999),
+        color: const Color(0xFF0D0C11),
+        border: Border.all(
+          color: const Color(0xFF4C3A24),
+          width: 2,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
