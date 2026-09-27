@@ -275,10 +275,13 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
         elevation: 0,
         foregroundColor: theme.primaryText,
         title: Text(
-          'Adventurer',
+          'ADVENTURER',
           style: theme.titleLarge.override(
-            font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-            letterSpacing: 0,
+            font: GoogleFonts.pressStart2p(
+              fontWeight: FontWeight.w700,
+            ),
+            fontSize: 14,
+            letterSpacing: .4,
           ),
         ),
       ),
@@ -351,13 +354,9 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
               children: [
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: theme.secondaryBackground,
-                    borderRadius: BorderRadius.circular(22),
-                    border: Border.all(color: theme.alternate),
-                  ),
+                QuestwellRetroPanel(
+                  padding: const EdgeInsets.all(16),
+                  accent: const Color(0xFF8E6B35),
                   child: Column(
                     children: [
                       SizedBox(
@@ -396,12 +395,14 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Level ${data.profile.level} ${_archetypeLabel(data.profile.adventurerArchetype)}',
+                        'LEVEL ${data.profile.level} • ${_archetypeLabel(data.profile.adventurerArchetype).toUpperCase()}',
+                        textAlign: TextAlign.center,
                         style: theme.titleLarge.override(
-                          font: GoogleFonts.interTight(
+                          font: GoogleFonts.pressStart2p(
                             fontWeight: FontWeight.w700,
                           ),
-                          letterSpacing: 0,
+                          fontSize: 12,
+                          letterSpacing: .3,
                         ),
                       ),
                       const SizedBox(height: 6),
@@ -418,10 +419,13 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 ),
                 const SizedBox(height: 22),
                 Text(
-                  'Your Archetype',
+                  'YOUR ARCHETYPE',
                   style: theme.titleLarge.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 13,
+                    letterSpacing: .3,
                   ),
                 ),
                 const SizedBox(height: 6),
