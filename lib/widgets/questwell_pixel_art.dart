@@ -366,6 +366,30 @@ class QuestwellItemPixelArt extends StatelessWidget {
   }
 }
 
+class QuestwellMarketPixelScene extends StatelessWidget {
+  const QuestwellMarketPixelScene({
+    super.key,
+    required this.archetype,
+    this.height = 150,
+  });
+
+  final String archetype;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return QuestwellPixelFrame(
+      height: height,
+      background: const Color(0xFF17151A),
+      child: CustomPaint(
+        painter: _MarketPainter(
+          palette: QuestwellPixelPalette.forClass(archetype),
+        ),
+      ),
+    );
+  }
+}
+
 class QuestwellBossSigilPixelArt extends StatelessWidget {
   const QuestwellBossSigilPixelArt({
     super.key,
@@ -1220,6 +1244,82 @@ class _ItemPainter extends CustomPainter {
       oldDelegate.slug != slug ||
       oldDelegate.category != category ||
       oldDelegate.locked != locked;
+}
+
+class _MarketPainter extends CustomPainter {
+  _MarketPainter({required this.palette});
+  final List<Color> palette;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void rect(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    rect(0, 0, size.width, size.height, const Color(0xFF17151A));
+    rect(0, size.height * .72, size.width, size.height * .28, const Color(0xFF4B2E1F));
+
+    // Awning.
+    for (var i = 0; i < 6; i++) {
+      rect(
+        size.width * (.07 + i * .145),
+        size.height * .08,
+        size.width * .145,
+        size.height * .16,
+        i.isEven ? palette[1] : const Color(0xFFD7C29D),
+      );
+    }
+    rect(size.width * .07, size.height * .23, size.width * .87, 7, const Color(0xFF8E6B35));
+
+    // Shelving.
+    rect(size.width * .12, size.height * .30, size.width * .28, size.height * .36, const Color(0xFF5B3822));
+    rect(size.width * .14, size.height * .39, size.width * .24, 5, const Color(0xFFB58049));
+    rect(size.width * .14, size.height * .53, size.width * .24, 5, const Color(0xFFB58049));
+
+    // Bottles / gear.
+    final goods = [
+      const Color(0xFF76D7C4),
+      const Color(0xFFB98CFF),
+      const Color(0xFFF1C75B),
+      const Color(0xFFE87947),
+    ];
+    for (var i = 0; i < 8; i++) {
+      final x = size.width * (.15 + (i % 4) * .055);
+      final y = size.height * (.32 + (i ~/ 4) * .15);
+      rect(x, y, 9, 18, goods[i % goods.length]);
+      rect(x + 2, y - 5, 5, 6, const Color(0xFFD8C7A3));
+    }
+
+    // Shopkeeper.
+    rect(size.width * .58, size.height * .38, size.width * .16, size.height * .28, palette[1]);
+    p.color = const Color(0xFFD9A56E);
+    canvas.drawCircle(Offset(size.width * .66, size.height * .33), size.height * .09, p);
+    rect(size.width * .60, size.height * .24, size.width * .12, size.height * .06, const Color(0xFF2B241F));
+    rect(size.width * .61, size.height * .31, 5, 5, const Color(0xFF17151A));
+    rect(size.width * .69, size.height * .31, 5, 5, const Color(0xFF17151A));
+
+    // Counter + coin stack.
+    rect(size.width * .46, size.height * .61, size.width * .42, size.height * .12, const Color(0xFF7B4F2B));
+    rect(size.width * .50, size.height * .69, size.width * .34, size.height * .10, const Color(0xFF5A361F));
+    for (var i = 0; i < 3; i++) {
+      p.color = const Color(0xFFF1C75B);
+      canvas.drawCircle(
+        Offset(size.width * (.79 + i * .025), size.height * (.57 - i * .018)),
+        5,
+        p,
+      );
+    }
+
+    // Hanging lantern.
+    rect(size.width * .88, size.height * .18, 4, size.height * .20, const Color(0xFF8E6B35));
+    rect(size.width * .855, size.height * .35, size.width * .06, size.height * .14, const Color(0xFFF1B64B));
+    rect(size.width * .87, size.height * .38, size.width * .03, size.height * .08, const Color(0xFFFFE39A));
+  }
+
+  @override
+  bool shouldRepaint(covariant _MarketPainter oldDelegate) => false;
 }
 
 class _BossSigilPainter extends CustomPainter {
