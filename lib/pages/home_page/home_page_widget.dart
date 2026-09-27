@@ -699,7 +699,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         .eqOrNull('user_id', currentUserUid)
                         .eqOrNull('status', 'open')
                         .order('created_at', ascending: true),
-                    limit: 3,
+                    limit: 50,
                   ),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
@@ -736,9 +736,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     }
 
                     final tasks = snapshot.data!;
+                    final campfireTasks = List<TasksRow>.from(tasks)
+                      ..sort(
+                        (a, b) => (a.frictionLevel ?? 99)
+                            .compareTo(b.frictionLevel ?? 99),
+                      );
                     final visibleTasks = _campfireMode
-                        ? tasks.take(1).toList()
-                        : tasks;
+                        ? campfireTasks.take(1).toList()
+                        : tasks.take(3).toList();
 
                     if (visibleTasks.isEmpty) {
                       return Container(
