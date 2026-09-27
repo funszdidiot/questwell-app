@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import '/services/questwell_task_service.dart';
+import '/services/questwell_cosmetic_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_page_model.dart';
@@ -40,9 +41,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   String _frictionLabel(int? level) {
     switch (level) {
       case 1:
-        return 'Quick Win';
+        return 'Easy';
       case 2:
-        return 'Annoying Quest';
+        return 'Annoying';
       case 3:
         return 'Hard to Start';
       case 4:
@@ -126,7 +127,124 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     letterSpacing: 0,
                   ),
                 ),
-                const SizedBox(height: 28),
+                const SizedBox(height: 22),
+                FutureBuilder<QuestwellCosmeticsSnapshot>(
+                  future: QuestwellCosmeticService.load(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Container(
+                        height: 104,
+                        decoration: BoxDecoration(
+                          color: theme.secondaryBackground,
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: const Center(child: CircularProgressIndicator()),
+                      );
+                    }
+
+                    final data = snapshot.data!;
+                    final profile = data.profile;
+                    final equipped =
+                        data.cosmetics.where((item) => item.equipped).toList();
+                    final xpIntoLevel = profile.totalXp % 100;
+                    final progress = xpIntoLevel / 100.0;
+
+                    return Container(
+                      padding: const EdgeInsets.all(18),
+                      decoration: BoxDecoration(
+                        color: theme.secondaryBackground,
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(color: theme.alternate),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  color: theme.primaryBackground,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.shield_outlined,
+                                  color: theme.primary,
+                                  size: 26,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'The Hearth',
+                                      style: theme.titleMedium.override(
+                                        font: GoogleFonts.interTight(
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        letterSpacing: 0,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      'Level ${profile.level} Adventurer',
+                                      style: theme.bodyMedium.override(
+                                        font: GoogleFonts.inter(),
+                                        color: theme.secondaryText,
+                                        letterSpacing: 0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              _RewardChip(
+                                icon: Icons.monetization_on_outlined,
+                                label: '${profile.coinBalance} coins',
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 14),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(999),
+                            child: LinearProgressIndicator(
+                              value: progress,
+                              minHeight: 8,
+                              backgroundColor: theme.primaryBackground,
+                            ),
+                          ),
+                          const SizedBox(height: 7),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '$xpIntoLevel / 100 XP to next level',
+                                style: theme.labelSmall.override(
+                                  font: GoogleFonts.inter(),
+                                  color: theme.secondaryText,
+                                  letterSpacing: 0,
+                                ),
+                              ),
+                              Text(
+                                equipped.isEmpty
+                                    ? 'No gear equipped'
+                                    : '${equipped.length} equipped',
+                                style: theme.labelSmall.override(
+                                  font: GoogleFonts.inter(),
+                                  color: theme.secondaryText,
+                                  letterSpacing: 0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 24),
                 Text(
                   'Your Next Win',
                   style: theme.titleLarge.override(
