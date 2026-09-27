@@ -130,6 +130,34 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
       body: FutureBuilder<QuestwellCosmeticsSnapshot>(
         future: _future,
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(28),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.cloud_off_outlined, size: 48, color: theme.primary),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Could not refresh this page.',
+                      textAlign: TextAlign.center,
+                      style: theme.titleMedium.override(
+                        font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                        letterSpacing: 0,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextButton(
+                      onPressed: () => setState(_refresh),
+                      child: const Text('Try Again'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
