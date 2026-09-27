@@ -17,6 +17,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
   late Future<QuestwellCosmeticsSnapshot> _future;
   String? _busyCosmeticId;
   bool _savingArchetype = false;
+  bool _claimingMastery = false;
 
   @override
   void initState() {
@@ -93,6 +94,33 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
         return Icons.shield_outlined;
       default:
         return Icons.hiking_outlined;
+    }
+  }
+
+  Future<void> _claimMasteryReward() async {
+    if (_claimingMastery) return;
+    setState(() => _claimingMastery = true);
+
+    try {
+      await QuestwellCosmeticService.claimClassMasteryReward();
+      if (!mounted) return;
+      setState(_refresh);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Class mastery reward claimed.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Mastery reward is not ready yet.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _claimingMastery = false);
     }
   }
 
@@ -198,11 +226,24 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
               .where(
                 (item) =>
                     item.requiredArchetype ==
-                    data.profile.adventurerArchetype,
+                        data.profile.adventurerArchetype &&
+                    item.unlockMethod == 'shop',
+              )
+              .toList();
+          final masteryRewards = data.cosmetics
+              .where(
+                (item) =>
+                    item.requiredArchetype ==
+                        data.profile.adventurerArchetype &&
+                    item.unlockMethod == 'class_mastery',
               )
               .toList();
           final ownedClassItems =
               classCollection.where((item) => item.owned).length;
+          final collectionComplete = classCollection.isNotEmpty &&
+              ownedClassItems == classCollection.length;
+          final masteryOwned =
+              masteryRewards.any((item) => item.owned);
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -424,15 +465,34 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             Text(
                               classCollection.isEmpty
                                   ? 'No exclusive gear yet.'
-                                  : ownedClassItems == classCollection.length
-                                      ? 'Collection complete — every class-exclusive item is yours.'
-                                      : '$ownedClassItems of ${classCollection.length} class-exclusive items unlocked',
+                                  : masteryOwned
+                                      ? 'Mastery complete — signature relic claimed.'
+                                      : collectionComplete
+                                          ? 'Collection complete — your mastery relic is ready.'
+                                          : '$ownedClassItems of ${classCollection.length} class-exclusive items unlocked',
                               style: theme.bodySmall.override(
                                 font: GoogleFonts.inter(),
                                 color: theme.secondaryText,
                                 letterSpacing: 0,
                               ),
                             ),
+                            if (collectionComplete && !masteryOwned) ...[
+                              const SizedBox(height: 8),
+                              FilledButton.icon(
+                                onPressed: _claimingMastery
+                                    ? null
+                                    : _claimMasteryReward,
+                                icon: const Icon(
+                                  Icons.workspace_premium_outlined,
+                                  size: 18,
+                                ),
+                                label: Text(
+                                  _claimingMastery
+                                      ? 'Claiming...'
+                                      : 'Claim Mastery Relic',
+                                ),
+                              ),
+                            ],
                           ],
                         ),
                       ),
