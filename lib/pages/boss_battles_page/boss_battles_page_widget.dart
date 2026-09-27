@@ -512,17 +512,9 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                       const SizedBox(height: 14),
                       Row(
                         children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: theme.primaryBackground,
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            child: Icon(
-                              _bossIcon(battle.bossType),
-                              color: theme.primary,
-                            ),
+                          QuestwellBossSigilPixelArt(
+                            bossType: battle.bossType,
+                            size: 48,
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -555,24 +547,44 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                         ],
                       ),
                       const SizedBox(height: 14),
-                      Text(
-                        battle.completed
-                            ? 'DEFEATED'
-                            : '${battle.completedSteps} of ${battle.totalSteps} attacks landed',
-                        style: theme.labelSmall.override(
-                          font: GoogleFonts.inter(
-                            fontWeight: FontWeight.w700,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              battle.completed
+                                  ? 'BOSS DEFEATED'
+                                  : '${battle.completedSteps} / ${battle.totalSteps} ATTACKS',
+                              style: theme.labelSmall.override(
+                                font: GoogleFonts.inter(
+                                  fontWeight: FontWeight.w800,
+                                ),
+                                color: battle.completed
+                                    ? theme.secondaryText
+                                    : theme.primary,
+                                letterSpacing: 1,
+                              ),
+                            ),
                           ),
-                          color: theme.secondaryText,
-                          letterSpacing: 1,
-                        ),
+                          Text(
+                            battle.completed
+                                ? '0% HP'
+                                : '${((1 - battle.progress) * 100).round()}% HP',
+                            style: theme.labelSmall.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w800,
+                              ),
+                              color: theme.secondaryText,
+                              letterSpacing: .6,
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 7),
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(999),
+                        borderRadius: BorderRadius.circular(2),
                         child: LinearProgressIndicator(
-                          value: battle.progress,
-                          minHeight: 10,
+                          value: battle.completed ? 0 : 1 - battle.progress,
+                          minHeight: 12,
                           backgroundColor: theme.primaryBackground,
                         ),
                       ),
