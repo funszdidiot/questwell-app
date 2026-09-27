@@ -904,6 +904,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ),
                 const SizedBox(height: 12),
+                FilledButton.icon(
+                  onPressed: () async {
+                    await context.pushNamed(ExpeditionPageWidget.routeName);
+                    if (mounted) setState(_loadHomeData);
+                  },
+                  icon: const Icon(Icons.explore_outlined),
+                  label: const Text('Start an Expedition'),
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size.fromHeight(48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
                 Row(
                   children: [
                     Expanded(
