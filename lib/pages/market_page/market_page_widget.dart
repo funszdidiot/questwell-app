@@ -27,6 +27,21 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
     _future = QuestwellCosmeticService.load();
   }
 
+  String _archetypeLabel(String value) {
+    switch (value) {
+      case 'scholar':
+        return 'Scholar';
+      case 'scout':
+        return 'Scout';
+      case 'alchemist':
+        return 'Alchemist';
+      case 'guardian':
+        return 'Guardian';
+      default:
+        return 'Wanderer';
+    }
+  }
+
   IconData _iconForCategory(String category) {
     switch (category) {
       case 'familiar':
@@ -238,6 +253,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                     padding: const EdgeInsets.only(bottom: 12),
                     child: _MarketCard(
                       cosmetic: cosmetic,
+                      currentArchetype: data.profile.adventurerArchetype,
                       busy: _busyCosmeticId == cosmetic.id,
                       icon: _iconForCategory(cosmetic.category),
                       onPurchase: () => _purchase(cosmetic),
@@ -258,6 +274,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
 class _MarketCard extends StatelessWidget {
   const _MarketCard({
     required this.cosmetic,
+    required this.currentArchetype,
     required this.busy,
     required this.icon,
     required this.onPurchase,
@@ -266,11 +283,31 @@ class _MarketCard extends StatelessWidget {
   });
 
   final QuestwellCosmetic cosmetic;
+  final String currentArchetype;
   final bool busy;
   final IconData icon;
   final VoidCallback onPurchase;
   final VoidCallback onEquip;
   final VoidCallback onUnequip;
+
+  String archetypeLabel(String value) {
+    switch (value) {
+      case 'scholar':
+        return 'Scholar';
+      case 'scout':
+        return 'Scout';
+      case 'alchemist':
+        return 'Alchemist';
+      case 'guardian':
+        return 'Guardian';
+      default:
+        return 'Wanderer';
+    }
+  }
+
+  bool get classLocked =>
+      cosmetic.requiredArchetype != null &&
+      cosmetic.requiredArchetype != currentArchetype;
 
   String get rarityLabel {
     final value = cosmetic.rarity;
@@ -322,6 +359,28 @@ class _MarketCard extends StatelessWidget {
                     letterSpacing: 0,
                   ),
                 ),
+                if (cosmetic.requiredArchetype != null) ...[
+                  const SizedBox(height: 5),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        classLocked ? Icons.lock_outline : Icons.verified_outlined,
+                        size: 15,
+                        color: classLocked ? theme.secondaryText : theme.primary,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        '${archetypeLabel(cosmetic.requiredArchetype!)} only',
+                        style: theme.labelSmall.override(
+                          font: GoogleFonts.inter(fontWeight: FontWeight.w700),
+                          color: classLocked ? theme.secondaryText : theme.primary,
+                          letterSpacing: 0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
                 if (cosmetic.description.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Text(
@@ -335,7 +394,7 @@ class _MarketCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 if (cosmetic.owned)
                   OutlinedButton.icon(
-                    onPressed: busy
+                    onPressed: busy || classLocked
                         ? null
                         : cosmetic.equipped
                             ? onUnequip
@@ -347,15 +406,23 @@ class _MarketCard extends StatelessWidget {
                       size: 18,
                     ),
                     label: Text(
-                      cosmetic.equipped ? 'Unequip' : 'Equip',
+                      classLocked
+                          ? 'Class locked'
+                          : cosmetic.equipped
+                              ? 'Unequip'
+                              : 'Equip',
                     ),
                   )
                 else
                   FilledButton.icon(
-                    onPressed: busy ? null : onPurchase,
+                    onPressed: busy || classLocked ? null : onPurchase,
                     icon: const Icon(Icons.monetization_on_outlined, size: 18),
                     label: Text(
-                      busy ? 'Unlocking...' : '${cosmetic.price} coins',
+                      classLocked
+                          ? '${archetypeLabel(cosmetic.requiredArchetype!)} only'
+                          : busy
+                              ? 'Unlocking...'
+                              : '${cosmetic.price} coins',
                     ),
                   ),
               ],
