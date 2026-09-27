@@ -90,6 +90,25 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
     }
   }
 
+  Future<void> _unequip(QuestwellCosmetic cosmetic) async {
+    if (_busyCosmeticId != null) return;
+    setState(() => _busyCosmeticId = cosmetic.id);
+
+    try {
+      await QuestwellCosmeticService.unequip(cosmetic.id);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${cosmetic.name} unequipped.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      setState(_refresh);
+    } finally {
+      if (mounted) setState(() => _busyCosmeticId = null);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
@@ -195,6 +214,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                       icon: _iconForCategory(cosmetic.category),
                       onPurchase: () => _purchase(cosmetic),
                       onEquip: () => _equip(cosmetic),
+                      onUnequip: () => _unequip(cosmetic),
                     ),
                   ),
                 ),
@@ -214,6 +234,7 @@ class _MarketCard extends StatelessWidget {
     required this.icon,
     required this.onPurchase,
     required this.onEquip,
+    required this.onUnequip,
   });
 
   final QuestwellCosmetic cosmetic;
@@ -221,6 +242,7 @@ class _MarketCard extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPurchase;
   final VoidCallback onEquip;
+  final VoidCallback onUnequip;
 
   String get rarityLabel {
     final value = cosmetic.rarity;
@@ -285,15 +307,19 @@ class _MarketCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 if (cosmetic.owned)
                   OutlinedButton.icon(
-                    onPressed: busy || cosmetic.equipped ? null : onEquip,
+                    onPressed: busy
+                        ? null
+                        : cosmetic.equipped
+                            ? onUnequip
+                            : onEquip,
                     icon: Icon(
                       cosmetic.equipped
-                          ? Icons.check_circle_outline
+                          ? Icons.remove_circle_outline
                           : Icons.checkroom_outlined,
                       size: 18,
                     ),
                     label: Text(
-                      cosmetic.equipped ? 'Equipped' : 'Equip',
+                      cosmetic.equipped ? 'Unequip' : 'Equip',
                     ),
                   )
                 else
