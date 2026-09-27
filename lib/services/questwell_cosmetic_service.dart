@@ -44,6 +44,7 @@ class QuestwellCosmetic {
     required this.price,
     required this.premium,
     required this.assetKey,
+    required this.requiredArchetype,
     required this.owned,
     required this.equipped,
   });
@@ -57,6 +58,7 @@ class QuestwellCosmetic {
   final int price;
   final bool premium;
   final String? assetKey;
+  final String? requiredArchetype;
   final bool owned;
   final bool equipped;
 
@@ -74,6 +76,7 @@ class QuestwellCosmetic {
       price: price,
       premium: premium,
       assetKey: assetKey,
+      requiredArchetype: requiredArchetype,
       owned: owned ?? this.owned,
       equipped: equipped ?? this.equipped,
     );
@@ -94,6 +97,7 @@ class QuestwellCosmetic {
       price: (json['price'] as num?)?.toInt() ?? 0,
       premium: json['premium'] == true,
       assetKey: json['asset_key']?.toString(),
+      requiredArchetype: json['required_archetype']?.toString(),
       owned: owned,
       equipped: equipped,
     );
@@ -127,7 +131,7 @@ class QuestwellCosmeticService {
           .single(),
       SupaFlow.client
           .from('cosmetics')
-          .select('id,slug,name,category,rarity,description,price,premium,asset_key')
+          .select('id,slug,name,category,rarity,description,price,premium,asset_key,required_archetype')
           .eq('active', true)
           .order('price'),
       SupaFlow.client
@@ -244,9 +248,9 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    await SupaFlow.client
-        .from('users')
-        .update({'adventurer_archetype': archetype})
-        .eq('id', uid);
+    await SupaFlow.client.rpc(
+      'set_adventurer_archetype',
+      params: {'p_archetype': archetype},
+    );
   }
 }
