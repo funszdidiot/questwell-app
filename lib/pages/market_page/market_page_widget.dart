@@ -420,13 +420,14 @@ class _MarketCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.secondaryBackground,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: theme.alternate),
-      ),
+    return QuestwellRetroPanel(
+      padding: const EdgeInsets.all(14),
+      accent: classLocked
+          ? const Color(0xFF5A5B62)
+          : cosmetic.equipped
+              ? const Color(0xFFF1C75B)
+              : const Color(0xFF8E6B35),
+      background: const Color(0xFF15141B),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -443,10 +444,13 @@ class _MarketCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  cosmetic.name,
+                  cosmetic.name.toUpperCase(),
                   style: theme.titleMedium.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 10,
+                    letterSpacing: .2,
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -509,10 +513,8 @@ class _MarketCard extends StatelessWidget {
                         : cosmetic.equipped
                             ? onUnequip
                             : onEquip,
-                    icon: Icon(
-                      cosmetic.equipped
-                          ? Icons.remove_circle_outline
-                          : Icons.checkroom_outlined,
+                    icon: QuestwellNavPixelIcon(
+                      kind: cosmetic.equipped ? 'quest' : 'adventurer',
                       size: 18,
                     ),
                     label: Text(
@@ -526,7 +528,10 @@ class _MarketCard extends StatelessWidget {
                 else
                   FilledButton.icon(
                     onPressed: busy || classLocked ? null : onPurchase,
-                    icon: const Icon(Icons.monetization_on_outlined, size: 18),
+                    icon: const QuestwellCurrencyPixelIcon(
+                      kind: 'coin',
+                      size: 18,
+                    ),
                     label: Text(
                       classLocked
                           ? '${archetypeLabel(cosmetic.requiredArchetype!)} only'
