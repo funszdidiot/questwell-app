@@ -16,6 +16,7 @@ class AdventurerPageWidget extends StatefulWidget {
 class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
   late Future<QuestwellCosmeticsSnapshot> _future;
   String? _busyCosmeticId;
+  bool _savingArchetype = false;
 
   @override
   void initState() {
@@ -62,6 +63,55 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
       setState(_refresh);
     } finally {
       if (mounted) setState(() => _busyCosmeticId = null);
+    }
+  }
+
+  String _archetypeLabel(String value) {
+    switch (value) {
+      case 'scholar':
+        return 'Scholar';
+      case 'scout':
+        return 'Scout';
+      case 'alchemist':
+        return 'Alchemist';
+      case 'guardian':
+        return 'Guardian';
+      default:
+        return 'Wanderer';
+    }
+  }
+
+  IconData _archetypeIcon(String value) {
+    switch (value) {
+      case 'scholar':
+        return Icons.menu_book_outlined;
+      case 'scout':
+        return Icons.explore_outlined;
+      case 'alchemist':
+        return Icons.science_outlined;
+      case 'guardian':
+        return Icons.shield_outlined;
+      default:
+        return Icons.hiking_outlined;
+    }
+  }
+
+  Future<void> _chooseArchetype(String archetype) async {
+    if (_savingArchetype) return;
+    setState(() => _savingArchetype = true);
+
+    try {
+      await QuestwellCosmeticService.setAdventurerArchetype(archetype);
+      if (!mounted) return;
+      setState(_refresh);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${_archetypeLabel(archetype)} selected.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _savingArchetype = false);
     }
   }
 
@@ -256,7 +306,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Level ${data.profile.level} Adventurer',
+                        'Level ${data.profile.level} ${_archetypeLabel(data.profile.adventurerArchetype)}',
                         style: theme.titleLarge.override(
                           font: GoogleFonts.interTight(
                             fontWeight: FontWeight.w700,
@@ -275,6 +325,52 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 22),
+                Text(
+                  'Your Archetype',
+                  style: theme.titleLarge.override(
+                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                    letterSpacing: 0,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Cosmetic identity only. Pick the vibe that feels like you.',
+                  style: theme.bodyMedium.override(
+                    font: GoogleFonts.inter(),
+                    color: theme.secondaryText,
+                    letterSpacing: 0,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (final value in const [
+                      'scholar',
+                      'scout',
+                      'alchemist',
+                      'guardian',
+                      'wanderer',
+                    ])
+                      ChoiceChip(
+                        selected:
+                            data.profile.adventurerArchetype == value,
+                        onSelected: _savingArchetype
+                            ? null
+                            : (_) => _chooseArchetype(value),
+                        avatar: Icon(
+                          _archetypeIcon(value),
+                          size: 17,
+                          color: data.profile.adventurerArchetype == value
+                              ? theme.primary
+                              : theme.secondaryText,
+                        ),
+                        label: Text(_archetypeLabel(value)),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 22),
                 Text(
