@@ -1,4 +1,5 @@
 import '/flutter_flow/flutter_flow_theme.dart';
+import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
@@ -125,7 +126,12 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                 letterSpacing: 0,
               ),
             ),
-            const SizedBox(height: 28),
+            const SizedBox(height: 18),
+            QuestwellExpeditionPixelScene(
+              height: 155,
+              campfire: false,
+            ),
+            const SizedBox(height: 22),
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
