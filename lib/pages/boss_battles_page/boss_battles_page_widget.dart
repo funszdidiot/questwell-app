@@ -351,17 +351,26 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
         elevation: 0,
         foregroundColor: theme.primaryText,
         title: Text(
-          'Boss Battles',
+          'BOSS BATTLES',
           style: theme.titleLarge.override(
-            font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-            letterSpacing: 0,
+            font: GoogleFonts.pressStart2p(
+              fontWeight: FontWeight.w700,
+            ),
+            fontSize: 13,
+            letterSpacing: .35,
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showCreateBattle,
-        icon: const Icon(Icons.add),
-        label: const Text('New Boss'),
+        icon: const QuestwellNavPixelIcon(
+          kind: 'boss',
+          size: 20,
+        ),
+        label: Text(
+          'NEW BOSS',
+          style: GoogleFonts.pressStart2p(fontSize: 9),
+        ),
       ),
       body: FutureBuilder<List<QuestwellBossBattle>>(
         future: _future,
@@ -456,18 +465,16 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
               separatorBuilder: (_, __) => const SizedBox(height: 14),
               itemBuilder: (context, index) {
                 if (_campfireMode && index == 0) {
-                  return Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: theme.secondaryBackground,
-                      borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: theme.primary),
-                    ),
+                  return QuestwellRetroPanel(
+                    padding: const EdgeInsets.all(14),
+                    accent: const Color(0xFFE87947),
+                    background: const Color(0xFF1A1512),
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.local_fire_department_outlined,
-                          color: theme.primary,
+                        const QuestwellStatusPixelBadge(
+                          kind: 'campfire',
+                          size: 32,
+                          active: true,
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -491,17 +498,12 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                 final remainingSteps =
                     battle.steps.where((step) => !step.completed).toList();
 
-                return Container(
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    color: theme.secondaryBackground,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: battle.completed
-                          ? theme.alternate
-                          : theme.primary,
-                    ),
-                  ),
+                return QuestwellRetroPanel(
+                  padding: const EdgeInsets.all(16),
+                  accent: battle.completed
+                      ? const Color(0xFF5A5B62)
+                      : const Color(0xFFE87947),
+                  background: const Color(0xFF15141B),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
