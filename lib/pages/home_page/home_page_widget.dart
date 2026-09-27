@@ -27,6 +27,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   bool _completingTask = false;
   bool _campfireMode = false;
   bool _changingEnergyMode = false;
+  bool _onboardingCompleted = true;
+  bool _creatingStarterQuest = false;
   late Future<QuestwellCosmeticsSnapshot> _homeSnapshotFuture;
 
   @override
@@ -40,10 +42,78 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     _homeSnapshotFuture = QuestwellCosmeticService.load();
     _homeSnapshotFuture.then((data) {
       if (!mounted) return;
-      if (_campfireMode != data.profile.campfireMode) {
-        setState(() => _campfireMode = data.profile.campfireMode);
+      if (_campfireMode != data.profile.campfireMode ||
+          _onboardingCompleted != data.profile.onboardingCompleted) {
+        setState(() {
+          _campfireMode = data.profile.campfireMode;
+          _onboardingCompleted = data.profile.onboardingCompleted;
+        });
       }
     });
+  }
+
+  Future<void> _finishOnboarding() async {
+    try {
+      await QuestwellCosmeticService.completeOnboarding();
+      if (!mounted) return;
+      setState(() {
+        _onboardingCompleted = true;
+        _loadHomeData();
+      });
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Could not finish setup. Please try again.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  Future<void> _startWithQuest({
+    required String title,
+    required int friction,
+    required int xp,
+    required int coins,
+  }) async {
+    if (_creatingStarterQuest) return;
+    setState(() => _creatingStarterQuest = true);
+
+    try {
+      await TasksTable().insert({
+        'user_id': currentUserUid,
+        'title': title,
+        'friction_level': friction,
+        'xp_value': xp,
+        'coin_value': coins,
+        'status': 'open',
+      });
+      await QuestwellCosmeticService.completeOnboarding();
+
+      if (!mounted) return;
+      setState(() {
+        _onboardingCompleted = true;
+        _loadHomeData();
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('First quest added. Your adventure has started.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Could not add that starter quest. Please try again.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _creatingStarterQuest = false);
+    }
   }
 
   Future<void> _setCampfireMode(bool enabled) async {
@@ -367,6 +437,94 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     );
                   },
                 ),
+                if (!_onboardingCompleted) ...[
+                  const SizedBox(height: 18),
+                  Container(
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: theme.secondaryBackground,
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(color: theme.primary, width: 1.4),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(Icons.auto_awesome, color: theme.primary),
+                            const SizedBox(width: 9),
+                            Expanded(
+                              child: Text(
+                                'Welcome to Questwell',
+                                style: theme.titleLarge.override(
+                                  font: GoogleFonts.interTight(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  letterSpacing: 0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 7),
+                        Text(
+                          'Pick one tiny real-life win. Completing it earns your first XP and coins.',
+                          style: theme.bodyMedium.override(
+                            font: GoogleFonts.inter(),
+                            color: theme.secondaryText,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            OutlinedButton(
+                              onPressed: _creatingStarterQuest
+                                  ? null
+                                  : () => _startWithQuest(
+                                        title: 'Reply to one email',
+                                        friction: 1,
+                                        xp: 10,
+                                        coins: 5,
+                                      ),
+                              child: const Text('Reply to one email'),
+                            ),
+                            OutlinedButton(
+                              onPressed: _creatingStarterQuest
+                                  ? null
+                                  : () => _startWithQuest(
+                                        title: 'Clear five desktop files',
+                                        friction: 1,
+                                        xp: 10,
+                                        coins: 5,
+                                      ),
+                              child: const Text('Clear five files'),
+                            ),
+                            OutlinedButton(
+                              onPressed: _creatingStarterQuest
+                                  ? null
+                                  : () => _startWithQuest(
+                                        title: 'Do the thing I keep avoiding',
+                                        friction: 3,
+                                        xp: 35,
+                                        coins: 18,
+                                      ),
+                              child: const Text('Do the avoided thing'),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        TextButton(
+                          onPressed:
+                              _creatingStarterQuest ? null : _finishOnboarding,
+                          child: const Text('I already know what I want to do'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 18),
                 Container(
                   padding: const EdgeInsets.all(16),
