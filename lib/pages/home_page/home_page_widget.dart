@@ -189,13 +189,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
       if (!mounted) return;
 
-      final previousLevel = ((reward.totalXp - reward.xpAwarded) ~/ 100) + 1;
+      final previousXp = reward.totalXp - reward.xpAwarded;
+      final previousLevel = (previousXp ~/ 100) + 1;
       final newLevel = (reward.totalXp ~/ 100) + 1;
       final leveledUp = newLevel > previousLevel;
+      final firstWin = previousXp == 0 && reward.xpAwarded > 0;
 
       setState(_loadHomeData);
 
-      await showDialog<void>(
+      final nextAction = await showDialog<String>(
         context: context,
         builder: (dialogContext) {
           final dialogTheme = FlutterFlowTheme.of(dialogContext);
@@ -213,7 +215,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    leveledUp ? 'Level Up!' : 'Quest Complete!',
+                    firstWin
+                        ? 'Your First Win!'
+                        : leveledUp
+                            ? 'Level Up!'
+                            : 'Quest Complete!',
                     style: dialogTheme.titleLarge.override(
                       font: GoogleFonts.interTight(
                         fontWeight: FontWeight.w700,
@@ -229,9 +235,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  leveledUp
-                      ? 'Your adventurer reached Level $newLevel.'
-                      : 'A small win became real momentum.',
+                  firstWin
+                      ? 'That is the loop: do one real thing, earn progress, and keep the momentum.'
+                      : leveledUp
+                          ? 'Your adventurer reached Level $newLevel.'
+                          : 'A small win became real momentum.',
                   style: dialogTheme.bodyMedium.override(
                     font: GoogleFonts.inter(),
                     color: dialogTheme.secondaryText,
@@ -268,13 +276,39 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(),
-                child: Text(leveledUp ? 'Continue Adventure' : 'Claim Win'),
+                onPressed: () =>
+                    Navigator.of(dialogContext).pop('chronicle'),
+                child: const Text('See Chronicle'),
+              ),
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(dialogContext).pop('add'),
+                child: const Text('Add Next Quest'),
+              ),
+              FilledButton(
+                onPressed: () =>
+                    Navigator.of(dialogContext).pop('continue'),
+                child: Text(
+                  firstWin
+                      ? 'Keep Going'
+                      : leveledUp
+                          ? 'Continue Adventure'
+                          : 'Claim Win',
+                ),
               ),
             ],
           );
         },
       );
+
+      if (!mounted) return;
+      if (nextAction == 'add') {
+        await context.pushNamed(AddTaskPageWidget.routeName);
+        if (mounted) setState(_loadHomeData);
+      } else if (nextAction == 'chronicle') {
+        await context.pushNamed(ChroniclePageWidget.routeName);
+        if (mounted) setState(_loadHomeData);
+      }
     } catch (error) {
       if (!mounted) return;
 
@@ -668,6 +702,32 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     limit: 3,
                   ),
                   builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Container(
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: theme.secondaryBackground,
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(color: theme.alternate),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.cloud_off_outlined, color: theme.primary),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                'The Quest Board could not refresh right now.',
+                                style: theme.bodyMedium.override(
+                                  font: GoogleFonts.inter(),
+                                  letterSpacing: 0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
                     if (!snapshot.hasData) {
                       return const Padding(
                         padding: EdgeInsets.all(28),
