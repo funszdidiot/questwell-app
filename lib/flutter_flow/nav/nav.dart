@@ -114,6 +114,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: BossBattlesPageWidget.routeName,
           path: BossBattlesPageWidget.routePath,
           builder: (context, params) => BossBattlesPageWidget(),
+        ),
+        FFRoute(
+          name: ChroniclePageWidget.routeName,
+          path: ChroniclePageWidget.routePath,
+          builder: (context, params) => ChroniclePageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
