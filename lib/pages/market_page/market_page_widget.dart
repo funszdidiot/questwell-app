@@ -1,5 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_cosmetic_service.dart';
+import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -253,6 +254,11 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                   ),
                 ),
                 const SizedBox(height: 20),
+                QuestwellClassPixelPortrait(
+                  archetype: data.profile.adventurerArchetype,
+                  height: 120,
+                ),
+                const SizedBox(height: 14),
                 Text(
                   '${_archetypeLabel(data.profile.adventurerArchetype)} Collection',
                   style: theme.titleLarge.override(
