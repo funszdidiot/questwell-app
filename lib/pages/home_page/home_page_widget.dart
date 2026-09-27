@@ -744,6 +744,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ),
                   ),
                 ],
+                if (_campfireMode) ...[
+                  const SizedBox(height: 18),
+                  const QuestwellExpeditionPixelScene(
+                    height: 130,
+                    campfire: true,
+                  ),
+                ],
                 const SizedBox(height: 18),
                 Container(
                   padding: const EdgeInsets.all(16),
