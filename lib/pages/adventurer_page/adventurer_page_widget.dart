@@ -291,33 +291,52 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
           if (snapshot.hasError) {
             return Center(
               child: Padding(
-                padding: const EdgeInsets.all(28),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.cloud_off_outlined, size: 48, color: theme.primary),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Could not refresh this page.',
-                      textAlign: TextAlign.center,
-                      style: theme.titleMedium.override(
-                        font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                        letterSpacing: 0,
+                padding: const EdgeInsets.all(24),
+                child: QuestwellRetroPanel(
+                  padding: const EdgeInsets.all(16),
+                  accent: const Color(0xFFE87947),
+                  background: const Color(0xFF1A1512),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const QuestwellNavPixelIcon(
+                        kind: 'adventurer',
+                        size: 42,
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    TextButton(
-                      onPressed: () => setState(_refresh),
-                      child: const Text('Try Again'),
-                    ),
-                  ],
+                      const SizedBox(height: 12),
+                      Text(
+                        'CHARACTER SHEET UNAVAILABLE',
+                        textAlign: TextAlign.center,
+                        style: theme.titleMedium.override(
+                          font: GoogleFonts.pressStart2p(
+                            fontWeight: FontWeight.w700,
+                          ),
+                          fontSize: 10,
+                          letterSpacing: .3,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      TextButton(
+                        onPressed: () => setState(_refresh),
+                        child: const Text('TRY AGAIN'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
           }
 
           if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: SizedBox(
+                width: 220,
+                child: QuestwellRetroPanel(
+                  padding: EdgeInsets.all(20),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              ),
+            );
           }
 
           final data = snapshot.data!;
@@ -467,13 +486,10 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: theme.secondaryBackground,
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: theme.alternate),
-                  ),
+                QuestwellRetroPanel(
+                  padding: const EdgeInsets.all(14),
+                  accent: const Color(0xFFD6A84B),
+                  background: const Color(0xFF171A20),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
