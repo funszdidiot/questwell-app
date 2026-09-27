@@ -958,7 +958,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     await context.pushNamed(ExpeditionPageWidget.routeName);
                     if (mounted) setState(_loadHomeData);
                   },
-                  icon: const Icon(Icons.explore_outlined),
+                  icon: const QuestwellNavPixelIcon(
+                    kind: 'expedition',
+                    size: 20,
+                  ),
                   label: const Text('Start an Expedition'),
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(48),
@@ -976,7 +979,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           await context.pushNamed(BossBattlesPageWidget.routeName);
                           if (mounted) setState(_loadHomeData);
                         },
-                        icon: const Icon(Icons.sports_mma_outlined),
+                        icon: const QuestwellNavPixelIcon(
+                          kind: 'boss',
+                          size: 20,
+                        ),
                         label: const Text('Boss Battles'),
                         style: OutlinedButton.styleFrom(
                           minimumSize: const Size.fromHeight(48),
@@ -995,7 +1001,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           await context.pushNamed(ChroniclePageWidget.routeName);
                           if (mounted) setState(_loadHomeData);
                         },
-                        icon: const Icon(Icons.menu_book_outlined),
+                        icon: const QuestwellNavPixelIcon(
+                          kind: 'chronicle',
+                          size: 20,
+                        ),
                         label: const Text('Chronicle'),
                         style: OutlinedButton.styleFrom(
                           minimumSize: const Size.fromHeight(48),
@@ -1018,7 +1027,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           await context.pushNamed(AdventurerPageWidget.routeName);
                           if (mounted) setState(_loadHomeData);
                         },
-                        icon: const Icon(Icons.person_outline),
+                        icon: const QuestwellNavPixelIcon(
+                          kind: 'adventurer',
+                          size: 20,
+                        ),
                         label: const Text('Adventurer'),
                         style: OutlinedButton.styleFrom(
                           minimumSize: const Size.fromHeight(46),
@@ -1037,7 +1049,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           await context.pushNamed(MarketPageWidget.routeName);
                           if (mounted) setState(_loadHomeData);
                         },
-                        icon: const Icon(Icons.storefront_outlined),
+                        icon: const QuestwellNavPixelIcon(
+                          kind: 'market',
+                          size: 20,
+                        ),
                         label: const Text('Market'),
                         style: OutlinedButton.styleFrom(
                           minimumSize: const Size.fromHeight(46),
