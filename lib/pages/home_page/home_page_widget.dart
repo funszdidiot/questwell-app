@@ -25,11 +25,51 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   late HomePageModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _completingTask = false;
+  bool _campfireMode = false;
+  bool _changingEnergyMode = false;
+  late Future<QuestwellCosmeticsSnapshot> _homeSnapshotFuture;
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => HomePageModel());
+    _loadHomeData();
+  }
+
+  void _loadHomeData() {
+    _homeSnapshotFuture = QuestwellCosmeticService.load();
+    _homeSnapshotFuture.then((data) {
+      if (!mounted) return;
+      if (_campfireMode != data.profile.campfireMode) {
+        setState(() => _campfireMode = data.profile.campfireMode);
+      }
+    });
+  }
+
+  Future<void> _setCampfireMode(bool enabled) async {
+    if (_changingEnergyMode) return;
+    setState(() => _changingEnergyMode = true);
+
+    try {
+      await QuestwellCosmeticService.setEnergyMode(
+        enabled ? 'campfire' : 'normal',
+      );
+      if (!mounted) return;
+      setState(() {
+        _campfireMode = enabled;
+        _loadHomeData();
+      });
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Could not change energy mode. Please try again.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _changingEnergyMode = false);
+    }
   }
 
   @override
@@ -68,7 +108,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       final newLevel = (reward.totalXp ~/ 100) + 1;
       final leveledUp = newLevel > previousLevel;
 
-      setState(() {});
+      setState(_loadHomeData);
 
       await showDialog<void>(
         context: context,
@@ -205,7 +245,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 ),
                 const SizedBox(height: 22),
                 FutureBuilder<QuestwellCosmeticsSnapshot>(
-                  future: QuestwellCosmeticService.load(),
+                  future: _homeSnapshotFuture,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return Container(
@@ -327,9 +367,76 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     );
                   },
                 ),
+                const SizedBox(height: 18),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: _campfireMode
+                        ? theme.secondaryBackground
+                        : theme.primaryBackground,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: _campfireMode ? theme.primary : theme.alternate,
+                    ),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: theme.secondaryBackground,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          _campfireMode
+                              ? Icons.local_fire_department_outlined
+                              : Icons.bolt_outlined,
+                          color: theme.primary,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Campfire Mode',
+                              style: theme.titleMedium.override(
+                                font: GoogleFonts.interTight(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                letterSpacing: 0,
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              _campfireMode
+                                  ? 'Today counts even if we go small. One quest at a time.'
+                                  : 'Low-energy day? Narrow the board to one gentle next step.',
+                              style: theme.bodySmall.override(
+                                font: GoogleFonts.inter(),
+                                color: theme.secondaryText,
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Switch.adaptive(
+                        value: _campfireMode,
+                        onChanged: _changingEnergyMode
+                            ? null
+                            : (value) => _setCampfireMode(value),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 24),
                 Text(
-                  'Your Next Win',
+                  _campfireMode ? 'One Small Win' : 'Your Next Win',
                   style: theme.titleLarge.override(
                     font: GoogleFonts.interTight(
                       fontWeight: FontWeight.w700,
@@ -337,6 +444,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     letterSpacing: 0,
                   ),
                 ),
+                if (_campfireMode) ...[
+                  const SizedBox(height: 5),
+                  Text(
+                    'No catching up. No penalty. Just the next thing.',
+                    style: theme.bodyMedium.override(
+                      font: GoogleFonts.inter(),
+                      color: theme.secondaryText,
+                      letterSpacing: 0,
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 12),
                 FutureBuilder<List<TasksRow>>(
                   future: TasksTable().queryRows(
@@ -355,8 +473,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     }
 
                     final tasks = snapshot.data!;
+                    final visibleTasks = _campfireMode
+                        ? tasks.take(1).toList()
+                        : tasks;
 
-                    if (tasks.isEmpty) {
+                    if (visibleTasks.isEmpty) {
                       return Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
@@ -391,15 +512,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
                     return Column(
                       children: [
-                        for (var index = 0; index < tasks.length; index++) ...[
+                        for (var index = 0; index < visibleTasks.length; index++) ...[
                           _QuestCard(
-                            task: tasks[index],
-                            frictionLabel: _frictionLabel(tasks[index].frictionLevel),
+                            task: visibleTasks[index],
+                            frictionLabel: _frictionLabel(visibleTasks[index].frictionLevel),
                             completing: _completingTask,
                             featured: index == 0,
-                            onComplete: () => _completeTask(tasks[index]),
+                            onComplete: () => _completeTask(visibleTasks[index]),
                           ),
-                          if (index != tasks.length - 1)
+                          if (index != visibleTasks.length - 1)
                             const SizedBox(height: 10),
                         ],
                       ],
@@ -410,7 +531,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 FFButtonWidget(
                   onPressed: () async {
                     await context.pushNamed(AddTaskPageWidget.routeName);
-                    if (mounted) setState(() {});
+                    if (mounted) setState(_loadHomeData);
                   },
                   text: '+ Add Quest',
                   options: FFButtonOptions(
