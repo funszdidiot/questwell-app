@@ -45,14 +45,29 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
 
   IconData _iconForCategory(String category) {
     switch (category) {
+      case 'head':
+        return Icons.face_retouching_natural;
+      case 'face':
+        return Icons.visibility_outlined;
+      case 'neck':
+        return Icons.style_outlined;
+      case 'chest':
+      case 'outfit':
+        return Icons.checkroom_outlined;
+      case 'hands':
+        return Icons.pan_tool_alt_outlined;
+      case 'legs':
+        return Icons.airline_seat_legroom_normal_outlined;
+      case 'feet':
+        return Icons.hiking_outlined;
+      case 'back':
+        return Icons.backpack_outlined;
       case 'familiar':
         return Icons.pets_outlined;
       case 'room':
         return Icons.chair_outlined;
       case 'effect':
         return Icons.auto_awesome_outlined;
-      case 'outfit':
-        return Icons.checkroom_outlined;
       default:
         return Icons.workspace_premium_outlined;
     }
