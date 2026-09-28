@@ -449,12 +449,42 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         child: SizedBox(
                           height: compact ? 245 : 300,
                           width: double.infinity,
-                          child: Image.asset(
-                            'assets/images/hearth_64_scene.png',
-                            fit: BoxFit.cover,
-                            alignment: Alignment.center,
-                            filterQuality: FilterQuality.none,
-                            gaplessPlayback: true,
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Image.asset(
+                                'assets/images/hearth_64_scene.png',
+                                fit: BoxFit.cover,
+                                alignment: Alignment.center,
+                                filterQuality: FilterQuality.none,
+                                gaplessPlayback: true,
+                              ),
+                              FutureBuilder<QuestwellCosmeticsSnapshot>(
+                                future: _homeSnapshotFuture,
+                                builder: (context, snapshot) {
+                                  final data = snapshot.data;
+                                  if (data == null) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  final equipped = data.cosmetics
+                                      .where((item) => item.equipped)
+                                      .toList();
+                                  return Align(
+                                    alignment: const Alignment(.12, .92),
+                                    child: QuestwellEquippedAvatarSprite(
+                                      archetype:
+                                          data.profile.adventurerArchetype,
+                                      equippedSlugs: {
+                                        for (final item in equipped)
+                                          item.category: item.slug,
+                                      },
+                                      width: compact ? 104 : 126,
+                                      height: compact ? 138 : 166,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ),
