@@ -374,24 +374,25 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                         children: [
                           Text(
                             'ADVENTURER',
-                            style: theme.headlineMedium.override(
-                              font: GoogleFonts.pressStart2p(
-                                fontWeight: FontWeight.w700,
-                              ),
-                              fontSize: 21,
-                              color: const Color(0xFFF2D9A0),
-                              letterSpacing: .5,
+                            style: GoogleFonts.cinzelDecorative(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
+                              color: const Color(0xFFFFE7A4),
+                              shadows: const [
+                                Shadow(
+                                  color: Color(0xFF5A3419),
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Your class, gear, relics, and hard-earned collection.',
-                            style: theme.bodyMedium.override(
-                              font: GoogleFonts.inter(
-                                fontWeight: FontWeight.w600,
-                              ),
-                              color: const Color(0xFFB7C4D4),
-                              letterSpacing: 0,
+                            'Character • equipment • relics • collection',
+                            style: GoogleFonts.libreBaskerville(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFFB9D8EA),
                             ),
                           ),
                         ],
@@ -409,70 +410,142 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 ),
                 const SizedBox(height: 14),
                 QuestwellRetroPanel(
-                  padding: const EdgeInsets.all(16),
-                  accent: const Color(0xFF8E6B35),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: Stack(
-                          children: [
-                            QuestwellEquippedAvatar(
-                              archetype: data.profile.adventurerArchetype,
-                              height: 220,
-                              showRelic: masteryOwned,
-                              equippedSlugs: {
-                                for (final item in equipped)
-                                  item.category: item.slug,
-                              },
+                  padding: EdgeInsets.zero,
+                  accent: const Color(0xFFD6A84B),
+                  background: const Color(0xFF0B1320),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final compact = constraints.maxWidth < 520;
+                      final avatar = QuestwellEquippedAvatar(
+                        archetype: data.profile.adventurerArchetype,
+                        height: compact ? 286 : 330,
+                        showRelic: masteryOwned,
+                        equippedSlugs: {
+                          for (final item in equipped)
+                            item.category: item.slug,
+                        },
+                      );
+                      final dossier = Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: const BoxDecoration(
+                          color: Color(0xE6121822),
+                          border: Border(
+                            left: BorderSide(
+                              color: Color(0xFF6A4C2C),
+                              width: 2,
                             ),
-                            if (equipped.isNotEmpty)
-                              Positioned(
-                                right: 10,
-                                top: 10,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 9,
-                                    vertical: 5,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'LEVEL ${data.profile.level}',
+                              style: GoogleFonts.cinzelDecorative(
+                                fontSize: 19,
+                                fontWeight: FontWeight.w900,
+                                color: const Color(0xFFFFE7A4),
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              _archetypeLabel(
+                                data.profile.adventurerArchetype,
+                              ).toUpperCase(),
+                              style: GoogleFonts.libreBaskerville(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: QuestwellPixelPalette.forClass(
+                                  data.profile.adventurerArchetype,
+                                ).last,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            const QuestwellPixelDivider(
+                              accent: Color(0xFF8E6B35),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              '${data.profile.totalXp} XP',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800,
+                                color: const Color(0xFFD7E2EF),
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              '${data.profile.coinBalance} COINS',
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800,
+                                color: const Color(0xFFF1C75B),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              '${equipped.length} / 5 GEAR SLOTS ACTIVE',
+                              style: GoogleFonts.inter(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: .5,
+                                color: const Color(0xFF9FB4C9),
+                              ),
+                            ),
+                            if (masteryOwned) ...[
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  QuestwellRelicPixelArt(
+                                    archetype:
+                                        data.profile.adventurerArchetype,
+                                    size: 36,
                                   ),
-                                  color: const Color(0xDD17151A),
-                                  child: Text(
-                                    '${equipped.length} equipped',
-                                    style: theme.labelSmall.override(
-                                      font: GoogleFonts.inter(
-                                        fontWeight: FontWeight.w700,
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      'MASTERY RELIC BOUND',
+                                      style: GoogleFonts.inter(
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.w900,
+                                        color: const Color(0xFFE6C568),
                                       ),
-                                      color: const Color(0xFFF1C75B),
-                                      letterSpacing: 0,
                                     ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ],
+                        ),
+                      );
+                      if (compact) {
+                        return Column(
+                          children: [
+                            avatar,
+                            Container(
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                    color: Color(0xFF6A4C2C),
+                                    width: 2,
                                   ),
                                 ),
                               ),
+                              child: dossier,
+                            ),
                           ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'LEVEL ${data.profile.level} • ${_archetypeLabel(data.profile.adventurerArchetype).toUpperCase()}',
-                        textAlign: TextAlign.center,
-                        style: theme.titleLarge.override(
-                          font: GoogleFonts.pressStart2p(
-                            fontWeight: FontWeight.w700,
-                          ),
-                          fontSize: 12,
-                          letterSpacing: .3,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        '${data.profile.totalXp} XP • ${data.profile.coinBalance} coins',
-                        style: theme.bodyMedium.override(
-                          font: GoogleFonts.inter(),
-                          color: theme.secondaryText,
-                          letterSpacing: 0,
-                        ),
-                      ),
-                    ],
+                        );
+                      }
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(flex: 7, child: avatar),
+                          Expanded(flex: 4, child: dossier),
+                        ],
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(height: 22),
