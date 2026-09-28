@@ -32,7 +32,7 @@ jobs:
         run: flutter pub get
 
       - name: Build preview
-        run: flutter build web --release --base-href "/questwell-app/"
+        run: flutter build web --release --base-href "/questwell-app/" --pwa-strategy=none
 
       - name: Add SPA fallback
         run: cp build/web/index.html build/web/404.html
