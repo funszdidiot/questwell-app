@@ -821,6 +821,67 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                 ),
               ),
               Positioned(
+                right: compact ? 12 : 16,
+                top: compact ? 12 : 16,
+                child: IgnorePointer(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: compact ? 8 : 10,
+                      vertical: compact ? 6 : 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xD814151A),
+                      border: Border.all(
+                        color: palette.last.withValues(alpha: .88),
+                        width: 2,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x77000000),
+                          offset: Offset(3, 3),
+                          blurRadius: 0,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        QuestwellRelicPixelArt(
+                          archetype: archetype,
+                          size: compact ? 24 : 28,
+                        ),
+                        SizedBox(width: compact ? 6 : 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              archetype.toUpperCase(),
+                              style: GoogleFonts.pressStart2p(
+                                fontSize: compact ? 6 : 7,
+                                color: const Color(0xFFF6E5B8),
+                                height: 1.0,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'GEAR ${equippedSlugs.length}${showRelic ? '  •  MASTERED' : ''}',
+                              style: GoogleFonts.inter(
+                                fontSize: compact ? 7 : 8,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: .5,
+                                color: showRelic
+                                    ? const Color(0xFFFFD978)
+                                    : const Color(0xFF9FB2C5),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
                 left: compact ? 14 : 18,
                 bottom: compact ? 12 : 16,
                 child: IgnorePointer(
@@ -974,6 +1035,32 @@ class _HearthAtmospherePainter extends CustomPainter {
         size.width * .08,
         1,
       ),
+      p,
+    );
+
+    // Foreground silhouettes create parallax depth and help the room read
+    // as a space the Adventurer is standing inside rather than a flat card.
+    p.color = const Color(0xB20B090A);
+    canvas.drawRect(
+      Rect.fromLTWH(0, size.height * .855, size.width * .10, size.height * .145),
+      p,
+    );
+    canvas.drawRect(
+      Rect.fromLTWH(
+        size.width * .91,
+        size.height * .84,
+        size.width * .09,
+        size.height * .16,
+      ),
+      p,
+    );
+    p.color = const Color(0x665A3419);
+    canvas.drawRect(
+      Rect.fromLTWH(size.width * .035, size.height * .82, 3, size.height * .12),
+      p,
+    );
+    canvas.drawRect(
+      Rect.fromLTWH(size.width * .95, size.height * .80, 3, size.height * .14),
       p,
     );
 
