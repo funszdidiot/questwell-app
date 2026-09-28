@@ -42,7 +42,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
       limit: 50,
     );
     _bossFuture = QuestwellBossService.loadBattles();
-    _cosmeticsFuture = QuestwellCosmeticService.loadSnapshot();
+    _cosmeticsFuture = QuestwellCosmeticService.load();
   }
 
   String _bossName(String type) {
