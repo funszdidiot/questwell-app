@@ -2657,6 +2657,14 @@ class _EquippedAvatarPainter extends CustomPainter {
 
   String? get outfit => equippedSlugs['outfit'];
   String? get accessory => equippedSlugs['accessory'];
+  String? get head => equippedSlugs['head'];
+  String? get face => equippedSlugs['face'];
+  String? get neck => equippedSlugs['neck'];
+  String? get chest => equippedSlugs['chest'];
+  String? get hands => equippedSlugs['hands'];
+  String? get legs => equippedSlugs['legs'];
+  String? get feet => equippedSlugs['feet'];
+  String? get back => equippedSlugs['back'];
   String? get familiar => equippedSlugs['familiar'];
   String? get effect => equippedSlugs['effect'];
   String? get room => equippedSlugs['room'];
@@ -2768,7 +2776,7 @@ class _EquippedAvatarPainter extends CustomPainter {
     pr(35, 112, 36, 3, const Color(0x44000000));
 
     // Back equipment/cloak layer.
-    final outfitSlug = outfit ?? '';
+    final outfitSlug = chest ?? outfit ?? '';
     if (outfitSlug.contains('moss-green-cloak') ||
         outfitSlug.contains('hearthguard-mantle')) {
       final cloakColor = outfitSlug.contains('hearthguard')
@@ -2794,12 +2802,14 @@ class _EquippedAvatarPainter extends CustomPainter {
     pr(57, 76, 8, 25, suitShadow);
 
     // Boots, with class/exclusive boot override.
-    final bootColor = outfitSlug.contains('pathfinder-boots')
-        ? const Color(0xFF6B4229)
-        : boot;
-    final bootHi = outfitSlug.contains('pathfinder-boots')
-        ? const Color(0xFFA87843)
-        : const Color(0xFF41302A);
+    final feetSlug = feet ?? '';
+    final legacyBoots = outfitSlug.contains('pathfinder-boots');
+    final pathfinderBoots =
+        feetSlug.contains('pathfinder-boots') || legacyBoots;
+    final bootColor =
+        pathfinderBoots ? const Color(0xFF6B4229) : boot;
+    final bootHi =
+        pathfinderBoots ? const Color(0xFFA87843) : const Color(0xFF41302A);
     pr(36, 99, 16, 9, deepest);
     pr(55, 99, 17, 9, deepest);
     pr(38, 98, 13, 7, bootColor);
@@ -2905,53 +2915,104 @@ class _EquippedAvatarPainter extends CustomPainter {
         pr(75, 49, 7, 4, gold);
     }
 
-    // Accessories aligned to the canonical body anchors.
-    final accessorySlug = accessory ?? '';
-    if (accessorySlug.contains('round-scholar-glasses')) {
+    // Modular equipment layers aligned to the canonical body anchors.
+    // Each slot can coexist with the others so users can equip/unequip
+    // individual pieces without baking them into the base character.
+    final legacyAccessory = accessory ?? '';
+    final faceSlug = face ?? legacyAccessory;
+    final headSlug = head ?? legacyAccessory;
+    final neckSlug = neck ?? '';
+    final backSlug = back ?? legacyAccessory;
+    final handsSlug = hands ?? legacyAccessory;
+
+    if (faceSlug.contains('round-scholar-glasses')) {
       p.style = PaintingStyle.stroke;
       p.strokeWidth = math.max(2.0, unit * 1.5);
-      p.color = const Color(0xFFD5B05A);
-      canvas.drawRect(Rect.fromLTWH(ox + 41 * unit, oy + 29 * unit, 10 * unit, 8 * unit), p);
-      canvas.drawRect(Rect.fromLTWH(ox + 56 * unit, oy + 29 * unit, 10 * unit, 8 * unit), p);
-      canvas.drawLine(Offset(ox + 51 * unit, oy + 33 * unit),
-          Offset(ox + 56 * unit, oy + 33 * unit), p);
+      p.color = const Color(0xFF24272D);
+      canvas.drawRect(
+        Rect.fromLTWH(ox + 41 * unit, oy + 29 * unit, 10 * unit, 8 * unit),
+        p,
+      );
+      canvas.drawRect(
+        Rect.fromLTWH(ox + 56 * unit, oy + 29 * unit, 10 * unit, 8 * unit),
+        p,
+      );
+      canvas.drawLine(
+        Offset(ox + 51 * unit, oy + 33 * unit),
+        Offset(ox + 56 * unit, oy + 33 * unit),
+        p,
+      );
+      canvas.drawLine(
+        Offset(ox + 40 * unit, oy + 31 * unit),
+        Offset(ox + 36 * unit, oy + 29 * unit),
+        p,
+      );
+      canvas.drawLine(
+        Offset(ox + 66 * unit, oy + 31 * unit),
+        Offset(ox + 70 * unit, oy + 29 * unit),
+        p,
+      );
       p.style = PaintingStyle.fill;
-      pr(43, 31, 6, 2, const Color(0xFF9CD9EE).withValues(alpha: .8));
-      pr(58, 31, 6, 2, const Color(0xFF9CD9EE).withValues(alpha: .8));
-    } else if (accessorySlug.contains('tiny-wizard-hat')) {
+      pr(43, 31, 6, 2, const Color(0xFF8796A3).withValues(alpha: .42));
+      pr(58, 31, 6, 2, const Color(0xFF8796A3).withValues(alpha: .42));
+    }
+
+    if (headSlug.contains('tiny-wizard-hat')) {
       pr(35, 12, 37, 5, const Color(0xFF2C1B38));
       pr(42, 3, 23, 12, const Color(0xFF5E3A7D));
       pr(50, 2, 8, 5, const Color(0xFF7851A1));
       pr(53, 5, 4, 4, gold);
-    } else if (accessorySlug.contains('satchel')) {
+    }
+
+    if (neckSlug.contains('emerald-scholar-scarf')) {
+      pr(34, 43, 38, 7, const Color(0xFF173C34));
+      pr(37, 44, 31, 5, const Color(0xFF2B6755));
+      pr(62, 47, 9, 28, const Color(0xFF1E5144));
+      pr(64, 49, 5, 23, const Color(0xFF3C7C65));
+      pr(64, 69, 7, 3, const Color(0xFFD6A84B));
+      pr(65, 73, 2, 5, const Color(0xFFD6A84B));
+      pr(69, 73, 2, 5, const Color(0xFFD6A84B));
+    }
+
+    if (backSlug.contains('satchel')) {
       p.style = PaintingStyle.stroke;
       p.strokeWidth = math.max(2.0, unit * 2);
-      p.color = gold;
+      p.color = const Color(0xFF4A2B1C);
       canvas.drawLine(
-        Offset(ox + 37 * unit, oy + 48 * unit),
-        Offset(ox + 67 * unit, oy + 83 * unit),
+        Offset(ox + 36 * unit, oy + 47 * unit),
+        Offset(ox + 67 * unit, oy + 84 * unit),
         p,
       );
       p.style = PaintingStyle.fill;
-      pr(62, 72, 19, 19, leather);
-      pr(65, 75, 13, 4, leatherHi);
-      pr(69, 81, 5, 4, gold);
-    } else if (accessorySlug.contains('grimoire')) {
+      pr(62, 72, 20, 20, const Color(0xFF6A3C24));
+      pr(64, 74, 16, 5, const Color(0xFF9A6035));
+      pr(68, 80, 6, 5, gold);
+      pr(65, 87, 14, 3, const Color(0xFF3B2419));
+    }
+
+    if (handsSlug.contains('grimoire')) {
       pr(73, 62, 20, 23, const Color(0xFF512467));
       pr(76, 65, 3, 17, gold);
       pr(82, 67, 8, 2, paper);
       pr(82, 72, 7, 2, paper);
       pr(82, 77, 6, 2, paper);
-    } else if (accessorySlug.contains('compass')) {
+    } else if (handsSlug.contains('compass')) {
       p.style = PaintingStyle.stroke;
       p.strokeWidth = math.max(2.0, unit * 1.4);
       p.color = gold;
-      canvas.drawCircle(Offset(ox + 54 * unit, oy + 65 * unit), 6 * unit, p);
-      canvas.drawLine(Offset(ox + 54 * unit, oy + 60 * unit),
-          Offset(ox + 57 * unit, oy + 68 * unit), p);
+      canvas.drawCircle(
+        Offset(ox + 54 * unit, oy + 65 * unit),
+        6 * unit,
+        p,
+      );
+      canvas.drawLine(
+        Offset(ox + 54 * unit, oy + 60 * unit),
+        Offset(ox + 57 * unit, oy + 68 * unit),
+        p,
+      );
       p.style = PaintingStyle.fill;
-    } else if (accessorySlug.contains('phial') ||
-        accessorySlug.contains('tonic')) {
+    } else if (handsSlug.contains('phial') ||
+        handsSlug.contains('tonic')) {
       pr(74, 63, 6, 13, const Color(0xFFB9EAF3));
       pr(72, 75, 10, 8, const Color(0xFF48C96A));
       pr(75, 76, 4, 3, const Color(0xFFD2FFDB));
