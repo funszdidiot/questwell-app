@@ -649,46 +649,114 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                   ),
                 ),
                 const SizedBox(height: 22),
-                Text(
-                  'EQUIPPED GEAR',
-                  style: theme.titleLarge.override(
-                    font: GoogleFonts.pressStart2p(
-                      fontWeight: FontWeight.w700,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'EQUIPPED GEAR',
+                        style: theme.titleLarge.override(
+                          font: GoogleFonts.pressStart2p(
+                            fontWeight: FontWeight.w700,
+                          ),
+                          fontSize: 12,
+                          color: const Color(0xFFF2D9A0),
+                          letterSpacing: .3,
+                        ),
+                      ),
                     ),
-                    fontSize: 12,
-                    color: const Color(0xFFF2D9A0),
-                    letterSpacing: .3,
-                  ),
+                    Text(
+                      '${equipped.length} / 5 SLOTS',
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFFD6A84B),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
-                if (equipped.isEmpty)
-                  _EmptyPanel(
-                    text: 'Nothing equipped yet. Visit The Market and claim your first look.',
-                  )
-                else
-                  Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: equipped
-                        .map(
-                          (item) => _EquippedChip(
-                            icon: _iconForCategory(item.category),
-                            label: item.name,
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final columns = constraints.maxWidth >= 820
+                        ? 5
+                        : constraints.maxWidth >= 520
+                            ? 3
+                            : 2;
+                    final width =
+                        (constraints.maxWidth - ((columns - 1) * 8)) / columns;
+                    final slots = <Map<String, String>>[
+                      {'label': 'OUTFIT', 'category': 'outfit'},
+                      {'label': 'ACCESSORY', 'category': 'accessory'},
+                      {'label': 'FAMILIAR', 'category': 'familiar'},
+                      {'label': 'ROOM', 'category': 'room'},
+                      {'label': 'EFFECT', 'category': 'effect'},
+                    ];
+                    return Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        for (final slot in slots)
+                          SizedBox(
+                            width: width,
+                            child: _GearSlotCard(
+                              label: slot['label']!,
+                              cosmetic: equipped
+                                  .where(
+                                    (item) =>
+                                        item.category == slot['category'],
+                                  )
+                                  .cast<QuestwellCosmetic?>()
+                                  .firstWhere(
+                                    (item) => item != null,
+                                    orElse: () => null,
+                                  ),
+                              archetype:
+                                  data.profile.adventurerArchetype,
+                              onUnequip: (item) => _unequip(item),
+                            ),
                           ),
-                        )
-                        .toList(),
-                  ),
+                      ],
+                    );
+                  },
+                ),
                 const SizedBox(height: 24),
-                Text(
-                  'INVENTORY',
-                  style: theme.titleLarge.override(
-                    font: GoogleFonts.pressStart2p(
-                      fontWeight: FontWeight.w700,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'BACKPACK',
+                        style: theme.titleLarge.override(
+                          font: GoogleFonts.pressStart2p(
+                            fontWeight: FontWeight.w700,
+                          ),
+                          fontSize: 12,
+                          color: const Color(0xFFF2D9A0),
+                          letterSpacing: .3,
+                        ),
+                      ),
                     ),
-                    fontSize: 12,
-                    color: const Color(0xFFF2D9A0),
-                    letterSpacing: .3,
-                  ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF141820),
+                        border: Border.all(
+                          color: const Color(0xFF8E6B35),
+                          width: 2,
+                        ),
+                      ),
+                      child: Text(
+                        '${owned.length} ITEMS',
+                        style: GoogleFonts.inter(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFFF2D9A0),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 6),
                 Text(
@@ -702,112 +770,43 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 const SizedBox(height: 12),
                 if (owned.isEmpty)
                   _EmptyPanel(
-                    text: 'Your pack is empty. Finish quests, earn coins, and unlock your first cosmetic.',
+                    text:
+                        'Your pack is empty. Finish quests, earn coins, and unlock your first cosmetic.',
                   )
                 else
-                  ...owned.map(
-                    (item) => Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: QuestwellParchmentPanel(
-                        padding: const EdgeInsets.all(14),
-                        selected: item.equipped,
-                        child: Row(
-                          children: [
-                            QuestwellItemPixelArt(
-                              slug: item.slug,
-                              category: item.category,
-                              archetype: item.requiredArchetype,
-                              size: 54,
-                              locked: _classLocked(
-                                item,
-                                data.profile.adventurerArchetype,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.name,
-                                    style: theme.titleSmall.override(
-                                      font: GoogleFonts.interTight(
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                      color: const Color(0xFF30261D),
-                                      letterSpacing: 0,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Wrap(
-                                    spacing: 8,
-                                    runSpacing: 6,
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
-                                    children: [
-                                      QuestwellRarityPixelBadge(
-                                        rarity: item.rarity,
-                                        compact: true,
-                                      ),
-                                      Text(
-                                        item.category.toUpperCase(),
-                                        style: theme.labelSmall.override(
-                                          font: GoogleFonts.inter(
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          color: const Color(0xFF67543E),
-                                          letterSpacing: .7,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  if (item.requiredArchetype != null) ...[
-                                    const SizedBox(height: 3),
-                                    Text(
-                                      '${_archetypeLabel(item.requiredArchetype!)} only',
-                                      style: theme.labelSmall.override(
-                                        font: GoogleFonts.inter(
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                        color: _classLocked(
-                                          item,
-                                          data.profile.adventurerArchetype,
-                                        )
-                                            ? theme.secondaryText
-                                            : theme.primary,
-                                        letterSpacing: 0,
-                                      ),
-                                    ),
-                                  ],
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            OutlinedButton(
-                              onPressed: _busyCosmeticId == item.id ||
-                                      _classLocked(
-                                        item,
-                                        data.profile.adventurerArchetype,
-                                      )
-                                  ? null
-                                  : item.equipped
-                                      ? () => _unequip(item)
-                                      : () => _equip(item),
-                              child: Text(
-                                _classLocked(
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final columns = constraints.maxWidth >= 900
+                          ? 4
+                          : constraints.maxWidth >= 620
+                              ? 3
+                              : 2;
+                      final width =
+                          (constraints.maxWidth - ((columns - 1) * 10)) /
+                              columns;
+                      return Wrap(
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: [
+                          for (final item in owned)
+                            SizedBox(
+                              width: width,
+                              child: _InventoryTile(
+                                cosmetic: item,
+                                currentArchetype:
+                                    data.profile.adventurerArchetype,
+                                locked: _classLocked(
                                   item,
                                   data.profile.adventurerArchetype,
-                                )
-                                    ? 'Class locked'
-                                    : item.equipped
-                                        ? 'Unequip'
-                                        : 'Equip',
+                                ),
+                                busy: _busyCosmeticId == item.id,
+                                onEquip: () => _equip(item),
+                                onUnequip: () => _unequip(item),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
+                        ],
+                      );
+                    },
                   ),
               ],
             ),
@@ -915,6 +914,216 @@ class _ArchetypeCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _GearSlotCard extends StatelessWidget {
+  const _GearSlotCard({
+    required this.label,
+    required this.cosmetic,
+    required this.archetype,
+    required this.onUnequip,
+  });
+
+  final String label;
+  final QuestwellCosmetic? cosmetic;
+  final String archetype;
+  final ValueChanged<QuestwellCosmetic> onUnequip;
+
+  @override
+  Widget build(BuildContext context) {
+    final item = cosmetic;
+    return QuestwellRetroPanel(
+      padding: const EdgeInsets.all(10),
+      accent: item == null
+          ? const Color(0xFF4B5563)
+          : const Color(0xFFD6A84B),
+      background: const Color(0xFF101923),
+      child: Column(
+        children: [
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.pressStart2p(
+              fontSize: 7,
+              color: const Color(0xFFB7C4D4),
+            ),
+          ),
+          const SizedBox(height: 8),
+          if (item == null)
+            Container(
+              width: 66,
+              height: 66,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: const Color(0xFF0B1320),
+                border: Border.all(
+                  color: const Color(0xFF344054),
+                  width: 2,
+                ),
+              ),
+              child: const Icon(
+                Icons.add,
+                color: Color(0xFF50617A),
+                size: 26,
+              ),
+            )
+          else
+            QuestwellItemPixelArt(
+              slug: item.slug,
+              category: item.category,
+              archetype: item.requiredArchetype ?? archetype,
+              size: 66,
+            ),
+          const SizedBox(height: 8),
+          Text(
+            item?.name ?? 'Empty',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(
+              fontSize: 11,
+              height: 1.15,
+              fontWeight: FontWeight.w700,
+              color: item == null
+                  ? const Color(0xFF718096)
+                  : const Color(0xFFF2D9A0),
+            ),
+          ),
+          if (item != null) ...[
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () => onUnequip(item),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(34),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  side: const BorderSide(
+                    color: Color(0xFF8E6B35),
+                    width: 2,
+                  ),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                ),
+                child: const Text('UNEQUIP'),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _InventoryTile extends StatelessWidget {
+  const _InventoryTile({
+    required this.cosmetic,
+    required this.currentArchetype,
+    required this.locked,
+    required this.busy,
+    required this.onEquip,
+    required this.onUnequip,
+  });
+
+  final QuestwellCosmetic cosmetic;
+  final String currentArchetype;
+  final bool locked;
+  final bool busy;
+  final VoidCallback onEquip;
+  final VoidCallback onUnequip;
+
+  @override
+  Widget build(BuildContext context) {
+    return QuestwellRetroPanel(
+      padding: const EdgeInsets.all(10),
+      accent: cosmetic.equipped
+          ? const Color(0xFFF1C75B)
+          : locked
+              ? const Color(0xFF5B3A3A)
+              : const Color(0xFF8E6B35),
+      background: const Color(0xFF101923),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Center(
+            child: QuestwellItemPixelArt(
+              slug: cosmetic.slug,
+              category: cosmetic.category,
+              archetype: cosmetic.requiredArchetype ?? currentArchetype,
+              size: 78,
+              locked: locked,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            cosmetic.name,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(
+              fontSize: 12,
+              height: 1.15,
+              fontWeight: FontWeight.w800,
+              color: const Color(0xFFF2E7CE),
+            ),
+          ),
+          const SizedBox(height: 7),
+          Center(
+            child: QuestwellRarityPixelBadge(
+              rarity: cosmetic.rarity,
+              compact: true,
+            ),
+          ),
+          if (cosmetic.requiredArchetype != null) ...[
+            const SizedBox(height: 6),
+            Text(
+              locked ? 'CLASS LOCKED' : 'CLASS GEAR',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                fontSize: 9,
+                fontWeight: FontWeight.w800,
+                color: locked
+                    ? const Color(0xFFE87947)
+                    : const Color(0xFF4AA89A),
+              ),
+            ),
+          ],
+          const SizedBox(height: 8),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: busy || locked
+                  ? null
+                  : cosmetic.equipped
+                      ? onUnequip
+                      : onEquip,
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(34),
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                side: BorderSide(
+                  color: cosmetic.equipped
+                      ? const Color(0xFFF1C75B)
+                      : const Color(0xFF526178),
+                  width: 2,
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
+              ),
+              child: Text(
+                locked
+                    ? 'LOCKED'
+                    : cosmetic.equipped
+                        ? 'UNEQUIP'
+                        : 'EQUIP',
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
