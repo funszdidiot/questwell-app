@@ -501,10 +501,14 @@ class QuestwellHearthPixelScene extends StatelessWidget {
     super.key,
     this.height = 170,
     this.archetype = 'wanderer',
+    this.equippedSlugs = const {},
+    this.showRelic = false,
   });
 
   final double height;
   final String archetype;
+  final Map<String, String> equippedSlugs;
+  final bool showRelic;
 
   @override
   Widget build(BuildContext context) {
@@ -514,6 +518,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
         painter: _HearthPainter(
           archetype: archetype,
           palette: QuestwellPixelPalette.forClass(archetype),
+          equippedSlugs: equippedSlugs,
+          showRelic: showRelic,
         ),
       ),
     );
@@ -1237,9 +1243,13 @@ class _HearthPainter extends CustomPainter {
   _HearthPainter({
     required this.archetype,
     required this.palette,
+    required this.equippedSlugs,
+    required this.showRelic,
   });
   final String archetype;
   final List<Color> palette;
+  final Map<String, String> equippedSlugs;
+  final bool showRelic;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -1428,15 +1438,22 @@ class _HearthPainter extends CustomPainter {
     r(size.width * .54, size.height * .802, 7, 7, const Color(0xFFE1B75A));
     r(size.width * .57, size.height * .802, 7, 7, const Color(0xFFE1B75A));
 
-    // Larger, detailed Adventurer sprite.
-    _Pixel64.character(
-      canvas,
-      p,
-      origin: Offset(size.width * .79, size.height * .50),
-      scale: size.height / 205 * 1.72,
-      palette: palette,
-      archetype: archetype,
+    // Live Adventurer is rendered inside the same scene painter so it belongs
+    // to the room instead of looking pasted over a generated background.
+    final avatarSize = Size(size.width * .235, size.height * .50);
+    canvas.save();
+    canvas.translate(
+      size.width * .405,
+      size.height * .315,
     );
+    _EquippedAvatarPainter(
+      archetype: archetype,
+      palette: palette,
+      equippedSlugs: equippedSlugs,
+      showRelic: showRelic,
+      portrait: false,
+    ).paint(canvas, avatarSize);
+    canvas.restore();
 
     // Cat with visible ears, tail, body shading.
     r(size.width * .54, size.height * .80, 34, 9, const Color(0xFF9E5C30));
@@ -1518,7 +1535,9 @@ class _HearthPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _HearthPainter oldDelegate) =>
       oldDelegate.archetype != archetype ||
-      oldDelegate.palette != palette;
+      oldDelegate.palette != palette ||
+      oldDelegate.equippedSlugs != equippedSlugs ||
+      oldDelegate.showRelic != showRelic;
 }
 
 class _NavIconPainter extends CustomPainter {
