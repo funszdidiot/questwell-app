@@ -130,23 +130,10 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
     final theme = FlutterFlowTheme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.primaryBackground,
-      appBar: AppBar(
-        backgroundColor: theme.primaryBackground,
-        elevation: 0,
-        foregroundColor: theme.primaryText,
-        title: Text(
-          'THE MARKET',
-          style: theme.titleLarge.override(
-            font: GoogleFonts.pressStart2p(
-              fontWeight: FontWeight.w700,
-            ),
-            fontSize: 14,
-            letterSpacing: .4,
-          ),
-        ),
-      ),
-      body: FutureBuilder<QuestwellCosmeticsSnapshot>(
+      backgroundColor: const Color(0xFF111827),
+      body: SafeArea(
+        top: true,
+        child: FutureBuilder<QuestwellCosmeticsSnapshot>(
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -211,11 +198,65 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
               await _future;
             },
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
+              padding: const EdgeInsets.fromLTRB(18, 16, 18, 30),
               children: [
+                Row(
+                  children: [
+                    QuestwellTopActionButton(
+                      kind: 'back',
+                      tooltip: 'Back to the Hearth',
+                      onTap: () => Navigator.of(context).maybePop(),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'THE MARKET',
+                            style: theme.headlineMedium.override(
+                              font: GoogleFonts.pressStart2p(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              fontSize: 21,
+                              color: const Color(0xFFF2D9A0),
+                              letterSpacing: .5,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Rare finds, class gear, and questionable fashion choices.',
+                            style: theme.bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                              ),
+                              color: const Color(0xFFB7C4D4),
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const QuestwellNavPixelIcon(
+                      kind: 'market',
+                      size: 36,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                const QuestwellPixelDivider(
+                  accent: Color(0xFFD6A84B),
+                ),
+                const SizedBox(height: 14),
+                QuestwellMarketPixelScene(
+                  archetype: data.profile.adventurerArchetype,
+                  height: 205,
+                ),
+                const SizedBox(height: 14),
                 QuestwellRetroPanel(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(14),
                   accent: const Color(0xFFF1C75B),
+                  background: const Color(0xFF17151A),
                   child: Row(
                     children: [
                       const QuestwellCurrencyPixelIcon(
@@ -251,12 +292,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                QuestwellMarketPixelScene(
-                  archetype: data.profile.adventurerArchetype,
-                  height: 145,
-                ),
-                const SizedBox(height: 14),
+                const SizedBox(height: 22),
                 Text(
                   '${_archetypeLabel(data.profile.adventurerArchetype).toUpperCase()} COLLECTION',
                   style: theme.titleLarge.override(
@@ -277,19 +313,33 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                   ),
                 ),
                 const SizedBox(height: 14),
-                ...currentClassItems.map(
-                  (cosmetic) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _MarketCard(
-                      cosmetic: cosmetic,
-                      currentArchetype: data.profile.adventurerArchetype,
-                      busy: _busyCosmeticId == cosmetic.id,
-                      icon: _iconForCategory(cosmetic.category),
-                      onPurchase: () => _purchase(cosmetic),
-                      onEquip: () => _equip(cosmetic),
-                      onUnequip: () => _unequip(cosmetic),
-                    ),
-                  ),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final wide = constraints.maxWidth >= 760;
+                    final itemWidth = wide
+                        ? (constraints.maxWidth - 12) / 2
+                        : constraints.maxWidth;
+                    return Wrap(
+                      spacing: 12,
+                      runSpacing: 12,
+                      children: [
+                        for (final cosmetic in currentClassItems)
+                          SizedBox(
+                            width: itemWidth,
+                            child: _MarketCard(
+                              cosmetic: cosmetic,
+                              currentArchetype:
+                                  data.profile.adventurerArchetype,
+                              busy: _busyCosmeticId == cosmetic.id,
+                              icon: _iconForCategory(cosmetic.category),
+                              onPurchase: () => _purchase(cosmetic),
+                              onEquip: () => _equip(cosmetic),
+                              onUnequip: () => _unequip(cosmetic),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -312,19 +362,33 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                   ),
                 ),
                 const SizedBox(height: 14),
-                ...generalItems.map(
-                  (cosmetic) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _MarketCard(
-                      cosmetic: cosmetic,
-                      currentArchetype: data.profile.adventurerArchetype,
-                      busy: _busyCosmeticId == cosmetic.id,
-                      icon: _iconForCategory(cosmetic.category),
-                      onPurchase: () => _purchase(cosmetic),
-                      onEquip: () => _equip(cosmetic),
-                      onUnequip: () => _unequip(cosmetic),
-                    ),
-                  ),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final wide = constraints.maxWidth >= 760;
+                    final itemWidth = wide
+                        ? (constraints.maxWidth - 12) / 2
+                        : constraints.maxWidth;
+                    return Wrap(
+                      spacing: 12,
+                      runSpacing: 12,
+                      children: [
+                        for (final cosmetic in generalItems)
+                          SizedBox(
+                            width: itemWidth,
+                            child: _MarketCard(
+                              cosmetic: cosmetic,
+                              currentArchetype:
+                                  data.profile.adventurerArchetype,
+                              busy: _busyCosmeticId == cosmetic.id,
+                              icon: _iconForCategory(cosmetic.category),
+                              onPurchase: () => _purchase(cosmetic),
+                              onEquip: () => _equip(cosmetic),
+                              onUnequip: () => _unequip(cosmetic),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 ),
                 if (otherClassItems.isNotEmpty) ...[
                   const SizedBox(height: 10),
@@ -348,25 +412,40 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                     ),
                   ),
                   const SizedBox(height: 14),
-                  ...otherClassItems.map(
-                    (cosmetic) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: _MarketCard(
-                        cosmetic: cosmetic,
-                        currentArchetype: data.profile.adventurerArchetype,
-                        busy: _busyCosmeticId == cosmetic.id,
-                        icon: _iconForCategory(cosmetic.category),
-                        onPurchase: () => _purchase(cosmetic),
-                        onEquip: () => _equip(cosmetic),
-                        onUnequip: () => _unequip(cosmetic),
-                      ),
-                    ),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final wide = constraints.maxWidth >= 760;
+                      final itemWidth = wide
+                          ? (constraints.maxWidth - 12) / 2
+                          : constraints.maxWidth;
+                      return Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: [
+                          for (final cosmetic in otherClassItems)
+                            SizedBox(
+                              width: itemWidth,
+                              child: _MarketCard(
+                                cosmetic: cosmetic,
+                                currentArchetype:
+                                    data.profile.adventurerArchetype,
+                                busy: _busyCosmeticId == cosmetic.id,
+                                icon: _iconForCategory(cosmetic.category),
+                                onPurchase: () => _purchase(cosmetic),
+                                onEquip: () => _equip(cosmetic),
+                                onUnequip: () => _unequip(cosmetic),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
                   ),
                 ],
               ],
             ),
           );
         },
+      ),
       ),
     );
   }
@@ -421,7 +500,7 @@ class _MarketCard extends StatelessWidget {
     final theme = FlutterFlowTheme.of(context);
 
     return QuestwellRetroPanel(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       accent: classLocked
           ? const Color(0xFF5A5B62)
           : cosmetic.equipped
@@ -431,12 +510,34 @@ class _MarketCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          QuestwellItemPixelArt(
-            slug: cosmetic.slug,
-            category: cosmetic.category,
-            archetype: cosmetic.requiredArchetype,
-            size: 62,
-            locked: classLocked,
+          Container(
+            width: 92,
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0F1824),
+              border: Border.all(
+                color: classLocked
+                    ? const Color(0xFF55565C)
+                    : const Color(0xFF6A4C2C),
+                width: 2,
+              ),
+            ),
+            child: Column(
+              children: [
+                QuestwellItemPixelArt(
+                  slug: cosmetic.slug,
+                  category: cosmetic.category,
+                  archetype: cosmetic.requiredArchetype,
+                  size: 72,
+                  locked: classLocked,
+                ),
+                const SizedBox(height: 6),
+                QuestwellRarityPixelBadge(
+                  rarity: cosmetic.rarity,
+                  compact: true,
+                ),
+              ],
+            ),
           ),
           const SizedBox(width: 14),
           Expanded(
@@ -459,10 +560,6 @@ class _MarketCard extends StatelessWidget {
                   runSpacing: 6,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    QuestwellRarityPixelBadge(
-                      rarity: cosmetic.rarity,
-                      compact: true,
-                    ),
                     Text(
                       cosmetic.category.toUpperCase(),
                       style: theme.labelSmall.override(
