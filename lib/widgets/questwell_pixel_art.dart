@@ -5,6 +5,7 @@ import '/generated_art/adventurer_base_data.dart';
 import '/generated_art/adventurer_glasses_data.dart';
 import '/generated_art/adventurer_scarf_data.dart';
 import '/generated_art/adventurer_satchel_data.dart';
+import '/generated_art/hearth_environment_data.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class QuestwellPixelPalette {
@@ -635,14 +636,12 @@ class QuestwellHearthPixelScene extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               Positioned.fill(
-                child: CustomPaint(
-                  painter: _HearthPainter(
-                    archetype: archetype,
-                    palette: palette,
-                    equippedSlugs: const {},
-                    showRelic: false,
-                    renderAvatar: false,
-                  ),
+                child: Image.memory(
+                  base64Decode(questwellHearthEnvironmentBase64),
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  filterQuality: FilterQuality.medium,
+                  gaplessPlayback: true,
                 ),
               ),
               Positioned.fill(
@@ -1129,14 +1128,38 @@ class QuestwellEquippedAvatar extends StatelessWidget {
     return QuestwellPixelFrame(
       height: height,
       background: palette.first,
-      child: CustomPaint(
-        painter: _EquippedAvatarPainter(
-          archetype: archetype,
-          palette: palette,
-          equippedSlugs: equippedSlugs,
-          showRelic: showRelic,
-          portrait: true,
-        ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          const DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF162437),
+                  Color(0xFF101923),
+                  Color(0xFF241914),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+            child: QuestwellLayeredAdventurerArt(
+              equippedSlugs: equippedSlugs,
+            ),
+          ),
+          if (showRelic)
+            Positioned(
+              left: 12,
+              top: 12,
+              child: QuestwellRelicPixelArt(
+                archetype: archetype,
+                size: 46,
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -1161,14 +1184,8 @@ class QuestwellEquippedAvatarSprite extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: CustomPaint(
-        painter: _EquippedAvatarPainter(
-          archetype: archetype,
-          palette: QuestwellPixelPalette.forClass(archetype),
-          equippedSlugs: equippedSlugs,
-          showRelic: false,
-          portrait: false,
-        ),
+      child: QuestwellLayeredAdventurerArt(
+        equippedSlugs: equippedSlugs,
       ),
     );
   }
@@ -1217,6 +1234,38 @@ class QuestwellItemPixelArt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = QuestwellPixelPalette.forClass(archetype ?? 'wanderer');
+    String? encoded;
+    if (slug.contains('round-scholar-glasses')) {
+      encoded = questwellAdventurerGlassesBase64;
+    } else if (slug.contains('emerald-scholar-scarf')) {
+      encoded = questwellAdventurerScarfBase64;
+    } else if (slug.contains('satchel')) {
+      encoded = questwellAdventurerSatchelBase64;
+    }
+
+    if (encoded != null) {
+      return SizedBox.square(
+        dimension: size,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Container(color: const Color(0xFF17151A)),
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: Image.memory(
+                base64Decode(encoded),
+                fit: BoxFit.contain,
+                filterQuality: FilterQuality.medium,
+                gaplessPlayback: true,
+              ),
+            ),
+            if (locked)
+              Container(color: const Color(0x99000000)),
+          ],
+        ),
+      );
+    }
+
     return SizedBox.square(
       dimension: size,
       child: CustomPaint(
