@@ -438,14 +438,26 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   accent: Color(0xFFD6A84B),
                 ),
                 const SizedBox(height: 12),
-                FutureBuilder<QuestwellCosmeticsSnapshot>(
-                  future: _homeSnapshotFuture,
-                  builder: (context, snapshot) {
-                    final compact = MediaQuery.sizeOf(context).width < 430;
-                    return QuestwellHearthPixelScene(
-                      height: compact ? 270 : 310,
-                      archetype:
-                          snapshot.data?.profile.adventurerArchetype ?? 'wanderer',
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final compact = constraints.maxWidth < 430;
+                    return QuestwellRetroPanel(
+                      padding: EdgeInsets.zero,
+                      accent: const Color(0xFFD6A84B),
+                      background: const Color(0xFF0B1320),
+                      child: ClipRect(
+                        child: SizedBox(
+                          height: compact ? 245 : 300,
+                          width: double.infinity,
+                          child: Image.asset(
+                            'assets/images/hearth_64_scene.png',
+                            fit: BoxFit.cover,
+                            alignment: Alignment.center,
+                            filterQuality: FilterQuality.none,
+                            gaplessPlayback: true,
+                          ),
+                        ),
+                      ),
                     );
                   },
                 ),
