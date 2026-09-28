@@ -251,14 +251,29 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
 
   IconData _iconForCategory(String category) {
     switch (category) {
+      case 'head':
+        return Icons.face_retouching_natural;
+      case 'face':
+        return Icons.visibility_outlined;
+      case 'neck':
+        return Icons.style_outlined;
+      case 'chest':
+      case 'outfit':
+        return Icons.checkroom_outlined;
+      case 'hands':
+        return Icons.pan_tool_alt_outlined;
+      case 'legs':
+        return Icons.airline_seat_legroom_normal_outlined;
+      case 'feet':
+        return Icons.hiking_outlined;
+      case 'back':
+        return Icons.backpack_outlined;
       case 'familiar':
         return Icons.pets_outlined;
       case 'room':
         return Icons.chair_outlined;
       case 'effect':
         return Icons.auto_awesome_outlined;
-      case 'outfit':
-        return Icons.checkroom_outlined;
       default:
         return Icons.workspace_premium_outlined;
     }
@@ -762,8 +777,14 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                     final width =
                         (constraints.maxWidth - ((columns - 1) * 8)) / columns;
                     final slots = <Map<String, String>>[
-                      {'label': 'OUTFIT', 'category': 'outfit'},
-                      {'label': 'ACCESSORY', 'category': 'accessory'},
+                      {'label': 'HEAD', 'category': 'head'},
+                      {'label': 'FACE', 'category': 'face'},
+                      {'label': 'NECK', 'category': 'neck'},
+                      {'label': 'CHEST', 'category': 'chest'},
+                      {'label': 'HANDS', 'category': 'hands'},
+                      {'label': 'LEGS', 'category': 'legs'},
+                      {'label': 'FEET', 'category': 'feet'},
+                      {'label': 'BACK', 'category': 'back'},
                       {'label': 'FAMILIAR', 'category': 'familiar'},
                       {'label': 'ROOM', 'category': 'room'},
                       {'label': 'EFFECT', 'category': 'effect'},
