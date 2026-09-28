@@ -1,10 +1,6 @@
 import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import '/generated_art/adventurer_base_data.dart';
-import '/generated_art/adventurer_glasses_data.dart';
-import '/generated_art/adventurer_scarf_data.dart';
-import '/generated_art/adventurer_satchel_data.dart';
 import '/generated_art/hearth_environment_data.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -31,43 +27,87 @@ class QuestwellPixelPalette {
 class QuestwellLayeredAdventurerArt extends StatelessWidget {
   const QuestwellLayeredAdventurerArt({
     super.key,
+    required this.archetype,
     required this.equippedSlugs,
-    this.fit = BoxFit.contain,
+    this.showRelic = false,
   });
 
+  static const _baseAsset =
+      'assets/images/questwell/avatar/adventurer_base.webp';
+  static const _glassesAsset =
+      'assets/images/questwell/avatar/glasses_round_dark.webp';
+  static const _scarfAsset =
+      'assets/images/questwell/avatar/scarf_emerald.webp';
+  static const _satchelAsset =
+      'assets/images/questwell/avatar/satchel_leather.webp';
+
+  final String archetype;
   final Map<String, String> equippedSlugs;
-  final BoxFit fit;
+  final bool showRelic;
 
-  bool _has(String slot, String fragment) =>
-      (equippedSlugs[slot] ?? '').contains(fragment);
+  bool _hasAny(Iterable<String> slugs) =>
+      equippedSlugs.values.any((value) => slugs.contains(value));
 
-  Widget _layer(String encoded) => Positioned.fill(
-        child: Image.memory(
-          base64Decode(encoded),
-          fit: fit,
-          alignment: Alignment.bottomCenter,
-          filterQuality: FilterQuality.medium,
-          gaplessPlayback: true,
-        ),
-      );
+  Widget _assetLayer(
+    String asset, {
+    required Widget Function() fallback,
+  }) {
+    return Positioned.fill(
+      child: Image.asset(
+        asset,
+        fit: BoxFit.contain,
+        alignment: Alignment.center,
+        filterQuality: FilterQuality.none,
+        gaplessPlayback: true,
+        errorBuilder: (_, __, ___) => fallback(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final glasses = _has('face', 'round-scholar-glasses') ||
-        _has('accessory', 'round-scholar-glasses');
-    final scarf = _has('neck', 'emerald-scholar-scarf');
-    final satchel = _has('back', 'satchel') ||
-        _has('accessory', 'satchel');
+    final hasGlasses = _hasAny(const [
+      'round-scholar-glasses',
+    ]);
+    final hasScarf = _hasAny(const [
+      'emerald-scholar-scarf',
+    ]);
+    final hasSatchel = _hasAny(const [
+      'leather-satchel',
+      'wayfarer-satchel',
+    ]);
 
     return RepaintBoundary(
       child: Stack(
         fit: StackFit.expand,
-        clipBehavior: Clip.none,
         children: [
-          _layer(questwellAdventurerBaseBase64),
-          if (scarf) _layer(questwellAdventurerScarfBase64),
-          if (satchel) _layer(questwellAdventurerSatchelBase64),
-          if (glasses) _layer(questwellAdventurerGlassesBase64),
+          _assetLayer(
+            _baseAsset,
+            fallback: () => CustomPaint(
+              painter: _EquippedAvatarPainter(
+                archetype: archetype,
+                palette: QuestwellPixelPalette.forClass(archetype),
+                equippedSlugs: equippedSlugs,
+                showRelic: showRelic,
+                portrait: false,
+              ),
+            ),
+          ),
+          if (hasScarf)
+            _assetLayer(
+              _scarfAsset,
+              fallback: () => const SizedBox.shrink(),
+            ),
+          if (hasSatchel)
+            _assetLayer(
+              _satchelAsset,
+              fallback: () => const SizedBox.shrink(),
+            ),
+          if (hasGlasses)
+            _assetLayer(
+              _glassesAsset,
+              fallback: () => const SizedBox.shrink(),
+            ),
         ],
       ),
     );
@@ -680,6 +720,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       ),
                     ),
                     QuestwellLayeredAdventurerArt(
+                      archetype: archetype,
                       equippedSlugs: equippedSlugs,
                     ),
                   ],
@@ -1147,7 +1188,9 @@ class QuestwellEquippedAvatar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
             child: QuestwellLayeredAdventurerArt(
+              archetype: archetype,
               equippedSlugs: equippedSlugs,
+              showRelic: showRelic,
             ),
           ),
           if (showRelic)
@@ -1185,6 +1228,7 @@ class QuestwellEquippedAvatarSprite extends StatelessWidget {
       width: width,
       height: height,
       child: QuestwellLayeredAdventurerArt(
+        archetype: archetype,
         equippedSlugs: equippedSlugs,
       ),
     );
@@ -1231,36 +1275,65 @@ class QuestwellItemPixelArt extends StatelessWidget {
   final double size;
   final bool locked;
 
+  String? get _asset {
+    switch (slug) {
+      case 'round-scholar-glasses':
+        return 'assets/images/questwell/avatar/glasses_round_dark.webp';
+      case 'emerald-scholar-scarf':
+        return 'assets/images/questwell/avatar/scarf_emerald.webp';
+      case 'leather-satchel':
+      case 'wayfarer-satchel':
+        return 'assets/images/questwell/avatar/satchel_leather.webp';
+      default:
+        return null;
+    }
+  }
+
+  Alignment get _alignment {
+    switch (slug) {
+      case 'round-scholar-glasses':
+        return const Alignment(0, -0.72);
+      case 'emerald-scholar-scarf':
+        return const Alignment(0, -0.35);
+      case 'leather-satchel':
+      case 'wayfarer-satchel':
+        return const Alignment(-0.18, 0.05);
+      default:
+        return Alignment.center;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final palette = QuestwellPixelPalette.forClass(archetype ?? 'wanderer');
-    String? encoded;
-    if (slug.contains('round-scholar-glasses')) {
-      encoded = questwellAdventurerGlassesBase64;
-    } else if (slug.contains('emerald-scholar-scarf')) {
-      encoded = questwellAdventurerScarfBase64;
-    } else if (slug.contains('satchel')) {
-      encoded = questwellAdventurerSatchelBase64;
-    }
-
-    if (encoded != null) {
+    final asset = _asset;
+    if (asset != null) {
       return SizedBox.square(
         dimension: size,
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Container(color: const Color(0xFF17151A)),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Image.memory(
-                base64Decode(encoded),
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.medium,
+            ClipRect(
+              child: Image.asset(
+                asset,
+                fit: BoxFit.cover,
+                alignment: _alignment,
+                filterQuality: FilterQuality.none,
                 gaplessPlayback: true,
+                errorBuilder: (_, __, ___) => CustomPaint(
+                  painter: _ItemPainter(
+                    slug: slug,
+                    category: category,
+                    palette: palette,
+                    locked: locked,
+                  ),
+                ),
               ),
             ),
             if (locked)
-              Container(color: const Color(0x99000000)),
+              const DecoratedBox(
+                decoration: BoxDecoration(color: Color(0x66000000)),
+              ),
           ],
         ),
       );
@@ -1279,7 +1352,6 @@ class QuestwellItemPixelArt extends StatelessWidget {
     );
   }
 }
-
 class QuestwellMarketPixelScene extends StatelessWidget {
   const QuestwellMarketPixelScene({
     super.key,
