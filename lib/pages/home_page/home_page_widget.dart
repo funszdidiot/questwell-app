@@ -438,56 +438,33 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   accent: Color(0xFFD6A84B),
                 ),
                 const SizedBox(height: 12),
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    final compact = constraints.maxWidth < 430;
-                    return QuestwellRetroPanel(
-                      padding: EdgeInsets.zero,
-                      accent: const Color(0xFFD6A84B),
-                      background: const Color(0xFF0B1320),
-                      child: ClipRect(
-                        child: SizedBox(
-                          height: compact ? 245 : 300,
-                          width: double.infinity,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Image.asset(
-                                'assets/images/hearth_64_scene.png',
-                                fit: BoxFit.cover,
-                                alignment: Alignment.center,
-                                filterQuality: FilterQuality.none,
-                                gaplessPlayback: true,
-                              ),
-                              FutureBuilder<QuestwellCosmeticsSnapshot>(
-                                future: _homeSnapshotFuture,
-                                builder: (context, snapshot) {
-                                  final data = snapshot.data;
-                                  if (data == null) {
-                                    return const SizedBox.shrink();
-                                  }
-                                  final equipped = data.cosmetics
-                                      .where((item) => item.equipped)
-                                      .toList();
-                                  return Align(
-                                    alignment: const Alignment(.12, .92),
-                                    child: QuestwellEquippedAvatarSprite(
-                                      archetype:
-                                          data.profile.adventurerArchetype,
-                                      equippedSlugs: {
-                                        for (final item in equipped)
-                                          item.category: item.slug,
-                                      },
-                                      width: compact ? 104 : 126,
-                                      height: compact ? 138 : 166,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                FutureBuilder<QuestwellCosmeticsSnapshot>(
+                  future: _homeSnapshotFuture,
+                  builder: (context, snapshot) {
+                    final data = snapshot.data;
+                    final archetype =
+                        data?.profile.adventurerArchetype ?? 'wanderer';
+                    final equipped = data?.cosmetics
+                            .where((item) => item.equipped)
+                            .toList() ??
+                        const <QuestwellCosmetic>[];
+                    final mastered = data?.cosmetics.any(
+                          (item) =>
+                              item.requiredArchetype == archetype &&
+                              item.unlockMethod == 'class_mastery' &&
+                              item.owned,
+                        ) ??
+                        false;
+                    final compact =
+                        MediaQuery.sizeOf(context).width < 430;
+                    return QuestwellHearthPixelScene(
+                      height: compact ? 285 : 330,
+                      archetype: archetype,
+                      showRelic: mastered,
+                      equippedSlugs: {
+                        for (final item in equipped)
+                          item.category: item.slug,
+                      },
                     );
                   },
                 ),
