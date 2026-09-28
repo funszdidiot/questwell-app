@@ -58,6 +58,14 @@ Target:
 - Improve mobile framing
 - Validate visual cohesion against the founder-approved 64-bit benchmark
 
+**Current implementation checkpoint:**
+- Hearth environment moved onto the web-safe Flutter asset pipeline
+- Avatar enlarged and lowered for stronger room integration
+- Ground contact/shadow moved behind the Adventurer
+- Warm environmental light, depth motes, floor glints, and edge vignette added
+- Hearth location plaque integrated into the scene
+- Mobile scene proportions adjusted independently from desktop
+
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
 ## Release gate

@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import '/generated_art/hearth_environment_data.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class QuestwellPixelPalette {
@@ -655,6 +653,9 @@ class QuestwellHearthPixelScene extends StatelessWidget {
     this.showRelic = false,
   });
 
+  static const _environmentAsset =
+      'assets/images/questwell/hearth/hearth_environment.webp';
+
   final double height;
   final String archetype;
   final Map<String, String> equippedSlugs;
@@ -672,16 +673,34 @@ class QuestwellHearthPixelScene extends StatelessWidget {
           final sceneHeight = constraints.maxHeight;
           final compact = sceneWidth < 430;
 
+          final avatarLeft = sceneWidth * (compact ? .33 : .365);
+          final avatarTop = sceneHeight * (compact ? .20 : .17);
+          final avatarWidth = sceneWidth * (compact ? .34 : .30);
+          final avatarHeight = sceneHeight * (compact ? .66 : .68);
+
           return Stack(
             fit: StackFit.expand,
             children: [
               Positioned.fill(
-                child: Image.memory(
-                  base64Decode(questwellHearthEnvironmentBase64),
+                child: Image.asset(
+                  _environmentAsset,
                   fit: BoxFit.cover,
-                  alignment: Alignment.center,
+                  alignment: const Alignment(0, .04),
                   filterQuality: FilterQuality.medium,
                   gaplessPlayback: true,
+                  errorBuilder: (_, __, ___) => const DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF27344A),
+                          Color(0xFF1A1718),
+                          Color(0xFF0E0B0D),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Positioned.fill(
@@ -691,29 +710,73 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        const Color(0x12091524),
+                        const Color(0x260B1630),
                         const Color(0x00101824),
-                        const Color(0x66120D0A),
+                        const Color(0x3A1B1008),
+                        const Color(0x9A0B0808),
                       ],
-                      stops: const [0, .58, 1],
+                      stops: const [0, .34, .70, 1],
                     ),
                   ),
                 ),
               ),
               Positioned(
-                left: sceneWidth * (compact ? .355 : .385),
-                top: sceneHeight * .265,
-                width: sceneWidth * (compact ? .285 : .255),
-                height: sceneHeight * .56,
+                left: sceneWidth * .06,
+                top: sceneHeight * .08,
+                width: sceneWidth * .42,
+                height: sceneHeight * .60,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        center: const Alignment(-.5, -.35),
+                        radius: .95,
+                        colors: [
+                          const Color(0x36FFB84C),
+                          const Color(0x18E87947),
+                          const Color(0x00E87947),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: avatarLeft - sceneWidth * .025,
+                bottom: sceneHeight * .075,
+                width: avatarWidth + sceneWidth * .05,
+                height: sceneHeight * .105,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        radius: .72,
+                        colors: [
+                          const Color(0xB5000000),
+                          const Color(0x52000000),
+                          const Color(0x00000000),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: avatarLeft,
+                top: avatarTop,
+                width: avatarWidth,
+                height: avatarHeight,
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
                     DecoratedBox(
                       decoration: BoxDecoration(
                         gradient: RadialGradient(
+                          center: const Alignment(0, -.15),
                           radius: .72,
                           colors: [
-                            palette.last.withValues(alpha: .18),
+                            palette.last.withValues(alpha: .22),
+                            palette[1].withValues(alpha: .08),
                             const Color(0x00FFFFFF),
                           ],
                         ),
@@ -722,22 +785,67 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                     QuestwellLayeredAdventurerArt(
                       archetype: archetype,
                       equippedSlugs: equippedSlugs,
+                      showRelic: showRelic,
                     ),
                   ],
                 ),
               ),
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: CustomPaint(
+                    painter: _HearthAtmospherePainter(
+                      accent: palette.last,
+                      compact: compact,
+                    ),
+                  ),
+                ),
+              ),
               Positioned(
-                left: sceneWidth * .33,
-                bottom: sceneHeight * .09,
-                width: sceneWidth * .38,
-                height: sceneHeight * .08,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      radius: .72,
-                      colors: [
-                        const Color(0x99000000),
-                        const Color(0x00000000),
+                left: compact ? 14 : 18,
+                bottom: compact ? 12 : 16,
+                child: IgnorePointer(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(
+                      compact ? 9 : 11,
+                      compact ? 7 : 8,
+                      compact ? 9 : 11,
+                      compact ? 6 : 7,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xCC101014),
+                      border: Border.all(
+                        color: const Color(0xFFB58742),
+                        width: 2,
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x77000000),
+                          offset: Offset(3, 3),
+                          blurRadius: 0,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'THE HEARTH',
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: compact ? 8 : 9,
+                            color: const Color(0xFFFFD978),
+                            height: 1.0,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'HOME BASE',
+                          style: GoogleFonts.inter(
+                            fontSize: compact ? 8 : 9,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.2,
+                            color: const Color(0xFFB8C7D8),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -748,7 +856,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: const Color(0x554A2D1B),
+                        color: const Color(0x774A2D1B),
                         width: 1,
                       ),
                     ),
@@ -761,6 +869,111 @@ class QuestwellHearthPixelScene extends StatelessWidget {
       ),
     );
   }
+}
+
+class _HearthAtmospherePainter extends CustomPainter {
+  const _HearthAtmospherePainter({
+    required this.accent,
+    required this.compact,
+  });
+
+  final Color accent;
+  final bool compact;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+
+    // Stepped warm light shafts. Keeping the edges hard preserves the
+    // 64-bit-era visual language rather than adding a modern blur layer.
+    final shaft = Path()
+      ..moveTo(size.width * .03, 0)
+      ..lineTo(size.width * .30, 0)
+      ..lineTo(size.width * .48, size.height)
+      ..lineTo(size.width * .32, size.height)
+      ..close();
+    p.color = const Color(0x0CFFD46B);
+    canvas.drawPath(shaft, p);
+
+    final narrowShaft = Path()
+      ..moveTo(size.width * .58, 0)
+      ..lineTo(size.width * .66, 0)
+      ..lineTo(size.width * .75, size.height * .74)
+      ..lineTo(size.width * .69, size.height * .74)
+      ..close();
+    p.color = accent.withValues(alpha: .035);
+    canvas.drawPath(narrowShaft, p);
+
+    // Sparse dust motes that read as environmental depth without competing
+    // with the Adventurer.
+    final motes = compact
+        ? const [
+            Offset(.17, .24),
+            Offset(.23, .39),
+            Offset(.74, .22),
+            Offset(.80, .43),
+            Offset(.13, .61),
+          ]
+        : const [
+            Offset(.14, .22),
+            Offset(.21, .37),
+            Offset(.28, .28),
+            Offset(.72, .18),
+            Offset(.80, .34),
+            Offset(.86, .51),
+            Offset(.12, .60),
+          ];
+    for (var i = 0; i < motes.length; i++) {
+      final o = motes[i];
+      p.color = i.isEven
+          ? const Color(0x66F6D27A)
+          : const Color(0x3DE87947);
+      final unit = i.isEven ? 2.0 : 1.0;
+      canvas.drawRect(
+        Rect.fromLTWH(size.width * o.dx, size.height * o.dy, unit, unit),
+        p,
+      );
+    }
+
+    // Hard-edged floor glints tie the live character into the room lighting.
+    p.color = accent.withValues(alpha: .12);
+    canvas.drawRect(
+      Rect.fromLTWH(
+        size.width * .42,
+        size.height * .82,
+        size.width * .16,
+        2,
+      ),
+      p,
+    );
+    p.color = const Color(0x24FFD978);
+    canvas.drawRect(
+      Rect.fromLTWH(
+        size.width * .46,
+        size.height * .845,
+        size.width * .08,
+        1,
+      ),
+      p,
+    );
+
+    // Dark edge strips work as a pixel vignette and keep attention on the
+    // Adventurer and the warm room center.
+    p.color = const Color(0x38000000);
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width * .035, size.height), p);
+    canvas.drawRect(
+      Rect.fromLTWH(size.width * .965, 0, size.width * .035, size.height),
+      p,
+    );
+    canvas.drawRect(
+      Rect.fromLTWH(0, size.height * .94, size.width, size.height * .06),
+      p,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _HearthAtmospherePainter oldDelegate) =>
+      oldDelegate.accent != accent || oldDelegate.compact != compact;
 }
 
 class QuestwellParchmentPanel extends StatelessWidget {
