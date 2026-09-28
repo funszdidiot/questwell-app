@@ -101,6 +101,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => AddTaskPageWidget(),
         ),
         FFRoute(
+          name: QuestBoardPageWidget.routeName,
+          path: QuestBoardPageWidget.routePath,
+          builder: (context, params) => QuestBoardPageWidget(),
+        ),
+        FFRoute(
           name: MarketPageWidget.routeName,
           path: MarketPageWidget.routePath,
           builder: (context, params) => MarketPageWidget(),
