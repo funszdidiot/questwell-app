@@ -2317,258 +2317,346 @@ class _EquippedAvatarPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()..isAntiAlias = false;
-    void r(double x, double y, double w, double h, Color c) {
-      p.color = c;
-      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
-    }
+    final unit = math.max(1.0, math.min(size.width / 104, size.height / 132));
+    final stageW = 104 * unit;
+    final stageH = 132 * unit;
+    final ox = (size.width - stageW) / 2;
+    final oy = (size.height - stageH) / 2;
 
-    if (portrait) {
-      _ClassPortraitPainter(
-        archetype: archetype,
-        palette: palette,
-        showRelic: showRelic,
-      ).paint(canvas, size);
-    } else {
-      // Transparent character stage for placement over a richer environment.
-      if (effect != null) {
-        _Pixel64.stepGlow(
-          canvas,
-          p,
-          Offset(size.width * .5, size.height * .48),
-          size.width * .42,
-          palette[1],
-        );
-      }
-      _Pixel64.character(
-        canvas,
+    void pr(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(
+        Rect.fromLTWH(
+          ox + (x * unit).roundToDouble(),
+          oy + (y * unit).roundToDouble(),
+          math.max(unit, (w * unit).roundToDouble()),
+          math.max(unit, (h * unit).roundToDouble()),
+        ),
         p,
-        origin: Offset(size.width * .5, size.height * .31),
-        scale: size.height / 150 * 2.10,
-        palette: palette,
-        archetype: archetype,
       );
     }
 
-    // ROOM cosmetics change the space around the Adventurer.
-    final roomSlug = room ?? '';
-    if (roomSlug.contains('rainy-window')) {
-      r(size.width * .67, size.height * .12, size.width * .23, size.height * .24, const Color(0xFF18324E));
-      r(size.width * .685, size.height * .135, size.width * .20, size.height * .20, const Color(0xFF274D70));
-      for (var i = 0; i < 7; i++) {
-        r(
-          size.width * (.70 + ((i * 19) % 16) / 100),
-          size.height * (.15 + ((i * 17) % 14) / 100),
-          2,
-          size.height * .045,
-          const Color(0xFF83B7D8),
-        );
-      }
-    } else if (roomSlug.contains('lantern')) {
+    void glow(double x, double y, double radius, Color color) {
       _Pixel64.stepGlow(
         canvas,
         p,
-        Offset(size.width * .78, size.height * .43),
-        size.width * .15,
-        const Color(0xFFFFD76A),
+        Offset(ox + x * unit, oy + y * unit),
+        radius * unit,
+        color,
       );
-      r(size.width * .75, size.height * .32, size.width * .06, size.height * .17, const Color(0xFFB47A2B));
-      r(size.width * .765, size.height * .355, size.width * .03, size.height * .09, const Color(0xFFFFE39A));
-    } else if (roomSlug.contains('map')) {
-      r(size.width * .69, size.height * .17, size.width * .20, size.height * .18, const Color(0xFF263E5B));
-      for (var i = 0; i < 7; i++) {
-        r(
-          size.width * (.71 + ((i * 19) % 15) / 100),
-          size.height * (.19 + ((i * 13) % 12) / 100),
-          3,
-          3,
-          const Color(0xFFFFDF78),
-        );
+    }
+
+    final dark = const Color(0xFF111318);
+    final deepest = const Color(0xFF090B10);
+    final skin = const Color(0xFFD89A68);
+    final skinHi = const Color(0xFFF0BD88);
+    final skinShadow = const Color(0xFF9C6345);
+    final hair = const Color(0xFF3B261D);
+    final hairHi = const Color(0xFF70432A);
+    final hairShadow = const Color(0xFF1C1513);
+    final gold = const Color(0xFFD6A84B);
+    final paper = const Color(0xFFE8D7B4);
+    final leather = const Color(0xFF80512F);
+    final leatherHi = const Color(0xFFB57A43);
+    final suit = const Color(0xFF262A35);
+    final suitHi = const Color(0xFF3E4658);
+    final suitShadow = const Color(0xFF171A22);
+    final boot = const Color(0xFF211A18);
+    final teal = const Color(0xFF4AA89A);
+
+    // Portrait mode gets an in-world backdrop; sprite mode stays transparent.
+    if (portrait) {
+      pr(0, 0, 104, 132, const Color(0xFF101923));
+      for (var i = 0; i < 8; i++) {
+        pr(4 + ((i * 17) % 94).toDouble(), 8 + ((i * 29) % 74).toDouble(), 2, 2,
+            palette.last.withValues(alpha: .45));
+      }
+      pr(0, 102, 104, 30, const Color(0xFF2A1D18));
+      pr(0, 101, 104, 2, const Color(0xFF63432C));
+      glow(26, 47, 22, const Color(0xFFE87947));
+      glow(78, 36, 16, palette.last);
+
+      // Small class-room props make the portrait feel like the same world.
+      pr(5, 73, 25, 19, const Color(0xFF4C2F20));
+      pr(8, 76, 19, 3, const Color(0xFF855636));
+      pr(75, 69, 22, 4, const Color(0xFF6B4327));
+      if ((room ?? '').contains('rainy-window')) {
+        pr(68, 10, 29, 31, const Color(0xFF173450));
+        pr(71, 13, 23, 25, const Color(0xFF28547B));
+        for (var i = 0; i < 6; i++) {
+          pr(73 + ((i * 7) % 18).toDouble(), 15 + ((i * 5) % 18).toDouble(), 1, 5,
+              const Color(0xFF9DD6EA));
+        }
+      } else if ((room ?? '').contains('lantern')) {
+        glow(84, 28, 12, const Color(0xFFFFD76A));
+        pr(81, 15, 6, 18, const Color(0xFF9E6A2D));
+        pr(82, 19, 4, 10, const Color(0xFFFFE49A));
+      } else if ((room ?? '').contains('map')) {
+        pr(70, 12, 25, 22, const Color(0xFF263E5B));
+        for (var i = 0; i < 6; i++) {
+          pr(73 + ((i * 11) % 18).toDouble(), 15 + ((i * 7) % 13).toDouble(), 2, 2,
+              const Color(0xFFFFDF78));
+        }
       }
     }
 
-    // EFFECT cosmetics render behind/around the body instead of as an icon.
+    // Effects belong behind the body.
     final effectSlug = effect ?? '';
     if (effectSlug.isNotEmpty) {
       final effectColor = effectSlug.contains('victory-sparkle')
           ? const Color(0xFFFFE07A)
           : effectSlug.contains('seal') || effectSlug.contains('crest')
-          ? const Color(0xFFD9B15F)
-          : palette.last;
-      for (var i = 0; i < 9; i++) {
-        final x = size.width * (.27 + ((i * 17) % 46) / 100);
-        final y = size.height * (.22 + ((i * 23) % 48) / 100);
-        r(x, y, i.isEven ? 4 : 3, i.isEven ? 4 : 3, effectColor.withValues(alpha: .9));
+              ? const Color(0xFFD9B15F)
+              : palette.last;
+      glow(50, 58, 29, effectColor);
+      for (var i = 0; i < 13; i++) {
+        final sx = 21 + ((i * 19) % 59).toDouble();
+        final sy = 20 + ((i * 31) % 71).toDouble();
+        pr(sx, sy, i.isEven ? 2 : 1, i.isEven ? 2 : 1, effectColor);
       }
     }
 
-    // Outfit changes are painted directly onto the character body.
+    // Ground shadow.
+    pr(29, 108, 48, 5, const Color(0x77000000));
+    pr(35, 112, 36, 3, const Color(0x44000000));
+
+    // Back equipment/cloak layer.
     final outfitSlug = outfit ?? '';
-    if (outfitSlug.contains('starter-business-suit')) {
-      // Tailored dark suit with ivory shirt and warm-gold tie.
-      r(size.width * .385, size.height * .39, size.width * .23, size.height * .29, const Color(0xFF23252B));
-      r(size.width * .455, size.height * .405, size.width * .09, size.height * .20, const Color(0xFFF0E2C8));
-      final leftLap = Path()
-        ..moveTo(size.width * .40, size.height * .40)
-        ..lineTo(size.width * .48, size.height * .49)
-        ..lineTo(size.width * .44, size.height * .61)
-        ..lineTo(size.width * .385, size.height * .50)
-        ..close();
-      final rightLap = Path()
-        ..moveTo(size.width * .60, size.height * .40)
-        ..lineTo(size.width * .52, size.height * .49)
-        ..lineTo(size.width * .56, size.height * .61)
-        ..lineTo(size.width * .615, size.height * .50)
-        ..close();
-      p.color = const Color(0xFF343741);
-      canvas.drawPath(leftLap, p);
-      canvas.drawPath(rightLap, p);
-      r(size.width * .487, size.height * .44, size.width * .026, size.height * .16, const Color(0xFFC79B47));
-      r(size.width * .41, size.height * .66, size.width * .075, size.height * .14, const Color(0xFF202228));
-      r(size.width * .515, size.height * .66, size.width * .075, size.height * .14, const Color(0xFF202228));
-    } else if (outfitSlug.contains('moss-green-cloak')) {
-      final cloak = Path()
-        ..moveTo(size.width * .38, size.height * .34)
-        ..lineTo(size.width * .27, size.height * .72)
-        ..lineTo(size.width * .43, size.height * .77)
-        ..lineTo(size.width * .50, size.height * .48)
-        ..lineTo(size.width * .57, size.height * .77)
-        ..lineTo(size.width * .73, size.height * .72)
-        ..lineTo(size.width * .62, size.height * .34)
-        ..close();
-      p.color = const Color(0xFF2F5A3E);
-      canvas.drawPath(cloak, p);
-      r(size.width * .485, size.height * .34, size.width * .03, size.height * .31, const Color(0xFFB68A46));
-    } else if (outfitSlug.contains('mantle')) {
-      final cloak = Path()
-        ..moveTo(size.width * .39, size.height * .34)
-        ..lineTo(size.width * .29, size.height * .68)
-        ..lineTo(size.width * .43, size.height * .74)
-        ..lineTo(size.width * .50, size.height * .49)
-        ..lineTo(size.width * .57, size.height * .74)
-        ..lineTo(size.width * .71, size.height * .68)
-        ..lineTo(size.width * .61, size.height * .34)
-        ..close();
-      p.color = const Color(0xFFA53A32);
-      canvas.drawPath(cloak, p);
-      r(size.width * .485, size.height * .35, size.width * .03, size.height * .31, const Color(0xFFF1C75B));
-    } else if (outfitSlug.contains('boot')) {
-      r(size.width * .39, size.height * .68, size.width * .09, size.height * .10, const Color(0xFF6B4229));
-      r(size.width * .52, size.height * .68, size.width * .09, size.height * .10, const Color(0xFF6B4229));
-      r(size.width * .36, size.height * .75, size.width * .13, size.height * .05, const Color(0xFF2C211A));
-      r(size.width * .51, size.height * .75, size.width * .13, size.height * .05, const Color(0xFF2C211A));
+    if (outfitSlug.contains('moss-green-cloak') ||
+        outfitSlug.contains('hearthguard-mantle')) {
+      final cloakColor = outfitSlug.contains('hearthguard')
+          ? const Color(0xFF8E2D30)
+          : const Color(0xFF28523A);
+      final cloakLight = outfitSlug.contains('hearthguard')
+          ? const Color(0xFFC65A46)
+          : const Color(0xFF4D7D53);
+      pr(28, 45, 10, 48, cloakColor);
+      pr(68, 45, 10, 48, cloakColor);
+      pr(24, 58, 12, 36, cloakColor);
+      pr(70, 58, 12, 36, cloakColor);
+      pr(29, 48, 3, 40, cloakLight);
+      pr(74, 48, 3, 40, cloakLight);
+      pr(34, 91, 7, 5, deepest);
+      pr(65, 91, 7, 5, deepest);
     }
 
-    // Accessories are anchored to the body so equipping is visible.
+    // Legs.
+    pr(39, 74, 12, 29, deepest);
+    pr(55, 74, 12, 29, deepest);
+    pr(41, 76, 8, 25, suitShadow);
+    pr(57, 76, 8, 25, suitShadow);
+
+    // Boots, with class/exclusive boot override.
+    final bootColor = outfitSlug.contains('pathfinder-boots')
+        ? const Color(0xFF6B4229)
+        : boot;
+    final bootHi = outfitSlug.contains('pathfinder-boots')
+        ? const Color(0xFFA87843)
+        : const Color(0xFF41302A);
+    pr(36, 99, 16, 9, deepest);
+    pr(55, 99, 17, 9, deepest);
+    pr(38, 98, 13, 7, bootColor);
+    pr(57, 98, 14, 7, bootColor);
+    pr(40, 99, 8, 2, bootHi);
+    pr(59, 99, 9, 2, bootHi);
+
+    // Torso base; item-specific outfit takes over the silhouette.
+    if (outfitSlug.contains('starter-business-suit')) {
+      pr(34, 45, 38, 34, deepest);
+      pr(36, 47, 34, 30, suit);
+      pr(38, 49, 8, 26, suitHi);
+      pr(60, 49, 8, 26, suitShadow);
+      pr(47, 47, 12, 24, paper);
+      pr(50, 50, 6, 18, const Color(0xFF2E6C64));
+      pr(51, 52, 4, 14, const Color(0xFFD9E9DB));
+      // Lapels.
+      pr(42, 48, 5, 16, const Color(0xFF525A6B));
+      pr(59, 48, 5, 16, const Color(0xFF191C24));
+      pr(42, 61, 5, 4, gold);
+      pr(59, 61, 5, 4, gold);
+      // Belt.
+      pr(38, 72, 30, 4, leather);
+      pr(50, 72, 6, 4, gold);
+    } else {
+      pr(34, 45, 38, 34, deepest);
+      pr(36, 47, 34, 30, palette[1]);
+      pr(39, 49, 6, 25, palette.last.withValues(alpha: .72));
+      pr(61, 49, 6, 25, palette.first);
+      pr(39, 72, 28, 4, leather);
+      pr(50, 72, 6, 4, gold);
+    }
+
+    // Arms and hands.
+    pr(28, 50, 9, 27, deepest);
+    pr(69, 50, 9, 27, deepest);
+    pr(30, 52, 6, 21, outfitSlug.contains('starter-business-suit') ? suit : palette[1]);
+    pr(70, 52, 6, 21, outfitSlug.contains('starter-business-suit') ? suit : palette[1]);
+    pr(30, 72, 7, 7, skinShadow);
+    pr(69, 72, 7, 7, skinShadow);
+    pr(31, 71, 5, 5, skin);
+
+    // Neck.
+    pr(47, 40, 12, 8, deepest);
+    pr(49, 40, 8, 7, skin);
+
+    // Head outline/ears.
+    pr(35, 18, 36, 27, deepest);
+    pr(38, 20, 30, 24, skin);
+    pr(36, 28, 4, 9, skinShadow);
+    pr(68, 28, 4, 9, skinShadow);
+    pr(40, 21, 24, 5, skinHi);
+
+    // Hair: layered, asymmetric, more 64-bit-era detail than the old block head.
+    pr(34, 14, 38, 9, hairShadow);
+    pr(37, 11, 9, 8, hair);
+    pr(46, 9, 15, 9, hair);
+    pr(59, 12, 12, 8, hair);
+    pr(34, 20, 8, 18, hair);
+    pr(66, 18, 8, 21, hair);
+    pr(38, 13, 7, 5, hairHi);
+    pr(48, 11, 8, 4, hairHi);
+    pr(61, 14, 6, 4, hairHi);
+    pr(33, 36, 5, 9, hairShadow);
+    pr(70, 35, 5, 10, hairShadow);
+
+    // Brows, eyes, nose, mouth.
+    pr(43, 28, 7, 2, hairShadow);
+    pr(57, 28, 7, 2, hairShadow);
+    pr(44, 32, 4, 4, const Color(0xFF1C2533));
+    pr(59, 32, 4, 4, const Color(0xFF1C2533));
+    pr(45, 32, 1, 1, const Color(0xFFEAF7FF));
+    pr(60, 32, 1, 1, const Color(0xFFEAF7FF));
+    pr(53, 35, 2, 3, skinShadow);
+    pr(49, 40, 9, 2, const Color(0xFF7A3E39));
+
+    // Archetype identity remains subtle so outfits still matter.
+    switch (archetype) {
+      case 'alchemist':
+        pr(77, 63, 5, 11, deepest);
+        pr(78, 62, 3, 4, paper);
+        pr(75, 73, 10, 8, const Color(0xFF52C96C));
+        pr(78, 74, 4, 3, const Color(0xFFC7FFD2));
+        glow(80, 76, 9, const Color(0xFF52C96C));
+        break;
+      case 'scholar':
+        pr(76, 63, 14, 18, const Color(0xFF4B2A70));
+        pr(79, 66, 8, 2, paper);
+        pr(79, 71, 7, 2, paper);
+        pr(79, 76, 6, 2, paper);
+        break;
+      case 'scout':
+        pr(78, 49, 2, 34, leatherHi);
+        pr(80, 52, 6, 2, gold);
+        pr(80, 59, 6, 2, gold);
+        break;
+      case 'guardian':
+        pr(76, 52, 14, 22, const Color(0xFF7D2A2C));
+        pr(79, 55, 8, 16, gold);
+        break;
+      default:
+        pr(77, 51, 3, 33, gold);
+        pr(75, 49, 7, 4, gold);
+    }
+
+    // Accessories aligned to the canonical body anchors.
     final accessorySlug = accessory ?? '';
     if (accessorySlug.contains('round-scholar-glasses')) {
       p.style = PaintingStyle.stroke;
-      p.strokeWidth = 3;
-      p.color = const Color(0xFFD7B15C);
-      canvas.drawCircle(
-        Offset(size.width * .455, size.height * .302),
-        size.width * .040,
-        p,
-      );
-      canvas.drawCircle(
-        Offset(size.width * .545, size.height * .302),
-        size.width * .040,
-        p,
-      );
-      canvas.drawLine(
-        Offset(size.width * .495, size.height * .302),
-        Offset(size.width * .505, size.height * .302),
-        p,
-      );
+      p.strokeWidth = math.max(2.0, unit * 1.5);
+      p.color = const Color(0xFFD5B05A);
+      canvas.drawRect(Rect.fromLTWH(ox + 41 * unit, oy + 29 * unit, 10 * unit, 8 * unit), p);
+      canvas.drawRect(Rect.fromLTWH(ox + 56 * unit, oy + 29 * unit, 10 * unit, 8 * unit), p);
+      canvas.drawLine(Offset(ox + 51 * unit, oy + 33 * unit),
+          Offset(ox + 56 * unit, oy + 33 * unit), p);
       p.style = PaintingStyle.fill;
+      pr(43, 31, 6, 2, const Color(0xFF9CD9EE).withValues(alpha: .8));
+      pr(58, 31, 6, 2, const Color(0xFF9CD9EE).withValues(alpha: .8));
     } else if (accessorySlug.contains('tiny-wizard-hat')) {
-      final hat = Path()
-        ..moveTo(size.width * .39, size.height * .235)
-        ..lineTo(size.width * .50, size.height * .08)
-        ..lineTo(size.width * .61, size.height * .235)
-        ..close();
-      p.color = const Color(0xFF5D3A7A);
-      canvas.drawPath(hat, p);
-      r(size.width * .37, size.height * .225, size.width * .26, size.height * .045, const Color(0xFF352040));
-      r(size.width * .475, size.height * .15, size.width * .035, size.height * .03, const Color(0xFFF1C75B));
+      pr(35, 12, 37, 5, const Color(0xFF2C1B38));
+      pr(42, 3, 23, 12, const Color(0xFF5E3A7D));
+      pr(50, 2, 8, 5, const Color(0xFF7851A1));
+      pr(53, 5, 4, 4, gold);
     } else if (accessorySlug.contains('satchel')) {
       p.style = PaintingStyle.stroke;
-      p.strokeWidth = 5;
-      p.color = const Color(0xFFD6A84B);
+      p.strokeWidth = math.max(2.0, unit * 2);
+      p.color = gold;
       canvas.drawLine(
-        Offset(size.width * .39, size.height * .35),
-        Offset(size.width * .59, size.height * .63),
+        Offset(ox + 37 * unit, oy + 48 * unit),
+        Offset(ox + 67 * unit, oy + 83 * unit),
         p,
       );
       p.style = PaintingStyle.fill;
-      r(size.width * .56, size.height * .55, size.width * .15, size.height * .14, const Color(0xFF8B5A32));
-      r(size.width * .605, size.height * .59, size.width * .05, size.height * .04, const Color(0xFFF1C75B));
+      pr(62, 72, 19, 19, leather);
+      pr(65, 75, 13, 4, leatherHi);
+      pr(69, 81, 5, 4, gold);
     } else if (accessorySlug.contains('grimoire')) {
-      r(size.width * .61, size.height * .48, size.width * .18, size.height * .20, const Color(0xFF6A337C));
-      r(size.width * .64, size.height * .51, size.width * .025, size.height * .14, const Color(0xFFF1C75B));
-      r(size.width * .69, size.height * .54, size.width * .07, 3, const Color(0xFFE5D6B7));
+      pr(73, 62, 20, 23, const Color(0xFF512467));
+      pr(76, 65, 3, 17, gold);
+      pr(82, 67, 8, 2, paper);
+      pr(82, 72, 7, 2, paper);
+      pr(82, 77, 6, 2, paper);
     } else if (accessorySlug.contains('compass')) {
       p.style = PaintingStyle.stroke;
-      p.strokeWidth = 4;
-      p.color = const Color(0xFFF1C75B);
-      canvas.drawCircle(
-        Offset(size.width * .50, size.height * .49),
-        size.width * .045,
-        p,
-      );
+      p.strokeWidth = math.max(2.0, unit * 1.4);
+      p.color = gold;
+      canvas.drawCircle(Offset(ox + 54 * unit, oy + 65 * unit), 6 * unit, p);
+      canvas.drawLine(Offset(ox + 54 * unit, oy + 60 * unit),
+          Offset(ox + 57 * unit, oy + 68 * unit), p);
       p.style = PaintingStyle.fill;
-    } else if (accessorySlug.contains('phial') || accessorySlug.contains('tonic')) {
-      r(size.width * .61, size.height * .52, size.width * .045, size.height * .10, const Color(0xFFB8EAF1));
-      r(size.width * .605, size.height * .57, size.width * .055, size.height * .05, const Color(0xFF42B883));
+    } else if (accessorySlug.contains('phial') ||
+        accessorySlug.contains('tonic')) {
+      pr(74, 63, 6, 13, const Color(0xFFB9EAF3));
+      pr(72, 75, 10, 8, const Color(0xFF48C96A));
+      pr(75, 76, 4, 3, const Color(0xFFD2FFDB));
+      glow(77, 78, 8, const Color(0xFF48C96A));
     }
 
-    // Familiar companions occupy a stable world-space anchor near the avatar.
+    // Familiar companion is rendered with the same logical grid and palette density.
     final familiarSlug = familiar ?? '';
     if (familiarSlug.isNotEmpty) {
-      final fx = size.width * .76;
-      final fy = size.height * .64;
-      if (familiarSlug.contains('mushroom')) {
-        r(fx - 4, fy - 2, 8, 15, const Color(0xFFD8C7A3));
-        p.color = const Color(0xFFB84D3A);
-        canvas.drawOval(
-          Rect.fromCenter(center: Offset(fx, fy - 6), width: 28, height: 16),
-          p,
-        );
-        r(fx - 7, fy - 9, 4, 4, const Color(0xFFF4E7C7));
-        r(fx + 5, fy - 7, 4, 4, const Color(0xFFF4E7C7));
-      } else if (familiarSlug.contains('tiny-owl')) {
-        p.color = const Color(0xFFB77A3A);
-        canvas.drawCircle(Offset(fx, fy), size.width * .07, p);
-        r(fx - 8, fy - 4, 4, 4, const Color(0xFFFFE07A));
-        r(fx + 4, fy - 4, 4, 4, const Color(0xFFFFE07A));
-      } else if (familiarSlug.contains('fox')) {
-        p.color = const Color(0xFFD77A32);
-        canvas.drawCircle(Offset(fx, fy), size.width * .07, p);
-        final ears = Path()
-          ..moveTo(fx - 11, fy - 7)
-          ..lineTo(fx - 8, fy - 22)
-          ..lineTo(fx - 1, fy - 8)
-          ..moveTo(fx + 3, fy - 8)
-          ..lineTo(fx + 11, fy - 22)
-          ..lineTo(fx + 13, fy - 6);
-        p.style = PaintingStyle.stroke;
-        p.strokeWidth = 5;
-        canvas.drawPath(ears, p);
-        p.style = PaintingStyle.fill;
+      final fx = 86.0;
+      final fy = 93.0;
+      if (familiarSlug.contains('fox')) {
+        pr(fx - 9, fy - 2, 18, 12, const Color(0xFFC9682E));
+        pr(fx - 7, fy - 7, 14, 11, const Color(0xFFE28B43));
+        pr(fx - 8, fy - 11, 5, 6, const Color(0xFFE28B43));
+        pr(fx + 3, fy - 11, 5, 6, const Color(0xFFE28B43));
+        pr(fx - 5, fy - 3, 3, 3, deepest);
+        pr(fx + 2, fy - 3, 3, 3, deepest);
+        pr(fx + 8, fy + 3, 10, 5, const Color(0xFF7F4224));
       } else if (familiarSlug.contains('owl')) {
-        p.color = const Color(0xFFB77A3A);
-        canvas.drawCircle(Offset(fx, fy), size.width * .07, p);
-        r(fx - 8, fy - 4, 4, 4, const Color(0xFFFFE07A));
-        r(fx + 4, fy - 4, 4, 4, const Color(0xFFFFE07A));
+        pr(fx - 7, fy - 8, 14, 17, const Color(0xFF9B6736));
+        pr(fx - 10, fy - 5, 5, 12, const Color(0xFF6E4729));
+        pr(fx + 5, fy - 5, 5, 12, const Color(0xFF6E4729));
+        pr(fx - 5, fy - 3, 4, 4, const Color(0xFFFFE07A));
+        pr(fx + 1, fy - 3, 4, 4, const Color(0xFFFFE07A));
+        pr(fx - 1, fy + 2, 3, 3, gold);
       } else if (familiarSlug.contains('slime')) {
-        p.color = const Color(0xFF55D7CB);
-        canvas.drawCircle(Offset(fx, fy + 3), size.width * .075, p);
-        r(fx - 14, fy + 1, 28, 11, const Color(0xFF55D7CB));
+        pr(fx - 9, fy - 3, 18, 11, const Color(0xFF4CCDC4));
+        pr(fx - 7, fy - 8, 14, 8, const Color(0xFF6EE2D8));
+        pr(fx - 4, fy - 2, 3, 3, deepest);
+        pr(fx + 2, fy - 2, 3, 3, deepest);
+        pr(fx - 4, fy + 4, 8, 2, const Color(0xFFBDF9F3));
       } else if (familiarSlug.contains('moth')) {
-        p.color = const Color(0xFFA8E36D);
-        canvas.drawOval(Rect.fromCenter(center: Offset(fx - 8, fy), width: 18, height: 25), p);
-        canvas.drawOval(Rect.fromCenter(center: Offset(fx + 8, fy), width: 18, height: 25), p);
-        r(fx - 2, fy - 8, 4, 18, const Color(0xFF6F8D3A));
+        pr(fx - 2, fy - 7, 4, 14, const Color(0xFF536D35));
+        pr(fx - 10, fy - 8, 8, 13, const Color(0xFF9FE16A));
+        pr(fx + 2, fy - 8, 8, 13, const Color(0xFF9FE16A));
+        pr(fx - 8, fy - 5, 5, 7, const Color(0xFFD9F39B));
+        pr(fx + 3, fy - 5, 5, 7, const Color(0xFFD9F39B));
+      } else if (familiarSlug.contains('mushroom')) {
+        pr(fx - 2, fy, 4, 9, paper);
+        pr(fx - 8, fy - 7, 16, 8, const Color(0xFFB84D3A));
+        pr(fx - 5, fy - 5, 3, 3, const Color(0xFFF4E7C7));
+        pr(fx + 2, fy - 4, 3, 3, const Color(0xFFF4E7C7));
       }
+    }
+
+    if (showRelic) {
+      final relic = _RelicPainter(archetype: archetype, palette: palette);
+      canvas.save();
+      canvas.translate(ox + 6 * unit, oy + 7 * unit);
+      relic.paint(canvas, Size(21 * unit, 21 * unit));
+      canvas.restore();
     }
   }
 
