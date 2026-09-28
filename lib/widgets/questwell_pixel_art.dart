@@ -1,5 +1,10 @@
+import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import '/generated_art/adventurer_base_data.dart';
+import '/generated_art/adventurer_glasses_data.dart';
+import '/generated_art/adventurer_scarf_data.dart';
+import '/generated_art/adventurer_satchel_data.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class QuestwellPixelPalette {
@@ -18,6 +23,53 @@ class QuestwellPixelPalette {
       default:
         return const [Color(0xFF1A2E5A), Color(0xFF3D5A9A), Color(0xFFF1C75B)];
     }
+  }
+}
+
+
+class QuestwellLayeredAdventurerArt extends StatelessWidget {
+  const QuestwellLayeredAdventurerArt({
+    super.key,
+    required this.equippedSlugs,
+    this.fit = BoxFit.contain,
+  });
+
+  final Map<String, String> equippedSlugs;
+  final BoxFit fit;
+
+  bool _has(String slot, String fragment) =>
+      (equippedSlugs[slot] ?? '').contains(fragment);
+
+  Widget _layer(String encoded) => Positioned.fill(
+        child: Image.memory(
+          base64Decode(encoded),
+          fit: fit,
+          alignment: Alignment.bottomCenter,
+          filterQuality: FilterQuality.medium,
+          gaplessPlayback: true,
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    final glasses = _has('face', 'round-scholar-glasses') ||
+        _has('accessory', 'round-scholar-glasses');
+    final scarf = _has('neck', 'emerald-scholar-scarf');
+    final satchel = _has('back', 'satchel') ||
+        _has('accessory', 'satchel');
+
+    return RepaintBoundary(
+      child: Stack(
+        fit: StackFit.expand,
+        clipBehavior: Clip.none,
+        children: [
+          _layer(questwellAdventurerBaseBase64),
+          if (scarf) _layer(questwellAdventurerScarfBase64),
+          if (satchel) _layer(questwellAdventurerSatchelBase64),
+          if (glasses) _layer(questwellAdventurerGlassesBase64),
+        ],
+      ),
+    );
   }
 }
 
@@ -583,11 +635,14 @@ class QuestwellHearthPixelScene extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               Positioned.fill(
-                child: Image.asset(
-                  'assets/images/hearth_64_scene.png',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                  filterQuality: FilterQuality.none,
+                child: CustomPaint(
+                  painter: _HearthPainter(
+                    archetype: archetype,
+                    palette: palette,
+                    equippedSlugs: const {},
+                    showRelic: false,
+                    renderAvatar: false,
+                  ),
                 ),
               ),
               Positioned.fill(
@@ -625,14 +680,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                         ),
                       ),
                     ),
-                    CustomPaint(
-                      painter: _EquippedAvatarPainter(
-                        archetype: archetype,
-                        palette: palette,
-                        equippedSlugs: equippedSlugs,
-                        showRelic: showRelic,
-                        portrait: false,
-                      ),
+                    QuestwellLayeredAdventurerArt(
+                      equippedSlugs: equippedSlugs,
                     ),
                   ],
                 ),
@@ -1401,11 +1450,13 @@ class _HearthPainter extends CustomPainter {
     required this.palette,
     required this.equippedSlugs,
     required this.showRelic,
+    this.renderAvatar = true,
   });
   final String archetype;
   final List<Color> palette;
   final Map<String, String> equippedSlugs;
   final bool showRelic;
+  final bool renderAvatar;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -1594,34 +1645,39 @@ class _HearthPainter extends CustomPainter {
     r(size.width * .54, size.height * .802, 7, 7, const Color(0xFFE1B75A));
     r(size.width * .57, size.height * .802, 7, 7, const Color(0xFFE1B75A));
 
-    // Live Adventurer is rendered inside the same scene painter so it belongs
-    // to the room instead of looking pasted over a generated background.
-    final avatarSize = Size(size.width * .235, size.height * .50);
-    canvas.save();
-    canvas.translate(
-      size.width * .405,
-      size.height * .315,
-    );
-    _EquippedAvatarPainter(
-      archetype: archetype,
-      palette: palette,
-      equippedSlugs: equippedSlugs,
-      showRelic: showRelic,
-      portrait: false,
-    ).paint(canvas, avatarSize);
-    canvas.restore();
+    if (renderAvatar) {
+      // Legacy fallback used only where the scene painter is explicitly asked
+      // to own the character. The Hearth itself now composes a higher-detail,
+      // asset-driven Adventurer over a character-free environment.
+      final avatarSize = Size(size.width * .235, size.height * .50);
+      canvas.save();
+      canvas.translate(size.width * .405, size.height * .315);
+      _EquippedAvatarPainter(
+        archetype: archetype,
+        palette: palette,
+        equippedSlugs: equippedSlugs,
+        showRelic: showRelic,
+        portrait: false,
+      ).paint(canvas, avatarSize);
+      canvas.restore();
+    }
 
-    // Scene-aware rim light: warm fireplace on the left, cool rain-window light
-    // on the right. These highlights visually seat the live avatar in the room.
-    final ax = size.width * .405;
-    final ay = size.height * .315;
-    final aw = avatarSize.width;
-    final ah = avatarSize.height;
-    r(ax + aw * .29, ay + ah * .24, 3, ah * .42, const Color(0xFFFFC15C));
-    r(ax + aw * .31, ay + ah * .20, aw * .11, 3, const Color(0xFFFFDF8A));
-    r(ax + aw * .69, ay + ah * .23, 3, ah * .40, const Color(0xFF79B7DD));
-    r(ax + aw * .59, ay + ah * .18, aw * .10, 2, const Color(0xFFAEDCF2));
-    r(ax + aw * .30, ay + ah * .84, aw * .38, 3, const Color(0x66000000));
+    // Warm/cool light pools are environmental, not painted onto the avatar.
+    // The layered Adventurer sits between these sources in the Hearth stack.
+    _Pixel64.stepGlow(
+      canvas,
+      p,
+      Offset(size.width * .43, size.height * .54),
+      size.height * .11,
+      const Color(0xFFE87947),
+    );
+    _Pixel64.stepGlow(
+      canvas,
+      p,
+      Offset(size.width * .66, size.height * .42),
+      size.height * .09,
+      const Color(0xFF5C8FBE),
+    );
 
     // Cat with visible ears, tail, body shading.
     r(size.width * .54, size.height * .80, 34, 9, const Color(0xFF9E5C30));
@@ -1705,7 +1761,8 @@ class _HearthPainter extends CustomPainter {
       oldDelegate.archetype != archetype ||
       oldDelegate.palette != palette ||
       oldDelegate.equippedSlugs != equippedSlugs ||
-      oldDelegate.showRelic != showRelic;
+      oldDelegate.showRelic != showRelic ||
+      oldDelegate.renderAvatar != renderAvatar;
 }
 
 class _NavIconPainter extends CustomPainter {
