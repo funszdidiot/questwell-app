@@ -360,7 +360,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: theme.primaryBackground,
+        backgroundColor: const Color(0xFF111827),
         body: SafeArea(
           top: true,
           child: SingleChildScrollView(
@@ -526,7 +526,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'THE HEARTH',
+                                      _archetypeLabel(profile.adventurerArchetype).toUpperCase(),
                                       style: theme.titleMedium.override(
                                         font: GoogleFonts.pressStart2p(
                                           fontWeight: FontWeight.w700,
@@ -540,7 +540,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       children: [
                                         Flexible(
                                           child: Text(
-                                            'LEVEL ${profile.level}  •  ${_archetypeLabel(profile.adventurerArchetype).toUpperCase()}',
+                                            'LEVEL ${profile.level}  •  HEARTH ADVENTURER',
                                             style: theme.bodyMedium.override(
                                               font: GoogleFonts.inter(),
                                               color: theme.secondaryText,
@@ -907,6 +907,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       fontWeight: FontWeight.w700,
                     ),
                     fontSize: 15,
+                    color: const Color(0xFFF2D9A0),
                     letterSpacing: 0.4,
                   ),
                 ),
@@ -921,6 +922,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     ),
                   ),
                 ],
+                const SizedBox(height: 12),
+                QuestwellQuestBoardPixelArt(
+                  height: MediaQuery.sizeOf(context).width < 430 ? 118 : 142,
+                  clear: false,
+                ),
                 const SizedBox(height: 12),
                 FutureBuilder<List<TasksRow>>(
                   future: TasksTable().queryRows(
