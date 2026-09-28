@@ -250,7 +250,13 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                 const SizedBox(height: 14),
                 QuestwellMarketPixelScene(
                   archetype: data.profile.adventurerArchetype,
-                  height: 205,
+                  equippedSlugs: {
+                    for (final item
+                        in data.cosmetics.where((item) => item.equipped))
+                      item.category: item.slug,
+                  },
+                  height:
+                      MediaQuery.sizeOf(context).width < 430 ? 250 : 285,
                 ),
                 const SizedBox(height: 14),
                 QuestwellRetroPanel(
@@ -319,7 +325,9 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                         ? 4
                         : constraints.maxWidth >= 680
                             ? 3
-                            : 2;
+                            : constraints.maxWidth >= 460
+                                ? 2
+                                : 1;
                     final itemWidth =
                         (constraints.maxWidth - ((columns - 1) * 10)) /
                             columns;
@@ -330,7 +338,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                         for (final cosmetic in currentClassItems)
                           SizedBox(
                             width: itemWidth,
-                            height: 330,
+                            height: 310,
                             child: _MarketCard(
                               cosmetic: cosmetic,
                               currentArchetype:
@@ -373,7 +381,9 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                         ? 4
                         : constraints.maxWidth >= 680
                             ? 3
-                            : 2;
+                            : constraints.maxWidth >= 460
+                                ? 2
+                                : 1;
                     final itemWidth =
                         (constraints.maxWidth - ((columns - 1) * 10)) /
                             columns;
@@ -384,7 +394,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                         for (final cosmetic in generalItems)
                           SizedBox(
                             width: itemWidth,
-                            height: 330,
+                            height: 310,
                             child: _MarketCard(
                               cosmetic: cosmetic,
                               currentArchetype:
@@ -521,10 +531,18 @@ class _MarketCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            height: 118,
+            height: 132,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF0B1320),
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF18283A),
+                  Color(0xFF0B1320),
+                  Color(0xFF17110E),
+                ],
+              ),
               border: Border.all(
                 color: classLocked
                     ? const Color(0xFF55565C)
@@ -539,7 +557,7 @@ class _MarketCard extends StatelessWidget {
                     slug: cosmetic.slug,
                     category: cosmetic.category,
                     archetype: cosmetic.requiredArchetype,
-                    size: 88,
+                    size: 104,
                     locked: classLocked,
                   ),
                 ),
@@ -569,10 +587,10 @@ class _MarketCard extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: theme.titleMedium.override(
-              font: GoogleFonts.pressStart2p(
-                fontWeight: FontWeight.w700,
+              font: GoogleFonts.cinzel(
+                fontWeight: FontWeight.w800,
               ),
-              fontSize: 9,
+              fontSize: 14,
               color: const Color(0xFFF2D9A0),
               letterSpacing: .15,
             ),
