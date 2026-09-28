@@ -368,28 +368,74 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  'QUESTWELL',
-                  style: theme.headlineMedium.override(
-                    font: GoogleFonts.pressStart2p(
-                      fontWeight: FontWeight.w700,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'QUESTWELL',
+                            style: theme.headlineMedium.override(
+                              font: GoogleFonts.pressStart2p(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              fontSize: 24,
+                              color: const Color(0xFFF2D9A0),
+                              letterSpacing: 0.6,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            'Small wins. Real momentum.',
+                            style: theme.bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                              ),
+                              color: const Color(0xFFB7C4D4),
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    fontSize: 24,
-                    letterSpacing: 0.6,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Small wins. Real momentum.',
-                  style: theme.bodyMedium.override(
-                    font: GoogleFonts.inter(),
-                    color: theme.secondaryText,
-                    letterSpacing: 0,
-                  ),
+                    const SizedBox(width: 10),
+                    QuestwellTopActionButton(
+                      kind: 'quest',
+                      tooltip: 'Quest Board',
+                      onTap: () async {
+                        await context.pushNamed(AddTaskPageWidget.routeName);
+                        if (mounted) setState(_loadHomeData);
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    QuestwellTopActionButton(
+                      kind: 'chronicle',
+                      tooltip: 'Chronicle',
+                      onTap: () async {
+                        await context.pushNamed(
+                          ChroniclePageWidget.routeName,
+                        );
+                        if (mounted) setState(_loadHomeData);
+                      },
+                    ),
+                    const SizedBox(width: 8),
+                    QuestwellTopActionButton(
+                      kind: 'adventurer',
+                      tooltip: 'Adventurer',
+                      onTap: () async {
+                        await context.pushNamed(
+                          AdventurerPageWidget.routeName,
+                        );
+                        if (mounted) setState(_loadHomeData);
+                      },
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
                 const QuestwellPixelDivider(
-                  accent: Color(0xFF6A4C2C),
+                  accent: Color(0xFFD6A84B),
                 ),
                 const SizedBox(height: 12),
                 FutureBuilder<QuestwellCosmeticsSnapshot>(
