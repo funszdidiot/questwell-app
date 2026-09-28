@@ -9,6 +9,7 @@ import '/services/questwell_task_service.dart';
 import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QuestBoardPageWidget extends StatefulWidget {
   const QuestBoardPageWidget({super.key});
@@ -23,6 +24,7 @@ class QuestBoardPageWidget extends StatefulWidget {
 class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
   String _filter = 'today';
   String? _busyTaskId;
+  Set<String> _favoriteTaskIds = <String>{};
   late Future<List<TasksRow>> _tasksFuture;
   late Future<List<QuestwellBossBattle>> _bossFuture;
   late Future<QuestwellCosmeticsSnapshot> _cosmeticsFuture;
@@ -31,6 +33,31 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
   void initState() {
     super.initState();
     _refresh();
+    _loadFavorites();
+  }
+
+  String get _favoritesStorageKey =>
+      'questwell_favorite_quests_${currentUserUid.isEmpty ? 'guest' : currentUserUid}';
+
+  Future<void> _loadFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    final saved = prefs.getStringList(_favoritesStorageKey) ?? const <String>[];
+    if (!mounted) return;
+    setState(() => _favoriteTaskIds = saved.toSet());
+  }
+
+  Future<void> _toggleFavorite(TasksRow task) async {
+    final taskId = task.id;
+    if (taskId == null) return;
+
+    final updated = Set<String>.from(_favoriteTaskIds);
+    if (!updated.add(taskId)) {
+      updated.remove(taskId);
+    }
+
+    setState(() => _favoriteTaskIds = updated);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(_favoritesStorageKey, updated.toList()..sort());
   }
 
   void _refresh() {
@@ -89,6 +116,10 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
         return tasks.where((task) => (task.frictionLevel ?? 0) >= 3).toList();
       case 'boss':
         return const <TasksRow>[];
+      case 'favorites':
+        return tasks
+            .where((task) => task.id != null && _favoriteTaskIds.contains(task.id))
+            .toList();
       default:
         return tasks;
     }
@@ -263,15 +294,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                       label: 'Favorites',
                       icon: Icons.star_border,
                       selected: _filter == 'favorites',
-                      onTap: () {
-                        setState(() => _filter = 'favorites');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Favorites are coming in a later pass.'),
-                            behavior: SnackBarBehavior.floating,
-                          ),
-                        );
-                      },
+                      onTap: () => setState(() => _filter = 'favorites'),
                     ),
                   ],
                 ),
@@ -391,16 +414,14 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                       );
                     }
 
-                    final visible = _filter == 'favorites'
-                        ? const <TasksRow>[]
-                        : _filtered(snapshot.data!);
+                    final visible = _filtered(snapshot.data!);
 
                     if (visible.isEmpty) {
                       return QuestwellParchmentPanel(
                         padding: const EdgeInsets.all(18),
                         child: Text(
                           _filter == 'favorites'
-                              ? 'Favorites are not wired yet.'
+                              ? 'No favorite quests yet. Tap the star on any quest to pin it here.'
                               : 'No quests in this lane right now.',
                           style: GoogleFonts.inter(
                             color: const Color(0xFF4B3A28),
@@ -417,6 +438,9 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                             task: task,
                             frictionLabel: _frictionLabel(task.frictionLevel),
                             busy: _busyTaskId == task.id,
+                            favorite: task.id != null &&
+                                _favoriteTaskIds.contains(task.id),
+                            onToggleFavorite: () => _toggleFavorite(task),
                             onComplete: () => _complete(task),
                           ),
                           const SizedBox(height: 10),
@@ -540,12 +564,16 @@ class _DailyQuestCard extends StatelessWidget {
     required this.task,
     required this.frictionLabel,
     required this.busy,
+    required this.favorite,
+    required this.onToggleFavorite,
     required this.onComplete,
   });
 
   final TasksRow task;
   final String frictionLabel;
   final bool busy;
+  final bool favorite;
+  final VoidCallback onToggleFavorite;
   final VoidCallback onComplete;
 
   @override
@@ -566,15 +594,40 @@ class _DailyQuestCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  (task.title?.trim().isNotEmpty ?? false)
-                      ? task.title!
-                      : 'Untitled quest',
-                  style: GoogleFonts.interTight(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w800,
-                    color: const Color(0xFFF3E7CD),
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        (task.title?.trim().isNotEmpty ?? false)
+                            ? task.title!
+                            : 'Untitled quest',
+                        style: GoogleFonts.interTight(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFFF3E7CD),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      onPressed: onToggleFavorite,
+                      tooltip: favorite ? 'Remove favorite' : 'Favorite quest',
+                      visualDensity: VisualDensity.compact,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(
+                        minWidth: 34,
+                        minHeight: 34,
+                      ),
+                      icon: Icon(
+                        favorite ? Icons.star : Icons.star_border,
+                        size: 21,
+                        color: favorite
+                            ? const Color(0xFFF1C75B)
+                            : const Color(0xFF7D8A9B),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 5),
                 Wrap(
