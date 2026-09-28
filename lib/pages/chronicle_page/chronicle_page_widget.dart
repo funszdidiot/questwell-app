@@ -33,23 +33,10 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
     final theme = FlutterFlowTheme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.primaryBackground,
-      appBar: AppBar(
-        backgroundColor: theme.primaryBackground,
-        elevation: 0,
-        foregroundColor: theme.primaryText,
-        title: Text(
-          'CHRONICLE',
-          style: theme.titleLarge.override(
-            font: GoogleFonts.pressStart2p(
-              fontWeight: FontWeight.w700,
-            ),
-            fontSize: 14,
-            letterSpacing: .4,
-          ),
-        ),
-      ),
-      body: FutureBuilder<ChronicleSnapshot>(
+      backgroundColor: const Color(0xFF111827),
+      body: SafeArea(
+        top: true,
+        child: FutureBuilder<ChronicleSnapshot>(
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -111,66 +98,168 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
               await _future;
             },
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+              padding: const EdgeInsets.fromLTRB(18, 16, 18, 32),
               children: [
-                Text(
-                  'YOUR WINS LIVE HERE',
-                  style: theme.headlineSmall.override(
-                    font: GoogleFonts.pressStart2p(
-                      fontWeight: FontWeight.w700,
-                    ),
-                    fontSize: 14,
-                    letterSpacing: .4,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Small wins. Real momentum. No streak pressure required.',
-                  style: theme.bodyMedium.override(
-                    font: GoogleFonts.inter(),
-                    color: theme.secondaryText,
-                    letterSpacing: 0,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const QuestwellChroniclePixelScene(height: 135),
-                const SizedBox(height: 18),
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
+                Row(
                   children: [
-                    _StatCard(
-                      icon: Icons.task_alt_outlined,
-                      value: '${data.weekWins}',
-                      label: 'wins this week',
+                    QuestwellTopActionButton(
+                      kind: 'back',
+                      tooltip: 'Back to the Hearth',
+                      onTap: () => Navigator.of(context).maybePop(),
                     ),
-                    _StatCard(
-                      icon: Icons.sports_mma_outlined,
-                      value: '${data.bossesDefeated}',
-                      label: 'bosses defeated',
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'CHRONICLE',
+                            style: theme.headlineMedium.override(
+                              font: GoogleFonts.pressStart2p(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              fontSize: 21,
+                              color: const Color(0xFFF2D9A0),
+                              letterSpacing: .5,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Every quest leaves a page behind.',
+                            style: theme.bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                              ),
+                              color: const Color(0xFFB7C4D4),
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    _StatCard(
-                      icon: Icons.auto_awesome_outlined,
-                      value: '${data.totalXpEarned}',
-                      label: 'XP earned',
-                    ),
-                    _StatCard(
-                      icon: Icons.monetization_on_outlined,
-                      value: '${data.totalCoinsEarned}',
-                      label: 'coins earned',
+                    const QuestwellNavPixelIcon(
+                      kind: 'chronicle',
+                      size: 36,
                     ),
                   ],
                 ),
-                const SizedBox(height: 24),
-                Text(
-                  'RECENT WINS',
-                  style: theme.titleLarge.override(
-                    font: GoogleFonts.pressStart2p(
-                      fontWeight: FontWeight.w700,
-                    ),
-                    fontSize: 13,
-                    letterSpacing: .3,
+                const SizedBox(height: 12),
+                const QuestwellPixelDivider(
+                  accent: Color(0xFFD6A84B),
+                ),
+                const SizedBox(height: 14),
+                const QuestwellChroniclePixelScene(height: 205),
+                const SizedBox(height: 16),
+                QuestwellRetroPanel(
+                  padding: const EdgeInsets.all(14),
+                  accent: const Color(0xFF7654D8),
+                  background: const Color(0xFF17151A),
+                  child: Row(
+                    children: [
+                      const QuestwellStatusPixelBadge(
+                        kind: 'momentum',
+                        size: 54,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'YOUR WINS LIVE HERE',
+                              style: theme.titleMedium.override(
+                                font: GoogleFonts.pressStart2p(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                fontSize: 10,
+                                color: const Color(0xFFF2D9A0),
+                                letterSpacing: .3,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              'Small wins. Real momentum. No streak pressure required.',
+                              style: theme.bodyMedium.override(
+                                font: GoogleFonts.inter(),
+                                color: const Color(0xFFB7C4D4),
+                                letterSpacing: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+                const SizedBox(height: 18),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final wide = constraints.maxWidth >= 760;
+                    final width = wide
+                        ? (constraints.maxWidth - 30) / 4
+                        : (constraints.maxWidth - 10) / 2;
+                    return Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        SizedBox(
+                          width: width,
+                          child: _StatCard(
+                            icon: Icons.task_alt_outlined,
+                            value: '${data.weekWins}',
+                            label: 'wins this week',
+                          ),
+                        ),
+                        SizedBox(
+                          width: width,
+                          child: _StatCard(
+                            icon: Icons.sports_mma_outlined,
+                            value: '${data.bossesDefeated}',
+                            label: 'bosses defeated',
+                          ),
+                        ),
+                        SizedBox(
+                          width: width,
+                          child: _StatCard(
+                            icon: Icons.auto_awesome_outlined,
+                            value: '${data.totalXpEarned}',
+                            label: 'XP earned',
+                          ),
+                        ),
+                        SizedBox(
+                          width: width,
+                          child: _StatCard(
+                            icon: Icons.monetization_on_outlined,
+                            value: '${data.totalCoinsEarned}',
+                            label: 'coins earned',
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    const QuestwellNavPixelIcon(
+                      kind: 'chronicle',
+                      size: 24,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'RECENT WINS',
+                        style: theme.titleLarge.override(
+                          font: GoogleFonts.pressStart2p(
+                            fontWeight: FontWeight.w700,
+                          ),
+                          fontSize: 12,
+                          color: const Color(0xFFF2D9A0),
+                          letterSpacing: .3,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 12),
                 if (data.wins.isEmpty)
@@ -194,7 +283,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                           'Complete a quest or defeat a boss and it will appear here.',
                           style: theme.bodyMedium.override(
                             font: GoogleFonts.inter(),
-                            color: theme.secondaryText,
+                            color: const Color(0xFF67543E),
                             letterSpacing: 0,
                           ),
                         ),
@@ -210,6 +299,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
             ),
           );
         },
+      ),
       ),
     );
   }
@@ -230,9 +320,7 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
 
-    return SizedBox(
-      width: 156,
-      child: QuestwellRetroPanel(
+    return QuestwellRetroPanel(
         padding: const EdgeInsets.all(12),
         accent: const Color(0xFF8E6B35),
         background: const Color(0xFF171A20),
@@ -265,7 +353,6 @@ class _StatCard extends StatelessWidget {
           ),
         ],
       ),
-      ),
     );
   }
 }
@@ -280,12 +367,9 @@ class _WinCard extends StatelessWidget {
     final theme = FlutterFlowTheme.of(context);
     final isBoss = win.kind == 'boss';
 
-    return QuestwellRetroPanel(
+    return QuestwellParchmentPanel(
       padding: const EdgeInsets.all(14),
-      accent: isBoss
-          ? const Color(0xFFE87947)
-          : const Color(0xFF8E6B35),
-      background: const Color(0xFF171A20),
+      selected: isBoss,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -302,7 +386,7 @@ class _WinCard extends StatelessWidget {
                   isBoss ? 'BOSS DEFEATED' : 'QUEST COMPLETE',
                   style: theme.labelSmall.override(
                     font: GoogleFonts.inter(fontWeight: FontWeight.w700),
-                    color: theme.primary,
+                    color: const Color(0xFF6E3B2C),
                     letterSpacing: 1.1,
                   ),
                 ),
@@ -319,7 +403,7 @@ class _WinCard extends StatelessWidget {
                   DateFormat('MMM d, yyyy').format(win.completedAt.toLocal()),
                   style: theme.bodySmall.override(
                     font: GoogleFonts.inter(),
-                    color: theme.secondaryText,
+                    color: const Color(0xFF67543E),
                     letterSpacing: 0,
                   ),
                 ),
@@ -342,7 +426,7 @@ class _WinCard extends StatelessWidget {
                             font: GoogleFonts.inter(
                               fontWeight: FontWeight.w600,
                             ),
-                            color: theme.secondaryText,
+                            color: const Color(0xFF67543E),
                             letterSpacing: 0,
                           ),
                         ),
@@ -362,7 +446,7 @@ class _WinCard extends StatelessWidget {
                             font: GoogleFonts.inter(
                               fontWeight: FontWeight.w600,
                             ),
-                            color: theme.secondaryText,
+                            color: const Color(0xFF67543E),
                             letterSpacing: 0,
                           ),
                         ),
