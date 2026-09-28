@@ -375,27 +375,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'QUESTWELL',
-                            style: theme.headlineMedium.override(
-                              font: GoogleFonts.pressStart2p(
-                                fontWeight: FontWeight.w700,
-                              ),
-                              fontSize: 24,
-                              color: const Color(0xFFF2D9A0),
-                              letterSpacing: 0.6,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            'Small wins. Real momentum.',
-                            style: theme.bodyMedium.override(
-                              font: GoogleFonts.inter(
-                                fontWeight: FontWeight.w600,
-                              ),
-                              color: const Color(0xFFB7C4D4),
-                              letterSpacing: 0,
-                            ),
+                          QuestwellBrandWordmark(
+                            compact:
+                                MediaQuery.sizeOf(context).width < 390,
                           ),
                         ],
                       ),
