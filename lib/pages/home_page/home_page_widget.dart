@@ -440,7 +440,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     final compact =
                         MediaQuery.sizeOf(context).width < 430;
                     return QuestwellHearthPixelScene(
-                      height: compact ? 285 : 330,
+                      height: compact ? 320 : 370,
                       archetype: archetype,
                       showRelic: mastered,
                       equippedSlugs: {
@@ -516,18 +516,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(
-                                width: 78,
-                                child: QuestwellEquippedAvatar(
-                                  archetype: profile.adventurerArchetype,
-                                  equippedSlugs: {
-                                    for (final item in equipped)
-                                      item.category: item.slug,
-                                  },
-                                  height: 78,
-                                  showRelic: classMastered,
-                                ),
+                              QuestwellRelicPixelArt(
+                                archetype: profile.adventurerArchetype,
+                                size: 58,
                               ),
                               const SizedBox(width: 12),
                               Expanded(
@@ -535,60 +528,54 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      _archetypeLabel(profile.adventurerArchetype).toUpperCase(),
+                                      _archetypeLabel(profile.adventurerArchetype)
+                                          .toUpperCase(),
                                       style: theme.titleMedium.override(
-                                        font: GoogleFonts.pressStart2p(
-                                          fontWeight: FontWeight.w700,
+                                        font: GoogleFonts.cinzel(
+                                          fontWeight: FontWeight.w900,
                                         ),
-                                        fontSize: 13,
-                                        letterSpacing: 0.4,
+                                        fontSize: 18,
+                                        color: const Color(0xFFF4D58A),
+                                        letterSpacing: .7,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
-                                    Row(
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                            'LEVEL ${profile.level}  •  HEARTH ADVENTURER',
-                                            style: theme.bodyMedium.override(
-                                              font: GoogleFonts.inter(),
-                                              color: theme.secondaryText,
-                                              letterSpacing: 0,
-                                            ),
-                                          ),
+                                    Text(
+                                      'LEVEL ${profile.level} • HEARTH ADVENTURER',
+                                      style: theme.bodyMedium.override(
+                                        font: GoogleFonts.libreBaskerville(
+                                          fontWeight: FontWeight.w700,
                                         ),
-                                        if (classMastered) ...[
-                                          const SizedBox(width: 7),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 7,
-                                              vertical: 4,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF0D0C11),
-                                              border: Border.all(
-                                                color: const Color(0xFFF1C75B),
-                                                width: 2,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              'MASTERED',
-                                              style: theme.labelSmall.override(
-                                                font: GoogleFonts.pressStart2p(
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                fontSize: 7,
-                                                color: const Color(0xFFF1C75B),
-                                                letterSpacing: .6,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ],
+                                        fontSize: 11,
+                                        color: const Color(0xFFB9C7D7),
+                                        letterSpacing: .3,
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
+                              if (classMastered)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF1B1510),
+                                    border: Border.all(
+                                      color: const Color(0xFFF1C75B),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'MASTERED',
+                                    style: GoogleFonts.pressStart2p(
+                                      fontSize: 7,
+                                      color: const Color(0xFFF1C75B),
+                                    ),
+                                  ),
+                                ),
+                              const SizedBox(width: 8),
                               _RewardChip(
                                 icon: Icons.monetization_on_outlined,
                                 label: '${profile.coinBalance} coins',
@@ -614,13 +601,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           const SizedBox(height: 5),
                           Text(
                             equipped.isEmpty
-                                ? 'No gear equipped'
-                                : 'Equipped: ${equipped.take(3).map((item) => item.name).join(' • ')}',
+                                ? 'LOADOUT • No gear equipped'
+                                : 'LOADOUT • ${equipped.take(3).map((item) => item.name).join(' • ')}',
                             softWrap: true,
                             style: theme.labelSmall.override(
-                              font: GoogleFonts.inter(),
-                              color: theme.secondaryText,
-                              letterSpacing: 0,
+                              font: GoogleFonts.libreBaskerville(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              color: const Color(0xFFB9C7D7),
+                              fontSize: 11,
+                              letterSpacing: .15,
                             ),
                           ),
                           if (equipped.isNotEmpty) ...[
