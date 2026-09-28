@@ -1867,82 +1867,147 @@ class _ClassPortraitPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()..isAntiAlias = false;
-    void rect(double x, double y, double w, double h, Color color) {
-      p.color = color;
-      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    void r(double x, double y, double w, double h, Color color) =>
+        _Pixel64.rect(canvas, p, x, y, w, h, color);
+
+    // Deep class backdrop with tiled texture and glow.
+    r(0, 0, size.width, size.height, const Color(0xFF0D1118));
+    _Pixel64.dither(
+      canvas,
+      p,
+      Rect.fromLTWH(0, 0, size.width, size.height * .72),
+      palette.first.withValues(alpha: .65),
+      9,
+    );
+    _Pixel64.stepGlow(
+      canvas,
+      p,
+      Offset(size.width * .50, size.height * .42),
+      size.width * .29,
+      palette[1],
+    );
+
+    // Decorative stone arch.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .08, size.height * .10, size.width * .84, size.height * .62),
+      const Color(0xFF2B2B31),
+      const Color(0xFF55505C),
+      const Color(0xFF111217),
+    );
+    r(size.width * .12, size.height * .14, size.width * .76, size.height * .54, const Color(0xFF11151D));
+
+    // Class banner.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .12, size.height * .17, size.width * .16, size.height * .30),
+      palette[1],
+      palette.last,
+      palette.first,
+    );
+    r(size.width * .17, size.height * .24, size.width * .06, size.height * .08, palette.last);
+
+    // Character platform.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .28, size.height * .70, size.width * .44, size.height * .12),
+      const Color(0xFF3B3025),
+      const Color(0xFF7B6447),
+      const Color(0xFF17130F),
+    );
+    for (var i = 0; i < 5; i++) {
+      r(size.width * (.34 + i * .075), size.height * .75, 5, 5, const Color(0xFFD6A84B));
     }
 
-    rect(0, 0, size.width, size.height, palette.first);
-    // Distant stars / particles.
-    for (var i = 0; i < 16; i++) {
-      final x = (i * 47 % 97) / 97 * size.width;
-      final y = (i * 31 % 83) / 83 * size.height * .65;
-      rect(x, y, 3, 3, palette.last.withValues(alpha: .65));
-    }
+    // Full 64-bit Adventurer sprite.
+    _Pixel64.character(
+      canvas,
+      p,
+      origin: Offset(size.width * .50, size.height * .37),
+      scale: size.height / 190 * 2.45,
+      palette: palette,
+      archetype: archetype,
+    );
 
-    // Ground.
-    rect(0, size.height * .76, size.width, size.height * .24, const Color(0xFF17151A));
-
-    final cx = size.width * .50;
-    // Body.
-    rect(cx - 28, size.height * .40, 56, 72, palette[1]);
-    rect(cx - 20, size.height * .29, 40, 42, const Color(0xFFD9A56E));
-    rect(cx - 24, size.height * .25, 48, 14, const Color(0xFF2B241F));
-
+    // Side props tuned by class.
     switch (archetype) {
       case 'scholar':
-        // Hat + book.
-        rect(cx - 33, size.height * .20, 66, 8, palette.last);
-        rect(cx - 18, size.height * .11, 36, 42, palette[1]);
-        rect(cx + 26, size.height * .48, 34, 26, const Color(0xFF6B3C84));
-        rect(cx + 30, size.height * .50, 26, 4, palette.last);
+        _Pixel64.bevel(
+          canvas,
+          p,
+          Rect.fromLTWH(size.width * .70, size.height * .42, size.width * .16, size.height * .17),
+          const Color(0xFF613778),
+          const Color(0xFF9569B2),
+          const Color(0xFF2E183A),
+        );
+        r(size.width * .735, size.height * .455, size.width * .09, 4, const Color(0xFFE5D6B7));
+        r(size.width * .735, size.height * .50, size.width * .07, 4, const Color(0xFFE5D6B7));
         break;
       case 'scout':
-        // Hood + bow.
-        rect(cx - 27, size.height * .18, 54, 18, const Color(0xFF375E37));
-        rect(cx - 35, size.height * .38, 14, 74, const Color(0xFF6A4A2A));
-        p.color = palette.last;
-        canvas.drawArc(
-          Rect.fromCenter(center: Offset(cx + 48, size.height * .52), width: 45, height: 85),
-          -1.3,
-          2.6,
-          false,
-          p..style = PaintingStyle.stroke..strokeWidth = 4,
-        );
-        p.style = PaintingStyle.fill;
+        r(size.width * .77, size.height * .32, 4, size.height * .32, palette.last);
+        for (var i = 0; i < 4; i++) {
+          r(size.width * .745, size.height * (.35 + i * .06), 11, 3, const Color(0xFFD8C7A3));
+        }
         break;
       case 'alchemist':
-        // Goggles + flask.
-        rect(cx - 24, size.height * .28, 20, 9, palette.last);
-        rect(cx + 4, size.height * .28, 20, 9, palette.last);
-        rect(cx + 32, size.height * .48, 10, 30, const Color(0xFFB8EAF1));
-        rect(cx + 25, size.height * .62, 25, 24, const Color(0xFF75D65D));
+        for (var i = 0; i < 3; i++) {
+          final x = size.width * (.72 + i * .055);
+          r(x, size.height * .45, 8, 22, const Color(0xFFB8EAF1));
+          r(x - 2, size.height * .55, 12, 14, i == 0
+              ? const Color(0xFF75D65D)
+              : i == 1
+                  ? const Color(0xFF8D65D6)
+                  : const Color(0xFFE87947));
+        }
         break;
       case 'guardian':
-        // Shield + cape.
-        rect(cx - 45, size.height * .38, 18, 88, const Color(0xFF742525));
-        rect(cx + 28, size.height * .44, 42, 62, const Color(0xFF9C4A2F));
-        rect(cx + 33, size.height * .49, 32, 42, palette.last);
+        _Pixel64.bevel(
+          canvas,
+          p,
+          Rect.fromLTWH(size.width * .71, size.height * .37, size.width * .16, size.height * .24),
+          const Color(0xFF8F3B2D),
+          const Color(0xFFD8754A),
+          const Color(0xFF4A211C),
+        );
+        r(size.width * .765, size.height * .43, 8, size.height * .11, palette.last);
         break;
       default:
-        // Pack + staff.
-        rect(cx - 50, size.height * .42, 23, 64, const Color(0xFF6D5333));
-        rect(cx + 42, size.height * .24, 5, 115, palette.last);
-        rect(cx + 35, size.height * .20, 20, 8, palette.last);
+        r(size.width * .77, size.height * .30, 4, size.height * .36, palette.last);
+        r(size.width * .745, size.height * .30, 22, 6, palette.last);
+        _Pixel64.bevel(
+          canvas,
+          p,
+          Rect.fromLTWH(size.width * .70, size.height * .50, size.width * .13, size.height * .14),
+          const Color(0xFF6A5031),
+          const Color(0xFF9A7748),
+          const Color(0xFF342619),
+        );
+    }
+
+    // Pixel sparks / ambient particles.
+    for (var i = 0; i < 12; i++) {
+      final x = size.width * (.15 + ((i * 17) % 70) / 100);
+      final y = size.height * (.18 + ((i * 23) % 45) / 100);
+      r(x, y, i.isEven ? 3 : 2, i.isEven ? 3 : 2, palette.last.withValues(alpha: .75));
     }
 
     if (showRelic) {
       final relic = _RelicPainter(archetype: archetype, palette: palette);
       canvas.save();
-      canvas.translate(size.width * .69, size.height * .58);
-      relic.paint(canvas, Size(size.width * .25, size.width * .25));
+      canvas.translate(size.width * .70, size.height * .62);
+      relic.paint(canvas, Size(size.width * .19, size.width * .19));
       canvas.restore();
     }
   }
 
   @override
   bool shouldRepaint(covariant _ClassPortraitPainter oldDelegate) =>
-      oldDelegate.archetype != archetype || oldDelegate.showRelic != showRelic;
+      oldDelegate.archetype != archetype ||
+      oldDelegate.palette != palette ||
+      oldDelegate.showRelic != showRelic;
 }
 
 class _RelicPainter extends CustomPainter {
