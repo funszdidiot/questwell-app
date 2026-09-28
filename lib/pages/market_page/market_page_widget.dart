@@ -625,7 +625,6 @@ class _MarketCard extends StatelessWidget {
               style: theme.bodySmall.override(
                 font: GoogleFonts.inter(),
                 color: const Color(0xFFB7C4D4),
-                height: 1.25,
                 letterSpacing: 0,
               ),
             ),
