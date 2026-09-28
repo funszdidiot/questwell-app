@@ -712,8 +712,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       colors: [
                         const Color(0x260B1630),
                         const Color(0x00101824),
-                        const Color(0x3A1B1008),
-                        const Color(0x9A0B0808),
+                        const Color(0x281B1008),
+                        const Color(0x5A0B0808),
                       ],
                       stops: const [0, .34, .70, 1],
                     ),
@@ -1100,7 +1100,7 @@ class _HearthAtmospherePainter extends CustomPainter {
 
     // Foreground silhouettes create parallax depth and help the room read
     // as a space the Adventurer is standing inside rather than a flat card.
-    p.color = const Color(0xB20B090A);
+    p.color = const Color(0x850B090A);
     canvas.drawRect(
       Rect.fromLTWH(0, size.height * .855, size.width * .10, size.height * .145),
       p,
@@ -1116,7 +1116,7 @@ class _HearthAtmospherePainter extends CustomPainter {
     );
     // Low foreground furniture shapes break the flat-card silhouette into
     // recognizable room depth while staying below the Adventurer eye line.
-    p.color = const Color(0xCC171012);
+    p.color = const Color(0xA8171012);
     canvas.drawRect(
       Rect.fromLTWH(
         size.width * .015,
@@ -1147,7 +1147,7 @@ class _HearthAtmospherePainter extends CustomPainter {
 
     // Dark edge strips work as a pixel vignette and keep attention on the
     // Adventurer and the warm room center.
-    p.color = const Color(0x38000000);
+    p.color = const Color(0x24000000);
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width * .035, size.height), p);
     canvas.drawRect(
       Rect.fromLTWH(size.width * .965, 0, size.width * .035, size.height),

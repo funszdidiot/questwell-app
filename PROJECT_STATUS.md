@@ -77,6 +77,11 @@ Target:
 - Supporting copy, descriptions, helper text, and subheaders standardized on Roboto across core screens
 - Section headers standardized on Press Start 2P, a commercially usable pixel font under the SIL Open Font License 1.1
 
+**Founder checkpoint #1 (iPhone Safari): NEEDS POLISH**
+- Technical rendering is stable, but the visible Hearth scene was too dark in the lower half
+- Several visible Hearth section/status titles were still using Roboto rather than the pixel header standard
+- Follow-up pass reduces overlay/vignette darkness and completes visible Hearth header typography before reinspection
+
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
 ## Release gate

@@ -544,10 +544,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       _archetypeLabel(profile.adventurerArchetype)
                                           .toUpperCase(),
                                       style: theme.titleMedium.override(
-                                        font: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.w900,
+                                        font: GoogleFonts.pressStart2p(
+                                          fontWeight: FontWeight.w700,
                                         ),
-                                        fontSize: 18,
+                                        fontSize: 13,
                                         color: const Color(0xFFF4D58A),
                                         letterSpacing: .7,
                                       ),
@@ -724,10 +724,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ? 'Momentum is building'
                                       : 'Fresh start',
                                   style: theme.titleMedium.override(
-                                    font: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.w800,
+                                    font: GoogleFonts.pressStart2p(
+                                      fontWeight: FontWeight.w700,
                                     ),
-                                    fontSize: 18,
+                                    fontSize: 12,
                                     letterSpacing: 0,
                                   ),
                                 ),
