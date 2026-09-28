@@ -155,7 +155,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     child: Text(
                       'Boss Defeated!',
                       style: theme.titleLarge.override(
-                        font: GoogleFonts.interTight(
+                        font: GoogleFonts.roboto(
                           fontWeight: FontWeight.w700,
                         ),
                         letterSpacing: 0,
@@ -176,7 +176,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   Text(
                     '${_bossName(battle.bossType)} is down. +${result.xpAwarded} XP • +${result.coinsAwarded} coins',
                     style: theme.bodyMedium.override(
-                      font: GoogleFonts.inter(),
+                      font: GoogleFonts.roboto(),
                       letterSpacing: 0,
                     ),
                   ),
@@ -235,7 +235,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   Text(
                     'Summon a Boss Battle',
                     style: theme.titleLarge.override(
-                      font: GoogleFonts.interTight(
+                      font: GoogleFonts.roboto(
                         fontWeight: FontWeight.w700,
                       ),
                       letterSpacing: 0,
@@ -245,7 +245,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   Text(
                     'Turn one intimidating office project into smaller attacks.',
                     style: theme.bodyMedium.override(
-                      font: GoogleFonts.inter(),
+                      font: GoogleFonts.roboto(),
                       color: theme.secondaryText,
                       letterSpacing: 0,
                     ),
@@ -304,7 +304,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   Text(
                     'Attack plan',
                     style: theme.titleMedium.override(
-                      font: GoogleFonts.interTight(
+                      font: GoogleFonts.roboto(
                         fontWeight: FontWeight.w700,
                       ),
                       letterSpacing: 0,
@@ -418,7 +418,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     Text(
                       'The office monsters slipped away.',
                       style: theme.titleMedium.override(
-                        font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                        font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
                         letterSpacing: 0,
                       ),
                     ),
@@ -460,7 +460,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     Text(
                       'No office monsters yet.',
                       style: theme.titleLarge.override(
-                        font: GoogleFonts.interTight(
+                        font: GoogleFonts.roboto(
                           fontWeight: FontWeight.w700,
                         ),
                         letterSpacing: 0,
@@ -471,7 +471,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                       'Turn the next intimidating project into a Boss Battle.',
                       textAlign: TextAlign.center,
                       style: theme.bodyMedium.override(
-                        font: GoogleFonts.inter(),
+                        font: GoogleFonts.roboto(),
                         color: theme.secondaryText,
                         letterSpacing: 0,
                       ),
@@ -526,7 +526,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                 Text(
                                   'Turn intimidating office work into a fight you can win.',
                                   style: theme.bodyMedium.override(
-                                    font: GoogleFonts.inter(
+                                    font: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600,
                                     ),
                                     color: const Color(0xFFB7C4D4),
@@ -569,7 +569,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                           child: Text(
                             'Campfire Mode: one boss, one attack. The rest can wait.',
                             style: theme.bodyMedium.override(
-                              font: GoogleFonts.inter(
+                              font: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w600,
                               ),
                               letterSpacing: 0,
@@ -616,7 +616,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                 Text(
                                   _bossName(battle.bossType),
                                   style: theme.labelMedium.override(
-                                    font: GoogleFonts.inter(
+                                    font: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w700,
                                     ),
                                     color: theme.primary,
@@ -627,7 +627,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                 Text(
                                   battle.title,
                                   style: theme.titleMedium.override(
-                                    font: GoogleFonts.interTight(
+                                    font: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w700,
                                     ),
                                     letterSpacing: 0,
@@ -647,7 +647,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                   ? 'BOSS DEFEATED'
                                   : '${battle.completedSteps} / ${battle.totalSteps} ATTACKS',
                               style: theme.labelSmall.override(
-                                font: GoogleFonts.inter(
+                                font: GoogleFonts.roboto(
                                   fontWeight: FontWeight.w800,
                                 ),
                                 color: battle.completed
@@ -662,7 +662,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                 ? '0% HP'
                                 : '${((1 - battle.progress) * 100).round()}% HP',
                             style: theme.labelSmall.override(
-                              font: GoogleFonts.inter(
+                              font: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w800,
                               ),
                               color: theme.secondaryText,
@@ -737,7 +737,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                   child: Text(
                                     step.title,
                                     style: theme.bodyMedium.override(
-                                      font: GoogleFonts.inter(
+                                      font: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w700,
                                       ),
                                       color: const Color(0xFF30261D),
@@ -766,7 +766,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                       Text(
                         'Victory loot: +${battle.rewardXp} XP • +${battle.rewardCoins} coins',
                         style: theme.labelMedium.override(
-                          font: GoogleFonts.inter(
+                          font: GoogleFonts.roboto(
                             fontWeight: FontWeight.w600,
                           ),
                           color: theme.secondaryText,
@@ -839,7 +839,7 @@ class _BossIntelCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   value,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.roboto(
                     fontSize: 12,
                     height: 1.3,
                     fontWeight: FontWeight.w600,

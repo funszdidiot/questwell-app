@@ -209,14 +209,14 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
             title: Text(
               'Change to ${_archetypeLabel(archetype)}?',
               style: dialogTheme.titleLarge.override(
-                font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
                 letterSpacing: 0,
               ),
             ),
             content: Text(
               '$preview${remaining > 0 ? ' and $remaining more' : ''} will be unequipped because that gear belongs to another class. You will still own it.',
               style: dialogTheme.bodyMedium.override(
-                font: GoogleFonts.inter(),
+                font: GoogleFonts.roboto(),
                 color: dialogTheme.secondaryText,
                 letterSpacing: 0,
               ),
@@ -404,7 +404,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                           const SizedBox(height: 4),
                           Text(
                             'Character • equipment • relics • collection',
-                            style: GoogleFonts.libreBaskerville(
+                            style: GoogleFonts.roboto(
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: const Color(0xFFB9D8EA),
@@ -468,7 +468,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                               _archetypeLabel(
                                 data.profile.adventurerArchetype,
                               ).toUpperCase(),
-                              style: GoogleFonts.libreBaskerville(
+                              style: GoogleFonts.roboto(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                                 color: QuestwellPixelPalette.forClass(
@@ -483,7 +483,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             const SizedBox(height: 12),
                             Text(
                               '${data.profile.totalXp} XP',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.roboto(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w800,
                                 color: const Color(0xFFD7E2EF),
@@ -492,7 +492,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             const SizedBox(height: 5),
                             Text(
                               '${data.profile.coinBalance} COINS',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.roboto(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w800,
                                 color: const Color(0xFFF1C75B),
@@ -501,7 +501,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             const SizedBox(height: 12),
                             Text(
                               '${equipped.length} / 5 GEAR SLOTS ACTIVE',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.roboto(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: .5,
@@ -521,7 +521,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                                   Expanded(
                                     child: Text(
                                       'MASTERY RELIC BOUND',
-                                      style: GoogleFonts.inter(
+                                      style: GoogleFonts.roboto(
                                         fontSize: 9,
                                         fontWeight: FontWeight.w900,
                                         color: const Color(0xFFE6C568),
@@ -578,7 +578,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 Text(
                   'Cosmetic identity only. Pick the vibe that feels like you.',
                   style: theme.bodyMedium.override(
-                    font: GoogleFonts.inter(),
+                    font: GoogleFonts.roboto(),
                     color: theme.secondaryText,
                     letterSpacing: 0,
                   ),
@@ -640,7 +640,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             Text(
                               '${_archetypeLabel(data.profile.adventurerArchetype)} Path',
                               style: theme.titleMedium.override(
-                                font: GoogleFonts.interTight(
+                                font: GoogleFonts.roboto(
                                   fontWeight: FontWeight.w700,
                                 ),
                                 letterSpacing: 0,
@@ -652,7 +652,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                                 data.profile.adventurerArchetype,
                               ),
                               style: theme.bodySmall.override(
-                                font: GoogleFonts.inter(),
+                                font: GoogleFonts.roboto(),
                                 color: theme.secondaryText,
                                 letterSpacing: 0,
                               ),
@@ -661,7 +661,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             Text(
                               'Mastery relic: ${_masteryRelicName(data.profile.adventurerArchetype)}',
                               style: theme.labelMedium.override(
-                                font: GoogleFonts.inter(
+                                font: GoogleFonts.roboto(
                                   fontWeight: FontWeight.w700,
                                 ),
                                 color: theme.primary,
@@ -696,7 +696,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             Text(
                               '${_archetypeLabel(data.profile.adventurerArchetype)} Collection',
                               style: theme.titleMedium.override(
-                                font: GoogleFonts.interTight(
+                                font: GoogleFonts.roboto(
                                   fontWeight: FontWeight.w700,
                                 ),
                                 letterSpacing: 0,
@@ -712,7 +712,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                                           ? 'Collection complete — your mastery relic is ready.'
                                           : '$ownedClassItems of ${classCollection.length} class-exclusive items unlocked',
                               style: theme.bodySmall.override(
-                                font: GoogleFonts.inter(),
+                                font: GoogleFonts.roboto(),
                                 color: theme.secondaryText,
                                 letterSpacing: 0,
                               ),
@@ -758,7 +758,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                     ),
                     Text(
                       '${equipped.length} / 5 SLOTS',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.roboto(
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
                         color: const Color(0xFFD6A84B),
@@ -847,7 +847,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                       ),
                       child: Text(
                         '${owned.length} ITEMS',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.roboto(
                           fontSize: 11,
                           fontWeight: FontWeight.w800,
                           color: const Color(0xFFF2D9A0),
@@ -860,7 +860,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 Text(
                   'Everything you have earned or unlocked lives here.',
                   style: theme.bodyMedium.override(
-                    font: GoogleFonts.inter(),
+                    font: GoogleFonts.roboto(),
                     color: theme.secondaryText,
                     letterSpacing: 0,
                   ),
@@ -988,7 +988,7 @@ class _ArchetypeCard extends StatelessWidget {
                       description,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.roboto(
                         fontSize: 12,
                         height: 1.25,
                         color: const Color(0xFFB7C4D4),
@@ -998,7 +998,7 @@ class _ArchetypeCard extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         'ACTIVE CLASS',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.roboto(
                           fontSize: 10,
                           fontWeight: FontWeight.w800,
                           color: palette.last,
@@ -1081,7 +1081,7 @@ class _GearSlotCard extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.roboto(
               fontSize: 11,
               height: 1.15,
               fontWeight: FontWeight.w700,
@@ -1162,7 +1162,7 @@ class _InventoryTile extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
+            style: GoogleFonts.roboto(
               fontSize: 12,
               height: 1.15,
               fontWeight: FontWeight.w800,
@@ -1181,7 +1181,7 @@ class _InventoryTile extends StatelessWidget {
             Text(
               locked ? 'CLASS LOCKED' : 'CLASS GEAR',
               textAlign: TextAlign.center,
-              style: GoogleFonts.inter(
+              style: GoogleFonts.roboto(
                 fontSize: 9,
                 fontWeight: FontWeight.w800,
                 color: locked
@@ -1255,7 +1255,7 @@ class _EquippedChip extends StatelessWidget {
           Text(
             label,
             style: theme.labelMedium.override(
-              font: GoogleFonts.inter(fontWeight: FontWeight.w600),
+              font: GoogleFonts.roboto(fontWeight: FontWeight.w600),
               letterSpacing: 0,
             ),
           ),
@@ -1283,7 +1283,7 @@ class _EmptyPanel extends StatelessWidget {
       child: Text(
         text,
         style: theme.bodyMedium.override(
-          font: GoogleFonts.inter(),
+          font: GoogleFonts.roboto(),
           color: theme.secondaryText,
           letterSpacing: 0,
         ),

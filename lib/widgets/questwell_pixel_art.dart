@@ -156,7 +156,7 @@ class QuestwellBrandWordmark extends StatelessWidget {
           subtitle,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.libreBaskerville(
+          style: GoogleFonts.roboto(
             fontSize: compact ? 12 : 14,
             fontWeight: FontWeight.w700,
             color: const Color(0xFFB9D8EA),
@@ -290,7 +290,7 @@ class QuestwellScreenHeader extends StatelessWidget {
                     subtitle,
                     maxLines: compact ? 2 : 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.roboto(
                       fontWeight: FontWeight.w600,
                       fontSize: compact ? 12 : 14,
                       height: 1.25,
@@ -865,7 +865,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               'GEAR ${equippedSlugs.length}${showRelic ? '  •  MASTERED' : ''}',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.roboto(
                                 fontSize: compact ? 7 : 8,
                                 fontWeight: FontWeight.w800,
                                 letterSpacing: .5,
@@ -920,7 +920,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           'HOME BASE',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.roboto(
                             fontSize: compact ? 8 : 9,
                             fontWeight: FontWeight.w800,
                             letterSpacing: 1.2,

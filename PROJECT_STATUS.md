@@ -72,6 +72,11 @@ Target:
 - Perspective Hearth rug and class-accent floor ornaments added to ground the scene
 - Ember clusters and low foreground furniture shapes added for environmental storytelling
 
+**Typography checkpoint:**
+- Questwell wordmark remains unchanged
+- Supporting copy, descriptions, helper text, and subheaders standardized on Roboto across core screens
+- Exact Common Pixel header rollout is pending commercial-use licensing; the font is currently documented as personal-use only
+
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
 ## Release gate

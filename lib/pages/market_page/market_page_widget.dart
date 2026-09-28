@@ -164,7 +164,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                       'Could not refresh this page.',
                       textAlign: TextAlign.center,
                       style: theme.titleMedium.override(
-                        font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                        font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
                         letterSpacing: 0,
                       ),
                     ),
@@ -242,7 +242,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                           Text(
                             'Rare finds, class gear, and questionable fashion choices.',
                             style: theme.bodyMedium.override(
-                              font: GoogleFonts.inter(
+                              font: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w600,
                               ),
                               color: const Color(0xFFB7C4D4),
@@ -287,7 +287,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                             Text(
                               '${data.profile.coinBalance} coins',
                               style: theme.titleMedium.override(
-                                font: GoogleFonts.interTight(
+                                font: GoogleFonts.roboto(
                                   fontWeight: FontWeight.w700,
                                 ),
                                 letterSpacing: 0,
@@ -297,7 +297,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                             Text(
                               'Earn coins by finishing real-life quests.',
                               style: theme.bodySmall.override(
-                                font: GoogleFonts.inter(),
+                                font: GoogleFonts.roboto(),
                                 color: theme.secondaryText,
                                 letterSpacing: 0,
                               ),
@@ -323,7 +323,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                 Text(
                   'Exclusive gear for your current Adventurer class.',
                   style: theme.bodyMedium.override(
-                    font: GoogleFonts.inter(),
+                    font: GoogleFonts.roboto(),
                     color: theme.secondaryText,
                     letterSpacing: 0,
                   ),
@@ -379,7 +379,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                 Text(
                   'Available to every class. Cosmetics only — productivity never depends on what you buy.',
                   style: theme.bodyMedium.override(
-                    font: GoogleFonts.inter(),
+                    font: GoogleFonts.roboto(),
                     color: theme.secondaryText,
                     letterSpacing: 0,
                   ),
@@ -436,7 +436,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                   Text(
                     'You can browse these, but they stay locked unless you change class.',
                     style: theme.bodyMedium.override(
-                      font: GoogleFonts.inter(),
+                      font: GoogleFonts.roboto(),
                       color: theme.secondaryText,
                       letterSpacing: 0,
                     ),
@@ -597,7 +597,7 @@ class _MarketCard extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: theme.titleMedium.override(
-              font: GoogleFonts.cinzel(
+              font: GoogleFonts.roboto(
                 fontWeight: FontWeight.w800,
               ),
               fontSize: 14,
@@ -609,7 +609,7 @@ class _MarketCard extends StatelessWidget {
           Text(
             cosmetic.category.toUpperCase(),
             style: theme.labelSmall.override(
-              font: GoogleFonts.inter(fontWeight: FontWeight.w800),
+              font: GoogleFonts.roboto(fontWeight: FontWeight.w800),
               color: const Color(0xFF9EACBE),
               letterSpacing: .8,
             ),
@@ -631,7 +631,7 @@ class _MarketCard extends StatelessWidget {
                     '${archetypeLabel(cosmetic.requiredArchetype!)} only',
                     overflow: TextOverflow.ellipsis,
                     style: theme.labelSmall.override(
-                      font: GoogleFonts.inter(
+                      font: GoogleFonts.roboto(
                         fontWeight: FontWeight.w800,
                       ),
                       color: classLocked
@@ -651,7 +651,7 @@ class _MarketCard extends StatelessWidget {
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: theme.bodySmall.override(
-                font: GoogleFonts.inter(),
+                font: GoogleFonts.roboto(),
                 color: const Color(0xFFB7C4D4),
                 letterSpacing: 0,
               ),

@@ -240,7 +240,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ? 'Level Up!'
                             : 'Quest Complete!',
                     style: dialogTheme.titleLarge.override(
-                      font: GoogleFonts.interTight(
+                      font: GoogleFonts.roboto(
                         fontWeight: FontWeight.w700,
                       ),
                       letterSpacing: 0,
@@ -265,7 +265,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           ? 'Your adventurer reached Level $newLevel.'
                           : 'A small win became real momentum.',
                   style: dialogTheme.bodyMedium.override(
-                    font: GoogleFonts.inter(),
+                    font: GoogleFonts.roboto(),
                     color: dialogTheme.secondaryText,
                     letterSpacing: 0,
                   ),
@@ -289,7 +289,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 Text(
                   'Balance: ${reward.coinBalance} coins • ${reward.totalXp} total XP',
                   style: dialogTheme.labelMedium.override(
-                    font: GoogleFonts.inter(
+                    font: GoogleFonts.roboto(
                       fontWeight: FontWeight.w600,
                     ),
                     color: dialogTheme.secondaryText,
@@ -480,7 +480,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               child: Text(
                                 'The Hearth could not refresh right now.',
                                 style: theme.bodyMedium.override(
-                                  font: GoogleFonts.inter(),
+                                  font: GoogleFonts.roboto(),
                                   letterSpacing: 0,
                                 ),
                               ),
@@ -544,7 +544,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       _archetypeLabel(profile.adventurerArchetype)
                                           .toUpperCase(),
                                       style: theme.titleMedium.override(
-                                        font: GoogleFonts.cinzel(
+                                        font: GoogleFonts.roboto(
                                           fontWeight: FontWeight.w900,
                                         ),
                                         fontSize: 18,
@@ -556,7 +556,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     Text(
                                       'LEVEL ${profile.level} • HEARTH ADVENTURER',
                                       style: theme.bodyMedium.override(
-                                        font: GoogleFonts.libreBaskerville(
+                                        font: GoogleFonts.roboto(
                                           fontWeight: FontWeight.w700,
                                         ),
                                         fontSize: 11,
@@ -606,7 +606,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           Text(
                             '$xpIntoLevel / 100 XP to next level',
                             style: theme.labelSmall.override(
-                              font: GoogleFonts.inter(),
+                              font: GoogleFonts.roboto(),
                               color: theme.secondaryText,
                               letterSpacing: 0,
                             ),
@@ -618,7 +618,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 : 'LOADOUT • ${equipped.take(3).map((item) => item.name).join(' • ')}',
                             softWrap: true,
                             style: theme.labelSmall.override(
-                              font: GoogleFonts.libreBaskerville(
+                              font: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w700,
                               ),
                               color: const Color(0xFFB9C7D7),
@@ -724,7 +724,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ? 'Momentum is building'
                                       : 'Fresh start',
                                   style: theme.titleMedium.override(
-                                    font: GoogleFonts.interTight(
+                                    font: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w800,
                                     ),
                                     fontSize: 18,
@@ -737,7 +737,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       ? '${momentum.weekWins} win${momentum.weekWins == 1 ? '' : 's'} this week • ${momentum.bossesDefeated} boss${momentum.bossesDefeated == 1 ? '' : 'es'} defeated'
                                       : 'Welcome back. No catching up required. Pick one thing.',
                                   style: theme.bodySmall.override(
-                                    font: GoogleFonts.inter(),
+                                    font: GoogleFonts.roboto(),
                                     color: theme.secondaryText,
                                     letterSpacing: 0,
                                   ),
@@ -780,7 +780,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               child: Text(
                                 'Welcome to Questwell',
                                 style: theme.titleLarge.override(
-                                  font: GoogleFonts.interTight(
+                                  font: GoogleFonts.roboto(
                                     fontWeight: FontWeight.w700,
                                   ),
                                   letterSpacing: 0,
@@ -793,7 +793,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         Text(
                           'Pick one tiny real-life win. Completing it earns your first XP and coins.',
                           style: theme.bodyMedium.override(
-                            font: GoogleFonts.inter(),
+                            font: GoogleFonts.roboto(),
                             color: theme.secondaryText,
                             letterSpacing: 0,
                           ),
@@ -893,7 +893,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   ? 'Today counts even if we go small. One quest at a time.'
                                   : 'Low-energy day? Narrow the board to one gentle next step.',
                               style: theme.bodySmall.override(
-                                font: GoogleFonts.inter(),
+                                font: GoogleFonts.roboto(),
                                 color: theme.secondaryText,
                                 letterSpacing: 0,
                               ),
@@ -928,7 +928,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   Text(
                     'No catching up. No penalty. Just the next thing.',
                     style: theme.bodyMedium.override(
-                      font: GoogleFonts.inter(),
+                      font: GoogleFonts.roboto(),
                       color: theme.secondaryText,
                       letterSpacing: 0,
                     ),
@@ -980,7 +980,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               child: Text(
                                 'The Quest Board could not refresh right now.',
                                 style: theme.bodyMedium.override(
-                                  font: GoogleFonts.inter(),
+                                  font: GoogleFonts.roboto(),
                                   letterSpacing: 0,
                                 ),
                               ),
@@ -1023,7 +1023,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             Text(
                               'The quest board is clear.',
                               style: theme.titleMedium.override(
-                                font: GoogleFonts.interTight(
+                                font: GoogleFonts.roboto(
                                   fontWeight: FontWeight.w700,
                                 ),
                                 letterSpacing: 0,
@@ -1033,7 +1033,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             Text(
                               'No catching up required. Add one thing when you are ready.',
                               style: theme.bodyMedium.override(
-                                font: GoogleFonts.inter(),
+                                font: GoogleFonts.roboto(),
                                 color: theme.secondaryText,
                                 letterSpacing: 0,
                               ),
@@ -1087,7 +1087,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
                     color: theme.secondaryBackground,
                     textStyle: theme.titleSmall.override(
-                      font: GoogleFonts.interTight(
+                      font: GoogleFonts.roboto(
                         fontWeight: FontWeight.w700,
                       ),
                       color: theme.primaryText,
@@ -1246,7 +1246,7 @@ class _QuestCard extends StatelessWidget {
                 child: Text(
                   frictionLabel,
                   style: theme.labelMedium.override(
-                    font: GoogleFonts.inter(fontWeight: FontWeight.w600),
+                    font: GoogleFonts.roboto(fontWeight: FontWeight.w600),
                     color: theme.secondaryText,
                     letterSpacing: 0,
                   ),
@@ -1260,7 +1260,7 @@ class _QuestCard extends StatelessWidget {
                 ? task.title!
                 : 'Untitled quest',
             style: (featured ? theme.titleLarge : theme.titleMedium).override(
-              font: GoogleFonts.interTight(fontWeight: FontWeight.w800),
+              font: GoogleFonts.roboto(fontWeight: FontWeight.w800),
               color: featured ? const Color(0xFFF2E7CE) : theme.primaryText,
               letterSpacing: 0,
             ),
@@ -1290,7 +1290,7 @@ class _QuestCard extends StatelessWidget {
               padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
               color: featured ? theme.primary : theme.primaryBackground,
               textStyle: theme.titleSmall.override(
-                font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
                 color: featured ? Colors.white : theme.primaryText,
                 letterSpacing: 0,
               ),
@@ -1339,7 +1339,7 @@ class _RewardChip extends StatelessWidget {
           Text(
             label,
             style: theme.labelMedium.override(
-              font: GoogleFonts.inter(
+              font: GoogleFonts.roboto(
                 fontWeight: FontWeight.w600,
               ),
               letterSpacing: 0,

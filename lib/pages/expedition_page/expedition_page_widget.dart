@@ -127,7 +127,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
             Text(
               'A quiet focus session with no streaks, rankings, or guilt.',
               style: theme.bodyMedium.override(
-                font: GoogleFonts.inter(),
+                font: GoogleFonts.roboto(),
                 color: theme.secondaryText,
                 letterSpacing: 0,
               ),
@@ -177,7 +177,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                         Text(
                           _timeLabel,
                           style: theme.displaySmall.override(
-                            font: GoogleFonts.interTight(
+                            font: GoogleFonts.roboto(
                               fontWeight: FontWeight.w800,
                             ),
                             color: const Color(0xFFF2E7CE),
@@ -199,7 +199,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                   ? 'STAY WITH THE QUEST'
                                   : 'READY WHEN YOU ARE',
                           style: theme.labelSmall.override(
-                            font: GoogleFonts.inter(
+                            font: GoogleFonts.roboto(
                               fontWeight: FontWeight.w800,
                             ),
                             color: const Color(0xFFD8C7A3),
@@ -289,7 +289,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                     child: Text(
                       'If 15 minutes feels like too much, leave. The point is to help you begin, not trap you in a timer.',
                       style: theme.bodyMedium.override(
-                        font: GoogleFonts.inter(),
+                        font: GoogleFonts.roboto(),
                         color: theme.secondaryText,
                         letterSpacing: 0,
                       ),

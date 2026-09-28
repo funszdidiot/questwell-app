@@ -127,7 +127,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                           Text(
                             'Every quest leaves a page behind.',
                             style: theme.bodyMedium.override(
-                              font: GoogleFonts.inter(
+                              font: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w600,
                               ),
                               color: const Color(0xFFB7C4D4),
@@ -180,7 +180,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                             Text(
                               'Small wins. Real momentum. No streak pressure required.',
                               style: theme.bodyMedium.override(
-                                font: GoogleFonts.inter(),
+                                font: GoogleFonts.roboto(),
                                 color: const Color(0xFFB7C4D4),
                                 letterSpacing: 0,
                               ),
@@ -272,7 +272,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                         Text(
                           'Your first page is waiting.',
                           style: theme.titleMedium.override(
-                            font: GoogleFonts.interTight(
+                            font: GoogleFonts.roboto(
                               fontWeight: FontWeight.w700,
                             ),
                             letterSpacing: 0,
@@ -282,7 +282,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                         Text(
                           'Complete a quest or defeat a boss and it will appear here.',
                           style: theme.bodyMedium.override(
-                            font: GoogleFonts.inter(),
+                            font: GoogleFonts.roboto(),
                             color: const Color(0xFF67543E),
                             letterSpacing: 0,
                           ),
@@ -338,7 +338,7 @@ class _StatCard extends StatelessWidget {
           Text(
             value,
             style: theme.headlineSmall.override(
-              font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+              font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
               letterSpacing: 0,
             ),
           ),
@@ -346,7 +346,7 @@ class _StatCard extends StatelessWidget {
           Text(
             label,
             style: theme.labelMedium.override(
-              font: GoogleFonts.inter(),
+              font: GoogleFonts.roboto(),
               color: theme.secondaryText,
               letterSpacing: 0,
             ),
@@ -385,7 +385,7 @@ class _WinCard extends StatelessWidget {
                 Text(
                   isBoss ? 'BOSS DEFEATED' : 'QUEST COMPLETE',
                   style: theme.labelSmall.override(
-                    font: GoogleFonts.inter(fontWeight: FontWeight.w700),
+                    font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
                     color: const Color(0xFF6E3B2C),
                     letterSpacing: 1.1,
                   ),
@@ -394,7 +394,7 @@ class _WinCard extends StatelessWidget {
                 Text(
                   win.title,
                   style: theme.titleMedium.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                    font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
                     letterSpacing: 0,
                   ),
                 ),
@@ -402,7 +402,7 @@ class _WinCard extends StatelessWidget {
                 Text(
                   DateFormat('MMM d, yyyy').format(win.completedAt.toLocal()),
                   style: theme.bodySmall.override(
-                    font: GoogleFonts.inter(),
+                    font: GoogleFonts.roboto(),
                     color: const Color(0xFF67543E),
                     letterSpacing: 0,
                   ),
@@ -423,7 +423,7 @@ class _WinCard extends StatelessWidget {
                         Text(
                           '+${win.xp} XP',
                           style: theme.labelMedium.override(
-                            font: GoogleFonts.inter(
+                            font: GoogleFonts.roboto(
                               fontWeight: FontWeight.w600,
                             ),
                             color: const Color(0xFF67543E),
@@ -443,7 +443,7 @@ class _WinCard extends StatelessWidget {
                         Text(
                           '+${win.coins} coins',
                           style: theme.labelMedium.override(
-                            font: GoogleFonts.inter(
+                            font: GoogleFonts.roboto(
                               fontWeight: FontWeight.w600,
                             ),
                             color: const Color(0xFF67543E),

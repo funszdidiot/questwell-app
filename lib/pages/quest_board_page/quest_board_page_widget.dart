@@ -253,7 +253,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                     Text(
                       'Choose your next small win.',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.roboto(
                         color: const Color(0xFFB7C4D4),
                         fontSize: 14,
                       ),
@@ -330,7 +330,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                         const SizedBox(height: 12),
                         Text(
                           _bossName(boss.bossType),
-                          style: GoogleFonts.interTight(
+                          style: GoogleFonts.roboto(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
                             color: const Color(0xFFF7E7C1),
@@ -339,7 +339,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                         const SizedBox(height: 4),
                         Text(
                           boss.title,
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.roboto(
                             fontSize: 14,
                             color: const Color(0xFFCFD7E3),
                           ),
@@ -358,7 +358,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                             const SizedBox(width: 10),
                             Text(
                               '+${boss.rewardXp} XP • +${boss.rewardCoins} coins',
-                              style: GoogleFonts.inter(
+                              style: GoogleFonts.roboto(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
                                 color: const Color(0xFFF1C75B),
@@ -423,7 +423,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                           _filter == 'favorites'
                               ? 'No favorite quests yet. Tap the star on any quest to pin it here.'
                               : 'No quests in this lane right now.',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.roboto(
                             color: const Color(0xFF4B3A28),
                             fontWeight: FontWeight.w700,
                           ),
@@ -454,7 +454,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                   padding: const EdgeInsets.all(18),
                   child: Text(
                     'Open Boss Battles to manage every office monster and attack step.',
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.roboto(
                       color: const Color(0xFF4B3A28),
                       fontWeight: FontWeight.w700,
                     ),
@@ -476,7 +476,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                     Expanded(
                       child: Text(
                         'A smaller, brighter tomorrow starts with one finished quest.',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.roboto(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: const Color(0xFFCFD7E3),
@@ -543,7 +543,7 @@ class _BoardFilter extends StatelessWidget {
               const SizedBox(width: 7),
               Text(
                 label,
-                style: GoogleFonts.inter(
+                style: GoogleFonts.roboto(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: selected
@@ -602,7 +602,7 @@ class _DailyQuestCard extends StatelessWidget {
                         (task.title?.trim().isNotEmpty ?? false)
                             ? task.title!
                             : 'Untitled quest',
-                        style: GoogleFonts.interTight(
+                        style: GoogleFonts.roboto(
                           fontSize: 17,
                           fontWeight: FontWeight.w800,
                           color: const Color(0xFFF3E7CD),
@@ -640,14 +640,14 @@ class _DailyQuestCard extends StatelessWidget {
                     ),
                     Text(
                       frictionLabel,
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.roboto(
                         fontSize: 12,
                         color: const Color(0xFFB7C4D4),
                       ),
                     ),
                     Text(
                       '+${task.xpValue ?? 0} XP',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.roboto(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                         color: const Color(0xFFB99BFF),
@@ -655,7 +655,7 @@ class _DailyQuestCard extends StatelessWidget {
                     ),
                     Text(
                       '+${task.coinValue ?? 0} coins',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.roboto(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                         color: const Color(0xFFF1C75B),
