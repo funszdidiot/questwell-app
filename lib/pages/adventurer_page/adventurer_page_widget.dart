@@ -417,10 +417,14 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                         width: double.infinity,
                         child: Stack(
                           children: [
-                            QuestwellClassPixelPortrait(
+                            QuestwellEquippedAvatar(
                               archetype: data.profile.adventurerArchetype,
-                              height: 190,
+                              height: 220,
                               showRelic: masteryOwned,
+                              equippedSlugs: {
+                                for (final item in equipped)
+                                  item.category: item.slug,
+                              },
                             ),
                             if (equipped.isNotEmpty)
                               Positioned(
