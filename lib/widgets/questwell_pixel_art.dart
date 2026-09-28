@@ -1558,7 +1558,7 @@ class QuestwellEquippedAvatar extends StatelessWidget {
           ),
           ClipRect(
             child: Transform.scale(
-              scale: 1.18,
+              scale: 1.10,
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
