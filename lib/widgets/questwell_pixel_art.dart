@@ -863,6 +863,152 @@ class QuestwellBossPixelArt extends StatelessWidget {
   }
 }
 
+class _Pixel64 {
+  static void rect(
+    Canvas canvas,
+    Paint paint,
+    double x,
+    double y,
+    double w,
+    double h,
+    Color color,
+  ) {
+    paint.color = color;
+    canvas.drawRect(Rect.fromLTWH(x, y, w, h), paint);
+  }
+
+  static void stepGlow(
+    Canvas canvas,
+    Paint paint,
+    Offset center,
+    double radius,
+    Color color,
+  ) {
+    for (var i = 3; i >= 1; i--) {
+      final r = radius * i / 3;
+      final alpha = i == 3 ? .10 : i == 2 ? .16 : .24;
+      rect(
+        canvas,
+        paint,
+        center.dx - r,
+        center.dy - r,
+        r * 2,
+        r * 2,
+        color.withValues(alpha: alpha),
+      );
+    }
+  }
+
+  static void dither(
+    Canvas canvas,
+    Paint paint,
+    Rect area,
+    Color color,
+    double step,
+  ) {
+    for (double y = area.top; y < area.bottom; y += step) {
+      for (double x = area.left; x < area.right; x += step) {
+        if ((((x / step).floor() + (y / step).floor()) & 1) == 0) {
+          rect(canvas, paint, x, y, step * .46, step * .46, color);
+        }
+      }
+    }
+  }
+
+  static void bevel(
+    Canvas canvas,
+    Paint paint,
+    Rect area,
+    Color base,
+    Color light,
+    Color dark,
+  ) {
+    rect(canvas, paint, area.left, area.top, area.width, area.height, base);
+    rect(canvas, paint, area.left, area.top, area.width, 4, light);
+    rect(canvas, paint, area.left, area.top, 4, area.height, light);
+    rect(canvas, paint, area.left, area.bottom - 4, area.width, 4, dark);
+    rect(canvas, paint, area.right - 4, area.top, 4, area.height, dark);
+  }
+
+  static void character(
+    Canvas canvas,
+    Paint paint, {
+    required Offset origin,
+    required double scale,
+    required List<Color> palette,
+    required String archetype,
+  }) {
+    void r(double x, double y, double w, double h, Color color) =>
+        rect(canvas, paint, origin.dx + x * scale, origin.dy + y * scale,
+            w * scale, h * scale, color);
+
+    final skin = const Color(0xFFD6A16D);
+    final skinHi = const Color(0xFFEBC18E);
+    final hair = const Color(0xFF2A211E);
+    final boot = const Color(0xFF211B19);
+    final outline = const Color(0xFF121116);
+
+    // Shadow.
+    r(-7, 28, 17, 4, const Color(0x66000000));
+
+    // Legs and boots.
+    r(-4, 16, 5, 11, palette.first);
+    r(3, 16, 5, 11, palette.first);
+    r(-5, 25, 6, 4, boot);
+    r(3, 25, 7, 4, boot);
+
+    // Torso with highlight/shadow.
+    r(-7, 3, 16, 15, outline);
+    r(-6, 4, 14, 13, palette[1]);
+    r(-5, 5, 3, 11, palette.last.withValues(alpha: .82));
+    r(5, 5, 2, 10, palette.first);
+
+    // Arms.
+    r(-10, 6, 4, 11, outline);
+    r(-9, 7, 3, 9, palette[1]);
+    r(8, 6, 4, 11, outline);
+    r(8, 7, 3, 9, palette[1]);
+
+    // Head.
+    r(-5, -8, 12, 12, outline);
+    r(-4, -7, 10, 10, skin);
+    r(-3, -6, 7, 3, skinHi);
+    r(-4, -9, 10, 4, hair);
+    r(-3, -3, 2, 2, const Color(0xFF15141B));
+    r(3, -3, 2, 2, const Color(0xFF15141B));
+
+    switch (archetype) {
+      case 'scholar':
+        r(-8, -13, 16, 3, palette.last);
+        r(-4, -18, 8, 6, palette[1]);
+        r(9, 8, 7, 9, const Color(0xFF6A337C));
+        r(11, 10, 4, 2, const Color(0xFFE5D6B7));
+        break;
+      case 'scout':
+        r(-6, -12, 13, 4, const Color(0xFF355E3B));
+        r(10, 2, 2, 20, palette.last);
+        r(12, 5, 3, 3, const Color(0xFFD7C29D));
+        break;
+      case 'alchemist':
+        r(-5, -5, 4, 2, const Color(0xFFB9E7F4));
+        r(2, -5, 4, 2, const Color(0xFFB9E7F4));
+        r(10, 8, 3, 7, const Color(0xFFB9E7F4));
+        r(8, 14, 7, 5, const Color(0xFF79D85D));
+        r(10, 15, 2, 2, const Color(0xFFE9FFD8));
+        break;
+      case 'guardian':
+        r(-11, 3, 4, 15, const Color(0xFF7D2828));
+        r(9, 5, 8, 12, const Color(0xFF9B4A32));
+        r(11, 7, 4, 8, palette.last);
+        break;
+      default:
+        r(-12, 5, 5, 11, const Color(0xFF6A5031));
+        r(11, -1, 2, 25, palette.last);
+        r(9, -4, 6, 3, palette.last);
+    }
+  }
+}
+
 class _HearthPainter extends CustomPainter {
   _HearthPainter({required this.palette});
   final List<Color> palette;
@@ -870,145 +1016,245 @@ class _HearthPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()..isAntiAlias = false;
-    void rect(double x, double y, double w, double h, Color color) {
-      p.color = color;
-      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
-    }
-    void px(double x, double y, double s, Color color) =>
-        rect(x, y, s, s, color);
+    void r(double x, double y, double w, double h, Color color) =>
+        _Pixel64.rect(canvas, p, x, y, w, h, color);
 
-    // Back wall with layered stone/wood depth.
-    rect(0, 0, size.width, size.height, const Color(0xFF111827));
-    for (var row = 0; row < 5; row++) {
-      for (var col = 0; col < 12; col++) {
-        final x = col * size.width / 12;
-        final y = row * size.height * .115;
-        final shade = (row + col).isEven
-            ? const Color(0xFF17243A)
-            : const Color(0xFF142033);
-        rect(x, y, size.width / 12 - 1, size.height * .11 - 1, shade);
+    // Layered night wall with higher-color-depth dithering.
+    r(0, 0, size.width, size.height, const Color(0xFF0D1523));
+    r(0, 0, size.width, size.height * .58, const Color(0xFF15233A));
+    _Pixel64.dither(
+      canvas,
+      p,
+      Rect.fromLTWH(0, 0, size.width, size.height * .58),
+      const Color(0xFF1B2E49),
+      10,
+    );
+
+    // Structural beams, beveled like late-90s RPG tiles.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(0, size.height * .565, size.width, 9),
+      const Color(0xFF6A4328),
+      const Color(0xFF93613B),
+      const Color(0xFF3A2418),
+    );
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .405, 0, 10, size.height * .58),
+      const Color(0xFF5A3724),
+      const Color(0xFF825437),
+      const Color(0xFF2A1913),
+    );
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .785, 0, 10, size.height * .58),
+      const Color(0xFF5A3724),
+      const Color(0xFF825437),
+      const Color(0xFF2A1913),
+    );
+
+    // Floor with perspective strips.
+    r(0, size.height * .60, size.width, size.height * .40, const Color(0xFF3F281B));
+    for (var i = 0; i < 9; i++) {
+      final y = size.height * (.62 + i * .043);
+      r(0, y, size.width, 2, i.isEven ? const Color(0xFF6F4830) : const Color(0xFF261812));
+    }
+    for (var i = 0; i < 14; i++) {
+      final x = size.width * (i / 14);
+      r(x, size.height * .60, 2, size.height * .40, const Color(0xFF2D1C15));
+    }
+
+    // Window: deep frame, rain, moon glow.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .67, size.height * .075, size.width * .27, size.height * .39),
+      const Color(0xFF18243A),
+      const Color(0xFF385B7B),
+      const Color(0xFF09111E),
+    );
+    r(size.width * .69, size.height * .10, size.width * .23, size.height * .32, const Color(0xFF254E78));
+    r(size.width * .80, size.height * .10, 5, size.height * .32, const Color(0xFF173451));
+    _Pixel64.stepGlow(
+      canvas,
+      p,
+      Offset(size.width * .86, size.height * .18),
+      24,
+      const Color(0xFFFFE28C),
+    );
+    p.color = const Color(0xFFFFE28C);
+    canvas.drawCircle(Offset(size.width * .86, size.height * .18), 10, p);
+    for (var i = 0; i < 15; i++) {
+      final x = size.width * (.70 + ((i * 17) % 20) / 100);
+      final y = size.height * (.13 + ((i * 29) % 26) / 100);
+      r(x, y, 2, 9, const Color(0xFF87C7E4));
+      r(x + 2, y + 7, 2, 5, const Color(0xFF4D8EB2));
+    }
+    r(size.width * .66, size.height * .44, size.width * .29, 9, const Color(0xFF6A4328));
+    r(size.width * .67, size.height * .44, size.width * .27, 3, const Color(0xFFA7794C));
+
+    // Fireplace body with brick texture and depth.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .035, size.height * .17, size.width * .36, size.height * .66),
+      const Color(0xFF65432F),
+      const Color(0xFF916547),
+      const Color(0xFF38231A),
+    );
+    for (var row = 0; row < 6; row++) {
+      for (var col = 0; col < 5; col++) {
+        final x = size.width * (.05 + col * .065 + (row.isOdd ? .032 : 0));
+        final y = size.height * (.20 + row * .092);
+        r(
+          x,
+          y,
+          size.width * .057,
+          size.height * .070,
+          (row + col).isEven
+              ? const Color(0xFF81563B)
+              : const Color(0xFF744B35),
+        );
+        r(x + 3, y + 3, size.width * .04, 3, const Color(0xFFA16F4B));
       }
     }
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .095, size.height * .36, size.width * .245, size.height * .31),
+      const Color(0xFF1B1110),
+      const Color(0xFF3A2018),
+      const Color(0xFF080707),
+    );
+    _Pixel64.stepGlow(
+      canvas,
+      p,
+      Offset(size.width * .22, size.height * .55),
+      34,
+      const Color(0xFFF08A32),
+    );
+    r(size.width * .12, size.height * .61, size.width * .20, size.height * .055, const Color(0xFF733A20));
+    r(size.width * .15, size.height * .53, size.width * .14, size.height * .11, const Color(0xFFF17828));
+    r(size.width * .18, size.height * .45, size.width * .08, size.height * .18, const Color(0xFFF6B83F));
+    r(size.width * .205, size.height * .40, size.width * .035, size.height * .20, const Color(0xFFFFE37C));
+    r(size.width * .145, size.height * .49, 4, 4, const Color(0xFFFFC44E));
+    r(size.width * .292, size.height * .46, 3, 3, const Color(0xFFFFE37C));
 
-    // Timber beams.
-    rect(0, size.height * .57, size.width, 7, const Color(0xFF6A4328));
-    rect(size.width * .41, 0, 7, size.height * .58, const Color(0xFF53321F));
-    rect(size.width * .78, 0, 7, size.height * .58, const Color(0xFF53321F));
-
-    // Floorboards, with alternating highlights/shadows.
-    rect(0, size.height * .61, size.width, size.height * .39, const Color(0xFF4A2D1D));
-    for (var i = 0; i < 10; i++) {
-      final y = size.height * (.63 + i * .038);
-      rect(0, y, size.width, 2, i.isEven ? const Color(0xFF6A4328) : const Color(0xFF351E15));
-    }
-    for (var i = 0; i < 12; i++) {
-      final x = size.width * (i / 12);
-      rect(x, size.height * .61, 2, size.height * .39, const Color(0xFF3C2519));
-    }
-
-    // Rainy window with stone sill, moon, stars and rain streaks.
-    rect(size.width * .67, size.height * .08, size.width * .27, size.height * .40, const Color(0xFF0B1220));
-    rect(size.width * .69, size.height * .10, size.width * .23, size.height * .35, const Color(0xFF244A73));
-    rect(size.width * .70, size.height * .11, size.width * .105, size.height * .34, const Color(0xFF315F8E));
-    rect(size.width * .815, size.height * .11, size.width * .095, size.height * .34, const Color(0xFF2A557E));
-    p.color = const Color(0xFFF7E58E);
-    canvas.drawCircle(Offset(size.width * .865, size.height * .20), 11, p);
-    for (var i = 0; i < 8; i++) {
-      final x = size.width * (.71 + (i % 4) * .05);
-      final y = size.height * (.15 + (i ~/ 4) * .14);
-      rect(x, y, 2, 7, const Color(0xFF8CC6DD));
-      rect(x + 2, y + 7, 2, 5, const Color(0xFF5E9FBE));
-    }
-    rect(size.width * .66, size.height * .46, size.width * .29, 7, const Color(0xFF6B4B32));
-
-    // Fireplace masonry with multi-tone bricks.
-    rect(size.width * .04, size.height * .20, size.width * .35, size.height * .64, const Color(0xFF5E3C2A));
-    for (var row = 0; row < 5; row++) {
-      for (var col = 0; col < 4; col++) {
-        final x = size.width * (.055 + col * .08 + (row.isOdd ? .04 : 0));
-        final y = size.height * (.22 + row * .105);
-        rect(x, y, size.width * .07, size.height * .085,
-            (row + col).isEven ? const Color(0xFF81563A) : const Color(0xFF70482F));
-      }
-    }
-    rect(size.width * .095, size.height * .37, size.width * .25, size.height * .33, const Color(0xFF1A1110));
-    rect(size.width * .11, size.height * .61, size.width * .22, size.height * .07, const Color(0xFF793C1F));
-    rect(size.width * .14, size.height * .55, size.width * .16, size.height * .12, const Color(0xFFEE7A24));
-    rect(size.width * .17, size.height * .47, size.width * .10, size.height * .18, const Color(0xFFF6B83F));
-    rect(size.width * .20, size.height * .42, size.width * .05, size.height * .19, const Color(0xFFFFE07A));
-    // Ember pixels.
-    px(size.width * .12, size.height * .50, 4, const Color(0xFFFFA12D));
-    px(size.width * .29, size.height * .48, 3, const Color(0xFFFFD86B));
-
-    // Detailed bookshelf and objects.
-    rect(size.width * .44, size.height * .16, size.width * .17, size.height * .48, const Color(0xFF4C2D1D));
-    rect(size.width * .455, size.height * .18, size.width * .14, size.height * .44, const Color(0xFF2D1D19));
-    final colors = [
-      const Color(0xFF8B3042),
-      const Color(0xFF2E6D59),
-      const Color(0xFF456A9A),
-      const Color(0xFFAA7A34),
-      const Color(0xFF76508A),
-      const Color(0xFFB2563D),
+    // Bookcase with more color/shading.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .44, size.height * .15, size.width * .17, size.height * .48),
+      const Color(0xFF4B2C1C),
+      const Color(0xFF7A4D2D),
+      const Color(0xFF241711),
+    );
+    final books = [
+      const Color(0xFF8D3347),
+      const Color(0xFF2E725F),
+      const Color(0xFF4B73A8),
+      const Color(0xFFB07B37),
+      const Color(0xFF78528A),
+      const Color(0xFFB75B42),
+      const Color(0xFF3C8B8A),
+      const Color(0xFF9A5F2F),
     ];
     for (var row = 0; row < 3; row++) {
-      rect(size.width * .455, size.height * (.29 + row * .13), size.width * .14, 4, const Color(0xFFB98245));
-      for (var book = 0; book < 6; book++) {
-        final bx = size.width * (.462 + book * .022);
-        final bh = size.height * (.065 + ((book + row) % 3) * .012);
-        rect(bx, size.height * (.215 + row * .13), size.width * .016, bh, colors[(row * 2 + book) % colors.length]);
-        rect(bx + 1, size.height * (.22 + row * .13), 2, bh - 7, const Color(0x55FFFFFF));
+      final sy = size.height * (.20 + row * .14);
+      r(size.width * .455, sy + size.height * .09, size.width * .14, 4, const Color(0xFFB9854B));
+      for (var book = 0; book < 7; book++) {
+        final bx = size.width * (.46 + book * .019);
+        final bh = size.height * (.055 + ((book + row) % 4) * .010);
+        r(bx, sy + size.height * .025, size.width * .014, bh, books[(book + row * 2) % books.length]);
+        r(bx + 1, sy + size.height * .028, 2, bh - 5, const Color(0x44FFFFFF));
       }
     }
-    // Potion bottle on top shelf.
-    rect(size.width * .50, size.height * .12, size.width * .02, size.height * .035, const Color(0xFFB7E86A));
-    rect(size.width * .495, size.height * .145, size.width * .03, size.height * .05, const Color(0xFF2F9B8F));
+    // Bottles and relic on the top shelf.
+    r(size.width * .488, size.height * .105, 5, 10, const Color(0xFF8F5C34));
+    r(size.width * .482, size.height * .135, 16, 18, const Color(0xFF3DA69A));
+    r(size.width * .505, size.height * .112, 5, 8, const Color(0xFF8F5C34));
+    r(size.width * .501, size.height * .137, 13, 15, const Color(0xFF8B58C3));
+    r(size.width * .545, size.height * .12, 16, 8, palette.last);
 
-    // Rug with border pattern.
-    rect(size.width * .42, size.height * .73, size.width * .32, size.height * .17, const Color(0xFF193E39));
-    rect(size.width * .435, size.height * .745, size.width * .29, size.height * .14, const Color(0xFF2E665A));
+    // Perspective rug with patterned center.
+    final rug = Rect.fromLTWH(size.width * .42, size.height * .73, size.width * .32, size.height * .16);
+    _Pixel64.bevel(
+      canvas,
+      p,
+      rug,
+      const Color(0xFF23544E),
+      const Color(0xFF3B786D),
+      const Color(0xFF102B28),
+    );
+    r(size.width * .45, size.height * .755, size.width * .26, size.height * .11, const Color(0xFF2D665D));
     for (var i = 0; i < 7; i++) {
-      px(size.width * (.45 + i * .037), size.height * .76, 4, const Color(0xFFD6A84B));
-      px(size.width * (.45 + i * .037), size.height * .85, 4, const Color(0xFFD6A84B));
+      final x = size.width * (.46 + i * .035);
+      r(x, size.height * .77, 4, 4, const Color(0xFFE1B75A));
+      r(x, size.height * .845, 4, 4, const Color(0xFFE1B75A));
     }
+    r(size.width * .555, size.height * .787, 7, 7, const Color(0xFFE1B75A));
+    r(size.width * .555, size.height * .817, 7, 7, const Color(0xFFE1B75A));
+    r(size.width * .54, size.height * .802, 7, 7, const Color(0xFFE1B75A));
+    r(size.width * .57, size.height * .802, 7, 7, const Color(0xFFE1B75A));
 
-    // Small adventurer near the hearth: boots, cloak, head and satchel.
-    rect(size.width * .755, size.height * .57, size.width * .055, size.height * .17, const Color(0xFF173B2B));
-    rect(size.width * .74, size.height * .60, size.width * .025, size.height * .12, const Color(0xFF477A4C));
-    rect(size.width * .80, size.height * .60, size.width * .025, size.height * .12, const Color(0xFF477A4C));
-    p.color = const Color(0xFFD7A16B);
-    canvas.drawCircle(Offset(size.width * .782, size.height * .53), 8, p);
-    rect(size.width * .765, size.height * .49, size.width * .038, 5, const Color(0xFF38271E));
-    rect(size.width * .745, size.height * .66, size.width * .025, size.height * .045, const Color(0xFF8B6530));
-    rect(size.width * .755, size.height * .73, size.width * .02, size.height * .06, const Color(0xFF2B211D));
-    rect(size.width * .795, size.height * .73, size.width * .02, size.height * .06, const Color(0xFF2B211D));
+    // Larger, detailed Adventurer sprite.
+    _Pixel64.character(
+      canvas,
+      p,
+      origin: Offset(size.width * .79, size.height * .50),
+      scale: size.height / 205 * 1.72,
+      palette: palette,
+      archetype: _archetypeFromPalette(palette),
+    );
 
-    // Cat with eyes and tail instead of abstract silhouette.
-    rect(size.width * .55, size.height * .79, size.width * .10, size.height * .045, const Color(0xFFC67D3E));
-    rect(size.width * .63, size.height * .77, size.width * .035, size.height * .055, const Color(0xFFD38A43));
-    rect(size.width * .655, size.height * .75, size.width * .02, size.height * .045, const Color(0xFFD38A43));
-    px(size.width * .642, size.height * .785, 2, const Color(0xFFF7E58E));
-    px(size.width * .652, size.height * .785, 2, const Color(0xFFF7E58E));
+    // Cat with visible ears, tail, body shading.
+    r(size.width * .54, size.height * .80, 34, 9, const Color(0xFF9E5C30));
+    r(size.width * .57, size.height * .775, 16, 17, const Color(0xFFC87B3E));
+    r(size.width * .575, size.height * .755, 5, 8, const Color(0xFFC87B3E));
+    r(size.width * .589, size.height * .755, 5, 8, const Color(0xFFC87B3E));
+    r(size.width * .598, size.height * .786, 14, 4, const Color(0xFF8E542D));
+    r(size.width * .605, size.height * .778, 4, 4, const Color(0xFFF5DB82));
 
-    // Class banner and trophy shelf bring the Adventurer into the room.
-    rect(size.width * .815, size.height * .52, size.width * .12, size.height * .05, const Color(0xFF6A4328));
-    rect(size.width * .835, size.height * .33, size.width * .08, size.height * .17, palette[1]);
-    rect(size.width * .846, size.height * .35, size.width * .058, size.height * .11, palette.first);
-    px(size.width * .873, size.height * .385, 6, palette.last);
-    rect(size.width * .455, size.height * .675, size.width * .14, 5, const Color(0xFF8E6B35));
+    // Class banner and trophy shelf.
+    r(size.width * .815, size.height * .49, size.width * .12, 7, const Color(0xFF6A4328));
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .84, size.height * .30, size.width * .07, size.height * .17),
+      palette[1],
+      palette.last,
+      palette.first,
+    );
+    r(size.width * .862, size.height * .345, 8, 8, palette.last);
+    r(size.width * .455, size.height * .665, size.width * .14, 5, const Color(0xFF8E6B35));
     p.color = const Color(0xFFF1C75B);
-    canvas.drawCircle(Offset(size.width * .485, size.height * .65), 5, p);
-    canvas.drawCircle(Offset(size.width * .565, size.height * .65), 5, p);
-    rect(size.width * .515, size.height * .625, size.width * .025, size.height * .045, palette.last);
+    canvas.drawCircle(Offset(size.width * .48, size.height * .645), 5, p);
+    canvas.drawCircle(Offset(size.width * .565, size.height * .645), 5, p);
 
-    // Lanterns with brackets and glow pixels.
+    // Lantern pools.
     for (final x in [size.width * .42, size.width * .61, size.width * .95]) {
-      rect(x, size.height * .07, 4, 18, const Color(0xFF6C442C));
-      rect(x - 6, size.height * .145, 16, 22, const Color(0xFFB97B2D));
-      rect(x - 3, size.height * .17, 10, 11, const Color(0xFFFFE29A));
-      px(x - 9, size.height * .185, 3, const Color(0xFF8E6B35));
-      px(x + 10, size.height * .185, 3, const Color(0xFF8E6B35));
+      _Pixel64.stepGlow(
+        canvas,
+        p,
+        Offset(x, size.height * .19),
+        20,
+        const Color(0xFFFFC95C),
+      );
+      r(x, size.height * .06, 4, 20, const Color(0xFF6C442C));
+      r(x - 7, size.height * .14, 18, 23, const Color(0xFFB77A2D));
+      r(x - 4, size.height * .16, 12, 14, const Color(0xFFFFE39A));
     }
+  }
+
+  String _archetypeFromPalette(List<Color> p) {
+    if (p == QuestwellPixelPalette.scholar) return 'scholar';
+    if (p == QuestwellPixelPalette.scout) return 'scout';
+    if (p == QuestwellPixelPalette.alchemist) return 'alchemist';
+    if (p == QuestwellPixelPalette.guardian) return 'guardian';
+    return 'wanderer';
   }
 
   @override
