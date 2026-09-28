@@ -441,8 +441,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 FutureBuilder<QuestwellCosmeticsSnapshot>(
                   future: _homeSnapshotFuture,
                   builder: (context, snapshot) {
+                    final compact = MediaQuery.sizeOf(context).width < 430;
                     return QuestwellHearthPixelScene(
-                      height: 205,
+                      height: compact ? 270 : 310,
                       archetype:
                           snapshot.data?.profile.adventurerArchetype ?? 'wanderer',
                     );
@@ -508,8 +509,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
                     return QuestwellRetroPanel(
                       padding: const EdgeInsets.all(16),
-                      accent: const Color(0xFFB98245),
-                      background: const Color(0xFF1A1714),
+                      accent: const Color(0xFFD6A84B),
+                      background: const Color(0xFF141820),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -517,7 +518,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             children: [
                               QuestwellClassMiniSprite(
                                 archetype: profile.adventurerArchetype,
-                                size: 58,
+                                size: 78,
                               ),
                               const SizedBox(width: 12),
                               Expanded(
