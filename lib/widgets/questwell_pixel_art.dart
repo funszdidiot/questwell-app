@@ -31,44 +31,26 @@ class QuestwellPixelPalette {
 class QuestwellLayeredAdventurerArt extends StatelessWidget {
   const QuestwellLayeredAdventurerArt({
     super.key,
+    required this.archetype,
     required this.equippedSlugs,
-    this.fit = BoxFit.contain,
+    this.showRelic = false,
   });
 
+  final String archetype;
   final Map<String, String> equippedSlugs;
-  final BoxFit fit;
-
-  bool _has(String slot, String fragment) =>
-      (equippedSlugs[slot] ?? '').contains(fragment);
-
-  Widget _layer(String encoded) => Positioned.fill(
-        child: Image.memory(
-          base64Decode(encoded),
-          fit: fit,
-          alignment: Alignment.bottomCenter,
-          filterQuality: FilterQuality.medium,
-          gaplessPlayback: true,
-        ),
-      );
+  final bool showRelic;
 
   @override
   Widget build(BuildContext context) {
-    final glasses = _has('face', 'round-scholar-glasses') ||
-        _has('accessory', 'round-scholar-glasses');
-    final scarf = _has('neck', 'emerald-scholar-scarf');
-    final satchel = _has('back', 'satchel') ||
-        _has('accessory', 'satchel');
-
     return RepaintBoundary(
-      child: Stack(
-        fit: StackFit.expand,
-        clipBehavior: Clip.none,
-        children: [
-          _layer(questwellAdventurerBaseBase64),
-          if (scarf) _layer(questwellAdventurerScarfBase64),
-          if (satchel) _layer(questwellAdventurerSatchelBase64),
-          if (glasses) _layer(questwellAdventurerGlassesBase64),
-        ],
+      child: CustomPaint(
+        painter: _EquippedAvatarPainter(
+          archetype: archetype,
+          palette: QuestwellPixelPalette.forClass(archetype),
+          equippedSlugs: equippedSlugs,
+          showRelic: showRelic,
+          portrait: false,
+        ),
       ),
     );
   }
@@ -680,6 +662,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       ),
                     ),
                     QuestwellLayeredAdventurerArt(
+                      archetype: archetype,
                       equippedSlugs: equippedSlugs,
                     ),
                   ],
@@ -1147,7 +1130,9 @@ class QuestwellEquippedAvatar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
             child: QuestwellLayeredAdventurerArt(
+              archetype: archetype,
               equippedSlugs: equippedSlugs,
+              showRelic: showRelic,
             ),
           ),
           if (showRelic)
@@ -1185,6 +1170,7 @@ class QuestwellEquippedAvatarSprite extends StatelessWidget {
       width: width,
       height: height,
       child: QuestwellLayeredAdventurerArt(
+        archetype: archetype,
         equippedSlugs: equippedSlugs,
       ),
     );
@@ -1234,38 +1220,6 @@ class QuestwellItemPixelArt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = QuestwellPixelPalette.forClass(archetype ?? 'wanderer');
-    String? encoded;
-    if (slug.contains('round-scholar-glasses')) {
-      encoded = questwellAdventurerGlassesBase64;
-    } else if (slug.contains('emerald-scholar-scarf')) {
-      encoded = questwellAdventurerScarfBase64;
-    } else if (slug.contains('satchel')) {
-      encoded = questwellAdventurerSatchelBase64;
-    }
-
-    if (encoded != null) {
-      return SizedBox.square(
-        dimension: size,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Container(color: const Color(0xFF17151A)),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Image.memory(
-                base64Decode(encoded),
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.medium,
-                gaplessPlayback: true,
-              ),
-            ),
-            if (locked)
-              Container(color: const Color(0x99000000)),
-          ],
-        ),
-      );
-    }
-
     return SizedBox.square(
       dimension: size,
       child: CustomPaint(
@@ -1279,7 +1233,6 @@ class QuestwellItemPixelArt extends StatelessWidget {
     );
   }
 }
-
 class QuestwellMarketPixelScene extends StatelessWidget {
   const QuestwellMarketPixelScene({
     super.key,
