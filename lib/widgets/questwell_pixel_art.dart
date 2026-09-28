@@ -2292,7 +2292,19 @@ class _EquippedAvatarPainter extends CustomPainter {
 
     // ROOM cosmetics change the space around the Adventurer.
     final roomSlug = room ?? '';
-    if (roomSlug.contains('lantern')) {
+    if (roomSlug.contains('rainy-window')) {
+      r(size.width * .67, size.height * .12, size.width * .23, size.height * .24, const Color(0xFF18324E));
+      r(size.width * .685, size.height * .135, size.width * .20, size.height * .20, const Color(0xFF274D70));
+      for (var i = 0; i < 7; i++) {
+        r(
+          size.width * (.70 + ((i * 19) % 16) / 100),
+          size.height * (.15 + ((i * 17) % 14) / 100),
+          2,
+          size.height * .045,
+          const Color(0xFF83B7D8),
+        );
+      }
+    } else if (roomSlug.contains('lantern')) {
       _Pixel64.stepGlow(
         canvas,
         p,
@@ -2318,7 +2330,9 @@ class _EquippedAvatarPainter extends CustomPainter {
     // EFFECT cosmetics render behind/around the body instead of as an icon.
     final effectSlug = effect ?? '';
     if (effectSlug.isNotEmpty) {
-      final effectColor = effectSlug.contains('seal') || effectSlug.contains('crest')
+      final effectColor = effectSlug.contains('victory-sparkle')
+          ? const Color(0xFFFFE07A)
+          : effectSlug.contains('seal') || effectSlug.contains('crest')
           ? const Color(0xFFD9B15F)
           : palette.last;
       for (var i = 0; i < 9; i++) {
@@ -2330,7 +2344,42 @@ class _EquippedAvatarPainter extends CustomPainter {
 
     // Outfit changes are painted directly onto the character body.
     final outfitSlug = outfit ?? '';
-    if (outfitSlug.contains('mantle')) {
+    if (outfitSlug.contains('starter-business-suit')) {
+      // Tailored dark suit with ivory shirt and warm-gold tie.
+      r(size.width * .385, size.height * .39, size.width * .23, size.height * .29, const Color(0xFF23252B));
+      r(size.width * .455, size.height * .405, size.width * .09, size.height * .20, const Color(0xFFF0E2C8));
+      final leftLap = Path()
+        ..moveTo(size.width * .40, size.height * .40)
+        ..lineTo(size.width * .48, size.height * .49)
+        ..lineTo(size.width * .44, size.height * .61)
+        ..lineTo(size.width * .385, size.height * .50)
+        ..close();
+      final rightLap = Path()
+        ..moveTo(size.width * .60, size.height * .40)
+        ..lineTo(size.width * .52, size.height * .49)
+        ..lineTo(size.width * .56, size.height * .61)
+        ..lineTo(size.width * .615, size.height * .50)
+        ..close();
+      p.color = const Color(0xFF343741);
+      canvas.drawPath(leftLap, p);
+      canvas.drawPath(rightLap, p);
+      r(size.width * .487, size.height * .44, size.width * .026, size.height * .16, const Color(0xFFC79B47));
+      r(size.width * .41, size.height * .66, size.width * .075, size.height * .14, const Color(0xFF202228));
+      r(size.width * .515, size.height * .66, size.width * .075, size.height * .14, const Color(0xFF202228));
+    } else if (outfitSlug.contains('moss-green-cloak')) {
+      final cloak = Path()
+        ..moveTo(size.width * .38, size.height * .34)
+        ..lineTo(size.width * .27, size.height * .72)
+        ..lineTo(size.width * .43, size.height * .77)
+        ..lineTo(size.width * .50, size.height * .48)
+        ..lineTo(size.width * .57, size.height * .77)
+        ..lineTo(size.width * .73, size.height * .72)
+        ..lineTo(size.width * .62, size.height * .34)
+        ..close();
+      p.color = const Color(0xFF2F5A3E);
+      canvas.drawPath(cloak, p);
+      r(size.width * .485, size.height * .34, size.width * .03, size.height * .31, const Color(0xFFB68A46));
+    } else if (outfitSlug.contains('mantle')) {
       final cloak = Path()
         ..moveTo(size.width * .39, size.height * .34)
         ..lineTo(size.width * .29, size.height * .68)
@@ -2350,9 +2399,39 @@ class _EquippedAvatarPainter extends CustomPainter {
       r(size.width * .51, size.height * .75, size.width * .13, size.height * .05, const Color(0xFF2C211A));
     }
 
-    // Accessories are anchored to the torso/hand so equipping is visible.
+    // Accessories are anchored to the body so equipping is visible.
     final accessorySlug = accessory ?? '';
-    if (accessorySlug.contains('satchel')) {
+    if (accessorySlug.contains('round-scholar-glasses')) {
+      p.style = PaintingStyle.stroke;
+      p.strokeWidth = 3;
+      p.color = const Color(0xFFD7B15C);
+      canvas.drawCircle(
+        Offset(size.width * .455, size.height * .302),
+        size.width * .040,
+        p,
+      );
+      canvas.drawCircle(
+        Offset(size.width * .545, size.height * .302),
+        size.width * .040,
+        p,
+      );
+      canvas.drawLine(
+        Offset(size.width * .495, size.height * .302),
+        Offset(size.width * .505, size.height * .302),
+        p,
+      );
+      p.style = PaintingStyle.fill;
+    } else if (accessorySlug.contains('tiny-wizard-hat')) {
+      final hat = Path()
+        ..moveTo(size.width * .39, size.height * .235)
+        ..lineTo(size.width * .50, size.height * .08)
+        ..lineTo(size.width * .61, size.height * .235)
+        ..close();
+      p.color = const Color(0xFF5D3A7A);
+      canvas.drawPath(hat, p);
+      r(size.width * .37, size.height * .225, size.width * .26, size.height * .045, const Color(0xFF352040));
+      r(size.width * .475, size.height * .15, size.width * .035, size.height * .03, const Color(0xFFF1C75B));
+    } else if (accessorySlug.contains('satchel')) {
       p.style = PaintingStyle.stroke;
       p.strokeWidth = 5;
       p.color = const Color(0xFFD6A84B);
@@ -2388,7 +2467,21 @@ class _EquippedAvatarPainter extends CustomPainter {
     if (familiarSlug.isNotEmpty) {
       final fx = size.width * .76;
       final fy = size.height * .64;
-      if (familiarSlug.contains('fox')) {
+      if (familiarSlug.contains('mushroom')) {
+        r(fx - 4, fy - 2, 8, 15, const Color(0xFFD8C7A3));
+        p.color = const Color(0xFFB84D3A);
+        canvas.drawOval(
+          Rect.fromCenter(center: Offset(fx, fy - 6), width: 28, height: 16),
+          p,
+        );
+        r(fx - 7, fy - 9, 4, 4, const Color(0xFFF4E7C7));
+        r(fx + 5, fy - 7, 4, 4, const Color(0xFFF4E7C7));
+      } else if (familiarSlug.contains('tiny-owl')) {
+        p.color = const Color(0xFFB77A3A);
+        canvas.drawCircle(Offset(fx, fy), size.width * .07, p);
+        r(fx - 8, fy - 4, 4, 4, const Color(0xFFFFE07A));
+        r(fx + 4, fy - 4, 4, 4, const Color(0xFFFFE07A));
+      } else if (familiarSlug.contains('fox')) {
         p.color = const Color(0xFFD77A32);
         canvas.drawCircle(Offset(fx, fy), size.width * .07, p);
         final ears = Path()
