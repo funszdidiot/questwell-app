@@ -673,10 +673,10 @@ class QuestwellHearthPixelScene extends StatelessWidget {
           final sceneHeight = constraints.maxHeight;
           final compact = sceneWidth < 430;
 
-          final avatarLeft = sceneWidth * (compact ? .33 : .365);
-          final avatarTop = sceneHeight * (compact ? .20 : .17);
-          final avatarWidth = sceneWidth * (compact ? .34 : .30);
-          final avatarHeight = sceneHeight * (compact ? .66 : .68);
+          final avatarLeft = sceneWidth * (compact ? .315 : .35);
+          final avatarTop = sceneHeight * (compact ? .175 : .145);
+          final avatarWidth = sceneWidth * (compact ? .37 : .33);
+          final avatarHeight = sceneHeight * (compact ? .70 : .72);
 
           return Stack(
             fit: StackFit.expand,
@@ -742,10 +742,10 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                 ),
               ),
               Positioned(
-                left: avatarLeft - sceneWidth * .025,
-                bottom: sceneHeight * .075,
-                width: avatarWidth + sceneWidth * .05,
-                height: sceneHeight * .105,
+                left: avatarLeft - sceneWidth * .035,
+                bottom: sceneHeight * .062,
+                width: avatarWidth + sceneWidth * .07,
+                height: sceneHeight * .115,
                 child: IgnorePointer(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
@@ -755,6 +755,26 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                           const Color(0xB5000000),
                           const Color(0x52000000),
                           const Color(0x00000000),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: avatarLeft - sceneWidth * .06,
+                bottom: sceneHeight * .105,
+                width: avatarWidth + sceneWidth * .12,
+                height: sceneHeight * .18,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        radius: .78,
+                        colors: [
+                          palette.last.withValues(alpha: .11),
+                          const Color(0x12E87947),
+                          const Color(0x00E87947),
                         ],
                       ),
                     ),

@@ -361,9 +361,22 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: const Color(0xFF111827),
-        body: SafeArea(
-          top: true,
-          child: SingleChildScrollView(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFF111B2B),
+                Color(0xFF111827),
+                Color(0xFF17120F),
+              ],
+              stops: [0, .56, 1],
+            ),
+          ),
+          child: SafeArea(
+            top: true,
+            child: SingleChildScrollView(
             padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -440,7 +453,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     final compact =
                         MediaQuery.sizeOf(context).width < 430;
                     return QuestwellHearthPixelScene(
-                      height: compact ? 320 : 370,
+                      height: compact ? 342 : 392,
                       archetype: archetype,
                       showRelic: mastered,
                       equippedSlugs: {
@@ -1169,6 +1182,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ],
                 ),
               ],
+            ),
             ),
           ),
         ),

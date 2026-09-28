@@ -65,6 +65,8 @@ Target:
 - Warm environmental light, depth motes, floor glints, and edge vignette added
 - Hearth location plaque integrated into the scene
 - Mobile scene proportions adjusted independently from desktop
+- Hearth page background now transitions from cool upper-room tones into warm lower-room tones
+- Adventurer focal scale increased with stronger floor-light and grounding treatment
 
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
