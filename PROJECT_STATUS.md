@@ -82,6 +82,15 @@ Target:
 - Several visible Hearth section/status titles were still using Roboto rather than the pixel header standard
 - Follow-up pass reduces overlay/vignette darkness and completes visible Hearth header typography before reinspection
 
+**Avatar root-fix checkpoint:** IN PROGRESS
+- Added profile-level base avatar choice: Male, Female, or Gender Neutral
+- Added three richer transparent business-suit base avatars on a shared 240×320 production canvas
+- Business suit remains the pre-class base outfit
+- Hearth and Adventurer now consume the same selected base-avatar state
+- Legacy low-fidelity equipment overlays are intentionally withheld from the live rich avatar until they are rebuilt against the new shared canvas
+- Existing ownership/equip state is preserved; this pass changes rendering, not user inventory
+- Acceptance gate: all three bases must render cleanly on iPhone Safari, switch persistently, share scale/baseline, and show no gray boxes or transparency artifacts
+
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
 ## Release gate

@@ -18,6 +18,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
   late Future<QuestwellCosmeticsSnapshot> _future;
   String? _busyCosmeticId;
   bool _savingArchetype = false;
+  bool _savingBodyType = false;
   bool _claimingMastery = false;
 
   @override
@@ -152,6 +153,30 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
       );
     } finally {
       if (mounted) setState(() => _claimingMastery = false);
+    }
+  }
+
+  Future<void> _chooseBodyType(String bodyType) async {
+    if (_savingBodyType) return;
+    setState(() => _savingBodyType = true);
+
+    try {
+      await QuestwellCosmeticService.setAvatarBodyType(bodyType);
+      if (!mounted) return;
+      setState(_refresh);
+      final label = switch (bodyType) {
+        'male' => 'Male',
+        'female' => 'Female',
+        _ => 'Gender Neutral',
+      };
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('$label adventurer selected.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _savingBodyType = false);
     }
   }
 
@@ -433,6 +458,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                       final compact = constraints.maxWidth < 520;
                       final avatar = QuestwellEquippedAvatar(
                         archetype: data.profile.adventurerArchetype,
+                        avatarBodyType: data.profile.avatarBodyType,
                         height: compact ? 286 : 330,
                         showRelic: masteryOwned,
                         equippedSlugs: {
@@ -468,8 +494,8 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                               _archetypeLabel(
                                 data.profile.adventurerArchetype,
                               ).toUpperCase(),
-                              style: GoogleFonts.roboto(
-                                fontSize: 14,
+                              style: GoogleFonts.pressStart2p(
+                                fontSize: 10,
                                 fontWeight: FontWeight.w700,
                                 color: QuestwellPixelPalette.forClass(
                                   data.profile.adventurerArchetype,
@@ -562,6 +588,50 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                       );
                     },
                   ),
+                ),
+                const SizedBox(height: 22),
+                Text(
+                  'CHOOSE YOUR ADVENTURER',
+                  style: theme.titleLarge.override(
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 13,
+                    letterSpacing: .3,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Your base look. The business suit stays underneath future class gear.',
+                  style: theme.bodyMedium.override(
+                    font: GoogleFonts.roboto(),
+                    color: theme.secondaryText,
+                    letterSpacing: 0,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final width = constraints.maxWidth >= 680
+                        ? (constraints.maxWidth - 16) / 3
+                        : (constraints.maxWidth - 8) / 2;
+                    return Wrap(
+                      spacing: 8,
+                      runSpacing: 10,
+                      children: [
+                        for (final value in const ['male', 'female', 'neutral'])
+                          SizedBox(
+                            width: width,
+                            child: _AvatarBodyCard(
+                              bodyType: value,
+                              selected: data.profile.avatarBodyType == value,
+                              disabled: _savingBodyType,
+                              onTap: () => _chooseBodyType(value),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 ),
                 const SizedBox(height: 22),
                 Text(
@@ -1011,6 +1081,75 @@ class _ArchetypeCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AvatarBodyCard extends StatelessWidget {
+  const _AvatarBodyCard({
+    required this.bodyType,
+    required this.selected,
+    required this.disabled,
+    required this.onTap,
+  });
+
+  final String bodyType;
+  final bool selected;
+  final bool disabled;
+  final VoidCallback onTap;
+
+  String get label => switch (bodyType) {
+        'male' => 'MALE',
+        'female' => 'FEMALE',
+        _ => 'GENDER NEUTRAL',
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: disabled ? null : onTap,
+      child: QuestwellRetroPanel(
+        padding: const EdgeInsets.all(10),
+        accent: selected
+            ? const Color(0xFFF1C75B)
+            : const Color(0xFF526178),
+        background: const Color(0xFF101923),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 176,
+              child: QuestwellLayeredAdventurerArt(
+                archetype: 'wanderer',
+                avatarBodyType: bodyType,
+                equippedSlugs: const {},
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.pressStart2p(
+                fontSize: bodyType == 'neutral' ? 7 : 8,
+                color: selected
+                    ? const Color(0xFFFFD978)
+                    : const Color(0xFFF2E7CE),
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              selected ? 'SELECTED' : 'BUSINESS SUIT BASE',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.roboto(
+                fontSize: 9,
+                fontWeight: FontWeight.w700,
+                color: selected
+                    ? const Color(0xFFF1C75B)
+                    : const Color(0xFF9FB4C9),
+              ),
+            ),
+          ],
         ),
       ),
     );

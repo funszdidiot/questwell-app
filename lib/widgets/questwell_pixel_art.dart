@@ -27,86 +27,51 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     super.key,
     required this.archetype,
     required this.equippedSlugs,
+    this.avatarBodyType = 'neutral',
     this.showRelic = false,
   });
 
-  static const _baseAsset =
-      'assets/images/questwell/avatar/adventurer_base.webp';
-  static const _glassesAsset =
-      'assets/images/questwell/avatar/glasses_round_dark.webp';
-  static const _scarfAsset =
-      'assets/images/questwell/avatar/scarf_emerald.webp';
-  static const _satchelAsset =
-      'assets/images/questwell/avatar/satchel_leather.webp';
+  static const _maleBase =
+      'assets/images/questwell/avatar/base/base_male.webp';
+  static const _femaleBase =
+      'assets/images/questwell/avatar/base/base_female.webp';
+  static const _neutralBase =
+      'assets/images/questwell/avatar/base/base_neutral.webp';
 
   final String archetype;
   final Map<String, String> equippedSlugs;
+  final String avatarBodyType;
   final bool showRelic;
 
-  bool _hasAny(Iterable<String> slugs) =>
-      equippedSlugs.values.any((value) => slugs.contains(value));
-
-  Widget _assetLayer(
-    String asset, {
-    required Widget Function() fallback,
-  }) {
-    return Positioned.fill(
-      child: Image.asset(
-        asset,
-        fit: BoxFit.contain,
-        alignment: Alignment.center,
-        filterQuality: FilterQuality.none,
-        gaplessPlayback: true,
-        errorBuilder: (_, __, ___) => fallback(),
-      ),
-    );
+  String get _baseAsset {
+    switch (avatarBodyType) {
+      case 'male':
+        return _maleBase;
+      case 'female':
+        return _femaleBase;
+      default:
+        return _neutralBase;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final hasGlasses = _hasAny(const [
-      'round-scholar-glasses',
-    ]);
-    final hasScarf = _hasAny(const [
-      'emerald-scholar-scarf',
-    ]);
-    final hasSatchel = _hasAny(const [
-      'leather-satchel',
-      'wayfarer-satchel',
-    ]);
-
     return RepaintBoundary(
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          _assetLayer(
-            _baseAsset,
-            fallback: () => CustomPaint(
-              painter: _EquippedAvatarPainter(
-                archetype: archetype,
-                palette: QuestwellPixelPalette.forClass(archetype),
-                equippedSlugs: equippedSlugs,
-                showRelic: showRelic,
-                portrait: false,
-              ),
-            ),
+      child: Image.asset(
+        _baseAsset,
+        fit: BoxFit.contain,
+        alignment: Alignment.bottomCenter,
+        filterQuality: FilterQuality.high,
+        gaplessPlayback: true,
+        errorBuilder: (_, __, ___) => CustomPaint(
+          painter: _EquippedAvatarPainter(
+            archetype: archetype,
+            palette: QuestwellPixelPalette.forClass(archetype),
+            equippedSlugs: equippedSlugs,
+            showRelic: showRelic,
+            portrait: false,
           ),
-          if (hasScarf)
-            _assetLayer(
-              _scarfAsset,
-              fallback: () => const SizedBox.shrink(),
-            ),
-          if (hasSatchel)
-            _assetLayer(
-              _satchelAsset,
-              fallback: () => const SizedBox.shrink(),
-            ),
-          if (hasGlasses)
-            _assetLayer(
-              _glassesAsset,
-              fallback: () => const SizedBox.shrink(),
-            ),
-        ],
+        ),
       ),
     );
   }
@@ -649,6 +614,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
     super.key,
     this.height = 170,
     this.archetype = 'wanderer',
+    this.avatarBodyType = 'neutral',
     this.equippedSlugs = const {},
     this.showRelic = false,
   });
@@ -658,6 +624,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
 
   final double height;
   final String archetype;
+  final String avatarBodyType;
   final Map<String, String> equippedSlugs;
   final bool showRelic;
 
@@ -804,6 +771,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                     ),
                     QuestwellLayeredAdventurerArt(
                       archetype: archetype,
+                      avatarBodyType: avatarBodyType,
                       equippedSlugs: equippedSlugs,
                       showRelic: showRelic,
                     ),
@@ -1555,12 +1523,14 @@ class QuestwellEquippedAvatar extends StatelessWidget {
     super.key,
     required this.archetype,
     required this.equippedSlugs,
+    this.avatarBodyType = 'neutral',
     this.height = 210,
     this.showRelic = false,
   });
 
   final String archetype;
   final Map<String, String> equippedSlugs;
+  final String avatarBodyType;
   final double height;
   final bool showRelic;
 
@@ -1590,6 +1560,7 @@ class QuestwellEquippedAvatar extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
             child: QuestwellLayeredAdventurerArt(
               archetype: archetype,
+              avatarBodyType: avatarBodyType,
               equippedSlugs: equippedSlugs,
               showRelic: showRelic,
             ),
@@ -1614,12 +1585,14 @@ class QuestwellEquippedAvatarSprite extends StatelessWidget {
     super.key,
     required this.archetype,
     required this.equippedSlugs,
+    this.avatarBodyType = 'neutral',
     this.width = 116,
     this.height = 150,
   });
 
   final String archetype;
   final Map<String, String> equippedSlugs;
+  final String avatarBodyType;
   final double width;
   final double height;
 
@@ -1630,6 +1603,7 @@ class QuestwellEquippedAvatarSprite extends StatelessWidget {
       height: height,
       child: QuestwellLayeredAdventurerArt(
         archetype: archetype,
+        avatarBodyType: avatarBodyType,
         equippedSlugs: equippedSlugs,
       ),
     );

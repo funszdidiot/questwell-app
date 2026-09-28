@@ -455,6 +455,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     return QuestwellHearthPixelScene(
                       height: compact ? 342 : 392,
                       archetype: archetype,
+                      avatarBodyType: data?.profile.avatarBodyType ?? 'neutral',
                       showRelic: mastered,
                       equippedSlugs: {
                         for (final item in equipped)

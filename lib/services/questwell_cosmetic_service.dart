@@ -8,6 +8,7 @@ class QuestwellProfile {
     required this.currentEnergyMode,
     required this.onboardingCompleted,
     required this.adventurerArchetype,
+    required this.avatarBodyType,
   });
 
   final int level;
@@ -16,6 +17,7 @@ class QuestwellProfile {
   final String currentEnergyMode;
   final bool onboardingCompleted;
   final String adventurerArchetype;
+  final String avatarBodyType;
 
   bool get campfireMode => currentEnergyMode == 'campfire';
 
@@ -29,6 +31,7 @@ class QuestwellProfile {
       onboardingCompleted: json['onboarding_completed'] == true,
       adventurerArchetype:
           json['adventurer_archetype']?.toString() ?? 'wanderer',
+      avatarBodyType: json['avatar_body_type']?.toString() ?? 'neutral',
     );
   }
 }
@@ -130,7 +133,7 @@ class QuestwellCosmeticService {
     final responses = await Future.wait([
       SupaFlow.client
           .from('users')
-          .select('level,total_xp,coin_balance,current_energy_mode,onboarding_completed,adventurer_archetype')
+          .select('level,total_xp,coin_balance,current_energy_mode,onboarding_completed,adventurer_archetype,avatar_body_type')
           .eq('id', uid)
           .single(),
       SupaFlow.client
@@ -238,6 +241,23 @@ class QuestwellCosmeticService {
 
     final response = await SupaFlow.client.rpc('claim_class_mastery_reward');
     return response.toString();
+  }
+
+  static Future<void> setAvatarBodyType(String bodyType) async {
+    const allowed = {'male', 'female', 'neutral'};
+    if (!allowed.contains(bodyType)) {
+      throw ArgumentError.value(bodyType, 'bodyType', 'Unsupported avatar body type');
+    }
+
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) {
+      throw StateError('Authentication required.');
+    }
+
+    await SupaFlow.client
+        .from('users')
+        .update({'avatar_body_type': bodyType})
+        .eq('id', uid);
   }
 
   static Future<void> setAdventurerArchetype(String archetype) async {
