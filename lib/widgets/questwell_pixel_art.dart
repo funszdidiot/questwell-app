@@ -92,6 +92,79 @@ class QuestwellTopActionButton extends StatelessWidget {
   }
 }
 
+class QuestwellScreenHeader extends StatelessWidget {
+  const QuestwellScreenHeader({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.kind,
+    required this.onBack,
+    this.accent = const Color(0xFFD6A84B),
+  });
+
+  final String title;
+  final String subtitle;
+  final String kind;
+  final VoidCallback onBack;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    final compact = MediaQuery.sizeOf(context).width < 390;
+    return Column(
+      children: [
+        Row(
+          children: [
+            QuestwellTopActionButton(
+              kind: 'back',
+              tooltip: 'Back to the Hearth',
+              onTap: onBack,
+            ),
+            SizedBox(width: compact ? 8 : 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                      fontSize: compact ? 15 : 21,
+                      color: const Color(0xFFF2D9A0),
+                      letterSpacing: compact ? .2 : .5,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    subtitle,
+                    maxLines: compact ? 2 : 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w600,
+                      fontSize: compact ? 12 : 14,
+                      height: 1.25,
+                      color: const Color(0xFFB7C4D4),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: compact ? 7 : 10),
+            QuestwellNavPixelIcon(
+              kind: kind,
+              size: compact ? 30 : 36,
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        QuestwellPixelDivider(accent: accent),
+      ],
+    );
+  }
+}
+
 class QuestwellRetroMenuButton extends StatelessWidget {
   const QuestwellRetroMenuButton({
     super.key,
