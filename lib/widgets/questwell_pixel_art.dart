@@ -2500,8 +2500,128 @@ class _BossPainter extends CustomPainter {
       rect(size.width * .39, size.height * .28, size.width * .22, size.height * .52, const Color(0xFF22142E));
       rect(size.width * .44, size.height * .42, 8, 8, const Color(0xFFF064AF));
       rect(size.width * .55, size.height * .42, 8, 8, const Color(0xFFF064AF));
+    } else if (bossType == 'spreadsheet_slime') {
+      // Glossy grid slime with cell highlights and dripping formulas.
+      _Pixel64.stepGlow(
+        canvas,
+        p,
+        Offset(size.width * .50, size.height * .55),
+        42,
+        const Color(0xFF45B7A8),
+      );
+      rect(size.width * .24, size.height * .39, size.width * .52, size.height * .34, const Color(0xFF236C68));
+      rect(size.width * .28, size.height * .33, size.width * .44, size.height * .34, const Color(0xFF3EA89C));
+      for (var row = 0; row < 3; row++) {
+        for (var col = 0; col < 5; col++) {
+          final x = size.width * (.31 + col * .075);
+          final y = size.height * (.38 + row * .075);
+          rect(x, y, 10, 8, (row + col).isEven ? const Color(0xFF9DE1C8) : const Color(0xFF267C75));
+        }
+      }
+      rect(size.width * .36, size.height * .46, 8, 8, const Color(0xFFF7E58E));
+      rect(size.width * .60, size.height * .46, 8, 8, const Color(0xFFF7E58E));
+      rect(size.width * .44, size.height * .61, size.width * .12, 6, const Color(0xFF16433F));
+      rect(size.width * .30, size.height * .70, size.width * .08, size.height * .13, const Color(0xFF2E8D84));
+      rect(size.width * .62, size.height * .70, size.width * .07, size.height * .10, const Color(0xFF2E8D84));
+    } else if (bossType == 'printer_poltergeist') {
+      // Haunted office printer with spectral paper trail.
+      _Pixel64.stepGlow(
+        canvas,
+        p,
+        Offset(size.width * .50, size.height * .44),
+        45,
+        const Color(0xFF8D65D6),
+      );
+      _Pixel64.bevel(
+        canvas,
+        p,
+        Rect.fromLTWH(size.width * .28, size.height * .31, size.width * .44, size.height * .38),
+        const Color(0xFF5E6670),
+        const Color(0xFF8A949E),
+        const Color(0xFF2C3138),
+      );
+      rect(size.width * .35, size.height * .16, size.width * .30, size.height * .25, paper);
+      rect(size.width * .38, size.height * .20, size.width * .22, 5, const Color(0xFF7C7466));
+      rect(size.width * .38, size.height * .28, size.width * .18, 5, const Color(0xFF7C7466));
+      rect(size.width * .34, size.height * .61, size.width * .32, size.height * .20, paper);
+      rect(size.width * .39, size.height * .66, size.width * .22, 4, const Color(0xFF8A8170));
+      rect(size.width * .62, size.height * .42, 8, 8, const Color(0xFFE87947));
+      rect(size.width * .37, size.height * .46, 7, 7, const Color(0xFF8D65D6));
+      rect(size.width * .56, size.height * .46, 7, 7, const Color(0xFF8D65D6));
+      for (var i = 0; i < 5; i++) {
+        rect(
+          size.width * (.17 + i * .13),
+          size.height * (.12 + (i % 2) * .07),
+          12,
+          8,
+          const Color(0x99DCC9FF),
+        );
+      }
+    } else if (bossType == 'ticket_troll') {
+      // Help-desk troll built from tickets and backlog cards.
+      _Pixel64.bevel(
+        canvas,
+        p,
+        Rect.fromLTWH(size.width * .30, size.height * .30, size.width * .40, size.height * .45),
+        const Color(0xFF40523B),
+        const Color(0xFF6C805F),
+        const Color(0xFF202B1E),
+      );
+      rect(size.width * .25, size.height * .39, size.width * .08, size.height * .26, const Color(0xFF6B5034));
+      rect(size.width * .67, size.height * .39, size.width * .08, size.height * .26, const Color(0xFF6B5034));
+      rect(size.width * .36, size.height * .20, size.width * .28, size.height * .17, const Color(0xFF5D704F));
+      rect(size.width * .39, size.height * .26, 8, 8, const Color(0xFFF7E58E));
+      rect(size.width * .58, size.height * .26, 8, 8, const Color(0xFFF7E58E));
+      rect(size.width * .43, size.height * .52, size.width * .14, 7, const Color(0xFF1B1715));
+      for (var i = 0; i < 6; i++) {
+        final x = size.width * (.13 + (i % 3) * .30);
+        final y = size.height * (.12 + (i ~/ 3) * .60);
+        _Pixel64.bevel(
+          canvas,
+          p,
+          Rect.fromLTWH(x, y, 28, 18),
+          i.isEven ? const Color(0xFFD8C7A3) : const Color(0xFFE5D8B8),
+          const Color(0xFFF5E9C9),
+          const Color(0xFF8A7652),
+        );
+        rect(x + 5, y + 6, 18, 3, const Color(0xFF8E6B35));
+      }
+    } else if (bossType == 'update_dragon') {
+      // Patch-note dragon with progress-bar scales.
+      _Pixel64.stepGlow(
+        canvas,
+        p,
+        Offset(size.width * .52, size.height * .49),
+        48,
+        const Color(0xFFE87947),
+      );
+      final leftWing = Path()
+        ..moveTo(size.width * .45, size.height * .46)
+        ..lineTo(size.width * .16, size.height * .22)
+        ..lineTo(size.width * .27, size.height * .60)
+        ..close();
+      final rightWing = Path()
+        ..moveTo(size.width * .55, size.height * .46)
+        ..lineTo(size.width * .84, size.height * .22)
+        ..lineTo(size.width * .73, size.height * .60)
+        ..close();
+      p.color = const Color(0xFF8E2F2B);
+      canvas.drawPath(leftWing, p);
+      canvas.drawPath(rightWing, p);
+      rect(size.width * .40, size.height * .30, size.width * .20, size.height * .42, const Color(0xFFB44735));
+      rect(size.width * .43, size.height * .24, size.width * .14, size.height * .15, const Color(0xFFD56242));
+      rect(size.width * .45, size.height * .29, 7, 7, const Color(0xFFFFE07A));
+      rect(size.width * .55, size.height * .29, 7, 7, const Color(0xFFFFE07A));
+      for (var i = 0; i < 4; i++) {
+        rect(size.width * .44, size.height * (.44 + i * .055), size.width * .12, 5, i < 3 ? const Color(0xFFF1C75B) : const Color(0xFF5B3127));
+      }
+      rect(size.width * .47, size.height * .72, 6, size.height * .12, const Color(0xFF7D2A26));
+      rect(size.width * .55, size.height * .72, 6, size.height * .12, const Color(0xFF7D2A26));
+      // Tiny flame / update spark.
+      rect(size.width * .62, size.height * .42, 9, 7, const Color(0xFFF4A13A));
+      rect(size.width * .66, size.height * .39, 7, 5, const Color(0xFFFFDF78));
     } else {
-      // Generic backlog / spreadsheet / printer / ticket monster.
+      // Fallback backlog monster.
       for (var i = 0; i < 10; i++) {
         final w = size.width * (.22 + (i % 3) * .03);
         rect(size.width * (.18 + (i % 4) * .16), size.height * (.12 + i * .055), w, 13, paper);
