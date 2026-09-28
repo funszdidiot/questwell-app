@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import '/services/questwell_boss_service.dart';
+import '/services/questwell_cosmetic_service.dart';
 import '/services/questwell_task_service.dart';
 import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
   String? _busyTaskId;
   late Future<List<TasksRow>> _tasksFuture;
   late Future<List<QuestwellBossBattle>> _bossFuture;
+  late Future<QuestwellCosmeticsSnapshot> _cosmeticsFuture;
 
   @override
   void initState() {
@@ -40,6 +42,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
       limit: 50,
     );
     _bossFuture = QuestwellBossService.loadBattles();
+    _cosmeticsFuture = QuestwellCosmeticService.loadSnapshot();
   }
 
   String _bossName(String type) {
@@ -134,7 +137,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
         child: RefreshIndicator(
           onRefresh: () async {
             setState(_refresh);
-            await Future.wait([_tasksFuture, _bossFuture]);
+            await Future.wait([_tasksFuture, _bossFuture, _cosmeticsFuture]);
           },
           child: ListView(
             padding: const EdgeInsets.fromLTRB(14, 14, 14, 110),
@@ -197,9 +200,26 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                 background: const Color(0xFF17151A),
                 child: Column(
                   children: [
-                    const QuestwellQuestBoardPixelArt(
-                      height: 210,
-                      clear: false,
+                    FutureBuilder<QuestwellCosmeticsSnapshot>(
+                      future: _cosmeticsFuture,
+                      builder: (context, snapshot) {
+                        final data = snapshot.data;
+                        final archetype =
+                            data?.profile.adventurerArchetype ?? 'wanderer';
+                        final equipped = data?.cosmetics
+                                .where((item) => item.equipped)
+                                .toList() ??
+                            const <QuestwellCosmetic>[];
+                        return QuestwellQuestBoardPixelArt(
+                          height: 235,
+                          clear: false,
+                          archetype: archetype,
+                          equippedSlugs: {
+                            for (final item in equipped)
+                              item.category: item.slug,
+                          },
+                        );
+                      },
                     ),
                     const SizedBox(height: 10),
                     Text(
