@@ -1556,9 +1556,11 @@ class QuestwellEquippedAvatar extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 48, 18, 12),
-            child: Align(
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: FractionallySizedBox(
+              widthFactor: .90,
+              heightFactor: .88,
               alignment: Alignment.bottomCenter,
               child: QuestwellLayeredAdventurerArt(
                 archetype: archetype,
