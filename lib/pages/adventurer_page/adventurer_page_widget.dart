@@ -389,7 +389,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                         children: [
                           Text(
                             'ADVENTURER',
-                            style: GoogleFonts.cinzelDecorative(
+                            style: GoogleFonts.pressStart2p(
                               fontSize: 24,
                               fontWeight: FontWeight.w900,
                               color: const Color(0xFFFFE7A4),
@@ -457,7 +457,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                           children: [
                             Text(
                               'LEVEL ${data.profile.level}',
-                              style: GoogleFonts.cinzelDecorative(
+                              style: GoogleFonts.pressStart2p(
                                 fontSize: 19,
                                 fontWeight: FontWeight.w900,
                                 color: const Color(0xFFFFE7A4),

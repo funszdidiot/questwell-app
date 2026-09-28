@@ -75,7 +75,7 @@ Target:
 **Typography checkpoint:**
 - Questwell wordmark remains unchanged
 - Supporting copy, descriptions, helper text, and subheaders standardized on Roboto across core screens
-- Exact Common Pixel header rollout is pending commercial-use licensing; the font is currently documented as personal-use only
+- Section headers standardized on Press Start 2P, a commercially usable pixel font under the SIL Open Font License 1.1
 
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
