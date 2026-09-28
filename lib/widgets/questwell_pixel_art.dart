@@ -1016,6 +1016,44 @@ class _HearthAtmospherePainter extends CustomPainter {
       );
     }
 
+    // A low-contrast perspective rug visually anchors the Adventurer to the
+    // Hearth floor without introducing another character-scale focal point.
+    final rug = Path()
+      ..moveTo(size.width * .34, size.height * .70)
+      ..lineTo(size.width * .66, size.height * .70)
+      ..lineTo(size.width * .76, size.height * .965)
+      ..lineTo(size.width * .24, size.height * .965)
+      ..close();
+    p.color = const Color(0x82431E25);
+    canvas.drawPath(rug, p);
+
+    final rugInset = Path()
+      ..moveTo(size.width * .37, size.height * .725)
+      ..lineTo(size.width * .63, size.height * .725)
+      ..lineTo(size.width * .70, size.height * .93)
+      ..lineTo(size.width * .30, size.height * .93)
+      ..close();
+    p.style = PaintingStyle.stroke;
+    p.strokeWidth = compact ? 2 : 3;
+    p.color = accent.withValues(alpha: .42);
+    canvas.drawPath(rugInset, p);
+    p.style = PaintingStyle.fill;
+
+    // Small stepped rug ornaments echo the class accent while preserving the
+    // warm neutral palette of the room.
+    p.color = accent.withValues(alpha: .22);
+    for (final x in [.39, .47, .55, .63]) {
+      canvas.drawRect(
+        Rect.fromLTWH(
+          size.width * x,
+          size.height * .84,
+          compact ? 2 : 3,
+          compact ? 2 : 3,
+        ),
+        p,
+      );
+    }
+
     // Hard-edged floor glints tie the live character into the room lighting.
     p.color = accent.withValues(alpha: .12);
     canvas.drawRect(
@@ -1038,6 +1076,28 @@ class _HearthAtmospherePainter extends CustomPainter {
       p,
     );
 
+    // Small ember clusters on the left keep the existing room's warm light
+    // source feeling active without adding animation or stealing focus.
+    final emberPoints = compact
+        ? const [Offset(.095, .69), Offset(.12, .665), Offset(.14, .70)]
+        : const [
+            Offset(.085, .70),
+            Offset(.105, .665),
+            Offset(.13, .69),
+            Offset(.145, .65),
+          ];
+    for (var i = 0; i < emberPoints.length; i++) {
+      final ember = emberPoints[i];
+      p.color = i.isEven
+          ? const Color(0xB8FFB347)
+          : const Color(0xA8E87947);
+      final px = compact ? 2.0 : 3.0;
+      canvas.drawRect(
+        Rect.fromLTWH(size.width * ember.dx, size.height * ember.dy, px, px),
+        p,
+      );
+    }
+
     // Foreground silhouettes create parallax depth and help the room read
     // as a space the Adventurer is standing inside rather than a flat card.
     p.color = const Color(0xB20B090A);
@@ -1051,6 +1111,27 @@ class _HearthAtmospherePainter extends CustomPainter {
         size.height * .84,
         size.width * .09,
         size.height * .16,
+      ),
+      p,
+    );
+    // Low foreground furniture shapes break the flat-card silhouette into
+    // recognizable room depth while staying below the Adventurer eye line.
+    p.color = const Color(0xCC171012);
+    canvas.drawRect(
+      Rect.fromLTWH(
+        size.width * .015,
+        size.height * .79,
+        size.width * .12,
+        size.height * .065,
+      ),
+      p,
+    );
+    canvas.drawRect(
+      Rect.fromLTWH(
+        size.width * .865,
+        size.height * .775,
+        size.width * .12,
+        size.height * .075,
       ),
       p,
     );

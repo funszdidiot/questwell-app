@@ -69,6 +69,8 @@ Target:
 - Adventurer focal scale increased with stronger floor-light and grounding treatment
 - Compact in-scene archetype/loadout HUD added without competing with the character focal point
 - Foreground silhouette layers added to increase room depth and parallax
+- Perspective Hearth rug and class-accent floor ornaments added to ground the scene
+- Ember clusters and low foreground furniture shapes added for environmental storytelling
 
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
