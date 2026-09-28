@@ -1557,12 +1557,15 @@ class QuestwellEquippedAvatar extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(6, 24, 6, 0),
-            child: QuestwellLayeredAdventurerArt(
-              archetype: archetype,
-              avatarBodyType: avatarBodyType,
-              equippedSlugs: equippedSlugs,
-              showRelic: showRelic,
+            padding: const EdgeInsets.fromLTRB(18, 48, 18, 12),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: QuestwellLayeredAdventurerArt(
+                archetype: archetype,
+                avatarBodyType: avatarBodyType,
+                equippedSlugs: equippedSlugs,
+                showRelic: showRelic,
+              ),
             ),
           ),
           if (showRelic)
