@@ -254,10 +254,10 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    await SupaFlow.client
-        .from('users')
-        .update({'avatar_body_type': bodyType})
-        .eq('id', uid);
+    await SupaFlow.client.rpc(
+      'set_avatar_body_type',
+      params: {'p_body_type': bodyType},
+    );
   }
 
   static Future<void> setAdventurerArchetype(String archetype) async {
