@@ -21,6 +21,63 @@ class QuestwellPixelPalette {
   }
 }
 
+class QuestwellBrandWordmark extends StatelessWidget {
+  const QuestwellBrandWordmark({
+    super.key,
+    this.compact = false,
+    this.subtitle = 'Small wins. Real momentum.',
+  });
+
+  final bool compact;
+  final String subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'QUESTWELL',
+          maxLines: 1,
+          overflow: TextOverflow.fade,
+          style: GoogleFonts.cinzelDecorative(
+            fontSize: compact ? 24 : 30,
+            fontWeight: FontWeight.w900,
+            height: .95,
+            letterSpacing: -.5,
+            color: const Color(0xFFFFE7A4),
+            shadows: const [
+              Shadow(
+                color: Color(0xFF5A3419),
+                offset: Offset(0, 2),
+                blurRadius: 0,
+              ),
+              Shadow(
+                color: Color(0xAAE87947),
+                offset: Offset(0, 0),
+                blurRadius: 6,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 3),
+        Text(
+          subtitle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: GoogleFonts.libreBaskerville(
+            fontSize: compact ? 12 : 14,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xFFB9D8EA),
+            letterSpacing: .05,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
 class QuestwellPixelDivider extends StatelessWidget {
   const QuestwellPixelDivider({
     super.key,
