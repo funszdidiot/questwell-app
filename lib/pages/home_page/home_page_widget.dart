@@ -950,9 +950,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ],
                 const SizedBox(height: 12),
-                QuestwellQuestBoardPixelArt(
-                  height: MediaQuery.sizeOf(context).width < 430 ? 118 : 142,
-                  clear: false,
+                FutureBuilder<QuestwellCosmeticsSnapshot>(
+                  future: _homeSnapshotFuture,
+                  builder: (context, snapshot) {
+                    final data = snapshot.data;
+                    final archetype =
+                        data?.profile.adventurerArchetype ?? 'wanderer';
+                    final equipped = data?.cosmetics
+                            .where((item) => item.equipped)
+                            .toList() ??
+                        const <QuestwellCosmetic>[];
+                    return QuestwellQuestBoardPixelArt(
+                      height:
+                          MediaQuery.sizeOf(context).width < 430 ? 148 : 172,
+                      clear: false,
+                      archetype: archetype,
+                      equippedSlugs: {
+                        for (final item in equipped)
+                          item.category: item.slug,
+                      },
+                    );
+                  },
                 ),
                 const SizedBox(height: 12),
                 FutureBuilder<List<TasksRow>>(
