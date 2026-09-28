@@ -250,11 +250,6 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                 const SizedBox(height: 14),
                 QuestwellMarketPixelScene(
                   archetype: data.profile.adventurerArchetype,
-                  equippedSlugs: {
-                    for (final item
-                        in data.cosmetics.where((item) => item.equipped))
-                      item.category: item.slug,
-                  },
                   height:
                       MediaQuery.sizeOf(context).width < 430 ? 250 : 285,
                 ),
