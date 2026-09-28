@@ -839,6 +839,71 @@ class QuestwellClassPixelPortrait extends StatelessWidget {
   }
 }
 
+class QuestwellEquippedAvatar extends StatelessWidget {
+  const QuestwellEquippedAvatar({
+    super.key,
+    required this.archetype,
+    required this.equippedSlugs,
+    this.height = 210,
+    this.showRelic = false,
+  });
+
+  final String archetype;
+  final Map<String, String> equippedSlugs;
+  final double height;
+  final bool showRelic;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = QuestwellPixelPalette.forClass(archetype);
+    return QuestwellPixelFrame(
+      height: height,
+      background: palette.first,
+      child: CustomPaint(
+        painter: _EquippedAvatarPainter(
+          archetype: archetype,
+          palette: palette,
+          equippedSlugs: equippedSlugs,
+          showRelic: showRelic,
+          portrait: true,
+        ),
+      ),
+    );
+  }
+}
+
+class QuestwellEquippedAvatarSprite extends StatelessWidget {
+  const QuestwellEquippedAvatarSprite({
+    super.key,
+    required this.archetype,
+    required this.equippedSlugs,
+    this.width = 116,
+    this.height = 150,
+  });
+
+  final String archetype;
+  final Map<String, String> equippedSlugs;
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: CustomPaint(
+        painter: _EquippedAvatarPainter(
+          archetype: archetype,
+          palette: QuestwellPixelPalette.forClass(archetype),
+          equippedSlugs: equippedSlugs,
+          showRelic: false,
+          portrait: false,
+        ),
+      ),
+    );
+  }
+}
+
 class QuestwellRelicPixelArt extends StatelessWidget {
   const QuestwellRelicPixelArt({
     super.key,
@@ -2167,6 +2232,200 @@ class _ClassPortraitPainter extends CustomPainter {
       oldDelegate.archetype != archetype ||
       oldDelegate.palette != palette ||
       oldDelegate.showRelic != showRelic;
+}
+
+class _EquippedAvatarPainter extends CustomPainter {
+  _EquippedAvatarPainter({
+    required this.archetype,
+    required this.palette,
+    required this.equippedSlugs,
+    required this.showRelic,
+    required this.portrait,
+  });
+
+  final String archetype;
+  final List<Color> palette;
+  final Map<String, String> equippedSlugs;
+  final bool showRelic;
+  final bool portrait;
+
+  String? get outfit => equippedSlugs['outfit'];
+  String? get accessory => equippedSlugs['accessory'];
+  String? get familiar => equippedSlugs['familiar'];
+  String? get effect => equippedSlugs['effect'];
+  String? get room => equippedSlugs['room'];
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void r(double x, double y, double w, double h, Color c) {
+      p.color = c;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    if (portrait) {
+      _ClassPortraitPainter(
+        archetype: archetype,
+        palette: palette,
+        showRelic: showRelic,
+      ).paint(canvas, size);
+    } else {
+      // Transparent character stage for placement over a richer environment.
+      if (effect != null) {
+        _Pixel64.stepGlow(
+          canvas,
+          p,
+          Offset(size.width * .5, size.height * .48),
+          size.width * .42,
+          palette[1],
+        );
+      }
+      _Pixel64.character(
+        canvas,
+        p,
+        origin: Offset(size.width * .5, size.height * .31),
+        scale: size.height / 150 * 2.10,
+        palette: palette,
+        archetype: archetype,
+      );
+    }
+
+    // ROOM cosmetics change the space around the Adventurer.
+    final roomSlug = room ?? '';
+    if (roomSlug.contains('lantern')) {
+      _Pixel64.stepGlow(
+        canvas,
+        p,
+        Offset(size.width * .78, size.height * .43),
+        size.width * .15,
+        const Color(0xFFFFD76A),
+      );
+      r(size.width * .75, size.height * .32, size.width * .06, size.height * .17, const Color(0xFFB47A2B));
+      r(size.width * .765, size.height * .355, size.width * .03, size.height * .09, const Color(0xFFFFE39A));
+    } else if (roomSlug.contains('map')) {
+      r(size.width * .69, size.height * .17, size.width * .20, size.height * .18, const Color(0xFF263E5B));
+      for (var i = 0; i < 7; i++) {
+        r(
+          size.width * (.71 + ((i * 19) % 15) / 100),
+          size.height * (.19 + ((i * 13) % 12) / 100),
+          3,
+          3,
+          const Color(0xFFFFDF78),
+        );
+      }
+    }
+
+    // EFFECT cosmetics render behind/around the body instead of as an icon.
+    final effectSlug = effect ?? '';
+    if (effectSlug.isNotEmpty) {
+      final effectColor = effectSlug.contains('seal') || effectSlug.contains('crest')
+          ? const Color(0xFFD9B15F)
+          : palette.last;
+      for (var i = 0; i < 9; i++) {
+        final x = size.width * (.27 + ((i * 17) % 46) / 100);
+        final y = size.height * (.22 + ((i * 23) % 48) / 100);
+        r(x, y, i.isEven ? 4 : 3, i.isEven ? 4 : 3, effectColor.withValues(alpha: .9));
+      }
+    }
+
+    // Outfit changes are painted directly onto the character body.
+    final outfitSlug = outfit ?? '';
+    if (outfitSlug.contains('mantle')) {
+      final cloak = Path()
+        ..moveTo(size.width * .39, size.height * .34)
+        ..lineTo(size.width * .29, size.height * .68)
+        ..lineTo(size.width * .43, size.height * .74)
+        ..lineTo(size.width * .50, size.height * .49)
+        ..lineTo(size.width * .57, size.height * .74)
+        ..lineTo(size.width * .71, size.height * .68)
+        ..lineTo(size.width * .61, size.height * .34)
+        ..close();
+      p.color = const Color(0xFFA53A32);
+      canvas.drawPath(cloak, p);
+      r(size.width * .485, size.height * .35, size.width * .03, size.height * .31, const Color(0xFFF1C75B));
+    } else if (outfitSlug.contains('boot')) {
+      r(size.width * .39, size.height * .68, size.width * .09, size.height * .10, const Color(0xFF6B4229));
+      r(size.width * .52, size.height * .68, size.width * .09, size.height * .10, const Color(0xFF6B4229));
+      r(size.width * .36, size.height * .75, size.width * .13, size.height * .05, const Color(0xFF2C211A));
+      r(size.width * .51, size.height * .75, size.width * .13, size.height * .05, const Color(0xFF2C211A));
+    }
+
+    // Accessories are anchored to the torso/hand so equipping is visible.
+    final accessorySlug = accessory ?? '';
+    if (accessorySlug.contains('satchel')) {
+      p.style = PaintingStyle.stroke;
+      p.strokeWidth = 5;
+      p.color = const Color(0xFFD6A84B);
+      canvas.drawLine(
+        Offset(size.width * .39, size.height * .35),
+        Offset(size.width * .59, size.height * .63),
+        p,
+      );
+      p.style = PaintingStyle.fill;
+      r(size.width * .56, size.height * .55, size.width * .15, size.height * .14, const Color(0xFF8B5A32));
+      r(size.width * .605, size.height * .59, size.width * .05, size.height * .04, const Color(0xFFF1C75B));
+    } else if (accessorySlug.contains('grimoire')) {
+      r(size.width * .61, size.height * .48, size.width * .18, size.height * .20, const Color(0xFF6A337C));
+      r(size.width * .64, size.height * .51, size.width * .025, size.height * .14, const Color(0xFFF1C75B));
+      r(size.width * .69, size.height * .54, size.width * .07, 3, const Color(0xFFE5D6B7));
+    } else if (accessorySlug.contains('compass')) {
+      p.style = PaintingStyle.stroke;
+      p.strokeWidth = 4;
+      p.color = const Color(0xFFF1C75B);
+      canvas.drawCircle(
+        Offset(size.width * .50, size.height * .49),
+        size.width * .045,
+        p,
+      );
+      p.style = PaintingStyle.fill;
+    } else if (accessorySlug.contains('phial') || accessorySlug.contains('tonic')) {
+      r(size.width * .61, size.height * .52, size.width * .045, size.height * .10, const Color(0xFFB8EAF1));
+      r(size.width * .605, size.height * .57, size.width * .055, size.height * .05, const Color(0xFF42B883));
+    }
+
+    // Familiar companions occupy a stable world-space anchor near the avatar.
+    final familiarSlug = familiar ?? '';
+    if (familiarSlug.isNotEmpty) {
+      final fx = size.width * .76;
+      final fy = size.height * .64;
+      if (familiarSlug.contains('fox')) {
+        p.color = const Color(0xFFD77A32);
+        canvas.drawCircle(Offset(fx, fy), size.width * .07, p);
+        final ears = Path()
+          ..moveTo(fx - 11, fy - 7)
+          ..lineTo(fx - 8, fy - 22)
+          ..lineTo(fx - 1, fy - 8)
+          ..moveTo(fx + 3, fy - 8)
+          ..lineTo(fx + 11, fy - 22)
+          ..lineTo(fx + 13, fy - 6);
+        p.style = PaintingStyle.stroke;
+        p.strokeWidth = 5;
+        canvas.drawPath(ears, p);
+        p.style = PaintingStyle.fill;
+      } else if (familiarSlug.contains('owl')) {
+        p.color = const Color(0xFFB77A3A);
+        canvas.drawCircle(Offset(fx, fy), size.width * .07, p);
+        r(fx - 8, fy - 4, 4, 4, const Color(0xFFFFE07A));
+        r(fx + 4, fy - 4, 4, 4, const Color(0xFFFFE07A));
+      } else if (familiarSlug.contains('slime')) {
+        p.color = const Color(0xFF55D7CB);
+        canvas.drawCircle(Offset(fx, fy + 3), size.width * .075, p);
+        r(fx - 14, fy + 1, 28, 11, const Color(0xFF55D7CB));
+      } else if (familiarSlug.contains('moth')) {
+        p.color = const Color(0xFFA8E36D);
+        canvas.drawOval(Rect.fromCenter(center: Offset(fx - 8, fy), width: 18, height: 25), p);
+        canvas.drawOval(Rect.fromCenter(center: Offset(fx + 8, fy), width: 18, height: 25), p);
+        r(fx - 2, fy - 8, 4, 18, const Color(0xFF6F8D3A));
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _EquippedAvatarPainter oldDelegate) =>
+      oldDelegate.archetype != archetype ||
+      oldDelegate.equippedSlugs != equippedSlugs ||
+      oldDelegate.showRelic != showRelic ||
+      oldDelegate.portrait != portrait;
 }
 
 class _RelicPainter extends CustomPainter {
