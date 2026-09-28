@@ -91,6 +91,8 @@ Target:
 - Existing ownership/equip state is preserved; this pass changes rendering, not user inventory
 - Acceptance gate: all three bases must render cleanly on iPhone Safari, switch persistently, share scale/baseline, and show no gray boxes or transparency artifacts
 
+- Founder iPhone check confirmed rich base assets now load on Safari. Cleared three stale legacy equipped states, tied the active-gear count to rendered rich layers, blocked invisible legacy equips until rebuilt, and increased the main Adventurer portrait scale by 18%.
+
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
 ## Release gate

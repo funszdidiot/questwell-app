@@ -15,6 +15,8 @@ class AdventurerPageWidget extends StatefulWidget {
 }
 
 class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
+  static const bool _richEquipmentLayersReady = false;
+
   late Future<QuestwellCosmeticsSnapshot> _future;
   String? _busyCosmeticId;
   bool _savingArchetype = false;
@@ -32,6 +34,15 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
   }
 
   Future<void> _equip(QuestwellCosmetic cosmetic) async {
+    if (!_richEquipmentLayersReady) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Equipment visuals are being upgraded. Your item stays owned.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
     if (_busyCosmeticId != null) return;
     setState(() => _busyCosmeticId = cosmetic.id);
 
@@ -368,6 +379,8 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
 
           final data = snapshot.data!;
           final equipped = data.cosmetics.where((item) => item.equipped).toList();
+          final visibleEquipped =
+              _richEquipmentLayersReady ? equipped : <QuestwellCosmetic>[];
           final owned = data.cosmetics.where((item) => item.owned).toList();
           final classCollection = data.cosmetics
               .where(
@@ -526,7 +539,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             ),
                             const SizedBox(height: 12),
                             Text(
-                              '${equipped.length} / 5 GEAR SLOTS ACTIVE',
+                              '${visibleEquipped.length} / 5 GEAR SLOTS ACTIVE',
                               style: GoogleFonts.roboto(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w800,
