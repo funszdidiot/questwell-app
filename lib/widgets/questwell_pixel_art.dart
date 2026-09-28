@@ -1796,56 +1796,61 @@ class _ClassMiniPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()..isAntiAlias = false;
-    void rect(double x, double y, double w, double h, Color color) {
-      p.color = color;
-      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
-    }
+    void r(double x, double y, double w, double h, Color color) =>
+        _Pixel64.rect(canvas, p, x, y, w, h, color);
 
-    rect(0, 0, size.width, size.height, palette.first);
-    rect(0, size.height * .78, size.width, size.height * .22, const Color(0xFF17151A));
+    r(0, 0, size.width, size.height, const Color(0xFF11131A));
+    _Pixel64.dither(
+      canvas,
+      p,
+      Rect.fromLTWH(0, 0, size.width, size.height * .74),
+      palette.first.withValues(alpha: .55),
+      6,
+    );
 
-    // Tiny star pixels.
-    rect(size.width * .12, size.height * .16, 3, 3, palette.last);
-    rect(size.width * .78, size.height * .22, 3, 3, palette.last);
-    rect(size.width * .69, size.height * .10, 2, 2, const Color(0xFFF2E7CE));
+    // Class halo behind the sprite.
+    _Pixel64.stepGlow(
+      canvas,
+      p,
+      Offset(size.width * .50, size.height * .43),
+      size.width * .31,
+      palette[1],
+    );
 
-    final cx = size.width * .50;
-    // Legs, body, face.
-    rect(cx - size.width * .14, size.height * .62, size.width * .10, size.height * .20, const Color(0xFF2B211D));
-    rect(cx + size.width * .04, size.height * .62, size.width * .10, size.height * .20, const Color(0xFF2B211D));
-    rect(cx - size.width * .20, size.height * .38, size.width * .40, size.height * .34, palette[1]);
-    rect(cx - size.width * .14, size.height * .23, size.width * .28, size.height * .20, const Color(0xFFD9A56E));
-    rect(cx - size.width * .16, size.height * .19, size.width * .32, size.height * .07, const Color(0xFF2B241F));
+    // Ground / pedestal.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(
+        size.width * .12,
+        size.height * .73,
+        size.width * .76,
+        size.height * .17,
+      ),
+      const Color(0xFF2D241D),
+      const Color(0xFF5A4430),
+      const Color(0xFF15110E),
+    );
 
-    switch (archetype) {
-      case 'scholar':
-        rect(cx - size.width * .24, size.height * .13, size.width * .48, size.height * .05, palette.last);
-        rect(cx + size.width * .16, size.height * .47, size.width * .23, size.height * .18, const Color(0xFF6B3C84));
-        rect(cx + size.width * .20, size.height * .51, size.width * .15, 3, palette.last);
-        break;
-      case 'scout':
-        rect(cx - size.width * .20, size.height * .16, size.width * .40, size.height * .08, const Color(0xFF375E37));
-        rect(cx + size.width * .25, size.height * .34, 3, size.height * .34, palette.last);
-        break;
-      case 'alchemist':
-        rect(cx - size.width * .14, size.height * .27, size.width * .10, 4, palette.last);
-        rect(cx + size.width * .04, size.height * .27, size.width * .10, 4, palette.last);
-        rect(cx + size.width * .23, size.height * .46, size.width * .08, size.height * .18, const Color(0xFFB8EAF1));
-        rect(cx + size.width * .18, size.height * .59, size.width * .18, size.height * .12, const Color(0xFF75D65D));
-        break;
-      case 'guardian':
-        rect(cx - size.width * .30, size.height * .39, size.width * .10, size.height * .33, const Color(0xFF742525));
-        rect(cx + size.width * .22, size.height * .43, size.width * .22, size.height * .25, palette.last);
-        break;
-      default:
-        rect(cx - size.width * .33, size.height * .42, size.width * .13, size.height * .25, const Color(0xFF6D5333));
-        rect(cx + size.width * .28, size.height * .20, 3, size.height * .56, palette.last);
-    }
+    _Pixel64.character(
+      canvas,
+      p,
+      origin: Offset(size.width * .50, size.height * .40),
+      scale: size.width / 58 * 1.05,
+      palette: palette,
+      archetype: archetype,
+    );
+
+    // Tiny class insignia.
+    r(size.width * .10, size.height * .10, 4, 4, palette.last);
+    r(size.width * .82, size.height * .16, 4, 4, palette.last);
+    r(size.width * .14, size.height * .20, 2, 2, const Color(0xFFF2E7CE));
   }
 
   @override
   bool shouldRepaint(covariant _ClassMiniPainter oldDelegate) =>
-      oldDelegate.archetype != archetype;
+      oldDelegate.archetype != archetype ||
+      oldDelegate.palette != palette;
 }
 
 class _ClassPortraitPainter extends CustomPainter {
