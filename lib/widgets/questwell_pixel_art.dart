@@ -45,6 +45,53 @@ class QuestwellPixelDivider extends StatelessWidget {
   }
 }
 
+class QuestwellTopActionButton extends StatelessWidget {
+  const QuestwellTopActionButton({
+    super.key,
+    required this.kind,
+    required this.tooltip,
+    required this.onTap,
+  });
+
+  final String kind;
+  final String tooltip;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          width: 46,
+          height: 46,
+          decoration: BoxDecoration(
+            color: const Color(0xFF15141B),
+            border: Border.all(
+              color: const Color(0xFFD6A84B),
+              width: 2,
+            ),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x77000000),
+                blurRadius: 0,
+                offset: Offset(3, 3),
+              ),
+            ],
+          ),
+          child: Center(
+            child: QuestwellNavPixelIcon(
+              kind: kind,
+              size: 24,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class QuestwellRetroMenuButton extends StatelessWidget {
   const QuestwellRetroMenuButton({
     super.key,
