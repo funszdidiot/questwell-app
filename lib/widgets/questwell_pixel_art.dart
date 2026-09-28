@@ -328,12 +328,71 @@ class QuestwellRetroPanel extends StatelessWidget {
         foregroundPainter: _RetroBorderPainter(accent: accent),
         child: Container(
           padding: padding.add(const EdgeInsets.all(8)),
-          color: background,
-          child: child,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.lerp(background, const Color(0xFF24344A), .20)!,
+                background,
+                Color.lerp(background, const Color(0xFF05080D), .34)!,
+              ],
+              stops: const [0, .48, 1],
+            ),
+          ),
+          child: CustomPaint(
+            painter: _QuestwellPanelAtmospherePainter(accent: accent),
+            child: child,
+          ),
         ),
       ),
     );
   }
+}
+
+class _QuestwellPanelAtmospherePainter extends CustomPainter {
+  const _QuestwellPanelAtmospherePainter({required this.accent});
+  final Color accent;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+
+    // Very restrained 64-bit-era environmental texture: stepped corner light,
+    // low-contrast masonry marks, and a warm accent glow. This keeps text
+    // readable while making panels feel like pieces of the same game world.
+    for (var i = 0; i < 4; i++) {
+      final inset = i * 10.0;
+      p.color = accent.withValues(alpha: .035 - (i * .006));
+      canvas.drawRect(
+        Rect.fromLTWH(inset, inset, size.width - inset * 2, 2),
+        p,
+      );
+    }
+
+    p.color = const Color(0x14FFFFFF);
+    for (double y = 18; y < size.height; y += 34) {
+      final stagger = ((y / 34).floor().isEven) ? 10.0 : 28.0;
+      for (double x = stagger; x < size.width - 18; x += 58) {
+        canvas.drawRect(Rect.fromLTWH(x, y, 16, 1), p);
+        canvas.drawRect(Rect.fromLTWH(x + 4, y + 3, 8, 1), p);
+      }
+    }
+
+    p.color = accent.withValues(alpha: .08);
+    canvas.drawRect(
+      Rect.fromLTWH(size.width * .72, size.height * .08, size.width * .20, 2),
+      p,
+    );
+    canvas.drawRect(
+      Rect.fromLTWH(size.width * .82, size.height * .08, 2, size.height * .16),
+      p,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _QuestwellPanelAtmospherePainter oldDelegate) =>
+      oldDelegate.accent != accent;
 }
 
 class _RetroBorderPainter extends CustomPainter {
