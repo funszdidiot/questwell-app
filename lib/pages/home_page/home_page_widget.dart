@@ -327,7 +327,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
       if (!mounted) return;
       if (nextAction == 'add') {
-        await context.pushNamed(AddTaskPageWidget.routeName);
+        await context.pushNamed(QuestBoardPageWidget.routeName);
         if (mounted) setState(_loadHomeData);
       } else if (nextAction == 'chronicle') {
         await context.pushNamed(ChroniclePageWidget.routeName);
@@ -405,7 +405,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       kind: 'quest',
                       tooltip: 'Quest Board',
                       onTap: () async {
-                        await context.pushNamed(AddTaskPageWidget.routeName);
+                        await context.pushNamed(QuestBoardPageWidget.routeName);
                         if (mounted) setState(_loadHomeData);
                       },
                     ),
@@ -1012,7 +1012,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             OutlinedButton.icon(
                               onPressed: () async {
                                 await context.pushNamed(
-                                  AddTaskPageWidget.routeName,
+                                  QuestBoardPageWidget.routeName,
                                 );
                                 if (mounted) setState(_loadHomeData);
                               },
@@ -1047,7 +1047,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 const SizedBox(height: 14),
                 FFButtonWidget(
                   onPressed: () async {
-                    await context.pushNamed(AddTaskPageWidget.routeName);
+                    await context.pushNamed(QuestBoardPageWidget.routeName);
                     if (mounted) setState(_loadHomeData);
                   },
                   text: '+ Add Quest',
