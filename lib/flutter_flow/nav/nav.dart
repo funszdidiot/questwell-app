@@ -101,6 +101,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => AddTaskPageWidget(),
         ),
         FFRoute(
+          name: QuestBoardPageWidget.routeName,
+          path: QuestBoardPageWidget.routePath,
+          builder: (context, params) => QuestBoardPageWidget(),
+        ),
+        FFRoute(
           name: MarketPageWidget.routeName,
           path: MarketPageWidget.routePath,
           builder: (context, params) => MarketPageWidget(),
@@ -109,6 +114,21 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: AdventurerPageWidget.routeName,
           path: AdventurerPageWidget.routePath,
           builder: (context, params) => AdventurerPageWidget(),
+        ),
+        FFRoute(
+          name: BossBattlesPageWidget.routeName,
+          path: BossBattlesPageWidget.routePath,
+          builder: (context, params) => BossBattlesPageWidget(),
+        ),
+        FFRoute(
+          name: ChroniclePageWidget.routeName,
+          path: ChroniclePageWidget.routePath,
+          builder: (context, params) => ChroniclePageWidget(),
+        ),
+        FFRoute(
+          name: ExpeditionPageWidget.routeName,
+          path: ExpeditionPageWidget.routePath,
+          builder: (context, params) => ExpeditionPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

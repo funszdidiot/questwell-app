@@ -1,5 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_cosmetic_service.dart';
+import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -27,16 +28,46 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
     _future = QuestwellCosmeticService.load();
   }
 
+  String _archetypeLabel(String value) {
+    switch (value) {
+      case 'scholar':
+        return 'Scholar';
+      case 'scout':
+        return 'Scout';
+      case 'alchemist':
+        return 'Alchemist';
+      case 'guardian':
+        return 'Guardian';
+      default:
+        return 'Wanderer';
+    }
+  }
+
   IconData _iconForCategory(String category) {
     switch (category) {
+      case 'head':
+        return Icons.face_retouching_natural;
+      case 'face':
+        return Icons.visibility_outlined;
+      case 'neck':
+        return Icons.style_outlined;
+      case 'chest':
+      case 'outfit':
+        return Icons.checkroom_outlined;
+      case 'hands':
+        return Icons.pan_tool_alt_outlined;
+      case 'legs':
+        return Icons.airline_seat_legroom_normal_outlined;
+      case 'feet':
+        return Icons.hiking_outlined;
+      case 'back':
+        return Icons.backpack_outlined;
       case 'familiar':
         return Icons.pets_outlined;
       case 'room':
         return Icons.chair_outlined;
       case 'effect':
         return Icons.auto_awesome_outlined;
-      case 'outfit':
-        return Icons.checkroom_outlined;
       default:
         return Icons.workspace_premium_outlined;
     }
@@ -90,32 +121,91 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
     }
   }
 
+  Future<void> _unequip(QuestwellCosmetic cosmetic) async {
+    if (_busyCosmeticId != null) return;
+    setState(() => _busyCosmeticId = cosmetic.id);
+
+    try {
+      await QuestwellCosmeticService.unequip(cosmetic.id);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${cosmetic.name} unequipped.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      setState(_refresh);
+    } finally {
+      if (mounted) setState(() => _busyCosmeticId = null);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.primaryBackground,
-      appBar: AppBar(
-        backgroundColor: theme.primaryBackground,
-        elevation: 0,
-        foregroundColor: theme.primaryText,
-        title: Text(
-          'The Market',
-          style: theme.titleLarge.override(
-            font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-            letterSpacing: 0,
-          ),
-        ),
-      ),
-      body: FutureBuilder<QuestwellCosmeticsSnapshot>(
+      backgroundColor: const Color(0xFF111827),
+      body: SafeArea(
+        top: true,
+        child: FutureBuilder<QuestwellCosmeticsSnapshot>(
         future: _future,
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(28),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.cloud_off_outlined, size: 48, color: theme.primary),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Could not refresh this page.',
+                      textAlign: TextAlign.center,
+                      style: theme.titleMedium.override(
+                        font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                        letterSpacing: 0,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextButton(
+                      onPressed: () => setState(_refresh),
+                      child: const Text('Try Again'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());
           }
 
           final data = snapshot.data!;
+          final currentClassItems = data.cosmetics
+              .where(
+                (item) =>
+                    item.unlockMethod == 'shop' &&
+                    item.requiredArchetype == data.profile.adventurerArchetype,
+              )
+              .toList();
+          final generalItems = data.cosmetics
+              .where(
+                (item) =>
+                    item.unlockMethod == 'shop' &&
+                    item.requiredArchetype == null,
+              )
+              .toList();
+          final otherClassItems = data.cosmetics
+              .where(
+                (item) =>
+                    item.unlockMethod == 'shop' &&
+                    item.requiredArchetype != null &&
+                    item.requiredArchetype != data.profile.adventurerArchetype,
+              )
+              .toList();
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -123,20 +213,70 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
               await _future;
             },
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
+              padding: const EdgeInsets.fromLTRB(18, 16, 18, 30),
               children: [
-                Container(
-                  padding: const EdgeInsets.all(18),
-                  decoration: BoxDecoration(
-                    color: theme.secondaryBackground,
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: theme.alternate),
-                  ),
+                Row(
+                  children: [
+                    QuestwellTopActionButton(
+                      kind: 'back',
+                      tooltip: 'Back to the Hearth',
+                      onTap: () => Navigator.of(context).maybePop(),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'THE MARKET',
+                            style: theme.headlineMedium.override(
+                              font: GoogleFonts.pressStart2p(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              fontSize: 21,
+                              color: const Color(0xFFF2D9A0),
+                              letterSpacing: .5,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Rare finds, class gear, and questionable fashion choices.',
+                            style: theme.bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                              ),
+                              color: const Color(0xFFB7C4D4),
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const QuestwellNavPixelIcon(
+                      kind: 'market',
+                      size: 36,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                const QuestwellPixelDivider(
+                  accent: Color(0xFFD6A84B),
+                ),
+                const SizedBox(height: 14),
+                QuestwellMarketPixelScene(
+                  archetype: data.profile.adventurerArchetype,
+                  height:
+                      MediaQuery.sizeOf(context).width < 430 ? 250 : 285,
+                ),
+                const SizedBox(height: 14),
+                QuestwellRetroPanel(
+                  padding: const EdgeInsets.all(14),
+                  accent: const Color(0xFFF1C75B),
+                  background: const Color(0xFF17151A),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.monetization_on_outlined,
-                        color: theme.primary,
+                      const QuestwellCurrencyPixelIcon(
+                        kind: 'coin',
                         size: 28,
                       ),
                       const SizedBox(width: 12),
@@ -168,17 +308,20 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 22),
                 Text(
-                  'Guild Goods',
+                  '${_archetypeLabel(data.profile.adventurerArchetype).toUpperCase()} COLLECTION',
                   style: theme.titleLarge.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 13,
+                    letterSpacing: .3,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Cosmetics only. Your productivity never depends on what you buy.',
+                  'Exclusive gear for your current Adventurer class.',
                   style: theme.bodyMedium.override(
                     font: GoogleFonts.inter(),
                     color: theme.secondaryText,
@@ -186,22 +329,153 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
                   ),
                 ),
                 const SizedBox(height: 14),
-                ...data.cosmetics.map(
-                  (cosmetic) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: _MarketCard(
-                      cosmetic: cosmetic,
-                      busy: _busyCosmeticId == cosmetic.id,
-                      icon: _iconForCategory(cosmetic.category),
-                      onPurchase: () => _purchase(cosmetic),
-                      onEquip: () => _equip(cosmetic),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final columns = constraints.maxWidth >= 980
+                        ? 4
+                        : constraints.maxWidth >= 680
+                            ? 3
+                            : constraints.maxWidth >= 460
+                                ? 2
+                                : 1;
+                    final itemWidth =
+                        (constraints.maxWidth - ((columns - 1) * 10)) /
+                            columns;
+                    return Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        for (final cosmetic in currentClassItems)
+                          SizedBox(
+                            width: itemWidth,
+                            height: 310,
+                            child: _MarketCard(
+                              cosmetic: cosmetic,
+                              currentArchetype:
+                                  data.profile.adventurerArchetype,
+                              busy: _busyCosmeticId == cosmetic.id,
+                              icon: _iconForCategory(cosmetic.category),
+                              onPurchase: () => _purchase(cosmetic),
+                              onEquip: () => _equip(cosmetic),
+                              onUnequip: () => _unequip(cosmetic),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'GUILD GOODS',
+                  style: theme.titleLarge.override(
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
                     ),
+                    fontSize: 13,
+                    letterSpacing: .3,
                   ),
                 ),
+                const SizedBox(height: 6),
+                Text(
+                  'Available to every class. Cosmetics only — productivity never depends on what you buy.',
+                  style: theme.bodyMedium.override(
+                    font: GoogleFonts.inter(),
+                    color: theme.secondaryText,
+                    letterSpacing: 0,
+                  ),
+                ),
+                const SizedBox(height: 14),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final columns = constraints.maxWidth >= 980
+                        ? 4
+                        : constraints.maxWidth >= 680
+                            ? 3
+                            : constraints.maxWidth >= 460
+                                ? 2
+                                : 1;
+                    final itemWidth =
+                        (constraints.maxWidth - ((columns - 1) * 10)) /
+                            columns;
+                    return Wrap(
+                      spacing: 10,
+                      runSpacing: 10,
+                      children: [
+                        for (final cosmetic in generalItems)
+                          SizedBox(
+                            width: itemWidth,
+                            height: 310,
+                            child: _MarketCard(
+                              cosmetic: cosmetic,
+                              currentArchetype:
+                                  data.profile.adventurerArchetype,
+                              busy: _busyCosmeticId == cosmetic.id,
+                              icon: _iconForCategory(cosmetic.category),
+                              onPurchase: () => _purchase(cosmetic),
+                              onEquip: () => _equip(cosmetic),
+                              onUnequip: () => _unequip(cosmetic),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
+                ),
+                if (otherClassItems.isNotEmpty) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    'OTHER CLASS COLLECTIONS',
+                    style: theme.titleLarge.override(
+                      font: GoogleFonts.pressStart2p(
+                        fontWeight: FontWeight.w700,
+                      ),
+                      fontSize: 12,
+                      letterSpacing: .2,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'You can browse these, but they stay locked unless you change class.',
+                    style: theme.bodyMedium.override(
+                      font: GoogleFonts.inter(),
+                      color: theme.secondaryText,
+                      letterSpacing: 0,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      final wide = constraints.maxWidth >= 760;
+                      final itemWidth = wide
+                          ? (constraints.maxWidth - 12) / 2
+                          : constraints.maxWidth;
+                      return Wrap(
+                        spacing: 12,
+                        runSpacing: 12,
+                        children: [
+                          for (final cosmetic in otherClassItems)
+                            SizedBox(
+                              width: itemWidth,
+                              child: _MarketCard(
+                                cosmetic: cosmetic,
+                                currentArchetype:
+                                    data.profile.adventurerArchetype,
+                                busy: _busyCosmeticId == cosmetic.id,
+                                icon: _iconForCategory(cosmetic.category),
+                                onPurchase: () => _purchase(cosmetic),
+                                onEquip: () => _equip(cosmetic),
+                                onUnequip: () => _unequip(cosmetic),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
               ],
             ),
           );
         },
+      ),
       ),
     );
   }
@@ -210,17 +484,40 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
 class _MarketCard extends StatelessWidget {
   const _MarketCard({
     required this.cosmetic,
+    required this.currentArchetype,
     required this.busy,
     required this.icon,
     required this.onPurchase,
     required this.onEquip,
+    required this.onUnequip,
   });
 
   final QuestwellCosmetic cosmetic;
+  final String currentArchetype;
   final bool busy;
   final IconData icon;
   final VoidCallback onPurchase;
   final VoidCallback onEquip;
+  final VoidCallback onUnequip;
+
+  String archetypeLabel(String value) {
+    switch (value) {
+      case 'scholar':
+        return 'Scholar';
+      case 'scout':
+        return 'Scout';
+      case 'alchemist':
+        return 'Alchemist';
+      case 'guardian':
+        return 'Guardian';
+      default:
+        return 'Wanderer';
+    }
+  }
+
+  bool get classLocked =>
+      cosmetic.requiredArchetype != null &&
+      cosmetic.requiredArchetype != currentArchetype;
 
   String get rarityLabel {
     final value = cosmetic.rarity;
@@ -232,83 +529,191 @@ class _MarketCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.secondaryBackground,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: theme.alternate),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return QuestwellRetroPanel(
+      padding: const EdgeInsets.all(10),
+      accent: classLocked
+          ? const Color(0xFF5A5B62)
+          : cosmetic.equipped
+              ? const Color(0xFFF1C75B)
+              : const Color(0xFF8E6B35),
+      background: const Color(0xFF101923),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            width: 54,
-            height: 54,
+            height: 132,
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: theme.primaryBackground,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(icon, color: theme.primary, size: 28),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  cosmetic.name,
-                  style: theme.titleMedium.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  '$rarityLabel • ${cosmetic.category}',
-                  style: theme.labelMedium.override(
-                    font: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                    color: theme.secondaryText,
-                    letterSpacing: 0,
-                  ),
-                ),
-                if (cosmetic.description.isNotEmpty) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    cosmetic.description,
-                    style: theme.bodyMedium.override(
-                      font: GoogleFonts.inter(),
-                      letterSpacing: 0,
-                    ),
-                  ),
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF18283A),
+                  Color(0xFF0B1320),
+                  Color(0xFF17110E),
                 ],
-                const SizedBox(height: 12),
-                if (cosmetic.owned)
-                  OutlinedButton.icon(
-                    onPressed: busy || cosmetic.equipped ? null : onEquip,
-                    icon: Icon(
-                      cosmetic.equipped
-                          ? Icons.check_circle_outline
-                          : Icons.checkroom_outlined,
-                      size: 18,
-                    ),
-                    label: Text(
-                      cosmetic.equipped ? 'Equipped' : 'Equip',
-                    ),
-                  )
-                else
-                  FilledButton.icon(
-                    onPressed: busy ? null : onPurchase,
-                    icon: const Icon(Icons.monetization_on_outlined, size: 18),
-                    label: Text(
-                      busy ? 'Unlocking...' : '${cosmetic.price} coins',
+              ),
+              border: Border.all(
+                color: classLocked
+                    ? const Color(0xFF55565C)
+                    : const Color(0xFF6A4C2C),
+                width: 2,
+              ),
+            ),
+            child: Stack(
+              children: [
+                Center(
+                  child: QuestwellItemPixelArt(
+                    slug: cosmetic.slug,
+                    category: cosmetic.category,
+                    archetype: cosmetic.requiredArchetype,
+                    size: 104,
+                    locked: classLocked,
+                  ),
+                ),
+                Positioned(
+                  left: 4,
+                  top: 4,
+                  child: QuestwellRarityPixelBadge(
+                    rarity: cosmetic.rarity,
+                    compact: true,
+                  ),
+                ),
+                if (cosmetic.equipped)
+                  const Positioned(
+                    right: 4,
+                    top: 4,
+                    child: QuestwellStatusPixelBadge(
+                      kind: 'momentum',
+                      size: 26,
                     ),
                   ),
               ],
             ),
           ),
+          const SizedBox(height: 10),
+          Text(
+            cosmetic.name.toUpperCase(),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: theme.titleMedium.override(
+              font: GoogleFonts.cinzel(
+                fontWeight: FontWeight.w800,
+              ),
+              fontSize: 14,
+              color: const Color(0xFFF2D9A0),
+              letterSpacing: .15,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            cosmetic.category.toUpperCase(),
+            style: theme.labelSmall.override(
+              font: GoogleFonts.inter(fontWeight: FontWeight.w800),
+              color: const Color(0xFF9EACBE),
+              letterSpacing: .8,
+            ),
+          ),
+          if (cosmetic.requiredArchetype != null) ...[
+            const SizedBox(height: 6),
+            Row(
+              children: [
+                Icon(
+                  classLocked ? Icons.lock_outline : Icons.verified_outlined,
+                  size: 14,
+                  color: classLocked
+                      ? const Color(0xFF8893A3)
+                      : const Color(0xFF7654D8),
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    '${archetypeLabel(cosmetic.requiredArchetype!)} only',
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.labelSmall.override(
+                      font: GoogleFonts.inter(
+                        fontWeight: FontWeight.w800,
+                      ),
+                      color: classLocked
+                          ? const Color(0xFF8893A3)
+                          : const Color(0xFF8D6DFF),
+                      letterSpacing: 0,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          if (cosmetic.description.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Text(
+              cosmetic.description,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: theme.bodySmall.override(
+                font: GoogleFonts.inter(),
+                color: const Color(0xFFB7C4D4),
+                letterSpacing: 0,
+              ),
+            ),
+          ],
+          const Spacer(),
+          const SizedBox(height: 10),
+          if (cosmetic.owned)
+            OutlinedButton.icon(
+              onPressed: busy || classLocked
+                  ? null
+                  : cosmetic.equipped
+                      ? onUnequip
+                      : onEquip,
+              icon: QuestwellNavPixelIcon(
+                kind: cosmetic.equipped ? 'quest' : 'adventurer',
+                size: 17,
+              ),
+              label: Text(
+                classLocked
+                    ? 'LOCKED'
+                    : cosmetic.equipped
+                        ? 'UNEQUIP'
+                        : 'EQUIP',
+              ),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size.fromHeight(38),
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                side: const BorderSide(
+                  color: Color(0xFF8E6B35),
+                  width: 2,
+                ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
+              ),
+            )
+          else
+            FilledButton.icon(
+              onPressed: busy || classLocked ? null : onPurchase,
+              icon: const QuestwellCurrencyPixelIcon(
+                kind: 'coin',
+                size: 17,
+              ),
+              label: Text(
+                classLocked
+                    ? 'LOCKED'
+                    : busy
+                        ? '...'
+                        : '${cosmetic.price}',
+              ),
+              style: FilledButton.styleFrom(
+                minimumSize: const Size.fromHeight(38),
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                backgroundColor: const Color(0xFF205AD4),
+                foregroundColor: Colors.white,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero,
+                ),
+              ),
+            ),
         ],
       ),
-    );
-  }
+    );  }
 }

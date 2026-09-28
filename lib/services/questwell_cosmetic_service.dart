@@ -5,17 +5,30 @@ class QuestwellProfile {
     required this.level,
     required this.totalXp,
     required this.coinBalance,
+    required this.currentEnergyMode,
+    required this.onboardingCompleted,
+    required this.adventurerArchetype,
   });
 
   final int level;
   final int totalXp;
   final int coinBalance;
+  final String currentEnergyMode;
+  final bool onboardingCompleted;
+  final String adventurerArchetype;
+
+  bool get campfireMode => currentEnergyMode == 'campfire';
 
   factory QuestwellProfile.fromJson(Map<String, dynamic> json) {
     return QuestwellProfile(
       level: (json['level'] as num?)?.toInt() ?? 1,
       totalXp: (json['total_xp'] as num?)?.toInt() ?? 0,
       coinBalance: (json['coin_balance'] as num?)?.toInt() ?? 0,
+      currentEnergyMode:
+          json['current_energy_mode']?.toString() ?? 'normal',
+      onboardingCompleted: json['onboarding_completed'] == true,
+      adventurerArchetype:
+          json['adventurer_archetype']?.toString() ?? 'wanderer',
     );
   }
 }
@@ -31,6 +44,8 @@ class QuestwellCosmetic {
     required this.price,
     required this.premium,
     required this.assetKey,
+    required this.requiredArchetype,
+    required this.unlockMethod,
     required this.owned,
     required this.equipped,
   });
@@ -44,6 +59,8 @@ class QuestwellCosmetic {
   final int price;
   final bool premium;
   final String? assetKey;
+  final String? requiredArchetype;
+  final String unlockMethod;
   final bool owned;
   final bool equipped;
 
@@ -61,6 +78,8 @@ class QuestwellCosmetic {
       price: price,
       premium: premium,
       assetKey: assetKey,
+      requiredArchetype: requiredArchetype,
+      unlockMethod: unlockMethod,
       owned: owned ?? this.owned,
       equipped: equipped ?? this.equipped,
     );
@@ -81,6 +100,8 @@ class QuestwellCosmetic {
       price: (json['price'] as num?)?.toInt() ?? 0,
       premium: json['premium'] == true,
       assetKey: json['asset_key']?.toString(),
+      requiredArchetype: json['required_archetype']?.toString(),
+      unlockMethod: json['unlock_method']?.toString() ?? 'shop',
       owned: owned,
       equipped: equipped,
     );
@@ -109,12 +130,12 @@ class QuestwellCosmeticService {
     final responses = await Future.wait([
       SupaFlow.client
           .from('users')
-          .select('level,total_xp,coin_balance')
+          .select('level,total_xp,coin_balance,current_energy_mode,onboarding_completed,adventurer_archetype')
           .eq('id', uid)
           .single(),
       SupaFlow.client
           .from('cosmetics')
-          .select('id,slug,name,category,rarity,description,price,premium,asset_key')
+          .select('id,slug,name,category,rarity,description,price,premium,asset_key,required_archetype,unlock_method')
           .eq('active', true)
           .order('price'),
       SupaFlow.client
@@ -171,6 +192,79 @@ class QuestwellCosmeticService {
     await SupaFlow.client.rpc(
       'equip_cosmetic',
       params: {'p_cosmetic_id': cosmeticId},
+    );
+  }
+
+  static Future<void> unequip(String cosmeticId) async {
+    await SupaFlow.client.rpc(
+      'unequip_cosmetic',
+      params: {'p_cosmetic_id': cosmeticId},
+    );
+  }
+
+  static Future<void> setEnergyMode(String mode) async {
+    if (mode != 'normal' && mode != 'campfire') {
+      throw ArgumentError.value(mode, 'mode', 'Unsupported energy mode');
+    }
+
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) {
+      throw StateError('Authentication required.');
+    }
+
+    await SupaFlow.client
+        .from('users')
+        .update({'current_energy_mode': mode})
+        .eq('id', uid);
+  }
+
+  static Future<void> completeOnboarding() async {
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) {
+      throw StateError('Authentication required.');
+    }
+
+    await SupaFlow.client
+        .from('users')
+        .update({'onboarding_completed': true})
+        .eq('id', uid);
+  }
+
+  static Future<String> claimClassMasteryReward() async {
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) {
+      throw StateError('Authentication required.');
+    }
+
+    final response = await SupaFlow.client.rpc('claim_class_mastery_reward');
+    return response.toString();
+  }
+
+  static Future<void> setAdventurerArchetype(String archetype) async {
+    const allowed = {
+      'scholar',
+      'scout',
+      'alchemist',
+      'guardian',
+      'wanderer',
+    };
+
+    if (!allowed.contains(archetype)) {
+      throw ArgumentError.value(
+        archetype,
+        'archetype',
+        'Unsupported adventurer archetype',
+      );
+    }
+
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) {
+      throw StateError('Authentication required.');
+    }
+
+    await SupaFlow.client.rpc(
+      'set_adventurer_archetype',
+      params: {'p_archetype': archetype},
     );
   }
 }
