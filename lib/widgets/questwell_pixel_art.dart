@@ -1520,6 +1520,18 @@ class _HearthPainter extends CustomPainter {
     ).paint(canvas, avatarSize);
     canvas.restore();
 
+    // Scene-aware rim light: warm fireplace on the left, cool rain-window light
+    // on the right. These highlights visually seat the live avatar in the room.
+    final ax = size.width * .405;
+    final ay = size.height * .315;
+    final aw = avatarSize.width;
+    final ah = avatarSize.height;
+    r(ax + aw * .29, ay + ah * .24, 3, ah * .42, const Color(0xFFFFC15C));
+    r(ax + aw * .31, ay + ah * .20, aw * .11, 3, const Color(0xFFFFDF8A));
+    r(ax + aw * .69, ay + ah * .23, 3, ah * .40, const Color(0xFF79B7DD));
+    r(ax + aw * .59, ay + ah * .18, aw * .10, 2, const Color(0xFFAEDCF2));
+    r(ax + aw * .30, ay + ah * .84, aw * .38, 3, const Color(0x66000000));
+
     // Cat with visible ears, tail, body shading.
     r(size.width * .54, size.height * .80, 34, 9, const Color(0xFF9E5C30));
     r(size.width * .57, size.height * .775, 16, 17, const Color(0xFFC87B3E));
