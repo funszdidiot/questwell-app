@@ -106,164 +106,267 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
       },
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: theme.primaryBackground,
-        appBar: AppBar(
-          backgroundColor: theme.primaryBackground,
-          elevation: 0,
-          foregroundColor: theme.primaryText,
-          title: Text(
-            'ADD QUEST',
-            style: theme.titleLarge.override(
-              font: GoogleFonts.pressStart2p(
-                fontWeight: FontWeight.w700,
-              ),
-              fontSize: 14,
-              letterSpacing: .4,
-            ),
-          ),
-        ),
+        backgroundColor: const Color(0xFF111827),
         body: SafeArea(
-          top: false,
+          top: true,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const QuestwellQuestBoardPixelArt(
-                  height: 110,
-                  clear: false,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'WHAT NEEDS TO GET DONE?',
-                  style: theme.headlineSmall.override(
-                    font: GoogleFonts.pressStart2p(
-                      fontWeight: FontWeight.w700,
-                    ),
-                    fontSize: 13,
-                    letterSpacing: .3,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Make it concrete enough that you will know when it is finished.',
-                  style: theme.bodyMedium.override(
-                    font: GoogleFonts.inter(),
-                    color: theme.secondaryText,
-                    letterSpacing: 0,
-                  ),
-                ),
-                const SizedBox(height: 18),
-                TextFormField(
-                  controller: _model.taskTitleFieldTextController,
-                  focusNode: _model.taskTitleFieldFocusNode,
-                  autofocus: true,
-                  textCapitalization: TextCapitalization.sentences,
-                  decoration: InputDecoration(
-                    hintText: 'Reply to Jordan about the proposal',
-                    filled: true,
-                    fillColor: theme.secondaryBackground,
-                    contentPadding: const EdgeInsets.all(16),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Color(0xFF8E6B35),
-                        width: 2,
-                      ),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Color(0xFFF1C75B),
-                        width: 3,
-                      ),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  style: theme.bodyLarge.override(
-                    font: GoogleFonts.inter(),
-                    letterSpacing: 0,
-                  ),
-                ),
-                const SizedBox(height: 26),
-                Text(
-                  'HOW HARD DOES THIS FEEL?',
-                  style: theme.titleLarge.override(
-                    font: GoogleFonts.pressStart2p(
-                      fontWeight: FontWeight.w700,
-                    ),
-                    fontSize: 12,
-                    letterSpacing: .3,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Questwell rewards friction, not perfection.',
-                  style: theme.bodyMedium.override(
-                    font: GoogleFonts.inter(),
-                    color: theme.secondaryText,
-                    letterSpacing: 0,
-                  ),
-                ),
-                const SizedBox(height: 14),
-                _FrictionChoice(
-                  selected: _model.selectedFriction == 1,
-                  title: 'Easy',
-                  subtitle: 'I can probably just do it.',
-                  reward: '+10 XP • +5 coins',
-                  level: 1,
-                  onTap: () => _selectFriction(1, 10, 5),
-                ),
-                const SizedBox(height: 10),
-                _FrictionChoice(
-                  selected: _model.selectedFriction == 2,
-                  title: 'Annoying',
-                  subtitle: 'Not hard. I just do not want to.',
-                  reward: '+20 XP • +10 coins',
-                  level: 2,
-                  onTap: () => _selectFriction(2, 20, 10),
-                ),
-                const SizedBox(height: 10),
-                _FrictionChoice(
-                  selected: _model.selectedFriction == 3,
-                  title: 'Hard to Start',
-                  subtitle: 'I keep circling it instead of beginning.',
-                  reward: '+35 XP • +18 coins',
-                  level: 3,
-                  onTap: () => _selectFriction(3, 35, 18),
-                ),
-                const SizedBox(height: 10),
-                _FrictionChoice(
-                  selected: _model.selectedFriction == 4,
-                  title: 'Brain Says Absolutely Not',
-                  subtitle: 'This task has developed its own weather system.',
-                  reward: '+60 XP • +30 coins',
-                  level: 4,
-                  onTap: () => _selectFriction(4, 60, 30),
-                ),
-                const SizedBox(height: 24),
-                FilledButton.icon(
-                  onPressed: _saving ? null : _saveQuest,
-                  icon: _saving
-                      ? const Icon(Icons.hourglass_top)
-                      : const QuestwellNavPixelIcon(
-                          kind: 'quest',
-                          size: 20,
+            padding: const EdgeInsets.fromLTRB(18, 16, 18, 30),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 920),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        QuestwellTopActionButton(
+                          kind: 'back',
+                          tooltip: 'Back to the Hearth',
+                          onTap: () => context.safePop(),
                         ),
-                  label: Text(_saving ? 'Adding Quest...' : 'Add to Quest Board'),
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(52),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'QUEST BOARD',
+                                style: theme.headlineMedium.override(
+                                  font: GoogleFonts.pressStart2p(
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  fontSize: 21,
+                                  color: const Color(0xFFF2D9A0),
+                                  letterSpacing: .5,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Turn one real-life task into your next adventure.',
+                                style: theme.bodyMedium.override(
+                                  font: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  color: const Color(0xFFB7C4D4),
+                                  letterSpacing: 0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const QuestwellNavPixelIcon(
+                          kind: 'quest',
+                          size: 36,
+                        ),
+                      ],
                     ),
-                  ),
+                    const SizedBox(height: 12),
+                    const QuestwellPixelDivider(
+                      accent: Color(0xFFD6A84B),
+                    ),
+                    const SizedBox(height: 14),
+                    const QuestwellQuestBoardPixelArt(
+                      height: 160,
+                      clear: false,
+                    ),
+                    const SizedBox(height: 18),
+                    QuestwellParchmentPanel(
+                      padding: const EdgeInsets.fromLTRB(18, 18, 18, 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'POST A NEW QUEST',
+                            style: theme.titleLarge.override(
+                              font: GoogleFonts.pressStart2p(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              fontSize: 13,
+                              color: const Color(0xFF30261D),
+                              letterSpacing: .3,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'What needs to get done?',
+                            style: theme.titleMedium.override(
+                              font: GoogleFonts.interTight(
+                                fontWeight: FontWeight.w800,
+                              ),
+                              color: const Color(0xFF30261D),
+                              letterSpacing: 0,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Make it concrete enough that you will know when it is finished.',
+                            style: theme.bodyMedium.override(
+                              font: GoogleFonts.inter(),
+                              color: const Color(0xFF67543E),
+                              letterSpacing: 0,
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          TextFormField(
+                            controller: _model.taskTitleFieldTextController,
+                            focusNode: _model.taskTitleFieldFocusNode,
+                            autofocus: true,
+                            textCapitalization: TextCapitalization.sentences,
+                            decoration: InputDecoration(
+                              hintText: 'Reply to Jordan about the proposal',
+                              hintStyle: const TextStyle(
+                                color: Color(0xFF8B765B),
+                              ),
+                              filled: true,
+                              fillColor: const Color(0xFFF7EAC8),
+                              contentPadding: const EdgeInsets.all(16),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFF8E6B35),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.zero,
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFFD6A84B),
+                                  width: 3,
+                                ),
+                                borderRadius: BorderRadius.zero,
+                              ),
+                            ),
+                            style: theme.bodyLarge.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                              ),
+                              color: const Color(0xFF30261D),
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'CHOOSE THE MONSTER',
+                      style: theme.titleLarge.override(
+                        font: GoogleFonts.pressStart2p(
+                          fontWeight: FontWeight.w700,
+                        ),
+                        fontSize: 12,
+                        color: const Color(0xFFF2D9A0),
+                        letterSpacing: .3,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Questwell rewards friction, not perfection. Pick how this task feels right now.',
+                      style: theme.bodyMedium.override(
+                        font: GoogleFonts.inter(),
+                        color: const Color(0xFFB7C4D4),
+                        letterSpacing: 0,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        final wide = constraints.maxWidth >= 700;
+                        final cardWidth = wide
+                            ? (constraints.maxWidth - 12) / 2
+                            : constraints.maxWidth;
+                        final cards = <Widget>[
+                          _FrictionChoice(
+                            selected: _model.selectedFriction == 1,
+                            title: 'Easy',
+                            subtitle: 'I can probably just do it.',
+                            reward: '+10 XP • +5 coins',
+                            level: 1,
+                            onTap: () => _selectFriction(1, 10, 5),
+                          ),
+                          _FrictionChoice(
+                            selected: _model.selectedFriction == 2,
+                            title: 'Annoying',
+                            subtitle: 'Not hard. I just do not want to.',
+                            reward: '+20 XP • +10 coins',
+                            level: 2,
+                            onTap: () => _selectFriction(2, 20, 10),
+                          ),
+                          _FrictionChoice(
+                            selected: _model.selectedFriction == 3,
+                            title: 'Hard to Start',
+                            subtitle: 'I keep circling it instead of beginning.',
+                            reward: '+35 XP • +18 coins',
+                            level: 3,
+                            onTap: () => _selectFriction(3, 35, 18),
+                          ),
+                          _FrictionChoice(
+                            selected: _model.selectedFriction == 4,
+                            title: 'Brain Says Absolutely Not',
+                            subtitle: 'This task has developed its own weather system.',
+                            reward: '+60 XP • +30 coins',
+                            level: 4,
+                            onTap: () => _selectFriction(4, 60, 30),
+                          ),
+                        ];
+                        return Wrap(
+                          spacing: 12,
+                          runSpacing: 12,
+                          children: [
+                            for (final card in cards)
+                              SizedBox(width: cardWidth, child: card),
+                          ],
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    QuestwellRetroPanel(
+                      padding: const EdgeInsets.all(10),
+                      accent: const Color(0xFFD6A84B),
+                      background: const Color(0xFF17151A),
+                      child: FilledButton.icon(
+                        onPressed: _saving ? null : _saveQuest,
+                        icon: _saving
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const QuestwellNavPixelIcon(
+                                kind: 'quest',
+                                size: 21,
+                              ),
+                        label: Text(
+                          _saving
+                              ? 'Posting Quest...'
+                              : 'Post to Quest Board',
+                          style: GoogleFonts.pressStart2p(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        style: FilledButton.styleFrom(
+                          minimumSize: const Size.fromHeight(54),
+                          backgroundColor: const Color(0xFF6E3B2C),
+                          foregroundColor: const Color(0xFFF6E7BE),
+                          disabledBackgroundColor: const Color(0xFF3A3433),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
+
 }
 
 class _FrictionChoice extends StatelessWidget {
@@ -294,18 +397,20 @@ class _FrictionChoice extends StatelessWidget {
         duration: const Duration(milliseconds: 160),
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: theme.secondaryBackground,
-          borderRadius: BorderRadius.circular(6),
+          color: selected
+              ? const Color(0xFFF7E8B9)
+              : const Color(0xFFE7D4A8),
+          borderRadius: BorderRadius.zero,
           border: Border.all(
             color: selected
-                ? const Color(0xFFF1C75B)
-                : const Color(0xFF8E6B35),
+                ? const Color(0xFFD6A84B)
+                : const Color(0xFF80633E),
             width: selected ? 3 : 2,
           ),
           boxShadow: const [
             BoxShadow(
-              color: Color(0x55322018),
-              offset: Offset(3, 3),
+              color: Color(0x77322018),
+              offset: Offset(4, 4),
               blurRadius: 0,
             ),
           ],
@@ -324,7 +429,8 @@ class _FrictionChoice extends StatelessWidget {
                   Text(
                     title,
                     style: theme.titleMedium.override(
-                      font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
+                      font: GoogleFonts.interTight(fontWeight: FontWeight.w800),
+                      color: const Color(0xFF30261D),
                       letterSpacing: 0,
                     ),
                   ),
@@ -333,7 +439,7 @@ class _FrictionChoice extends StatelessWidget {
                     subtitle,
                     style: theme.bodySmall.override(
                       font: GoogleFonts.inter(),
-                      color: theme.secondaryText,
+                      color: const Color(0xFF67543E),
                       letterSpacing: 0,
                     ),
                   ),
@@ -356,7 +462,7 @@ class _FrictionChoice extends StatelessWidget {
                               font: GoogleFonts.inter(
                                 fontWeight: FontWeight.w700,
                               ),
-                              color: theme.primary,
+                              color: const Color(0xFF6E3B2C),
                               letterSpacing: 0,
                             ),
                           ),
@@ -376,7 +482,7 @@ class _FrictionChoice extends StatelessWidget {
                               font: GoogleFonts.inter(
                                 fontWeight: FontWeight.w700,
                               ),
-                              color: theme.primary,
+                              color: const Color(0xFF6E3B2C),
                               letterSpacing: 0,
                             ),
                           ),
