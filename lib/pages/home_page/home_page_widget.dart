@@ -558,9 +558,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         children: [
                           Row(
                             children: [
-                              QuestwellClassMiniSprite(
-                                archetype: profile.adventurerArchetype,
-                                size: 78,
+                              SizedBox(
+                                width: 78,
+                                child: QuestwellEquippedAvatar(
+                                  archetype: profile.adventurerArchetype,
+                                  equippedSlugs: {
+                                    for (final item in equipped)
+                                      item.category: item.slug,
+                                  },
+                                  height: 78,
+                                  showRelic: classMastered,
+                                ),
                               ),
                               const SizedBox(width: 12),
                               Expanded(
