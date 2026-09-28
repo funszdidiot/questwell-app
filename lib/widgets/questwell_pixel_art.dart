@@ -569,15 +569,106 @@ class QuestwellHearthPixelScene extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = QuestwellPixelPalette.forClass(archetype);
+
     return QuestwellPixelFrame(
       height: height,
-      child: CustomPaint(
-        painter: _HearthPainter(
-          archetype: archetype,
-          palette: QuestwellPixelPalette.forClass(archetype),
-          equippedSlugs: equippedSlugs,
-          showRelic: showRelic,
-        ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final sceneWidth = constraints.maxWidth;
+          final sceneHeight = constraints.maxHeight;
+          final compact = sceneWidth < 430;
+
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/images/hearth_64_scene.png',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  filterQuality: FilterQuality.none,
+                ),
+              ),
+              Positioned.fill(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        const Color(0x12091524),
+                        const Color(0x00101824),
+                        const Color(0x66120D0A),
+                      ],
+                      stops: const [0, .58, 1],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: sceneWidth * (compact ? .355 : .385),
+                top: sceneHeight * .265,
+                width: sceneWidth * (compact ? .285 : .255),
+                height: sceneHeight * .56,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: RadialGradient(
+                          radius: .72,
+                          colors: [
+                            palette.last.withValues(alpha: .18),
+                            const Color(0x00FFFFFF),
+                          ],
+                        ),
+                      ),
+                    ),
+                    CustomPaint(
+                      painter: _EquippedAvatarPainter(
+                        archetype: archetype,
+                        palette: palette,
+                        equippedSlugs: equippedSlugs,
+                        showRelic: showRelic,
+                        portrait: false,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                left: sceneWidth * .33,
+                bottom: sceneHeight * .09,
+                width: sceneWidth * .38,
+                height: sceneHeight * .08,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      radius: .72,
+                      colors: [
+                        const Color(0x99000000),
+                        const Color(0x00000000),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0x554A2D1B),
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
