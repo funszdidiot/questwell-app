@@ -1337,6 +1337,44 @@ class _HearthPainter extends CustomPainter {
     canvas.drawCircle(Offset(size.width * .48, size.height * .645), 5, p);
     canvas.drawCircle(Offset(size.width * .565, size.height * .645), 5, p);
 
+    // Foreground desk, chair, and trophy clutter to create more 64-bit-era depth.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .72, size.height * .68, size.width * .23, size.height * .11),
+      const Color(0xFF5B3825),
+      const Color(0xFF8A5A38),
+      const Color(0xFF281913),
+    );
+    r(size.width * .75, size.height * .71, size.width * .045, size.height * .05, const Color(0xFFD8C7A3));
+    r(size.width * .805, size.height * .705, size.width * .032, size.height * .055, const Color(0xFF3D8F86));
+    r(size.width * .848, size.height * .70, size.width * .06, size.height * .06, const Color(0xFF6A337C));
+    r(size.width * .86, size.height * .685, size.width * .035, size.height * .018, const Color(0xFFE7C96A));
+
+    // Layered foreground shadowing and warm bounce light.
+    r(0, size.height * .91, size.width, size.height * .09, const Color(0x66201018));
+    _Pixel64.stepGlow(
+      canvas,
+      p,
+      Offset(size.width * .30, size.height * .72),
+      size.height * .16,
+      const Color(0xFFE57A2A),
+    );
+    _Pixel64.dither(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .02, size.height * .62, size.width * .36, size.height * .25),
+      const Color(0x337E4B2D),
+      7,
+    );
+
+    // Fine highlight pixels on wood and props to reduce flat 16-bit appearance.
+    for (var i = 0; i < 24; i++) {
+      final x = size.width * (.04 + ((i * 37) % 92) / 100);
+      final y = size.height * (.61 + ((i * 19) % 28) / 100);
+      r(x, y, 2, 2, i.isEven ? const Color(0xFF8A5B3A) : const Color(0xFFB07A4B));
+    }
+
     // Lantern pools.
     for (final x in [size.width * .42, size.width * .61, size.width * .95]) {
       _Pixel64.stepGlow(
