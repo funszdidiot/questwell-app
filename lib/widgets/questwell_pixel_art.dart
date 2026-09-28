@@ -2209,73 +2209,153 @@ class _MarketPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()..isAntiAlias = false;
-    void rect(double x, double y, double w, double h, Color color) {
-      p.color = color;
-      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
-    }
+    void r(double x, double y, double w, double h, Color color) =>
+        _Pixel64.rect(canvas, p, x, y, w, h, color);
 
-    rect(0, 0, size.width, size.height, const Color(0xFF17151A));
-    rect(0, size.height * .72, size.width, size.height * .28, const Color(0xFF4B2E1F));
+    r(0, 0, size.width, size.height, const Color(0xFF10131A));
+    r(0, size.height * .70, size.width, size.height * .30, const Color(0xFF3E291D));
+    _Pixel64.dither(
+      canvas,
+      p,
+      Rect.fromLTWH(0, 0, size.width, size.height * .70),
+      const Color(0xFF1E2730),
+      9,
+    );
 
-    // Awning.
-    for (var i = 0; i < 6; i++) {
-      rect(
-        size.width * (.07 + i * .145),
-        size.height * .08,
-        size.width * .145,
-        size.height * .16,
-        i.isEven ? palette[1] : const Color(0xFFD7C29D),
+    // Rich striped awning with trim.
+    for (var i = 0; i < 8; i++) {
+      final x = size.width * (.05 + i * .115);
+      final stripe = i.isEven ? palette[1] : const Color(0xFFE1D0AA);
+      _Pixel64.bevel(
+        canvas,
+        p,
+        Rect.fromLTWH(x, size.height * .06, size.width * .115, size.height * .17),
+        stripe,
+        stripe.withValues(alpha: .92),
+        const Color(0xFF5A402A),
       );
     }
-    rect(size.width * .07, size.height * .23, size.width * .87, 7, const Color(0xFF8E6B35));
+    r(size.width * .045, size.height * .225, size.width * .92, 7, const Color(0xFF8E6B35));
+    r(size.width * .06, size.height * .245, size.width * .89, 3, const Color(0xFFD2A656));
 
-    // Shelving.
-    rect(size.width * .12, size.height * .30, size.width * .28, size.height * .36, const Color(0xFF5B3822));
-    rect(size.width * .14, size.height * .39, size.width * .24, 5, const Color(0xFFB58049));
-    rect(size.width * .14, size.height * .53, size.width * .24, 5, const Color(0xFFB58049));
-
-    // Bottles / gear.
+    // Back shelves with stacked goods.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .08, size.height * .29, size.width * .34, size.height * .36),
+      const Color(0xFF4D2E20),
+      const Color(0xFF7B4C2F),
+      const Color(0xFF281812),
+    );
+    for (var row = 0; row < 3; row++) {
+      r(size.width * .10, size.height * (.37 + row * .095), size.width * .30, 5, const Color(0xFFB58049));
+    }
     final goods = [
-      const Color(0xFF76D7C4),
+      const Color(0xFF75D7C5),
       const Color(0xFFB98CFF),
       const Color(0xFFF1C75B),
       const Color(0xFFE87947),
+      const Color(0xFF6BA6E8),
+      const Color(0xFF86C66A),
     ];
-    for (var i = 0; i < 8; i++) {
-      final x = size.width * (.15 + (i % 4) * .055);
-      final y = size.height * (.32 + (i ~/ 4) * .15);
-      rect(x, y, 9, 18, goods[i % goods.length]);
-      rect(x + 2, y - 5, 5, 6, const Color(0xFFD8C7A3));
+    for (var i = 0; i < 15; i++) {
+      final col = i % 5;
+      final row = i ~/ 5;
+      final x = size.width * (.115 + col * .055);
+      final y = size.height * (.31 + row * .095);
+      r(x, y, 8, 18, goods[i % goods.length]);
+      r(x + 2, y - 4, 4, 5, const Color(0xFFD9C8A1));
+      r(x + 1, y + 3, 2, 10, const Color(0x55FFFFFF));
     }
 
-    // Shopkeeper.
-    rect(size.width * .58, size.height * .38, size.width * .16, size.height * .28, palette[1]);
-    p.color = const Color(0xFFD9A56E);
-    canvas.drawCircle(Offset(size.width * .66, size.height * .33), size.height * .09, p);
-    rect(size.width * .60, size.height * .24, size.width * .12, size.height * .06, const Color(0xFF2B241F));
-    rect(size.width * .61, size.height * .31, 5, 5, const Color(0xFF17151A));
-    rect(size.width * .69, size.height * .31, 5, 5, const Color(0xFF17151A));
-
-    // Counter + coin stack.
-    rect(size.width * .46, size.height * .61, size.width * .42, size.height * .12, const Color(0xFF7B4F2B));
-    rect(size.width * .50, size.height * .69, size.width * .34, size.height * .10, const Color(0xFF5A361F));
+    // Hanging class pennants.
     for (var i = 0; i < 3; i++) {
+      final x = size.width * (.46 + i * .09);
+      r(x, size.height * .27, 3, size.height * .12, const Color(0xFF6A4328));
+      final path = Path()
+        ..moveTo(x + 3, size.height * .29)
+        ..lineTo(x + size.width * .055, size.height * .31)
+        ..lineTo(x + size.width * .028, size.height * .43)
+        ..close();
+      p.color = i == 1 ? palette[1] : palette.first;
+      canvas.drawPath(path, p);
+      r(x + size.width * .025, size.height * .335, 5, 5, palette.last);
+    }
+
+    // Shopkeeper with more 64-bit shading.
+    final keeperOrigin = Offset(size.width * .67, size.height * .32);
+    _Pixel64.character(
+      canvas,
+      p,
+      origin: keeperOrigin,
+      scale: size.height / 145 * 1.35,
+      palette: palette,
+      archetype: 'wanderer',
+    );
+    // Apron overlay.
+    r(size.width * .625, size.height * .46, size.width * .09, size.height * .18, const Color(0xFF6B5034));
+    r(size.width * .642, size.height * .49, size.width * .055, size.height * .13, const Color(0xFF8B6A43));
+
+    // Counter, display cloth, and sparkle.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .44, size.height * .59, size.width * .47, size.height * .14),
+      const Color(0xFF74482B),
+      const Color(0xFFA16A3E),
+      const Color(0xFF3B2419),
+    );
+    r(size.width * .48, size.height * .62, size.width * .14, size.height * .07, palette.first);
+    r(size.width * .49, size.height * .63, size.width * .12, 3, palette.last);
+
+    // Coin stacks and gem.
+    for (var i = 0; i < 4; i++) {
       p.color = const Color(0xFFF1C75B);
       canvas.drawCircle(
-        Offset(size.width * (.79 + i * .025), size.height * (.57 - i * .018)),
+        Offset(size.width * (.80 + i * .018), size.height * (.56 - i * .013)),
         5,
         p,
       );
+      r(size.width * (.80 + i * .018) - 2, size.height * (.56 - i * .013) - 3, 3, 3, const Color(0xFFFFE69B));
+    }
+    final gem = Path()
+      ..moveTo(size.width * .735, size.height * .53)
+      ..lineTo(size.width * .755, size.height * .56)
+      ..lineTo(size.width * .74, size.height * .61)
+      ..lineTo(size.width * .72, size.height * .56)
+      ..close();
+    p.color = const Color(0xFF8FD9FF);
+    canvas.drawPath(gem, p);
+
+    // Floor rug / path.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .20, size.height * .78, size.width * .58, size.height * .13),
+      const Color(0xFF21433F),
+      const Color(0xFF3A6A62),
+      const Color(0xFF102320),
+    );
+    for (var i = 0; i < 8; i++) {
+      r(size.width * (.235 + i * .065), size.height * .815, 5, 5, const Color(0xFFD4AA55));
     }
 
-    // Hanging lantern.
-    rect(size.width * .88, size.height * .18, 4, size.height * .20, const Color(0xFF8E6B35));
-    rect(size.width * .855, size.height * .35, size.width * .06, size.height * .14, const Color(0xFFF1B64B));
-    rect(size.width * .87, size.height * .38, size.width * .03, size.height * .08, const Color(0xFFFFE39A));
+    // Lantern glow.
+    _Pixel64.stepGlow(
+      canvas,
+      p,
+      Offset(size.width * .91, size.height * .38),
+      24,
+      const Color(0xFFFFC95C),
+    );
+    r(size.width * .905, size.height * .16, 4, size.height * .18, const Color(0xFF7B4A2A));
+    r(size.width * .875, size.height * .34, size.width * .075, size.height * .16, const Color(0xFFB77A2D));
+    r(size.width * .891, size.height * .375, size.width * .043, size.height * .085, const Color(0xFFFFE39A));
   }
 
   @override
-  bool shouldRepaint(covariant _MarketPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _MarketPainter oldDelegate) =>
+      oldDelegate.palette != palette;
 }
 
 class _BossSigilPainter extends CustomPainter {
