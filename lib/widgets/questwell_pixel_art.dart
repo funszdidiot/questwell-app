@@ -747,10 +747,14 @@ class QuestwellQuestBoardPixelArt extends StatelessWidget {
     super.key,
     this.height = 105,
     this.clear = false,
+    this.archetype = 'wanderer',
+    this.equippedSlugs = const {},
   });
 
   final double height;
   final bool clear;
+  final String archetype;
+  final Map<String, String> equippedSlugs;
 
   @override
   Widget build(BuildContext context) {
@@ -758,7 +762,11 @@ class QuestwellQuestBoardPixelArt extends StatelessWidget {
       height: height,
       background: const Color(0xFF17151A),
       child: CustomPaint(
-        painter: _QuestBoardPainter(clear: clear),
+        painter: _QuestBoardPainter(
+          clear: clear,
+          archetype: archetype,
+          equippedSlugs: equippedSlugs,
+        ),
       ),
     );
   }
@@ -1723,61 +1731,221 @@ class _StatusBadgePainter extends CustomPainter {
 }
 
 class _QuestBoardPainter extends CustomPainter {
-  _QuestBoardPainter({required this.clear});
+  _QuestBoardPainter({
+    required this.clear,
+    required this.archetype,
+    required this.equippedSlugs,
+  });
+
   final bool clear;
+  final String archetype;
+  final Map<String, String> equippedSlugs;
 
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()..isAntiAlias = false;
-    void rect(double x, double y, double w, double h, Color color) {
-      p.color = color;
-      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    final palette = QuestwellPixelPalette.forClass(archetype);
+
+    void r(double x, double y, double w, double h, Color color) =>
+        _Pixel64.rect(canvas, p, x, y, w, h, color);
+
+    // Deep room backdrop with layered masonry and timber.
+    r(0, 0, size.width, size.height, const Color(0xFF0C1522));
+    r(0, 0, size.width, size.height * .70, const Color(0xFF13243A));
+    _Pixel64.dither(
+      canvas,
+      p,
+      Rect.fromLTWH(0, 0, size.width, size.height * .70),
+      const Color(0xFF1D3550),
+      11,
+    );
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(0, size.height * .69, size.width, size.height * .31),
+      const Color(0xFF3D291D),
+      const Color(0xFF6C4930),
+      const Color(0xFF20150F),
+    );
+
+    // Overhead beam and side shelves.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(0, 0, size.width, size.height * .10),
+      const Color(0xFF4E301F),
+      const Color(0xFF805238),
+      const Color(0xFF24170F),
+    );
+    for (final x in [size.width * .03, size.width * .86]) {
+      _Pixel64.bevel(
+        canvas,
+        p,
+        Rect.fromLTWH(x, size.height * .12, size.width * .11, size.height * .46),
+        const Color(0xFF4A2E20),
+        const Color(0xFF724B31),
+        const Color(0xFF23160F),
+      );
     }
 
-    rect(0, 0, size.width, size.height, const Color(0xFF17151A));
-
-    // Wooden notice board.
-    rect(size.width * .10, size.height * .16, size.width * .80, size.height * .66, const Color(0xFF6A4328));
-    rect(size.width * .13, size.height * .20, size.width * .74, size.height * .58, const Color(0xFF8A5A35));
-
-    if (clear) {
-      // One waiting parchment and a tiny hopeful sparkle.
-      rect(size.width * .34, size.height * .31, size.width * .32, size.height * .34, const Color(0xFFD8C7A3));
-      rect(size.width * .39, size.height * .40, size.width * .22, 4, const Color(0xFF9A7B50));
-      rect(size.width * .39, size.height * .49, size.width * .16, 4, const Color(0xFF9A7B50));
-      p.color = const Color(0xFFF1C75B);
-      canvas.drawCircle(Offset(size.width * .74, size.height * .30), 5, p);
-      rect(size.width * .735, size.height * .19, 4, 10, const Color(0xFFF1C75B));
-      rect(size.width * .735, size.height * .38, 4, 10, const Color(0xFFF1C75B));
-      rect(size.width * .68, size.height * .285, 10, 4, const Color(0xFFF1C75B));
-      rect(size.width * .79, size.height * .285, 10, 4, const Color(0xFFF1C75B));
-    } else {
-      final papers = [
-        const Color(0xFFD8C7A3),
-        const Color(0xFFC8B78F),
-        const Color(0xFFE3D7B9),
-      ];
-      for (var i = 0; i < 3; i++) {
-        final x = size.width * (.19 + i * .22);
-        final y = size.height * (.27 + (i % 2) * .09);
-        rect(x, y, size.width * .18, size.height * .30, papers[i]);
-        rect(x + size.width * .03, y + size.height * .09, size.width * .12, 4, const Color(0xFF9A7B50));
-        rect(x + size.width * .03, y + size.height * .17, size.width * .09, 4, const Color(0xFF9A7B50));
-        p.color = const Color(0xFFB74A3A);
-        canvas.drawCircle(Offset(x + size.width * .09, y - 2), 4, p);
+    // Books and jars create environment density.
+    final shelfColors = [
+      const Color(0xFF7A3246),
+      const Color(0xFF2C6B5C),
+      const Color(0xFF4A6FA4),
+      const Color(0xFFA57135),
+      const Color(0xFF6B4B82),
+    ];
+    for (var side = 0; side < 2; side++) {
+      final baseX = side == 0 ? size.width * .045 : size.width * .875;
+      for (var row = 0; row < 3; row++) {
+        final y = size.height * (.18 + row * .12);
+        r(baseX, y + size.height * .075, size.width * .07, 3, const Color(0xFF9B6B41));
+        for (var i = 0; i < 4; i++) {
+          final bx = baseX + i * size.width * .017;
+          final bh = size.height * (.045 + ((row + i) % 3) * .010);
+          r(bx, y + size.height * .025, size.width * .013, bh,
+              shelfColors[(row + i) % shelfColors.length]);
+          r(bx + 1, y + size.height * .028, 1, math.max(2, bh - 4),
+              const Color(0x33FFFFFF));
+        }
       }
     }
 
-    // Bottom hooks / tiny lanterns.
-    rect(size.width * .19, size.height * .82, 4, size.height * .12, const Color(0xFF8E6B35));
-    rect(size.width * .79, size.height * .82, 4, size.height * .12, const Color(0xFF8E6B35));
-    rect(size.width * .15, size.height * .89, size.width * .10, size.height * .07, const Color(0xFFF1B64B));
-    rect(size.width * .75, size.height * .89, size.width * .10, size.height * .07, const Color(0xFFF1B64B));
+    // Lantern pools.
+    for (final x in [size.width * .16, size.width * .82]) {
+      _Pixel64.stepGlow(
+        canvas,
+        p,
+        Offset(x, size.height * .20),
+        size.height * .12,
+        const Color(0xFFFFC85A),
+      );
+      r(x - 7, size.height * .12, 14, size.height * .15, const Color(0xFF9E672B));
+      r(x - 4, size.height * .145, 8, size.height * .085, const Color(0xFFFFE294));
+    }
+
+    // Main quest board, thick carved frame + parchment center.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .15, size.height * .12, size.width * .70, size.height * .60),
+      const Color(0xFF5B3825),
+      const Color(0xFF8B5C39),
+      const Color(0xFF2A1A12),
+    );
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .18, size.height * .16, size.width * .64, size.height * .52),
+      const Color(0xFF9B6D3E),
+      const Color(0xFFC28F56),
+      const Color(0xFF5B3B24),
+    );
+    r(size.width * .205, size.height * .19, size.width * .59, size.height * .46,
+        const Color(0xFFD9C7A1));
+
+    // Aged parchment shading.
+    _Pixel64.dither(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .205, size.height * .19, size.width * .59, size.height * .46),
+      const Color(0x22745431),
+      8,
+    );
+    r(size.width * .22, size.height * .205, size.width * .56, 3, const Color(0xFFB99059));
+    r(size.width * .22, size.height * .62, size.width * .56, 3, const Color(0xFF8D6740));
+
+    if (clear) {
+      r(size.width * .36, size.height * .30, size.width * .28, size.height * .22,
+          const Color(0xFFE6D8B8));
+      r(size.width * .40, size.height * .36, size.width * .19, 3,
+          const Color(0xFF9C7850));
+      r(size.width * .40, size.height * .42, size.width * .15, 3,
+          const Color(0xFF9C7850));
+    } else {
+      final papers = [
+        const Color(0xFFE8D9B8),
+        const Color(0xFFD8C6A0),
+        const Color(0xFFF0E1C0),
+        const Color(0xFFCFB991),
+      ];
+      for (var i = 0; i < 4; i++) {
+        final x = size.width * (.25 + (i % 2) * .27);
+        final y = size.height * (.25 + (i ~/ 2) * .18);
+        final w = size.width * .20;
+        final h = size.height * .14;
+        _Pixel64.bevel(
+          canvas,
+          p,
+          Rect.fromLTWH(x, y, w, h),
+          papers[i],
+          const Color(0xFFF3E8CF),
+          const Color(0xFFB49C73),
+        );
+        r(x + w * .13, y + h * .30, w * .65, 3, const Color(0xFF8F7652));
+        r(x + w * .13, y + h * .52, w * .48, 3, const Color(0xFF8F7652));
+        p.color = i.isEven ? const Color(0xFFB94A3A) : const Color(0xFF4C6FA9);
+        canvas.drawCircle(Offset(x + w * .5, y + 3), 4, p);
+      }
+    }
+
+    // Ivy and leaves tie the Quest Board to the Hearth art language.
+    for (var i = 0; i < 16; i++) {
+      final x = size.width * (.10 + ((i * 17) % 80) / 100);
+      final y = size.height * (.07 + ((i * 11) % 10) / 100);
+      r(x, y, 5, 8, i.isEven ? const Color(0xFF2F6B3F) : const Color(0xFF4C8C4D));
+      if (i % 3 == 0) r(x + 4, y + 3, 4, 6, const Color(0xFF6FAE58));
+    }
+
+    // Integrated live Adventurer at the board, using the same modular renderer.
+    final avatarSize = Size(size.width * .18, size.height * .47);
+    canvas.save();
+    canvas.translate(size.width * .035, size.height * .42);
+    _EquippedAvatarPainter(
+      archetype: archetype,
+      palette: palette,
+      equippedSlugs: equippedSlugs,
+      showRelic: false,
+      portrait: false,
+    ).paint(canvas, avatarSize);
+    canvas.restore();
+
+    // Desk clutter and quill in foreground.
+    _Pixel64.bevel(
+      canvas,
+      p,
+      Rect.fromLTWH(size.width * .66, size.height * .77, size.width * .27, size.height * .12),
+      const Color(0xFF58351F),
+      const Color(0xFF8A5A35),
+      const Color(0xFF28180F),
+    );
+    r(size.width * .70, size.height * .79, size.width * .08, size.height * .055,
+        const Color(0xFFD7C7A6));
+    r(size.width * .80, size.height * .79, 4, size.height * .09,
+        const Color(0xFFE7D9B6));
+    r(size.width * .79, size.height * .77, 10, 3, const Color(0xFFF1C75B));
+
+    // Warm floor bounce and small highlight pixels.
+    _Pixel64.stepGlow(
+      canvas,
+      p,
+      Offset(size.width * .50, size.height * .88),
+      size.height * .13,
+      const Color(0xFFE87947),
+    );
+    for (var i = 0; i < 18; i++) {
+      final x = size.width * (.07 + ((i * 29) % 86) / 100);
+      final y = size.height * (.72 + ((i * 17) % 20) / 100);
+      r(x, y, 2, 2, i.isEven ? const Color(0xFF9B6A43) : const Color(0xFFD6A84B));
+    }
   }
 
   @override
   bool shouldRepaint(covariant _QuestBoardPainter oldDelegate) =>
-      oldDelegate.clear != clear;
+      oldDelegate.clear != clear ||
+      oldDelegate.archetype != archetype ||
+      oldDelegate.equippedSlugs != equippedSlugs;
 }
 
 class _FrictionPainter extends CustomPainter {
