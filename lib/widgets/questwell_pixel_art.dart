@@ -203,85 +203,63 @@ class QuestwellRetroPanel extends StatelessWidget {
           ),
         ],
       ),
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFF0D0C11),
-              border: Border.all(color: accent, width: 3),
-            ),
-            child: Container(
-              margin: const EdgeInsets.all(5),
-              padding: padding,
-              decoration: BoxDecoration(
-                color: background,
-                border: Border.all(
-                  color: const Color(0xFF5B4227),
-                  width: 2,
-                ),
-              ),
-              child: child,
-            ),
-          ),
-          Positioned(
-            left: 2,
-            top: 2,
-            child: _RetroCorner(),
-          ),
-          Positioned(
-            right: 2,
-            top: 2,
-            child: _RetroCorner(),
-          ),
-          Positioned(
-            left: 2,
-            bottom: 2,
-            child: _RetroCorner(),
-          ),
-          Positioned(
-            right: 2,
-            bottom: 2,
-            child: _RetroCorner(),
-          ),
-          Positioned(
-            left: 24,
-            right: 24,
-            top: 2,
-            child: Container(height: 2, color: const Color(0xFF6A4C2C)),
-          ),
-          Positioned(
-            left: 24,
-            right: 24,
-            bottom: 2,
-            child: Container(height: 2, color: const Color(0xFF6A4C2C)),
-          ),
-        ],
+      child: CustomPaint(
+        foregroundPainter: _RetroBorderPainter(accent: accent),
+        child: Container(
+          padding: padding.add(const EdgeInsets.all(8)),
+          color: background,
+          child: child,
+        ),
       ),
     );
   }
 }
 
-class _RetroCorner extends StatelessWidget {
-  const _RetroCorner();
+class _RetroBorderPainter extends CustomPainter {
+  const _RetroBorderPainter({required this.accent});
+  final Color accent;
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 13,
-      height: 13,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Container(color: const Color(0xFFF1C75B)),
-          Container(
-            width: 5,
-            height: 5,
-            color: const Color(0xFF8E6B35),
-          ),
-        ],
-      ),
-    );
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..isAntiAlias = false;
+    void r(double x, double y, double w, double h, Color color) {
+      p.color = color;
+      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    }
+
+    // Outer and inner hard-edged RPG frame.
+    r(0, 0, size.width, 3, accent);
+    r(0, size.height - 3, size.width, 3, accent);
+    r(0, 0, 3, size.height, accent);
+    r(size.width - 3, 0, 3, size.height, accent);
+
+    const inner = Color(0xFF5B4227);
+    r(6, 6, size.width - 12, 2, inner);
+    r(6, size.height - 8, size.width - 12, 2, inner);
+    r(6, 6, 2, size.height - 12, inner);
+    r(size.width - 8, 6, 2, size.height - 12, inner);
+
+    const gold = Color(0xFFF1C75B);
+    const darkGold = Color(0xFF8E6B35);
+    for (final o in [
+      const Offset(2, 2),
+      Offset(size.width - 15, 2),
+      Offset(2, size.height - 15),
+      Offset(size.width - 15, size.height - 15),
+    ]) {
+      r(o.dx, o.dy, 13, 13, gold);
+      r(o.dx + 4, o.dy + 4, 5, 5, darkGold);
+    }
+
+    if (size.width > 60) {
+      r(24, 2, size.width - 48, 2, const Color(0xFF6A4C2C));
+      r(24, size.height - 4, size.width - 48, 2, const Color(0xFF6A4C2C));
+    }
   }
+
+  @override
+  bool shouldRepaint(covariant _RetroBorderPainter oldDelegate) =>
+      oldDelegate.accent != accent;
 }
 
 class QuestwellPixelFrame extends StatelessWidget {
@@ -695,11 +673,11 @@ class QuestwellClassMiniSprite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return QuestwellPixelFrame(
-      height: size,
-      background: QuestwellPixelPalette.forClass(archetype).first,
-      child: SizedBox.square(
-        dimension: size,
+    return SizedBox.square(
+      dimension: size,
+      child: QuestwellPixelFrame(
+        height: size,
+        background: QuestwellPixelPalette.forClass(archetype).first,
         child: CustomPaint(
           painter: _ClassMiniPainter(
             archetype: archetype,
