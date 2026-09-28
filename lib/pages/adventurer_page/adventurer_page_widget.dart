@@ -269,23 +269,10 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     final theme = FlutterFlowTheme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.primaryBackground,
-      appBar: AppBar(
-        backgroundColor: theme.primaryBackground,
-        elevation: 0,
-        foregroundColor: theme.primaryText,
-        title: Text(
-          'ADVENTURER',
-          style: theme.titleLarge.override(
-            font: GoogleFonts.pressStart2p(
-              fontWeight: FontWeight.w700,
-            ),
-            fontSize: 14,
-            letterSpacing: .4,
-          ),
-        ),
-      ),
-      body: FutureBuilder<QuestwellCosmeticsSnapshot>(
+      backgroundColor: const Color(0xFF111827),
+      body: SafeArea(
+        top: true,
+        child: FutureBuilder<QuestwellCosmeticsSnapshot>(
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -371,8 +358,56 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
               await _future;
             },
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
+              padding: const EdgeInsets.fromLTRB(18, 16, 18, 30),
               children: [
+                Row(
+                  children: [
+                    QuestwellTopActionButton(
+                      kind: 'back',
+                      tooltip: 'Back to the Hearth',
+                      onTap: () => Navigator.of(context).maybePop(),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'ADVENTURER',
+                            style: theme.headlineMedium.override(
+                              font: GoogleFonts.pressStart2p(
+                                fontWeight: FontWeight.w700,
+                              ),
+                              fontSize: 21,
+                              color: const Color(0xFFF2D9A0),
+                              letterSpacing: .5,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Your class, gear, relics, and hard-earned collection.',
+                            style: theme.bodyMedium.override(
+                              font: GoogleFonts.inter(
+                                fontWeight: FontWeight.w600,
+                              ),
+                              color: const Color(0xFFB7C4D4),
+                              letterSpacing: 0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const QuestwellNavPixelIcon(
+                      kind: 'adventurer',
+                      size: 36,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                const QuestwellPixelDivider(
+                  accent: Color(0xFFD6A84B),
+                ),
+                const SizedBox(height: 14),
                 QuestwellRetroPanel(
                   padding: const EdgeInsets.all(16),
                   accent: const Color(0xFF8E6B35),
@@ -457,33 +492,41 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    for (final value in const [
-                      'scholar',
-                      'scout',
-                      'alchemist',
-                      'guardian',
-                      'wanderer',
-                    ])
-                      ChoiceChip(
-                        selected:
-                            data.profile.adventurerArchetype == value,
-                        onSelected: _savingArchetype
-                            ? null
-                            : (_) => _requestArchetypeChange(value, data),
-                        avatar: Icon(
-                          _archetypeIcon(value),
-                          size: 17,
-                          color: data.profile.adventurerArchetype == value
-                              ? theme.primary
-                              : theme.secondaryText,
-                        ),
-                        label: Text(_archetypeLabel(value)),
-                      ),
-                  ],
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final wide = constraints.maxWidth >= 760;
+                    final width = wide
+                        ? (constraints.maxWidth - 16) / 3
+                        : constraints.maxWidth >= 520
+                            ? (constraints.maxWidth - 12) / 2
+                            : constraints.maxWidth;
+                    return Wrap(
+                      spacing: 8,
+                      runSpacing: 10,
+                      children: [
+                        for (final value in const [
+                          'scholar',
+                          'scout',
+                          'alchemist',
+                          'guardian',
+                          'wanderer',
+                        ])
+                          SizedBox(
+                            width: width,
+                            child: _ArchetypeCard(
+                              archetype: value,
+                              label: _archetypeLabel(value),
+                              description: _archetypeDescription(value),
+                              selected:
+                                  data.profile.adventurerArchetype == value,
+                              disabled: _savingArchetype,
+                              onTap: () =>
+                                  _requestArchetypeChange(value, data),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 ),
                 const SizedBox(height: 16),
                 QuestwellRetroPanel(
@@ -540,13 +583,10 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: theme.secondaryBackground,
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: theme.alternate),
-                  ),
+                QuestwellRetroPanel(
+                  padding: const EdgeInsets.all(14),
+                  accent: const Color(0xFF8E6B35),
+                  background: const Color(0xFF17151A),
                   child: Row(
                     children: [
                       Icon(
@@ -610,10 +650,14 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 ),
                 const SizedBox(height: 22),
                 Text(
-                  'Equipped',
+                  'EQUIPPED GEAR',
                   style: theme.titleLarge.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 12,
+                    color: const Color(0xFFF2D9A0),
+                    letterSpacing: .3,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -636,10 +680,14 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                   ),
                 const SizedBox(height: 24),
                 Text(
-                  'Inventory',
+                  'INVENTORY',
                   style: theme.titleLarge.override(
-                    font: GoogleFonts.interTight(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
+                    font: GoogleFonts.pressStart2p(
+                      fontWeight: FontWeight.w700,
+                    ),
+                    fontSize: 12,
+                    color: const Color(0xFFF2D9A0),
+                    letterSpacing: .3,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -660,13 +708,9 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                   ...owned.map(
                     (item) => Padding(
                       padding: const EdgeInsets.only(bottom: 10),
-                      child: Container(
+                      child: QuestwellParchmentPanel(
                         padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: theme.secondaryBackground,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: theme.alternate),
-                        ),
+                        selected: item.equipped,
                         child: Row(
                           children: [
                             QuestwellItemPixelArt(
@@ -688,8 +732,9 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                                     item.name,
                                     style: theme.titleSmall.override(
                                       font: GoogleFonts.interTight(
-                                        fontWeight: FontWeight.w700,
+                                        fontWeight: FontWeight.w800,
                                       ),
+                                      color: const Color(0xFF30261D),
                                       letterSpacing: 0,
                                     ),
                                   ),
@@ -710,7 +755,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                                           font: GoogleFonts.inter(
                                             fontWeight: FontWeight.w700,
                                           ),
-                                          color: theme.secondaryText,
+                                          color: const Color(0xFF67543E),
                                           letterSpacing: .7,
                                         ),
                                       ),
@@ -768,6 +813,108 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
             ),
           );
         },
+      ),
+      ),
+    );
+  }
+}
+
+class _ArchetypeCard extends StatelessWidget {
+  const _ArchetypeCard({
+    required this.archetype,
+    required this.label,
+    required this.description,
+    required this.selected,
+    required this.disabled,
+    required this.onTap,
+  });
+
+  final String archetype;
+  final String label;
+  final String description;
+  final bool selected;
+  final bool disabled;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = QuestwellPixelPalette.forClass(archetype);
+
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: '$label archetype',
+      child: InkWell(
+        onTap: disabled ? null : onTap,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: selected
+                ? const Color(0xFF211C19)
+                : const Color(0xFF17151A),
+            border: Border.all(
+              color: selected ? palette.last : const Color(0xFF6A4C2C),
+              width: selected ? 3 : 2,
+            ),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x77000000),
+                offset: Offset(4, 4),
+                blurRadius: 0,
+              ),
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              QuestwellClassMiniSprite(
+                archetype: archetype,
+                size: 62,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label.toUpperCase(),
+                      style: GoogleFonts.pressStart2p(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                        color: selected
+                            ? palette.last
+                            : const Color(0xFFF2D9A0),
+                      ),
+                    ),
+                    const SizedBox(height: 7),
+                    Text(
+                      description,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        height: 1.25,
+                        color: const Color(0xFFB7C4D4),
+                      ),
+                    ),
+                    if (selected) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        'ACTIVE CLASS',
+                        style: GoogleFonts.inter(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          color: palette.last,
+                          letterSpacing: .7,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
