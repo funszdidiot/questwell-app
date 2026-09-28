@@ -154,22 +154,9 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'QUESTWELL',
-                          style: GoogleFonts.pressStart2p(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFFF2D9A0),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Small wins. Real momentum.',
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFFB7C4D4),
-                          ),
+                        QuestwellBrandWordmark(
+                          compact:
+                              MediaQuery.sizeOf(context).width < 390,
                         ),
                       ],
                     ),
