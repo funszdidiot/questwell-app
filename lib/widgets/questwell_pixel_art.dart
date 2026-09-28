@@ -354,6 +354,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
       height: height,
       child: CustomPaint(
         painter: _HearthPainter(
+          archetype: archetype,
           palette: QuestwellPixelPalette.forClass(archetype),
         ),
       ),
@@ -1010,7 +1011,11 @@ class _Pixel64 {
 }
 
 class _HearthPainter extends CustomPainter {
-  _HearthPainter({required this.palette});
+  _HearthPainter({
+    required this.archetype,
+    required this.palette,
+  });
+  final String archetype;
   final List<Color> palette;
 
   @override
@@ -1207,7 +1212,7 @@ class _HearthPainter extends CustomPainter {
       origin: Offset(size.width * .79, size.height * .50),
       scale: size.height / 205 * 1.72,
       palette: palette,
-      archetype: _archetypeFromPalette(palette),
+      archetype: archetype,
     );
 
     // Cat with visible ears, tail, body shading.
@@ -1249,16 +1254,9 @@ class _HearthPainter extends CustomPainter {
     }
   }
 
-  String _archetypeFromPalette(List<Color> p) {
-    if (p == QuestwellPixelPalette.scholar) return 'scholar';
-    if (p == QuestwellPixelPalette.scout) return 'scout';
-    if (p == QuestwellPixelPalette.alchemist) return 'alchemist';
-    if (p == QuestwellPixelPalette.guardian) return 'guardian';
-    return 'wanderer';
-  }
-
   @override
   bool shouldRepaint(covariant _HearthPainter oldDelegate) =>
+      oldDelegate.archetype != archetype ||
       oldDelegate.palette != palette;
 }
 
