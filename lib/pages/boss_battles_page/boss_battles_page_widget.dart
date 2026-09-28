@@ -61,6 +61,48 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
         return 'Inbox Hydra';
     }
   }
+  String _bossWeakness(String type) {
+    switch (type) {
+      case 'meeting_mimic':
+        return 'A clear agenda and one decision at a time.';
+      case 'spreadsheet_slime':
+        return 'Small cleanups, one tab or formula at a time.';
+      case 'calendar_kraken':
+        return 'Protect one block of time and cut the tentacles.';
+      case 'printer_poltergeist':
+        return 'A single physical next step and zero superstition.';
+      case 'notification_swarm':
+        return 'Silence the noise, then clear one channel.';
+      case 'ticket_troll':
+        return 'Define done and close the oldest useful ticket.';
+      case 'update_dragon':
+        return 'Break the upgrade into safe, boring checkpoints.';
+      default:
+        return 'One reply, one thread, one head at a time.';
+    }
+  }
+
+  String _bossStrategy(String type) {
+    switch (type) {
+      case 'meeting_mimic':
+        return 'Attack the outcome, not the whole meeting.';
+      case 'spreadsheet_slime':
+        return 'Reduce the mess before adding more logic.';
+      case 'calendar_kraken':
+        return 'Defend your next useful hour.';
+      case 'printer_poltergeist':
+        return 'Make the machine prove the next failure.';
+      case 'notification_swarm':
+        return 'Batch the alerts instead of chasing them.';
+      case 'ticket_troll':
+        return 'Move the queue by finishing one concrete item.';
+      case 'update_dragon':
+        return 'Ship the smallest safe change first.';
+      default:
+        return 'Shrink the inbox until the next action is obvious.';
+    }
+  }
+
 
   IconData _bossIcon(String type) {
     switch (type) {
@@ -345,24 +387,11 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
     final theme = FlutterFlowTheme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.primaryBackground,
-      appBar: AppBar(
-        backgroundColor: theme.primaryBackground,
-        elevation: 0,
-        foregroundColor: theme.primaryText,
-        title: Text(
-          'BOSS BATTLES',
-          style: theme.titleLarge.override(
-            font: GoogleFonts.pressStart2p(
-              fontWeight: FontWeight.w700,
-            ),
-            fontSize: 13,
-            letterSpacing: .35,
-          ),
-        ),
-      ),
+      backgroundColor: const Color(0xFF111827),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showCreateBattle,
+        backgroundColor: const Color(0xFF6E3B2C),
+        foregroundColor: const Color(0xFFF6E7BE),
         icon: const QuestwellNavPixelIcon(
           kind: 'boss',
           size: 20,
@@ -372,7 +401,9 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
           style: GoogleFonts.pressStart2p(fontSize: 9),
         ),
       ),
-      body: FutureBuilder<List<QuestwellBossBattle>>(
+      body: SafeArea(
+        top: true,
+        child: FutureBuilder<List<QuestwellBossBattle>>(
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -460,11 +491,68 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
               ]);
             },
             child: ListView.separated(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 100),
-              itemCount: visibleBattles.length + (_campfireMode ? 1 : 0),
+              padding: const EdgeInsets.fromLTRB(18, 16, 18, 110),
+              itemCount: visibleBattles.length + (_campfireMode ? 1 : 0) + 1,
               separatorBuilder: (_, __) => const SizedBox(height: 14),
               itemBuilder: (context, index) {
-                if (_campfireMode && index == 0) {
+                if (index == 0) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          QuestwellTopActionButton(
+                            kind: 'back',
+                            tooltip: 'Back to the Hearth',
+                            onTap: () => Navigator.of(context).maybePop(),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'BOSS BATTLES',
+                                  style: theme.headlineMedium.override(
+                                    font: GoogleFonts.pressStart2p(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    fontSize: 21,
+                                    color: const Color(0xFFF2D9A0),
+                                    letterSpacing: .5,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Turn intimidating office work into a fight you can win.',
+                                  style: theme.bodyMedium.override(
+                                    font: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    color: const Color(0xFFB7C4D4),
+                                    letterSpacing: 0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const QuestwellNavPixelIcon(
+                            kind: 'boss',
+                            size: 36,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      const QuestwellPixelDivider(
+                        accent: Color(0xFFE87947),
+                      ),
+                    ],
+                  );
+                }
+
+                final contentIndex = index - 1;
+
+                if (_campfireMode && contentIndex == 0) {
                   return QuestwellRetroPanel(
                     padding: const EdgeInsets.all(14),
                     accent: const Color(0xFFE87947),
@@ -494,9 +582,11 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                 }
 
                 final battle =
-                    visibleBattles[index - (_campfireMode ? 1 : 0)];
+                    visibleBattles[contentIndex - (_campfireMode ? 1 : 0)];
                 final remainingSteps =
                     battle.steps.where((step) => !step.completed).toList();
+                final isFeatured =
+                    openBattles.isNotEmpty && battle.id == openBattles.first.id;
 
                 return QuestwellRetroPanel(
                   padding: const EdgeInsets.all(16),
@@ -509,7 +599,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     children: [
                       QuestwellBossPixelArt(
                         bossType: battle.bossType,
-                        height: 132,
+                        height: isFeatured ? 245 : 160,
                       ),
                       const SizedBox(height: 14),
                       Row(
@@ -588,34 +678,88 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                         height: 18,
                         segments: 14,
                       ),
+                      if (isFeatured && !battle.completed) ...[
+                        const SizedBox(height: 14),
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            final wide = constraints.maxWidth >= 680;
+                            final boxWidth = wide
+                                ? (constraints.maxWidth - 16) / 3
+                                : constraints.maxWidth;
+                            return Wrap(
+                              spacing: 8,
+                              runSpacing: 8,
+                              children: [
+                                SizedBox(
+                                  width: boxWidth,
+                                  child: _BossIntelCard(
+                                    label: 'WEAKNESS',
+                                    value: _bossWeakness(battle.bossType),
+                                    kind: 'quest',
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: boxWidth,
+                                  child: _BossIntelCard(
+                                    label: 'VICTORY LOOT',
+                                    value:
+                                        '+${battle.rewardXp} XP • +${battle.rewardCoins} coins',
+                                    kind: 'coin',
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: boxWidth,
+                                  child: _BossIntelCard(
+                                    label: 'STRATEGY',
+                                    value: _bossStrategy(battle.bossType),
+                                    kind: 'boss',
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
                       if (!battle.completed && remainingSteps.isNotEmpty) ...[
                         const SizedBox(height: 16),
                         for (final step in remainingSteps
                             .take(_campfireMode ? 1 : 3)) ...[
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  step.title,
-                                  style: theme.bodyMedium.override(
-                                    font: GoogleFonts.inter(),
-                                    letterSpacing: 0,
+                          QuestwellParchmentPanel(
+                            padding: const EdgeInsets.fromLTRB(12, 10, 10, 10),
+                            child: Row(
+                              children: [
+                                const QuestwellNavPixelIcon(
+                                  kind: 'quest',
+                                  size: 22,
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    step.title,
+                                    style: theme.bodyMedium.override(
+                                      font: GoogleFonts.inter(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      color: const Color(0xFF30261D),
+                                      letterSpacing: 0,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              TextButton(
-                                onPressed: _busyStepId == step.id
-                                    ? null
-                                    : () => _completeStep(battle, step),
-                                child: Text(
-                                  _busyStepId == step.id
-                                      ? 'Attacking...'
-                                      : 'Attack',
+                                const SizedBox(width: 8),
+                                TextButton(
+                                  onPressed: _busyStepId == step.id
+                                      ? null
+                                      : () => _completeStep(battle, step),
+                                  child: Text(
+                                    _busyStepId == step.id
+                                        ? 'Attacking...'
+                                        : 'ATTACK',
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
+                          const SizedBox(height: 8),
                         ],
                       ],
                       const SizedBox(height: 10),
@@ -636,6 +780,76 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
             ),
           );
         },
+      ),
+      ),
+    );
+  }
+}
+
+class _BossIntelCard extends StatelessWidget {
+  const _BossIntelCard({
+    required this.label,
+    required this.value,
+    required this.kind,
+  });
+
+  final String label;
+  final String value;
+  final String kind;
+
+  @override
+  Widget build(BuildContext context) {
+    final icon = kind == 'coin'
+        ? const QuestwellCurrencyPixelIcon(kind: 'coin', size: 22)
+        : QuestwellNavPixelIcon(kind: kind, size: 22);
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0F1824),
+        border: Border.all(
+          color: const Color(0xFF6A4C2C),
+          width: 2,
+        ),
+        boxShadow: const [
+          BoxShadow(
+            color: Color(0x66000000),
+            offset: Offset(3, 3),
+            blurRadius: 0,
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          icon,
+          const SizedBox(width: 9),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: GoogleFonts.pressStart2p(
+                    fontSize: 8,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFFF2D9A0),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  value,
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    height: 1.3,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFFB7C4D4),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
