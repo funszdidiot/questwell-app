@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/questwell_home_sections.dart';
+import '../widgets/questwell_home_overview.dart';
 import '../widgets/questwell_campfire_background.dart';
 
 class HomeSectionsReviewApp extends StatefulWidget {
@@ -18,10 +19,20 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
       body: QuestwellCampfireBackground(active: _campfire, child: SafeArea(child: Center(child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 430),
         child: ListView(padding: const EdgeInsets.all(20), children: [
-          SwitchListTile(contentPadding: EdgeInsets.zero,
-            title: const Text('Campfire Mode'),
-            subtitle: const Text('One small win at a time.'),
-            value: _campfire, activeThumbColor: const Color(0xFFFFBC6B),
+          QuestwellHomeHeader(onOpen: (_) {}),
+          const SizedBox(height: 14),
+          QuestwellHomeCharacter(archetype: 'scout', className: 'Scout',
+            level: 3, xp: 95, coins: 49, mastered: false, equippedNames: const [],
+            collection: const [
+              HomeCollectionItem(name: 'Scout cloak', slug: 'scout_cloak', category: 'outfit',
+                archetype: 'scout', owned: false, equipped: false),
+              HomeCollectionItem(name: 'Trail accessory', slug: 'trail_accessory', category: 'accessory',
+                archetype: 'scout', owned: true, equipped: false),
+            ], onCustomize: () {}, onMarket: () {}),
+          const SizedBox(height: 12),
+          QuestwellHomeMomentum(wins: 4, bosses: 0, onOpen: () {}),
+          const SizedBox(height: 12),
+          QuestwellHomeCampfireControl(active: _campfire,
             onChanged: (value) => setState(() => _campfire = value)),
           const SizedBox(height: 24),
           const Text('YOUR NEXT WIN', style: TextStyle(color: Color(0xFFF2D9A0),

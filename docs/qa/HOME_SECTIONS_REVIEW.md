@@ -18,3 +18,14 @@ Development-only cleanup requested September 29, 2026.
 - Off mode stops animation and removes embers. Reduced-motion preference shows a still atmosphere.
 - Interactive review: `?review=home` with Campfire Mode toggle.
 - Existing energy-mode persistence remains unchanged.
+
+## Character overview and controls
+
+- Founder approved campfire embers ("I love it").
+- Header now includes visible Quests, Chronicle, Adventurer labels below the wordmark.
+- Compact level/XP/coin overview and remaining XP to the next level.
+- Loadout displays all equipped names with a Customize adventurer route.
+- Expandable class collection lists all shop items for the active class, with names and explicit ownership/equipment states. Market link provided.
+- Momentum summary emphasizes weekly wins; Campfire control shares a compact panel style.
+- Data sources, XP formula, energy persistence, and approved Hearth/avatars retained.
+- Review fixture uses sample profile/item data, not an account. Actual account navigation and persistence still require user verification.

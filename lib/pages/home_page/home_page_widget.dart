@@ -9,6 +9,7 @@ import '/services/questwell_cosmetic_service.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_home_sections.dart';
+import '/widgets/questwell_home_overview.dart';
 import '/widgets/questwell_campfire_background.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -375,53 +376,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          QuestwellBrandWordmark(
-                            compact:
-                                MediaQuery.sizeOf(context).width < 390,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    QuestwellTopActionButton(
-                      kind: 'quest',
-                      tooltip: 'Quest Board',
-                      onTap: () async {
-                        await context.pushNamed(QuestBoardPageWidget.routeName);
-                        if (mounted) setState(_loadHomeData);
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                    QuestwellTopActionButton(
-                      kind: 'chronicle',
-                      tooltip: 'Chronicle',
-                      onTap: () async {
-                        await context.pushNamed(
-                          ChroniclePageWidget.routeName,
-                        );
-                        if (mounted) setState(_loadHomeData);
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                    QuestwellTopActionButton(
-                      kind: 'adventurer',
-                      tooltip: 'Adventurer',
-                      onTap: () async {
-                        await context.pushNamed(
-                          AdventurerPageWidget.routeName,
-                        );
-                        if (mounted) setState(_loadHomeData);
-                      },
-                    ),
-                  ],
-                ),
+                QuestwellHomeHeader(onOpen: (destination) async {
+                  final route = switch (destination) {
+                    'quest' => QuestBoardPageWidget.routeName,
+                    'chronicle' => ChroniclePageWidget.routeName,
+                    _ => AdventurerPageWidget.routeName,
+                  };
+                  await context.pushNamed(route);
+                  if (mounted) setState(_loadHomeData);
+                }),
                 const SizedBox(height: 10),
                 const QuestwellPixelDivider(
                   accent: Color(0xFFD6A84B),
@@ -514,175 +477,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           item.owned,
                     );
                     final xpIntoLevel = profile.totalXp % 100;
-                    final progress = xpIntoLevel / 100.0;
 
-                    return QuestwellRetroPanel(
-                      padding: const EdgeInsets.all(16),
-                      accent: const Color(0xFFD6A84B),
-                      background: const Color(0xFF141820),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              QuestwellRelicPixelArt(
-                                archetype: profile.adventurerArchetype,
-                                size: 58,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      _archetypeLabel(profile.adventurerArchetype)
-                                          .toUpperCase(),
-                                      style: theme.titleMedium.override(
-                                        font: GoogleFonts.pressStart2p(
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                        fontSize: 13,
-                                        color: const Color(0xFFF4D58A),
-                                        letterSpacing: .7,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      'LEVEL ${profile.level} • HEARTH ADVENTURER',
-                                      style: theme.bodyMedium.override(
-                                        font: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                        fontSize: 11,
-                                        color: const Color(0xFFB9C7D7),
-                                        letterSpacing: .3,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              if (classMastered)
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFF1B1510),
-                                    border: Border.all(
-                                      color: const Color(0xFFF1C75B),
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'MASTERED',
-                                    style: GoogleFonts.pressStart2p(
-                                      fontSize: 7,
-                                      color: const Color(0xFFF1C75B),
-                                    ),
-                                  ),
-                                ),
-                              const SizedBox(width: 8),
-                              _RewardChip(
-                                icon: Icons.monetization_on_outlined,
-                                label: '${profile.coinBalance} coins',
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 14),
-                          QuestwellPixelMeter(
-                            value: progress,
-                            kind: 'xp',
-                            height: 16,
-                            segments: 12,
-                          ),
-                          const SizedBox(height: 7),
-                          Text(
-                            '$xpIntoLevel / 100 XP to next level',
-                            style: theme.labelSmall.override(
-                              font: GoogleFonts.roboto(),
-                              color: theme.secondaryText,
-                              letterSpacing: 0,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            equipped.isEmpty
-                                ? 'LOADOUT • No gear equipped'
-                                : 'LOADOUT • ${equipped.take(3).map((item) => item.name).join(' • ')}',
-                            softWrap: true,
-                            style: theme.labelSmall.override(
-                              font: GoogleFonts.roboto(
-                                fontWeight: FontWeight.w700,
-                              ),
-                              color: const Color(0xFFB9C7D7),
-                              fontSize: 11,
-                              letterSpacing: .15,
-                            ),
-                          ),
-                          if (equipped.isNotEmpty) ...[
-                            const SizedBox(height: 10),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: [
-                                for (final item in equipped.take(4))
-                                  QuestwellItemPixelArt(
-                                    slug: item.slug,
-                                    category: item.category,
-                                    archetype: item.requiredArchetype,
-                                    size: 42,
-                                  ),
-                              ],
-                            ),
-                          ],
-                          const SizedBox(height: 12),
-                          const QuestwellPixelDivider(
-                            accent: Color(0xFF6A4C2C),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'CLASS COLLECTION',
-                            style: theme.labelSmall.override(
-                              font: GoogleFonts.pressStart2p(
-                                fontWeight: FontWeight.w700,
-                              ),
-                              fontSize: 8,
-                              color: const Color(0xFFD6A84B),
-                              letterSpacing: .8,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: [
-                              for (final item in data.cosmetics.where(
-                                (item) =>
-                                    item.requiredArchetype ==
-                                        profile.adventurerArchetype &&
-                                    item.unlockMethod == 'shop',
-                              ).take(3))
-                                Opacity(
-                                  opacity: item.owned ? 1 : .38,
-                                  child: QuestwellItemPixelArt(
-                                    slug: item.slug,
-                                    category: item.category,
-                                    archetype: item.requiredArchetype,
-                                    size: 46,
-                                    locked: !item.owned,
-                                  ),
-                                ),
-                              if (classMastered)
-                                QuestwellRelicPixelArt(
-                                  archetype: profile.adventurerArchetype,
-                                  size: 46,
-                                ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    return QuestwellHomeCharacter(
+                      archetype: profile.adventurerArchetype,
+                      className: _archetypeLabel(profile.adventurerArchetype),
+                      level: profile.level, xp: xpIntoLevel, coins: profile.coinBalance,
+                      mastered: classMastered,
+                      equippedNames: equipped.map((item) => item.name).toList(),
+                      collection: data.cosmetics.where((item) =>
+                        item.requiredArchetype == profile.adventurerArchetype &&
+                        item.unlockMethod == 'shop').map((item) => HomeCollectionItem(
+                          name: item.name, slug: item.slug, category: item.category,
+                          archetype: item.requiredArchetype, owned: item.owned,
+                          equipped: item.equipped)).toList(),
+                      onCustomize: () async {
+                        await context.pushNamed(AdventurerPageWidget.routeName);
+                        if (mounted) setState(_loadHomeData);
+                      },
+                      onMarket: () async {
+                        await context.pushNamed(MarketPageWidget.routeName);
+                        if (mounted) setState(_loadHomeData);
+                      },
                     );
                   },
                 ),
@@ -695,66 +510,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     }
 
                     final momentum = snapshot.data!;
-                    final hasWins = momentum.weekWins > 0;
-
-                    return QuestwellRetroPanel(
-                      padding: const EdgeInsets.all(14),
-                      accent: const Color(0xFFD6A84B),
-                      background: const Color(0xFF171A20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          QuestwellStatusPixelBadge(
-                            kind: 'momentum',
-                            size: 44,
-                            active: hasWins,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  hasWins
-                                      ? 'Momentum is building'
-                                      : 'Fresh start',
-                                  style: theme.titleMedium.override(
-                                    font: GoogleFonts.pressStart2p(
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    fontSize: 12,
-                                    letterSpacing: 0,
-                                  ),
-                                ),
-                                const SizedBox(height: 3),
-                                Text(
-                                  hasWins
-                                      ? '${momentum.weekWins} win${momentum.weekWins == 1 ? '' : 's'} this week • ${momentum.bossesDefeated} boss${momentum.bossesDefeated == 1 ? '' : 'es'} defeated'
-                                      : 'Welcome back. No catching up required. Pick one thing.',
-                                  style: theme.bodySmall.override(
-                                    font: GoogleFonts.roboto(),
-                                    color: theme.secondaryText,
-                                    letterSpacing: 0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            tooltip: 'Open Chronicle',
-                            onPressed: () async {
-                              await context.pushNamed(
-                                ChroniclePageWidget.routeName,
-                              );
-                              if (mounted) setState(_loadHomeData);
-                            },
-                            icon: const QuestwellNavPixelIcon(
-                              kind: 'chronicle',
-                              size: 28,
-                            ),
-                          ),
-                        ],
-                      ),
+                    return QuestwellHomeMomentum(
+                      wins: momentum.weekWins, bosses: momentum.bossesDefeated,
+                      onOpen: () async {
+                        await context.pushNamed(ChroniclePageWidget.routeName);
+                        if (mounted) setState(_loadHomeData);
+                      },
                     );
                   },
                 ),
@@ -846,61 +607,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ],
                 const SizedBox(height: 18),
-                QuestwellRetroPanel(
-                  padding: const EdgeInsets.all(14),
-                  accent: _campfireMode
-                      ? const Color(0xFFE87947)
-                      : const Color(0xFF8E6B35),
-                  background: _campfireMode
-                      ? const Color(0xFF241712)
-                      : const Color(0xFF171A20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      QuestwellStatusPixelBadge(
-                        kind: 'campfire',
-                        size: 44,
-                        active: _campfireMode,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'CAMPFIRE MODE',
-                              style: theme.titleMedium.override(
-                                font: GoogleFonts.pressStart2p(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                fontSize: 11,
-                                letterSpacing: 0.2,
-                              ),
-                            ),
-                            const SizedBox(height: 3),
-                            Text(
-                              _campfireMode
-                                  ? 'Today counts even if we go small. One quest at a time.'
-                                  : 'Low-energy day? Narrow the board to one gentle next step.',
-                              style: theme.bodySmall.override(
-                                font: GoogleFonts.roboto(),
-                                color: theme.secondaryText,
-                                letterSpacing: 0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      QuestwellPixelToggle(
-                        value: _campfireMode,
-                        onChanged: _changingEnergyMode
-                            ? null
-                            : (value) => _setCampfireMode(value),
-                      ),
-                    ],
-                  ),
-                ),
+                QuestwellHomeCampfireControl(active: _campfireMode,
+                  onChanged: _changingEnergyMode ? null : _setCampfireMode),
                 const SizedBox(height: 24),
                 Text(
                   _campfireMode ? 'ONE SMALL WIN' : 'YOUR NEXT WIN',
