@@ -161,9 +161,10 @@ class _HomePanel extends StatelessWidget {
   final Widget child;
   final bool warm;
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(16), decoration: BoxDecoration(
-      color: warm ? const Color(0xFF2B211D) : const Color(0xFF19232D),
-      border: Border.all(color: warm ? const Color(0xFF94603D) : const Color(0xFF65563D)),
-      borderRadius: BorderRadius.circular(3)), child: child);
+  Widget build(BuildContext context) => Material(
+    color: warm ? const Color(0xFF2B211D) : const Color(0xFF19232D),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3),
+      side: BorderSide(color: warm ? const Color(0xFF94603D) : const Color(0xFF65563D))),
+    clipBehavior: Clip.antiAlias,
+    child: Padding(padding: const EdgeInsets.all(16), child: child));
 }
