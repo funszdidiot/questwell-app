@@ -53,6 +53,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           _onboardingCompleted = data.profile.onboardingCompleted;
         });
       }
+    }, onError: (Object error, StackTrace stackTrace) {
+      // FutureBuilder displays the load error. Handle this side-effect future
+      // too so a failed profile sync is not reported as an uncaught exception.
     });
   }
 

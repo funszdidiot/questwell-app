@@ -20,6 +20,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   int _secondsRemaining = 25 * 60;
   bool _running = false;
   bool _finished = false;
+  DateTime? _deadline;
 
   @override
   void dispose() {
@@ -39,6 +40,9 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   void _start() {
     if (_running || _secondsRemaining <= 0) return;
 
+    _timer?.cancel();
+    _deadline = DateTime.now().add(Duration(seconds: _secondsRemaining));
+
     setState(() {
       _running = true;
       _finished = false;
@@ -50,8 +54,10 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
         return;
       }
 
-      if (_secondsRemaining <= 1) {
+      final remaining = _deadline!.difference(DateTime.now()).inMilliseconds;
+      if (remaining <= 0) {
         timer.cancel();
+        _deadline = null;
         setState(() {
           _secondsRemaining = 0;
           _running = false;
@@ -60,17 +66,25 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
         return;
       }
 
-      setState(() => _secondsRemaining -= 1);
+      setState(() => _secondsRemaining = (remaining / 1000).ceil());
     });
   }
 
   void _pause() {
     _timer?.cancel();
-    setState(() => _running = false);
+    final remaining = _deadline?.difference(DateTime.now()).inMilliseconds ?? 0;
+    _deadline = null;
+    setState(() {
+      _secondsRemaining =
+          (remaining / 1000).ceil().clamp(0, _selectedMinutes * 60).toInt();
+      _running = false;
+      _finished = _secondsRemaining == 0;
+    });
   }
 
   void _reset() {
     _timer?.cancel();
+    _deadline = null;
     setState(() {
       _running = false;
       _finished = false;
