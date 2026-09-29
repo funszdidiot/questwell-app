@@ -28,16 +28,15 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.38.6'
+          flutter-version: '3.44.6'
           cache: true
 
       - name: Install dependencies
         run: flutter pub get
 
-      # Flutter 3.38.6 browser-decoded images disappear in CPU-only CanvasKit.
-      # Use bundled codecs until an engine upgrade includes flutter/flutter#180706.
+      # Includes the CPU-only CanvasKit image fix (flutter/flutter#180706).
       - name: Build preview
-        run: flutter build web --release --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=BROWSER_IMAGE_DECODING_ENABLED=false
+        run: flutter build web --release --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none
 
       - name: Cache-bust preview bundle
         run: |

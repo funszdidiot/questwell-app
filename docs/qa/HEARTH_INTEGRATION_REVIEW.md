@@ -45,4 +45,4 @@ the Hearth visual review, not merely a passing automated build.
 
 ## Software rendering compatibility
 
-The Flutter 3.38.6 browser decoder can decode assets while leaving them invisible in CPU-only CanvasKit (upstream flutter/flutter#180706). The development preview uses `BROWSER_IMAGE_DECODING_ENABLED=false` to select bundled WASM codecs. Remove this workaround when upgrading to an engine containing the upstream fix. Approved artwork is unchanged.
+Flutter 3.38.6 can decode assets while leaving them invisible in CPU-only CanvasKit (upstream flutter/flutter#180706). Disabling the browser decoder alone did not fix URL-backed assets. The development build and validation use Flutter 3.44.6, which includes the complete upstream software rendering fix. Approved artwork is unchanged.
