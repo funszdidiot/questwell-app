@@ -774,7 +774,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   });
 
   static const _environmentAsset =
-      'assets/images/questwell/hearth/hearth_environment.webp';
+      'assets/images/questwell/hearth/hearth_environment_v2.webp';
 
   final double height;
   final String archetype;
@@ -1092,57 +1092,6 @@ class _HearthAtmospherePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()..isAntiAlias = false;
-
-    // Stepped warm light shafts. Keeping the edges hard preserves the
-    // 64-bit-era visual language rather than adding a modern blur layer.
-    final shaft = Path()
-      ..moveTo(size.width * .03, 0)
-      ..lineTo(size.width * .30, 0)
-      ..lineTo(size.width * .48, size.height)
-      ..lineTo(size.width * .32, size.height)
-      ..close();
-    p.color = const Color(0x0CFFD46B);
-    canvas.drawPath(shaft, p);
-
-    final narrowShaft = Path()
-      ..moveTo(size.width * .58, 0)
-      ..lineTo(size.width * .66, 0)
-      ..lineTo(size.width * .75, size.height * .74)
-      ..lineTo(size.width * .69, size.height * .74)
-      ..close();
-    p.color = accent.withValues(alpha: .035);
-    canvas.drawPath(narrowShaft, p);
-
-    // Sparse dust motes that read as environmental depth without competing
-    // with the Adventurer.
-    final motes = compact
-        ? const [
-            Offset(.17, .24),
-            Offset(.23, .39),
-            Offset(.74, .22),
-            Offset(.80, .43),
-            Offset(.13, .61),
-          ]
-        : const [
-            Offset(.14, .22),
-            Offset(.21, .37),
-            Offset(.28, .28),
-            Offset(.72, .18),
-            Offset(.80, .34),
-            Offset(.86, .51),
-            Offset(.12, .60),
-          ];
-    for (var i = 0; i < motes.length; i++) {
-      final o = motes[i];
-      p.color = i.isEven
-          ? const Color(0x66F6D27A)
-          : const Color(0x3DE87947);
-      final unit = i.isEven ? 2.0 : 1.0;
-      canvas.drawRect(
-        Rect.fromLTWH(size.width * o.dx, size.height * o.dy, unit, unit),
-        p,
-      );
-    }
 
     // A low-contrast perspective rug visually anchors the Adventurer to the
     // Hearth floor without introducing another character-scale focal point.

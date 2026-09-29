@@ -52,3 +52,7 @@ Flutter 3.38.6 can decode assets while leaving them invisible in CPU-only Canvas
 Commit `89783d9` passed Flutter checks and web build/deployment. Live browser inspection confirmed restored room and avatar images for neutral Wanderer at 390 px, female Wanderer at 320 px, and female Guardian at 320 px. Matching Adventurer portraits rendered correctly. The Flutter engine upgrade also required page_transition 2.2.2 and replacing the unused Font Awesome renderer with Flutter Icon for existing IconData.
 
 iPhone Safari acceptance and signed-in body-selection persistence remain manual gates. Epic 2 is not promoted by this browser review.
+
+## Cleaner room candidate — 2026-09-29
+
+Replaced the busy room with `hearth_environment_v2.webp`, generated using the built-in image tool. Prompt: crisp restrained pixel-art timber room, small fireplace left, twilight window right, quiet blue-gray center wall, open wooden floor, sparse furnishings, no characters, text, fog, or clutter. Removed decorative light shafts and dust motes; kept existing avatar, rug and boot contact geometry. Pending visual acceptance.
