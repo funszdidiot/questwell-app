@@ -162,7 +162,12 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       filterQuality: FilterQuality.high,
       gaplessPlayback: true,
-      errorBuilder: (_, __, ___) => fallback ?? const SizedBox.shrink(),
+      errorBuilder: (_, error, ___) {
+        if (Uri.base.queryParameters['review'] == 'hearth') {
+          debugPrint('Hearth asset error: $asset: $error');
+        }
+        return fallback ?? const SizedBox.shrink();
+      },
     );
   }
 
