@@ -6,7 +6,7 @@ This file is the founder-facing dashboard for the Questwell art overhaul.
 
 ## Current state
 
-**Active workstream:** Epic 2 — Hearth Visual Overhaul  
+**Active workstream:** Epic 2 — Hearth Visual Overhaul (visual acceptance testing)  
 **Development branch:** `questwell-dev`  
 **Promoted/app branch:** `flutterflow`  
 **Last promoted milestone:** Epic 1 — Modular Avatar Foundation  
@@ -17,7 +17,7 @@ This file is the founder-facing dashboard for the Questwell art overhaul.
 | Epic | Scope | Status |
 |---|---|---|
 | 1 | Modular Avatar Foundation | ✅ Promoted |
-| 2 | Hearth Visual Overhaul | 🟡 In Progress |
+| 2 | Hearth Visual Overhaul | 🧪 Testing |
 | 3 | Quest Board Redesign | ⚪ Not Started |
 | 4 | Adventurer / Inventory Overhaul | ⚪ Not Started |
 | 5 | Market Overhaul | ⚪ Not Started |
@@ -45,7 +45,7 @@ Completed:
 
 ## Epic 2 — Hearth Visual Overhaul
 
-**Status:** 🟡 In Progress
+**Status:** 🧪 Testing
 
 Target:
 - Keep the Hearth environment character-free
