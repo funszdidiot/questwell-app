@@ -24,7 +24,7 @@ void main() {
           expect(avatar.width / avatar.height, closeTo(.75, .001));
           expect(avatar.top, greaterThan(frame.top + 25));
           expect(avatar.bottom, lessThan(frame.bottom));
-          expect(avatar.top + avatar.height * 310 / 320, closeTo(shadow.center.dy, .1));
+          expect(avatar.top + avatar.height * 302 / 320, closeTo(shadow.center.dy, .1));
           final art = tester.widget<QuestwellLayeredAdventurerArt>(find.byType(QuestwellLayeredAdventurerArt));
           expect(art.archetype, kind);
           expect(art.avatarBodyType, body);

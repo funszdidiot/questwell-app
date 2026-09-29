@@ -899,22 +899,11 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               Positioned(
                 key: const ValueKey('hearth-contact-shadow'),
                 left: avatarLeft + avatarWidth * .22,
-                top: footY - sceneHeight * .025,
+                top: footY - avatarHeight * 8 / 320 - sceneHeight * .025,
                 width: avatarWidth * .56,
                 height: sceneHeight * .05,
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        radius: .72,
-                        colors: [
-                          const Color(0xB5000000),
-                          const Color(0x52000000),
-                          const Color(0x00000000),
-                        ],
-                      ),
-                    ),
-                  ),
+                child: const IgnorePointer(
+                  child: CustomPaint(painter: _HearthBootShadowPainter()),
                 ),
               ),
               Positioned(
@@ -1080,6 +1069,25 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   }
 }
 
+class _HearthBootShadowPainter extends CustomPainter {
+  const _HearthBootShadowPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Flattened contact ovals beneath each boot, never a round central spot.
+    final p = Paint()..color = const Color(0x35000000);
+    canvas.drawOval(Rect.fromLTWH(0, size.height * .32, size.width, size.height * .36), p);
+    p.color = const Color(0x55000000);
+    for (final x in [.08, .56]) {
+      canvas.drawOval(Rect.fromLTWH(size.width * x, size.height * .36,
+        size.width * .36, size.height * .24), p);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _HearthBootShadowPainter oldDelegate) => false;
+}
+
 class _HearthAtmospherePainter extends CustomPainter {
   const _HearthAtmospherePainter({
     required this.accent,
@@ -1093,65 +1101,44 @@ class _HearthAtmospherePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final p = Paint()..isAntiAlias = false;
 
-    // A low-contrast perspective rug visually anchors the Adventurer to the
-    // Hearth floor without introducing another character-scale focal point.
-    final rug = Path()
-      ..moveTo(size.width * .34, size.height * .70)
-      ..lineTo(size.width * .66, size.height * .70)
-      ..lineTo(size.width * .76, size.height * .965)
-      ..lineTo(size.width * .24, size.height * .965)
-      ..close();
-    p.color = const Color(0x82431E25);
+    // Opaque woven fabric follows the room's floor perspective.
+    Offset point(double u, double v) {
+      final halfWidth = .17 + .11 * v;
+      return Offset(size.width * (.5 + (u - .5) * 2 * halfWidth),
+          size.height * (.69 + .26 * v));
+    }
+    Path panel(double inset) => Path()
+      ..addPolygon([point(inset, inset), point(1 - inset, inset),
+        point(1 - inset, 1 - inset), point(inset, 1 - inset)], true);
+    final rug = panel(0);
+    p.color = const Color(0xFF452B35);
     canvas.drawPath(rug, p);
-
-    final rugInset = Path()
-      ..moveTo(size.width * .37, size.height * .725)
-      ..lineTo(size.width * .63, size.height * .725)
-      ..lineTo(size.width * .70, size.height * .93)
-      ..lineTo(size.width * .30, size.height * .93)
-      ..close();
+    p.color = const Color(0xFFAE8955);
+    canvas.drawPath(panel(.045), p);
+    p.color = const Color(0xFF623E48);
+    canvas.drawPath(panel(.075), p);
+    p.color = const Color(0xFFAE8955);
     p.style = PaintingStyle.stroke;
-    p.strokeWidth = compact ? 2 : 3;
-    p.color = accent.withValues(alpha: .42);
-    canvas.drawPath(rugInset, p);
+    p.strokeWidth = 1;
+    canvas.drawPath(panel(.105), p);
     p.style = PaintingStyle.fill;
 
-    // Small stepped rug ornaments echo the class accent while preserving the
-    // warm neutral palette of the room.
-    p.color = accent.withValues(alpha: .22);
-    for (final x in [.39, .47, .55, .63]) {
-      canvas.drawRect(
-        Rect.fromLTWH(
-          size.width * x,
-          size.height * .84,
-          compact ? 2 : 3,
-          compact ? 2 : 3,
-        ),
-        p,
-      );
+    // Fine horizontal yarn rows stay clipped to the fabric.
+    canvas.save();
+    canvas.clipPath(panel(.115));
+    p.color = const Color(0xFF704B53);
+    p.strokeWidth = 1;
+    for (double v = .13; v < .9; v += .045) {
+      canvas.drawLine(point(.1, v), point(.9, v), p);
     }
-
-    // Hard-edged floor glints tie the live character into the room lighting.
-    p.color = accent.withValues(alpha: .12);
-    canvas.drawRect(
-      Rect.fromLTWH(
-        size.width * .42,
-        size.height * .82,
-        size.width * .16,
-        2,
-      ),
-      p,
-    );
-    p.color = const Color(0x24FFD978);
-    canvas.drawRect(
-      Rect.fromLTWH(
-        size.width * .46,
-        size.height * .845,
-        size.width * .08,
-        1,
-      ),
-      p,
-    );
+    canvas.restore();
+    // Small woven border stitches widen naturally toward the foreground.
+    p.color = const Color(0xFFD0AD70);
+    for (double u = .12; u < .9; u += .065) {
+      for (final v in [.058, .94]) {
+        canvas.drawLine(point(u, v), point(u + .018, v), p);
+      }
+    }
 
     // Dark edge strips work as a pixel vignette and keep attention on the
     // Adventurer and the warm room center.
