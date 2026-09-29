@@ -75,7 +75,7 @@ class _EmberPainter extends CustomPainter {
     final paint = Paint()..isAntiAlias = false;
     // One cycle is 24 seconds, with fixed seeds and no sudden twinkling.
     for (var i = 0; i < 30; i++) {
-      final phase = ((still ? .35 : drift.value) + i * .61803398875) % 1;
+      final phase = ((still ? .35 : drift.value) + i * i * .137 + i * .217) % 1;
       final baseX = ((i * .381966 + .07) % 1) * size.width;
       final x = (baseX + math.sin(phase * math.pi * 2 + i) * 14).roundToDouble();
       final y = ((1 - phase) * (size.height + 30) - 15).roundToDouble();
