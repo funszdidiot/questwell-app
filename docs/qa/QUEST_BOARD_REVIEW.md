@@ -25,3 +25,7 @@ Hearth saved-avatar persistence remains unverified. No promotion or launch.
 ## Pinned-paper revision
 
 Founder requested restoring the illustrated noticeboard feel. Shared live/review cards now use opaque parchment, folded corners, subtle paper shadows, drawn brass/steel pin controls, and a wooden plank backdrop. Existing completion and favorite behavior is preserved. Gold pins mark priorities.
+
+## Founder visual acceptance — 2026-09-29
+
+Founder approved pinned-paper revision `4960b14` with “I love it” and authorized signed-in validation. Completion/rewards, pin persistence after reopening, and boss navigation remain unverified against an authenticated account. Development only; no merge or launch.

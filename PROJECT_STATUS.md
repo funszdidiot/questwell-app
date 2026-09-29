@@ -10,7 +10,7 @@ This file is the founder-facing dashboard for the Questwell art overhaul.
 and warmer lighting on 2026-09-29 (“It’s good”), at `51f7f9b`.
 Saved-avatar account persistence remains an unverified manual gate.
 
-**Quest Board:** Epic 3 implementation in progress with founder authorization.
+**Quest Board:** Pinned-paper design approved by the founder on 2026-09-29 (“I love it”), at `4960b14`. Signed-in validation is now in progress.
 First pass prioritizes daily task access, readable cards, pinned priorities,
 server-confirmed completion rewards, and an account-free `?review=quests` fixture.
 No merge to flutterflow or launch authorized.
