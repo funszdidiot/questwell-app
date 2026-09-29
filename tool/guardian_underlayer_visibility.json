@@ -3,7 +3,7 @@
     240,
     320
   ],
-  "description": "Guardian-specific visible regions on the frozen bases: preserve anatomy, front clothing and full trousers; hide suit shoulders, sleeves and hip flaps. Wrist polygons are independently tightened after composite inspection to prevent isolated suit-jacket fragments. Checked against guardian-v1.",
+  "description": "Guardian-specific visible regions on the frozen bases: preserve anatomy, front clothing and full trousers; hide suit shoulders, sleeves and hip flaps. Wrist polygons are independently tightened after composite inspection to prevent isolated suit-jacket fragments. Checked against guardian-v2.",
   "bodies": {
     "male": [
       [

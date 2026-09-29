@@ -8,7 +8,7 @@ import 'package:project_momentum/widgets/guardian_underlayer_clip.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   for (final body in ['male', 'female', 'neutral']) {
-    test('$body Guardian panels cover the outside trouser edges', () async {
+    test('$body Guardian covers trousers and keeps waist trim open', () async {
       Future<ui.Image> loadImage(String asset) async {
         final bytes = await rootBundle.load(asset);
         final codec = await ui.instantiateImageCodec(
@@ -23,7 +23,7 @@ void main() {
         'assets/images/questwell/avatar/base/base_$body.webp',
       );
       final coat = await loadImage(
-        'assets/images/questwell/avatar/classes/guardian/guardian_coat_${body}_v1.webp',
+        'assets/images/questwell/avatar/classes/guardian/guardian_coat_${body}_v2.webp',
       );
       try {
         expect([base.width, base.height, coat.width, coat.height],
@@ -52,6 +52,37 @@ void main() {
         }
         expect(exposed, isEmpty,
             reason: '$body trousers outside coat: ${exposed.take(12).join(', ')}');
+
+        // Regression for the reviewed v1 pinch and thick gold wedges. Inspect
+        // the actual exported piping, independently of the fit-control data.
+        bool isGold(int x, int y) {
+          final offset = (y * 240 + x) * 4;
+          final red = coatPixels.getUint8(offset);
+          final green = coatPixels.getUint8(offset + 1);
+          final blue = coatPixels.getUint8(offset + 2);
+          return red > 175 && green > 110 && blue < green * .85 &&
+              coatPixels.getUint8(offset + 3) > 180;
+        }
+        for (var y = 130; y <= 160; y++) {
+          var left = -1, right = 240;
+          for (var x = 100; x < 140; x++) {
+            if (!isGold(x, y)) continue;
+            if (x < 119) {
+              left = x;
+            } else if (right == 240) {
+              right = x;
+            }
+          }
+          expect(left, greaterThanOrEqualTo(100), reason: '$body left piping at $y');
+          expect(right, lessThan(140), reason: '$body right piping at $y');
+          expect(right - left - 1, greaterThanOrEqualTo(10),
+              reason: '$body gold edges pinch the front opening at $y');
+          var leftWidth = 0, rightWidth = 0;
+          for (var x = left; x >= 100 && isGold(x, y); x--) { leftWidth++; }
+          for (var x = right; x < 140 && isGold(x, y); x++) { rightWidth++; }
+          expect(leftWidth, lessThanOrEqualTo(3), reason: '$body thick left piping at $y');
+          expect(rightWidth, lessThanOrEqualTo(3), reason: '$body thick right piping at $y');
+        }
       } finally {
         base.dispose();
         coat.dispose();
@@ -149,7 +180,7 @@ void main() {
           ).map((image) => (image.image as AssetImage).assetName).toList();
           expect(images, [
             'assets/images/questwell/avatar/base/base_$body.webp',
-            'assets/images/questwell/avatar/classes/guardian/guardian_coat_${body}_v1.webp',
+            'assets/images/questwell/avatar/classes/guardian/guardian_coat_${body}_v2.webp',
           ]);
           final clip = tester.widget<ClipPath>(
             find.descendant(of: layer, matching: find.byType(ClipPath)),

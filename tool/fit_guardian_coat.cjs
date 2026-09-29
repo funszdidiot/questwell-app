@@ -59,10 +59,11 @@ for (const [body, spec] of Object.entries(manifest.bodies)) {
   const dw = width * scale, dh = height * scale;
   const output = Buffer.alloc(dw * dh * 4);
   const contourRows = spec.contour_fit?.rows;
+  const frontRows = spec.front_fit?.rows;
   // Keep source coordinates, not a second raster texture. The contour pass
   // samples the original master once, avoiding repeated color interpolation.
   const smooth = spec.mapping === 'thin_plate_spline';
-  const sourceMap = contourRows || smooth ? new Float32Array(dw * dh * 2) : null;
+  const sourceMap = contourRows || frontRows || smooth ? new Float32Array(dw * dh * 2) : null;
 
   function sample(x, y, offset) {
     x = x * sw / width - .5;
@@ -148,6 +149,42 @@ for (const [body, spec] of Object.entries(manifest.bodies)) {
     }
   }
 
+  if (frontRows) {
+    // Fit the measured piping locally without moving the outer torso/sleeves.
+    // Map coordinates back into the original texture; never paint over trim.
+    const originalMap = sourceMap.slice();
+    for (let y = 0; y < dh; y++) {
+      const py = (y + .5) / scale;
+      if (py <= frontRows[0].y || py >= frontRows.at(-1).y) continue;
+      const index = frontRows.findIndex(row => row.y >= py);
+      const a = frontRows[index - 1], b = frontRows[index];
+      const t = (py - a.y) / (b.y - a.y);
+      const lerp = (key, i) => a[key][i] * (1 - t) + b[key][i] * t;
+      const old = a.source.map((_, i) => lerp('source', i));
+      const fitted = a.target.map((_, i) => lerp('target', i));
+      for (let i = 1; i < old.length; i++) {
+        if (old[i] <= old[i - 1] || fitted[i] <= fitted[i - 1]) {
+          throw new Error(`${body}: folded front-line mapping at ${py}`);
+        }
+      }
+      for (let x = 0; x < dw; x++) {
+        const px = (x + .5) / scale;
+        if (px <= fitted[0] || px >= fitted.at(-1)) continue;
+        const i = fitted.findIndex(value => value >= px);
+        const fraction = (px - fitted[i - 1]) / (fitted[i] - fitted[i - 1]);
+        const oldX = old[i - 1] + fraction * (old[i] - old[i - 1]);
+        const q = oldX * scale - .5, x0 = Math.floor(q), fx = q - x0;
+        const offset = (y * dw + x) * 4, mapOffset = (y * dw + x) * 2;
+        const l = (y * dw + x0) * 2, r = l + 2;
+        const sx = originalMap[l] * (1 - fx) + originalMap[r] * fx;
+        const sy = originalMap[l + 1] * (1 - fx) + originalMap[r + 1] * fx;
+        sourceMap[mapOffset] = sx; sourceMap[mapOffset + 1] = sy;
+        output.fill(0, offset, offset + 4);
+        sample(sx, sy, offset);
+      }
+    }
+  }
+
   if (contourRows) {
     for (let y = 0; y < dh; y++) {
       const py = (y + .5) / scale;
@@ -179,6 +216,13 @@ for (const [body, spec] of Object.entries(manifest.bodies)) {
                sourceMap[a + 1] * (1 - fx) + sourceMap[b + 1] * fx, offset);
       }
     }
+  }
+  const proofIndex = process.argv.indexOf('--proof-dir');
+  if (proofIndex >= 0) {
+    const proofDir = process.argv[proofIndex + 1];
+    fs.mkdirSync(proofDir, {recursive: true});
+    command('convert', ['-size', `${dw}x${dh}`, '-depth', '8', 'rgba:-',
+      path.join(proofDir, `${body}-4x.png`)], output);
   }
   command('convert', ['-size', `${dw}x${dh}`, '-depth', '8', 'rgba:-',
     '-filter', 'Lanczos', '-resize', `${width}x${height}`, '-define', 'webp:lossless=true',

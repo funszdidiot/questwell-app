@@ -104,7 +104,7 @@ Freeze the approved base avatars. Complete **Scholar** for one body type at a ti
 | Scholar | 240 x 320 | 240 x 320 | 240 x 320 | **Approved template.** Frozen at scholar-approved-v1 after founder direction. Preserve its reviewed artwork, body-specific coverage and presentation. |
 | Scout | 240 x 320 | 240 x 320 | 240 x 320 | **Approved: scout-approved-v1.** Three fitted coats and Scout-specific jacket coverage are frozen. See docs/qa/SCOUT_FIT_REVIEW.md. |
 | Alchemist | 240 x 320 | 240 x 320 | 240 x 320 | **Approved: alchemist-approved-v1 (artwork alchemist-lab-v4).** Chemistry lab coats in sapphire blue and silver with neon-green molecular accents and plain chest pockets. See docs/qa/ALCHEMIST_FIT_REVIEW.md; current three-body set accepted and frozen. |
-| Guardian | 240 x 320 | 240 x 320 | 240 x 320 | **Review candidate: guardian-v1.** Burgundy/gold cloth coats, separate measured body fits, shield/chevron embroidery and continuous side coverage. Founder acceptance pending; see docs/qa/GUARDIAN_FIT_REVIEW.md. |
+| Guardian | 240 x 320 | 240 x 320 | 240 x 320 | **Review candidate: guardian-v2.** Burgundy/gold cloth coats, separate measured body fits, single-border trim, simplified shield/chevron embroidery, smooth waist paths and continuous side coverage. Founder acceptance pending; see docs/qa/GUARDIAN_FIT_REVIEW.md. |
 
 Alchemist revision 2 was rejected for incorrect fit. Revision 3 adds continuous
 hip/thigh contour checks; individual anchor alignment alone is insufficient.

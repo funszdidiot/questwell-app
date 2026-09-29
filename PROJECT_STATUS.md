@@ -34,10 +34,13 @@ The beaker/flask emblems are removed. Body-specific fitting, jacket coverage
 and portrait/card rendering are wired.
 Founder accepted the set with “Good to go.” See `docs/qa/ALCHEMIST_FIT_REVIEW.md`.
 
-**Guardian fit:** 🧪 `guardian-v1` ready for development review, not yet founder approved.
-Three independently fitted burgundy/gold cloth coats use embroidered shield and
-chevron details, compact cuffs, continuous thigh coverage and Guardian-specific
-jacket occlusion. All frozen templates are preserved.
+**Guardian fit:** 🧪 `guardian-v2` linework revision ready for development review, not yet founder approved.
+Founder rejected v1’s uneven gold lines. Revision 2 removes branching borders,
+uses one isolated chevron per lower panel and locally fits the piping to smooth
+waist paths with consistent gold width. Three independent body fits retain
+compact cuffs, continuous thigh coverage and Guardian-specific jacket occlusion.
+Actual-image tests check waist clearance and line width. All frozen templates
+are preserved.
 See `docs/qa/GUARDIAN_FIT_REVIEW.md` and `guardian-fit-review.html`.
 Wanderer follows only after Guardian acceptance.
 

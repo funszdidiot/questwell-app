@@ -56,9 +56,9 @@
   "candidate_classes": {
     "guardian": {
       "visual_approval": "pending_founder_review",
-      "art_revision": "guardian-v1",
+      "art_revision": "guardian-v2",
       "template_reference": "scholar-approved-v1",
-      "design": "Burgundy and warm red cloth, burnished-gold piping and four brass fasteners, plain right chest welt and paired hip welts, flat shoulder yoke, embroidered shield crest and three lower-panel chevrons. No equipment.",
+      "design": "Burgundy/gold cloth coat with four brass fasteners, plain chest and hip welts, sleeve shield embroidery, one gold border and one isolated chevron per lower panel. Smooth waist piping and consistent trim width. No equipment.",
       "bodies": [
         "male",
         "female",
@@ -66,22 +66,22 @@
       ],
       "assets": [
         {
-          "path": "assets/images/questwell/avatar/classes/guardian/guardian_coat_male_v1.webp",
-          "sha256": "7b43deb70895a54b3fce2e75cced386b2839b249f1003a61cb2477bff09d616d"
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_coat_male_v2.webp",
+          "sha256": "7431461a6c66b2e17cea9ed63eae74acc591bd58ce491e6e56a44f8229adf286"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/guardian/guardian_coat_female_v1.webp",
-          "sha256": "5b5e6ae90f7a2390ff26988d436a31c4878efa3e6de6608f9303257307d9fa48"
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_coat_female_v2.webp",
+          "sha256": "88a5915fc12f0e4f923933b361657e3b82bde4cc5f76d50a4a981d3e9736b412"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/guardian/guardian_coat_neutral_v1.webp",
-          "sha256": "7fa2d5dff5dbdef5fdbb9e8a5478f4c0df243e592297a176d1e4efc316c08f65"
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_coat_neutral_v2.webp",
+          "sha256": "6dc31f7ba6dc0300669db9aa891f97f96079af67cafef2fa37cecbd5198ffef6"
         }
       ],
       "fit_inputs": [
         {
           "path": "tool/guardian_underlayer_visibility.json",
-          "sha256": "6346a7be740b8d4d6ffc688116c6d340386027538ad101ebcc4a382a1d27fe23"
+          "sha256": "3f0b9e726c3e6afe52506e96bacfd3af0a51118ebc9148dc8dc5596970355f25"
         },
         {
           "path": "lib/widgets/guardian_underlayer_clip.dart",
@@ -93,31 +93,31 @@
         },
         {
           "path": "tool/guardian_fit_anchors.json",
-          "sha256": "391f2618a1d42ecc65417f585243c336795fa9af67e2dd18c723c45298715ca8"
+          "sha256": "0224c606fb43f1a36f3125ac58c80fc7227a4d8da59557aaa3ab6d08158b8a31"
         },
         {
           "path": "tool/fit_guardian_coat.cjs",
-          "sha256": "18500bd1d50a4d2565c40d46fb6541ec7ec31208113db0cd31e724d98d3a3e22"
+          "sha256": "41ff9770cd1955fe8b3808e4660eb12deea5f1c29d98a854f4fe474a52ee2efd"
         },
         {
           "path": "tool/generate_guardian_underlayer.py",
           "sha256": "fb32e182d50f438c1463861de67fe598bbfbc1eb96425bdd3300bfb4115b947f"
         },
         {
-          "path": "tool/art_assets/guardian_v1/prompts.json",
-          "sha256": "7fc1ffb2a738ea43ea014ecf9b8ae47443dc5dbc2737a69f0fc3be9145f82f60"
+          "path": "tool/art_assets/guardian_v2/prompts.json",
+          "sha256": "5c3e1564eb7282ed70593cb01880ee9ddbeed91ae56ed019f8e3dbbabb6a8909"
         },
         {
-          "path": "tool/art_assets/guardian_v1/male.webp",
-          "sha256": "0c5a96191c2511b2d55ba3397a2a60ec63c8f5903fd933ddd70f3a720dbe9e77"
+          "path": "tool/art_assets/guardian_v2/male.webp",
+          "sha256": "74e4bb795cd2b28f72e99b9c4b2b4e7ee775432d83e68390c07ec625fc62c31b"
         },
         {
-          "path": "tool/art_assets/guardian_v1/female.webp",
-          "sha256": "05349cb974afbcb9ade19d3ecde6bcf2f054082ef09443e8c6ff8aba5b7fb392"
+          "path": "tool/art_assets/guardian_v2/female.webp",
+          "sha256": "eb5bfc1cff50856fe6f79485e1b74fa28b18b7fce612ef57d8207d32c2af0ed2"
         },
         {
-          "path": "tool/art_assets/guardian_v1/neutral.webp",
-          "sha256": "a54671ee59ebb96649035dabedae97c1290d3cbaf909a65b0f68f389703eeeda"
+          "path": "tool/art_assets/guardian_v2/neutral.webp",
+          "sha256": "59bf715be0f7852c337fd324f34f24cf4e49e9e2a8674ff416c3912744d540d0"
         }
       ]
     }

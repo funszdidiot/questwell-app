@@ -64,11 +64,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v4.webp';
 
   static const _guardianMale =
-      'assets/images/questwell/avatar/classes/guardian/guardian_coat_male_v1.webp';
+      'assets/images/questwell/avatar/classes/guardian/guardian_coat_male_v2.webp';
   static const _guardianFemale =
-      'assets/images/questwell/avatar/classes/guardian/guardian_coat_female_v1.webp';
+      'assets/images/questwell/avatar/classes/guardian/guardian_coat_female_v2.webp';
   static const _guardianNeutral =
-      'assets/images/questwell/avatar/classes/guardian/guardian_coat_neutral_v1.webp';
+      'assets/images/questwell/avatar/classes/guardian/guardian_coat_neutral_v2.webp';
 
   final String archetype;
   final Map<String, String> equippedSlugs;
