@@ -14,19 +14,21 @@ class QuestwellQuestCard extends StatelessWidget {
   final VoidCallback? onComplete;
 
   @override
-  Widget build(BuildContext context) => QuestwellRetroPanel(
-    padding: const EdgeInsets.all(16),
-    accent: favorite ? const Color(0xFFD6A84B) : const Color(0xFF66718A),
-    background: const Color(0xFF172335),
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: const BoxDecoration(boxShadow: [
+      BoxShadow(color: Color(0x65000000), offset: Offset(3, 5), blurRadius: 2),
+    ]),
+    child: CustomPaint(painter: _QuestPaperPainter(),
+      child: Padding(padding: const EdgeInsets.fromLTRB(16, 18, 16, 16),
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(favorite ? 'PINNED QUEST' : 'QUEST', style: GoogleFonts.pressStart2p(
-            fontSize: 8, height: 1.6, color: const Color(0xFFE0BE77))),
+            fontSize: 8, height: 1.6, color: const Color(0xFF785729))),
           const SizedBox(height: 10),
           Text(title.trim().isEmpty ? 'Untitled quest' : title,
             style: GoogleFonts.roboto(fontSize: 19, height: 1.3,
-              fontWeight: FontWeight.w800, color: const Color(0xFFF7EAD1))),
+              fontWeight: FontWeight.w800, color: const Color(0xFF34291F))),
         ])),
         IconButton(onPressed: onFavorite,
           tooltip: favorite ? 'Unpin quest' : 'Pin quest',
@@ -36,9 +38,9 @@ class QuestwellQuestCard extends StatelessWidget {
       ]),
       const SizedBox(height: 14),
       Wrap(spacing: 8, runSpacing: 8, children: [
-        _QuestTag(effort, const Color(0xFFD0DBE7)),
-        _QuestTag('+$xp XP', const Color(0xFFC8B1FF)),
-        _QuestTag('+$coins coins', const Color(0xFFF1CF81)),
+        _QuestTag(effort, const Color(0xFF4B493F)),
+        _QuestTag('+$xp XP', const Color(0xFF624286)),
+        _QuestTag('+$coins coins', const Color(0xFF79531C)),
       ]),
       const SizedBox(height: 16),
       SizedBox(width: double.infinity, child: FilledButton.icon(
@@ -53,6 +55,7 @@ class QuestwellQuestCard extends StatelessWidget {
           shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
       )),
     ]),
+    )),
   );
 }
 
@@ -63,7 +66,7 @@ class _QuestTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 6),
-    decoration: BoxDecoration(color: const Color(0xFF101A29),
+    decoration: BoxDecoration(color: const Color(0xFFE5D2A9),
       border: Border.all(color: color.withValues(alpha: .25))),
     child: Text(text, style: GoogleFonts.roboto(color: color, fontSize: 12,
       fontWeight: FontWeight.w700)),
@@ -97,17 +100,79 @@ class _QuestPinPainter extends CustomPainter {
   final bool pinned;
   @override
   void paint(Canvas canvas, Size size) {
-    final path = Path()..addPolygon([
-      const Offset(.5, .06), const Offset(.63, .35), const Offset(.96, .38),
-      const Offset(.71, .60), const Offset(.79, .94), const Offset(.5, .77),
-      const Offset(.21, .94), const Offset(.29, .60), const Offset(.04, .38),
-      const Offset(.37, .35),
-    ].map((p) => Offset(p.dx * size.width, p.dy * size.height)).toList(), true);
-    canvas.drawPath(path, Paint()
-      ..color = pinned ? const Color(0xFFF1C75B) : const Color(0xFFBAC7D8)
-      ..style = pinned ? PaintingStyle.fill : PaintingStyle.stroke
-      ..strokeWidth = 2);
+    final p = Paint();
+    // A brass priority tack, or a muted steel tack for ordinary quests.
+    p.color = const Color(0x55342116);
+    canvas.drawOval(Rect.fromLTWH(size.width * .28, size.height * .57,
+      size.width * .62, size.height * .24), p);
+    p.color = const Color(0xFF65594B);
+    p.strokeWidth = 2;
+    canvas.drawLine(Offset(size.width * .47, size.height * .4),
+      Offset(size.width * .61, size.height * .88), p);
+    p.color = pinned ? const Color(0xFF94601E) : const Color(0xFF59676A);
+    canvas.drawCircle(Offset(size.width * .46, size.height * .39), size.width * .32, p);
+    p.color = pinned ? const Color(0xFFE2B858) : const Color(0xFF9CAAAA);
+    canvas.drawCircle(Offset(size.width * .44, size.height * .34), size.width * .25, p);
+    p.color = pinned ? const Color(0xFFFFE5A0) : const Color(0xFFD7DFD6);
+    canvas.drawCircle(Offset(size.width * .36, size.height * .26), size.width * .07, p);
   }
   @override
   bool shouldRepaint(covariant _QuestPinPainter oldDelegate) => oldDelegate.pinned != pinned;
+}
+
+class QuestwellNoticeboard extends StatelessWidget {
+  const QuestwellNoticeboard({super.key, required this.child});
+  final Widget child;
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: BoxDecoration(border: Border.all(color: const Color(0xFF9E7546), width: 3),
+      boxShadow: const [BoxShadow(color: Color(0x66000000), offset: Offset(3, 4))]),
+    child: CustomPaint(painter: _NoticeboardWoodPainter(),
+      child: Padding(padding: const EdgeInsets.all(13), child: child)),
+  );
+}
+
+class _NoticeboardWoodPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..color = const Color(0xFF493326);
+    canvas.drawRect(Offset.zero & size, p);
+    for (double y = 0; y < size.height; y += 82) {
+      p.color = const Color(0xFF2C201C);
+      canvas.drawRect(Rect.fromLTWH(0, y, size.width, 3), p);
+      p.color = const Color(0xFF614532);
+      canvas.drawRect(Rect.fromLTWH(0, y + 4, size.width, 1), p);
+      for (var i = 0; i < 4; i++) {
+        final x = (i * 73 + y * .31) % size.width;
+        p.color = const Color(0xFF563C2C);
+        canvas.drawRect(Rect.fromLTWH(x, y + 18 + i * 11, 34, 1), p);
+      }
+    }
+  }
+  @override
+  bool shouldRepaint(covariant _NoticeboardWoodPainter oldDelegate) => false;
+}
+
+class _QuestPaperPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..color = const Color(0xFFF0DFB8);
+    final shape = Path()..moveTo(0, 0)..lineTo(size.width - 15, 0)
+      ..lineTo(size.width, 15)..lineTo(size.width, size.height)
+      ..lineTo(0, size.height)..close();
+    canvas.drawPath(shape, p);
+    p..color = const Color(0xFFC6AB78)..style = PaintingStyle.stroke..strokeWidth = 1;
+    canvas.drawPath(shape, p);
+    p..style = PaintingStyle.fill..color = const Color(0xFFD1B681);
+    canvas.drawPath(Path()..moveTo(size.width - 15, 0)
+      ..lineTo(size.width - 15, 15)..lineTo(size.width, 15)..close(), p);
+    // Sparse fibers remain at the edges, away from readable text.
+    p.color = const Color(0xFFCDB789);
+    for (double y = 29; y < size.height - 10; y += 23) {
+      canvas.drawRect(Rect.fromLTWH(3, y, 3, 1), p);
+      canvas.drawRect(Rect.fromLTWH(size.width - 7, y + 4, 3, 1), p);
+    }
+  }
+  @override
+  bool shouldRepaint(covariant _QuestPaperPainter oldDelegate) => false;
 }

@@ -380,7 +380,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                         padding: const EdgeInsets.all(18),
                         child: Text(
                           _filter == 'favorites'
-                              ? 'No pinned quests yet. Tap a star to keep an important quest here.'
+                              ? 'No pinned quests yet. Tap a pin to keep an important quest here.'
                               : 'No quests in this lane right now.',
                           style: GoogleFonts.roboto(
                             color: const Color(0xFF4B3A28),
@@ -390,7 +390,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                       );
                     }
 
-                    return Column(
+                    return QuestwellNoticeboard(child: Column(
                       children: [
                         for (final task in visible) ...[
                           QuestwellQuestCard(
@@ -404,10 +404,10 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                             onFavorite: () => _toggleFavorite(task),
                             onComplete: _busyTaskId == null ? () => _complete(task) : null,
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 18),
                         ],
                       ],
-                    );
+                    ));
                   },
                 ),
               if (_filter == 'boss')

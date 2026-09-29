@@ -21,3 +21,7 @@ Hearth saved-avatar persistence remains unverified. No promotion or launch.
 - Signed-in task completion/rewards, pinned persistence and boss navigation still require account-level verification.
 - Existing query is capped at 50 open quests; pagination is not implemented in this visual pass.
 - No new task scheduling, priority schema, or reward backend changes.
+
+## Pinned-paper revision
+
+Founder requested restoring the illustrated noticeboard feel. Shared live/review cards now use opaque parchment, folded corners, subtle paper shadows, drawn brass/steel pin controls, and a wooden plank backdrop. Existing completion and favorite behavior is preserved. Gold pins mark priorities.

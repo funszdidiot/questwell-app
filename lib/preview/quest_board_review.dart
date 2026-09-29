@@ -35,6 +35,7 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
               onSelected: (_) => setState(() => _pinnedOnly = true)),
           ]),
           const SizedBox(height: 12),
+          QuestwellNoticeboard(child: Column(children: [
           for (var i = 0; i < _titles.length; i++)
             if (!_done.contains(i) && (!_pinnedOnly || _pinned.contains(i)))
               Padding(padding: const EdgeInsets.only(bottom: 14),
@@ -49,8 +50,9 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
                 )),
           if (!_titles.asMap().keys.any((i) => !_done.contains(i) && (!_pinnedOnly || _pinned.contains(i))))
             Padding(padding: const EdgeInsets.all(20), child: Text(
-              _pinnedOnly ? 'No pinned quests here. Star a quest in All quests.'
+              _pinnedOnly ? 'No pinned quests here. Pin a quest in All quests.'
                 : 'Board clear. Enjoy your small wins.', textAlign: TextAlign.center)),
+          ])),
           TextButton(onPressed: () => setState(() { _done.clear(); _pinnedOnly = false; }),
             child: const Text('Reset sample quests')),
         ]),
