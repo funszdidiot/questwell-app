@@ -25,6 +25,10 @@ for (const [body, spec] of Object.entries(manifest.bodies)) {
   const input = command('convert', [source, '-depth', '8', 'rgba:-']);
   const dw = width * scale, dh = height * scale;
   const output = Buffer.alloc(dw * dh * 4);
+  const contourRows = spec.contour_fit?.rows;
+  // Keep source coordinates, not a second raster texture. The contour pass
+  // samples the original master once, avoiding repeated color interpolation.
+  const sourceMap = contourRows ? new Float32Array(dw * dh * 2) : null;
 
   function sample(x, y, offset) {
     x = x * sw / width - .5;
@@ -67,8 +71,45 @@ for (const [body, spec] of Object.entries(manifest.bodies)) {
       const v = area(t[0], p, t[2]) / determinant;
       const w = 1 - u - v;
       if (u < -1e-7 || v < -1e-7 || w < -1e-7) continue;
-      sample(u * s[0][0] + v * s[1][0] + w * s[2][0],
-             u * s[0][1] + v * s[1][1] + w * s[2][1], (y * dw + x) * 4);
+      const sx = u * s[0][0] + v * s[1][0] + w * s[2][0];
+      const sy = u * s[0][1] + v * s[1][1] + w * s[2][1];
+      sample(sx, sy, (y * dw + x) * 4);
+      if (sourceMap) {
+        sourceMap[(y * dw + x) * 2] = sx;
+        sourceMap[(y * dw + x) * 2 + 1] = sy;
+      }
+    }
+  }
+
+  if (contourRows) {
+    for (let y = 0; y < dh; y++) {
+      const py = (y + .5) / scale;
+      if (py <= contourRows[0].y || py >= contourRows.at(-1).y) continue;
+      const index = contourRows.findIndex(row => row.y >= py);
+      const before = contourRows[index - 1], after = contourRows[index];
+      const t = (py - before.y) / (after.y - before.y);
+      const lerp = key => before[key] * (1 - t) + after[key] * t;
+      const left = lerp('left'), innerLeft = lerp('inner_left');
+      const innerRight = lerp('inner_right'), right = lerp('right');
+      const fittedLeft = lerp('fitted_left'), fittedRight = lerp('fitted_right');
+      if (!(fittedLeft < innerLeft && innerLeft < innerRight && innerRight < fittedRight)) {
+        throw new Error(`${body}: invalid contour ordering at ${py}`);
+      }
+      for (let x = 0; x < dw; x++) {
+        const px = (x + .5) / scale;
+        let oldX = px;
+        if (px < innerLeft) oldX = innerLeft + (px - innerLeft) * (innerLeft - left) / (innerLeft - fittedLeft);
+        if (px > innerRight) oldX = innerRight + (px - innerRight) * (right - innerRight) / (fittedRight - innerRight);
+        if (Math.abs(oldX - px) < 1e-8) continue;
+        const q = oldX * scale - .5;
+        const x0 = Math.floor(q), fx = q - x0;
+        const offset = (y * dw + x) * 4;
+        output.fill(0, offset, offset + 4);
+        if (x0 < 0 || x0 + 1 >= dw) continue;
+        const a = (y * dw + x0) * 2, b = a + 2;
+        sample(sourceMap[a] * (1 - fx) + sourceMap[b] * fx,
+               sourceMap[a + 1] * (1 - fx) + sourceMap[b + 1] * fx, offset);
+      }
     }
   }
   command('convert', ['-size', `${dw}x${dh}`, '-depth', '8', 'rgba:-',

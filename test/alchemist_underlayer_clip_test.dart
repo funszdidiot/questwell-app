@@ -1,10 +1,63 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:project_momentum/widgets/questwell_pixel_art.dart';
 import 'package:project_momentum/widgets/alchemist_underlayer_clip.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   for (final body in ['male', 'female', 'neutral']) {
+    test('$body Alchemist panels cover the outside trouser edges', () async {
+      Future<ui.Image> loadImage(String asset) async {
+        final bytes = await rootBundle.load(asset);
+        final codec = await ui.instantiateImageCodec(
+          bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes),
+        );
+        final frame = await codec.getNextFrame();
+        codec.dispose();
+        return frame.image;
+      }
+
+      final base = await loadImage(
+        'assets/images/questwell/avatar/base/base_$body.webp',
+      );
+      final coat = await loadImage(
+        'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v3.webp',
+      );
+      try {
+        expect([base.width, base.height, coat.width, coat.height],
+            [240, 320, 240, 320]);
+        final basePixels = (await base.toByteData(format: ui.ImageByteFormat.rawRgba))!;
+        final coatPixels = (await coat.toByteData(format: ui.ImageByteFormat.rawRgba))!;
+        final exposed = <String>[];
+        // Below the hands, the outside of each trouser leg belongs behind
+        // the coat. The center opening stays visible. Check the actual art,
+        // independent of the underlayer clip or the export's control points.
+        for (var y = 196; y <= 240; y++) {
+          var left = 240, right = -1;
+          for (var x = 0; x < 240; x++) {
+            if (coatPixels.getUint8((y * 240 + x) * 4 + 3) >= 128) {
+              if (x < left) left = x;
+              right = x;
+            }
+          }
+          expect(left, lessThan(right), reason: '$body coat row $y');
+          for (var x = 0; x < 240; x++) {
+            if ((x < left || x > right) &&
+                basePixels.getUint8((y * 240 + x) * 4 + 3) >= 128) {
+              exposed.add('($x,$y)');
+            }
+          }
+        }
+        expect(exposed, isEmpty,
+            reason: '$body trousers outside coat: ${exposed.take(12).join(', ')}');
+      } finally {
+        base.dispose();
+        coat.dispose();
+      }
+    });
+
     test('$body Alchemist retains anatomy and hides the original jacket', () {
       final path = AlchemistUnderlayerClipper(body).getClip(const Size(240, 320));
       for (final point in [
@@ -96,7 +149,7 @@ void main() {
           ).map((image) => (image.image as AssetImage).assetName).toList();
           expect(images, [
             'assets/images/questwell/avatar/base/base_$body.webp',
-            'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v2.webp',
+            'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v3.webp',
           ]);
           final clip = tester.widget<ClipPath>(
             find.descendant(of: layer, matching: find.byType(ClipPath)),

@@ -56,7 +56,7 @@
   "candidate_classes": {
     "alchemist": {
       "visual_approval": "pending_founder_review",
-      "art_revision": "alchemist-lab-v2",
+      "art_revision": "alchemist-lab-v3",
       "template_reference": "scholar-approved-v1",
       "design": "Sapphire-blue chemistry coats with cool silver trim, neon-green molecular embroidery and cuff bands, and plain chest pockets. Beaker/flask emblems removed at founder request.",
       "bodies": [
@@ -66,22 +66,22 @@
       ],
       "assets": [
         {
-          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v2.webp",
-          "sha256": "91d92c0c4cf9a44fbdc56f3da597a8813e47f1f36a7473f7f98e2f217ce79b35"
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v3.webp",
+          "sha256": "63ecceca92beb89b0a1d04791826e928bc4967b61cb61dcc63c5e2e4305f241d"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v2.webp",
-          "sha256": "9e4f34712a0accca3e56935f6226e6ef5e2f26abd42602c60c8061a164a3316d"
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v3.webp",
+          "sha256": "299ee2d426794010ae20ecc222cd1c1f051eb3a620ce55e0de1e1a8d04ba5e63"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v2.webp",
-          "sha256": "95e91978d4b36771cba4d4a7ee2581948b64f0cec612eb73302c403ee22ca4d4"
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v3.webp",
+          "sha256": "15c64b482e42dc106434a1c43e737e2381b108e0885ab3ef1f95a23f3c3803a6"
         }
       ],
       "fit_inputs": [
         {
           "path": "tool/alchemist_underlayer_visibility.json",
-          "sha256": "e3dd9c8a483049974b7d3ae959cc1f4a524be1c80aa131ca14c8d43a5f6d67f1"
+          "sha256": "cf7069bb378525ec1391bdaf0957591090cc72a58612ec4c51402c231c2dce94"
         },
         {
           "path": "lib/widgets/alchemist_underlayer_clip.dart",
@@ -93,7 +93,7 @@
         },
         {
           "path": "tool/alchemist_fit_anchors.json",
-          "sha256": "931508b8b0ab59329de216e0b0de32bd7ccf030e289c5b9eb02ac15cf6bc013c"
+          "sha256": "dfce8575c5c0fbb5c73394224c87dc9dbe9b30343177866243cb21d9d8ae38c5"
         },
         {
           "path": "tool/art_assets/alchemist_lab_v2/male.webp",
@@ -106,8 +106,15 @@
         {
           "path": "tool/art_assets/alchemist_lab_v2/neutral.webp",
           "sha256": "65e0980aff2bfc84316f107bbeb4b87d0f74f31021415488041e976c8d243da6"
+        },
+        {
+          "path": "tool/fit_alchemist_coat.cjs",
+          "sha256": "98aa77a45db8a6ffc8e73c7d044dd8fcda444901b094560b3b12fe425f515f33"
         }
-      ]
+      ],
+      "fit_revision": "continuous_side_contours",
+      "last_rejected_revision": "alchemist-lab-v2",
+      "fit_correction": "Founder rejected v2 fit. Widened and smoothed the hip/thigh panels to enclose the frozen trousers while preserving front piping, upper-body fit and original neon artwork."
     }
   },
   "approved_classes": {

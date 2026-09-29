@@ -14,22 +14,22 @@
 </style>
 <main>
 <h1>Alchemist · lab coat review</h1>
-<p>Sapphire-blue lab coats with silver trim, neon-green molecular embroidery and cuff bands, and plain chest pockets. Each body has its own fit. Portrait fill and 176 px card sizing match the app.</p>
+<p>Sapphire-blue lab coats with silver trim, neon-green molecular embroidery and cuff bands, and plain chest pockets. Corrected hip and thigh coverage for each body. Portrait fill and 176 px card sizing match the app.</p>
 <div class="controls">
 <label><input id="coat" type="checkbox" checked> Show Alchemist coat</label>
 <label><input id="guides" type="checkbox"> Show alignment guides</label>
 <label><input id="jacket" type="checkbox"> Show original jacket (compare)</label>
 </div>
 <div class="bodies" id="bodies"></div>
-<p class="note">Development candidate · 29 September 2026. The selected sapphire-blue palette with silver trim and neon-green chemistry details. Beaker emblems removed. Review all three bodies in the app before approving this class.</p>
+<p class="note">Development candidate · 29 September 2026. The selected sapphire-blue palette with silver trim and neon-green chemistry details. Beaker emblems removed. Fit revision 3 widens the side panels over the trousers. Review all three bodies in the app before approving this class.</p>
 </main>
-<script src="alchemist-underlayer.js?rev=alchemist-lab-v2"></script>
+<script src="alchemist-underlayer.js?rev=alchemist-lab-v3"></script>
 <script>
-const bodies=[['male','Male','91d92c0c4cf9'],['female','Female','9e4f34712a0a'],['neutral','Gender Neutral','95e91978d4b3']];
+const bodies=[['male','Male','63ecceca92be'],['female','Female','299ee2d42679'],['neutral','Gender Neutral','15c64b482e42']];
 const asset='assets/assets/images/questwell/avatar/';
 for(const [body,label,hash] of bodies){
  const article=document.createElement('article');
- article.innerHTML=`<h2>${label}</h2><div class="portrait-frame"><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="coat" alt="Clean fitted Alchemist coat" src="${asset}classes/alchemist/alchemist_coat_${body}_lab_v2.webp"></div></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="coat" alt="" src="${asset}classes/alchemist/alchemist_coat_${body}_lab_v2.webp"></div><p class="selection"><span aria-hidden="true">✓</span> SELECTED</p><div class="hash">Coat SHA-256: ${hash}</div>`;
+ article.innerHTML=`<h2>${label}</h2><div class="portrait-frame"><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="coat" alt="Clean fitted Alchemist coat" src="${asset}classes/alchemist/alchemist_coat_${body}_lab_v3.webp"></div></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="coat" alt="" src="${asset}classes/alchemist/alchemist_coat_${body}_lab_v3.webp"></div><p class="selection"><span aria-hidden="true">✓</span> SELECTED</p><div class="hash">Coat SHA-256: ${hash}</div>`;
  document.querySelector('#bodies').append(article);
 }
 const svgNS='http://www.w3.org/2000/svg';

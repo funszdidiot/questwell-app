@@ -3,12 +3,12 @@
     240,
     320
   ],
-  "method": "Offline body-specific fit of neon-accent chemistry coats against frozen avatar landmarks; runtime canvases stack 1:1.",
+  "method": "Single source texture sample through the original body mesh and measured continuous hip-to-hem contours. No anatomy clipping or runtime garment transforms.",
   "bodies": {
     "male": {
       "source": "tool/art_assets/alchemist_lab_v2/male.webp",
-      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v2.webp",
-      "note": "Sapphire/silver coat with neon-green molecular and cuff accents, plain chest pocket. Original body targets retained.",
+      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v3.webp",
+      "note": "Continuous hip-to-hem panel contours measured against the frozen body and approved Scholar garment. Collar, sleeves, wrists and hem endpoints preserved; sapphire/silver/neon master unchanged.",
       "points": [
         {
           "name": "neck_l",
@@ -822,12 +822,161 @@
           13,
           22
         ]
-      ]
+      ],
+      "contour_fit": {
+        "input_space": "body-fit canvas before contour correction",
+        "rows": [
+          {
+            "y": 177,
+            "left": 82.0,
+            "inner_left": 105.0,
+            "inner_right": 133.0,
+            "right": 156.0,
+            "fitted_left": 82.0,
+            "fitted_right": 156.0
+          },
+          {
+            "y": 180,
+            "left": 82.0,
+            "inner_left": 105.0,
+            "inner_right": 134.0,
+            "right": 156.0,
+            "fitted_left": 82,
+            "fitted_right": 156
+          },
+          {
+            "y": 185,
+            "left": 82.0,
+            "inner_left": 104.0,
+            "inner_right": 136.0,
+            "right": 157.0,
+            "fitted_left": 82,
+            "fitted_right": 157
+          },
+          {
+            "y": 190,
+            "left": 86.0,
+            "inner_left": 103.0,
+            "inner_right": 137.0,
+            "right": 153.0,
+            "fitted_left": 83,
+            "fitted_right": 157
+          },
+          {
+            "y": 196,
+            "left": 88.0,
+            "inner_left": 103.0,
+            "inner_right": 137.0,
+            "right": 151.0,
+            "fitted_left": 83,
+            "fitted_right": 158
+          },
+          {
+            "y": 200,
+            "left": 88.0,
+            "inner_left": 103.0,
+            "inner_right": 138.0,
+            "right": 151.0,
+            "fitted_left": 83,
+            "fitted_right": 158
+          },
+          {
+            "y": 205,
+            "left": 88.0,
+            "inner_left": 102.0,
+            "inner_right": 139.0,
+            "right": 151.0,
+            "fitted_left": 82,
+            "fitted_right": 159
+          },
+          {
+            "y": 210,
+            "left": 87.0,
+            "inner_left": 101.0,
+            "inner_right": 139.0,
+            "right": 152.0,
+            "fitted_left": 81,
+            "fitted_right": 160
+          },
+          {
+            "y": 215,
+            "left": 86.0,
+            "inner_left": 103.0,
+            "inner_right": 138.0,
+            "right": 153.0,
+            "fitted_left": 80,
+            "fitted_right": 161
+          },
+          {
+            "y": 220,
+            "left": 85.0,
+            "inner_left": 103.0,
+            "inner_right": 138.0,
+            "right": 154.0,
+            "fitted_left": 78,
+            "fitted_right": 163
+          },
+          {
+            "y": 225,
+            "left": 83.0,
+            "inner_left": 103.0,
+            "inner_right": 137.0,
+            "right": 156.0,
+            "fitted_left": 76,
+            "fitted_right": 164
+          },
+          {
+            "y": 230,
+            "left": 81.0,
+            "inner_left": 103.0,
+            "inner_right": 137.0,
+            "right": 158.0,
+            "fitted_left": 74,
+            "fitted_right": 166
+          },
+          {
+            "y": 235,
+            "left": 78.0,
+            "inner_left": 103.0,
+            "inner_right": 137.0,
+            "right": 160.0,
+            "fitted_left": 71,
+            "fitted_right": 169
+          },
+          {
+            "y": 240,
+            "left": 74.0,
+            "inner_left": 103.0,
+            "inner_right": 136.0,
+            "right": 164.0,
+            "fitted_left": 67,
+            "fitted_right": 174
+          },
+          {
+            "y": 245,
+            "left": 66.0,
+            "inner_left": 102.0,
+            "inner_right": 136.0,
+            "right": 173.0,
+            "fitted_left": 61,
+            "fitted_right": 179
+          },
+          {
+            "y": 252,
+            "left": 66.0,
+            "inner_left": 99.0,
+            "inner_right": 141.0,
+            "right": 173.0,
+            "fitted_left": 66.0,
+            "fitted_right": 173.0
+          }
+        ]
+      }
     },
     "female": {
       "source": "tool/art_assets/alchemist_lab_v2/female.webp",
-      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v2.webp",
-      "note": "Sapphire/silver coat with neon-green molecular and cuff accents, plain chest pocket. Original body targets retained.",
+      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v3.webp",
+      "note": "Continuous hip-to-hem panel contours measured against the frozen body and approved Scholar garment. Collar, sleeves, wrists and hem endpoints preserved; sapphire/silver/neon master unchanged.",
       "points": [
         {
           "name": "neck_l",
@@ -1641,12 +1790,170 @@
           15,
           12
         ]
-      ]
+      ],
+      "contour_fit": {
+        "input_space": "body-fit canvas before contour correction",
+        "rows": [
+          {
+            "y": 175,
+            "left": 89.0,
+            "inner_left": 109.0,
+            "inner_right": 135.0,
+            "right": 151.0,
+            "fitted_left": 89.0,
+            "fitted_right": 151.0
+          },
+          {
+            "y": 176,
+            "left": 90.0,
+            "inner_left": 109.0,
+            "inner_right": 134.0,
+            "right": 150.0,
+            "fitted_left": 89,
+            "fitted_right": 152
+          },
+          {
+            "y": 180,
+            "left": 91.0,
+            "inner_left": 107.0,
+            "inner_right": 133.0,
+            "right": 148.0,
+            "fitted_left": 86,
+            "fitted_right": 155
+          },
+          {
+            "y": 185,
+            "left": 93.0,
+            "inner_left": 106.0,
+            "inner_right": 134.0,
+            "right": 146.0,
+            "fitted_left": 86,
+            "fitted_right": 156
+          },
+          {
+            "y": 190,
+            "left": 95.0,
+            "inner_left": 106.0,
+            "inner_right": 134.0,
+            "right": 145.0,
+            "fitted_left": 86,
+            "fitted_right": 157
+          },
+          {
+            "y": 196,
+            "left": 95.0,
+            "inner_left": 105.0,
+            "inner_right": 135.0,
+            "right": 144.0,
+            "fitted_left": 85,
+            "fitted_right": 157
+          },
+          {
+            "y": 200,
+            "left": 95.0,
+            "inner_left": 105.0,
+            "inner_right": 135.0,
+            "right": 145.0,
+            "fitted_left": 85,
+            "fitted_right": 158
+          },
+          {
+            "y": 205,
+            "left": 92.0,
+            "inner_left": 104.0,
+            "inner_right": 136.0,
+            "right": 147.0,
+            "fitted_left": 84,
+            "fitted_right": 159
+          },
+          {
+            "y": 210,
+            "left": 90.0,
+            "inner_left": 104.0,
+            "inner_right": 136.0,
+            "right": 150.0,
+            "fitted_left": 82,
+            "fitted_right": 160
+          },
+          {
+            "y": 215,
+            "left": 88.0,
+            "inner_left": 103.0,
+            "inner_right": 137.0,
+            "right": 153.0,
+            "fitted_left": 80,
+            "fitted_right": 161
+          },
+          {
+            "y": 220,
+            "left": 85.0,
+            "inner_left": 102.0,
+            "inner_right": 138.0,
+            "right": 157.0,
+            "fitted_left": 78,
+            "fitted_right": 163
+          },
+          {
+            "y": 225,
+            "left": 82.0,
+            "inner_left": 102.0,
+            "inner_right": 139.0,
+            "right": 160.0,
+            "fitted_left": 77,
+            "fitted_right": 165
+          },
+          {
+            "y": 230,
+            "left": 78.0,
+            "inner_left": 101.0,
+            "inner_right": 142.0,
+            "right": 164.0,
+            "fitted_left": 74,
+            "fitted_right": 167
+          },
+          {
+            "y": 235,
+            "left": 75.0,
+            "inner_left": 99.0,
+            "inner_right": 146.0,
+            "right": 168.0,
+            "fitted_left": 72,
+            "fitted_right": 169
+          },
+          {
+            "y": 240,
+            "left": 71.0,
+            "inner_left": 98.0,
+            "inner_right": 149.0,
+            "right": 172.0,
+            "fitted_left": 69,
+            "fitted_right": 172
+          },
+          {
+            "y": 245,
+            "left": 67.0,
+            "inner_left": 96.0,
+            "inner_right": 151.0,
+            "right": 176.0,
+            "fitted_left": 66,
+            "fitted_right": 176
+          },
+          {
+            "y": 252,
+            "left": 65.0,
+            "inner_left": 101.0,
+            "inner_right": 149.0,
+            "right": 180.0,
+            "fitted_left": 65.0,
+            "fitted_right": 180.0
+          }
+        ]
+      }
     },
     "neutral": {
       "source": "tool/art_assets/alchemist_lab_v2/neutral.webp",
-      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v2.webp",
-      "note": "Sapphire/silver coat with neon-green molecular and cuff accents, plain chest pocket. Original body targets retained.",
+      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v3.webp",
+      "note": "Continuous hip-to-hem panel contours measured against the frozen body and approved Scholar garment. Collar, sleeves, wrists and hem endpoints preserved; sapphire/silver/neon master unchanged.",
       "points": [
         {
           "name": "neck_l",
@@ -2460,7 +2767,156 @@
           16,
           17
         ]
-      ]
+      ],
+      "contour_fit": {
+        "input_space": "body-fit canvas before contour correction",
+        "rows": [
+          {
+            "y": 177,
+            "left": 84.0,
+            "inner_left": 105.0,
+            "inner_right": 131.0,
+            "right": 153.0,
+            "fitted_left": 84.0,
+            "fitted_right": 153.0
+          },
+          {
+            "y": 180,
+            "left": 85.0,
+            "inner_left": 104.0,
+            "inner_right": 132.0,
+            "right": 151.0,
+            "fitted_left": 84,
+            "fitted_right": 154
+          },
+          {
+            "y": 185,
+            "left": 89.0,
+            "inner_left": 103.0,
+            "inner_right": 133.0,
+            "right": 148.0,
+            "fitted_left": 84,
+            "fitted_right": 155
+          },
+          {
+            "y": 190,
+            "left": 87.0,
+            "inner_left": 103.0,
+            "inner_right": 134.0,
+            "right": 149.0,
+            "fitted_left": 85,
+            "fitted_right": 156
+          },
+          {
+            "y": 196,
+            "left": 86.0,
+            "inner_left": 102.0,
+            "inner_right": 136.0,
+            "right": 150.0,
+            "fitted_left": 84,
+            "fitted_right": 157
+          },
+          {
+            "y": 200,
+            "left": 86.0,
+            "inner_left": 102.0,
+            "inner_right": 136.0,
+            "right": 151.0,
+            "fitted_left": 84,
+            "fitted_right": 158
+          },
+          {
+            "y": 205,
+            "left": 87.0,
+            "inner_left": 101.0,
+            "inner_right": 136.0,
+            "right": 150.0,
+            "fitted_left": 84,
+            "fitted_right": 158
+          },
+          {
+            "y": 210,
+            "left": 87.0,
+            "inner_left": 101.0,
+            "inner_right": 136.0,
+            "right": 150.0,
+            "fitted_left": 83,
+            "fitted_right": 159
+          },
+          {
+            "y": 215,
+            "left": 85.0,
+            "inner_left": 100.0,
+            "inner_right": 136.0,
+            "right": 151.0,
+            "fitted_left": 82,
+            "fitted_right": 160
+          },
+          {
+            "y": 220,
+            "left": 84.0,
+            "inner_left": 100.0,
+            "inner_right": 136.0,
+            "right": 153.0,
+            "fitted_left": 80,
+            "fitted_right": 162
+          },
+          {
+            "y": 225,
+            "left": 82.0,
+            "inner_left": 100.0,
+            "inner_right": 135.0,
+            "right": 156.0,
+            "fitted_left": 79,
+            "fitted_right": 164
+          },
+          {
+            "y": 230,
+            "left": 79.0,
+            "inner_left": 99.0,
+            "inner_right": 135.0,
+            "right": 159.0,
+            "fitted_left": 76,
+            "fitted_right": 166
+          },
+          {
+            "y": 235,
+            "left": 76.0,
+            "inner_left": 98.0,
+            "inner_right": 136.0,
+            "right": 162.0,
+            "fitted_left": 73,
+            "fitted_right": 168
+          },
+          {
+            "y": 240,
+            "left": 72.0,
+            "inner_left": 97.0,
+            "inner_right": 138.0,
+            "right": 167.0,
+            "fitted_left": 69,
+            "fitted_right": 171
+          },
+          {
+            "y": 245,
+            "left": 65.0,
+            "inner_left": 96.0,
+            "inner_right": 141.0,
+            "right": 173.0,
+            "fitted_left": 64,
+            "fitted_right": 176
+          },
+          {
+            "y": 252,
+            "left": 65.0,
+            "inner_left": 94.0,
+            "inner_right": 145.0,
+            "right": 177.0,
+            "fitted_left": 65.0,
+            "fitted_right": 177.0
+          }
+        ]
+      }
     }
   }
 }
