@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -50,6 +51,7 @@ class _MyAppState extends State<MyApp> {
           .toList();
 
   late Stream<BaseAuthUser> userStream;
+  StreamSubscription<AuthState>? _recoverySubscription;
 
   @override
   void initState() {
@@ -62,10 +64,21 @@ class _MyAppState extends State<MyApp> {
         _appStateNotifier.update(user);
       });
     jwtTokenStream.listen((_) {});
+    _recoverySubscription = SupaFlow.client.auth.onAuthStateChange.listen((state) {
+      if (state.event == AuthChangeEvent.passwordRecovery && mounted) {
+        _router.go('/authPage?recovery=true');
+      }
+    });
     Future.delayed(
       const Duration(milliseconds: 1000),
       () => _appStateNotifier.stopShowingSplashImage(),
     );
+  }
+
+  @override
+  void dispose() {
+    _recoverySubscription?.cancel();
+    super.dispose();
   }
 
   void setThemeMode(ThemeMode mode) => safeSetState(() {
