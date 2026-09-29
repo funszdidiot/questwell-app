@@ -482,6 +482,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                         archetype: data.profile.adventurerArchetype,
                         avatarBodyType: selectedBodyType,
                         height: compact ? 286 : 330,
+                        artHeightFactor: .96,
                         showRelic: masteryOwned,
                         equippedSlugs: {
                           for (final item in equipped)
@@ -1133,48 +1134,64 @@ class _AvatarBodyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: disabled ? null : onTap,
-      child: QuestwellRetroPanel(
-        padding: const EdgeInsets.all(10),
-        accent: selected
-            ? const Color(0xFFF1C75B)
-            : const Color(0xFF526178),
-        background: const Color(0xFF101923),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 176,
-              child: QuestwellLayeredAdventurerArt(
-                archetype: archetype,
-                avatarBodyType: bodyType,
-                equippedSlugs: const {},
+    return Semantics(
+      selected: selected,
+      child: InkWell(
+        onTap: disabled ? null : onTap,
+        child: QuestwellRetroPanel(
+          padding: const EdgeInsets.all(10),
+          accent: selected
+              ? const Color(0xFFF1C75B)
+              : const Color(0xFF526178),
+          background: const Color(0xFF101923),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 176,
+                child: QuestwellLayeredAdventurerArt(
+                  archetype: archetype,
+                  avatarBodyType: bodyType,
+                  equippedSlugs: const {},
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.pressStart2p(
-                fontSize: bodyType == 'neutral' ? 7 : 8,
-                color: selected
-                    ? const Color(0xFFFFD978)
-                    : const Color(0xFFF2E7CE),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.pressStart2p(
+                  fontSize: bodyType == 'neutral' ? 7 : 8,
+                  color: selected
+                      ? const Color(0xFFFFD978)
+                      : const Color(0xFFF2E7CE),
+                ),
               ),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              selected ? 'SELECTED' : '${archetype.toUpperCase()} PREVIEW',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.roboto(
-                fontSize: 9,
-                fontWeight: FontWeight.w700,
-                color: selected
-                    ? const Color(0xFFF1C75B)
-                    : const Color(0xFF9FB4C9),
+              const SizedBox(height: 5),
+              SizedBox(
+                height: 16,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (selected) ...[
+                      const Icon(Icons.check_rounded,
+                          size: 12, color: Color(0xFFF1C75B)),
+                      const SizedBox(width: 4),
+                    ],
+                    Text(
+                      selected ? 'SELECTED' : '${archetype.toUpperCase()} PREVIEW',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                        color: selected
+                            ? const Color(0xFFF1C75B)
+                            : const Color(0xFF9FB4C9),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

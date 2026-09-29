@@ -17,8 +17,8 @@ class ScholarUnderlayerClipper extends CustomClipper<Path> {
     ],
     'female': [
       [Offset(0, 0), Offset(240, 0), Offset(240, 76), Offset(137, 76), Offset(137, 83), Offset(106, 83), Offset(106, 76), Offset(0, 76)],
-      [Offset(65, 70), Offset(107, 70), Offset(103, 82), Offset(93, 86), Offset(86, 100), Offset(84, 115), Offset(68, 115)],
-      [Offset(136, 70), Offset(174, 70), Offset(174, 115), Offset(156, 115), Offset(155, 99), Offset(149, 90), Offset(139, 84)],
+      [Offset(65, 70), Offset(107, 70), Offset(106, 82), Offset(93, 86), Offset(86, 100), Offset(84, 117), Offset(68, 117)],
+      [Offset(136, 70), Offset(174, 70), Offset(174, 115), Offset(156, 115), Offset(155, 99), Offset(149, 90), Offset(137, 84)],
       [Offset(106, 75), Offset(136, 75), Offset(136, 135), Offset(141, 144), Offset(141, 156), Offset(104, 156), Offset(108, 137)],
       [Offset(58, 168), Offset(87, 168), Offset(87, 195), Offset(58, 195)],
       [Offset(152, 167), Offset(179, 167), Offset(179, 195), Offset(152, 195)],

@@ -141,6 +141,13 @@ Questwell is not graphics-complete until the full core experience reaches the ap
 The dashboard should be updated whenever an epic starts, reaches testing, is blocked, or is promoted.
 # Scholar detail polish candidate — 2026-09-29
 
+Final presentation pass: main Adventurer art fills 96% of the existing portrait
+frame height (was 88%); selection cards show a checkmark and expose selected
+semantics. Female hairline/curl visibility restored at the clipping boundary.
+Mobile layout checks cover 320, 390 and 430 px widths. Scholar art and all base
+files remain unchanged. Candidate is frozen for founder review before other
+class work, merge or launch.
+
 Follow-up: founder identified suit-jacket bleed after v2. Added Scholar-only
 underlayer occlusion paths for all three bodies, preserving original base and
 robe bytes. The review page has an original-jacket comparison toggle. Added

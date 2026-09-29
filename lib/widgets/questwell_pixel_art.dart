@@ -1589,6 +1589,7 @@ class QuestwellEquippedAvatar extends StatelessWidget {
     required this.equippedSlugs,
     this.avatarBodyType = 'neutral',
     this.height = 210,
+    this.artHeightFactor = .88,
     this.showRelic = false,
   });
 
@@ -1596,6 +1597,7 @@ class QuestwellEquippedAvatar extends StatelessWidget {
   final Map<String, String> equippedSlugs;
   final String avatarBodyType;
   final double height;
+  final double artHeightFactor;
   final bool showRelic;
 
   @override
@@ -1624,7 +1626,7 @@ class QuestwellEquippedAvatar extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: FractionallySizedBox(
               widthFactor: .90,
-              heightFactor: .88,
+              heightFactor: artHeightFactor,
               alignment: Alignment.bottomCenter,
               child: QuestwellLayeredAdventurerArt(
                 archetype: archetype,
