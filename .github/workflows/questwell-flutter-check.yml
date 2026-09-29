@@ -15,8 +15,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Materialize Questwell art
-        run: bash tool/materialize_questwell_art.sh
+      - name: Verify fitted Scholar assets
+        run: python3 tool/verify_avatar_assets.py
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2

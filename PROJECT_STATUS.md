@@ -1,6 +1,6 @@
 # Questwell Project Status
 
-_Last verified: 2026-09-28_
+_Last verified: 2026-09-29_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
@@ -113,6 +113,8 @@ Target:
 - Scholar anatomy-fit implementation: replaced the prior robe assets with body-constrained overlays that follow the approved base-avatar shoulder and arm silhouettes. Exposed hands are preserved, cuff width is constrained to wrist geometry, and upper-body garment pixels are limited to the measured body envelope. This pass is governed by docs/AVATAR_CLASS_FIT_SPEC.md and requires live mobile approval before becoming the reusable class standard.
 
 **Benchmark rule:** CI success alone does not mark this epic complete.
+
+**Scholar build-source fix (2026-09-29):** Found that both workflows replaced the committed body-fitted Scholar WebPs with older staged base64 art. Replaced this destructive build preparation with dimension, transparency, and checksum validation. The latest fitted assets are now the build source of truth. Local regression checks confirm preparation preserves all six base/robe files and rejects stale robe substitutions. Added a Scholar-only review page with all three body types, portrait/card sizes, and a base/robe toggle. Scholar visual acceptance remains the gate before fitting other classes.
 
 ## Release gate
 

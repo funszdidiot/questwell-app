@@ -95,6 +95,21 @@ Do not mark Scholar complete based on a passing build. Record the founder's visu
 ## Implementation rule
 Do not compensate for bad art with a second generic runtime scale or translation. The final asset itself must be authored/fitted to the 240 x 320 body-specific canvas. Runtime rendering should stack the base and class overlay 1:1.
 
+## Build source correction — 2026-09-29
+The preview pipeline was decoding the older `tool/art_assets/scholar_*.b64.*` files over the newer committed WebPs on every build. This restored the wide cuffs and lower shoulder line even after the body-fit commits. All three compiled robes differed from the committed fit.
+
+Both workflows now verify the committed base and Scholar WebPs with `tool/verify_avatar_assets.py`. The compatibility materialization script also verifies without writing. `tool/avatar_assets.json` records all six SHA-256 values and requires a 240 x 320 transparent WebP. Legacy base64 chunks are historical inputs only and are not build sources.
+
+Verified locally:
+- [x] All three base/robe pairs use the same 240 x 320 transparent canvas.
+- [x] Build preparation preserves all six files byte for byte.
+- [x] Substituting an older staged robe causes validation to fail.
+- [x] Compared base, previous build art, and committed fit for each body. The committed fit places the sleeve cuffs at the wrists and exposes the hands; the previous build art covered them with flared cuffs.
+- [x] Added `scholar-fit-review.html` to preview for direct inspection of all three portraits and 176 px selection cards, with a robe toggle and alignment guides.
+- [ ] Founder iPhone Safari acceptance of the actual fitted Scholar art.
+
+The development review page uses the exact same source assets and 1:1 stack as the app. Its SHA prefixes identify the intended robes. Keep Scholar as the template candidate until its visual review is accepted.
+
 ## Release gate
 Reject the garment if any of these appear:
 - floating coat
