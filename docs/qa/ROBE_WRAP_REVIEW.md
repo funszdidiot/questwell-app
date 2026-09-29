@@ -1,6 +1,6 @@
 # Rear robe construction — development candidate
 
-Revision: `robe-wrap-v1`. Founder acceptance is pending for all twelve fits.
+Revision: `robe-wrap-v1`. Founder accepted all twelve fits on 2026-09-29 and directed “Ok! Let’s do wanderer.”
 The founder authorized correcting the missing wrap-around construction before
 starting Wanderer. This supersedes the earlier single-front-layer construction,
 not the approved class colors, designs or frozen avatar anatomy.
@@ -40,7 +40,7 @@ unchanged, including the latest female Guardian sleeve/hip correction.
 | Alchemist | New rear candidate | New rear candidate | New rear candidate |
 
 Previous front-design approvals remain recorded. They do not approve the newly
-layered appearance. Guardian also retains its outstanding overall visual gate.
+layered appearance. Guardian was accepted with this review; Wanderer may proceed.
 
 ## Checklist
 
@@ -51,8 +51,8 @@ layered appearance. Guardian also retains its outstanding overall visual gate.
 - [x] Inspect all twelve composites and 176 px cards.
 - [x] Connect shared runtime layers and all four class review pages.
 - [x] Add rear continuity, head/feet clearance and layer-order checks to Flutter CI.
-- [ ] Founder reviews wrap, lining colors, side joins and hem depth on all bodies.
-- [ ] Founder accepts the layered construction before Wanderer begins.
+- [x] Founder reviews wrap, lining colors, side joins and hem depth on all bodies.
+- [x] Founder accepts the layered construction before Wanderer begins.
 
 ## Reproduction and provenance
 

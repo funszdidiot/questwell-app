@@ -12,9 +12,9 @@ def verify(root: Path) -> None:
             raise ValueError(f'{entry["path"]}: differs from founder-approved Scholar fit')
         print(f'Verified locked Scholar fit: {entry["path"]}')
     assets = list(manifest['assets'])
-    for collection in ['approved_classes', 'candidate_classes', 'candidate_layers']:
+    for collection in ['approved_classes', 'candidate_classes', 'candidate_layers', 'approved_layers']:
         for archetype, class_spec in manifest.get(collection, {}).items():
-            status = 'approved template' if collection == 'approved_classes' else 'review candidate'
+            status = 'approved template' if collection in ['approved_classes', 'approved_layers'] else 'review candidate'
             for entry in class_spec.get('fit_inputs', []):
                 data = (root / entry['path']).read_bytes()
                 if hashlib.sha256(data).hexdigest() != entry['sha256']:

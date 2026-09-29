@@ -1,0 +1,1006 @@
+{
+  "canvas": [
+    240,
+    320
+  ],
+  "method": "Independent thin-plate fitting of generated Wanderer masters to frozen body landmarks; single source sampling at 4x, no runtime transform.",
+  "bodies": {
+    "male": {
+      "source": "tool/art_assets/wanderer_v1/male.webp",
+      "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v1.webp",
+      "mapping": "thin_plate_spline",
+      "points": [
+        {
+          "name": "neck_l",
+          "source": [
+            108,
+            77
+          ],
+          "target": [
+            108,
+            77
+          ]
+        },
+        {
+          "name": "neck_r",
+          "source": [
+            131,
+            77
+          ],
+          "target": [
+            130,
+            77
+          ]
+        },
+        {
+          "name": "shoulder_l",
+          "source": [
+            80,
+            90
+          ],
+          "target": [
+            81,
+            87
+          ]
+        },
+        {
+          "name": "shoulder_r",
+          "source": [
+            155,
+            90
+          ],
+          "target": [
+            155,
+            89
+          ]
+        },
+        {
+          "name": "elbow_l",
+          "source": [
+            65,
+            138
+          ],
+          "target": [
+            65,
+            136
+          ]
+        },
+        {
+          "name": "elbow_r",
+          "source": [
+            172,
+            138
+          ],
+          "target": [
+            169,
+            136
+          ]
+        },
+        {
+          "name": "cuff_l_outer",
+          "source": [
+            61,
+            176
+          ],
+          "target": [
+            62,
+            174
+          ]
+        },
+        {
+          "name": "cuff_l_inner",
+          "source": [
+            81,
+            176
+          ],
+          "target": [
+            80,
+            174
+          ]
+        },
+        {
+          "name": "cuff_r_inner",
+          "source": [
+            159,
+            176
+          ],
+          "target": [
+            157,
+            174
+          ]
+        },
+        {
+          "name": "cuff_r_outer",
+          "source": [
+            180,
+            176
+          ],
+          "target": [
+            176,
+            174
+          ]
+        },
+        {
+          "name": "waist_l",
+          "source": [
+            93,
+            151
+          ],
+          "target": [
+            93,
+            151
+          ]
+        },
+        {
+          "name": "waist_r",
+          "source": [
+            146,
+            151
+          ],
+          "target": [
+            147,
+            151
+          ]
+        },
+        {
+          "name": "opening_l",
+          "source": [
+            115,
+            151
+          ],
+          "target": [
+            113,
+            150
+          ]
+        },
+        {
+          "name": "opening_r",
+          "source": [
+            125,
+            151
+          ],
+          "target": [
+            124,
+            150
+          ]
+        },
+        {
+          "name": "hip_l",
+          "source": [
+            82,
+            186
+          ],
+          "target": [
+            85,
+            184
+          ]
+        },
+        {
+          "name": "hip_r",
+          "source": [
+            158,
+            186
+          ],
+          "target": [
+            154,
+            184
+          ]
+        },
+        {
+          "name": "flare_l",
+          "source": [
+            60,
+            250
+          ],
+          "target": [
+            61,
+            246
+          ]
+        },
+        {
+          "name": "flare_r",
+          "source": [
+            181,
+            250
+          ],
+          "target": [
+            177,
+            246
+          ]
+        },
+        {
+          "name": "tail_l",
+          "source": [
+            84,
+            294
+          ],
+          "target": [
+            85,
+            291
+          ]
+        },
+        {
+          "name": "tail_r",
+          "source": [
+            155,
+            294
+          ],
+          "target": [
+            156,
+            291
+          ]
+        },
+        {
+          "name": "inner_hem_l",
+          "source": [
+            110,
+            264
+          ],
+          "target": [
+            111,
+            262
+          ]
+        },
+        {
+          "name": "inner_hem_r",
+          "source": [
+            131,
+            264
+          ],
+          "target": [
+            133,
+            262
+          ]
+        },
+        {
+          "name": "canvas_0",
+          "source": [
+            0,
+            0
+          ],
+          "target": [
+            0,
+            0
+          ]
+        },
+        {
+          "name": "canvas_1",
+          "source": [
+            240,
+            0
+          ],
+          "target": [
+            240,
+            0
+          ]
+        },
+        {
+          "name": "canvas_2",
+          "source": [
+            240,
+            320
+          ],
+          "target": [
+            240,
+            320
+          ]
+        },
+        {
+          "name": "canvas_3",
+          "source": [
+            0,
+            320
+          ],
+          "target": [
+            0,
+            320
+          ]
+        }
+      ]
+    },
+    "female": {
+      "source": "tool/art_assets/wanderer_v1/female.webp",
+      "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v1.webp",
+      "mapping": "thin_plate_spline",
+      "points": [
+        {
+          "name": "neck_l",
+          "source": [
+            110,
+            80
+          ],
+          "target": [
+            110,
+            76
+          ]
+        },
+        {
+          "name": "neck_r",
+          "source": [
+            130,
+            80
+          ],
+          "target": [
+            129,
+            76
+          ]
+        },
+        {
+          "name": "shoulder_l",
+          "source": [
+            87,
+            93
+          ],
+          "target": [
+            88,
+            86
+          ]
+        },
+        {
+          "name": "shoulder_r",
+          "source": [
+            150,
+            93
+          ],
+          "target": [
+            150,
+            87
+          ]
+        },
+        {
+          "name": "elbow_l",
+          "source": [
+            76,
+            136
+          ],
+          "target": [
+            75,
+            137
+          ]
+        },
+        {
+          "name": "elbow_r",
+          "source": [
+            165,
+            136
+          ],
+          "target": [
+            162,
+            137
+          ]
+        },
+        {
+          "name": "cuff_l_outer",
+          "source": [
+            68,
+            173
+          ],
+          "target": [
+            70.5,
+            170
+          ]
+        },
+        {
+          "name": "cuff_l_inner",
+          "source": [
+            86,
+            173
+          ],
+          "target": [
+            85.5,
+            170
+          ]
+        },
+        {
+          "name": "cuff_r_inner",
+          "source": [
+            155,
+            173
+          ],
+          "target": [
+            153.5,
+            170
+          ]
+        },
+        {
+          "name": "cuff_r_outer",
+          "source": [
+            173,
+            173
+          ],
+          "target": [
+            169.5,
+            170
+          ]
+        },
+        {
+          "name": "waist_l",
+          "source": [
+            96,
+            141
+          ],
+          "target": [
+            96,
+            145
+          ]
+        },
+        {
+          "name": "waist_r",
+          "source": [
+            146,
+            141
+          ],
+          "target": [
+            145,
+            145
+          ]
+        },
+        {
+          "name": "opening_l",
+          "source": [
+            115,
+            145
+          ],
+          "target": [
+            112,
+            145
+          ]
+        },
+        {
+          "name": "opening_r",
+          "source": [
+            126,
+            145
+          ],
+          "target": [
+            126,
+            145
+          ]
+        },
+        {
+          "name": "hip_l",
+          "source": [
+            85,
+            179
+          ],
+          "target": [
+            89,
+            179
+          ]
+        },
+        {
+          "name": "hip_r",
+          "source": [
+            155,
+            179
+          ],
+          "target": [
+            151,
+            179
+          ]
+        },
+        {
+          "name": "flare_l",
+          "source": [
+            63,
+            244
+          ],
+          "target": [
+            62,
+            250
+          ]
+        },
+        {
+          "name": "flare_r",
+          "source": [
+            177,
+            244
+          ],
+          "target": [
+            181,
+            250
+          ]
+        },
+        {
+          "name": "tail_l",
+          "source": [
+            88,
+            280
+          ],
+          "target": [
+            93,
+            288
+          ]
+        },
+        {
+          "name": "tail_r",
+          "source": [
+            157,
+            280
+          ],
+          "target": [
+            162,
+            288
+          ]
+        },
+        {
+          "name": "inner_hem_l",
+          "source": [
+            106,
+            260
+          ],
+          "target": [
+            115,
+            265
+          ]
+        },
+        {
+          "name": "inner_hem_r",
+          "source": [
+            131,
+            260
+          ],
+          "target": [
+            138,
+            265
+          ]
+        },
+        {
+          "name": "canvas_0",
+          "source": [
+            0,
+            0
+          ],
+          "target": [
+            0,
+            0
+          ]
+        },
+        {
+          "name": "canvas_1",
+          "source": [
+            240,
+            0
+          ],
+          "target": [
+            240,
+            0
+          ]
+        },
+        {
+          "name": "canvas_2",
+          "source": [
+            240,
+            320
+          ],
+          "target": [
+            240,
+            320
+          ]
+        },
+        {
+          "name": "canvas_3",
+          "source": [
+            0,
+            320
+          ],
+          "target": [
+            0,
+            320
+          ]
+        }
+      ],
+      "contour_fit": {
+        "rows": [
+          {
+            "y": 178,
+            "left": 90,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 149,
+            "fitted_left": 90,
+            "fitted_right": 149
+          },
+          {
+            "y": 186,
+            "left": 91,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 150,
+            "fitted_left": 91,
+            "fitted_right": 151
+          },
+          {
+            "y": 196,
+            "left": 91,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 152,
+            "fitted_left": 91,
+            "fitted_right": 155
+          },
+          {
+            "y": 202,
+            "left": 89,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 154,
+            "fitted_left": 89,
+            "fitted_right": 156
+          },
+          {
+            "y": 210,
+            "left": 88,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 157,
+            "fitted_left": 88,
+            "fitted_right": 157
+          },
+          {
+            "y": 220,
+            "left": 84,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 161,
+            "fitted_left": 84,
+            "fitted_right": 161
+          }
+        ],
+        "note": "Measured outer trouser clearance; preserve inner piping and widen only side seam smoothly."
+      }
+    },
+    "neutral": {
+      "source": "tool/art_assets/wanderer_v1/neutral.webp",
+      "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v1.webp",
+      "mapping": "thin_plate_spline",
+      "points": [
+        {
+          "name": "neck_l",
+          "source": [
+            111,
+            79
+          ],
+          "target": [
+            108,
+            76
+          ]
+        },
+        {
+          "name": "neck_r",
+          "source": [
+            136,
+            79
+          ],
+          "target": [
+            131,
+            76
+          ]
+        },
+        {
+          "name": "shoulder_l",
+          "source": [
+            85,
+            92
+          ],
+          "target": [
+            84,
+            88
+          ]
+        },
+        {
+          "name": "shoulder_r",
+          "source": [
+            163,
+            92
+          ],
+          "target": [
+            154,
+            89
+          ]
+        },
+        {
+          "name": "elbow_l",
+          "source": [
+            70,
+            139
+          ],
+          "target": [
+            69,
+            138
+          ]
+        },
+        {
+          "name": "elbow_r",
+          "source": [
+            180,
+            139
+          ],
+          "target": [
+            169,
+            138
+          ]
+        },
+        {
+          "name": "cuff_l_outer",
+          "source": [
+            64,
+            175
+          ],
+          "target": [
+            65,
+            174
+          ]
+        },
+        {
+          "name": "cuff_l_inner",
+          "source": [
+            85,
+            175
+          ],
+          "target": [
+            83,
+            174
+          ]
+        },
+        {
+          "name": "cuff_r_inner",
+          "source": [
+            163,
+            175
+          ],
+          "target": [
+            156,
+            174
+          ]
+        },
+        {
+          "name": "cuff_r_outer",
+          "source": [
+            184,
+            175
+          ],
+          "target": [
+            175,
+            174
+          ]
+        },
+        {
+          "name": "waist_l",
+          "source": [
+            96,
+            151
+          ],
+          "target": [
+            96,
+            151
+          ]
+        },
+        {
+          "name": "waist_r",
+          "source": [
+            154,
+            151
+          ],
+          "target": [
+            145,
+            151
+          ]
+        },
+        {
+          "name": "opening_l",
+          "source": [
+            119,
+            151
+          ],
+          "target": [
+            113,
+            151
+          ]
+        },
+        {
+          "name": "opening_r",
+          "source": [
+            129,
+            151
+          ],
+          "target": [
+            124,
+            151
+          ]
+        },
+        {
+          "name": "hip_l",
+          "source": [
+            85,
+            187
+          ],
+          "target": [
+            86,
+            180
+          ]
+        },
+        {
+          "name": "hip_r",
+          "source": [
+            164,
+            187
+          ],
+          "target": [
+            152,
+            180
+          ]
+        },
+        {
+          "name": "flare_l",
+          "source": [
+            62,
+            250
+          ],
+          "target": [
+            60,
+            248
+          ]
+        },
+        {
+          "name": "flare_r",
+          "source": [
+            187,
+            250
+          ],
+          "target": [
+            180,
+            248
+          ]
+        },
+        {
+          "name": "tail_l",
+          "source": [
+            88,
+            294
+          ],
+          "target": [
+            87,
+            289
+          ]
+        },
+        {
+          "name": "tail_r",
+          "source": [
+            162,
+            294
+          ],
+          "target": [
+            158,
+            289
+          ]
+        },
+        {
+          "name": "inner_hem_l",
+          "source": [
+            115,
+            264
+          ],
+          "target": [
+            111,
+            262
+          ]
+        },
+        {
+          "name": "inner_hem_r",
+          "source": [
+            136,
+            264
+          ],
+          "target": [
+            134,
+            262
+          ]
+        },
+        {
+          "name": "canvas_0",
+          "source": [
+            0,
+            0
+          ],
+          "target": [
+            0,
+            0
+          ]
+        },
+        {
+          "name": "canvas_1",
+          "source": [
+            240,
+            0
+          ],
+          "target": [
+            240,
+            0
+          ]
+        },
+        {
+          "name": "canvas_2",
+          "source": [
+            240,
+            320
+          ],
+          "target": [
+            240,
+            320
+          ]
+        },
+        {
+          "name": "canvas_3",
+          "source": [
+            0,
+            320
+          ],
+          "target": [
+            0,
+            320
+          ]
+        }
+      ],
+      "contour_fit": {
+        "rows": [
+          {
+            "y": 178,
+            "left": 86,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 151,
+            "fitted_left": 86,
+            "fitted_right": 151
+          },
+          {
+            "y": 186,
+            "left": 87,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 149,
+            "fitted_left": 87,
+            "fitted_right": 151
+          },
+          {
+            "y": 196,
+            "left": 86,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 150,
+            "fitted_left": 86,
+            "fitted_right": 154
+          },
+          {
+            "y": 204,
+            "left": 84,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 152,
+            "fitted_left": 84,
+            "fitted_right": 155
+          },
+          {
+            "y": 212,
+            "left": 81,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 155,
+            "fitted_left": 81,
+            "fitted_right": 156
+          },
+          {
+            "y": 220,
+            "left": 78,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 159,
+            "fitted_left": 78,
+            "fitted_right": 159
+          }
+        ],
+        "note": "Measured outer trouser clearance; preserve inner piping and widen only side seam smoothly."
+      }
+    }
+  }
+}

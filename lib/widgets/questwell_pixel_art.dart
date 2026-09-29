@@ -5,6 +5,7 @@ import 'scholar_underlayer_clip.dart';
 import 'scout_underlayer_clip.dart';
 import 'alchemist_underlayer_clip.dart';
 import 'guardian_underlayer_clip.dart';
+import 'wanderer_underlayer_clip.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -70,6 +71,13 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   static const _guardianNeutral =
       'assets/images/questwell/avatar/classes/guardian/guardian_coat_neutral_v2.webp';
 
+  static const _wandererMale =
+      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v1.webp';
+  static const _wandererFemale =
+      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v1.webp';
+  static const _wandererNeutral =
+      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v1.webp';
+
   final String archetype;
   final Map<String, String> equippedSlugs;
   final String avatarBodyType;
@@ -131,6 +139,17 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       }
     }
 
+    if (archetype == 'wanderer') {
+      switch (avatarBodyType) {
+        case 'male':
+          return _wandererMale;
+        case 'female':
+          return _wandererFemale;
+        default:
+          return _wandererNeutral;
+      }
+    }
+
     return null;
   }
 
@@ -177,6 +196,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           else if (archetype == 'guardian')
             ClipPath(
               clipper: GuardianUnderlayerClipper(avatarBodyType),
+              child: _assetLayer(_baseAsset),
+            )
+          else if (archetype == 'wanderer')
+            ClipPath(
+              clipper: WandererUnderlayerClipper(avatarBodyType),
               child: _assetLayer(_baseAsset),
             )
           else

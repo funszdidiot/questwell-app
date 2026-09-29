@@ -1,3 +1,7 @@
+# Acceptance — 2026-09-29
+
+Founder accepted Guardian v3 female / v2 male and neutral with robe-wrap-v1 and directed “Ok! Let’s do wanderer.” This supersedes pending notes below. No production promotion or launch.
+
 # Guardian garment review — 29 September 2026
 
 **Development candidate: `guardian-v3`. Founder visual acceptance is pending.**
@@ -107,7 +111,7 @@ remains necessary for the shape, joins and embroidery.
 - [x] Recheck the finished asset pixels: zero outer-trouser exposure, two
   connected garment halves, clear head/shoe regions and 1–2 px waist gold fill.
 - [ ] Founder reviews all three bodies in the app, including iPhone Safari.
-- [ ] Record acceptance and freeze Guardian before moving to Wanderer.
+- [x] Record acceptance and freeze Guardian before moving to Wanderer.
 
 | Body | Revision 2 first-fit exposed outer trouser pixels | Finished candidate | Fit |
 | --- | ---: | ---: | --- |

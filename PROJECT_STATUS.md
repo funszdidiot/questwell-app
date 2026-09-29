@@ -6,13 +6,13 @@ This file is the founder-facing dashboard for the Questwell art overhaul.
 
 ## Current state
 
-**Robe construction:** 🧪 `robe-wrap-v1` rear-lining candidate across Guardian,
-Scholar, Scout and Alchemist, with all three bodies fitted independently.
-The founder requested real wrap-around construction before Wanderer. Runtime
-now stacks rear cloth, the frozen avatar and existing front clothing. Front
-art/fit approvals are preserved; the newly layered appearances await review.
-See `docs/qa/ROBE_WRAP_REVIEW.md` and `robe-wrap-review.html`. Wanderer remains
-on hold. No production promotion or launch.
+**Robe construction:** ✅ Founder accepted `robe-wrap-v1` on 2026-09-29
+and directed “Ok! Let’s do wanderer.” Guardian, Scholar, Scout and Alchemist
+retain their accepted three-layer construction across all three bodies.
+**Wanderer:** 🧪 `wanderer-v1` ready for visual review — midnight-blue/gold travel
+coats with compass stitching, three independent fits and continuous rear lining.
+See `docs/qa/WANDERER_FIT_REVIEW.md` and `wanderer-fit-review.html`.
+No production promotion or launch.
 
 **Scholar visual template:** ✅ Founder approved and frozen, 2026-09-29.
 All three body variants use `scholar-approved-v1`, anchored to source commit
@@ -42,7 +42,7 @@ The beaker/flask emblems are removed. Body-specific fitting, jacket coverage
 and portrait/card rendering are wired.
 Founder accepted the set with “Good to go.” See `docs/qa/ALCHEMIST_FIT_REVIEW.md`.
 
-**Guardian fit:** 🧪 `guardian-v3` female sleeve/hip correction ready for development review, not yet founder approved.
+**Guardian fit:** ✅ Accepted 2026-09-29 with the rear-wrap review and founder direction to proceed to Wanderer. Female uses `guardian-v3`; male and neutral retain `guardian-v2`.
 Founder flagged the female viewer-right arm and hip after revision 2. Revision 3
 smooths the elbow/forearm and waist-to-hip contours through a female-only local
 fit. It preserves wrist contact, front piping, the base avatar and the male and
@@ -55,7 +55,7 @@ compact cuffs, continuous thigh coverage and Guardian-specific jacket occlusion.
 Actual-image tests check waist clearance and line width. All frozen templates
 are preserved.
 See `docs/qa/GUARDIAN_FIT_REVIEW.md` and `guardian-fit-review.html`.
-Wanderer follows only after Guardian acceptance.
+Guardian is frozen; Wanderer is the current class workstream.
 
 **Active workstream:** Epic 2 — Hearth Visual Overhaul (manual iPhone Safari visual acceptance gate)  
 **Development branch:** `questwell-dev`  
