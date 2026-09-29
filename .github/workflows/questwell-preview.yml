@@ -37,6 +37,11 @@ jobs:
       - name: Build preview
         run: flutter build web --release --base-href "/questwell-app/" --pwa-strategy=none
 
+      - name: Cache-bust preview bundle
+        run: |
+          sed -i "s#main.dart.js#main.dart.js?rev=${GITHUB_SHA}#g" build/web/index.html
+          sed -i "s#manifest.json#manifest.json?rev=${GITHUB_SHA}#g" build/web/index.html
+
       - name: Add SPA fallback
         run: cp build/web/index.html build/web/404.html
 
