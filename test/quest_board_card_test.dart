@@ -26,6 +26,8 @@ void main() {
     expect(tester.getSize(find.byType(FilledButton)).height, greaterThanOrEqualTo(48));
   });
   testWidgets('Review completion removes only that quest and updates visit count', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(430, 1600));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(const QuestBoardReviewApp());
     await tester.pump();
     await tester.ensureVisible(find.text('Complete quest').first);
