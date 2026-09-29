@@ -2,7 +2,7 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Questwell · Alchemist fit review</title>
+<title>Questwell · Guardian fit review</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#171b26;color:#f1ecdf;font:16px/1.5 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:24px}h1{font-size:26px;margin:0 0 8px}p{margin:0 0 16px;color:#c4c9d3}.controls{display:flex;gap:18px;flex-wrap:wrap;margin:20px 0}label{cursor:pointer}input{accent-color:#d4ae5e}.bodies{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}article{border:1px solid #566074;border-radius:12px;padding:18px;background:#222936}h2{margin:0 0 12px;font-size:20px}.stage{position:relative;width:240px;height:320px;max-width:100%;margin:auto;background:#343d4c;border-radius:8px;overflow:hidden}.stage img{position:absolute;width:100%;height:100%;inset:0;object-fit:contain;object-position:center bottom}.stage.card{width:132px;height:176px}.caption{text-align:center;margin:12px 0 6px;font-size:14px}.hash{font:12px monospace;text-align:center;margin:10px 0;color:#bfc4ce}.hide-coat .coat{visibility:hidden}.guides .stage{background-image:linear-gradient(90deg,transparent calc(50% - .5px),#72819888 50%,transparent calc(50% + .5px)),repeating-linear-gradient(0deg,transparent 0 31px,#72819855 31px 32px)}.note{margin-top:24px;padding:16px;border-left:3px solid #d4ae5e;background:#222936}@media(max-width:780px){.bodies{grid-template-columns:1fr}main{padding:18px}article{padding:16px}}
 </style>
@@ -13,23 +13,23 @@
 .selection span{font-size:12px;margin-right:4px}
 </style>
 <main>
-<h1>Alchemist · approved fits</h1>
-<p>Sapphire-blue lab coats with silver trim, neon-green molecular embroidery and cuff bands, and plain chest pockets. Matching snaps, pockets and chemistry embroidery, with smoother waists and slimmer cuffs. Portrait fill and 176 px card sizing match the app.</p>
+<h1>Guardian · fit review</h1>
+<p>Burgundy cloth coats with gold trim, an embroidered shield crest and matching chevrons. Each body has its own shoulder, sleeve, waist and hem fit. Portrait fill and 176 px card sizing match the app.</p>
 <div class="controls">
-<label><input id="coat" type="checkbox" checked> Show Alchemist coat</label>
+<label><input id="coat" type="checkbox" checked> Show Guardian coat</label>
 <label><input id="guides" type="checkbox"> Show alignment guides</label>
 <label><input id="jacket" type="checkbox"> Show original jacket (compare)</label>
 </div>
 <div class="bodies" id="bodies"></div>
-<p class="note">Approved Alchemist template · 29 September 2026. The selected sapphire-blue palette with silver trim and neon-green chemistry details. Beaker emblems removed. Revision 4 unifies the outfit details and refines the waist, trim and cuffs while retaining full side-panel coverage. Founder approved the current three-body set. Artwork and fit inputs are frozen.</p>
+<p class="note">Guardian review candidate · 29 September 2026. Cloth garments only; the shield is embroidery. Inspect the shoulders, waist, cuffs and side panels on all three bodies. Your approval is required before this class becomes a frozen template.</p>
 </main>
-<script src="alchemist-underlayer.js?rev=alchemist-lab-v4"></script>
+<script src="guardian-underlayer.js?rev=guardian-v1"></script>
 <script>
-const bodies=[['male','Male','da71172cf2ce'],['female','Female','9fbe6abe4c65'],['neutral','Gender Neutral','99b59bb61df2']];
+const bodies=[['male','Male','7b43deb70895'],['female','Female','5b5e6ae90f7a'],['neutral','Gender Neutral','7fa2d5dff5db']];
 const asset='assets/assets/images/questwell/avatar/';
 for(const [body,label,hash] of bodies){
  const article=document.createElement('article');
- article.innerHTML=`<h2>${label}</h2><div class="portrait-frame"><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="coat" alt="Clean fitted Alchemist coat" src="${asset}classes/alchemist/alchemist_coat_${body}_lab_v4.webp"></div></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="coat" alt="" src="${asset}classes/alchemist/alchemist_coat_${body}_lab_v4.webp"></div><p class="selection"><span aria-hidden="true">✓</span> SELECTED</p><div class="hash">Coat SHA-256: ${hash}</div>`;
+ article.innerHTML=`<h2>${label}</h2><div class="portrait-frame"><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="coat" alt="Clean fitted Guardian coat" src="${asset}classes/guardian/guardian_coat_${body}_v1.webp"></div></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="coat" alt="" src="${asset}classes/guardian/guardian_coat_${body}_v1.webp"></div><p class="selection"><span aria-hidden="true">✓</span> SELECTED</p><div class="hash">Coat SHA-256: ${hash}</div>`;
  document.querySelector('#bodies').append(article);
 }
 const svgNS='http://www.w3.org/2000/svg';
@@ -37,7 +37,7 @@ const definitions=document.createElementNS(svgNS,'svg');
 definitions.setAttribute('width','0'); definitions.setAttribute('height','0');
 definitions.style.position='absolute';
 const defs=document.createElementNS(svgNS,'defs'); definitions.append(defs);
-for(const [body,polygons] of Object.entries(alchemistUnderlayerVisibility)){
+for(const [body,polygons] of Object.entries(guardianUnderlayerVisibility)){
  const clip=document.createElementNS(svgNS,'clipPath');
  clip.id=`underlayer-${body}`; clip.setAttribute('clipPathUnits','objectBoundingBox');
  const path=document.createElementNS(svgNS,'path');

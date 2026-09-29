@@ -1,6 +1,12 @@
 # Alchemist lab-coat review — 29 September 2026
 
-**Development candidate: `alchemist-lab-v4`. Founder visual approval pending.**
+**Founder approved on 29 September 2026: `alchemist-approved-v1`.**
+
+Approved artwork: `alchemist-lab-v4`, source commit
+`0198dc8710ac11a44c5527bd06e293a68a7b652b`. After deployment and review, the
+founder said “Good to go.” Approval covers Male, Female and Gender Neutral.
+Artwork, masters, export settings and visibility definitions are now frozen.
+This approval does not promote Epic 2, merge to `flutterflow`, or launch.
 
 This class follows the approved Scholar fit checklist. Scout was approved after
 its app delivery; its `scout-approved-v1` artwork and fit inputs are frozen.
@@ -55,8 +61,8 @@ revision 2; revision 4 below deliberately refines that artwork.
 
 ### Revision 4 consistency and finish pass
 
-The founder authorized this pass after the revision 3 delivery. This is a new
-review candidate, not founder acceptance of either revision.
+The founder authorized this pass after the revision 3 delivery and accepted
+the completed revision 4 set after its app deployment, as recorded above.
 
 | Shared detail | Male | Female | Gender Neutral |
 | --- | --- | --- | --- |
@@ -91,14 +97,14 @@ cobalt cloth, silver edging and neon-green accents. No beaker or flask remains.
   shirt/tie, belt, hands, trousers and shoes.
 - [x] Stack class art and base at the same origin and scale in the shared app renderer.
 - [x] Keep the coat a starter class garment, separate from the five accessory slots.
-- [ ] Founder visual acceptance of all three variants in the signed-in app.
-- [ ] Freeze Alchemist only after that acceptance; Guardian follows.
+- [x] Founder accepted the current three-body set after app delivery and review.
+- [x] Freeze Alchemist after acceptance; Guardian follows.
 
 | Body | Fit and visual check | Acceptance |
 | --- | --- | --- |
-| Male | Smooth waist piping, compact cuffs, consistent details and covered thighs | Revision 4 composite checked; founder pending |
-| Female | Independent narrower fit, smooth placket, visible long hair and hands | Revision 4 composite checked; founder pending |
-| Gender Neutral | Independent balanced fit, matching details, smooth seams and clear wrists | Revision 4 composite checked; founder pending |
+| Male | Smooth waist piping, compact cuffs, consistent details and covered thighs | Founder approved current set |
+| Female | Independent narrower fit, smooth placket, visible long hair and hands | Founder approved current set |
+| Gender Neutral | Independent balanced fit, matching details, smooth seams and clear wrists | Founder approved current set |
 
 The public comparison is a review surface, not evidence that we independently
 operated a signed-in iPhone Safari session. Build success does not confer visual
@@ -127,7 +133,10 @@ garment-only runtime scaling or offset.
 
 `python3 tool/generate_alchemist_underlayer.py` generates Flutter and browser
 coverage from `tool/alchemist_underlayer_visibility.json`. The asset verifier
-checks all approved locks and the Alchemist candidate source/fit checksums.
+checks all approved locks and the approved Alchemist source/fit checksums.
 `test/alchemist_underlayer_clip_test.dart` covers anatomy/hair retention, jacket
 occlusion, contain alignment, correct body/asset/clip pairing and app portrait/card
 layout at 320, 390 and 430 px widths.
+
+Next class: Guardian. Carry forward the fit, continuous contour, uniform-detail,
+trim and cuff checks using its own source artwork and visibility definitions.

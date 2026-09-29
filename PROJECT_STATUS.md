@@ -20,7 +20,9 @@ and card composites have been inspected; founder accepted the current three-body
 set after app delivery.
 See `docs/qa/SCOUT_FIT_REVIEW.md` and `scout-fit-review.html` in the preview.
 
-**Alchemist fit:** 🧪 `alchemist-lab-v4` is ready for development review.
+**Alchemist fit:** ✅ Founder approved and frozen as `alchemist-approved-v1`, 2026-09-29.
+Approved artwork: `alchemist-lab-v4`, source commit
+`0198dc8710ac11a44c5527bd06e293a68a7b652b`. Approval covers all three body variants.
 Founder rejected revision 2's fit. Revision 3 repairs the continuous hip/thigh
 contours and adds an actual-image test for exposed outer trouser edges.
 Revision 4 follows the requested consistency pass: matching snaps, pockets and
@@ -30,7 +32,14 @@ Three sapphire-blue/silver laboratory coats with neon-green accents follow the f
 for a stronger science/chemistry identity and color distinction from Scout.
 The beaker/flask emblems are removed. Body-specific fitting, jacket coverage
 and portrait/card rendering are wired.
-Founder visual approval is pending; see `docs/qa/ALCHEMIST_FIT_REVIEW.md`.
+Founder accepted the set with “Good to go.” See `docs/qa/ALCHEMIST_FIT_REVIEW.md`.
+
+**Guardian fit:** 🧪 `guardian-v1` ready for development review, not yet founder approved.
+Three independently fitted burgundy/gold cloth coats use embroidered shield and
+chevron details, compact cuffs, continuous thigh coverage and Guardian-specific
+jacket occlusion. All frozen templates are preserved.
+See `docs/qa/GUARDIAN_FIT_REVIEW.md` and `guardian-fit-review.html`.
+Wanderer follows only after Guardian acceptance.
 
 **Active workstream:** Epic 2 — Hearth Visual Overhaul (manual iPhone Safari visual acceptance gate)  
 **Development branch:** `questwell-dev`  
