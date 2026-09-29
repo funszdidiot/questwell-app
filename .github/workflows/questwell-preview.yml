@@ -22,7 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Verify fitted Scholar assets
+      - name: Verify approved and candidate class assets
         run: python3 tool/verify_avatar_assets.py
 
       - name: Set up Flutter

@@ -1,4 +1,4 @@
-"""Verify frozen bases and fitted Scholar assets without modifying them."""
+"""Verify frozen templates and class review candidates without modifying them."""
 import hashlib
 import json
 from pathlib import Path
@@ -11,7 +11,15 @@ def verify(root: Path) -> None:
         if hashlib.sha256(data).hexdigest() != entry['sha256']:
             raise ValueError(f'{entry["path"]}: differs from founder-approved Scholar fit')
         print(f'Verified locked Scholar fit: {entry["path"]}')
-    for entry in manifest['assets']:
+    assets = list(manifest['assets'])
+    for archetype, candidate in manifest.get('candidate_classes', {}).items():
+        for entry in candidate.get('fit_inputs', []):
+            data = (root / entry['path']).read_bytes()
+            if hashlib.sha256(data).hexdigest() != entry['sha256']:
+                raise ValueError(f'{entry["path"]}: differs from {archetype} review candidate')
+            print(f'Verified {archetype} fit input: {entry["path"]}')
+        assets.extend(candidate['assets'])
+    for entry in assets:
         path = root / entry['path']
         data = path.read_bytes()
         if hashlib.sha256(data).hexdigest() != entry['sha256']:

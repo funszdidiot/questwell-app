@@ -102,7 +102,7 @@ Freeze the approved base avatars. Complete **Scholar** for one body type at a ti
 | Class | Male | Female | Gender Neutral | Next action |
 | --- | --- | --- | --- | --- |
 | Scholar | 240 x 320 | 240 x 320 | 240 x 320 | **Approved template.** Frozen at scholar-approved-v1 after founder direction. Preserve its reviewed artwork, body-specific coverage and presentation. |
-| Scout | 384 x 512 | 384 x 512 | 384 x 512 | **Next fit.** Reauthor three garment-only coats on matching 240 x 320 canvases using the approved workflow. Give Scout its own coverage paths and visual review. |
+| Scout | 240 x 320 | 240 x 320 | 240 x 320 | **Review candidate: scout-polish-v1.** Three fitted coats and Scout-specific jacket coverage. See docs/qa/SCOUT_FIT_REVIEW.md; founder review pending. |
 
 Do not mark Scholar complete based on a passing build. Record the founder's visual decision for each body type before applying the template to Scout or promoting Epic 2.
 

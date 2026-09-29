@@ -9,9 +9,15 @@ This file is the founder-facing dashboard for the Questwell art overhaul.
 **Scholar visual template:** ✅ Founder approved and frozen, 2026-09-29.
 All three body variants use `scholar-approved-v1`, anchored to source commit
 `71f6f5d38315155222ce6832ea6fc6ee12b13be0`. Asset and fit-input checksums guard
-the accepted reference. Scout is next for body-specific fitting and review.
+the accepted reference.
 This supersedes the historical Scholar candidate/pending notes below; it does
 not promote Epic 2 or authorize merging to flutterflow or launching.
+
+**Scout fit:** 🧪 `scout-polish-v1` is ready for development review.
+Three independently fitted forest-green/gold coats now use the shared 240 × 320
+canvas, compact cuffs, clean piping and Scout-specific jacket coverage. Portrait
+and card composites have been inspected; founder iPhone approval is pending.
+See `docs/qa/SCOUT_FIT_REVIEW.md` and `scout-fit-review.html` in the preview.
 
 **Active workstream:** Epic 2 — Hearth Visual Overhaul (manual iPhone Safari visual acceptance gate)  
 **Development branch:** `questwell-dev`  

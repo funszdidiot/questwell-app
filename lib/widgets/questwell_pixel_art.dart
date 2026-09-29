@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'scholar_underlayer_clip.dart';
+import 'scout_underlayer_clip.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -47,11 +48,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       'assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_polish_v2.webp';
 
   static const _scoutMale =
-      'assets/images/questwell/avatar/classes/scout/scout_coat_male.webp';
+      'assets/images/questwell/avatar/classes/scout/scout_coat_male_polish_v1.webp';
   static const _scoutFemale =
-      'assets/images/questwell/avatar/classes/scout/scout_coat_female.webp';
+      'assets/images/questwell/avatar/classes/scout/scout_coat_female_polish_v1.webp';
   static const _scoutNeutral =
-      'assets/images/questwell/avatar/classes/scout/scout_coat_neutral.webp';
+      'assets/images/questwell/avatar/classes/scout/scout_coat_neutral_polish_v1.webp';
 
   final String archetype;
   final Map<String, String> equippedSlugs;
@@ -119,6 +120,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           if (archetype == 'scholar')
             ClipPath(
               clipper: ScholarUnderlayerClipper(avatarBodyType),
+              child: _assetLayer(_baseAsset),
+            )
+          else if (archetype == 'scout')
+            ClipPath(
+              clipper: ScoutUnderlayerClipper(avatarBodyType),
               child: _assetLayer(_baseAsset),
             )
           else

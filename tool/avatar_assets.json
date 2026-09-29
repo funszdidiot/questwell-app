@@ -7,7 +7,11 @@
   "visual_approval": "founder_approved",
   "approval_date": "2026-09-29",
   "approved_source_commit": "71f6f5d38315155222ce6832ea6fc6ee12b13be0",
-  "approved_bodies": ["male", "female", "neutral"],
+  "approved_bodies": [
+    "male",
+    "female",
+    "neutral"
+  ],
   "approval_scope": "Scholar visual template only; no production merge or launch",
   "locked_fit_inputs": [
     {
@@ -48,5 +52,61 @@
   "art_revision": "scholar-polish-v2",
   "template_revision": "scholar-approved-v1",
   "portrait_art_height_factor": 0.96,
-  "selection_art_height": 176
+  "selection_art_height": 176,
+  "candidate_classes": {
+    "scout": {
+      "visual_approval": "pending_founder_review",
+      "art_revision": "scout-polish-v1",
+      "template_reference": "scholar-approved-v1",
+      "bodies": [
+        "male",
+        "female",
+        "neutral"
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_coat_male_polish_v1.webp",
+          "sha256": "d1386c0638344a0121be691c9800e384027712a1a2ac7ee293c2bf9de6083399"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_coat_female_polish_v1.webp",
+          "sha256": "8d05a26df80f8be140417f3036165bad3e39af740a6f9623c7554072ef8afe78"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_coat_neutral_polish_v1.webp",
+          "sha256": "ac6a4d8c1ccd04496a16110193960f87d3c163c8f3a3eaefbefd1536346b6674"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/scout_underlayer_visibility.json",
+          "sha256": "c294a7d051492d1f0659d50715b195ad7c0c78e87152055aee67081a09801a98"
+        },
+        {
+          "path": "lib/widgets/scout_underlayer_clip.dart",
+          "sha256": "ca5fe514660008f266d5caf14bff7dfa45cc436fabb241acc303ee302d13e30c"
+        },
+        {
+          "path": "web/scout-underlayer.js",
+          "sha256": "f7ceb6b3b84fc18a00d8b255f40e0144fe9f58515a0436f7cc15acd04529d179"
+        },
+        {
+          "path": "tool/scout_fit_anchors.json",
+          "sha256": "a1b022268073f0d7ed7bd0cf686f6df6aaa9e2a240eff3d0abead21914cd4c46"
+        },
+        {
+          "path": "tool/art_assets/polished_scout/male.webp",
+          "sha256": "d31d28d65ea57ae168af19c3e9d95ecc3ff30ea627e1d0037d28e28005bf9ceb"
+        },
+        {
+          "path": "tool/art_assets/polished_scout/female.webp",
+          "sha256": "7a5019e680dc1067ff40927f1ccdd1bcc8aa7b2c7c6596fe3db85a4bc7c8849c"
+        },
+        {
+          "path": "tool/art_assets/polished_scout/neutral.webp",
+          "sha256": "2faeaefdf6387c878695894a7810ba29999c4458321a31ed45632bd9b33c5744"
+        }
+      ]
+    }
+  }
 }
