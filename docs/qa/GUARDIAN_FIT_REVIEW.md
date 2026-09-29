@@ -1,6 +1,30 @@
 # Guardian garment review — 29 September 2026
 
-**Development candidate: `guardian-v2`. Founder visual acceptance is pending.**
+**Development candidate: `guardian-v3`. Founder visual acceptance is pending.**
+
+## Revision 3: female sleeve and hip correction
+
+Founder reported that the female avatar's right arm and hip looked distorted.
+The correction addresses the viewer-right side: the sleeve made an exaggerated
+bend through the elbow, and the coat side stepped outward below the waist.
+The prior coverage and gold-trim checks did not detect these contour defects.
+
+The female-only local fit now follows a continuous elbow/forearm outline and
+a smoother waist-to-hip line. It maps the retained source texture through
+measured, monotone horizontal intervals. Front piping, the opposite half and
+cuff endpoints stay pinned. No base anatomy, source painting, male/neutral
+garment or approved class asset was changed.
+
+- [x] Inspect female portrait and 176 px card against revision 2.
+- [x] Retain zero exposed outer-trouser pixels and the existing waist-trim checks.
+- [x] Add a regression check for abrupt native-pixel sleeve/hip edge steps.
+- [x] Preserve the original wrist contact, visible hands and frozen base.
+- [ ] Founder accepts the revised female fit in the app/iPhone Safari.
+
+Comparison: [female sleeve and hip](guardian-female-v3-comparison.png).
+Runtime uses female `v3`, male `v2` and neutral `v2`. The revision-2 source
+masters/prompts remain authoritative; this revision changes fitting code and
+coordinates only. Reproduce with `node tool/fit_guardian_coat.cjs`.
 
 Alchemist was approved after its revision 4 app delivery with “Good to go.”
 Its three-body set and fitting inputs are frozen as `alchemist-approved-v1`.
@@ -51,7 +75,7 @@ remains necessary for the shape, joins and embroidery.
 
 ## Review surfaces
 
-- Saved portrait/card comparison: [Guardian revision 2](guardian-v2-portraits-and-cards.png).
+- Previous portrait/card comparison: [Guardian revision 2](guardian-v2-portraits-and-cards.png).
   Inspected against the exported revision 2 assets at enlarged and 176 px sizes.
 - App: https://funszdidiot.github.io/questwell-app/ — Adventurer → Your Archetype
   → Guardian. Check Male, Female and Gender Neutral.
@@ -98,7 +122,8 @@ fit mapping. These checks do not substitute for founder visual acceptance.
 
 ## Reproduction and validation
 
-- Runtime: `assets/images/questwell/avatar/classes/guardian/guardian_coat_*_v2.webp`.
+- Runtime: `assets/images/questwell/avatar/classes/guardian/`, female `v3`,
+  male/neutral `v2`.
 - Source masters and full built-in prompts: `tool/art_assets/guardian_v2/`.
 - Measured landmarks and side contours: `tool/guardian_fit_anchors.json`.
 - Export: `node tool/fit_guardian_coat.cjs` (Node + ImageMagick). Smooth inverse

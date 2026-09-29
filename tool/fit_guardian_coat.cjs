@@ -186,6 +186,7 @@ for (const [body, spec] of Object.entries(manifest.bodies)) {
   }
 
   if (contourRows) {
+    const contourMap = spec.silhouette_fit ? sourceMap.slice() : null;
     for (let y = 0; y < dh; y++) {
       const py = (y + .5) / scale;
       if (py <= contourRows[0].y || py >= contourRows.at(-1).y) continue;
@@ -212,8 +213,50 @@ for (const [body, spec] of Object.entries(manifest.bodies)) {
         output.fill(0, offset, offset + 4);
         if (x0 < 0 || x0 + 1 >= dw) continue;
         const a = (y * dw + x0) * 2, b = a + 2;
-        sample(sourceMap[a] * (1 - fx) + sourceMap[b] * fx,
-               sourceMap[a + 1] * (1 - fx) + sourceMap[b + 1] * fx, offset);
+        const sx = sourceMap[a] * (1 - fx) + sourceMap[b] * fx;
+        const sy = sourceMap[a + 1] * (1 - fx) + sourceMap[b + 1] * fx;
+        sample(sx, sy, offset);
+        if (contourMap) {
+          contourMap[offset / 2] = sx;
+          contourMap[offset / 2 + 1] = sy;
+        }
+      }
+    }
+    if (contourMap) sourceMap.set(contourMap);
+  }
+
+  if (spec.silhouette_fit) {
+    // A local, monotone fit for the sleeve and side seam. Keep the front
+    // piping, opposite half and cuff contact fixed; sample the source once.
+    const rows = spec.silhouette_fit.rows;
+    const originalMap = sourceMap.slice();
+    for (let y = 0; y < dh; y++) {
+      const py = (y + .5) / scale;
+      if (py <= rows[0].y || py >= rows.at(-1).y) continue;
+      const index = rows.findIndex(row => row.y >= py);
+      const a = rows[index - 1], b = rows[index];
+      const t = (py - a.y) / (b.y - a.y);
+      const old = a.source.map((v, i) => v * (1 - t) + b.source[i] * t);
+      const fitted = a.target.map((v, i) => v * (1 - t) + b.target[i] * t);
+      for (let i = 1; i < old.length; i++) {
+        if (old[i] <= old[i - 1] || fitted[i] <= fitted[i - 1]) {
+          throw new Error(`${body}: folded silhouette fit at ${py}`);
+        }
+      }
+      for (let x = 0; x < dw; x++) {
+        const px = (x + .5) / scale;
+        if (px <= fitted[0] || px >= fitted.at(-1)) continue;
+        const i = fitted.findIndex(value => value >= px);
+        const fraction = (px - fitted[i - 1]) / (fitted[i] - fitted[i - 1]);
+        const oldX = old[i - 1] + fraction * (old[i] - old[i - 1]);
+        const q = oldX * scale - .5, x0 = Math.floor(q), fx = q - x0;
+        if (x0 < 0 || x0 + 1 >= dw) throw new Error('Silhouette fit outside canvas');
+        if (Math.abs(oldX - px) < 1e-8) continue;
+        const l = (y * dw + x0) * 2, r = l + 2;
+        const offset = (y * dw + x) * 4;
+        output.fill(0, offset, offset + 4);
+        sample(originalMap[l] * (1 - fx) + originalMap[r] * fx,
+               originalMap[l + 1] * (1 - fx) + originalMap[r + 1] * fx, offset);
       }
     }
   }

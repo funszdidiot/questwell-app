@@ -8,6 +8,7 @@ import 'package:project_momentum/widgets/guardian_underlayer_clip.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   for (final body in ['male', 'female', 'neutral']) {
+    final revision = body == 'female' ? 'v3' : 'v2';
     test('$body Guardian covers trousers and keeps waist trim open', () async {
       Future<ui.Image> loadImage(String asset) async {
         final bytes = await rootBundle.load(asset);
@@ -23,7 +24,7 @@ void main() {
         'assets/images/questwell/avatar/base/base_$body.webp',
       );
       final coat = await loadImage(
-        'assets/images/questwell/avatar/classes/guardian/guardian_coat_${body}_v2.webp',
+        'assets/images/questwell/avatar/classes/guardian/guardian_coat_${body}_$revision.webp',
       );
       try {
         expect([base.width, base.height, coat.width, coat.height],
@@ -82,6 +83,22 @@ void main() {
           for (var x = right; x < 140 && isGold(x, y); x++) { rightWidth++; }
           expect(leftWidth, lessThanOrEqualTo(3), reason: '$body thick left piping at $y');
           expect(rightWidth, lessThanOrEqualTo(3), reason: '$body thick right piping at $y');
+        }
+        if (body == 'female') {
+          // The previous fit passed coverage while its right elbow and hip
+          // still made abrupt steps. Inspect the exported silhouette itself.
+          int outerEdge(int y) {
+            for (var x = 179; x >= 135; x--) {
+              if (coatPixels.getUint8((y * 240 + x) * 4 + 3) >= 128) return x;
+            }
+            throw StateError('Missing female garment at row $y');
+          }
+          for (final interval in [[125, 159], [171, 210]]) {
+            for (var y = interval.first + 1; y <= interval.last; y++) {
+              expect((outerEdge(y) - outerEdge(y - 1)).abs(), lessThanOrEqualTo(1),
+                  reason: 'Female sleeve/hip makes an abrupt step at row $y');
+            }
+          }
         }
       } finally {
         base.dispose();
@@ -180,7 +197,7 @@ void main() {
           ).map((image) => (image.image as AssetImage).assetName).toList();
           expect(images, [
             'assets/images/questwell/avatar/base/base_$body.webp',
-            'assets/images/questwell/avatar/classes/guardian/guardian_coat_${body}_v2.webp',
+            'assets/images/questwell/avatar/classes/guardian/guardian_coat_${body}_${body == 'female' ? 'v3' : 'v2'}.webp',
           ]);
           final clip = tester.widget<ClipPath>(
             find.descendant(of: layer, matching: find.byType(ClipPath)),

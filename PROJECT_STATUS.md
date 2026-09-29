@@ -34,7 +34,12 @@ The beaker/flask emblems are removed. Body-specific fitting, jacket coverage
 and portrait/card rendering are wired.
 Founder accepted the set with “Good to go.” See `docs/qa/ALCHEMIST_FIT_REVIEW.md`.
 
-**Guardian fit:** 🧪 `guardian-v2` linework revision ready for development review, not yet founder approved.
+**Guardian fit:** 🧪 `guardian-v3` female sleeve/hip correction ready for development review, not yet founder approved.
+Founder flagged the female viewer-right arm and hip after revision 2. Revision 3
+smooths the elbow/forearm and waist-to-hip contours through a female-only local
+fit. It preserves wrist contact, front piping, the base avatar and the male and
+neutral revision-2 garments. Actual-image checks now cover abrupt side-contour
+steps as well as trouser coverage and waist piping.
 Founder rejected v1’s uneven gold lines. Revision 2 removes branching borders,
 uses one isolated chevron per lower panel and locally fits the piping to smooth
 waist paths with consistent gold width. Three independent body fits retain

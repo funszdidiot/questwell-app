@@ -13,23 +13,23 @@
 .selection span{font-size:12px;margin-right:4px}
 </style>
 <main>
-<h1>Guardian · refined trim</h1>
-<p>Burgundy coats with smooth gold piping, simpler hem borders and one clear chevron per lower panel. Each body retains its independent fit. Portrait fill and 176 px card sizing match the app.</p>
+<h1>Guardian · female fit correction</h1>
+<p>The female coat now follows a smoother right elbow and hip contour. Burgundy/gold linework and the male and neutral fits are preserved. Portrait fill and 176 px card sizing match the app.</p>
 <div class="controls">
 <label><input id="coat" type="checkbox" checked> Show Guardian coat</label>
 <label><input id="guides" type="checkbox"> Show alignment guides</label>
 <label><input id="jacket" type="checkbox"> Show original jacket (compare)</label>
 </div>
 <div class="bodies" id="bodies"></div>
-<p class="note">Guardian revision 2 · linework review. The waist piping has been smoothed, the branching borders removed and the lower embroidery simplified. Please check the three body fits before this class becomes a frozen template.</p>
+<p class="note">Guardian revision 3 · female sleeve and hip review. Check the right side of the image for the corrected elbow and smoother waist-to-hip transition. Please check the three body fits before this class becomes a frozen template.</p>
 </main>
-<script src="guardian-underlayer.js?rev=guardian-v2"></script>
+<script src="guardian-underlayer.js?rev=guardian-v3"></script>
 <script>
-const bodies=[['male','Male','7431461a6c66'],['female','Female','88a5915fc12f'],['neutral','Gender Neutral','6dc31f7ba6dc']];
+const bodies=[['male','Male','7431461a6c66','v2'],['female','Female','4f35e1e3aa4b','v3'],['neutral','Gender Neutral','6dc31f7ba6dc','v2']];
 const asset='assets/assets/images/questwell/avatar/';
-for(const [body,label,hash] of bodies){
+for(const [body,label,hash,revision] of bodies){
  const article=document.createElement('article');
- article.innerHTML=`<h2>${label}</h2><div class="portrait-frame"><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="coat" alt="Clean fitted Guardian coat" src="${asset}classes/guardian/guardian_coat_${body}_v2.webp"></div></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="coat" alt="" src="${asset}classes/guardian/guardian_coat_${body}_v2.webp"></div><p class="selection"><span aria-hidden="true">✓</span> SELECTED</p><div class="hash">Coat SHA-256: ${hash}</div>`;
+ article.innerHTML=`<h2>${label}</h2><div class="portrait-frame"><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="coat" alt="Clean fitted Guardian coat" src="${asset}classes/guardian/guardian_coat_${body}_${revision}.webp"></div></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="coat" alt="" src="${asset}classes/guardian/guardian_coat_${body}_${revision}.webp"></div><p class="selection"><span aria-hidden="true">✓</span> SELECTED</p><div class="hash">Coat SHA-256: ${hash}</div>`;
  document.querySelector('#bodies').append(article);
 }
 const svgNS='http://www.w3.org/2000/svg';

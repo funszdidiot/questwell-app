@@ -56,9 +56,9 @@
   "candidate_classes": {
     "guardian": {
       "visual_approval": "pending_founder_review",
-      "art_revision": "guardian-v2",
+      "art_revision": "guardian-v3",
       "template_reference": "scholar-approved-v1",
-      "design": "Burgundy/gold cloth coat with four brass fasteners, plain chest and hip welts, sleeve shield embroidery, one gold border and one isolated chevron per lower panel. Smooth waist piping and consistent trim width. No equipment.",
+      "design": "Burgundy/gold cloth coat with four brass fasteners, plain chest and hip welts, sleeve shield embroidery, one gold border and one isolated chevron per lower panel. Smooth waist piping and consistent trim width. No equipment. Female revision 3 corrects viewer-right elbow and hip contours; male and neutral retain revision 2.",
       "bodies": [
         "male",
         "female",
@@ -70,8 +70,8 @@
           "sha256": "7431461a6c66b2e17cea9ed63eae74acc591bd58ce491e6e56a44f8229adf286"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/guardian/guardian_coat_female_v2.webp",
-          "sha256": "88a5915fc12f0e4f923933b361657e3b82bde4cc5f76d50a4a981d3e9736b412"
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_coat_female_v3.webp",
+          "sha256": "4f35e1e3aa4bf90e8da7696f237448ba071a28a253ad973f8a2cbe6a44b43beb"
         },
         {
           "path": "assets/images/questwell/avatar/classes/guardian/guardian_coat_neutral_v2.webp",
@@ -93,11 +93,11 @@
         },
         {
           "path": "tool/guardian_fit_anchors.json",
-          "sha256": "0224c606fb43f1a36f3125ac58c80fc7227a4d8da59557aaa3ab6d08158b8a31"
+          "sha256": "8155ad98255202b1d783910b02f5296c128c21f08fa345c0e57703661bbd62be"
         },
         {
           "path": "tool/fit_guardian_coat.cjs",
-          "sha256": "41ff9770cd1955fe8b3808e4660eb12deea5f1c29d98a854f4fe474a52ee2efd"
+          "sha256": "dc418e0843e806974a445708371ee5167a1f50d7fd1360af6113c615ec0c4eb9"
         },
         {
           "path": "tool/generate_guardian_underlayer.py",
