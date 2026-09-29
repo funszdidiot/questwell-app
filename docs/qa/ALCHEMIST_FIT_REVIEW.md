@@ -1,6 +1,6 @@
 # Alchemist lab-coat review — 29 September 2026
 
-**Development candidate: `alchemist-lab-v3`. Founder visual approval pending.**
+**Development candidate: `alchemist-lab-v4`. Founder visual approval pending.**
 
 This class follows the approved Scholar fit checklist. Scout was approved after
 its app delivery; its `scout-approved-v1` artwork and fit inputs are frozen.
@@ -48,9 +48,35 @@ The front placket is held fixed while the outer fabric covers the legs.
 
 These are native-canvas pixel checks at alpha 128 or greater, not a substitute
 for founder acceptance. The same check now decodes the actual runtime WebPs in
-the Flutter test suite. Head/upper-body pixels above row 170 match revision 2.
+the Flutter test suite. Revision 3's upper-body pixels above row 170 matched
+revision 2; revision 4 below deliberately refines that artwork.
 
 ## Developer checklist
+
+### Revision 4 consistency and finish pass
+
+The founder authorized this pass after the revision 3 delivery. This is a new
+review candidate, not founder acceptance of either revision.
+
+| Shared detail | Male | Female | Gender Neutral |
+| --- | --- | --- | --- |
+| Silver snaps | Four, two pairs | Four, two pairs | Four, two pairs |
+| Pockets | Plain right chest welt; two hip welts | Same layout, independently fitted | Same layout, independently fitted |
+| Neon embroidery | Three linked rings on left sleeve and both lower panels | Same motif and placement | Same motif and placement |
+| Cuffs | Compact end, narrow green inlay, fine silver edge | Same finish at female wrist positions | Same finish at neutral wrist positions |
+| Outer trouser pixels beyond coat, rows 196–240 | 0 | 0 | 0 |
+
+Left/right here are the viewer's perspective. The artwork retains sapphire and
+cobalt cloth, silver edging and neon-green accents. No beaker or flask remains.
+
+- [x] Standardize snaps, pocket layout and three-ring embroidery across bodies.
+- [x] Smooth the waist/front placket without reintroducing notches during fitting.
+- [x] Refine silver line weight and lower-panel corners.
+- [x] Reduce cuff bulk while preserving wrist endpoints and readable hands.
+- [x] Recheck the actual composite at enlarged portrait and 176 px card sizes.
+- [x] Reject folded mappings; retain two solid garment halves and clear head/boot regions.
+
+### Fit and implementation checks
 
 - [x] Preserve all frozen base, Scholar and Scout art and fit definitions.
 - [x] Author three separate garments with body-specific anatomy and fit anchors.
@@ -70,9 +96,9 @@ the Flutter test suite. Head/upper-body pixels above row 170 match revision 2.
 
 | Body | Fit and visual check | Acceptance |
 | --- | --- | --- |
-| Male | Side panels widened over the thighs; upper fit and stance retained | Revised coverage check passed; founder pending |
-| Female | Inward thigh pinch removed; front trim, long hair and wrists retained | Revised coverage check passed; founder pending |
-| Gender Neutral | Right side seam now covers the outer leg; independent balanced fit retained | Revised coverage check passed; founder pending |
+| Male | Smooth waist piping, compact cuffs, consistent details and covered thighs | Revision 4 composite checked; founder pending |
+| Female | Independent narrower fit, smooth placket, visible long hair and hands | Revision 4 composite checked; founder pending |
+| Gender Neutral | Independent balanced fit, matching details, smooth seams and clear wrists | Revision 4 composite checked; founder pending |
 
 The public comparison is a review surface, not evidence that we independently
 operated a signed-in iPhone Safari session. Build success does not confer visual
@@ -80,19 +106,23 @@ approval, promote Epic 2, or authorize a production merge/launch.
 
 ## Asset sources and reproduction
 
-Runtime assets are the three `alchemist_coat_*_lab_v3.webp` files in
+Runtime assets are the three `alchemist_coat_*_lab_v4.webp` files in
 `assets/images/questwell/avatar/classes/alchemist/`.
 The built-in image-generation tool produced the garment masters, chemistry
 details, seam refinement, selected blue treatment, neon-green accents and flask
 removal. Sources and prompts are retained in
-`tool/art_assets/alchemist_lab_v2/`.
+`tool/art_assets/alchemist_lab_v4/`. Its `prompts.json` records the selected
+source images and complete built-in image-generation prompts for this pass.
 
 `tool/alchemist_fit_anchors.json` records measured source/base coordinates and
-the nonfolding body mesh and continuous side-contour constraints.
+separate body landmarks and continuous side-contour constraints.
 `node tool/fit_alchemist_coat.cjs` reproduces the lossless WebPs using Node and
-ImageMagick. It maps the corrected contours back through the body mesh before
-sampling the original master, preserving front piping and avoiding a second
-color-texture resampling. This is an offline texture bake; there is no
+ImageMagick. Revision 4 solves a smooth inverse thin-plate mapping through each
+body's measured landmarks. This avoids the sharp placket bends introduced by
+the first trial's triangle boundaries. The exporter rejects folded garment
+regions, then maps the corrected side contours back to the original master,
+preserving front piping and avoiding a second color-texture resampling.
+This is an offline texture bake; there is no
 garment-only runtime scaling or offset.
 
 `python3 tool/generate_alchemist_underlayer.py` generates Flutter and browser

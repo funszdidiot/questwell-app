@@ -23,7 +23,7 @@ void main() {
         'assets/images/questwell/avatar/base/base_$body.webp',
       );
       final coat = await loadImage(
-        'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v3.webp',
+        'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v4.webp',
       );
       try {
         expect([base.width, base.height, coat.width, coat.height],
@@ -149,7 +149,7 @@ void main() {
           ).map((image) => (image.image as AssetImage).assetName).toList();
           expect(images, [
             'assets/images/questwell/avatar/base/base_$body.webp',
-            'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v3.webp',
+            'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v4.webp',
           ]);
           final clip = tester.widget<ClipPath>(
             find.descendant(of: layer, matching: find.byType(ClipPath)),

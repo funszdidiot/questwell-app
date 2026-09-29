@@ -3,18 +3,18 @@
     240,
     320
   ],
-  "method": "Single source texture sample through the original body mesh and measured continuous hip-to-hem contours. No anatomy clipping or runtime garment transforms.",
+  "method": "Smooth thin-plate inverse mapping through separately measured body landmarks, then continuous side-contour fitting. Sample each pixel from the original master; runtime canvases stack 1:1.",
   "bodies": {
     "male": {
-      "source": "tool/art_assets/alchemist_lab_v2/male.webp",
-      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v3.webp",
-      "note": "Continuous hip-to-hem panel contours measured against the frozen body and approved Scholar garment. Collar, sleeves, wrists and hem endpoints preserved; sapphire/silver/neon master unchanged.",
+      "source": "tool/art_assets/alchemist_lab_v4/male.webp",
+      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v4.webp",
+      "note": "Shared four-snap, matching-pocket and three-ring embroidery design, independently fitted to the frozen base; slimmer cuffs preserve wrist endpoints.",
       "points": [
         {
           "name": "neck_l",
           "source": [
             113,
-            82
+            36
           ],
           "target": [
             108,
@@ -24,8 +24,8 @@
         {
           "name": "neck_r",
           "source": [
-            133,
-            83
+            137,
+            36
           ],
           "target": [
             130,
@@ -35,8 +35,8 @@
         {
           "name": "shoulder_l",
           "source": [
-            82,
-            92
+            74,
+            52
           ],
           "target": [
             81,
@@ -46,8 +46,8 @@
         {
           "name": "shoulder_r",
           "source": [
-            162,
-            96
+            173,
+            52
           ],
           "target": [
             155,
@@ -57,8 +57,8 @@
         {
           "name": "epaulet_l",
           "source": [
-            70,
-            108
+            58,
+            72
           ],
           "target": [
             70,
@@ -68,8 +68,8 @@
         {
           "name": "epaulet_r",
           "source": [
-            170,
-            110
+            188,
+            74
           ],
           "target": [
             165,
@@ -79,8 +79,8 @@
         {
           "name": "armpit_l",
           "source": [
-            91,
-            135
+            87,
+            99
           ],
           "target": [
             92,
@@ -90,8 +90,8 @@
         {
           "name": "armpit_r",
           "source": [
-            154,
-            136
+            162,
+            99
           ],
           "target": [
             148,
@@ -101,8 +101,8 @@
         {
           "name": "elbow_outer_l",
           "source": [
-            67,
-            146
+            55,
+            117
           ],
           "target": [
             65,
@@ -112,8 +112,8 @@
         {
           "name": "elbow_inner_l",
           "source": [
-            89,
-            146
+            83,
+            117
           ],
           "target": [
             85,
@@ -123,8 +123,8 @@
         {
           "name": "elbow_outer_r",
           "source": [
-            177,
-            149
+            192,
+            117
           ],
           "target": [
             169,
@@ -134,8 +134,8 @@
         {
           "name": "elbow_inner_r",
           "source": [
-            156,
-            149
+            167,
+            117
           ],
           "target": [
             151,
@@ -145,96 +145,96 @@
         {
           "name": "cuff_top_outer_l",
           "source": [
-            64,
-            170
+            49,
+            154
           ],
           "target": [
-            63,
-            164
+            64,
+            166
           ]
         },
         {
           "name": "cuff_top_inner_l",
           "source": [
-            85,
-            170
+            70,
+            154
           ],
           "target": [
-            81,
-            164
+            80,
+            166
           ]
         },
         {
           "name": "cuff_bottom_outer_l",
           "source": [
-            63,
-            184
+            48,
+            163
           ],
           "target": [
-            62,
+            63,
             173
           ]
         },
         {
           "name": "cuff_bottom_inner_l",
           "source": [
-            85,
-            184
+            69,
+            163
           ],
           "target": [
-            81,
+            80,
             173
           ]
         },
         {
           "name": "cuff_top_inner_r",
           "source": [
-            160,
-            170
+            178,
+            154
           ],
           "target": [
-            156,
-            164
+            157,
+            166
           ]
         },
         {
           "name": "cuff_top_outer_r",
           "source": [
-            184,
-            170
+            200,
+            154
           ],
           "target": [
-            176,
-            164
+            175,
+            166
           ]
         },
         {
           "name": "cuff_bottom_inner_r",
           "source": [
-            161,
-            184
+            180,
+            163
           ],
           "target": [
-            156,
+            157,
             173
           ]
         },
         {
           "name": "cuff_bottom_outer_r",
           "source": [
-            184,
-            184
+            201,
+            163
           ],
           "target": [
-            176,
+            175,
             173
           ]
         },
         {
           "name": "waist_outer_l",
           "source": [
-            94,
-            157
+            90,
+            129
           ],
           "target": [
             93,
@@ -244,8 +244,8 @@
         {
           "name": "waist_outer_r",
           "source": [
-            153,
-            157
+            160,
+            129
           ],
           "target": [
             147,
@@ -255,8 +255,8 @@
         {
           "name": "waist_opening_l",
           "source": [
-            119,
-            157
+            121,
+            129
           ],
           "target": [
             113,
@@ -266,8 +266,8 @@
         {
           "name": "waist_opening_r",
           "source": [
-            127,
-            157
+            128,
+            129
           ],
           "target": [
             124,
@@ -277,8 +277,8 @@
         {
           "name": "hip_l",
           "source": [
-            87,
-            193
+            75,
+            176
           ],
           "target": [
             85,
@@ -288,8 +288,8 @@
         {
           "name": "hip_r",
           "source": [
-            160,
-            193
+            174,
+            176
           ],
           "target": [
             154,
@@ -299,8 +299,8 @@
         {
           "name": "skirt_seam_l",
           "source": [
-            103,
-            243
+            105,
+            244
           ],
           "target": [
             102,
@@ -310,8 +310,8 @@
         {
           "name": "skirt_seam_r",
           "source": [
-            143,
-            243
+            145,
+            244
           ],
           "target": [
             137,
@@ -321,8 +321,8 @@
         {
           "name": "skirt_outer_l",
           "source": [
-            63,
-            256
+            47,
+            255
           ],
           "target": [
             61,
@@ -332,8 +332,8 @@
         {
           "name": "skirt_outer_r",
           "source": [
-            184,
-            256
+            202,
+            255
           ],
           "target": [
             177,
@@ -343,8 +343,8 @@
         {
           "name": "tail_l",
           "source": [
-            88,
-            303
+            77,
+            311
           ],
           "target": [
             85,
@@ -354,8 +354,8 @@
         {
           "name": "tail_r",
           "source": [
-            160,
-            303
+            171,
+            311
           ],
           "target": [
             156,
@@ -365,8 +365,8 @@
         {
           "name": "inner_hem_l",
           "source": [
-            115,
-            276
+            112,
+            282
           ],
           "target": [
             111,
@@ -376,8 +376,8 @@
         {
           "name": "inner_hem_r",
           "source": [
-            137,
-            276
+            140,
+            282
           ],
           "target": [
             133,
@@ -387,8 +387,8 @@
         {
           "name": "lower_edge_l",
           "source": [
-            78,
-            286
+            65,
+            293
           ],
           "target": [
             77,
@@ -398,8 +398,8 @@
         {
           "name": "lower_edge_r",
           "source": [
-            167,
-            286
+            183,
+            293
           ],
           "target": [
             163,
@@ -451,448 +451,76 @@
           ]
         }
       ],
-      "triangles": [
-        [
-          38,
-          17,
-          37
-        ],
-        [
-          37,
-          0,
-          36
-        ],
-        [
-          12,
-          39,
-          36
-        ],
-        [
-          1,
-          0,
-          37
-        ],
-        [
-          33,
-          31,
-          32
-        ],
-        [
-          27,
-          33,
-          32
-        ],
-        [
-          0,
-          2,
-          36
-        ],
-        [
-          2,
-          4,
-          36
-        ],
-        [
-          8,
-          12,
-          36
-        ],
-        [
-          4,
-          8,
-          36
-        ],
-        [
-          31,
-          30,
-          32
-        ],
-        [
-          39,
-          30,
-          38
-        ],
-        [
-          30,
-          31,
-          38
-        ],
-        [
-          12,
-          14,
-          39
-        ],
-        [
-          14,
-          28,
-          39
-        ],
-        [
-          5,
-          3,
-          37
-        ],
-        [
-          3,
-          1,
-          37
-        ],
-        [
-          17,
-          10,
-          37
-        ],
-        [
-          10,
-          5,
-          37
-        ],
-        [
-          25,
-          29,
-          27
-        ],
-        [
-          35,
-          33,
-          27
-        ],
-        [
-          29,
-          35,
-          27
-        ],
-        [
-          33,
-          35,
-          31
-        ],
-        [
-          31,
-          35,
-          38
-        ],
-        [
-          35,
-          29,
-          38
-        ],
-        [
-          2,
-          6,
-          4
-        ],
-        [
-          6,
-          8,
-          4
-        ],
-        [
-          6,
-          2,
-          0
-        ],
-        [
-          1,
-          6,
-          0
-        ],
-        [
-          30,
-          34,
-          32
-        ],
-        [
-          28,
-          34,
-          39
-        ],
-        [
-          34,
-          30,
-          39
-        ],
-        [
-          26,
-          27,
-          32
-        ],
-        [
-          34,
-          26,
-          32
-        ],
-        [
-          26,
-          34,
-          28
-        ],
-        [
-          3,
-          7,
-          1
-        ],
-        [
-          7,
-          6,
-          1
-        ],
-        [
-          7,
-          3,
-          5
-        ],
-        [
-          7,
-          23,
-          22
-        ],
-        [
-          6,
-          7,
-          22
-        ],
-        [
-          10,
-          7,
-          5
-        ],
-        [
-          16,
-          10,
-          17
-        ],
-        [
-          10,
-          16,
-          21
-        ],
-        [
-          16,
-          23,
-          21
-        ],
-        [
-          25,
-          19,
-          29
-        ],
-        [
-          19,
-          17,
-          38
-        ],
-        [
-          29,
-          19,
-          38
-        ],
-        [
-          14,
-          24,
-          28
-        ],
-        [
-          24,
-          26,
-          28
-        ],
-        [
-          23,
-          24,
-          22
-        ],
-        [
-          25,
-          24,
-          23
-        ],
-        [
-          24,
-          25,
-          27
-        ],
-        [
-          26,
-          24,
-          27
-        ],
-        [
-          23,
-          11,
-          21
-        ],
-        [
-          7,
-          11,
-          23
-        ],
-        [
-          11,
-          10,
-          21
-        ],
-        [
-          11,
-          7,
-          10
-        ],
-        [
-          18,
-          19,
-          25
-        ],
-        [
-          18,
-          25,
-          23
-        ],
-        [
-          16,
-          18,
-          23
-        ],
-        [
-          18,
-          16,
-          17
-        ],
-        [
-          19,
-          18,
-          17
-        ],
-        [
-          8,
-          13,
-          12
-        ],
-        [
-          13,
-          20,
-          22
-        ],
-        [
-          6,
-          9,
-          8
-        ],
-        [
-          9,
-          13,
-          8
-        ],
-        [
-          13,
-          9,
-          20
-        ],
-        [
-          9,
-          6,
-          22
-        ],
-        [
-          20,
-          9,
-          22
-        ],
-        [
-          15,
-          24,
-          14
-        ],
-        [
-          15,
-          14,
-          12
-        ],
-        [
-          13,
-          15,
-          12
-        ],
-        [
-          24,
-          15,
-          22
-        ],
-        [
-          15,
-          13,
-          22
-        ]
-      ],
       "contour_fit": {
-        "input_space": "body-fit canvas before contour correction",
+        "input_space": "smooth body-fit canvas before contour correction",
         "rows": [
           {
             "y": 177,
-            "left": 82.0,
-            "inner_left": 105.0,
-            "inner_right": 133.0,
-            "right": 156.0,
-            "fitted_left": 82.0,
-            "fitted_right": 156.0
+            "left": 87.0,
+            "inner_left": 107.0,
+            "inner_right": 132.0,
+            "right": 151.0,
+            "fitted_left": 87.0,
+            "fitted_right": 151.0
           },
           {
             "y": 180,
-            "left": 82.0,
-            "inner_left": 105.0,
-            "inner_right": 134.0,
-            "right": 156.0,
+            "left": 86.0,
+            "inner_left": 106.0,
+            "inner_right": 132.0,
+            "right": 152.0,
             "fitted_left": 82,
             "fitted_right": 156
           },
           {
             "y": 185,
-            "left": 82.0,
-            "inner_left": 104.0,
-            "inner_right": 136.0,
-            "right": 157.0,
+            "left": 85.0,
+            "inner_left": 105.0,
+            "inner_right": 134.0,
+            "right": 154.0,
             "fitted_left": 82,
             "fitted_right": 157
           },
           {
             "y": 190,
-            "left": 86.0,
-            "inner_left": 103.0,
-            "inner_right": 137.0,
-            "right": 153.0,
+            "left": 89.0,
+            "inner_left": 104.0,
+            "inner_right": 135.0,
+            "right": 150.0,
             "fitted_left": 83,
             "fitted_right": 157
           },
           {
             "y": 196,
-            "left": 88.0,
+            "left": 90.0,
             "inner_left": 103.0,
-            "inner_right": 137.0,
-            "right": 151.0,
+            "inner_right": 136.0,
+            "right": 149.0,
             "fitted_left": 83,
             "fitted_right": 158
           },
           {
             "y": 200,
-            "left": 88.0,
+            "left": 89.0,
             "inner_left": 103.0,
-            "inner_right": 138.0,
-            "right": 151.0,
+            "inner_right": 136.0,
+            "right": 150.0,
             "fitted_left": 83,
             "fitted_right": 158
           },
           {
             "y": 205,
-            "left": 88.0,
+            "left": 87.0,
             "inner_left": 102.0,
-            "inner_right": 139.0,
-            "right": 151.0,
+            "inner_right": 137.0,
+            "right": 150.0,
             "fitted_left": 82,
             "fitted_right": 159
           },
           {
             "y": 210,
-            "left": 87.0,
-            "inner_left": 101.0,
+            "left": 86.0,
+            "inner_left": 100.0,
             "inner_right": 139.0,
             "right": 152.0,
             "fitted_left": 81,
@@ -900,8 +528,8 @@
           },
           {
             "y": 215,
-            "left": 86.0,
-            "inner_left": 103.0,
+            "left": 84.0,
+            "inner_left": 101.0,
             "inner_right": 138.0,
             "right": 153.0,
             "fitted_left": 80,
@@ -909,80 +537,81 @@
           },
           {
             "y": 220,
-            "left": 85.0,
-            "inner_left": 103.0,
+            "left": 82.0,
+            "inner_left": 100.0,
             "inner_right": 138.0,
-            "right": 154.0,
+            "right": 155.0,
             "fitted_left": 78,
             "fitted_right": 163
           },
           {
             "y": 225,
-            "left": 83.0,
-            "inner_left": 103.0,
-            "inner_right": 137.0,
-            "right": 156.0,
+            "left": 80.0,
+            "inner_left": 100.0,
+            "inner_right": 138.0,
+            "right": 157.0,
             "fitted_left": 76,
             "fitted_right": 164
           },
           {
             "y": 230,
-            "left": 81.0,
-            "inner_left": 103.0,
-            "inner_right": 137.0,
-            "right": 158.0,
+            "left": 77.0,
+            "inner_left": 99.0,
+            "inner_right": 139.0,
+            "right": 159.0,
             "fitted_left": 74,
             "fitted_right": 166
           },
           {
             "y": 235,
-            "left": 78.0,
-            "inner_left": 103.0,
-            "inner_right": 137.0,
-            "right": 160.0,
+            "left": 74.0,
+            "inner_left": 99.0,
+            "inner_right": 139.0,
+            "right": 163.0,
             "fitted_left": 71,
             "fitted_right": 169
           },
           {
             "y": 240,
-            "left": 74.0,
-            "inner_left": 103.0,
-            "inner_right": 136.0,
-            "right": 164.0,
+            "left": 69.0,
+            "inner_left": 99.0,
+            "inner_right": 139.0,
+            "right": 168.0,
             "fitted_left": 67,
             "fitted_right": 174
           },
           {
             "y": 245,
-            "left": 66.0,
-            "inner_left": 102.0,
-            "inner_right": 136.0,
-            "right": 173.0,
+            "left": 61.0,
+            "inner_left": 98.0,
+            "inner_right": 141.0,
+            "right": 176.0,
             "fitted_left": 61,
             "fitted_right": 179
           },
           {
             "y": 252,
-            "left": 66.0,
-            "inner_left": 99.0,
-            "inner_right": 141.0,
-            "right": 173.0,
-            "fitted_left": 66.0,
-            "fitted_right": 173.0
+            "left": 67.0,
+            "inner_left": 95.0,
+            "inner_right": 145.0,
+            "right": 171.0,
+            "fitted_left": 67.0,
+            "fitted_right": 171.0
           }
         ]
-      }
+      },
+      "mapping": "thin_plate_spline"
     },
     "female": {
-      "source": "tool/art_assets/alchemist_lab_v2/female.webp",
-      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v3.webp",
-      "note": "Continuous hip-to-hem panel contours measured against the frozen body and approved Scholar garment. Collar, sleeves, wrists and hem endpoints preserved; sapphire/silver/neon master unchanged.",
+      "source": "tool/art_assets/alchemist_lab_v4/female.webp",
+      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v4.webp",
+      "note": "Shared four-snap, matching-pocket and three-ring embroidery design, independently fitted to the frozen base; slimmer cuffs preserve wrist endpoints.",
       "points": [
         {
           "name": "neck_l",
           "source": [
-            115,
-            78
+            114.5,
+            25
           ],
           "target": [
             110,
@@ -992,8 +621,8 @@
         {
           "name": "neck_r",
           "source": [
-            133,
-            78
+            136.8,
+            25
           ],
           "target": [
             129,
@@ -1003,8 +632,8 @@
         {
           "name": "shoulder_l",
           "source": [
-            92,
-            88
+            81,
+            43
           ],
           "target": [
             88,
@@ -1014,8 +643,8 @@
         {
           "name": "shoulder_r",
           "source": [
-            156,
-            89
+            165,
+            43
           ],
           "target": [
             150,
@@ -1025,8 +654,8 @@
         {
           "name": "epaulet_l",
           "source": [
-            82,
-            101
+            68.5,
+            64
           ],
           "target": [
             77,
@@ -1036,8 +665,8 @@
         {
           "name": "epaulet_r",
           "source": [
-            164,
-            101
+            180,
+            64
           ],
           "target": [
             160,
@@ -1047,8 +676,8 @@
         {
           "name": "armpit_l",
           "source": [
-            99,
-            123
+            93,
+            86
           ],
           "target": [
             95,
@@ -1058,8 +687,8 @@
         {
           "name": "armpit_r",
           "source": [
-            147,
-            126
+            158,
+            86
           ],
           "target": [
             143,
@@ -1069,8 +698,8 @@
         {
           "name": "elbow_outer_l",
           "source": [
-            78,
-            139
+            66,
+            108
           ],
           "target": [
             75,
@@ -1080,8 +709,8 @@
         {
           "name": "elbow_inner_l",
           "source": [
-            95,
-            139
+            89,
+            108
           ],
           "target": [
             92,
@@ -1091,8 +720,8 @@
         {
           "name": "elbow_outer_r",
           "source": [
-            167,
-            139
+            185,
+            108
           ],
           "target": [
             162,
@@ -1102,8 +731,8 @@
         {
           "name": "elbow_inner_r",
           "source": [
-            149,
-            139
+            162,
+            108
           ],
           "target": [
             145,
@@ -1113,88 +742,88 @@
         {
           "name": "cuff_top_outer_l",
           "source": [
-            71,
-            167
+            57,
+            146
           ],
           "target": [
-            70,
-            161
+            71,
+            163
           ]
         },
         {
           "name": "cuff_top_inner_l",
           "source": [
-            88,
-            167
+            76,
+            146
           ],
           "target": [
-            86,
-            161
+            85,
+            163
           ]
         },
         {
           "name": "cuff_bottom_outer_l",
           "source": [
-            71,
-            176
+            56,
+            154
           ],
           "target": [
-            70,
+            70.5,
             170
           ]
         },
         {
           "name": "cuff_bottom_inner_l",
           "source": [
-            88,
-            176
+            74.5,
+            154
           ],
           "target": [
-            86,
+            85.5,
             170
           ]
         },
         {
           "name": "cuff_top_inner_r",
           "source": [
-            159,
-            167
+            175,
+            146
           ],
           "target": [
-            153,
-            161
+            153.5,
+            163
           ]
         },
         {
           "name": "cuff_top_outer_r",
           "source": [
-            176,
-            167
+            195,
+            146
           ],
           "target": [
-            170,
-            161
+            169,
+            163
           ]
         },
         {
           "name": "cuff_bottom_inner_r",
           "source": [
-            160,
-            176
+            177,
+            154
           ],
           "target": [
-            153,
+            153.5,
             170
           ]
         },
         {
           "name": "cuff_bottom_outer_r",
           "source": [
-            178,
-            176
+            195.5,
+            154
           ],
           "target": [
-            170,
+            169.5,
             170
           ]
         },
@@ -1202,7 +831,7 @@
           "name": "waist_outer_l",
           "source": [
             100,
-            145
+            117
           ],
           "target": [
             96,
@@ -1212,8 +841,8 @@
         {
           "name": "waist_outer_r",
           "source": [
-            146,
-            145
+            153,
+            117
           ],
           "target": [
             145,
@@ -1223,8 +852,8 @@
         {
           "name": "waist_opening_l",
           "source": [
-            114,
-            145
+            121,
+            117
           ],
           "target": [
             112,
@@ -1234,8 +863,8 @@
         {
           "name": "waist_opening_r",
           "source": [
-            130,
-            145
+            131,
+            117
           ],
           "target": [
             126,
@@ -1245,8 +874,8 @@
         {
           "name": "hip_l",
           "source": [
-            88,
-            177
+            78,
+            167
           ],
           "target": [
             89,
@@ -1256,8 +885,8 @@
         {
           "name": "hip_r",
           "source": [
-            159,
-            177
+            173,
+            167
           ],
           "target": [
             151,
@@ -1267,30 +896,30 @@
         {
           "name": "skirt_seam_l",
           "source": [
-            104,
-            229
+            106,
+            237
           ],
           "target": [
             102,
-            224
+            237
           ]
         },
         {
           "name": "skirt_seam_r",
           "source": [
             146,
-            229
+            237
           ],
           "target": [
             139,
-            224
+            237
           ]
         },
         {
           "name": "skirt_outer_l",
           "source": [
-            62,
-            257
+            49,
+            252
           ],
           "target": [
             62,
@@ -1300,8 +929,8 @@
         {
           "name": "skirt_outer_r",
           "source": [
-            187,
-            257
+            204,
+            252
           ],
           "target": [
             181,
@@ -1311,8 +940,8 @@
         {
           "name": "tail_l",
           "source": [
-            95,
-            298
+            81,
+            306
           ],
           "target": [
             93,
@@ -1322,8 +951,8 @@
         {
           "name": "tail_r",
           "source": [
-            166,
-            298
+            173,
+            306
           ],
           "target": [
             162,
@@ -1333,7 +962,7 @@
         {
           "name": "inner_hem_l",
           "source": [
-            119,
+            114,
             274
           ],
           "target": [
@@ -1344,7 +973,7 @@
         {
           "name": "inner_hem_r",
           "source": [
-            140,
+            145,
             274
           ],
           "target": [
@@ -1355,7 +984,7 @@
         {
           "name": "lower_edge_l",
           "source": [
-            83,
+            69,
             282
           ],
           "target": [
@@ -1366,7 +995,7 @@
         {
           "name": "lower_edge_r",
           "source": [
-            177,
+            184,
             282
           ],
           "target": [
@@ -1419,495 +1048,123 @@
           ]
         }
       ],
-      "triangles": [
-        [
-          38,
-          19,
-          37
-        ],
-        [
-          37,
-          0,
-          36
-        ],
-        [
-          12,
-          39,
-          36
-        ],
-        [
-          39,
-          30,
-          38
-        ],
-        [
-          1,
-          0,
-          37
-        ],
-        [
-          0,
-          2,
-          36
-        ],
-        [
-          2,
-          4,
-          36
-        ],
-        [
-          8,
-          12,
-          36
-        ],
-        [
-          4,
-          8,
-          36
-        ],
-        [
-          29,
-          19,
-          38
-        ],
-        [
-          5,
-          3,
-          37
-        ],
-        [
-          3,
-          1,
-          37
-        ],
-        [
-          10,
-          5,
-          37
-        ],
-        [
-          6,
-          8,
-          4
-        ],
-        [
-          2,
-          6,
-          4
-        ],
-        [
-          6,
-          2,
-          0
-        ],
-        [
-          1,
-          6,
-          0
-        ],
-        [
-          8,
-          13,
-          12
-        ],
-        [
-          24,
-          25,
-          26
-        ],
-        [
-          34,
-          30,
-          39
-        ],
-        [
-          28,
-          34,
-          39
-        ],
-        [
-          34,
-          28,
-          26
-        ],
-        [
-          14,
-          24,
-          26
-        ],
-        [
-          28,
-          14,
-          26
-        ],
-        [
-          12,
-          14,
-          39
-        ],
-        [
-          14,
-          28,
-          39
-        ],
-        [
-          19,
-          17,
-          37
-        ],
-        [
-          17,
-          10,
-          37
-        ],
-        [
-          9,
-          6,
-          22
-        ],
-        [
-          6,
-          9,
-          8
-        ],
-        [
-          7,
-          3,
-          5
-        ],
-        [
-          3,
-          7,
-          1
-        ],
-        [
-          7,
-          6,
-          1
-        ],
-        [
-          10,
-          7,
-          5
-        ],
-        [
-          29,
-          27,
-          19
-        ],
-        [
-          27,
-          25,
-          19
-        ],
-        [
-          25,
-          27,
-          26
-        ],
-        [
-          33,
-          27,
-          29
-        ],
-        [
-          30,
-          31,
-          38
-        ],
-        [
-          33,
-          31,
-          30
-        ],
-        [
-          32,
-          34,
-          26
-        ],
-        [
-          27,
-          32,
-          26
-        ],
-        [
-          32,
-          27,
-          33
-        ],
-        [
-          32,
-          33,
-          30
-        ],
-        [
-          34,
-          32,
-          30
-        ],
-        [
-          14,
-          15,
-          24
-        ],
-        [
-          24,
-          15,
-          22
-        ],
-        [
-          15,
-          13,
-          22
-        ],
-        [
-          25,
-          18,
-          19
-        ],
-        [
-          18,
-          17,
-          19
-        ],
-        [
-          20,
-          13,
-          8
-        ],
-        [
-          9,
-          20,
-          8
-        ],
-        [
-          13,
-          20,
-          22
-        ],
-        [
-          20,
-          9,
-          22
-        ],
-        [
-          6,
-          23,
-          22
-        ],
-        [
-          7,
-          23,
-          6
-        ],
-        [
-          23,
-          24,
-          22
-        ],
-        [
-          23,
-          25,
-          24
-        ],
-        [
-          11,
-          10,
-          21
-        ],
-        [
-          11,
-          7,
-          10
-        ],
-        [
-          23,
-          11,
-          21
-        ],
-        [
-          11,
-          23,
-          7
-        ],
-        [
-          35,
-          33,
-          29
-        ],
-        [
-          35,
-          31,
-          33
-        ],
-        [
-          35,
-          29,
-          38
-        ],
-        [
-          31,
-          35,
-          38
-        ],
-        [
-          18,
-          16,
-          17
-        ],
-        [
-          10,
-          16,
-          21
-        ],
-        [
-          17,
-          16,
-          10
-        ],
-        [
-          16,
-          18,
-          25
-        ],
-        [
-          16,
-          23,
-          21
-        ],
-        [
-          23,
-          16,
-          25
-        ],
-        [
-          15,
-          14,
-          12
-        ],
-        [
-          13,
-          15,
-          12
-        ]
-      ],
       "contour_fit": {
-        "input_space": "body-fit canvas before contour correction",
+        "input_space": "smooth body-fit canvas before contour correction",
         "rows": [
           {
             "y": 175,
             "left": 89.0,
-            "inner_left": 109.0,
-            "inner_right": 135.0,
-            "right": 151.0,
+            "inner_left": 105.0,
+            "inner_right": 136.0,
+            "right": 150.0,
             "fitted_left": 89.0,
-            "fitted_right": 151.0
+            "fitted_right": 150.0
           },
           {
             "y": 176,
             "left": 90.0,
-            "inner_left": 109.0,
-            "inner_right": 134.0,
-            "right": 150.0,
+            "inner_left": 105.0,
+            "inner_right": 136.0,
+            "right": 149.0,
             "fitted_left": 89,
             "fitted_right": 152
           },
           {
             "y": 180,
-            "left": 91.0,
-            "inner_left": 107.0,
-            "inner_right": 133.0,
-            "right": 148.0,
+            "left": 95.0,
+            "inner_left": 105.0,
+            "inner_right": 137.0,
+            "right": 146.0,
             "fitted_left": 86,
             "fitted_right": 155
           },
           {
             "y": 185,
-            "left": 93.0,
-            "inner_left": 106.0,
-            "inner_right": 134.0,
-            "right": 146.0,
+            "left": 95.0,
+            "inner_left": 105.0,
+            "inner_right": 137.0,
+            "right": 147.0,
             "fitted_left": 86,
             "fitted_right": 156
           },
           {
             "y": 190,
-            "left": 95.0,
-            "inner_left": 106.0,
-            "inner_right": 134.0,
-            "right": 145.0,
+            "left": 94.0,
+            "inner_left": 104.0,
+            "inner_right": 138.0,
+            "right": 148.0,
             "fitted_left": 86,
             "fitted_right": 157
           },
           {
             "y": 196,
-            "left": 95.0,
-            "inner_left": 105.0,
-            "inner_right": 135.0,
-            "right": 144.0,
+            "left": 92.0,
+            "inner_left": 102.0,
+            "inner_right": 140.0,
+            "right": 149.0,
             "fitted_left": 85,
             "fitted_right": 157
           },
           {
             "y": 200,
-            "left": 95.0,
-            "inner_left": 105.0,
-            "inner_right": 135.0,
-            "right": 145.0,
+            "left": 91.0,
+            "inner_left": 103.0,
+            "inner_right": 139.0,
+            "right": 151.0,
             "fitted_left": 85,
             "fitted_right": 158
           },
           {
             "y": 205,
-            "left": 92.0,
-            "inner_left": 104.0,
-            "inner_right": 136.0,
-            "right": 147.0,
+            "left": 89.0,
+            "inner_left": 102.0,
+            "inner_right": 139.0,
+            "right": 152.0,
             "fitted_left": 84,
             "fitted_right": 159
           },
           {
             "y": 210,
-            "left": 90.0,
-            "inner_left": 104.0,
-            "inner_right": 136.0,
-            "right": 150.0,
+            "left": 87.0,
+            "inner_left": 102.0,
+            "inner_right": 140.0,
+            "right": 154.0,
             "fitted_left": 82,
             "fitted_right": 160
           },
           {
             "y": 215,
-            "left": 88.0,
-            "inner_left": 103.0,
-            "inner_right": 137.0,
-            "right": 153.0,
+            "left": 85.0,
+            "inner_left": 101.0,
+            "inner_right": 140.0,
+            "right": 156.0,
             "fitted_left": 80,
             "fitted_right": 161
           },
           {
             "y": 220,
-            "left": 85.0,
-            "inner_left": 102.0,
-            "inner_right": 138.0,
-            "right": 157.0,
+            "left": 82.0,
+            "inner_left": 100.0,
+            "inner_right": 141.0,
+            "right": 158.0,
             "fitted_left": 78,
             "fitted_right": 163
           },
           {
             "y": 225,
-            "left": 82.0,
-            "inner_left": 102.0,
-            "inner_right": 139.0,
-            "right": 160.0,
+            "left": 80.0,
+            "inner_left": 100.0,
+            "inner_right": 142.0,
+            "right": 161.0,
             "fitted_left": 77,
             "fitted_right": 165
           },
           {
             "y": 230,
             "left": 78.0,
-            "inner_left": 101.0,
+            "inner_left": 99.0,
             "inner_right": 142.0,
-            "right": 164.0,
+            "right": 163.0,
             "fitted_left": 74,
             "fitted_right": 167
           },
@@ -1915,51 +1172,52 @@
             "y": 235,
             "left": 75.0,
             "inner_left": 99.0,
-            "inner_right": 146.0,
-            "right": 168.0,
+            "inner_right": 143.0,
+            "right": 166.0,
             "fitted_left": 72,
             "fitted_right": 169
           },
           {
             "y": 240,
-            "left": 71.0,
-            "inner_left": 98.0,
-            "inner_right": 149.0,
-            "right": 172.0,
+            "left": 72.0,
+            "inner_left": 99.0,
+            "inner_right": 143.0,
+            "right": 170.0,
             "fitted_left": 69,
             "fitted_right": 172
           },
           {
             "y": 245,
             "left": 67.0,
-            "inner_left": 96.0,
-            "inner_right": 151.0,
-            "right": 176.0,
+            "inner_left": 99.0,
+            "inner_right": 145.0,
+            "right": 175.0,
             "fitted_left": 66,
             "fitted_right": 176
           },
           {
             "y": 252,
-            "left": 65.0,
-            "inner_left": 101.0,
-            "inner_right": 149.0,
-            "right": 180.0,
-            "fitted_left": 65.0,
-            "fitted_right": 180.0
+            "left": 64.0,
+            "inner_left": 97.0,
+            "inner_right": 117.0,
+            "right": 120.0,
+            "fitted_left": 64.0,
+            "fitted_right": 120.0
           }
         ]
-      }
+      },
+      "mapping": "thin_plate_spline"
     },
     "neutral": {
-      "source": "tool/art_assets/alchemist_lab_v2/neutral.webp",
-      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v3.webp",
-      "note": "Continuous hip-to-hem panel contours measured against the frozen body and approved Scholar garment. Collar, sleeves, wrists and hem endpoints preserved; sapphire/silver/neon master unchanged.",
+      "source": "tool/art_assets/alchemist_lab_v4/neutral.webp",
+      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v4.webp",
+      "note": "Shared four-snap, matching-pocket and three-ring embroidery design, independently fitted to the frozen base; slimmer cuffs preserve wrist endpoints.",
       "points": [
         {
           "name": "neck_l",
           "source": [
-            110,
-            78
+            107,
+            34
           ],
           "target": [
             108,
@@ -1969,8 +1227,8 @@
         {
           "name": "neck_r",
           "source": [
-            128,
-            78
+            133,
+            34
           ],
           "target": [
             131,
@@ -1980,8 +1238,8 @@
         {
           "name": "shoulder_l",
           "source": [
-            84,
-            90
+            69,
+            51
           ],
           "target": [
             84,
@@ -1991,8 +1249,8 @@
         {
           "name": "shoulder_r",
           "source": [
-            156,
-            92
+            171,
+            51
           ],
           "target": [
             154,
@@ -2002,8 +1260,8 @@
         {
           "name": "epaulet_l",
           "source": [
-            77,
-            101
+            56,
+            72
           ],
           "target": [
             75,
@@ -2013,8 +1271,8 @@
         {
           "name": "epaulet_r",
           "source": [
-            163,
-            101
+            185,
+            72
           ],
           "target": [
             164,
@@ -2024,8 +1282,8 @@
         {
           "name": "armpit_l",
           "source": [
-            93,
-            132
+            83,
+            97
           ],
           "target": [
             93,
@@ -2035,8 +1293,8 @@
         {
           "name": "armpit_r",
           "source": [
-            147,
-            132
+            160,
+            97
           ],
           "target": [
             146,
@@ -2046,8 +1304,8 @@
         {
           "name": "elbow_outer_l",
           "source": [
-            68,
-            143
+            51,
+            120
           ],
           "target": [
             69,
@@ -2057,8 +1315,8 @@
         {
           "name": "elbow_inner_l",
           "source": [
-            87,
-            143
+            78,
+            120
           ],
           "target": [
             87,
@@ -2068,8 +1326,8 @@
         {
           "name": "elbow_outer_r",
           "source": [
-            171,
-            143
+            192,
+            120
           ],
           "target": [
             169,
@@ -2079,8 +1337,8 @@
         {
           "name": "elbow_inner_r",
           "source": [
-            152,
-            143
+            166,
+            120
           ],
           "target": [
             151,
@@ -2090,96 +1348,96 @@
         {
           "name": "cuff_top_outer_l",
           "source": [
-            63,
-            165
+            40,
+            155
           ],
           "target": [
-            64,
-            164
+            65,
+            166
           ]
         },
         {
           "name": "cuff_top_inner_l",
           "source": [
-            84,
-            165
+            62,
+            155
           ],
           "target": [
-            84,
-            164
+            83,
+            166
           ]
         },
         {
           "name": "cuff_bottom_outer_l",
           "source": [
-            62,
-            178
+            39,
+            164
           ],
           "target": [
-            64,
+            65,
             174
           ]
         },
         {
           "name": "cuff_bottom_inner_l",
           "source": [
-            83,
-            178
+            60,
+            164
           ],
           "target": [
-            84,
+            83,
             174
           ]
         },
         {
           "name": "cuff_top_inner_r",
           "source": [
-            155,
-            165
+            177,
+            155
           ],
           "target": [
-            155,
-            164
+            156,
+            166
           ]
         },
         {
           "name": "cuff_top_outer_r",
           "source": [
-            178,
-            165
+            201,
+            155
           ],
           "target": [
-            176,
-            164
+            175,
+            166
           ]
         },
         {
           "name": "cuff_bottom_inner_r",
           "source": [
-            155,
-            178
+            180,
+            164
           ],
           "target": [
-            155,
+            156,
             174
           ]
         },
         {
           "name": "cuff_bottom_outer_r",
           "source": [
-            178,
-            178
+            202,
+            164
           ],
           "target": [
-            176,
+            175,
             174
           ]
         },
         {
           "name": "waist_outer_l",
           "source": [
-            94,
-            151
+            86,
+            129
           ],
           "target": [
             96,
@@ -2189,8 +1447,8 @@
         {
           "name": "waist_outer_r",
           "source": [
-            145,
-            151
+            154,
+            129
           ],
           "target": [
             145,
@@ -2201,7 +1459,7 @@
           "name": "waist_opening_l",
           "source": [
             115,
-            151
+            129
           ],
           "target": [
             113,
@@ -2211,8 +1469,8 @@
         {
           "name": "waist_opening_r",
           "source": [
-            123,
-            151
+            125,
+            129
           ],
           "target": [
             124,
@@ -2222,8 +1480,8 @@
         {
           "name": "hip_l",
           "source": [
-            86,
-            183
+            68,
+            176
           ],
           "target": [
             86,
@@ -2233,8 +1491,8 @@
         {
           "name": "hip_r",
           "source": [
-            154,
-            183
+            172,
+            176
           ],
           "target": [
             152,
@@ -2244,8 +1502,8 @@
         {
           "name": "skirt_seam_l",
           "source": [
-            100,
-            235
+            97,
+            240
           ],
           "target": [
             101,
@@ -2255,8 +1513,8 @@
         {
           "name": "skirt_seam_r",
           "source": [
-            142,
-            235
+            143,
+            240
           ],
           "target": [
             137,
@@ -2266,8 +1524,8 @@
         {
           "name": "skirt_outer_l",
           "source": [
-            59,
-            251
+            38,
+            253
           ],
           "target": [
             60,
@@ -2277,8 +1535,8 @@
         {
           "name": "skirt_outer_r",
           "source": [
-            181,
-            251
+            202,
+            253
           ],
           "target": [
             180,
@@ -2288,8 +1546,8 @@
         {
           "name": "tail_l",
           "source": [
-            87,
-            292
+            68,
+            309
           ],
           "target": [
             87,
@@ -2299,8 +1557,8 @@
         {
           "name": "tail_r",
           "source": [
-            157,
-            292
+            174,
+            309
           ],
           "target": [
             158,
@@ -2310,8 +1568,8 @@
         {
           "name": "inner_hem_l",
           "source": [
-            110,
-            265
+            105,
+            282
           ],
           "target": [
             111,
@@ -2321,8 +1579,8 @@
         {
           "name": "inner_hem_r",
           "source": [
-            137,
-            265
+            135,
+            282
           ],
           "target": [
             134,
@@ -2332,8 +1590,8 @@
         {
           "name": "lower_edge_l",
           "source": [
-            75,
-            278
+            57,
+            292
           ],
           "target": [
             77,
@@ -2343,8 +1601,8 @@
         {
           "name": "lower_edge_r",
           "source": [
-            169,
-            278
+            182,
+            292
           ],
           "target": [
             170,
@@ -2396,527 +1654,156 @@
           ]
         }
       ],
-      "triangles": [
-        [
-          38,
-          17,
-          37
-        ],
-        [
-          37,
-          1,
-          36
-        ],
-        [
-          3,
-          1,
-          37
-        ],
-        [
-          14,
-          39,
-          36
-        ],
-        [
-          12,
-          14,
-          36
-        ],
-        [
-          3,
-          7,
-          1
-        ],
-        [
-          2,
-          4,
-          36
-        ],
-        [
-          8,
-          12,
-          36
-        ],
-        [
-          4,
-          8,
-          36
-        ],
-        [
-          7,
-          21,
-          23
-        ],
-        [
-          21,
-          7,
-          11
-        ],
-        [
-          17,
-          10,
-          37
-        ],
-        [
-          7,
-          10,
-          11
-        ],
-        [
-          39,
-          30,
-          38
-        ],
-        [
-          14,
-          28,
-          39
-        ],
-        [
-          24,
-          28,
-          14
-        ],
-        [
-          28,
-          24,
-          26
-        ],
-        [
-          15,
-          14,
-          12
-        ],
-        [
-          15,
-          24,
-          14
-        ],
-        [
-          1,
-          0,
-          36
-        ],
-        [
-          0,
-          2,
-          36
-        ],
-        [
-          6,
-          8,
-          4
-        ],
-        [
-          6,
-          7,
-          23
-        ],
-        [
-          2,
-          6,
-          4
-        ],
-        [
-          0,
-          6,
-          2
-        ],
-        [
-          7,
-          6,
-          1
-        ],
-        [
-          6,
-          0,
-          1
-        ],
-        [
-          25,
-          24,
-          23
-        ],
-        [
-          24,
-          25,
-          26
-        ],
-        [
-          5,
-          3,
-          37
-        ],
-        [
-          10,
-          5,
-          37
-        ],
-        [
-          5,
-          7,
-          3
-        ],
-        [
-          5,
-          10,
-          7
-        ],
-        [
-          34,
-          30,
-          39
-        ],
-        [
-          28,
-          34,
-          39
-        ],
-        [
-          34,
-          28,
-          26
-        ],
-        [
-          22,
-          6,
-          23
-        ],
-        [
-          24,
-          22,
-          23
-        ],
-        [
-          22,
-          20,
-          6
-        ],
-        [
-          16,
-          21,
-          11
-        ],
-        [
-          21,
-          16,
-          23
-        ],
-        [
-          16,
-          10,
-          17
-        ],
-        [
-          10,
-          16,
-          11
-        ],
-        [
-          25,
-          19,
-          29
-        ],
-        [
-          19,
-          17,
-          38
-        ],
-        [
-          29,
-          19,
-          38
-        ],
-        [
-          32,
-          34,
-          26
-        ],
-        [
-          34,
-          32,
-          30
-        ],
-        [
-          27,
-          25,
-          29
-        ],
-        [
-          33,
-          27,
-          29
-        ],
-        [
-          25,
-          27,
-          26
-        ],
-        [
-          27,
-          32,
-          26
-        ],
-        [
-          32,
-          27,
-          33
-        ],
-        [
-          30,
-          31,
-          38
-        ],
-        [
-          32,
-          31,
-          30
-        ],
-        [
-          31,
-          32,
-          33
-        ],
-        [
-          6,
-          9,
-          8
-        ],
-        [
-          20,
-          9,
-          6
-        ],
-        [
-          18,
-          19,
-          25
-        ],
-        [
-          18,
-          25,
-          23
-        ],
-        [
-          16,
-          18,
-          23
-        ],
-        [
-          35,
-          33,
-          29
-        ],
-        [
-          35,
-          31,
-          33
-        ],
-        [
-          35,
-          29,
-          38
-        ],
-        [
-          31,
-          35,
-          38
-        ],
-        [
-          13,
-          9,
-          20
-        ],
-        [
-          13,
-          15,
-          12
-        ],
-        [
-          8,
-          13,
-          12
-        ],
-        [
-          9,
-          13,
-          8
-        ],
-        [
-          15,
-          13,
-          24
-        ],
-        [
-          13,
-          22,
-          24
-        ],
-        [
-          13,
-          20,
-          22
-        ],
-        [
-          19,
-          18,
-          17
-        ],
-        [
-          18,
-          16,
-          17
-        ]
-      ],
       "contour_fit": {
-        "input_space": "body-fit canvas before contour correction",
+        "input_space": "smooth body-fit canvas before contour correction",
         "rows": [
           {
             "y": 177,
-            "left": 84.0,
+            "left": 87.0,
             "inner_left": 105.0,
-            "inner_right": 131.0,
-            "right": 153.0,
-            "fitted_left": 84.0,
-            "fitted_right": 153.0
+            "inner_right": 133.0,
+            "right": 150.0,
+            "fitted_left": 87.0,
+            "fitted_right": 150.0
           },
           {
             "y": 180,
-            "left": 85.0,
+            "left": 86.0,
             "inner_left": 104.0,
-            "inner_right": 132.0,
+            "inner_right": 133.0,
             "right": 151.0,
             "fitted_left": 84,
             "fitted_right": 154
           },
           {
             "y": 185,
-            "left": 89.0,
-            "inner_left": 103.0,
-            "inner_right": 133.0,
-            "right": 148.0,
+            "left": 90.0,
+            "inner_left": 102.0,
+            "inner_right": 134.0,
+            "right": 147.0,
             "fitted_left": 84,
             "fitted_right": 155
           },
           {
             "y": 190,
-            "left": 87.0,
-            "inner_left": 103.0,
-            "inner_right": 134.0,
-            "right": 149.0,
+            "left": 89.0,
+            "inner_left": 101.0,
+            "inner_right": 135.0,
+            "right": 148.0,
             "fitted_left": 85,
             "fitted_right": 156
           },
           {
             "y": 196,
-            "left": 86.0,
-            "inner_left": 102.0,
-            "inner_right": 136.0,
-            "right": 150.0,
+            "left": 87.0,
+            "inner_left": 100.0,
+            "inner_right": 135.0,
+            "right": 149.0,
             "fitted_left": 84,
             "fitted_right": 157
           },
           {
             "y": 200,
             "left": 86.0,
-            "inner_left": 102.0,
+            "inner_left": 99.0,
             "inner_right": 136.0,
-            "right": 151.0,
+            "right": 150.0,
             "fitted_left": 84,
             "fitted_right": 158
           },
           {
             "y": 205,
-            "left": 87.0,
-            "inner_left": 101.0,
+            "left": 84.0,
+            "inner_left": 99.0,
             "inner_right": 136.0,
-            "right": 150.0,
+            "right": 151.0,
             "fitted_left": 84,
             "fitted_right": 158
           },
           {
             "y": 210,
-            "left": 87.0,
-            "inner_left": 101.0,
+            "left": 83.0,
+            "inner_left": 99.0,
             "inner_right": 136.0,
-            "right": 150.0,
+            "right": 153.0,
             "fitted_left": 83,
             "fitted_right": 159
           },
           {
             "y": 215,
-            "left": 85.0,
-            "inner_left": 100.0,
-            "inner_right": 136.0,
-            "right": 151.0,
+            "left": 81.0,
+            "inner_left": 98.0,
+            "inner_right": 137.0,
+            "right": 154.0,
             "fitted_left": 82,
             "fitted_right": 160
           },
           {
             "y": 220,
-            "left": 84.0,
-            "inner_left": 100.0,
-            "inner_right": 136.0,
-            "right": 153.0,
+            "left": 79.0,
+            "inner_left": 98.0,
+            "inner_right": 137.0,
+            "right": 156.0,
             "fitted_left": 80,
             "fitted_right": 162
           },
           {
             "y": 225,
-            "left": 82.0,
-            "inner_left": 100.0,
-            "inner_right": 135.0,
-            "right": 156.0,
+            "left": 77.0,
+            "inner_left": 98.0,
+            "inner_right": 138.0,
+            "right": 159.0,
             "fitted_left": 79,
             "fitted_right": 164
           },
           {
             "y": 230,
-            "left": 79.0,
-            "inner_left": 99.0,
-            "inner_right": 135.0,
-            "right": 159.0,
+            "left": 75.0,
+            "inner_left": 98.0,
+            "inner_right": 139.0,
+            "right": 162.0,
             "fitted_left": 76,
             "fitted_right": 166
           },
           {
             "y": 235,
-            "left": 76.0,
+            "left": 72.0,
             "inner_left": 98.0,
-            "inner_right": 136.0,
-            "right": 162.0,
+            "inner_right": 139.0,
+            "right": 165.0,
             "fitted_left": 73,
             "fitted_right": 168
           },
           {
             "y": 240,
-            "left": 72.0,
-            "inner_left": 97.0,
-            "inner_right": 138.0,
-            "right": 167.0,
+            "left": 68.0,
+            "inner_left": 98.0,
+            "inner_right": 141.0,
+            "right": 170.0,
             "fitted_left": 69,
             "fitted_right": 171
           },
           {
             "y": 245,
-            "left": 65.0,
+            "left": 63.0,
             "inner_left": 96.0,
-            "inner_right": 141.0,
-            "right": 173.0,
+            "inner_right": 145.0,
+            "right": 176.0,
             "fitted_left": 64,
             "fitted_right": 176
           },
           {
             "y": 252,
-            "left": 65.0,
-            "inner_left": 94.0,
-            "inner_right": 145.0,
-            "right": 177.0,
-            "fitted_left": 65.0,
-            "fitted_right": 177.0
+            "left": 64.0,
+            "inner_left": 93.0,
+            "inner_right": 149.0,
+            "right": 176.0,
+            "fitted_left": 64.0,
+            "fitted_right": 176.0
           }
         ]
-      }
+      },
+      "mapping": "thin_plate_spline"
     }
   }
 }

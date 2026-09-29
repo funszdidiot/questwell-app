@@ -20,9 +20,12 @@ and card composites have been inspected; founder accepted the current three-body
 set after app delivery.
 See `docs/qa/SCOUT_FIT_REVIEW.md` and `scout-fit-review.html` in the preview.
 
-**Alchemist fit:** 🧪 `alchemist-lab-v3` is ready for development review.
+**Alchemist fit:** 🧪 `alchemist-lab-v4` is ready for development review.
 Founder rejected revision 2's fit. Revision 3 repairs the continuous hip/thigh
 contours and adds an actual-image test for exposed outer trouser edges.
+Revision 4 follows the requested consistency pass: matching snaps, pockets and
+chemistry embroidery; smoother waist piping; slimmer cuffs and silver edging.
+The three independent body fits retain the corrected trouser coverage.
 Three sapphire-blue/silver laboratory coats with neon-green accents follow the founder’s request
 for a stronger science/chemistry identity and color distinction from Scout.
 The beaker/flask emblems are removed. Body-specific fitting, jacket coverage
