@@ -20,10 +20,11 @@ and card composites have been inspected; founder accepted the current three-body
 set after app delivery.
 See `docs/qa/SCOUT_FIT_REVIEW.md` and `scout-fit-review.html` in the preview.
 
-**Alchemist fit:** 🧪 `alchemist-lab-v1` is ready for development review.
-Three sapphire-blue/silver/cyan laboratory coats follow the founder’s request
+**Alchemist fit:** 🧪 `alchemist-lab-v2` is ready for development review.
+Three sapphire-blue/silver laboratory coats with neon-green accents follow the founder’s request
 for a stronger science/chemistry identity and color distinction from Scout.
-Body-specific fitting, jacket coverage and portrait/card rendering are wired.
+The beaker/flask emblems are removed. Body-specific fitting, jacket coverage
+and portrait/card rendering are wired.
 Founder visual approval is pending; see `docs/qa/ALCHEMIST_FIT_REVIEW.md`.
 
 **Active workstream:** Epic 2 — Hearth Visual Overhaul (manual iPhone Safari visual acceptance gate)  

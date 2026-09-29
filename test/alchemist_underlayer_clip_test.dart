@@ -96,7 +96,7 @@ void main() {
           ).map((image) => (image.image as AssetImage).assetName).toList();
           expect(images, [
             'assets/images/questwell/avatar/base/base_$body.webp',
-            'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v1.webp',
+            'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v2.webp',
           ]);
           final clip = tester.widget<ClipPath>(
             find.descendant(of: layer, matching: find.byType(ClipPath)),

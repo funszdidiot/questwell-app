@@ -1,6 +1,6 @@
 {
   "canvas": [240, 320],
-  "description": "Visible regions of the frozen avatar beneath the fitted Alchemist lab coat. These preserve anatomy and base front clothing while hiding suit jacket shoulders, sleeves and hip flaps. Checked against alchemist-lab-v1.",
+  "description": "Visible regions of the frozen avatar beneath the fitted Alchemist lab coat. These preserve anatomy and base front clothing while hiding suit jacket shoulders, sleeves and hip flaps. Checked against alchemist-lab-v2.",
   "bodies": {
     "male": [
       [[0,0],[240,0],[240,75],[137,75],[137,83],[105,83],[105,75],[0,75]],

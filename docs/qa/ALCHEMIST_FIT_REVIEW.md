@@ -1,6 +1,6 @@
 # Alchemist lab-coat review — 29 September 2026
 
-**Development candidate: `alchemist-lab-v1`. Founder visual approval pending.**
+**Development candidate: `alchemist-lab-v2`. Founder visual approval pending.**
 
 This class follows the approved Scholar fit checklist. Scout was approved after
 its app delivery; its `scout-approved-v1` artwork and fit inputs are frozen.
@@ -10,8 +10,10 @@ its app delivery; its `scout-approved-v1` artwork and fit inputs are frozen.
 The founder requested colors more distinct from Scout, then a more recognizable
 science/chemistry aesthetic, then selected the second blue color treatment.
 The selected direction is a sapphire-blue laboratory coat with cobalt lining,
-cyan molecule embroidery, cool silver edging/snaps, and a flask emblem on a
-chest pocket. The white laboratory-coat study supplied the chemistry details;
+neon-green molecule embroidery and cuff bands, cool silver edging/snaps,
+and plain chest pockets. The founder requested green accents, then explicitly
+removed the beaker/flask emblem from all three variants. The white laboratory-coat
+study supplied the chemistry details;
 the founder's preferred all-blue study supplied the final palette and finish.
 The earlier teal/gold, ceremonial and white studies are not runtime assets.
 Mystical sigils, jeweled lapels and hanging ornaments were removed. Molecular
@@ -32,7 +34,7 @@ motifs are decorative embroidery, not instructional chemistry diagrams.
 - [x] Export transparent 240 × 320 overlays; no anatomy or base clothes baked in.
 - [x] Fit shoulder slope, armpit, elbow, waist, wrist and hem to each base.
 - [x] Keep compact cuffs at the wrists and both hands and boots readable.
-- [x] Keep front seams continuous and molecular/flask embroidery clear.
+- [x] Keep front seams continuous and molecular embroidery clear.
 - [x] Inspect the three composites at enlarged portrait and 176 px card sizes.
 - [x] Add Alchemist-specific jacket occlusion while preserving head/hair,
   shirt/tie, belt, hands, trousers and shoes.
@@ -53,11 +55,12 @@ approval, promote Epic 2, or authorize a production merge/launch.
 
 ## Asset sources and reproduction
 
-Runtime assets are the three `alchemist_coat_*_lab_v1.webp` files in
+Runtime assets are the three `alchemist_coat_*_lab_v2.webp` files in
 `assets/images/questwell/avatar/classes/alchemist/`.
 The built-in image-generation tool produced the garment masters, chemistry
-details, seam refinement and selected blue treatment. Sources and prompts are retained in
-`tool/art_assets/alchemist_lab_v1/`.
+details, seam refinement, selected blue treatment, neon-green accents and flask
+removal. Sources and prompts are retained in
+`tool/art_assets/alchemist_lab_v2/`.
 
 `tool/alchemist_fit_anchors.json` records measured source/base coordinates and
 the nonfolding mesh. `node tool/fit_alchemist_coat.cjs` reproduces the lossless

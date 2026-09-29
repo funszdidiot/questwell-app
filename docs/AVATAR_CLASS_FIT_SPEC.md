@@ -103,7 +103,7 @@ Freeze the approved base avatars. Complete **Scholar** for one body type at a ti
 | --- | --- | --- | --- | --- |
 | Scholar | 240 x 320 | 240 x 320 | 240 x 320 | **Approved template.** Frozen at scholar-approved-v1 after founder direction. Preserve its reviewed artwork, body-specific coverage and presentation. |
 | Scout | 240 x 320 | 240 x 320 | 240 x 320 | **Approved: scout-approved-v1.** Three fitted coats and Scout-specific jacket coverage are frozen. See docs/qa/SCOUT_FIT_REVIEW.md. |
-| Alchemist | 240 x 320 | 240 x 320 | 240 x 320 | **Review candidate: alchemist-lab-v1.** Chemistry lab coats in sapphire blue, silver and cyan. See docs/qa/ALCHEMIST_FIT_REVIEW.md; founder review pending. |
+| Alchemist | 240 x 320 | 240 x 320 | 240 x 320 | **Review candidate: alchemist-lab-v2.** Chemistry lab coats in sapphire blue and silver with neon-green molecular accents and plain chest pockets. See docs/qa/ALCHEMIST_FIT_REVIEW.md; founder review pending. |
 
 Do not mark Scholar complete based on a passing build. Record the founder's visual decision for each body type before applying the template to Scout or promoting Epic 2.
 

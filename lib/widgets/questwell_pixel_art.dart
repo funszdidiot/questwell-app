@@ -15,7 +15,7 @@ class QuestwellPixelPalette {
       case 'scout':
         return const [Color(0xFF173B2B), Color(0xFF477A4C), Color(0xFFD6A84B)];
       case 'alchemist':
-        return const [Color(0xFF1749A0), Color(0xFF35BFFF), Color(0xFFCCDCEB)];
+        return const [Color(0xFF1749A0), Color(0xFFB6FF36), Color(0xFFCCDCEB)];
       case 'guardian':
         return const [Color(0xFF5C1D1D), Color(0xFFA84432), Color(0xFFF1B24A)];
       default:
@@ -56,11 +56,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       'assets/images/questwell/avatar/classes/scout/scout_coat_neutral_polish_v1.webp';
 
   static const _alchemistMale =
-      'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v1.webp';
+      'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v2.webp';
   static const _alchemistFemale =
-      'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v1.webp';
+      'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v2.webp';
   static const _alchemistNeutral =
-      'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v1.webp';
+      'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v2.webp';
 
   final String archetype;
   final Map<String, String> equippedSlugs;

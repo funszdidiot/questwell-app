@@ -56,9 +56,9 @@
   "candidate_classes": {
     "alchemist": {
       "visual_approval": "pending_founder_review",
-      "art_revision": "alchemist-lab-v1",
+      "art_revision": "alchemist-lab-v2",
       "template_reference": "scholar-approved-v1",
-      "design": "Sapphire-blue chemistry lab coats with cool silver trim and cyan molecular/flask embroidery; selected blue palette, no mystic sigils or jeweled lapels.",
+      "design": "Sapphire-blue chemistry coats with cool silver trim, neon-green molecular embroidery and cuff bands, and plain chest pockets. Beaker/flask emblems removed at founder request.",
       "bodies": [
         "male",
         "female",
@@ -66,22 +66,22 @@
       ],
       "assets": [
         {
-          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v1.webp",
-          "sha256": "3dbc64e171837d9930965f3c895975854d9a1d2d57ed9e29bc0436db2b41a0a3"
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v2.webp",
+          "sha256": "91d92c0c4cf9a44fbdc56f3da597a8813e47f1f36a7473f7f98e2f217ce79b35"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v1.webp",
-          "sha256": "f4c706fa96868c2b1a53fe7424c0afbd9b24bb09fd72aaf69f7c757d32d63229"
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v2.webp",
+          "sha256": "9e4f34712a0accca3e56935f6226e6ef5e2f26abd42602c60c8061a164a3316d"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v1.webp",
-          "sha256": "b5e9ec7259706f1c51b80a2bd1647c34394e9a7f3a2535f0a3f53f464b69e3a2"
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v2.webp",
+          "sha256": "95e91978d4b36771cba4d4a7ee2581948b64f0cec612eb73302c403ee22ca4d4"
         }
       ],
       "fit_inputs": [
         {
           "path": "tool/alchemist_underlayer_visibility.json",
-          "sha256": "c2fba4d1f98757487b418a89bdb2fe6479e2653e358b559575f69378ea6a422d"
+          "sha256": "e3dd9c8a483049974b7d3ae959cc1f4a524be1c80aa131ca14c8d43a5f6d67f1"
         },
         {
           "path": "lib/widgets/alchemist_underlayer_clip.dart",
@@ -93,19 +93,19 @@
         },
         {
           "path": "tool/alchemist_fit_anchors.json",
-          "sha256": "e686acc7901f8c9499c75060cee473cde85cddd5382e7c3aeabe96565260723b"
+          "sha256": "931508b8b0ab59329de216e0b0de32bd7ccf030e289c5b9eb02ac15cf6bc013c"
         },
         {
-          "path": "tool/art_assets/alchemist_lab_v1/male.webp",
-          "sha256": "4db05fb2beb42475e8286504ac52b927bdcaebbba308e2baed3927a3644da1b0"
+          "path": "tool/art_assets/alchemist_lab_v2/male.webp",
+          "sha256": "67d3f1dab16c3354f9f11c965e1153b2bd531a14ba90ae2b5c9cafbd848d0153"
         },
         {
-          "path": "tool/art_assets/alchemist_lab_v1/female.webp",
-          "sha256": "66a4cab0e068973559fe9cf4431accd09d0b9fd79d2fb2e9ff2c2cfaac70ce34"
+          "path": "tool/art_assets/alchemist_lab_v2/female.webp",
+          "sha256": "368909443cc9f82f2026d4ccabfc1fad894c175f9d1936d4b9f08a6a667f3f47"
         },
         {
-          "path": "tool/art_assets/alchemist_lab_v1/neutral.webp",
-          "sha256": "45d5540421e6dd1c258e6ecb82f84e59ea683013a3699918c494353ede3d0210"
+          "path": "tool/art_assets/alchemist_lab_v2/neutral.webp",
+          "sha256": "65e0980aff2bfc84316f107bbeb4b87d0f74f31021415488041e976c8d243da6"
         }
       ]
     }

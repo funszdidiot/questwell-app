@@ -1,0 +1,23 @@
+{
+  "tool": "built-in image_gen",
+  "reference_revision": "alchemist-lab-v1",
+  "revision": "alchemist-lab-v2",
+  "selection": "Founder requested neon-green accents, then removal of the beaker/flask emblem. All three body fits remain pending visual approval.",
+  "stages": [
+    {
+      "name": "neon_accent",
+      "prompt": "Use case: precise-object-edit.\nEdit target: this single fitted Questwell Alchemist garment, on a transparent 3:4 avatar canvas.\nMake ONE color accent change. Recolor the existing thin CYAN molecular-ring embroidery on the sleeve and lower coat panels, the small flask chest-pocket emblem, and the narrow cyan cuff inlay to vivid NEON LIME GREEN (#B6FF36), with restrained pale-lime highlights. The green must be bright and clearly visible at small game-avatar size but limited to those existing accent details.\nPreserve all sapphire-blue cloth, cobalt lining, cool silver lapel/front/hem edging, metal snaps, pockets, folds and shading. Do not turn silver edging green, add panels, expand the embroidery, create glow halos, add symbols or change the design.\nSTRICT FIT LOCK: exactly the same normalized canvas placement, silhouette, shoulder width, arm angles, cuff endpoints, waist, front opening and split hem endpoints as the input. Keep the entire canvas and its empty head/foot space; do not crop, zoom, recenter, resize the garment within the canvas, or redraw its proportions. Both coat front halves and sleeve-to-torso gaps remain separate and transparent.\nOutput only the same garment with the green accent edit. Actual transparent alpha everywhere outside the garment. No person, head, hair, skin, hands, shirt, tie, belt, pants, shoes, mannequin, ground shadow, background, lettering or extra accessories. Clean smooth seams and crisp continuous outlines.",
+      "body_suffix": "Body variant: {male|female|neutral}. Preserve this exact variant's independently fitted geometry."
+    },
+    {
+      "name": "remove_flask",
+      "prompt": "Use case: precise-object-edit.\nEdit this exact transparent Questwell Alchemist coat. Remove ONLY the small neon-green beaker/Erlenmeyer-flask emblem from the chest pocket. Fill the emblem area with matching plain sapphire-blue pocket cloth and natural shading, leaving a clean unmarked chest pocket. There must be no beaker, flask, bottle, vial, potion, or replacement badge anywhere.\nKeep all existing neon-lime molecular embroidery and narrow green cuff bands unchanged. Preserve the blue fabric, silver trim, pockets, metal snaps, seams, folds, illustration style, and every other detail.\nStrictly preserve the exact canvas dimensions/aspect, normalized coat scale and placement, shoulder and sleeve contours, cuff positions, waist, front opening and hems. Do not redesign, zoom, crop, recenter or change the garment fit. Preserve the real transparent background, empty head/foot space and transparent openings. Garment only: no person, body parts, base clothes, background, ground shadow, text or additional objects.",
+      "body_suffix": "This is the {male|female|neutral} body variant."
+    }
+  ],
+  "selected_sources": {
+    "male": "exec-7be92b08-4897-4762-a279-1a87a2a58bd5.png",
+    "female": "exec-6aee584a-0060-4433-ac32-90226d53a852.png",
+    "neutral": "exec-2bbc4150-f1b6-4f50-9c26-d4e67442ce04.png"
+  }
+}
