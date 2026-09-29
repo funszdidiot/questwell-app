@@ -53,98 +53,7 @@
   "template_revision": "scholar-approved-v1",
   "portrait_art_height_factor": 0.96,
   "selection_art_height": 176,
-  "candidate_classes": {
-    "wanderer": {
-      "art_revision": "wanderer-v2",
-      "visual_approval": "pending_founder_review",
-      "bodies": [
-        "male",
-        "female",
-        "neutral"
-      ],
-      "design": "Tobacco-brown travel coat with copper-gold edging, compass stitching and continuous ochre rear lining; independent body fits.",
-      "assets": [
-        {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v2.webp",
-          "sha256": "1b3824a0dec90e69639487eb34d642495bfd5315c85d07c5583bdc1f9c902a88"
-        },
-        {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_male_wrap_v2.webp",
-          "sha256": "321c528cefacb99ea6807c3607b3292ce55d4d4bbfb34281def1edae59881353"
-        },
-        {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v2.webp",
-          "sha256": "5ad18fedcb95a18b9f32822303eacec842274aabcb12b96dd59a07d934e90a4e"
-        },
-        {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_female_wrap_v2.webp",
-          "sha256": "62f2e7f919de9deee44de5b34e450f19c412941bac79fc7f035fc25c0bf1b8b1"
-        },
-        {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v2.webp",
-          "sha256": "6e7c07a8da7b122e471025ea2c4b8d6805c1ea6f61d026ec34cb98bf107b95b6"
-        },
-        {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_neutral_wrap_v2.webp",
-          "sha256": "b753a918c3e4468a1e66b635f5d5c02618c04ae4311986d234c18541803034b0"
-        }
-      ],
-      "fit_inputs": [
-        {
-          "path": "tool/wanderer_fit_anchors.json",
-          "sha256": "b57594a948aa1c83685a6830551f971f5058da8cc04fc4e4b71eeaed63eaed64"
-        },
-        {
-          "path": "tool/wanderer_wrap_fit.json",
-          "sha256": "e41550f963d8f8ef62bbccf04bf051ea6de3e30b1689aba8cdc811f30844c32e"
-        },
-        {
-          "path": "tool/fit_wanderer_coat.cjs",
-          "sha256": "4bc653e621d360aa3259e4e2c0dc0204b997118d512672c58b475205b22c1b0f"
-        },
-        {
-          "path": "tool/fit_wanderer_rear.cjs",
-          "sha256": "54cf47be716f7fd517ec36cd7885ba95cb4d312ba1ccaefdcca329904adb4bbc"
-        },
-        {
-          "path": "tool/wanderer_underlayer_visibility.json",
-          "sha256": "7306890443617be680df3dd2e5a0b0fddc9885e798849d2faeb303fc8bcd80c3"
-        },
-        {
-          "path": "tool/generate_wanderer_underlayer.py",
-          "sha256": "680469bab7a1be7f29fd166cd4e69dabbe2e20872e178c42af00cdbe4f84cec2"
-        },
-        {
-          "path": "lib/widgets/wanderer_underlayer_clip.dart",
-          "sha256": "e91c59cdde76e30a02ade8393d1e367b24835878768245f8c5b539abd698277e"
-        },
-        {
-          "path": "web/wanderer-underlayer.js",
-          "sha256": "d950da168b4545a9ae7c3214e557c809f4f32b97d28cab7afc251542bd4a5953"
-        },
-        {
-          "path": "tool/art_assets/wanderer_v2/prompts.json",
-          "sha256": "7b234278c237b44bfbcdb913cd51fec805aa0f68a143ef1a4b8de5f89d596d62"
-        },
-        {
-          "path": "tool/art_assets/wanderer_v2/male.webp",
-          "sha256": "1fbffdb111d34473b773c0f3ff550fb7eb2e81c7b4e742fdeb3d0cdee982fd33"
-        },
-        {
-          "path": "tool/art_assets/wanderer_v2/female.webp",
-          "sha256": "bf5595b6b2f84b6382b0c595f323581284b74328450a7cba418f1eab72833172"
-        },
-        {
-          "path": "tool/art_assets/wanderer_v2/neutral.webp",
-          "sha256": "fae646244d49e873f889dc2b0517e831694c29942459df7af2ac14160eb5e9b7"
-        },
-        {
-          "path": "tool/art_assets/wanderer_v2/rear.webp",
-          "sha256": "adf02e2a355d5d64c158f2fa30c5ec3c21b6e7a7cd37dbc1bde02c0c16a04f32"
-        }
-      ]
-    }
-  },
+  "candidate_classes": {},
   "approved_classes": {
     "scout": {
       "visual_approval": "founder_approved",
@@ -347,6 +256,99 @@
         }
       ],
       "approval_revision": "guardian-approved-v1"
+    },
+    "wanderer": {
+      "art_revision": "wanderer-v2",
+      "visual_approval": "founder_approved_2026-09-29",
+      "bodies": [
+        "male",
+        "female",
+        "neutral"
+      ],
+      "design": "Tobacco-brown travel coat with copper-gold edging, compass stitching and continuous ochre rear lining; independent body fits.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v2.webp",
+          "sha256": "1b3824a0dec90e69639487eb34d642495bfd5315c85d07c5583bdc1f9c902a88"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_male_wrap_v2.webp",
+          "sha256": "321c528cefacb99ea6807c3607b3292ce55d4d4bbfb34281def1edae59881353"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v2.webp",
+          "sha256": "5ad18fedcb95a18b9f32822303eacec842274aabcb12b96dd59a07d934e90a4e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_female_wrap_v2.webp",
+          "sha256": "62f2e7f919de9deee44de5b34e450f19c412941bac79fc7f035fc25c0bf1b8b1"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v2.webp",
+          "sha256": "6e7c07a8da7b122e471025ea2c4b8d6805c1ea6f61d026ec34cb98bf107b95b6"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_neutral_wrap_v2.webp",
+          "sha256": "b753a918c3e4468a1e66b635f5d5c02618c04ae4311986d234c18541803034b0"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/wanderer_fit_anchors.json",
+          "sha256": "b57594a948aa1c83685a6830551f971f5058da8cc04fc4e4b71eeaed63eaed64"
+        },
+        {
+          "path": "tool/wanderer_wrap_fit.json",
+          "sha256": "e41550f963d8f8ef62bbccf04bf051ea6de3e30b1689aba8cdc811f30844c32e"
+        },
+        {
+          "path": "tool/fit_wanderer_coat.cjs",
+          "sha256": "4bc653e621d360aa3259e4e2c0dc0204b997118d512672c58b475205b22c1b0f"
+        },
+        {
+          "path": "tool/fit_wanderer_rear.cjs",
+          "sha256": "54cf47be716f7fd517ec36cd7885ba95cb4d312ba1ccaefdcca329904adb4bbc"
+        },
+        {
+          "path": "tool/wanderer_underlayer_visibility.json",
+          "sha256": "7306890443617be680df3dd2e5a0b0fddc9885e798849d2faeb303fc8bcd80c3"
+        },
+        {
+          "path": "tool/generate_wanderer_underlayer.py",
+          "sha256": "680469bab7a1be7f29fd166cd4e69dabbe2e20872e178c42af00cdbe4f84cec2"
+        },
+        {
+          "path": "lib/widgets/wanderer_underlayer_clip.dart",
+          "sha256": "e91c59cdde76e30a02ade8393d1e367b24835878768245f8c5b539abd698277e"
+        },
+        {
+          "path": "web/wanderer-underlayer.js",
+          "sha256": "d950da168b4545a9ae7c3214e557c809f4f32b97d28cab7afc251542bd4a5953"
+        },
+        {
+          "path": "tool/art_assets/wanderer_v2/prompts.json",
+          "sha256": "7b234278c237b44bfbcdb913cd51fec805aa0f68a143ef1a4b8de5f89d596d62"
+        },
+        {
+          "path": "tool/art_assets/wanderer_v2/male.webp",
+          "sha256": "1fbffdb111d34473b773c0f3ff550fb7eb2e81c7b4e742fdeb3d0cdee982fd33"
+        },
+        {
+          "path": "tool/art_assets/wanderer_v2/female.webp",
+          "sha256": "bf5595b6b2f84b6382b0c595f323581284b74328450a7cba418f1eab72833172"
+        },
+        {
+          "path": "tool/art_assets/wanderer_v2/neutral.webp",
+          "sha256": "fae646244d49e873f889dc2b0517e831694c29942459df7af2ac14160eb5e9b7"
+        },
+        {
+          "path": "tool/art_assets/wanderer_v2/rear.webp",
+          "sha256": "adf02e2a355d5d64c158f2fa30c5ec3c21b6e7a7cd37dbc1bde02c0c16a04f32"
+        }
+      ],
+      "approval_revision": "wanderer-approved-v1",
+      "approval_quote": "Perfect",
+      "approved_source_commit": "9b26c1da4720fe61aabd6971eaf9c7740b173068"
     }
   },
   "candidate_layers": {},

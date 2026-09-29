@@ -16,7 +16,7 @@ lining for all four existing classes. Render rear → clipped base → front at
 the same canvas origin and scale. Rear fabric is continuous; legs occlude it
 naturally, and its side edges tuck behind the front panels. The founder accepted this layered appearance on 2026-09-29 and directed work
 on Wanderer. See `docs/qa/ROBE_WRAP_REVIEW.md`. Wanderer uses the same construction
-and awaits its own visual acceptance.
+and was accepted on 2026-09-29.
 For Scholar, the original suit jacket is hidden beneath the robe using a
 body-specific visibility path. The frozen base file remains intact. Head/hair,
 shirt/tie, belt, hands, trousers and shoes remain visible; jacket shoulders,
@@ -112,7 +112,7 @@ Freeze the approved base avatars. Complete **Scholar** for one body type at a ti
 | Scout | 240 x 320 | 240 x 320 | 240 x 320 | **Approved: scout-approved-v1.** Three fitted coats and Scout-specific jacket coverage are frozen. See docs/qa/SCOUT_FIT_REVIEW.md. |
 | Alchemist | 240 x 320 | 240 x 320 | 240 x 320 | **Approved: alchemist-approved-v1 (artwork alchemist-lab-v4).** Chemistry lab coats in sapphire blue and silver with neon-green molecular accents and plain chest pockets. See docs/qa/ALCHEMIST_FIT_REVIEW.md; current three-body set accepted and frozen. |
 | Guardian | 240 x 320 | 240 x 320 | 240 x 320 | **Approved: guardian-approved-v1.** Female viewer-right sleeve/hip contours corrected; male and neutral retain v2. Smooth gold piping and continuous trouser coverage retained. Accepted with robe-wrap-v1; see docs/qa/GUARDIAN_FIT_REVIEW.md. |
-| Wanderer | 240 x 320 | 240 x 320 | 240 x 320 | **Review candidate: wanderer-v2.** Tobacco-brown/copper-gold travel coats with ochre rear lining. Three independent fits; see docs/qa/WANDERER_FIT_REVIEW.md. |
+| Wanderer | 240 x 320 | 240 x 320 | 240 x 320 | **Approved: wanderer-approved-v1 (artwork wanderer-v2).** Tobacco-brown/copper-gold travel coats with ochre rear lining. Three independent fits; see docs/qa/WANDERER_FIT_REVIEW.md. |
 
 Alchemist revision 2 was rejected for incorrect fit. Revision 3 adds continuous
 hip/thigh contour checks; individual anchor alignment alone is insufficient.

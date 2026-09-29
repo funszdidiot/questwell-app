@@ -1,8 +1,10 @@
-# Wanderer v2 — development review
+# Wanderer v2 — approved and frozen
 
 Founder direction, 2026-09-29: “Ok! Let’s do wanderer.” This accepts the
 preceding Guardian and four-class rear-construction review and authorizes
-Wanderer development. Wanderer's appearance still needs its own visual review.
+Wanderer development. The founder accepted the tobacco/copper/ochre revision
+with “Perfect” on 2026-09-29. Freeze as `wanderer-approved-v1`, source commit
+`9b26c1da4720fe61aabd6971eaf9c7740b173068`.
 
 ## Design and fit
 
@@ -45,7 +47,7 @@ versioned for comparison. Other classes retain their accepted palettes.
 - [x] Shared app renderer and browser review layers match.
 - [x] Inspect native portraits, enlarged female fit and 176 px cards.
 - [x] Register source/fit/asset hashes and add Wanderer to Flutter checks.
-- [ ] Founder accepts Male, Female and Gender Neutral appearance.
+- [x] Founder accepts Male, Female and Gender Neutral appearance.
 - [ ] Founder completes the broader iPhone Safari/Epic 2 visual gate.
 
 ## Reproduction
