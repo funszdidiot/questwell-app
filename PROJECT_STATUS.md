@@ -141,6 +141,11 @@ Questwell is not graphics-complete until the full core experience reaches the ap
 The dashboard should be updated whenever an epic starts, reaches testing, is blocked, or is promoted.
 # Scholar detail polish candidate — 2026-09-29
 
+Follow-up: founder identified suit-jacket bleed after v2. Added Scholar-only
+underlayer occlusion paths for all three bodies, preserving original base and
+robe bytes. The review page has an original-jacket comparison toggle. Added
+targeted clip coverage/alignment tests. Founder visual acceptance still pending.
+
 Development-only v2 polishes pendants, cuff bands, front trim and folded hem tips
 for all three bodies. Selection cards now explain class previews and successful
 body selection no longer obscures the art with a toast. Frozen bases unchanged.

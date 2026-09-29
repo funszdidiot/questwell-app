@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'scholar_underlayer_clip.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -115,18 +116,24 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          _assetLayer(
-            _baseAsset,
-            fallback: CustomPaint(
-              painter: _EquippedAvatarPainter(
-                archetype: archetype,
-                palette: QuestwellPixelPalette.forClass(archetype),
-                equippedSlugs: equippedSlugs,
-                showRelic: showRelic,
-                portrait: false,
+          if (archetype == 'scholar')
+            ClipPath(
+              clipper: ScholarUnderlayerClipper(avatarBodyType),
+              child: _assetLayer(_baseAsset),
+            )
+          else
+            _assetLayer(
+              _baseAsset,
+              fallback: CustomPaint(
+                painter: _EquippedAvatarPainter(
+                  archetype: archetype,
+                  palette: QuestwellPixelPalette.forClass(archetype),
+                  equippedSlugs: equippedSlugs,
+                  showRelic: showRelic,
+                  portrait: false,
+                ),
               ),
             ),
-          ),
           if (classOverlay != null) _assetLayer(classOverlay),
         ],
       ),

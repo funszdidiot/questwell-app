@@ -4,6 +4,14 @@
 All class garments must look worn by the approved business-suit avatar, not layered as a flat costume. The base avatar is the anatomical source of truth. Class art changes clothing identity only; it must not change apparent body proportions.
 
 ## Asset contract
+For Scholar, the original suit jacket is hidden beneath the robe using a
+body-specific visibility path. The frozen base file remains intact. Head/hair,
+shirt/tie, belt, hands, trousers and shoes remain visible; jacket shoulders,
+sleeves and hip flaps must not protrude through or beyond the robe. This is
+underlayer occlusion, not a scale/translation or a cut into the robe artwork.
+Coordinates are in `tool/scholar_underlayer_visibility.json`; regenerate the
+Flutter and browser paths with `python3 tool/generate_scholar_underlayer.py`.
+
 **Base avatar owns:** head, hair, face, neck, hands, business suit, shirt, tie, belt, pants, shoes.
 
 **Class overlay owns:** class garment only. No anatomy or base clothing may be baked into a class overlay.

@@ -29,3 +29,6 @@ jobs:
 
       - name: Analyze
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Test Scholar underlayer coverage and alignment
+        run: flutter test test/scholar_underlayer_clip_test.dart
