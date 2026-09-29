@@ -110,6 +110,8 @@ Target:
 - Remaining gate is visual, not technical: the measured Scholar robe fit and overall Hearth composition require founder review on iPhone Safari before Epic 2 can be promoted.
 - No promotion to `flutterflow` will occur solely from green CI.
 
+- Scholar anatomy-fit implementation: replaced the prior robe assets with body-constrained overlays that follow the approved base-avatar shoulder and arm silhouettes. Exposed hands are preserved, cuff width is constrained to wrist geometry, and upper-body garment pixels are limited to the measured body envelope. This pass is governed by docs/AVATAR_CLASS_FIT_SPEC.md and requires live mobile approval before becoming the reusable class standard.
+
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
 ## Release gate
