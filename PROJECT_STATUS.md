@@ -99,6 +99,8 @@ Target:
 
 - Class coat sizing standard: class clothing overlays now use the same fitted production envelope on a 240×320 avatar canvas (approximately 132×210 visual bounds, centered over the business-suit base). Scholar Male/Female/Gender Neutral have been rebuilt to this standard. Scout will use this same envelope so class changes do not alter apparent body scale.
 
+- Avatar clothing-fit correction: measured shoulder spans and hand positions from each approved base avatar and moved class clothing to a body-specific fit transform. Head/hair and hands now render back above class clothing, so collars sit behind the character and cuffs terminate at the hands instead of swallowing them. This fit system is shared by Scholar, Scout, and all future class clothing.
+
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
 ## Release gate
