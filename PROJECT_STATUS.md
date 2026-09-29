@@ -101,6 +101,8 @@ Target:
 
 - Avatar clothing-fit correction: measured shoulder spans and hand positions from each approved base avatar and moved class clothing to a body-specific fit transform. Head/hair and hands now render back above class clothing, so collars sit behind the character and cuffs terminate at the hands instead of swallowing them. This fit system is shared by Scholar, Scout, and all future class clothing.
 
+- Scholar measured-fit pass: robe geometry was rebuilt against measured base-avatar landmarks rather than scaled as one costume image. Male/Female/Gender Neutral now use shoulder, elbow, wrist, waist, and hem anchors taken from the approved business-suit bodies. Live mobile review is required before this fit becomes the class-wide template.
+
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
 ## Release gate
