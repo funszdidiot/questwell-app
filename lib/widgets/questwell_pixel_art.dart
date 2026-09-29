@@ -105,35 +105,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     );
   }
 
-  // Measured from the approved 240 x 320 base-avatar canvases.
-  // The fit is intentionally body-specific so class clothing follows the
-  // avatar silhouette instead of imposing one oversized garment box.
-  ({double scaleX, double scaleY, double dy}) get _classFit {
-    switch (avatarBodyType) {
-      case 'male':
-        // shoulder span ~93 px; hands center near y 182 px
-        return (scaleX: .94, scaleY: .96, dy: 3.0);
-      case 'female':
-        // shoulder span ~89 px; hands center near y 178 px
-        return (scaleX: .91, scaleY: .95, dy: 4.0);
-      default:
-        // shoulder span ~85 px; hands center near y 182 px
-        return (scaleX: .93, scaleY: .95, dy: 4.0);
-    }
-  }
-
-  Widget _fittedClassLayer(String asset) {
-    final fit = _classFit;
-    return Transform.translate(
-      offset: Offset(0, fit.dy),
-      child: Transform(
-        alignment: Alignment.center,
-        transform: Matrix4.diagonal3Values(fit.scaleX, fit.scaleY, 1),
-        child: _assetLayer(asset),
-      ),
-    );
-  }
-
+  // Class garment assets are authored directly on the approved 240 x 320
+  // body-specific canvas. Do not apply another generic scale/offset here.
   @override
   Widget build(BuildContext context) {
     final classOverlay = _classOverlayAsset;
@@ -154,96 +127,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ),
             ),
           ),
-          if (classOverlay != null) _fittedClassLayer(classOverlay),
-          if (classOverlay != null)
-            ClipPath(
-              clipper: _AvatarForegroundClipper(avatarBodyType),
-              child: _assetLayer(_baseAsset),
-            ),
+          if (classOverlay != null) _assetLayer(classOverlay),
         ],
       ),
     );
   }
-}
-
-class _AvatarForegroundClipper extends CustomClipper<Path> {
-  const _AvatarForegroundClipper(this.bodyType);
-
-  final String bodyType;
-
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-
-    // Head/hair stays above collars and shoulder pieces.
-    switch (bodyType) {
-      case 'female':
-        path.addRect(Rect.fromLTRB(
-          size.width * .24,
-          0,
-          size.width * .76,
-          size.height * .31,
-        ));
-        path.addRect(Rect.fromLTRB(
-          size.width * .27,
-          size.height * .50,
-          size.width * .36,
-          size.height * .63,
-        ));
-        path.addRect(Rect.fromLTRB(
-          size.width * .64,
-          size.height * .50,
-          size.width * .73,
-          size.height * .63,
-        ));
-        break;
-      case 'male':
-        path.addRect(Rect.fromLTRB(
-          size.width * .30,
-          0,
-          size.width * .70,
-          size.height * .30,
-        ));
-        path.addRect(Rect.fromLTRB(
-          size.width * .25,
-          size.height * .51,
-          size.width * .35,
-          size.height * .63,
-        ));
-        path.addRect(Rect.fromLTRB(
-          size.width * .65,
-          size.height * .51,
-          size.width * .75,
-          size.height * .63,
-        ));
-        break;
-      default:
-        path.addRect(Rect.fromLTRB(
-          size.width * .29,
-          0,
-          size.width * .71,
-          size.height * .30,
-        ));
-        path.addRect(Rect.fromLTRB(
-          size.width * .26,
-          size.height * .51,
-          size.width * .36,
-          size.height * .63,
-        ));
-        path.addRect(Rect.fromLTRB(
-          size.width * .64,
-          size.height * .51,
-          size.width * .74,
-          size.height * .63,
-        ));
-    }
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant _AvatarForegroundClipper oldClipper) =>
-      oldClipper.bodyType != bodyType;
 }
 
 class QuestwellBrandWordmark extends StatelessWidget {
