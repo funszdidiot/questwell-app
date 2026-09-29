@@ -8,6 +8,7 @@ import '/services/questwell_task_service.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_pixel_art.dart';
+import '/widgets/questwell_home_sections.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_page_model.dart';
@@ -941,29 +942,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ],
                 const SizedBox(height: 12),
-                FutureBuilder<QuestwellCosmeticsSnapshot>(
-                  future: _homeSnapshotFuture,
-                  builder: (context, snapshot) {
-                    final data = snapshot.data;
-                    final archetype =
-                        data?.profile.adventurerArchetype ?? 'wanderer';
-                    final equipped = data?.cosmetics
-                            .where((item) => item.equipped)
-                            .toList() ??
-                        const <QuestwellCosmetic>[];
-                    return QuestwellQuestBoardPixelArt(
-                      height:
-                          MediaQuery.sizeOf(context).width < 430 ? 148 : 172,
-                      clear: false,
-                      archetype: archetype,
-                      equippedSlugs: {
-                        for (final item in equipped)
-                          item.category: item.slug,
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(height: 12),
                 FutureBuilder<List<TasksRow>>(
                   future: TasksTable().queryRows(
                     queryFn: (q) => q
@@ -1014,55 +992,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         : tasks.take(3).toList();
 
                     if (visibleTasks.isEmpty) {
-                      return QuestwellRetroPanel(
-                        padding: const EdgeInsets.all(16),
-                        accent: const Color(0xFF8E6B35),
-                        background: const Color(0xFF171A20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const QuestwellQuestBoardPixelArt(
-                              height: 100,
-                              clear: true,
-                            ),
-                            const SizedBox(height: 14),
-                            Text(
-                              'The quest board is clear.',
-                              style: theme.titleMedium.override(
-                                font: GoogleFonts.pressStart2p(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                fontSize: 11,
-                                  lineHeight: 1.5,
-                                  letterSpacing: 0,
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              'No catching up required. Add one thing when you are ready.',
-                              style: theme.bodyMedium.override(
-                                font: GoogleFonts.roboto(),
-                                color: theme.secondaryText,
-                                letterSpacing: 0,
-                              ),
-                            ),
-                            const SizedBox(height: 14),
-                            OutlinedButton.icon(
-                              onPressed: () async {
-                                await context.pushNamed(
-                                  QuestBoardPageWidget.routeName,
-                                );
-                                if (mounted) setState(_loadHomeData);
-                              },
-                              icon: const QuestwellNavPixelIcon(
-                                kind: 'quest',
-                                size: 18,
-                              ),
-                              label: const Text('ADD A QUEST'),
-                            ),
-                          ],
-                        ),
-                      );
+                      return const QuestwellHomeEmptyBoard();
                     }
 
                     return Column(
@@ -1083,112 +1013,18 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   },
                 ),
                 const SizedBox(height: 14),
-                FFButtonWidget(
-                  onPressed: () async {
-                    await context.pushNamed(QuestBoardPageWidget.routeName);
-                    if (mounted) setState(_loadHomeData);
-                  },
-                  text: '+ Add Quest',
-                  options: FFButtonOptions(
-                    height: 46,
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
-                    color: theme.secondaryBackground,
-                    textStyle: theme.titleSmall.override(
-                      font: GoogleFonts.roboto(
-                        fontWeight: FontWeight.w700,
-                      ),
-                      color: theme.primaryText,
-                      letterSpacing: 0,
-                    ),
-                    elevation: 0,
-                    borderSide: const BorderSide(
-                      color: Color(0xFF8E6B35),
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                const SizedBox(height: 18),
-                const QuestwellPixelDivider(
-                  accent: Color(0xFF8E6B35),
-                ),
-                const SizedBox(height: 10),
-                QuestwellRetroMenuButton(
-                  label: 'Start an Expedition',
-                  kind: 'expedition',
-                  accent: const Color(0xFF4AA89A),
-                  onTap: () async {
-                    await context.pushNamed(ExpeditionPageWidget.routeName);
-                    if (mounted) setState(_loadHomeData);
-                  },
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: QuestwellRetroMenuButton(
-                        label: 'Boss Battles',
-                        kind: 'boss',
-                        compact: true,
-                        accent: const Color(0xFFE87947),
-                        onTap: () async {
-                          await context.pushNamed(
-                            BossBattlesPageWidget.routeName,
-                          );
-                          if (mounted) setState(_loadHomeData);
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: QuestwellRetroMenuButton(
-                        label: 'Chronicle',
-                        kind: 'chronicle',
-                        compact: true,
-                        accent: const Color(0xFF7654D8),
-                        onTap: () async {
-                          await context.pushNamed(
-                            ChroniclePageWidget.routeName,
-                          );
-                          if (mounted) setState(_loadHomeData);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: QuestwellRetroMenuButton(
-                        label: 'Adventurer',
-                        kind: 'adventurer',
-                        compact: true,
-                        accent: const Color(0xFF4AA89A),
-                        onTap: () async {
-                          await context.pushNamed(
-                            AdventurerPageWidget.routeName,
-                          );
-                          if (mounted) setState(_loadHomeData);
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: QuestwellRetroMenuButton(
-                        label: 'Market',
-                        kind: 'market',
-                        compact: true,
-                        accent: const Color(0xFFD6A84B),
-                        onTap: () async {
-                          await context.pushNamed(MarketPageWidget.routeName);
-                          if (mounted) setState(_loadHomeData);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                QuestwellHomeActions(onOpen: (destination) async {
+                  final route = switch (destination) {
+                    'quests' => QuestBoardPageWidget.routeName,
+                    'expedition' => ExpeditionPageWidget.routeName,
+                    'boss' => BossBattlesPageWidget.routeName,
+                    'chronicle' => ChroniclePageWidget.routeName,
+                    'adventurer' => AdventurerPageWidget.routeName,
+                    _ => MarketPageWidget.routeName,
+                  };
+                  await context.pushNamed(route);
+                  if (mounted) setState(_loadHomeData);
+                }),
               ],
             ),
             ),

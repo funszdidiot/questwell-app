@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../lib/widgets/questwell_home_sections.dart';
+
+void main() {
+  testWidgets('Home actions remain readable and route correctly on narrow screens', (tester) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
+    await tester.binding.setSurfaceSize(const Size(320, 1600));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    String? destination;
+    await tester.pumpWidget(MaterialApp(home: MediaQuery(
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.6)),
+      child: Scaffold(body: ListView(padding: const EdgeInsets.all(16), children: [
+        const QuestwellHomeEmptyBoard(),
+        QuestwellHomeActions(onOpen: (value) => destination = value),
+      ])),
+    )));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('Add quest'), findsOneWidget);
+    for (final entry in {'Add quest': 'quests', 'Start an expedition': 'expedition',
+      'Boss battles': 'boss', 'Chronicle': 'chronicle', 'Adventurer': 'adventurer',
+      'Market': 'market'}.entries) {
+      await tester.ensureVisible(find.text(entry.key));
+      await tester.tap(find.text(entry.key));
+      expect(destination, entry.value);
+    }
+  });
+}

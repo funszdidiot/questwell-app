@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'main.dart' as application;
 import 'preview/hearth_review.dart';
 import 'preview/quest_board_review.dart';
+import 'preview/home_sections_review.dart';
 
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
@@ -12,6 +13,9 @@ void main() {
   } else if (Uri.base.queryParameters['review'] == 'quests') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const QuestBoardReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'home') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const HomeSectionsReviewApp());
   } else {
     application.main();
   }
