@@ -1,6 +1,12 @@
 # Questwell Avatar Class Clothing Fit Spec
 
 ## Purpose
+**Current status: Scholar approved and frozen on 2026-09-29.**
+The governing checkpoint is `docs/qa/SCHOLAR_TEMPLATE_CHECKPOINT.md`, revision
+`scholar-approved-v1`. Later classes inherit its workflow and acceptance rules.
+Historical candidate notes below are superseded by this approval; the broader
+Epic 2, production merge and launch gates remain open.
+
 All class garments must look worn by the approved business-suit avatar, not layered as a flat costume. The base avatar is the anatomical source of truth. Class art changes clothing identity only; it must not change apparent body proportions.
 
 ## Asset contract
@@ -95,8 +101,8 @@ Freeze the approved base avatars. Complete **Scholar** for one body type at a ti
 
 | Class | Male | Female | Gender Neutral | Next action |
 | --- | --- | --- | --- | --- |
-| Scholar | 240 x 320 | 240 x 320 | 240 x 320 | **Active template.** Prior founder feedback: shoulders do not match base shoulders, sleeves/arms misalign, sleeves appear bulky and overwhelm the hands, and the coat floats. Rebuild and review each body on iPhone Safari; dimensions alone do not establish acceptance. |
-| Scout | 384 x 512 | 384 x 512 | 384 x 512 | **Hold.** Once Scholar is approved, reauthor all three garment-only coats on their matching 240 x 320 base canvases using the accepted fit rules. |
+| Scholar | 240 x 320 | 240 x 320 | 240 x 320 | **Approved template.** Frozen at scholar-approved-v1 after founder direction. Preserve its reviewed artwork, body-specific coverage and presentation. |
+| Scout | 384 x 512 | 384 x 512 | 384 x 512 | **Next fit.** Reauthor three garment-only coats on matching 240 x 320 canvases using the approved workflow. Give Scout its own coverage paths and visual review. |
 
 Do not mark Scholar complete based on a passing build. Record the founder's visual decision for each body type before applying the template to Scout or promoting Epic 2.
 

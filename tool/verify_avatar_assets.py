@@ -6,6 +6,11 @@ from pathlib import Path
 
 def verify(root: Path) -> None:
     manifest = json.loads((root / 'tool/avatar_assets.json').read_text())
+    for entry in manifest.get('locked_fit_inputs', []):
+        data = (root / entry['path']).read_bytes()
+        if hashlib.sha256(data).hexdigest() != entry['sha256']:
+            raise ValueError(f'{entry["path"]}: differs from founder-approved Scholar fit')
+        print(f'Verified locked Scholar fit: {entry["path"]}')
     for entry in manifest['assets']:
         path = root / entry['path']
         data = path.read_bytes()

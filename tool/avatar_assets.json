@@ -4,7 +4,21 @@
     320
   ],
   "template": "scholar",
-  "visual_approval": "pending_founder_review",
+  "visual_approval": "founder_approved",
+  "approval_date": "2026-09-29",
+  "approved_source_commit": "71f6f5d38315155222ce6832ea6fc6ee12b13be0",
+  "approved_bodies": ["male", "female", "neutral"],
+  "approval_scope": "Scholar visual template only; no production merge or launch",
+  "locked_fit_inputs": [
+    {
+      "path": "tool/scholar_underlayer_visibility.json",
+      "sha256": "5ce4005119716f6a2095905bd783706df87bf5c54fa7a5ceae776b83ee50fe90"
+    },
+    {
+      "path": "lib/widgets/scholar_underlayer_clip.dart",
+      "sha256": "558c9cb9c51fc1b2b9e759671a237191e767ea3097945e13931add12c25e604e"
+    }
+  ],
   "assets": [
     {
       "path": "assets/images/questwell/avatar/base/base_male.webp",
@@ -31,5 +45,8 @@
       "sha256": "10a1d553e631279c5efd212c220a806eb46357315bd13403dd4d02fd698b3a7a"
     }
   ],
-  "art_revision": "scholar-polish-v2"
+  "art_revision": "scholar-polish-v2",
+  "template_revision": "scholar-approved-v1",
+  "portrait_art_height_factor": 0.96,
+  "selection_art_height": 176
 }
