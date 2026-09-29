@@ -6,6 +6,14 @@ This file is the founder-facing dashboard for the Questwell art overhaul.
 
 ## Current state
 
+**Hearth integration:** In review — approved robes now use a 3:4 scene box,
+boot-aligned contact shadow, floor effects behind the avatar, and brighter lower
+room framing. The development-only Flutter review is `?review=hearth` and shows
+Hearth with the matching Adventurer portrait. Mobile layout tests cover all 15
+class/body combinations at 320, 390, 430 and 768 px widths. Account persistence
+and final iPhone Safari appearance remain manual gates. See
+`docs/qa/HEARTH_INTEGRATION_REVIEW.md`.
+
 **Robe construction:** ✅ Founder accepted `robe-wrap-v1` on 2026-09-29
 and directed “Ok! Let’s do wanderer.” Guardian, Scholar, Scout and Alchemist
 retain their accepted three-layer construction across all three bodies.

@@ -35,7 +35,7 @@ jobs:
         run: flutter pub get
 
       - name: Build preview
-        run: flutter build web --release --base-href "/questwell-app/" --pwa-strategy=none
+        run: flutter build web --release --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none
 
       - name: Cache-bust preview bundle
         run: |

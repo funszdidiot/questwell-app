@@ -784,9 +784,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               child: Text(
                                 'Welcome to Questwell',
                                 style: theme.titleLarge.override(
-                                  font: GoogleFonts.roboto(
+                                  font: GoogleFonts.pressStart2p(
                                     fontWeight: FontWeight.w700,
                                   ),
+                                  fontSize: 11,
+                                  lineHeight: 1.5,
                                   letterSpacing: 0,
                                 ),
                               ),
@@ -1027,10 +1029,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             Text(
                               'The quest board is clear.',
                               style: theme.titleMedium.override(
-                                font: GoogleFonts.roboto(
+                                font: GoogleFonts.pressStart2p(
                                   fontWeight: FontWeight.w700,
                                 ),
-                                letterSpacing: 0,
+                                fontSize: 11,
+                                  lineHeight: 1.5,
+                                  letterSpacing: 0,
                               ),
                             ),
                             const SizedBox(height: 6),

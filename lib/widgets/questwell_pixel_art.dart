@@ -789,10 +789,14 @@ class QuestwellHearthPixelScene extends StatelessWidget {
           final sceneHeight = constraints.maxHeight;
           final compact = sceneWidth < 430;
 
-          final avatarLeft = sceneWidth * (compact ? .315 : .35);
-          final avatarTop = sceneHeight * (compact ? .175 : .145);
-          final avatarWidth = sceneWidth * (compact ? .37 : .33);
-          final avatarHeight = sceneHeight * (compact ? .70 : .72);
+          // Keep the authored 3:4 canvas ratio, so BoxFit.contain cannot
+          // silently shrink the character inside a narrow mobile rectangle.
+          final avatarHeight = math.min(sceneHeight * .76, sceneWidth * .62 * 4 / 3);
+          final avatarWidth = avatarHeight * 3 / 4;
+          final avatarLeft = (sceneWidth - avatarWidth) / 2;
+          final footY = sceneHeight * .88;
+          // Frozen boots end near row 310 on the shared 320 px canvas.
+          final avatarTop = footY - avatarHeight * 310 / 320;
 
           return Stack(
             fit: StackFit.expand,
@@ -828,8 +832,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       colors: [
                         const Color(0x260B1630),
                         const Color(0x00101824),
-                        const Color(0x281B1008),
-                        const Color(0x5A0B0808),
+                        const Color(0x141B1008),
+                        const Color(0x2C0B0808),
                       ],
                       stops: const [0, .34, .70, 1],
                     ),
@@ -857,29 +861,19 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                left: avatarLeft - sceneWidth * .035,
-                bottom: sceneHeight * .062,
-                width: avatarWidth + sceneWidth * .07,
-                height: sceneHeight * .115,
+              Positioned.fill(
                 child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        radius: .72,
-                        colors: [
-                          const Color(0xB5000000),
-                          const Color(0x52000000),
-                          const Color(0x00000000),
-                        ],
-                      ),
+                  child: CustomPaint(
+                    painter: _HearthAtmospherePainter(
+                      accent: palette.last,
+                      compact: compact,
                     ),
                   ),
                 ),
               ),
               Positioned(
                 left: avatarLeft - sceneWidth * .06,
-                bottom: sceneHeight * .105,
+                top: footY - sceneHeight * .09,
                 width: avatarWidth + sceneWidth * .12,
                 height: sceneHeight * .18,
                 child: IgnorePointer(
@@ -898,6 +892,28 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                 ),
               ),
               Positioned(
+                key: const ValueKey('hearth-contact-shadow'),
+                left: avatarLeft + avatarWidth * .22,
+                top: footY - sceneHeight * .025,
+                width: avatarWidth * .56,
+                height: sceneHeight * .05,
+                child: IgnorePointer(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: RadialGradient(
+                        radius: .72,
+                        colors: [
+                          const Color(0xB5000000),
+                          const Color(0x52000000),
+                          const Color(0x00000000),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                key: const ValueKey('hearth-avatar-bounds'),
                 left: avatarLeft,
                 top: avatarTop,
                 width: avatarWidth,
@@ -925,16 +941,6 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       showRelic: showRelic,
                     ),
                   ],
-                ),
-              ),
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: CustomPaint(
-                    painter: _HearthAtmospherePainter(
-                      accent: palette.last,
-                      compact: compact,
-                    ),
-                  ),
                 ),
               ),
               Positioned(
