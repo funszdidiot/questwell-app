@@ -1,3 +1,6 @@
+import '/auth/supabase_auth/auth_util.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/auth_page/auth_page_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/widgets/questwell_pixel_art.dart';
@@ -22,6 +25,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
   bool _savingArchetype = false;
   bool _savingBodyType = false;
   bool _claimingMastery = false;
+  bool _signingOut = false;
   String? _avatarBodyOverride;
 
   @override
@@ -322,12 +326,42 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     }
   }
 
+  Future<void> _signOut() async {
+    if (_signingOut) return;
+    setState(() => _signingOut = true);
+    try {
+      await authManager.signOut();
+      if (!mounted) return;
+      GoRouter.of(context).clearRedirectLocation();
+      context.goNamed(AuthPageWidget.routeName);
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not sign out. Please try again.')),
+      );
+    } finally {
+      if (mounted) setState(() => _signingOut = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFF111827),
+      bottomNavigationBar: SafeArea(top: false, child: Padding(
+        padding: const EdgeInsets.fromLTRB(18, 8, 18, 12),
+        child: OutlinedButton(
+          onPressed: _signingOut ? null : _signOut,
+          style: OutlinedButton.styleFrom(
+            foregroundColor: const Color(0xFFF2D9A0),
+            side: const BorderSide(color: Color(0xFF9E7546)),
+            minimumSize: const Size.fromHeight(48),
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
+          child: Text(_signingOut ? 'Signing out…' : 'Sign out',
+            style: GoogleFonts.roboto(fontSize: 15, fontWeight: FontWeight.w700)),
+        ),
+      )),
       body: SafeArea(
         top: true,
         child: FutureBuilder<QuestwellCosmeticsSnapshot>(
