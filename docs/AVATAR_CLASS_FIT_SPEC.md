@@ -70,6 +70,28 @@ Every class garment must pass in:
 
 A class is not visually complete until all three bodies pass both portrait and card review.
 
+## Developer fit checklist
+Freeze the approved base avatars. Complete **Scholar** for one body type at a time, then compare all three at the same portrait size. Do not start Scout refitting or generalize the template until Scholar passes founder review.
+
+- [ ] Start from the approved business-suit base for the matching body type. Record head height, neck base, both shoulder points and slopes, chest width, waist, elbow paths, wrist and hand positions, inseam and leg opening, and portrait-frame height on the 240 x 320 canvas.
+- [ ] Export a garment-only transparent 240 x 320 WebP for that body type. Preserve the base head, hair, face, hands, pants, and shoes; do not bake them into the garment.
+- [ ] Place each shoulder seam on the corresponding base shoulder. Trace each sleeve through the elbow and stop the cuff at the wrist, with both hands visible.
+- [ ] Fit the lapels around the shirt and tie; taper at the base waist; keep the hem clear of the stance and shoes.
+- [ ] If one flat overlay cannot follow the anatomy, author separate torso, left sleeve, right sleeve, and collar/shoulder layers on the same coordinate system. Keep their stacking order explicit and preserve visible hands.
+- [ ] Stack base and overlay at exactly the same canvas origin and scale. Check the male, female, and gender-neutral composites individually at native size and at the small selection-card size.
+- [ ] Switch among the three Scholar body types. The head position, shoulder width, hand contact, baseline, and apparent height must remain consistent with each selected base.
+- [ ] Inspect the main Adventurer portrait and all three selection cards on iPhone Safari. Capture each Scholar body type for founder review; record pass or a specific failed anchor for every image.
+- [ ] Keep the business suit underneath each starter class robe or coat. Show 0 / 5 accessory slots and no equipped accessories at this stage.
+
+### Current asset audit (2026-09-29)
+
+| Class | Male | Female | Gender Neutral | Next action |
+| --- | --- | --- | --- | --- |
+| Scholar | 240 x 320 | 240 x 320 | 240 x 320 | **Active template.** Prior founder feedback: shoulders do not match base shoulders, sleeves/arms misalign, sleeves appear bulky and overwhelm the hands, and the coat floats. Rebuild and review each body on iPhone Safari; dimensions alone do not establish acceptance. |
+| Scout | 384 x 512 | 384 x 512 | 384 x 512 | **Hold.** Once Scholar is approved, reauthor all three garment-only coats on their matching 240 x 320 base canvases using the accepted fit rules. |
+
+Do not mark Scholar complete based on a passing build. Record the founder's visual decision for each body type before applying the template to Scout or promoting Epic 2.
+
 ## Implementation rule
 Do not compensate for bad art with a second generic runtime scale or translation. The final asset itself must be authored/fitted to the 240 x 320 body-specific canvas. Runtime rendering should stack the base and class overlay 1:1.
 
