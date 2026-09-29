@@ -93,6 +93,8 @@ Target:
 
 - Founder iPhone check confirmed rich base assets now load on Safari. Cleared three stale legacy equipped states, tied the active-gear count to rendered rich layers, blocked invisible legacy equips until rebuilt, and increased the main Adventurer portrait scale by 18%.
 
+- Scholar starter class layer: founder-approved navy/gold robe art is now wired for Male, Female, and Gender Neutral base avatars. The robe renders automatically for the Scholar archetype over the business-suit base and does not consume a gear slot. Accessories remain intentionally disabled pending later progression work. iPhone Safari alignment review is required before this class layer is marked visually complete.
+
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
 ## Release gate

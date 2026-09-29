@@ -38,6 +38,13 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   static const _neutralBase =
       'assets/images/questwell/avatar/base/base_neutral.webp';
 
+  static const _scholarMale =
+      'assets/images/questwell/avatar/classes/scholar/scholar_robe_male.webp';
+  static const _scholarFemale =
+      'assets/images/questwell/avatar/classes/scholar/scholar_robe_female.webp';
+  static const _scholarNeutral =
+      'assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral.webp';
+
   final String archetype;
   final Map<String, String> equippedSlugs;
   final String avatarBodyType;
@@ -54,24 +61,52 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     }
   }
 
+  String? get _classOverlayAsset {
+    if (archetype != 'scholar') return null;
+
+    switch (avatarBodyType) {
+      case 'male':
+        return _scholarMale;
+      case 'female':
+        return _scholarFemale;
+      default:
+        return _scholarNeutral;
+    }
+  }
+
+  Widget _assetLayer(String asset, {Widget? fallback}) {
+    return Image.asset(
+      asset,
+      fit: BoxFit.contain,
+      alignment: Alignment.bottomCenter,
+      filterQuality: FilterQuality.high,
+      gaplessPlayback: true,
+      errorBuilder: (_, __, ___) => fallback ?? const SizedBox.shrink(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final classOverlay = _classOverlayAsset;
+
     return RepaintBoundary(
-      child: Image.asset(
-        _baseAsset,
-        fit: BoxFit.contain,
-        alignment: Alignment.bottomCenter,
-        filterQuality: FilterQuality.high,
-        gaplessPlayback: true,
-        errorBuilder: (_, __, ___) => CustomPaint(
-          painter: _EquippedAvatarPainter(
-            archetype: archetype,
-            palette: QuestwellPixelPalette.forClass(archetype),
-            equippedSlugs: equippedSlugs,
-            showRelic: showRelic,
-            portrait: false,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          _assetLayer(
+            _baseAsset,
+            fallback: CustomPaint(
+              painter: _EquippedAvatarPainter(
+                archetype: archetype,
+                palette: QuestwellPixelPalette.forClass(archetype),
+                equippedSlugs: equippedSlugs,
+                showRelic: showRelic,
+                portrait: false,
+              ),
+            ),
           ),
-        ),
+          if (classOverlay != null) _assetLayer(classOverlay),
+        ],
       ),
     );
   }
