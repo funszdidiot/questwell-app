@@ -2,7 +2,7 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Questwell · Scout fit review</title>
+<title>Questwell · Alchemist fit review</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#171b26;color:#f1ecdf;font:16px/1.5 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:24px}h1{font-size:26px;margin:0 0 8px}p{margin:0 0 16px;color:#c4c9d3}.controls{display:flex;gap:18px;flex-wrap:wrap;margin:20px 0}label{cursor:pointer}input{accent-color:#d4ae5e}.bodies{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}article{border:1px solid #566074;border-radius:12px;padding:18px;background:#222936}h2{margin:0 0 12px;font-size:20px}.stage{position:relative;width:240px;height:320px;max-width:100%;margin:auto;background:#343d4c;border-radius:8px;overflow:hidden}.stage img{position:absolute;width:100%;height:100%;inset:0;object-fit:contain;object-position:center bottom}.stage.card{width:132px;height:176px}.caption{text-align:center;margin:12px 0 6px;font-size:14px}.hash{font:12px monospace;text-align:center;margin:10px 0;color:#bfc4ce}.hide-coat .coat{visibility:hidden}.guides .stage{background-image:linear-gradient(90deg,transparent calc(50% - .5px),#72819888 50%,transparent calc(50% + .5px)),repeating-linear-gradient(0deg,transparent 0 31px,#72819855 31px 32px)}.note{margin-top:24px;padding:16px;border-left:3px solid #d4ae5e;background:#222936}@media(max-width:780px){.bodies{grid-template-columns:1fr}main{padding:18px}article{padding:16px}}
 </style>
@@ -13,23 +13,23 @@
 .selection span{font-size:12px;margin-right:4px}
 </style>
 <main>
-<h1>Scout · approved template</h1>
-<p>Forest-green coats fitted separately for Male, Female and Gender Neutral. Check shoulders, hair, cuffs, suit coverage and stance. Portrait fill and card sizing match the app.</p>
+<h1>Alchemist · lab coat review</h1>
+<p>Sapphire-blue lab coats with silver trim, cyan accents, and molecule/flask embroidery. Each body has its own fit. Portrait fill and 176 px card sizing match the app.</p>
 <div class="controls">
-<label><input id="coat" type="checkbox" checked> Show Scout coat</label>
+<label><input id="coat" type="checkbox" checked> Show Alchemist coat</label>
 <label><input id="guides" type="checkbox"> Show alignment guides</label>
 <label><input id="jacket" type="checkbox"> Show original jacket (compare)</label>
 </div>
 <div class="bodies" id="bodies"></div>
-<p class="note">Approved and frozen on 29 September 2026. The current Male, Female and Gender Neutral Scout set is accepted. Alchemist is next and requires its own fit and visual review.</p>
+<p class="note">Development candidate · 29 September 2026. The selected sapphire-blue palette with silver trim and cyan chemistry details. Review all three bodies in the app before approving this class.</p>
 </main>
-<script src="scout-underlayer.js?rev=scout-polish-v1"></script>
+<script src="alchemist-underlayer.js?rev=alchemist-lab-v1"></script>
 <script>
-const bodies=[['male','Male','d1386c063834'],['female','Female','8d05a26df80f'],['neutral','Gender Neutral','ac6a4d8c1ccd']];
+const bodies=[['male','Male','3dbc64e17183'],['female','Female','f4c706fa9686'],['neutral','Gender Neutral','b5e9ec725970']];
 const asset='assets/assets/images/questwell/avatar/';
 for(const [body,label,hash] of bodies){
  const article=document.createElement('article');
- article.innerHTML=`<h2>${label}</h2><div class="portrait-frame"><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="coat" alt="Clean fitted Scout coat" src="${asset}classes/scout/scout_coat_${body}_polish_v1.webp"></div></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="coat" alt="" src="${asset}classes/scout/scout_coat_${body}_polish_v1.webp"></div><p class="selection"><span aria-hidden="true">✓</span> SELECTED</p><div class="hash">Coat SHA-256: ${hash}</div>`;
+ article.innerHTML=`<h2>${label}</h2><div class="portrait-frame"><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="coat" alt="Clean fitted Alchemist coat" src="${asset}classes/alchemist/alchemist_coat_${body}_lab_v1.webp"></div></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="coat" alt="" src="${asset}classes/alchemist/alchemist_coat_${body}_lab_v1.webp"></div><p class="selection"><span aria-hidden="true">✓</span> SELECTED</p><div class="hash">Coat SHA-256: ${hash}</div>`;
  document.querySelector('#bodies').append(article);
 }
 const svgNS='http://www.w3.org/2000/svg';
@@ -37,7 +37,7 @@ const definitions=document.createElementNS(svgNS,'svg');
 definitions.setAttribute('width','0'); definitions.setAttribute('height','0');
 definitions.style.position='absolute';
 const defs=document.createElementNS(svgNS,'defs'); definitions.append(defs);
-for(const [body,polygons] of Object.entries(scoutUnderlayerVisibility)){
+for(const [body,polygons] of Object.entries(alchemistUnderlayerVisibility)){
  const clip=document.createElementNS(svgNS,'clipPath');
  clip.id=`underlayer-${body}`; clip.setAttribute('clipPathUnits','objectBoundingBox');
  const path=document.createElementNS(svgNS,'path');

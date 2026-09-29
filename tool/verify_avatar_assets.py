@@ -12,13 +12,15 @@ def verify(root: Path) -> None:
             raise ValueError(f'{entry["path"]}: differs from founder-approved Scholar fit')
         print(f'Verified locked Scholar fit: {entry["path"]}')
     assets = list(manifest['assets'])
-    for archetype, candidate in manifest.get('candidate_classes', {}).items():
-        for entry in candidate.get('fit_inputs', []):
-            data = (root / entry['path']).read_bytes()
-            if hashlib.sha256(data).hexdigest() != entry['sha256']:
-                raise ValueError(f'{entry["path"]}: differs from {archetype} review candidate')
-            print(f'Verified {archetype} fit input: {entry["path"]}')
-        assets.extend(candidate['assets'])
+    for collection in ['approved_classes', 'candidate_classes']:
+        for archetype, class_spec in manifest.get(collection, {}).items():
+            status = 'approved template' if collection == 'approved_classes' else 'review candidate'
+            for entry in class_spec.get('fit_inputs', []):
+                data = (root / entry['path']).read_bytes()
+                if hashlib.sha256(data).hexdigest() != entry['sha256']:
+                    raise ValueError(f'{entry["path"]}: differs from {archetype} {status}')
+                print(f'Verified {archetype} fit input: {entry["path"]}')
+            assets.extend(class_spec['assets'])
     for entry in assets:
         path = root / entry['path']
         data = path.read_bytes()

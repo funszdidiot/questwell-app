@@ -1,10 +1,14 @@
 # Scout fit review — 29 September 2026
 
-**Development candidate: `scout-polish-v1`. Founder visual approval is pending.**
+**Founder approved on 29 September 2026: `scout-approved-v1`.**
+
+Approved source: `8f067e7317e30498513f47f6e75d936cf0cebb34`, artwork
+`scout-polish-v1`. Approval covers the current Male, Female and Gender Neutral set.
+After the app deployment, the founder directed: “Good to go. Next.”
 
 Uses the approved `scholar-approved-v1` checklist and frozen business-suit bases.
-Scholar artwork and visibility definitions are unchanged. This work does not
-approve Scout, promote Epic 2, or merge to `flutterflow`.
+Scholar artwork and visibility definitions are unchanged. Scout approval does not
+promote Epic 2 or authorize merging to `flutterflow` or launching.
 
 ## Review surfaces
 
@@ -28,14 +32,14 @@ approve Scout, promote Epic 2, or merge to `flutterflow`.
 - [x] Inspect all three composites at portrait and 176 px card sizes.
 - [x] Use shared class rendering for the app portrait and body selection cards.
 - [x] Keep the starter coat out of accessory slots and preserve inventory state.
-- [ ] Founder review of all three bodies in the signed-in iPhone app.
-- [ ] Record the founder's Scout approval before freezing its template.
+- [x] Founder accepted the current three-body Scout set after app delivery.
+- [x] Record the founder's Scout approval and freeze its artwork/fit inputs.
 
 | Body | Shoulders / sleeve path | Cuffs / hands | Front opening / waist | Hem / stance | Current visual result |
 | --- | --- | --- | --- | --- | --- |
-| Male | Structured shoulders, independently fitted sleeves | Both hands exposed, compact cuffs | Shirt/tie framed; jacket flaps hidden | Split tails clear boots | Pass in desktop composite; founder review pending |
-| Female | Narrower shoulders and arms; long hair preserved | Cuffs aligned to the higher wrists | Narrow torso and natural waist | Clear stance and boot baseline | Pass in desktop composite; founder review pending |
-| Gender Neutral | Separate balanced torso and relaxed sleeve paths | Both hands exposed | Scout waist clasps frame base belt | Split tails clear boots | Pass in desktop composite; founder review pending |
+| Male | Structured shoulders, independently fitted sleeves | Both hands exposed, compact cuffs | Shirt/tie framed; jacket flaps hidden | Split tails clear boots | Founder approved current set |
+| Female | Narrower shoulders and arms; long hair preserved | Cuffs aligned to the higher wrists | Narrow torso and natural waist | Clear stance and boot baseline | Founder approved current set |
+| Gender Neutral | Separate balanced torso and relaxed sleeve paths | Both hands exposed | Scout waist clasps frame base belt | Split tails clear boots | Founder approved current set |
 
 The comparison page is a visual review surface. It is not evidence of a signed-in
 iPhone Safari session. Build checks also do not establish visual approval.
@@ -63,5 +67,8 @@ assets without materializing older artwork over them.
 
 `test/scout_underlayer_clip_test.dart` covers anatomy retention, jacket occlusion,
 female curls, contain alignment, body/asset/clip matching, and portrait/card
-layouts at 320, 390 and 430 px widths. Scout remains a pending candidate in the
-manifest, separate from the founder-approved Scholar template.
+layouts at 320, 390 and 430 px widths. Scout is recorded under approved classes in the manifest. Its artwork and
+fit-input checksums remain locked alongside the approved Scholar template.
+
+Next class: Alchemist. Use the same body-fit checklist, with its own artwork,
+coverage paths and visual review.

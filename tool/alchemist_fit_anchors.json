@@ -1,0 +1,2466 @@
+{
+  "canvas": [
+    240,
+    320
+  ],
+  "method": "Offline body-specific fit of the selected sapphire chemistry coats against frozen avatar landmarks; runtime canvases stack 1:1.",
+  "bodies": {
+    "male": {
+      "source": "tool/art_assets/alchemist_lab_v1/male.webp",
+      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_male_lab_v1.webp",
+      "note": "Selected sapphire/silver chemistry design. Independently measured shoulders, sleeve paths, cuff corners and split hems.",
+      "points": [
+        {
+          "name": "neck_l",
+          "source": [
+            114,
+            81
+          ],
+          "target": [
+            108,
+            77
+          ]
+        },
+        {
+          "name": "neck_r",
+          "source": [
+            132,
+            81
+          ],
+          "target": [
+            130,
+            77
+          ]
+        },
+        {
+          "name": "shoulder_l",
+          "source": [
+            85,
+            95
+          ],
+          "target": [
+            81,
+            87
+          ]
+        },
+        {
+          "name": "shoulder_r",
+          "source": [
+            158,
+            94
+          ],
+          "target": [
+            155,
+            89
+          ]
+        },
+        {
+          "name": "epaulet_l",
+          "source": [
+            78,
+            105
+          ],
+          "target": [
+            70,
+            101
+          ]
+        },
+        {
+          "name": "epaulet_r",
+          "source": [
+            165,
+            104
+          ],
+          "target": [
+            165,
+            101
+          ]
+        },
+        {
+          "name": "armpit_l",
+          "source": [
+            97,
+            127
+          ],
+          "target": [
+            92,
+            124
+          ]
+        },
+        {
+          "name": "armpit_r",
+          "source": [
+            150,
+            127
+          ],
+          "target": [
+            148,
+            124
+          ]
+        },
+        {
+          "name": "elbow_outer_l",
+          "source": [
+            70,
+            139
+          ],
+          "target": [
+            65,
+            136
+          ]
+        },
+        {
+          "name": "elbow_inner_l",
+          "source": [
+            92,
+            139
+          ],
+          "target": [
+            85,
+            137
+          ]
+        },
+        {
+          "name": "elbow_outer_r",
+          "source": [
+            173,
+            139
+          ],
+          "target": [
+            169,
+            136
+          ]
+        },
+        {
+          "name": "elbow_inner_r",
+          "source": [
+            152,
+            139
+          ],
+          "target": [
+            151,
+            137
+          ]
+        },
+        {
+          "name": "cuff_top_outer_l",
+          "source": [
+            68,
+            163
+          ],
+          "target": [
+            63,
+            164
+          ]
+        },
+        {
+          "name": "cuff_top_inner_l",
+          "source": [
+            87,
+            163
+          ],
+          "target": [
+            81,
+            164
+          ]
+        },
+        {
+          "name": "cuff_bottom_outer_l",
+          "source": [
+            66,
+            176
+          ],
+          "target": [
+            62,
+            173
+          ]
+        },
+        {
+          "name": "cuff_bottom_inner_l",
+          "source": [
+            87,
+            176
+          ],
+          "target": [
+            81,
+            173
+          ]
+        },
+        {
+          "name": "cuff_top_inner_r",
+          "source": [
+            155,
+            163
+          ],
+          "target": [
+            156,
+            164
+          ]
+        },
+        {
+          "name": "cuff_top_outer_r",
+          "source": [
+            175,
+            163
+          ],
+          "target": [
+            176,
+            164
+          ]
+        },
+        {
+          "name": "cuff_bottom_inner_r",
+          "source": [
+            156,
+            176
+          ],
+          "target": [
+            156,
+            173
+          ]
+        },
+        {
+          "name": "cuff_bottom_outer_r",
+          "source": [
+            177,
+            176
+          ],
+          "target": [
+            176,
+            173
+          ]
+        },
+        {
+          "name": "waist_outer_l",
+          "source": [
+            98,
+            151
+          ],
+          "target": [
+            93,
+            151
+          ]
+        },
+        {
+          "name": "waist_outer_r",
+          "source": [
+            148,
+            151
+          ],
+          "target": [
+            147,
+            151
+          ]
+        },
+        {
+          "name": "waist_opening_l",
+          "source": [
+            119,
+            151
+          ],
+          "target": [
+            113,
+            150
+          ]
+        },
+        {
+          "name": "waist_opening_r",
+          "source": [
+            126,
+            151
+          ],
+          "target": [
+            124,
+            150
+          ]
+        },
+        {
+          "name": "hip_l",
+          "source": [
+            90,
+            184
+          ],
+          "target": [
+            85,
+            184
+          ]
+        },
+        {
+          "name": "hip_r",
+          "source": [
+            154,
+            184
+          ],
+          "target": [
+            154,
+            184
+          ]
+        },
+        {
+          "name": "skirt_seam_l",
+          "source": [
+            103,
+            233
+          ],
+          "target": [
+            102,
+            240
+          ]
+        },
+        {
+          "name": "skirt_seam_r",
+          "source": [
+            146,
+            233
+          ],
+          "target": [
+            137,
+            240
+          ]
+        },
+        {
+          "name": "skirt_outer_l",
+          "source": [
+            65,
+            242
+          ],
+          "target": [
+            61,
+            246
+          ]
+        },
+        {
+          "name": "skirt_outer_r",
+          "source": [
+            180,
+            242
+          ],
+          "target": [
+            177,
+            246
+          ]
+        },
+        {
+          "name": "tail_l",
+          "source": [
+            89,
+            285
+          ],
+          "target": [
+            85,
+            291
+          ]
+        },
+        {
+          "name": "tail_r",
+          "source": [
+            156,
+            285
+          ],
+          "target": [
+            156,
+            291
+          ]
+        },
+        {
+          "name": "inner_hem_l",
+          "source": [
+            114,
+            256
+          ],
+          "target": [
+            111,
+            262
+          ]
+        },
+        {
+          "name": "inner_hem_r",
+          "source": [
+            135,
+            255
+          ],
+          "target": [
+            133,
+            262
+          ]
+        },
+        {
+          "name": "lower_edge_l",
+          "source": [
+            82,
+            274
+          ],
+          "target": [
+            77,
+            274
+          ]
+        },
+        {
+          "name": "lower_edge_r",
+          "source": [
+            164,
+            274
+          ],
+          "target": [
+            163,
+            274
+          ]
+        },
+        {
+          "name": "canvas_0",
+          "source": [
+            0,
+            0
+          ],
+          "target": [
+            0,
+            0
+          ]
+        },
+        {
+          "name": "canvas_1",
+          "source": [
+            240,
+            0
+          ],
+          "target": [
+            240,
+            0
+          ]
+        },
+        {
+          "name": "canvas_2",
+          "source": [
+            240,
+            320
+          ],
+          "target": [
+            240,
+            320
+          ]
+        },
+        {
+          "name": "canvas_3",
+          "source": [
+            0,
+            320
+          ],
+          "target": [
+            0,
+            320
+          ]
+        }
+      ],
+      "triangles": [
+        [
+          38,
+          19,
+          37
+        ],
+        [
+          37,
+          0,
+          36
+        ],
+        [
+          14,
+          39,
+          36
+        ],
+        [
+          1,
+          0,
+          37
+        ],
+        [
+          0,
+          2,
+          36
+        ],
+        [
+          2,
+          4,
+          36
+        ],
+        [
+          4,
+          8,
+          36
+        ],
+        [
+          29,
+          19,
+          38
+        ],
+        [
+          39,
+          30,
+          38
+        ],
+        [
+          5,
+          3,
+          37
+        ],
+        [
+          3,
+          1,
+          37
+        ],
+        [
+          10,
+          5,
+          37
+        ],
+        [
+          2,
+          6,
+          4
+        ],
+        [
+          6,
+          8,
+          4
+        ],
+        [
+          6,
+          2,
+          0
+        ],
+        [
+          1,
+          6,
+          0
+        ],
+        [
+          12,
+          14,
+          36
+        ],
+        [
+          8,
+          12,
+          36
+        ],
+        [
+          24,
+          25,
+          26
+        ],
+        [
+          25,
+          24,
+          22
+        ],
+        [
+          29,
+          25,
+          19
+        ],
+        [
+          30,
+          31,
+          38
+        ],
+        [
+          24,
+          28,
+          14
+        ],
+        [
+          28,
+          24,
+          26
+        ],
+        [
+          14,
+          28,
+          39
+        ],
+        [
+          19,
+          17,
+          37
+        ],
+        [
+          17,
+          10,
+          37
+        ],
+        [
+          3,
+          7,
+          1
+        ],
+        [
+          7,
+          6,
+          1
+        ],
+        [
+          7,
+          3,
+          5
+        ],
+        [
+          10,
+          7,
+          5
+        ],
+        [
+          15,
+          24,
+          14
+        ],
+        [
+          12,
+          15,
+          14
+        ],
+        [
+          24,
+          15,
+          22
+        ],
+        [
+          25,
+          27,
+          26
+        ],
+        [
+          27,
+          25,
+          29
+        ],
+        [
+          32,
+          31,
+          30
+        ],
+        [
+          10,
+          16,
+          21
+        ],
+        [
+          17,
+          16,
+          10
+        ],
+        [
+          6,
+          23,
+          22
+        ],
+        [
+          7,
+          23,
+          6
+        ],
+        [
+          16,
+          23,
+          21
+        ],
+        [
+          23,
+          25,
+          22
+        ],
+        [
+          20,
+          6,
+          22
+        ],
+        [
+          15,
+          20,
+          22
+        ],
+        [
+          35,
+          27,
+          29
+        ],
+        [
+          35,
+          29,
+          38
+        ],
+        [
+          31,
+          35,
+          38
+        ],
+        [
+          34,
+          32,
+          30
+        ],
+        [
+          34,
+          30,
+          39
+        ],
+        [
+          28,
+          34,
+          39
+        ],
+        [
+          34,
+          28,
+          26
+        ],
+        [
+          32,
+          34,
+          26
+        ],
+        [
+          23,
+          11,
+          21
+        ],
+        [
+          11,
+          23,
+          7
+        ],
+        [
+          11,
+          10,
+          21
+        ],
+        [
+          11,
+          7,
+          10
+        ],
+        [
+          23,
+          18,
+          25
+        ],
+        [
+          18,
+          23,
+          16
+        ],
+        [
+          25,
+          18,
+          19
+        ],
+        [
+          18,
+          17,
+          19
+        ],
+        [
+          18,
+          16,
+          17
+        ],
+        [
+          13,
+          15,
+          12
+        ],
+        [
+          13,
+          20,
+          15
+        ],
+        [
+          13,
+          12,
+          8
+        ],
+        [
+          6,
+          9,
+          8
+        ],
+        [
+          20,
+          9,
+          6
+        ],
+        [
+          9,
+          13,
+          8
+        ],
+        [
+          13,
+          9,
+          20
+        ],
+        [
+          35,
+          33,
+          27
+        ],
+        [
+          27,
+          33,
+          26
+        ],
+        [
+          33,
+          32,
+          26
+        ],
+        [
+          32,
+          33,
+          31
+        ],
+        [
+          33,
+          35,
+          31
+        ]
+      ]
+    },
+    "female": {
+      "source": "tool/art_assets/alchemist_lab_v1/female.webp",
+      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_female_lab_v1.webp",
+      "note": "Selected sapphire/silver chemistry design. Independently measured shoulders, sleeve paths, cuff corners and split hems.",
+      "points": [
+        {
+          "name": "neck_l",
+          "source": [
+            112,
+            80
+          ],
+          "target": [
+            110,
+            76
+          ]
+        },
+        {
+          "name": "neck_r",
+          "source": [
+            129,
+            80
+          ],
+          "target": [
+            129,
+            76
+          ]
+        },
+        {
+          "name": "shoulder_l",
+          "source": [
+            88,
+            90
+          ],
+          "target": [
+            88,
+            86
+          ]
+        },
+        {
+          "name": "shoulder_r",
+          "source": [
+            153,
+            91
+          ],
+          "target": [
+            150,
+            87
+          ]
+        },
+        {
+          "name": "epaulet_l",
+          "source": [
+            81,
+            103
+          ],
+          "target": [
+            77,
+            100
+          ]
+        },
+        {
+          "name": "epaulet_r",
+          "source": [
+            160,
+            103
+          ],
+          "target": [
+            160,
+            100
+          ]
+        },
+        {
+          "name": "armpit_l",
+          "source": [
+            98,
+            123
+          ],
+          "target": [
+            95,
+            118
+          ]
+        },
+        {
+          "name": "armpit_r",
+          "source": [
+            145,
+            125
+          ],
+          "target": [
+            143,
+            118
+          ]
+        },
+        {
+          "name": "elbow_outer_l",
+          "source": [
+            75,
+            137
+          ],
+          "target": [
+            75,
+            137
+          ]
+        },
+        {
+          "name": "elbow_inner_l",
+          "source": [
+            95,
+            137
+          ],
+          "target": [
+            92,
+            136
+          ]
+        },
+        {
+          "name": "elbow_outer_r",
+          "source": [
+            165,
+            137
+          ],
+          "target": [
+            162,
+            137
+          ]
+        },
+        {
+          "name": "elbow_inner_r",
+          "source": [
+            146,
+            137
+          ],
+          "target": [
+            145,
+            136
+          ]
+        },
+        {
+          "name": "cuff_top_outer_l",
+          "source": [
+            72,
+            161
+          ],
+          "target": [
+            70,
+            161
+          ]
+        },
+        {
+          "name": "cuff_top_inner_l",
+          "source": [
+            90,
+            161
+          ],
+          "target": [
+            86,
+            161
+          ]
+        },
+        {
+          "name": "cuff_bottom_outer_l",
+          "source": [
+            71,
+            173
+          ],
+          "target": [
+            70,
+            170
+          ]
+        },
+        {
+          "name": "cuff_bottom_inner_l",
+          "source": [
+            88,
+            173
+          ],
+          "target": [
+            86,
+            170
+          ]
+        },
+        {
+          "name": "cuff_top_inner_r",
+          "source": [
+            152,
+            161
+          ],
+          "target": [
+            153,
+            161
+          ]
+        },
+        {
+          "name": "cuff_top_outer_r",
+          "source": [
+            169,
+            161
+          ],
+          "target": [
+            170,
+            161
+          ]
+        },
+        {
+          "name": "cuff_bottom_inner_r",
+          "source": [
+            153,
+            173
+          ],
+          "target": [
+            153,
+            170
+          ]
+        },
+        {
+          "name": "cuff_bottom_outer_r",
+          "source": [
+            171,
+            173
+          ],
+          "target": [
+            170,
+            170
+          ]
+        },
+        {
+          "name": "waist_outer_l",
+          "source": [
+            101,
+            145
+          ],
+          "target": [
+            96,
+            145
+          ]
+        },
+        {
+          "name": "waist_outer_r",
+          "source": [
+            145,
+            145
+          ],
+          "target": [
+            145,
+            145
+          ]
+        },
+        {
+          "name": "waist_opening_l",
+          "source": [
+            115,
+            145
+          ],
+          "target": [
+            112,
+            145
+          ]
+        },
+        {
+          "name": "waist_opening_r",
+          "source": [
+            128,
+            145
+          ],
+          "target": [
+            126,
+            145
+          ]
+        },
+        {
+          "name": "hip_l",
+          "source": [
+            89,
+            176
+          ],
+          "target": [
+            89,
+            175
+          ]
+        },
+        {
+          "name": "hip_r",
+          "source": [
+            154,
+            176
+          ],
+          "target": [
+            151,
+            175
+          ]
+        },
+        {
+          "name": "skirt_seam_l",
+          "source": [
+            102,
+            224
+          ],
+          "target": [
+            102,
+            224
+          ]
+        },
+        {
+          "name": "skirt_seam_r",
+          "source": [
+            143,
+            224
+          ],
+          "target": [
+            139,
+            224
+          ]
+        },
+        {
+          "name": "skirt_outer_l",
+          "source": [
+            65,
+            251
+          ],
+          "target": [
+            62,
+            250
+          ]
+        },
+        {
+          "name": "skirt_outer_r",
+          "source": [
+            181,
+            251
+          ],
+          "target": [
+            181,
+            250
+          ]
+        },
+        {
+          "name": "tail_l",
+          "source": [
+            93,
+            288
+          ],
+          "target": [
+            93,
+            288
+          ]
+        },
+        {
+          "name": "tail_r",
+          "source": [
+            160,
+            286
+          ],
+          "target": [
+            162,
+            288
+          ]
+        },
+        {
+          "name": "inner_hem_l",
+          "source": [
+            114,
+            264
+          ],
+          "target": [
+            115,
+            265
+          ]
+        },
+        {
+          "name": "inner_hem_r",
+          "source": [
+            139,
+            264
+          ],
+          "target": [
+            138,
+            265
+          ]
+        },
+        {
+          "name": "lower_edge_l",
+          "source": [
+            82,
+            274
+          ],
+          "target": [
+            80,
+            273
+          ]
+        },
+        {
+          "name": "lower_edge_r",
+          "source": [
+            166,
+            274
+          ],
+          "target": [
+            169,
+            273
+          ]
+        },
+        {
+          "name": "canvas_0",
+          "source": [
+            0,
+            0
+          ],
+          "target": [
+            0,
+            0
+          ]
+        },
+        {
+          "name": "canvas_1",
+          "source": [
+            240,
+            0
+          ],
+          "target": [
+            240,
+            0
+          ]
+        },
+        {
+          "name": "canvas_2",
+          "source": [
+            240,
+            320
+          ],
+          "target": [
+            240,
+            320
+          ]
+        },
+        {
+          "name": "canvas_3",
+          "source": [
+            0,
+            320
+          ],
+          "target": [
+            0,
+            320
+          ]
+        }
+      ],
+      "triangles": [
+        [
+          38,
+          19,
+          37
+        ],
+        [
+          37,
+          0,
+          36
+        ],
+        [
+          14,
+          39,
+          36
+        ],
+        [
+          1,
+          0,
+          37
+        ],
+        [
+          0,
+          2,
+          36
+        ],
+        [
+          2,
+          4,
+          36
+        ],
+        [
+          4,
+          8,
+          36
+        ],
+        [
+          24,
+          26,
+          14
+        ],
+        [
+          24,
+          25,
+          26
+        ],
+        [
+          29,
+          19,
+          38
+        ],
+        [
+          14,
+          28,
+          39
+        ],
+        [
+          26,
+          28,
+          14
+        ],
+        [
+          5,
+          3,
+          37
+        ],
+        [
+          3,
+          1,
+          37
+        ],
+        [
+          7,
+          3,
+          5
+        ],
+        [
+          3,
+          7,
+          1
+        ],
+        [
+          10,
+          5,
+          37
+        ],
+        [
+          10,
+          7,
+          5
+        ],
+        [
+          12,
+          14,
+          36
+        ],
+        [
+          8,
+          12,
+          36
+        ],
+        [
+          6,
+          8,
+          4
+        ],
+        [
+          6,
+          2,
+          0
+        ],
+        [
+          2,
+          6,
+          4
+        ],
+        [
+          1,
+          6,
+          0
+        ],
+        [
+          7,
+          6,
+          1
+        ],
+        [
+          10,
+          16,
+          21
+        ],
+        [
+          25,
+          27,
+          26
+        ],
+        [
+          27,
+          25,
+          19
+        ],
+        [
+          29,
+          27,
+          19
+        ],
+        [
+          16,
+          23,
+          21
+        ],
+        [
+          6,
+          23,
+          22
+        ],
+        [
+          23,
+          6,
+          7
+        ],
+        [
+          15,
+          24,
+          14
+        ],
+        [
+          12,
+          15,
+          14
+        ],
+        [
+          9,
+          6,
+          22
+        ],
+        [
+          6,
+          9,
+          8
+        ],
+        [
+          25,
+          18,
+          19
+        ],
+        [
+          18,
+          23,
+          16
+        ],
+        [
+          24,
+          18,
+          25
+        ],
+        [
+          18,
+          24,
+          22
+        ],
+        [
+          23,
+          18,
+          22
+        ],
+        [
+          17,
+          16,
+          10
+        ],
+        [
+          19,
+          17,
+          37
+        ],
+        [
+          17,
+          10,
+          37
+        ],
+        [
+          18,
+          17,
+          19
+        ],
+        [
+          17,
+          18,
+          16
+        ],
+        [
+          35,
+          29,
+          38
+        ],
+        [
+          31,
+          35,
+          38
+        ],
+        [
+          32,
+          28,
+          26
+        ],
+        [
+          27,
+          32,
+          26
+        ],
+        [
+          23,
+          11,
+          21
+        ],
+        [
+          11,
+          23,
+          7
+        ],
+        [
+          11,
+          10,
+          21
+        ],
+        [
+          10,
+          11,
+          7
+        ],
+        [
+          13,
+          15,
+          12
+        ],
+        [
+          13,
+          12,
+          8
+        ],
+        [
+          9,
+          13,
+          8
+        ],
+        [
+          24,
+          13,
+          22
+        ],
+        [
+          15,
+          13,
+          24
+        ],
+        [
+          39,
+          30,
+          38
+        ],
+        [
+          30,
+          31,
+          38
+        ],
+        [
+          33,
+          35,
+          31
+        ],
+        [
+          30,
+          33,
+          31
+        ],
+        [
+          33,
+          30,
+          32
+        ],
+        [
+          33,
+          32,
+          27
+        ],
+        [
+          33,
+          27,
+          29
+        ],
+        [
+          35,
+          33,
+          29
+        ],
+        [
+          20,
+          9,
+          22
+        ],
+        [
+          13,
+          20,
+          22
+        ],
+        [
+          20,
+          13,
+          9
+        ],
+        [
+          32,
+          34,
+          28
+        ],
+        [
+          30,
+          34,
+          32
+        ],
+        [
+          28,
+          34,
+          39
+        ],
+        [
+          34,
+          30,
+          39
+        ]
+      ]
+    },
+    "neutral": {
+      "source": "tool/art_assets/alchemist_lab_v1/neutral.webp",
+      "output": "assets/images/questwell/avatar/classes/alchemist/alchemist_coat_neutral_lab_v1.webp",
+      "note": "Selected sapphire/silver chemistry design. Independently measured shoulders, sleeve paths, cuff corners and split hems.",
+      "points": [
+        {
+          "name": "neck_l",
+          "source": [
+            110,
+            82
+          ],
+          "target": [
+            108,
+            76
+          ]
+        },
+        {
+          "name": "neck_r",
+          "source": [
+            131,
+            82
+          ],
+          "target": [
+            131,
+            76
+          ]
+        },
+        {
+          "name": "shoulder_l",
+          "source": [
+            86,
+            95
+          ],
+          "target": [
+            84,
+            88
+          ]
+        },
+        {
+          "name": "shoulder_r",
+          "source": [
+            153,
+            95
+          ],
+          "target": [
+            154,
+            89
+          ]
+        },
+        {
+          "name": "epaulet_l",
+          "source": [
+            79,
+            104
+          ],
+          "target": [
+            75,
+            102
+          ]
+        },
+        {
+          "name": "epaulet_r",
+          "source": [
+            161,
+            104
+          ],
+          "target": [
+            164,
+            102
+          ]
+        },
+        {
+          "name": "armpit_l",
+          "source": [
+            95,
+            127
+          ],
+          "target": [
+            93,
+            122
+          ]
+        },
+        {
+          "name": "armpit_r",
+          "source": [
+            145,
+            127
+          ],
+          "target": [
+            146,
+            122
+          ]
+        },
+        {
+          "name": "elbow_outer_l",
+          "source": [
+            70,
+            140
+          ],
+          "target": [
+            69,
+            138
+          ]
+        },
+        {
+          "name": "elbow_inner_l",
+          "source": [
+            91,
+            140
+          ],
+          "target": [
+            87,
+            138
+          ]
+        },
+        {
+          "name": "elbow_outer_r",
+          "source": [
+            170,
+            140
+          ],
+          "target": [
+            169,
+            138
+          ]
+        },
+        {
+          "name": "elbow_inner_r",
+          "source": [
+            150,
+            140
+          ],
+          "target": [
+            151,
+            138
+          ]
+        },
+        {
+          "name": "cuff_top_outer_l",
+          "source": [
+            67,
+            163
+          ],
+          "target": [
+            64,
+            164
+          ]
+        },
+        {
+          "name": "cuff_top_inner_l",
+          "source": [
+            85,
+            163
+          ],
+          "target": [
+            84,
+            164
+          ]
+        },
+        {
+          "name": "cuff_bottom_outer_l",
+          "source": [
+            65,
+            175
+          ],
+          "target": [
+            64,
+            174
+          ]
+        },
+        {
+          "name": "cuff_bottom_inner_l",
+          "source": [
+            84,
+            175
+          ],
+          "target": [
+            84,
+            174
+          ]
+        },
+        {
+          "name": "cuff_top_inner_r",
+          "source": [
+            155,
+            163
+          ],
+          "target": [
+            155,
+            164
+          ]
+        },
+        {
+          "name": "cuff_top_outer_r",
+          "source": [
+            173,
+            163
+          ],
+          "target": [
+            176,
+            164
+          ]
+        },
+        {
+          "name": "cuff_bottom_inner_r",
+          "source": [
+            156,
+            175
+          ],
+          "target": [
+            155,
+            174
+          ]
+        },
+        {
+          "name": "cuff_bottom_outer_r",
+          "source": [
+            175,
+            175
+          ],
+          "target": [
+            176,
+            174
+          ]
+        },
+        {
+          "name": "waist_outer_l",
+          "source": [
+            98,
+            151
+          ],
+          "target": [
+            96,
+            151
+          ]
+        },
+        {
+          "name": "waist_outer_r",
+          "source": [
+            144,
+            151
+          ],
+          "target": [
+            145,
+            151
+          ]
+        },
+        {
+          "name": "waist_opening_l",
+          "source": [
+            115,
+            151
+          ],
+          "target": [
+            113,
+            151
+          ]
+        },
+        {
+          "name": "waist_opening_r",
+          "source": [
+            125,
+            151
+          ],
+          "target": [
+            124,
+            151
+          ]
+        },
+        {
+          "name": "hip_l",
+          "source": [
+            87,
+            181
+          ],
+          "target": [
+            86,
+            180
+          ]
+        },
+        {
+          "name": "hip_r",
+          "source": [
+            153,
+            181
+          ],
+          "target": [
+            152,
+            180
+          ]
+        },
+        {
+          "name": "skirt_seam_l",
+          "source": [
+            100,
+            231
+          ],
+          "target": [
+            101,
+            234
+          ]
+        },
+        {
+          "name": "skirt_seam_r",
+          "source": [
+            141,
+            231
+          ],
+          "target": [
+            137,
+            234
+          ]
+        },
+        {
+          "name": "skirt_outer_l",
+          "source": [
+            59,
+            246
+          ],
+          "target": [
+            60,
+            248
+          ]
+        },
+        {
+          "name": "skirt_outer_r",
+          "source": [
+            181,
+            245
+          ],
+          "target": [
+            180,
+            248
+          ]
+        },
+        {
+          "name": "tail_l",
+          "source": [
+            84,
+            286
+          ],
+          "target": [
+            87,
+            289
+          ]
+        },
+        {
+          "name": "tail_r",
+          "source": [
+            157,
+            286
+          ],
+          "target": [
+            158,
+            289
+          ]
+        },
+        {
+          "name": "inner_hem_l",
+          "source": [
+            114,
+            262
+          ],
+          "target": [
+            111,
+            262
+          ]
+        },
+        {
+          "name": "inner_hem_r",
+          "source": [
+            133,
+            262
+          ],
+          "target": [
+            134,
+            262
+          ]
+        },
+        {
+          "name": "lower_edge_l",
+          "source": [
+            75,
+            273
+          ],
+          "target": [
+            77,
+            274
+          ]
+        },
+        {
+          "name": "lower_edge_r",
+          "source": [
+            166,
+            273
+          ],
+          "target": [
+            170,
+            274
+          ]
+        },
+        {
+          "name": "canvas_0",
+          "source": [
+            0,
+            0
+          ],
+          "target": [
+            0,
+            0
+          ]
+        },
+        {
+          "name": "canvas_1",
+          "source": [
+            240,
+            0
+          ],
+          "target": [
+            240,
+            0
+          ]
+        },
+        {
+          "name": "canvas_2",
+          "source": [
+            240,
+            320
+          ],
+          "target": [
+            240,
+            320
+          ]
+        },
+        {
+          "name": "canvas_3",
+          "source": [
+            0,
+            320
+          ],
+          "target": [
+            0,
+            320
+          ]
+        }
+      ],
+      "triangles": [
+        [
+          38,
+          19,
+          37
+        ],
+        [
+          37,
+          0,
+          36
+        ],
+        [
+          14,
+          39,
+          36
+        ],
+        [
+          1,
+          0,
+          37
+        ],
+        [
+          0,
+          2,
+          36
+        ],
+        [
+          2,
+          4,
+          36
+        ],
+        [
+          4,
+          8,
+          36
+        ],
+        [
+          29,
+          19,
+          38
+        ],
+        [
+          14,
+          28,
+          39
+        ],
+        [
+          24,
+          28,
+          14
+        ],
+        [
+          28,
+          24,
+          26
+        ],
+        [
+          5,
+          3,
+          37
+        ],
+        [
+          3,
+          1,
+          37
+        ],
+        [
+          10,
+          5,
+          37
+        ],
+        [
+          29,
+          25,
+          19
+        ],
+        [
+          24,
+          25,
+          26
+        ],
+        [
+          12,
+          14,
+          36
+        ],
+        [
+          8,
+          12,
+          36
+        ],
+        [
+          6,
+          8,
+          4
+        ],
+        [
+          2,
+          6,
+          4
+        ],
+        [
+          6,
+          2,
+          0
+        ],
+        [
+          39,
+          30,
+          38
+        ],
+        [
+          16,
+          25,
+          21
+        ],
+        [
+          25,
+          27,
+          26
+        ],
+        [
+          27,
+          25,
+          29
+        ],
+        [
+          15,
+          24,
+          14
+        ],
+        [
+          12,
+          15,
+          14
+        ],
+        [
+          24,
+          20,
+          22
+        ],
+        [
+          11,
+          16,
+          21
+        ],
+        [
+          16,
+          11,
+          10
+        ],
+        [
+          3,
+          7,
+          1
+        ],
+        [
+          1,
+          7,
+          0
+        ],
+        [
+          7,
+          6,
+          0
+        ],
+        [
+          7,
+          3,
+          5
+        ],
+        [
+          10,
+          7,
+          5
+        ],
+        [
+          11,
+          7,
+          10
+        ],
+        [
+          28,
+          34,
+          39
+        ],
+        [
+          34,
+          30,
+          39
+        ],
+        [
+          34,
+          28,
+          26
+        ],
+        [
+          17,
+          16,
+          10
+        ],
+        [
+          19,
+          17,
+          37
+        ],
+        [
+          17,
+          10,
+          37
+        ],
+        [
+          25,
+          18,
+          19
+        ],
+        [
+          16,
+          18,
+          25
+        ],
+        [
+          18,
+          17,
+          19
+        ],
+        [
+          17,
+          18,
+          16
+        ],
+        [
+          30,
+          31,
+          38
+        ],
+        [
+          6,
+          9,
+          8
+        ],
+        [
+          9,
+          6,
+          22
+        ],
+        [
+          20,
+          9,
+          22
+        ],
+        [
+          13,
+          15,
+          12
+        ],
+        [
+          13,
+          9,
+          20
+        ],
+        [
+          15,
+          13,
+          24
+        ],
+        [
+          13,
+          20,
+          24
+        ],
+        [
+          13,
+          12,
+          8
+        ],
+        [
+          9,
+          13,
+          8
+        ],
+        [
+          25,
+          23,
+          21
+        ],
+        [
+          23,
+          11,
+          21
+        ],
+        [
+          23,
+          7,
+          11
+        ],
+        [
+          32,
+          34,
+          26
+        ],
+        [
+          34,
+          32,
+          30
+        ],
+        [
+          27,
+          32,
+          26
+        ],
+        [
+          32,
+          31,
+          30
+        ],
+        [
+          35,
+          27,
+          29
+        ],
+        [
+          35,
+          29,
+          38
+        ],
+        [
+          31,
+          35,
+          38
+        ],
+        [
+          32,
+          33,
+          31
+        ],
+        [
+          33,
+          35,
+          31
+        ],
+        [
+          33,
+          32,
+          27
+        ],
+        [
+          35,
+          33,
+          27
+        ],
+        [
+          7,
+          23,
+          6
+        ],
+        [
+          6,
+          23,
+          22
+        ],
+        [
+          23,
+          24,
+          22
+        ],
+        [
+          23,
+          25,
+          24
+        ]
+      ]
+    }
+  }
+}

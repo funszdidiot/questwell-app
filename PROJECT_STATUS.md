@@ -13,11 +13,18 @@ the accepted reference.
 This supersedes the historical Scholar candidate/pending notes below; it does
 not promote Epic 2 or authorize merging to flutterflow or launching.
 
-**Scout fit:** 🧪 `scout-polish-v1` is ready for development review.
+**Scout fit:** ✅ Founder approved and frozen as `scout-approved-v1`, 2026-09-29.
 Three independently fitted forest-green/gold coats now use the shared 240 × 320
 canvas, compact cuffs, clean piping and Scout-specific jacket coverage. Portrait
-and card composites have been inspected; founder iPhone approval is pending.
+and card composites have been inspected; founder accepted the current three-body
+set after app delivery.
 See `docs/qa/SCOUT_FIT_REVIEW.md` and `scout-fit-review.html` in the preview.
+
+**Alchemist fit:** 🧪 `alchemist-lab-v1` is ready for development review.
+Three sapphire-blue/silver/cyan laboratory coats follow the founder’s request
+for a stronger science/chemistry identity and color distinction from Scout.
+Body-specific fitting, jacket coverage and portrait/card rendering are wired.
+Founder visual approval is pending; see `docs/qa/ALCHEMIST_FIT_REVIEW.md`.
 
 **Active workstream:** Epic 2 — Hearth Visual Overhaul (manual iPhone Safari visual acceptance gate)  
 **Development branch:** `questwell-dev`  
