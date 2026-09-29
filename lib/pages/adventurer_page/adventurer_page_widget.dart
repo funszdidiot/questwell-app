@@ -22,6 +22,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
   bool _savingArchetype = false;
   bool _savingBodyType = false;
   bool _claimingMastery = false;
+  String? _avatarBodyOverride;
 
   @override
   void initState() {
@@ -169,12 +170,18 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
 
   Future<void> _chooseBodyType(String bodyType) async {
     if (_savingBodyType) return;
-    setState(() => _savingBodyType = true);
+
+    final previous = _avatarBodyOverride;
+    setState(() {
+      _savingBodyType = true;
+      _avatarBodyOverride = bodyType;
+    });
 
     try {
       await QuestwellCosmeticService.setAvatarBodyType(bodyType);
       if (!mounted) return;
-      setState(_refresh);
+      _refresh();
+      setState(() => _savingBodyType = false);
       final label = switch (bodyType) {
         'male' => 'Male',
         'female' => 'Female',
@@ -186,8 +193,18 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
           behavior: SnackBarBehavior.floating,
         ),
       );
-    } finally {
-      if (mounted) setState(() => _savingBodyType = false);
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _savingBodyType = false;
+        _avatarBodyOverride = previous;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Avatar change failed. Please try again.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     }
   }
 
@@ -378,6 +395,8 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
           }
 
           final data = snapshot.data!;
+          final selectedBodyType =
+              _avatarBodyOverride ?? data.profile.avatarBodyType;
           final equipped = data.cosmetics.where((item) => item.equipped).toList();
           final visibleEquipped =
               _richEquipmentLayersReady ? equipped : <QuestwellCosmetic>[];
@@ -471,7 +490,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                       final compact = constraints.maxWidth < 520;
                       final avatar = QuestwellEquippedAvatar(
                         archetype: data.profile.adventurerArchetype,
-                        avatarBodyType: data.profile.avatarBodyType,
+                        avatarBodyType: selectedBodyType,
                         height: compact ? 286 : 330,
                         showRelic: masteryOwned,
                         equippedSlugs: {
@@ -637,7 +656,8 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                             width: width,
                             child: _AvatarBodyCard(
                               bodyType: value,
-                              selected: data.profile.avatarBodyType == value,
+                              archetype: data.profile.adventurerArchetype,
+                              selected: selectedBodyType == value,
                               disabled: _savingBodyType,
                               onTap: () => _chooseBodyType(value),
                             ),
@@ -1103,12 +1123,14 @@ class _ArchetypeCard extends StatelessWidget {
 class _AvatarBodyCard extends StatelessWidget {
   const _AvatarBodyCard({
     required this.bodyType,
+    required this.archetype,
     required this.selected,
     required this.disabled,
     required this.onTap,
   });
 
   final String bodyType;
+  final String archetype;
   final bool selected;
   final bool disabled;
   final VoidCallback onTap;
@@ -1134,7 +1156,7 @@ class _AvatarBodyCard extends StatelessWidget {
             SizedBox(
               height: 176,
               child: QuestwellLayeredAdventurerArt(
-                archetype: 'wanderer',
+                archetype: archetype,
                 avatarBodyType: bodyType,
                 equippedSlugs: const {},
               ),
