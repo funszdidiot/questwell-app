@@ -8,4 +8,13 @@ Development-only cleanup requested September 29, 2026.
 - Existing quest queries, completion, campfire selection and route callbacks retained.
 - Review fixture: `?review=home`.
 - Founder confirmed sign-in, sign-out and signing back in on their device.
-- This visual cleanup awaits founder review. No merge or launch.
+- Founder approved the lower-section cleanup ("Much better!"). No merge or launch.
+
+## Campfire atmosphere
+
+- Campfire Mode enables slow, warm square embers behind home content.
+- Replaces the separate campfire landscape banner.
+- Paint-only animation, no home rebuilds or queries per frame; ignores input.
+- Off mode stops animation and removes embers. Reduced-motion preference shows a still atmosphere.
+- Interactive review: `?review=home` with Campfire Mode toggle.
+- Existing energy-mode persistence remains unchanged.

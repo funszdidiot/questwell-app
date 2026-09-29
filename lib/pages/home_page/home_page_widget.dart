@@ -9,6 +9,7 @@ import '/services/questwell_cosmetic_service.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_home_sections.dart';
+import '/widgets/questwell_campfire_background.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home_page_model.dart';
@@ -365,19 +366,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: const Color(0xFF111827),
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF111B2B),
-                Color(0xFF111827),
-                Color(0xFF17120F),
-              ],
-              stops: [0, .56, 1],
-            ),
-          ),
+        body: QuestwellCampfireBackground(
+          active: _campfireMode,
           child: SafeArea(
             top: true,
             child: SingleChildScrollView(
@@ -853,13 +843,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         ),
                       ],
                     ),
-                  ),
-                ],
-                if (_campfireMode) ...[
-                  const SizedBox(height: 18),
-                  const QuestwellExpeditionPixelScene(
-                    height: 130,
-                    campfire: true,
                   ),
                 ],
                 const SizedBox(height: 18),
