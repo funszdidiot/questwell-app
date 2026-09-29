@@ -1,12 +1,11 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import '/services/questwell_boss_service.dart';
-import '/services/questwell_cosmetic_service.dart';
 import '/services/questwell_task_service.dart';
 import '/widgets/questwell_pixel_art.dart';
+import '/widgets/questwell_quest_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,11 +22,11 @@ class QuestBoardPageWidget extends StatefulWidget {
 
 class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
   String _filter = 'today';
+  int _completedThisVisit = 0;
   String? _busyTaskId;
   Set<String> _favoriteTaskIds = <String>{};
   late Future<List<TasksRow>> _tasksFuture;
   late Future<List<QuestwellBossBattle>> _bossFuture;
-  late Future<QuestwellCosmeticsSnapshot> _cosmeticsFuture;
 
   @override
   void initState() {
@@ -69,7 +68,6 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
       limit: 50,
     );
     _bossFuture = QuestwellBossService.loadBattles();
-    _cosmeticsFuture = QuestwellCosmeticService.load();
   }
 
   String _bossName(String type) {
@@ -129,9 +127,13 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
     if (task.id == null || _busyTaskId != null) return;
     setState(() => _busyTaskId = task.id);
     try {
-      await QuestwellTaskService.completeTask(task.id!);
+      final result = await QuestwellTaskService.completeTask(task.id!);
       if (!mounted) return;
-      setState(_refresh);
+      setState(() { _completedThisVisit++; _refresh(); });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text('Quest complete! +${result.xpAwarded} XP · +${result.coinsAwarded} coins'),
+      ));
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -147,7 +149,6 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = FlutterFlowTheme.of(context);
 
     return Scaffold(
       backgroundColor: const Color(0xFF0E1724),
@@ -168,7 +169,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
         child: RefreshIndicator(
           onRefresh: () async {
             setState(_refresh);
-            await Future.wait([_tasksFuture, _bossFuture, _cosmeticsFuture]);
+            await Future.wait([_tasksFuture, _bossFuture]);
           },
           child: ListView(
             padding: const EdgeInsets.fromLTRB(14, 14, 14, 110),
@@ -212,62 +213,14 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
               const SizedBox(height: 12),
               const QuestwellPixelDivider(accent: Color(0xFFD6A84B)),
               const SizedBox(height: 12),
-              QuestwellRetroPanel(
-                padding: const EdgeInsets.all(10),
-                accent: const Color(0xFFD6A84B),
-                background: const Color(0xFF17151A),
-                child: Column(
-                  children: [
-                    FutureBuilder<QuestwellCosmeticsSnapshot>(
-                      future: _cosmeticsFuture,
-                      builder: (context, snapshot) {
-                        final data = snapshot.data;
-                        final archetype =
-                            data?.profile.adventurerArchetype ?? 'wanderer';
-                        final equipped = data?.cosmetics
-                                .where((item) => item.equipped)
-                                .toList() ??
-                            const <QuestwellCosmetic>[];
-                        return QuestwellQuestBoardPixelArt(
-                          height: 235,
-                          clear: false,
-                          archetype: archetype,
-                          equippedSlugs: {
-                            for (final item in equipped)
-                              item.category: item.slug,
-                          },
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'QUEST BOARD',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.pressStart2p(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFFF2D9A0),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Choose your next small win.',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.roboto(
-                        color: const Color(0xFFB7C4D4),
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              QuestwellBoardHeading(completed: _completedThisVisit),
               const SizedBox(height: 12),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
                     _BoardFilter(
-                      label: 'Today',
+                      label: 'All quests',
                       icon: Icons.calendar_today_outlined,
                       selected: _filter == 'today',
                       onTap: () => setState(() => _filter = 'today'),
@@ -279,7 +232,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                       onTap: () => setState(() => _filter = 'low'),
                     ),
                     _BoardFilter(
-                      label: 'High Impact',
+                      label: 'Bigger quests',
                       icon: Icons.landscape_outlined,
                       selected: _filter == 'high',
                       onTap: () => setState(() => _filter = 'high'),
@@ -291,7 +244,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                       onTap: () => setState(() => _filter = 'boss'),
                     ),
                     _BoardFilter(
-                      label: 'Favorites',
+                      label: 'Pinned',
                       icon: Icons.star_border,
                       selected: _filter == 'favorites',
                       onTap: () => setState(() => _filter = 'favorites'),
@@ -300,7 +253,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                 ),
               ),
               const SizedBox(height: 14),
-              FutureBuilder<List<QuestwellBossBattle>>(
+              if (_filter == 'boss') FutureBuilder<List<QuestwellBossBattle>>(
                 future: _bossFuture,
                 builder: (context, snapshot) {
                   final boss = snapshot.data
@@ -395,7 +348,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
               ),
               const SizedBox(height: 18),
               Text(
-                _filter == 'boss' ? 'BOSS QUESTS' : 'DAILY QUESTS',
+                _filter == 'boss' ? 'BOSS QUESTS' : 'YOUR NEXT WIN',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.pressStart2p(
                   fontSize: 12,
@@ -407,6 +360,12 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                 FutureBuilder<List<TasksRow>>(
                   future: _tasksFuture,
                   builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Column(children: [
+                        const Text('Your quests could not load.', style: TextStyle(color: Colors.white)),
+                        TextButton(onPressed: () => setState(_refresh), child: const Text('Try again')),
+                      ]);
+                    }
                     if (!snapshot.hasData) {
                       return const Padding(
                         padding: EdgeInsets.all(28),
@@ -421,7 +380,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                         padding: const EdgeInsets.all(18),
                         child: Text(
                           _filter == 'favorites'
-                              ? 'No favorite quests yet. Tap the star on any quest to pin it here.'
+                              ? 'No pinned quests yet. Tap a star to keep an important quest here.'
                               : 'No quests in this lane right now.',
                           style: GoogleFonts.roboto(
                             color: const Color(0xFF4B3A28),
@@ -434,14 +393,16 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                     return Column(
                       children: [
                         for (final task in visible) ...[
-                          _DailyQuestCard(
-                            task: task,
-                            frictionLabel: _frictionLabel(task.frictionLevel),
+                          QuestwellQuestCard(
+                            title: task.title ?? '',
+                            effort: _frictionLabel(task.frictionLevel),
+                            xp: task.xpValue ?? 0,
+                            coins: task.coinValue ?? 0,
                             busy: _busyTaskId == task.id,
                             favorite: task.id != null &&
                                 _favoriteTaskIds.contains(task.id),
-                            onToggleFavorite: () => _toggleFavorite(task),
-                            onComplete: () => _complete(task),
+                            onFavorite: () => _toggleFavorite(task),
+                            onComplete: _busyTaskId == null ? () => _complete(task) : null,
                           ),
                           const SizedBox(height: 10),
                         ],
@@ -559,131 +520,3 @@ class _BoardFilter extends StatelessWidget {
   }
 }
 
-class _DailyQuestCard extends StatelessWidget {
-  const _DailyQuestCard({
-    required this.task,
-    required this.frictionLabel,
-    required this.busy,
-    required this.favorite,
-    required this.onToggleFavorite,
-    required this.onComplete,
-  });
-
-  final TasksRow task;
-  final String frictionLabel;
-  final bool busy;
-  final bool favorite;
-  final VoidCallback onToggleFavorite;
-  final VoidCallback onComplete;
-
-  @override
-  Widget build(BuildContext context) {
-    return QuestwellRetroPanel(
-      padding: const EdgeInsets.all(12),
-      accent: const Color(0xFF8E6B35),
-      background: const Color(0xFF111B29),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          QuestwellFrictionPixelBadge(
-            level: task.frictionLevel ?? 0,
-            size: 48,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        (task.title?.trim().isNotEmpty ?? false)
-                            ? task.title!
-                            : 'Untitled quest',
-                        style: GoogleFonts.roboto(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w800,
-                          color: const Color(0xFFF3E7CD),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    IconButton(
-                      onPressed: onToggleFavorite,
-                      tooltip: favorite ? 'Remove favorite' : 'Favorite quest',
-                      visualDensity: VisualDensity.compact,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(
-                        minWidth: 34,
-                        minHeight: 34,
-                      ),
-                      icon: Icon(
-                        favorite ? Icons.star : Icons.star_border,
-                        size: 21,
-                        color: favorite
-                            ? const Color(0xFFF1C75B)
-                            : const Color(0xFF7D8A9B),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 5),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 6,
-                  children: [
-                    QuestwellFrictionPixelBadge(
-                      level: task.frictionLevel ?? 0,
-                      size: 24,
-                    ),
-                    Text(
-                      frictionLabel,
-                      style: GoogleFonts.roboto(
-                        fontSize: 12,
-                        color: const Color(0xFFB7C4D4),
-                      ),
-                    ),
-                    Text(
-                      '+${task.xpValue ?? 0} XP',
-                      style: GoogleFonts.roboto(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFFB99BFF),
-                      ),
-                    ),
-                    Text(
-                      '+${task.coinValue ?? 0} coins',
-                      style: GoogleFonts.roboto(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                        color: const Color(0xFFF1C75B),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: FilledButton.icon(
-                    onPressed: busy ? null : onComplete,
-                    icon: const Icon(Icons.play_arrow, size: 18),
-                    label: Text(busy ? 'FINISHING...' : 'COMPLETE'),
-                    style: FilledButton.styleFrom(
-                      backgroundColor: const Color(0xFF205AD4),
-                      foregroundColor: Colors.white,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.zero,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}

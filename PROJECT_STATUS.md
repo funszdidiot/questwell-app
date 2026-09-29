@@ -6,13 +6,14 @@ This file is the founder-facing dashboard for the Questwell art overhaul.
 
 ## Current state
 
-**Hearth integration:** In review — approved robes now use a 3:4 scene box,
-boot-aligned contact shadow, floor effects behind the avatar, and brighter lower
-room framing. The development-only Flutter review is `?review=hearth` and shows
-Hearth with the matching Adventurer portrait. Mobile layout tests cover all 15
-class/body combinations at 320, 390, 430 and 768 px widths. Account persistence
-and final iPhone Safari appearance remain manual gates. See
-`docs/qa/HEARTH_INTEGRATION_REVIEW.md`.
+**Hearth visuals:** Founder approved the cleaner room, woven rug, boot shadows,
+and warmer lighting on 2026-09-29 (“It’s good”), at `51f7f9b`.
+Saved-avatar account persistence remains an unverified manual gate.
+
+**Quest Board:** Epic 3 implementation in progress with founder authorization.
+First pass prioritizes daily task access, readable cards, pinned priorities,
+server-confirmed completion rewards, and an account-free `?review=quests` fixture.
+No merge to flutterflow or launch authorized.
 
 **Robe construction:** ✅ Founder accepted `robe-wrap-v1` on 2026-09-29
 and directed “Ok! Let’s do wanderer.” Guardian, Scholar, Scout and Alchemist
@@ -66,7 +67,7 @@ are preserved.
 See `docs/qa/GUARDIAN_FIT_REVIEW.md` and `guardian-fit-review.html`.
 Guardian is frozen; Wanderer is the current class workstream.
 
-**Active workstream:** Epic 2 — Hearth Visual Overhaul (manual iPhone Safari visual acceptance gate)  
+**Active workstream:** Epic 3 — Quest Board Redesign  
 **Development branch:** `questwell-dev`  
 **Promoted/app branch:** `flutterflow`  
 **Last promoted milestone:** Epic 1 — Modular Avatar Foundation  
@@ -78,7 +79,7 @@ Guardian is frozen; Wanderer is the current class workstream.
 |---|---|---|
 | 1 | Modular Avatar Foundation | ✅ Promoted |
 | 2 | Hearth Visual Overhaul | 🧪 Testing |
-| 3 | Quest Board Redesign | ⚪ Not Started |
+| 3 | Quest Board Redesign | 🧪 Development review |
 | 4 | Adventurer / Inventory Overhaul | ⚪ Not Started |
 | 5 | Market Overhaul | ⚪ Not Started |
 | 6 | Boss Battles Overhaul | ⚪ Not Started |
@@ -105,7 +106,7 @@ Completed:
 
 ## Epic 2 — Hearth Visual Overhaul
 
-**Status:** ⛔ Manual visual acceptance required before promotion
+**Status:** Visuals accepted; saved-avatar persistence verification pending
 
 Target:
 - Keep the Hearth environment character-free
