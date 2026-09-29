@@ -139,3 +139,10 @@ Questwell is not graphics-complete until the full core experience reaches the ap
 - This file = milestone-level founder status
 
 The dashboard should be updated whenever an epic starts, reaches testing, is blocked, or is promoted.
+# Scholar detail polish candidate — 2026-09-29
+
+Development-only v2 polishes pendants, cuff bands, front trim and folded hem tips
+for all three bodies. Selection cards now explain class previews and successful
+body selection no longer obscures the art with a toast. Frozen bases unchanged.
+Checklist and provenance: `docs/qa/SCHOLAR_POLISH_V2.md`. Founder review pending;
+do not advance other class robes, merge to flutterflow, or launch.

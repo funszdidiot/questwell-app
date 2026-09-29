@@ -182,17 +182,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
       if (!mounted) return;
       _refresh();
       setState(() => _savingBodyType = false);
-      final label = switch (bodyType) {
-        'male' => 'Male',
-        'female' => 'Female',
-        _ => 'Gender Neutral',
-      };
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('$label adventurer selected.'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      // The selected border and label confirm success without hiding the art.
     } catch (_) {
       if (!mounted) return;
       setState(() {
@@ -634,7 +624,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Your base look. The business suit stays underneath future class gear.',
+                  'Choose your body style, shown wearing your current class outfit. Your business suit stays underneath.',
                   style: theme.bodyMedium.override(
                     font: GoogleFonts.roboto(),
                     color: theme.secondaryText,
@@ -1174,7 +1164,7 @@ class _AvatarBodyCard extends StatelessWidget {
             ),
             const SizedBox(height: 5),
             Text(
-              selected ? 'SELECTED' : 'BUSINESS SUIT BASE',
+              selected ? 'SELECTED' : '${archetype.toUpperCase()} PREVIEW',
               textAlign: TextAlign.center,
               style: GoogleFonts.roboto(
                 fontSize: 9,

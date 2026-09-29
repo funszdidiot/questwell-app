@@ -7,7 +7,7 @@
 *{box-sizing:border-box}body{margin:0;background:#171b26;color:#f1ecdf;font:16px/1.5 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:24px}h1{font-size:26px;margin:0 0 8px}p{margin:0 0 16px;color:#c4c9d3}.controls{display:flex;gap:18px;flex-wrap:wrap;margin:20px 0}label{cursor:pointer}input{accent-color:#d4ae5e}.bodies{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}article{border:1px solid #566074;border-radius:12px;padding:18px;background:#222936}h2{margin:0 0 12px;font-size:20px}.stage{position:relative;width:240px;height:320px;max-width:100%;margin:auto;background:#343d4c;border-radius:8px;overflow:hidden}.stage img{position:absolute;width:100%;height:100%;inset:0;object-fit:contain;object-position:center bottom}.stage.card{width:132px;height:176px}.caption{text-align:center;margin:12px 0 6px;font-size:14px}.hash{font:12px monospace;text-align:center;margin:10px 0;color:#bfc4ce}.hide-robe .robe{visibility:hidden}.guides .stage{background-image:linear-gradient(90deg,transparent calc(50% - .5px),#72819888 50%,transparent calc(50% + .5px)),repeating-linear-gradient(0deg,transparent 0 31px,#72819855 31px 32px)}.note{margin-top:24px;padding:16px;border-left:3px solid #d4ae5e;background:#222936}@media(max-width:780px){.bodies{grid-template-columns:1fr}main{padding:18px}article{padding:16px}}
 </style>
 <main>
-<h1>Scholar robe · clean artwork review</h1>
+<h1>Scholar robe · final detail polish</h1>
 <p>The frozen business-suit base and fitted Scholar robe share one 240 × 320 canvas. Compare shoulders, sleeve paths, wrists, waist, hem, and stance.</p>
 <div class="controls">
 <label><input id="robe" type="checkbox" checked> Show Scholar robe</label>
@@ -17,11 +17,11 @@
 <p class="note">Review all three portraits and selection cards. The base underneath must keep its original head, hands, height, and stance. Scholar remains the template under review; other class fits follow its acceptance.</p>
 </main>
 <script>
-const bodies=[['male','Male','f771fdcafb1f'],['female','Female','e46f1e25cf5f'],['neutral','Gender Neutral','1295e8d7fbe2']];
+const bodies=[['male','Male','5032c019d530'],['female','Female','ab609f5253d6'],['neutral','Gender Neutral','10a1d553e631']];
 const asset='assets/assets/images/questwell/avatar/';
 for(const [body,label,hash] of bodies){
  const article=document.createElement('article');
- article.innerHTML=`<h2>${label}</h2><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="robe" alt="Clean fitted Scholar robe" src="${asset}classes/scholar/scholar_robe_${body}_clean_v1.webp"></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="robe" alt="" src="${asset}classes/scholar/scholar_robe_${body}_clean_v1.webp"></div><div class="hash">Robe SHA-256: ${hash}</div>`;
+ article.innerHTML=`<h2>${label}</h2><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="robe" alt="Clean fitted Scholar robe" src="${asset}classes/scholar/scholar_robe_${body}_polish_v2.webp"></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="robe" alt="" src="${asset}classes/scholar/scholar_robe_${body}_polish_v2.webp"></div><div class="hash">Robe SHA-256: ${hash}</div>`;
  document.querySelector('#bodies').append(article);
 }
 document.querySelector('#robe').addEventListener('change',e=>document.body.classList.toggle('hide-robe',!e.target.checked));

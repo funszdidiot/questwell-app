@@ -11,25 +11,25 @@
       "sha256": "6f99390508a3db5484e51ba77513423488f91def55a36615f0377e6595ca0254"
     },
     {
-      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_male_clean_v1.webp",
-      "sha256": "f771fdcafb1ffd7227d28c72340532a8c9950c8c2fd9d31953ceb4509f18879b"
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_male_polish_v2.webp",
+      "sha256": "5032c019d5307a84d94227b2296c27b4d1c3482136ac72109ef6d3c4aec18f7e"
     },
     {
       "path": "assets/images/questwell/avatar/base/base_female.webp",
       "sha256": "bfe3c51b6e5020ef65fd74f05f82ad6612e0e9445221650092ecd4804f79bdf0"
     },
     {
-      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_female_clean_v1.webp",
-      "sha256": "e46f1e25cf5f22763167576677e9efb193d6a5f0930f8bb3d24e031646ee16b4"
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_female_polish_v2.webp",
+      "sha256": "ab609f5253d6c0cb26448ff0d9aeca0648859170ddf235605c5f2f4a602c99a8"
     },
     {
       "path": "assets/images/questwell/avatar/base/base_neutral.webp",
       "sha256": "1151beadda5d9054cb6c9b79a649a074a1f92fb6849a61d502c404c751d01790"
     },
     {
-      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_clean_v1.webp",
-      "sha256": "1295e8d7fbe22a7cf74a55df4fa85da3568d4f6802f3d71f61964147a9d5a586"
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_polish_v2.webp",
+      "sha256": "10a1d553e631279c5efd212c220a806eb46357315bd13403dd4d02fd698b3a7a"
     }
   ],
-  "art_revision": "scholar-clean-v1"
+  "art_revision": "scholar-polish-v2"
 }
