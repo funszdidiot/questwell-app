@@ -97,6 +97,8 @@ Target:
 
 - Scout starter class layer: founder-approved forest-green/gold robe-only overlays are wired for Male, Female, and Gender Neutral bases. Scout keeps the business-suit base underneath and starts with 0 accessory gear slots active. Live mobile alignment review is required before Scout is marked visually complete.
 
+- Class coat sizing standard: class clothing overlays now use the same fitted production envelope on a 240×320 avatar canvas (approximately 132×210 visual bounds, centered over the business-suit base). Scholar Male/Female/Gender Neutral have been rebuilt to this standard. Scout will use this same envelope so class changes do not alter apparent body scale.
+
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
 ## Release gate
