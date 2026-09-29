@@ -6,7 +6,7 @@ This file is the founder-facing dashboard for the Questwell art overhaul.
 
 ## Current state
 
-**Active workstream:** Epic 2 — Hearth Visual Overhaul (visual acceptance testing)  
+**Active workstream:** Epic 2 — Hearth Visual Overhaul (manual iPhone Safari visual acceptance gate)  
 **Development branch:** `questwell-dev`  
 **Promoted/app branch:** `flutterflow`  
 **Last promoted milestone:** Epic 1 — Modular Avatar Foundation  
@@ -45,7 +45,7 @@ Completed:
 
 ## Epic 2 — Hearth Visual Overhaul
 
-**Status:** 🧪 Testing
+**Status:** ⛔ Manual visual acceptance required before promotion
 
 Target:
 - Keep the Hearth environment character-free
@@ -102,6 +102,13 @@ Target:
 - Avatar clothing-fit correction: measured shoulder spans and hand positions from each approved base avatar and moved class clothing to a body-specific fit transform. Head/hair and hands now render back above class clothing, so collars sit behind the character and cuffs terminate at the hands instead of swallowing them. This fit system is shared by Scholar, Scout, and all future class clothing.
 
 - Scholar measured-fit pass: robe geometry was rebuilt against measured base-avatar landmarks rather than scaled as one costume image. Male/Female/Gender Neutral now use shoulder, elbow, wrist, waist, and hem anchors taken from the approved business-suit bodies. Live mobile review is required before this fit becomes the class-wide template.
+
+**Exact validation checkpoint (2026-09-29):**
+- `questwell-dev` head: `68ae3fdb984194c403c95808ee3471eb93b63fbb`
+- Questwell Flutter Check: passed on exact head
+- Questwell Preview: passed and deployed on exact head
+- Remaining gate is visual, not technical: the measured Scholar robe fit and overall Hearth composition require founder review on iPhone Safari before Epic 2 can be promoted.
+- No promotion to `flutterflow` will occur solely from green CI.
 
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
