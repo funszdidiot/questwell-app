@@ -72,7 +72,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
       ]),
       const SizedBox(height: 8),
       Semantics(label: 'Level progress', value: '$xp out of 100 XP',
-        child: QuestwellPixelMeter(value: xp / 100, kind: 'xp', height: 10, segments: 12)),
+        child: QuestwellPixelMeter(value: xp / 100, kind: 'xp', height: 16, segments: 12)),
       const SizedBox(height: 6),
       Text('${100 - xp} XP to level ${level + 1}', style: _body(12, color: _muted)),
       const SizedBox(height: 16),
