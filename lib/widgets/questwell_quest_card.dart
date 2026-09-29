@@ -31,8 +31,8 @@ class QuestwellQuestCard extends StatelessWidget {
         IconButton(onPressed: onFavorite,
           tooltip: favorite ? 'Unpin quest' : 'Pin quest',
           constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-          icon: Icon(favorite ? Icons.star_rounded : Icons.star_border_rounded,
-            color: favorite ? const Color(0xFFF1C75B) : const Color(0xFFBAC7D8))),
+          icon: CustomPaint(size: const Size(24, 24),
+            painter: _QuestPinPainter(favorite))),
       ]),
       const SizedBox(height: 14),
       Wrap(spacing: 8, runSpacing: 8, children: [
@@ -90,4 +90,24 @@ class QuestwellBoardHeading extends StatelessWidget {
           color: const Color(0xFFB7C4D4))),
     ]),
   );
+}
+
+class _QuestPinPainter extends CustomPainter {
+  const _QuestPinPainter(this.pinned);
+  final bool pinned;
+  @override
+  void paint(Canvas canvas, Size size) {
+    final path = Path()..addPolygon([
+      const Offset(.5, .06), const Offset(.63, .35), const Offset(.96, .38),
+      const Offset(.71, .60), const Offset(.79, .94), const Offset(.5, .77),
+      const Offset(.21, .94), const Offset(.29, .60), const Offset(.04, .38),
+      const Offset(.37, .35),
+    ].map((p) => Offset(p.dx * size.width, p.dy * size.height)).toList(), true);
+    canvas.drawPath(path, Paint()
+      ..color = pinned ? const Color(0xFFF1C75B) : const Color(0xFFBAC7D8)
+      ..style = pinned ? PaintingStyle.fill : PaintingStyle.stroke
+      ..strokeWidth = 2);
+  }
+  @override
+  bool shouldRepaint(covariant _QuestPinPainter oldDelegate) => oldDelegate.pinned != pinned;
 }
