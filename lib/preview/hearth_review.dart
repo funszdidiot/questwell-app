@@ -1,6 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import '../widgets/questwell_pixel_art.dart';
 
@@ -15,26 +13,6 @@ class _HearthReviewAppState extends State<HearthReviewApp> {
   String _archetype = 'wanderer';
   String _body = 'neutral';
   double _width = 390;
-
-  @override
-  void initState() {
-    super.initState();
-    _checkAssetDecoding();
-  }
-
-  Future<void> _checkAssetDecoding() async {
-    const asset = 'assets/images/questwell/avatar/base/base_neutral.webp';
-    try {
-      final bytes = await rootBundle.load(asset);
-      debugPrint('Hearth review: loaded ${bytes.lengthInBytes} base bytes');
-      final codec = await ui.instantiateImageCodec(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
-      final frame = await codec.getNextFrame();
-      debugPrint('Hearth review: decoded ${frame.image.width} x ${frame.image.height}');
-      frame.image.dispose(); codec.dispose();
-    } catch (error) {
-      debugPrint('Hearth review decoding error: $error');
-    }
-  }
 
   Widget _choice<T>(String label, T value, List<T> values,
       String Function(T) title, ValueChanged<T> changed) {
