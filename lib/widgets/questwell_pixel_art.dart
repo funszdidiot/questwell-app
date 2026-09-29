@@ -835,10 +835,10 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        const Color(0x260B1630),
-                        const Color(0x00101824),
-                        const Color(0x141B1008),
-                        const Color(0x2C0B0808),
+                        const Color(0x202A1920),
+                        const Color(0x0CDB9855),
+                        const Color(0x12B8753E),
+                        const Color(0x24261913),
                       ],
                       stops: const [0, .34, .70, 1],
                     ),
@@ -846,19 +846,19 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                 ),
               ),
               Positioned(
-                left: sceneWidth * .06,
-                top: sceneHeight * .08,
-                width: sceneWidth * .42,
-                height: sceneHeight * .60,
+                left: -sceneWidth * .08,
+                top: sceneHeight * .28,
+                width: sceneWidth * .60,
+                height: sceneHeight * .66,
                 child: IgnorePointer(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: RadialGradient(
-                        center: const Alignment(-.5, -.35),
+                        center: const Alignment(-.45, .05),
                         radius: .95,
                         colors: [
-                          const Color(0x36FFB84C),
-                          const Color(0x18E87947),
+                          const Color(0x41FFB84C),
+                          const Color(0x1DE87947),
                           const Color(0x00E87947),
                         ],
                       ),
@@ -1111,13 +1111,13 @@ class _HearthAtmospherePainter extends CustomPainter {
       ..addPolygon([point(inset, inset), point(1 - inset, inset),
         point(1 - inset, 1 - inset), point(inset, 1 - inset)], true);
     final rug = panel(0);
-    p.color = const Color(0xFF452B35);
+    p.color = const Color(0xFF492C30);
     canvas.drawPath(rug, p);
-    p.color = const Color(0xFFAE8955);
+    p.color = const Color(0xFFB58E5F);
     canvas.drawPath(panel(.045), p);
-    p.color = const Color(0xFF623E48);
+    p.color = const Color(0xFF70434A);
     canvas.drawPath(panel(.075), p);
-    p.color = const Color(0xFFAE8955);
+    p.color = const Color(0xFFB58E5F);
     p.style = PaintingStyle.stroke;
     p.strokeWidth = 1;
     canvas.drawPath(panel(.105), p);
@@ -1126,14 +1126,14 @@ class _HearthAtmospherePainter extends CustomPainter {
     // Fine horizontal yarn rows stay clipped to the fabric.
     canvas.save();
     canvas.clipPath(panel(.115));
-    p.color = const Color(0xFF704B53);
+    p.color = const Color(0xFF7B4E54);
     p.strokeWidth = 1;
     for (double v = .13; v < .9; v += .045) {
       canvas.drawLine(point(.1, v), point(.9, v), p);
     }
     canvas.restore();
     // Small woven border stitches widen naturally toward the foreground.
-    p.color = const Color(0xFFD0AD70);
+    p.color = const Color(0xFFD2B17F);
     for (double u = .12; u < .9; u += .065) {
       for (final v in [.058, .94]) {
         canvas.drawLine(point(u, v), point(u + .018, v), p);
