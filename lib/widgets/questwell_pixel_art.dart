@@ -45,6 +45,13 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   static const _scholarNeutral =
       'assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral.webp';
 
+  static const _scoutMale =
+      'assets/images/questwell/avatar/classes/scout/scout_coat_male.webp';
+  static const _scoutFemale =
+      'assets/images/questwell/avatar/classes/scout/scout_coat_female.webp';
+  static const _scoutNeutral =
+      'assets/images/questwell/avatar/classes/scout/scout_coat_neutral.webp';
+
   final String archetype;
   final Map<String, String> equippedSlugs;
   final String avatarBodyType;
@@ -62,16 +69,29 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   }
 
   String? get _classOverlayAsset {
-    if (archetype != 'scholar') return null;
-
-    switch (avatarBodyType) {
-      case 'male':
-        return _scholarMale;
-      case 'female':
-        return _scholarFemale;
-      default:
-        return _scholarNeutral;
+    if (archetype == 'scholar') {
+      switch (avatarBodyType) {
+        case 'male':
+          return _scholarMale;
+        case 'female':
+          return _scholarFemale;
+        default:
+          return _scholarNeutral;
+      }
     }
+
+    if (archetype == 'scout') {
+      switch (avatarBodyType) {
+        case 'male':
+          return _scoutMale;
+        case 'female':
+          return _scoutFemale;
+        default:
+          return _scoutNeutral;
+      }
+    }
+
+    return null;
   }
 
   Widget _assetLayer(String asset, {Widget? fallback}) {
