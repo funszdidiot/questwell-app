@@ -10,6 +10,13 @@ Epic 2, production merge and launch gates remain open.
 All class garments must look worn by the approved business-suit avatar, not layered as a flat costume. The base avatar is the anatomical source of truth. Class art changes clothing identity only; it must not change apparent body proportions.
 
 ## Asset contract
+
+**Rear construction update:** `robe-wrap-v1` adds a separate body-fitted rear
+lining for all four existing classes. Render rear → clipped base → front at
+the same canvas origin and scale. Rear fabric is continuous; legs occlude it
+naturally, and its side edges tuck behind the front panels. Earlier approvals
+cover the retained front art, not this new layered appearance. See
+`docs/qa/ROBE_WRAP_REVIEW.md`; Wanderer waits for construction acceptance.
 For Scholar, the original suit jacket is hidden beneath the robe using a
 body-specific visibility path. The frozen base file remains intact. Head/hair,
 shirt/tie, belt, hands, trousers and shoes remain visible; jacket shoulders,

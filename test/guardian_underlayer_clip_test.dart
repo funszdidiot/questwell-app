@@ -196,6 +196,7 @@ void main() {
             find.descendant(of: layer, matching: find.byType(Image)),
           ).map((image) => (image.image as AssetImage).assetName).toList();
           expect(images, [
+            'assets/images/questwell/avatar/classes/guardian/guardian_rear_${body}_wrap_v1.webp',
             'assets/images/questwell/avatar/base/base_$body.webp',
             'assets/images/questwell/avatar/classes/guardian/guardian_coat_${body}_${body == 'female' ? 'v3' : 'v2'}.webp',
           ]);

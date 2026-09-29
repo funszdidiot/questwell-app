@@ -257,5 +257,102 @@
       "template_revision": "alchemist-approved-v1",
       "approval_scope": "Alchemist visual template only; no production merge or launch"
     }
+  },
+  "candidate_layers": {
+    "robe_wrap": {
+      "art_revision": "robe-wrap-v1",
+      "visual_approval": "pending_founder_review",
+      "classes": [
+        "guardian",
+        "scholar",
+        "scout",
+        "alchemist"
+      ],
+      "layer_order": [
+        "rear",
+        "clipped_base",
+        "front"
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_rear_male_wrap_v1.webp",
+          "sha256": "e102535274bdcee0d3c1a42be2ed40ef783515c51aba4dcf2a59b51005312a98"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_rear_female_wrap_v1.webp",
+          "sha256": "aaa1bbb93a87c0fb08734cb2e07d12c9083c394cd15f27b1ea66317d8f7d967c"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_rear_neutral_wrap_v1.webp",
+          "sha256": "0aad89829dd98e7efe4b5e0fda9966786289977188e0ee453a0afb6909401ffd"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_rear_male_wrap_v1.webp",
+          "sha256": "7f5d76f681ab56f84b871ef9818fff6f14257955047c72e6767682e8fd869e67"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_rear_female_wrap_v1.webp",
+          "sha256": "e41001c914fb5a0e10066a82332a18c8170b0062614866f1c233c58b1cc91bbc"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_rear_neutral_wrap_v1.webp",
+          "sha256": "e8022247a332e8691edc84c03682451bce91b9b84485945af4ed39d8167b9f12"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_rear_male_wrap_v1.webp",
+          "sha256": "f769952e14f27b8c4718b5af8c2664dccf06e6da53335a7ba30dda9e323f25de"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_rear_female_wrap_v1.webp",
+          "sha256": "e17c1c4beac5efab47d0d934c9dbbebc12a1630b32f5bb9ccfe635dff24a9bc8"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_rear_neutral_wrap_v1.webp",
+          "sha256": "7c8e122bf3ec3660f7f22f8d412554cb62ab68d12119d70926d0085bea4668e3"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_rear_male_wrap_v1.webp",
+          "sha256": "3a61a5a37972f17804d34a62bbdb09bda95a7435d9f233a713469364adc090aa"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_rear_female_wrap_v1.webp",
+          "sha256": "fb784abecf2188b9063e0940c859d481c7f928071838bcf60340708001b29676"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_rear_neutral_wrap_v1.webp",
+          "sha256": "cd7827bb6653bf78bc1b31efdf612eaa7bf3c7d97036ea41a60280d6f1ebd939"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/robe_wrap_fit.json",
+          "sha256": "80988ac528b8420577727e6a2f1c869827aed7c781cf6c6cad98d357883005e5"
+        },
+        {
+          "path": "tool/fit_robe_rear.cjs",
+          "sha256": "5ef6a2caad40c9767572a043d383fc9eeb0ee74f4bde56177bf90e75ed7637bc"
+        },
+        {
+          "path": "tool/art_assets/robe_wrap_v1/prompts.json",
+          "sha256": "7dc74b93d3432f520272e8413c50b45904ea997c467aca9a6f5ddbfc08dabe1d"
+        },
+        {
+          "path": "tool/art_assets/robe_wrap_v1/guardian.webp",
+          "sha256": "7303a9a8acde083b72fc6dab123c3c750dc24018872e5cd5bfb6fc343bf20858"
+        },
+        {
+          "path": "tool/art_assets/robe_wrap_v1/scholar.webp",
+          "sha256": "4aa399edc8a4983b3044910dead9eb4dd5c22a418a27b635ce8524f0ddeade81"
+        },
+        {
+          "path": "tool/art_assets/robe_wrap_v1/scout.webp",
+          "sha256": "9ddde072068481dd6f20a29345feeb48bb9d9d2014a961cf6558007e132b8a21"
+        },
+        {
+          "path": "tool/art_assets/robe_wrap_v1/alchemist.webp",
+          "sha256": "0e52325eb301c6ddfc93a9013c3ec27cfad4b54fce433f16abd5c1e881c1f4a2"
+        }
+      ]
+    }
   }
 }

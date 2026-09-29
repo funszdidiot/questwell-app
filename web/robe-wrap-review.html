@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Questwell · robe construction review</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#171b26;color:#f1ecdf;font:16px/1.5 system-ui,sans-serif}main{max-width:1160px;margin:auto;padding:20px}h1{font-size:26px;margin:0 0 8px}p{color:#c4c9d3;margin:8px 0 16px}select,a{color:#f1d28a}select{background:#222936;padding:10px;border:1px solid #88713f;border-radius:6px;font:inherit}iframe{display:block;width:100%;height:850px;border:1px solid #566074;border-radius:10px;margin-top:18px;background:#171b26}@media(max-width:780px){iframe{height:1900px}main{padding:12px}}
+</style>
+<main>
+<h1>Robe construction review</h1>
+<p>Rear fabric now sits behind the avatar, with the existing front garment over it. Compare all three bodies at portrait and card sizes. Toggle “Show rear lining” to see the difference.</p>
+<label for="class">Class </label>
+<select id="class"><option value="guardian">Guardian</option><option value="scholar">Scholar</option><option value="scout">Scout</option><option value="alchemist">Alchemist</option></select>
+<a id="direct" href="guardian-fit-review.html?rev=robe-wrap-v1">Open class review directly</a>
+<p>Development candidate · all four layered appearances await visual acceptance. Wanderer remains on hold.</p>
+<iframe id="review" title="Guardian robe fit review" src="guardian-fit-review.html?rev=robe-wrap-v1"></iframe>
+</main>
+<script>
+document.querySelector('#class').addEventListener('change',e=>{
+ const kind=e.target.value;
+ const url=kind+'-fit-review.html?rev=robe-wrap-v1';
+ document.querySelector('#review').src=url;
+ document.querySelector('#review').title=kind+' robe fit review';
+ document.querySelector('#direct').href=url;
+});
+</script>
+</html>

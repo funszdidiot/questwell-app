@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Questwell · Guardian fit review</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#171b26;color:#f1ecdf;font:16px/1.5 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:24px}h1{font-size:26px;margin:0 0 8px}p{margin:0 0 16px;color:#c4c9d3}.controls{display:flex;gap:18px;flex-wrap:wrap;margin:20px 0}label{cursor:pointer}input{accent-color:#d4ae5e}.bodies{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}article{border:1px solid #566074;border-radius:12px;padding:18px;background:#222936}h2{margin:0 0 12px;font-size:20px}.stage{position:relative;width:240px;height:320px;max-width:100%;margin:auto;background:#343d4c;border-radius:8px;overflow:hidden}.stage img{position:absolute;width:100%;height:100%;inset:0;object-fit:contain;object-position:center bottom}.stage.card{width:132px;height:176px}.caption{text-align:center;margin:12px 0 6px;font-size:14px}.hash{font:12px monospace;text-align:center;margin:10px 0;color:#bfc4ce}.hide-coat .coat{visibility:hidden}.guides .stage{background-image:linear-gradient(90deg,transparent calc(50% - .5px),#72819888 50%,transparent calc(50% + .5px)),repeating-linear-gradient(0deg,transparent 0 31px,#72819855 31px 32px)}.note{margin-top:24px;padding:16px;border-left:3px solid #d4ae5e;background:#222936}@media(max-width:780px){.bodies{grid-template-columns:1fr}main{padding:18px}article{padding:16px}}
+*{box-sizing:border-box}body{margin:0;background:#171b26;color:#f1ecdf;font:16px/1.5 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:24px}h1{font-size:26px;margin:0 0 8px}p{margin:0 0 16px;color:#c4c9d3}.controls{display:flex;gap:18px;flex-wrap:wrap;margin:20px 0}label{cursor:pointer}input{accent-color:#d4ae5e}.bodies{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}article{border:1px solid #566074;border-radius:12px;padding:18px;background:#222936}h2{margin:0 0 12px;font-size:20px}.stage{position:relative;width:240px;height:320px;max-width:100%;margin:auto;background:#343d4c;border-radius:8px;overflow:hidden}.stage img{position:absolute;width:100%;height:100%;inset:0;object-fit:contain;object-position:center bottom}.stage.card{width:132px;height:176px}.caption{text-align:center;margin:12px 0 6px;font-size:14px}.hash{font:12px monospace;text-align:center;margin:10px 0;color:#bfc4ce}.hide-coat .coat,.hide-coat .rear,.hide-rear .rear{visibility:hidden}.guides .stage{background-image:linear-gradient(90deg,transparent calc(50% - .5px),#72819888 50%,transparent calc(50% + .5px)),repeating-linear-gradient(0deg,transparent 0 31px,#72819855 31px 32px)}.note{margin-top:24px;padding:16px;border-left:3px solid #d4ae5e;background:#222936}@media(max-width:780px){.bodies{grid-template-columns:1fr}main{padding:18px}article{padding:16px}}
 </style>
 <style>
 .portrait-frame{position:relative;height:286px;background:linear-gradient(#162437,#101923,#241914);border:2px solid #8e6b35}
@@ -15,13 +15,15 @@
 <main>
 <h1>Guardian · female fit correction</h1>
 <p>The female coat now follows a smoother right elbow and hip contour. Burgundy/gold linework and the male and neutral fits are preserved. Portrait fill and 176 px card sizing match the app.</p>
+<p><a href="robe-wrap-review.html" target="_top" style="color:#e6c988">Compare all four robe constructions</a></p>
 <div class="controls">
+<label><input id="rear" type="checkbox" checked> Show rear lining</label>
 <label><input id="coat" type="checkbox" checked> Show Guardian coat</label>
 <label><input id="guides" type="checkbox"> Show alignment guides</label>
 <label><input id="jacket" type="checkbox"> Show original jacket (compare)</label>
 </div>
 <div class="bodies" id="bodies"></div>
-<p class="note">Guardian revision 3 · female sleeve and hip review. Check the right side of the image for the corrected elbow and smoother waist-to-hip transition. Please check the three body fits before this class becomes a frozen template.</p>
+<p class="note">Rear lining is a new construction candidate; approval of the earlier front artwork does not approve this layered appearance. Guardian revision 3 · female sleeve and hip review. Check the right side of the image for the corrected elbow and smoother waist-to-hip transition. Please check the three body fits before this class becomes a frozen template.</p>
 </main>
 <script src="guardian-underlayer.js?rev=guardian-v3"></script>
 <script>
@@ -29,7 +31,7 @@ const bodies=[['male','Male','7431461a6c66','v2'],['female','Female','4f35e1e3aa
 const asset='assets/assets/images/questwell/avatar/';
 for(const [body,label,hash,revision] of bodies){
  const article=document.createElement('article');
- article.innerHTML=`<h2>${label}</h2><div class="portrait-frame"><div class="stage"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="coat" alt="Clean fitted Guardian coat" src="${asset}classes/guardian/guardian_coat_${body}_${revision}.webp"></div></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img alt="" src="${asset}base/base_${body}.webp"><img class="coat" alt="" src="${asset}classes/guardian/guardian_coat_${body}_${revision}.webp"></div><p class="selection"><span aria-hidden="true">✓</span> SELECTED</p><div class="hash">Coat SHA-256: ${hash}</div>`;
+ article.innerHTML=`<h2>${label}</h2><div class="portrait-frame"><div class="stage"><img class="rear" alt="Rear lining" src="${asset}classes/guardian/guardian_rear_${body}_wrap_v1.webp"><img alt="${label} base avatar" src="${asset}base/base_${body}.webp"><img class="coat" alt="Clean fitted Guardian coat" src="${asset}classes/guardian/guardian_coat_${body}_${revision}.webp"></div></div><p class="caption">Selection card · 176 px high</p><div class="stage card" aria-hidden="true"><img class="rear" alt="" src="${asset}classes/guardian/guardian_rear_${body}_wrap_v1.webp"><img alt="" src="${asset}base/base_${body}.webp"><img class="coat" alt="" src="${asset}classes/guardian/guardian_coat_${body}_${revision}.webp"></div><p class="selection"><span aria-hidden="true">✓</span> SELECTED</p><div class="hash">Coat SHA-256: ${hash}</div>`;
  document.querySelector('#bodies').append(article);
 }
 const svgNS='http://www.w3.org/2000/svg';
@@ -47,7 +49,7 @@ for(const [body,polygons] of Object.entries(guardianUnderlayerVisibility)){
 document.body.append(definitions);
 function updateUnderlayer(){
  const hideJacket=document.querySelector('#coat').checked&&!document.querySelector('#jacket').checked;
- for(const img of document.querySelectorAll('.stage img:not(.coat)')){
+ for(const img of document.querySelectorAll('.stage img[src*="base_"]')){
   const body=img.src.match(/base_(male|female|neutral)\.webp/)[1];
   img.style.clipPath=hideJacket?`url(#underlayer-${body})`:'none';
  }
@@ -56,5 +58,6 @@ updateUnderlayer();
 document.querySelector('#jacket').addEventListener('change',updateUnderlayer);
 document.querySelector('#coat').addEventListener('change',e=>{document.body.classList.toggle('hide-coat',!e.target.checked);updateUnderlayer();});
 document.querySelector('#guides').addEventListener('change',e=>document.body.classList.toggle('guides',e.target.checked));
+document.querySelector('#rear').addEventListener('change',e=>document.body.classList.toggle('hide-rear',!e.target.checked));
 </script>
 </html>

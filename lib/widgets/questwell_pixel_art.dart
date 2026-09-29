@@ -150,11 +150,15 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classOverlay = _classOverlayAsset;
+    final body = ['male', 'female'].contains(avatarBodyType)
+        ? avatarBodyType : 'neutral';
 
     return RepaintBoundary(
       child: Stack(
         fit: StackFit.expand,
         children: [
+          if (classOverlay != null)
+            _assetLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_v1.webp'),
           if (archetype == 'scholar')
             ClipPath(
               clipper: ScholarUnderlayerClipper(avatarBodyType),

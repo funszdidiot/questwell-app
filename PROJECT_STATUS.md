@@ -6,6 +6,14 @@ This file is the founder-facing dashboard for the Questwell art overhaul.
 
 ## Current state
 
+**Robe construction:** 🧪 `robe-wrap-v1` rear-lining candidate across Guardian,
+Scholar, Scout and Alchemist, with all three bodies fitted independently.
+The founder requested real wrap-around construction before Wanderer. Runtime
+now stacks rear cloth, the frozen avatar and existing front clothing. Front
+art/fit approvals are preserved; the newly layered appearances await review.
+See `docs/qa/ROBE_WRAP_REVIEW.md` and `robe-wrap-review.html`. Wanderer remains
+on hold. No production promotion or launch.
+
 **Scholar visual template:** ✅ Founder approved and frozen, 2026-09-29.
 All three body variants use `scholar-approved-v1`, anchored to source commit
 `71f6f5d38315155222ce6832ea6fc6ee12b13be0`. Asset and fit-input checksums guard
