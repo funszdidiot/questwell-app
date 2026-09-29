@@ -28,6 +28,8 @@ void main() {
   testWidgets('Review completion removes only that quest and updates visit count', (tester) async {
     await tester.pumpWidget(const QuestBoardReviewApp());
     await tester.pump();
+    await tester.ensureVisible(find.text('Complete quest').first);
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Complete quest').first);
     await tester.pump();
     expect(find.text('Send the email you have been putting off'), findsNothing);
