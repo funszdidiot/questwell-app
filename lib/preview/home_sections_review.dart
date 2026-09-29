@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/questwell_home_sections.dart';
 import '../widgets/questwell_home_overview.dart';
+import '../widgets/questwell_typography.dart';
 import '../widgets/questwell_campfire_background.dart';
 
 class HomeSectionsReviewApp extends StatefulWidget {
@@ -35,8 +36,8 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
           QuestwellHomeCampfireControl(active: _campfire,
             onChanged: (value) => setState(() => _campfire = value)),
           const SizedBox(height: 24),
-          const Text('YOUR NEXT WIN', style: TextStyle(color: Color(0xFFF2D9A0),
-            fontWeight: FontWeight.w700, letterSpacing: 2)),
+          Text('YOUR NEXT WIN', style: QuestwellTypography.sectionHeading(
+            color: const Color(0xFFF2D9A0))),
           const SizedBox(height: 14),
           const QuestwellHomeEmptyBoard(),
           const SizedBox(height: 14),

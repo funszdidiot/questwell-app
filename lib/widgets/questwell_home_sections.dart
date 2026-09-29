@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
+import 'questwell_typography.dart';
 import 'questwell_quest_card.dart';
 
 /// Compact home overview; shared with the account-free visual review.
@@ -18,7 +19,7 @@ class QuestwellHomeEmptyBoard extends StatelessWidget {
           boxShadow: [BoxShadow(color: Color(0x4434291F), offset: Offset(1, 2))])),
         const SizedBox(height: 18),
         Text('A little room to breathe.', textAlign: TextAlign.center,
-          style: GoogleFonts.roboto(fontSize: 22, fontWeight: FontWeight.w800,
+          style: QuestwellTypography.sectionHeading(size: 12,
             color: const Color(0xFF34291F))),
         const SizedBox(height: 10),
         Text('Your board is clear. Add one thing when you’re ready.',
@@ -45,8 +46,7 @@ class QuestwellHomeActions extends StatelessWidget {
           textStyle: GoogleFonts.roboto(fontSize: 17, fontWeight: FontWeight.w700),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)))),
       const SizedBox(height: 28),
-      Text('EXPLORE', style: GoogleFonts.pressStart2p(fontSize: 10,
-        color: const Color(0xFFD6B77A), height: 1.5)),
+      Text('EXPLORE', style: QuestwellTypography.sectionHeading(size: 10, color: const Color(0xFFD6B77A))),
       const SizedBox(height: 12),
       _destination('expedition', 'Start an expedition', 'Make space for a focused session.'),
       const SizedBox(height: 10),

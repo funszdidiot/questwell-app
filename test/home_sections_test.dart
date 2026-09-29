@@ -19,6 +19,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
     expect(find.text('Add quest'), findsOneWidget);
+    expect(tester.widget<Text>(find.text('A little room to breathe.')).style?.fontFamily,
+      GoogleFonts.pressStart2p().fontFamily);
     for (final entry in {'Add quest': 'quests', 'Start an expedition': 'expedition',
       'Boss battles': 'boss', 'Chronicle': 'chronicle', 'Adventurer': 'adventurer',
       'Market': 'market'}.entries) {

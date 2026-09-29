@@ -28,6 +28,12 @@ void main() {
       ])),
     )));
     await tester.pumpAndSettle();
+    for (final heading in ['Scout', 'LOADOUT', 'Class collection', '1 win this week', 'Campfire Mode']) {
+      expect(tester.widget<Text>(find.text(heading)).style?.fontFamily,
+        GoogleFonts.pressStart2p().fontFamily, reason: '$heading must use the approved pixel heading font');
+    }
+    expect(tester.widget<Text>(find.text('5 XP to level 4')).style?.fontFamily,
+      GoogleFonts.roboto().fontFamily);
     expect(find.text('5 XP to level 4'), findsOneWidget);
     expect(find.text('1 win this week'), findsOneWidget);
     await tester.tap(find.text('Customize adventurer'));

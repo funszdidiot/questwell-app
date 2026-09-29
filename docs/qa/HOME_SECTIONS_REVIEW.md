@@ -29,3 +29,7 @@ Development-only cleanup requested September 29, 2026.
 - Momentum summary emphasizes weekly wins; Campfire control shares a compact panel style.
 - Data sources, XP formula, energy persistence, and approved Hearth/avatars retained.
 - Review fixture uses sample profile/item data, not an account. Actual account navigation and persistence still require user verification.
+
+## Typography correction
+
+Founder approved the new layout, with a correction to retain the established typography rules. Questwell wordmark stays unchanged. Section headings use Press Start 2P; subheaders, descriptions, controls and supporting text retain Roboto. Restored pixel headings for class, loadout, collection, weekly momentum, Campfire Mode and the empty-board title. Shared section-heading style and regression assertions protect this hierarchy.

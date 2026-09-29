@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
+import 'questwell_typography.dart';
 
 const _gold = Color(0xFFE4C586);
 const _ink = Color(0xFFF0E5CC);
@@ -58,7 +59,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
         QuestwellRelicPixelArt(archetype: archetype, size: 42),
         const SizedBox(width: 12),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(className, style: _body(23, color: _gold, bold: true)),
+          Text(className, style: QuestwellTypography.sectionHeading(size: 13)),
           Text('Level $level${mastered ? ' · Mastered' : ''}', style: _body(14, color: _muted)),
         ])),
       ]),
@@ -76,7 +77,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
       const SizedBox(height: 6),
       Text('${100 - xp} XP to level ${level + 1}', style: _body(12, color: _muted)),
       const SizedBox(height: 16),
-      Text('LOADOUT', style: _body(11, color: _gold, bold: true)),
+      Text('LOADOUT', style: QuestwellTypography.sectionHeading(size: 9)),
       const SizedBox(height: 5),
       Text(equippedNames.isEmpty ? 'No cosmetics equipped yet.' : equippedNames.join(' · '),
         style: _body(14, color: _muted)),
@@ -93,7 +94,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
         Theme(data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(tilePadding: EdgeInsets.zero, childrenPadding: EdgeInsets.zero,
             iconColor: _gold, collapsedIconColor: _gold,
-            title: Text('Class collection', style: _body(15, bold: true)),
+            title: Text('Class collection', style: QuestwellTypography.sectionHeading(size: 10)),
             subtitle: Text('${collection.where((item) => item.owned).length} of ${collection.length} owned · Tap to view',
               style: _body(12, color: _muted)),
             children: [
@@ -126,7 +127,7 @@ class QuestwellHomeMomentum extends StatelessWidget {
     QuestwellStatusPixelBadge(kind: 'momentum', size: 30, active: wins > 0),
     const SizedBox(width: 12),
     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(wins > 0 ? '$wins win${wins == 1 ? '' : 's'} this week' : 'A fresh start', style: _body(17, bold: true)),
+      Text(wins > 0 ? '$wins win${wins == 1 ? '' : 's'} this week' : 'A fresh start', style: QuestwellTypography.sectionHeading(size: 11, color: _ink)),
       Text(bosses > 0 ? '$bosses boss${bosses == 1 ? '' : 'es'} defeated'
         : wins > 0 ? 'Your small steps are adding up.' : 'One small step is enough.',
         style: _body(13, color: _muted)),
@@ -146,7 +147,7 @@ class QuestwellHomeCampfireControl extends StatelessWidget {
     const QuestwellNavPixelIcon(kind: 'expedition', size: 22),
     const SizedBox(width: 12),
     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text('Campfire Mode', style: _body(16, bold: true)),
+      Text('Campfire Mode', style: QuestwellTypography.sectionHeading(size: 10, color: _ink)),
       Text(active ? 'One gentle quest. A little warmth.' : 'Lower the pace. Focus on one quest.',
         style: _body(13, color: _muted)),
     ])),
