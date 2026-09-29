@@ -119,3 +119,12 @@ Reject the garment if any of these appear:
 - swallowed hands
 - torso wider than the base body
 - one body type looking like a resized version of another
+
+## Scholar clean-art pass — 2026-09-29
+Founder feedback accepted the improved fit and rejected the ragged overlay finish. Rebuilt the Scholar garment artwork with solid navy sleeves, continuous gold piping, compact cuff bands, and clearer hem edges. Frozen bases remain unchanged.
+
+The app now consumes `scholar_robe_male_clean_v1.webp`, `scholar_robe_female_clean_v1.webp`, and `scholar_robe_neutral_clean_v1.webp`. Versioned filenames prevent the prior art from remaining in browser caches. The same files power the portrait/card review page.
+
+Clean master art is retained in `tool/art_assets/clean_scholar/`. Body-specific landmarks and the mesh are recorded in `tool/scholar_fit_anchors.json`. Run `node tool/fit_scholar_robe.cjs` with ImageMagick installed to reproduce the 240 x 320 lossless WebPs. This is an offline texture bake; the app still stacks the full canvases 1:1. No cuts against the base anatomy are used to shape the fabric, avoiding the holes and fragments seen in the previous overlays.
+
+Clean-up review checks: continuous sleeve surfaces; one cuff outline; visible hands; continuous trim; no detached fragments; clear stance; inspection at portrait, card, and enlarged sizes. Scholar remains the class template candidate pending founder review of this clean-art revision.

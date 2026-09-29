@@ -114,6 +114,8 @@ Target:
 
 **Benchmark rule:** CI success alone does not mark this epic complete.
 
+**Scholar clean-art candidate (2026-09-29):** Founder confirmed fit improved but rejected ragged overlay quality. Added separate cleaned Scholar garments for all three body types, fitted offline to the frozen bases and exported as versioned lossless WebPs. App and review page now use the clean-art candidates. Source art and measured export geometry are preserved for reuse after visual acceptance.
+
 **Scholar build-source fix (2026-09-29):** Found that both workflows replaced the committed body-fitted Scholar WebPs with older staged base64 art. Replaced this destructive build preparation with dimension, transparency, and checksum validation. The latest fitted assets are now the build source of truth. Local regression checks confirm preparation preserves all six base/robe files and rejects stale robe substitutions. Added a Scholar-only review page with all three body types, portrait/card sizes, and a base/robe toggle. Scholar visual acceptance remains the gate before fitting other classes.
 
 ## Release gate

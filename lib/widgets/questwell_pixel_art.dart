@@ -39,11 +39,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       'assets/images/questwell/avatar/base/base_neutral.webp';
 
   static const _scholarMale =
-      'assets/images/questwell/avatar/classes/scholar/scholar_robe_male.webp';
+      'assets/images/questwell/avatar/classes/scholar/scholar_robe_male_clean_v1.webp';
   static const _scholarFemale =
-      'assets/images/questwell/avatar/classes/scholar/scholar_robe_female.webp';
+      'assets/images/questwell/avatar/classes/scholar/scholar_robe_female_clean_v1.webp';
   static const _scholarNeutral =
-      'assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral.webp';
+      'assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_clean_v1.webp';
 
   static const _scoutMale =
       'assets/images/questwell/avatar/classes/scout/scout_coat_male.webp';
