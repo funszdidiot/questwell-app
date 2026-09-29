@@ -55,52 +55,52 @@
   "selection_art_height": 176,
   "candidate_classes": {
     "wanderer": {
-      "art_revision": "wanderer-v1",
+      "art_revision": "wanderer-v2",
       "visual_approval": "pending_founder_review",
       "bodies": [
         "male",
         "female",
         "neutral"
       ],
-      "design": "Midnight-blue travel coat; brass piping and fasteners, short shoulder yoke, compass-star stitching, separate continuous rear cloth. No equipment.",
+      "design": "Tobacco-brown travel coat with copper-gold edging, compass stitching and continuous ochre rear lining; independent body fits.",
       "assets": [
         {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v1.webp",
-          "sha256": "ee89f38c11a427e8bd44a42f02199e7cbc3c7652d51ae5cf16c7e2b1c7b436c2"
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v2.webp",
+          "sha256": "1b3824a0dec90e69639487eb34d642495bfd5315c85d07c5583bdc1f9c902a88"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_male_wrap_v1.webp",
-          "sha256": "fff1934111ec18bd6b5b1f50145008c3cec73d7117f429e65aa95eae664580b3"
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_male_wrap_v2.webp",
+          "sha256": "321c528cefacb99ea6807c3607b3292ce55d4d4bbfb34281def1edae59881353"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v1.webp",
-          "sha256": "e2eb93560b6e8d3fc4f596a124f82b498b84896c738f53f2ae30301f59f5ea47"
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v2.webp",
+          "sha256": "5ad18fedcb95a18b9f32822303eacec842274aabcb12b96dd59a07d934e90a4e"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_female_wrap_v1.webp",
-          "sha256": "f5c334f50601c68de5fa19bdf90a147fe259295df759068d2b3e66cbbab825d7"
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_female_wrap_v2.webp",
+          "sha256": "62f2e7f919de9deee44de5b34e450f19c412941bac79fc7f035fc25c0bf1b8b1"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v1.webp",
-          "sha256": "b9320167af992f494eee90042dd42590301b34797746516d1235c6256b9dd454"
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v2.webp",
+          "sha256": "6e7c07a8da7b122e471025ea2c4b8d6805c1ea6f61d026ec34cb98bf107b95b6"
         },
         {
-          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_neutral_wrap_v1.webp",
-          "sha256": "2fac501eed94bf0b191993fdb4cefafa338200971cd2f622474e32d493157c3c"
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_neutral_wrap_v2.webp",
+          "sha256": "b753a918c3e4468a1e66b635f5d5c02618c04ae4311986d234c18541803034b0"
         }
       ],
       "fit_inputs": [
         {
           "path": "tool/wanderer_fit_anchors.json",
-          "sha256": "1685fd121759adafe4b417f2bac0d4b1f6da5961116edbf74fb7968f09892921"
+          "sha256": "b57594a948aa1c83685a6830551f971f5058da8cc04fc4e4b71eeaed63eaed64"
         },
         {
           "path": "tool/wanderer_wrap_fit.json",
-          "sha256": "6663af8871d0ae9cd0c67f086e66f1185ac2fd1ad5448f4169795d8935ffca7c"
+          "sha256": "e41550f963d8f8ef62bbccf04bf051ea6de3e30b1689aba8cdc811f30844c32e"
         },
         {
           "path": "tool/fit_wanderer_coat.cjs",
-          "sha256": "02bcef1e6916b2a97488b22ac939758b820472c916f31035de255e6d0cdb8df5"
+          "sha256": "4bc653e621d360aa3259e4e2c0dc0204b997118d512672c58b475205b22c1b0f"
         },
         {
           "path": "tool/fit_wanderer_rear.cjs",
@@ -123,24 +123,24 @@
           "sha256": "d950da168b4545a9ae7c3214e557c809f4f32b97d28cab7afc251542bd4a5953"
         },
         {
-          "path": "tool/art_assets/wanderer_v1/prompts.json",
-          "sha256": "dc718f3f285f685da4e4af2083d4488a04feee4baa137ab4ff7befbafbeb62a2"
+          "path": "tool/art_assets/wanderer_v2/prompts.json",
+          "sha256": "7b234278c237b44bfbcdb913cd51fec805aa0f68a143ef1a4b8de5f89d596d62"
         },
         {
-          "path": "tool/art_assets/wanderer_v1/male.webp",
-          "sha256": "dc103893601f9e4c5205a998f638ea471fd3fb6ecc96630e9203142c9367640f"
+          "path": "tool/art_assets/wanderer_v2/male.webp",
+          "sha256": "1fbffdb111d34473b773c0f3ff550fb7eb2e81c7b4e742fdeb3d0cdee982fd33"
         },
         {
-          "path": "tool/art_assets/wanderer_v1/female.webp",
-          "sha256": "427200777ff09f95de30fc096ed7cc250f1cd175cc52e30b26c9f5c683fb8363"
+          "path": "tool/art_assets/wanderer_v2/female.webp",
+          "sha256": "bf5595b6b2f84b6382b0c595f323581284b74328450a7cba418f1eab72833172"
         },
         {
-          "path": "tool/art_assets/wanderer_v1/neutral.webp",
-          "sha256": "35c5abedcf837dc275fe4a09152be3f54ba67be2d6e6932445776ef4b4136398"
+          "path": "tool/art_assets/wanderer_v2/neutral.webp",
+          "sha256": "fae646244d49e873f889dc2b0517e831694c29942459df7af2ac14160eb5e9b7"
         },
         {
-          "path": "tool/art_assets/wanderer_v1/rear.webp",
-          "sha256": "61b1533e51d6acf9faff07a070e8d7216e7484ea8fbada55d2c41b62956a59ed"
+          "path": "tool/art_assets/wanderer_v2/rear.webp",
+          "sha256": "adf02e2a355d5d64c158f2fa30c5ec3c21b6e7a7cd37dbc1bde02c0c16a04f32"
         }
       ]
     }

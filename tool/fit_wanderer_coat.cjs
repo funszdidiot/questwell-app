@@ -267,8 +267,14 @@ for (const [body, spec] of Object.entries(manifest.bodies)) {
     command('convert', ['-size', `${dw}x${dh}`, '-depth', '8', 'rgba:-',
       path.join(proofDir, `${body}-4x.png`)], output);
   }
-  command('convert', ['-size', `${dw}x${dh}`, '-depth', '8', 'rgba:-',
+  const encoded = command('convert', ['-size', `${dw}x${dh}`, '-depth', '8', 'rgba:-',
     '-filter', 'Lanczos', '-resize', `${width}x${height}`, '-define', 'webp:lossless=true',
-    path.join(root, spec.output)], output);
+    'webp:-'], output);
+  if (encoded.length < 100) throw new Error('Empty garment export');
+  const destination = path.join(root, spec.output);
+  fs.writeFileSync(destination, encoded);
+  const fd = fs.openSync(destination, 'r');
+  fs.fsyncSync(fd); fs.closeSync(fd);
+  command('identify', [destination]);
   console.log(`Exported clean ${body} Wanderer coat on ${width} x ${height} canvas`);
 }

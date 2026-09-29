@@ -8,7 +8,8 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   for (final kind in ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer']) {
     for (final body in ['male', 'female', 'neutral']) {
-      final rear = 'assets/images/questwell/avatar/classes/$kind/${kind}_rear_${body}_wrap_v1.webp';
+      final rearRevision = kind == 'wanderer' ? 'v2' : 'v1';
+      final rear = 'assets/images/questwell/avatar/classes/$kind/${kind}_rear_${body}_wrap_$rearRevision.webp';
       test('$kind $body rear is continuous cloth with clear head and feet', () async {
         final bytes = await rootBundle.load(rear);
         final codec = await ui.instantiateImageCodec(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));

@@ -6,14 +6,14 @@
   "method": "Independent thin-plate fitting of generated Wanderer masters to frozen body landmarks; single source sampling at 4x, no runtime transform.",
   "bodies": {
     "male": {
-      "source": "tool/art_assets/wanderer_v1/male.webp",
-      "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v1.webp",
+      "source": "tool/art_assets/wanderer_v2/male.webp",
+      "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v2.webp",
       "mapping": "thin_plate_spline",
       "points": [
         {
           "name": "neck_l",
           "source": [
-            108,
+            110,
             77
           ],
           "target": [
@@ -24,7 +24,7 @@
         {
           "name": "neck_r",
           "source": [
-            131,
+            133,
             77
           ],
           "target": [
@@ -35,7 +35,7 @@
         {
           "name": "shoulder_l",
           "source": [
-            80,
+            82,
             90
           ],
           "target": [
@@ -46,7 +46,7 @@
         {
           "name": "shoulder_r",
           "source": [
-            155,
+            157,
             90
           ],
           "target": [
@@ -57,7 +57,7 @@
         {
           "name": "elbow_l",
           "source": [
-            65,
+            67,
             138
           ],
           "target": [
@@ -68,7 +68,7 @@
         {
           "name": "elbow_r",
           "source": [
-            172,
+            174,
             138
           ],
           "target": [
@@ -79,7 +79,7 @@
         {
           "name": "cuff_l_outer",
           "source": [
-            61,
+            63,
             176
           ],
           "target": [
@@ -90,7 +90,7 @@
         {
           "name": "cuff_l_inner",
           "source": [
-            81,
+            83,
             176
           ],
           "target": [
@@ -101,7 +101,7 @@
         {
           "name": "cuff_r_inner",
           "source": [
-            159,
+            161,
             176
           ],
           "target": [
@@ -112,7 +112,7 @@
         {
           "name": "cuff_r_outer",
           "source": [
-            180,
+            182,
             176
           ],
           "target": [
@@ -123,7 +123,7 @@
         {
           "name": "waist_l",
           "source": [
-            93,
+            95,
             151
           ],
           "target": [
@@ -134,7 +134,7 @@
         {
           "name": "waist_r",
           "source": [
-            146,
+            148,
             151
           ],
           "target": [
@@ -145,7 +145,7 @@
         {
           "name": "opening_l",
           "source": [
-            115,
+            117,
             151
           ],
           "target": [
@@ -156,7 +156,7 @@
         {
           "name": "opening_r",
           "source": [
-            125,
+            127,
             151
           ],
           "target": [
@@ -167,7 +167,7 @@
         {
           "name": "hip_l",
           "source": [
-            82,
+            84,
             186
           ],
           "target": [
@@ -178,7 +178,7 @@
         {
           "name": "hip_r",
           "source": [
-            158,
+            160,
             186
           ],
           "target": [
@@ -189,7 +189,7 @@
         {
           "name": "flare_l",
           "source": [
-            60,
+            62,
             250
           ],
           "target": [
@@ -200,7 +200,7 @@
         {
           "name": "flare_r",
           "source": [
-            181,
+            183,
             250
           ],
           "target": [
@@ -211,7 +211,7 @@
         {
           "name": "tail_l",
           "source": [
-            84,
+            86,
             294
           ],
           "target": [
@@ -222,7 +222,7 @@
         {
           "name": "tail_r",
           "source": [
-            155,
+            157,
             294
           ],
           "target": [
@@ -233,7 +233,7 @@
         {
           "name": "inner_hem_l",
           "source": [
-            110,
+            112,
             264
           ],
           "target": [
@@ -244,7 +244,7 @@
         {
           "name": "inner_hem_r",
           "source": [
-            131,
+            133,
             264
           ],
           "target": [
@@ -299,15 +299,15 @@
       ]
     },
     "female": {
-      "source": "tool/art_assets/wanderer_v1/female.webp",
-      "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v1.webp",
+      "source": "tool/art_assets/wanderer_v2/female.webp",
+      "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v2.webp",
       "mapping": "thin_plate_spline",
       "points": [
         {
           "name": "neck_l",
           "source": [
-            110,
-            80
+            112.5,
+            80.0
           ],
           "target": [
             110,
@@ -317,8 +317,8 @@
         {
           "name": "neck_r",
           "source": [
-            130,
-            80
+            133.5,
+            80.0
           ],
           "target": [
             129,
@@ -328,8 +328,8 @@
         {
           "name": "shoulder_l",
           "source": [
-            87,
-            93
+            88.35,
+            93.325
           ],
           "target": [
             88,
@@ -339,8 +339,8 @@
         {
           "name": "shoulder_r",
           "source": [
-            150,
-            93
+            154.5,
+            93.325
           ],
           "target": [
             150,
@@ -350,8 +350,8 @@
         {
           "name": "elbow_l",
           "source": [
-            76,
-            136
+            76.8,
+            137.4
           ],
           "target": [
             75,
@@ -361,8 +361,8 @@
         {
           "name": "elbow_r",
           "source": [
-            165,
-            136
+            170.25,
+            137.4
           ],
           "target": [
             162,
@@ -372,8 +372,8 @@
         {
           "name": "cuff_l_outer",
           "source": [
-            68,
-            173
+            68.4,
+            177.325
           ],
           "target": [
             70.5,
@@ -383,8 +383,8 @@
         {
           "name": "cuff_l_inner",
           "source": [
-            86,
-            173
+            87.3,
+            177.325
           ],
           "target": [
             85.5,
@@ -394,8 +394,8 @@
         {
           "name": "cuff_r_inner",
           "source": [
-            155,
-            173
+            159.75,
+            177.325
           ],
           "target": [
             153.5,
@@ -405,8 +405,8 @@
         {
           "name": "cuff_r_outer",
           "source": [
-            173,
-            173
+            178.65,
+            177.325
           ],
           "target": [
             169.5,
@@ -416,8 +416,8 @@
         {
           "name": "waist_l",
           "source": [
-            96,
-            141
+            97.8,
+            142.525
           ],
           "target": [
             96,
@@ -427,8 +427,8 @@
         {
           "name": "waist_r",
           "source": [
-            146,
-            141
+            150.3,
+            142.525
           ],
           "target": [
             145,
@@ -438,8 +438,8 @@
         {
           "name": "opening_l",
           "source": [
-            115,
-            145
+            117.75,
+            146.625
           ],
           "target": [
             112,
@@ -449,8 +449,8 @@
         {
           "name": "opening_r",
           "source": [
-            126,
-            145
+            129.3,
+            146.625
           ],
           "target": [
             126,
@@ -460,8 +460,8 @@
         {
           "name": "hip_l",
           "source": [
-            85,
-            179
+            86.25,
+            181.475
           ],
           "target": [
             89,
@@ -471,8 +471,8 @@
         {
           "name": "hip_r",
           "source": [
-            155,
-            179
+            159.75,
+            181.475
           ],
           "target": [
             151,
@@ -482,8 +482,8 @@
         {
           "name": "flare_l",
           "source": [
-            63,
-            244
+            63.15,
+            248.1
           ],
           "target": [
             62,
@@ -493,8 +493,8 @@
         {
           "name": "flare_r",
           "source": [
-            177,
-            244
+            182.85,
+            248.1
           ],
           "target": [
             181,
@@ -504,8 +504,8 @@
         {
           "name": "tail_l",
           "source": [
-            88,
-            280
+            89.4,
+            285.0
           ],
           "target": [
             93,
@@ -515,8 +515,8 @@
         {
           "name": "tail_r",
           "source": [
-            157,
-            280
+            161.85,
+            285.0
           ],
           "target": [
             162,
@@ -526,8 +526,8 @@
         {
           "name": "inner_hem_l",
           "source": [
-            106,
-            260
+            108.3,
+            264.5
           ],
           "target": [
             115,
@@ -537,8 +537,8 @@
         {
           "name": "inner_hem_r",
           "source": [
-            131,
-            260
+            134.55,
+            264.5
           ],
           "target": [
             138,
@@ -603,20 +603,20 @@
           },
           {
             "y": 186,
-            "left": 91,
+            "left": 90,
             "inner_left": 100,
             "inner_right": 139,
             "right": 150,
-            "fitted_left": 91,
+            "fitted_left": 90,
             "fitted_right": 151
           },
           {
             "y": 196,
-            "left": 91,
+            "left": 90,
             "inner_left": 100,
             "inner_right": 139,
             "right": 152,
-            "fitted_left": 91,
+            "fitted_left": 90,
             "fitted_right": 155
           },
           {
@@ -630,35 +630,35 @@
           },
           {
             "y": 210,
-            "left": 88,
+            "left": 87,
             "inner_left": 100,
             "inner_right": 139,
             "right": 157,
-            "fitted_left": 88,
+            "fitted_left": 87,
             "fitted_right": 157
           },
           {
             "y": 220,
-            "left": 84,
+            "left": 83,
             "inner_left": 100,
             "inner_right": 139,
-            "right": 161,
-            "fitted_left": 84,
-            "fitted_right": 161
+            "right": 162,
+            "fitted_left": 83,
+            "fitted_right": 162
           }
         ],
-        "note": "Measured outer trouser clearance; preserve inner piping and widen only side seam smoothly."
+        "note": "Maintain measured outer trouser clearance after color-edit source registration."
       }
     },
     "neutral": {
-      "source": "tool/art_assets/wanderer_v1/neutral.webp",
-      "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v1.webp",
+      "source": "tool/art_assets/wanderer_v2/neutral.webp",
+      "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v2.webp",
       "mapping": "thin_plate_spline",
       "points": [
         {
           "name": "neck_l",
           "source": [
-            111,
+            114,
             79
           ],
           "target": [
@@ -669,7 +669,7 @@
         {
           "name": "neck_r",
           "source": [
-            136,
+            139,
             79
           ],
           "target": [
@@ -680,7 +680,7 @@
         {
           "name": "shoulder_l",
           "source": [
-            85,
+            88,
             92
           ],
           "target": [
@@ -691,7 +691,7 @@
         {
           "name": "shoulder_r",
           "source": [
-            163,
+            166,
             92
           ],
           "target": [
@@ -702,7 +702,7 @@
         {
           "name": "elbow_l",
           "source": [
-            70,
+            73,
             139
           ],
           "target": [
@@ -713,7 +713,7 @@
         {
           "name": "elbow_r",
           "source": [
-            180,
+            183,
             139
           ],
           "target": [
@@ -724,7 +724,7 @@
         {
           "name": "cuff_l_outer",
           "source": [
-            64,
+            67,
             175
           ],
           "target": [
@@ -735,7 +735,7 @@
         {
           "name": "cuff_l_inner",
           "source": [
-            85,
+            88,
             175
           ],
           "target": [
@@ -746,7 +746,7 @@
         {
           "name": "cuff_r_inner",
           "source": [
-            163,
+            166,
             175
           ],
           "target": [
@@ -757,7 +757,7 @@
         {
           "name": "cuff_r_outer",
           "source": [
-            184,
+            187,
             175
           ],
           "target": [
@@ -768,7 +768,7 @@
         {
           "name": "waist_l",
           "source": [
-            96,
+            99,
             151
           ],
           "target": [
@@ -779,7 +779,7 @@
         {
           "name": "waist_r",
           "source": [
-            154,
+            157,
             151
           ],
           "target": [
@@ -790,7 +790,7 @@
         {
           "name": "opening_l",
           "source": [
-            119,
+            122,
             151
           ],
           "target": [
@@ -801,7 +801,7 @@
         {
           "name": "opening_r",
           "source": [
-            129,
+            132,
             151
           ],
           "target": [
@@ -812,7 +812,7 @@
         {
           "name": "hip_l",
           "source": [
-            85,
+            88,
             187
           ],
           "target": [
@@ -823,7 +823,7 @@
         {
           "name": "hip_r",
           "source": [
-            164,
+            167,
             187
           ],
           "target": [
@@ -834,7 +834,7 @@
         {
           "name": "flare_l",
           "source": [
-            62,
+            65,
             250
           ],
           "target": [
@@ -845,7 +845,7 @@
         {
           "name": "flare_r",
           "source": [
-            187,
+            190,
             250
           ],
           "target": [
@@ -856,7 +856,7 @@
         {
           "name": "tail_l",
           "source": [
-            88,
+            91,
             294
           ],
           "target": [
@@ -867,7 +867,7 @@
         {
           "name": "tail_r",
           "source": [
-            162,
+            165,
             294
           ],
           "target": [
@@ -878,7 +878,7 @@
         {
           "name": "inner_hem_l",
           "source": [
-            115,
+            118,
             264
           ],
           "target": [
@@ -889,7 +889,7 @@
         {
           "name": "inner_hem_r",
           "source": [
-            136,
+            139,
             264
           ],
           "target": [
@@ -946,60 +946,60 @@
         "rows": [
           {
             "y": 178,
-            "left": 86,
+            "left": 84,
             "inner_left": 100,
             "inner_right": 139,
-            "right": 151,
-            "fitted_left": 86,
-            "fitted_right": 151
+            "right": 153,
+            "fitted_left": 84,
+            "fitted_right": 153
           },
           {
             "y": 186,
-            "left": 87,
+            "left": 85,
             "inner_left": 100,
             "inner_right": 139,
-            "right": 149,
-            "fitted_left": 87,
-            "fitted_right": 151
+            "right": 151,
+            "fitted_left": 85,
+            "fitted_right": 152
           },
           {
             "y": 196,
-            "left": 86,
+            "left": 85,
             "inner_left": 100,
             "inner_right": 139,
-            "right": 150,
-            "fitted_left": 86,
+            "right": 151,
+            "fitted_left": 85,
             "fitted_right": 154
           },
           {
             "y": 204,
-            "left": 84,
+            "left": 82,
             "inner_left": 100,
             "inner_right": 139,
-            "right": 152,
-            "fitted_left": 84,
-            "fitted_right": 155
-          },
-          {
-            "y": 212,
-            "left": 81,
-            "inner_left": 100,
-            "inner_right": 139,
-            "right": 155,
-            "fitted_left": 81,
+            "right": 154,
+            "fitted_left": 82,
             "fitted_right": 156
           },
           {
-            "y": 220,
-            "left": 78,
+            "y": 212,
+            "left": 79,
             "inner_left": 100,
             "inner_right": 139,
-            "right": 159,
-            "fitted_left": 78,
-            "fitted_right": 159
+            "right": 157,
+            "fitted_left": 79,
+            "fitted_right": 157
+          },
+          {
+            "y": 220,
+            "left": 76,
+            "inner_left": 100,
+            "inner_right": 139,
+            "right": 161,
+            "fitted_left": 76,
+            "fitted_right": 161
           }
         ],
-        "note": "Measured outer trouser clearance; preserve inner piping and widen only side seam smoothly."
+        "note": "Maintain measured outer trouser clearance after color-edit source registration."
       }
     }
   }

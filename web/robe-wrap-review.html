@@ -11,14 +11,14 @@
 <p>Rear fabric now sits behind the avatar, with the existing front garment over it. Compare all three bodies at portrait and card sizes. Toggle “Show rear lining” to see the difference.</p>
 <label for="class">Class </label>
 <select id="class"><option value="wanderer">Wanderer</option><option value="guardian">Guardian</option><option value="scholar">Scholar</option><option value="scout">Scout</option><option value="alchemist">Alchemist</option></select>
-<a id="direct" href="wanderer-fit-review.html?rev=wanderer-v1">Open class review directly</a>
+<a id="direct" href="wanderer-fit-review.html?rev=wanderer-v2">Open class review directly</a>
 <p>Wanderer is ready for visual review. Guardian, Scholar, Scout and Alchemist have accepted rear construction.</p>
-<iframe id="review" title="Wanderer robe fit review" src="wanderer-fit-review.html?rev=wanderer-v1"></iframe>
+<iframe id="review" title="Wanderer robe fit review" src="wanderer-fit-review.html?rev=wanderer-v2"></iframe>
 </main>
 <script>
 document.querySelector('#class').addEventListener('change',e=>{
  const kind=e.target.value;
- const url=kind+'-fit-review.html?rev=wanderer-v1';
+ const url=kind+'-fit-review.html?rev=wanderer-v2';
  document.querySelector('#review').src=url;
  document.querySelector('#review').title=kind+' robe fit review';
  document.querySelector('#direct').href=url;

@@ -1,4 +1,4 @@
-# Wanderer v1 — development review
+# Wanderer v2 — development review
 
 Founder direction, 2026-09-29: “Ok! Let’s do wanderer.” This accepts the
 preceding Guardian and four-class rear-construction review and authorizes
@@ -6,11 +6,11 @@ Wanderer development. Wanderer's appearance still needs its own visual review.
 
 ## Design and fit
 
-Midnight-blue travel coats retain the existing Wanderer class palette, with
-slate-blue folds, brass edging and fasteners, a short shoulder yoke, and small
-four-point compass-star embroidery. No equipment is baked into the clothing.
+Tobacco-brown travel coats replace the first blue palette after the founder
+requested more class color variation. Copper-gold edging and fasteners, a short shoulder yoke, and small
+four-point compass-star embroidery remain. The rear lining is muted ochre. No equipment is baked into the clothing.
 The three front masters and rear cloth were created using built-in image
-generation; exact prompts are in `tool/art_assets/wanderer_v1/prompts.json`.
+generation; exact prompts are in `tool/art_assets/wanderer_v2/prompts.json`.
 
 Male, Female and Gender Neutral each have their own generated master and
 measured fitting controls. All exports are transparent 240 × 320 WebP files.
@@ -24,13 +24,17 @@ front piping and sleeves. Actual exported-image checks cover trouser clearance,
 open waist piping, trim width and female sleeve/hip continuity. Rear cloth is
 continuous, with the legs providing natural occlusion.
 
+Color-edit masters were registered back to the existing body landmarks;
+cuff and side-seam clearances were rechecked. The previous blue assets remain
+versioned for comparison. Other classes retain their accepted palettes.
+
 ## Review surfaces
 
 - `wanderer-fit-review.html`: all three portraits and 176 px selection cards.
 - Toggles: coat, rear lining, alignment guides and original jacket comparison.
 - `robe-wrap-review.html`: all five classes; Wanderer selected initially.
-- `docs/qa/wanderer-fit-v1.png`: rear-off/rear-on and card comparisons.
-- `docs/qa/wanderer-lineup-v1.png`: the three complete outfits.
+- `docs/qa/wanderer-fit-v2.png`: rear-off/rear-on and card comparisons.
+- `docs/qa/wanderer-lineup-v2.png`: the three complete outfits.
 
 ## Checklist
 

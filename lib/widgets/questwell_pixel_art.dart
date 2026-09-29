@@ -20,6 +20,8 @@ class QuestwellPixelPalette {
         return const [Color(0xFF1749A0), Color(0xFFB6FF36), Color(0xFFCCDCEB)];
       case 'guardian':
         return const [Color(0xFF5C1D1D), Color(0xFFA84432), Color(0xFFF1B24A)];
+      case 'wanderer':
+        return const [Color(0xFF704526), Color(0xFFA77443), Color(0xFFC79450)];
       default:
         return const [Color(0xFF1A2E5A), Color(0xFF3D5A9A), Color(0xFFF1C75B)];
     }
@@ -72,11 +74,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       'assets/images/questwell/avatar/classes/guardian/guardian_coat_neutral_v2.webp';
 
   static const _wandererMale =
-      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v1.webp';
+      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v2.webp';
   static const _wandererFemale =
-      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v1.webp';
+      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v2.webp';
   static const _wandererNeutral =
-      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v1.webp';
+      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v2.webp';
 
   final String archetype;
   final Map<String, String> equippedSlugs;
@@ -169,6 +171,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final classOverlay = _classOverlayAsset;
+    final rearRevision = archetype == 'wanderer' ? 'v2' : 'v1';
     final body = ['male', 'female'].contains(avatarBodyType)
         ? avatarBodyType : 'neutral';
 
@@ -177,7 +180,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           if (classOverlay != null)
-            _assetLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_v1.webp'),
+            _assetLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
           if (archetype == 'scholar')
             ClipPath(
               clipper: ScholarUnderlayerClipper(avatarBodyType),

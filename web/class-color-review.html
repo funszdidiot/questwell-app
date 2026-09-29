@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Questwell · class color comparison</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#171b26;color:#f1ecdf;font:16px/1.5 system-ui,sans-serif}main{max-width:1240px;margin:auto;padding:20px}h1{font-size:26px}a{color:#e6c988}select{background:#222936;color:#f1ecdf;padding:8px;font:inherit}.classes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:20px}article{background:#232d3b;border:1px solid #566074;border-radius:8px;padding:10px}h2{font-size:18px;margin:0;text-align:center}.stage{position:relative;aspect-ratio:3/4;width:100%;max-width:240px;margin:auto}.stage.card{width:132px;max-width:100%;margin-top:20px}.stage img{position:absolute;width:100%;height:100%;inset:0;object-fit:contain}p{color:#c4c9d3}.caption{text-align:center;font-size:12px}@media(max-width:800px){.classes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+<main>
+<h1>Class color comparison</h1>
+<p>Wanderer now wears tobacco brown, copper-gold and ochre. Compare the same body across all five classes at portrait and selection-card sizes.</p>
+<label>Body <select id="body"><option value="male">Male</option><option value="female">Female</option><option value="neutral" selected>Gender Neutral</option></select></label>
+<a href="wanderer-fit-review.html?rev=wanderer-v2">Open Wanderer fit review</a>
+<div class="classes" id="classes"></div>
+<p>Wanderer v2 awaits visual acceptance. Development review only.</p>
+</main>
+<script src="scholar-underlayer.js"></script>
+<script src="scout-underlayer.js"></script>
+<script src="alchemist-underlayer.js"></script>
+<script src="guardian-underlayer.js"></script>
+<script src="wanderer-underlayer.js"></script>
+<script>
+const kinds=['scholar','scout','alchemist','guardian','wanderer'];
+const visibility={scholar:scholarUnderlayerVisibility,scout:scoutUnderlayerVisibility,alchemist:alchemistUnderlayerVisibility,guardian:guardianUnderlayerVisibility,wanderer:wandererUnderlayerVisibility};
+const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('width','0');svg.setAttribute('height','0');svg.style.position='absolute';const defs=document.createElementNS(ns,'defs');svg.append(defs);
+for(const kind of kinds)for(const [body,polygons] of Object.entries(visibility[kind])){
+ const clip=document.createElementNS(ns,'clipPath');clip.id=kind+'-'+body;clip.setAttribute('clipPathUnits','objectBoundingBox');const path=document.createElementNS(ns,'path');path.setAttribute('d',polygons.map(p=>p.map(([x,y],i)=>`${i?'L':'M'}${x/240},${y/320}`).join(' ')+' Z').join(' '));clip.append(path);defs.append(clip);
+}document.body.append(svg);
+function render(){
+ const body=document.querySelector('#body').value,root='assets/assets/images/questwell/avatar/';document.querySelector('#classes').replaceChildren();
+ for(const kind of kinds){
+  const front={scholar:`scholar_robe_${body}_polish_v2.webp`,scout:`scout_coat_${body}_polish_v1.webp`,alchemist:`alchemist_coat_${body}_lab_v4.webp`,guardian:`guardian_coat_${body}_${body==='female'?'v3':'v2'}.webp`,wanderer:`wanderer_coat_${body}_v2.webp`}[kind];
+  const rear=`${kind}_rear_${body}_wrap_${kind==='wanderer'?'v2':'v1'}.webp`;
+  const layers=`<img alt="Rear lining" src="${root}classes/${kind}/${rear}"><img alt="${body} avatar" style="clip-path:url(#${kind}-${body})" src="${root}base/base_${body}.webp"><img alt="${kind} coat" src="${root}classes/${kind}/${front}">`;
+  const article=document.createElement('article');article.innerHTML=`<h2>${kind[0].toUpperCase()+kind.slice(1)}</h2><div class="stage">${layers}</div><div class="stage card" aria-hidden="true">${layers}</div><p class="caption">176 px selection card</p>`;document.querySelector('#classes').append(article);
+ }
+}document.querySelector('#body').addEventListener('change',render);render();
+</script>
+</html>

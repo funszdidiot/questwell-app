@@ -1,5 +1,5 @@
 {
-  "revision": "wanderer-wrap-v1",
+  "revision": "wanderer-wrap-v2",
   "canvas": [
     240,
     320
@@ -12,12 +12,12 @@
   "visual_approval": "pending_founder_review",
   "classes": {
     "wanderer": {
-      "source": "tool/art_assets/wanderer_v1/rear.webp",
+      "source": "tool/art_assets/wanderer_v2/rear.webp",
       "interior_light": 0.82,
       "bodies": {
         "male": {
-          "front": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v1.webp",
-          "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_male_wrap_v1.webp",
+          "front": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v2.webp",
+          "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_male_wrap_v2.webp",
           "rows": [
             [
               148,
@@ -112,8 +112,8 @@
           ]
         },
         "female": {
-          "front": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v1.webp",
-          "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_female_wrap_v1.webp",
+          "front": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v2.webp",
+          "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_female_wrap_v2.webp",
           "rows": [
             [
               143,
@@ -198,8 +198,8 @@
           ]
         },
         "neutral": {
-          "front": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v1.webp",
-          "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_neutral_wrap_v1.webp",
+          "front": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v2.webp",
+          "output": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_neutral_wrap_v2.webp",
           "rows": [
             [
               146,

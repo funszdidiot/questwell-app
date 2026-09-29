@@ -9,8 +9,8 @@ This file is the founder-facing dashboard for the Questwell art overhaul.
 **Robe construction:** ✅ Founder accepted `robe-wrap-v1` on 2026-09-29
 and directed “Ok! Let’s do wanderer.” Guardian, Scholar, Scout and Alchemist
 retain their accepted three-layer construction across all three bodies.
-**Wanderer:** 🧪 `wanderer-v1` ready for visual review — midnight-blue/gold travel
-coats with compass stitching, three independent fits and continuous rear lining.
+**Wanderer:** 🧪 `wanderer-v2` ready for visual review — tobacco-brown/copper-gold travel
+coats with compass stitching, three independent fits and continuous ochre rear lining.
 See `docs/qa/WANDERER_FIT_REVIEW.md` and `wanderer-fit-review.html`.
 No production promotion or launch.
 

@@ -8,7 +8,7 @@ import 'package:project_momentum/widgets/wanderer_underlayer_clip.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   for (final body in ['male', 'female', 'neutral']) {
-    final revision = 'v1';
+    final revision = 'v2';
     test('$body Wanderer covers trousers and keeps waist trim open', () async {
       Future<ui.Image> loadImage(String asset) async {
         final bytes = await rootBundle.load(asset);
@@ -195,9 +195,9 @@ void main() {
             find.descendant(of: layer, matching: find.byType(Image)),
           ).map((image) => (image.image as AssetImage).assetName).toList();
           expect(images, [
-            'assets/images/questwell/avatar/classes/wanderer/wanderer_rear_${body}_wrap_v1.webp',
+            'assets/images/questwell/avatar/classes/wanderer/wanderer_rear_${body}_wrap_v2.webp',
             'assets/images/questwell/avatar/base/base_$body.webp',
-            'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_${body}_v1.webp',
+            'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_${body}_v2.webp',
           ]);
           final clip = tester.widget<ClipPath>(
             find.descendant(of: layer, matching: find.byType(ClipPath)),
