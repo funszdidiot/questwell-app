@@ -116,3 +116,12 @@ and down so its main flap stays visible beside the forearm; narrowed and darkene
 the shoulder strap, reduced its buckle and anchored it to the bag's outer ring.
 The illustrated asset, approved robes and accessories are unchanged. This remains
 a review-only candidate, with equipment, merge and launch gated.
+
+### Satchel strap attachment correction
+
+Founder flagged the strap connection in revision 2. Reattached the front strap to
+the inner (viewer-right) brass eyelet at source pixel (1064, 230), behind the bag
+artwork. Both the image and strap now share the same body-specific bag bounds and
+contain/center transform, including transparent image margins. The strap follows
+a direct curve from shoulder to this ring; bag placement and other gear are unchanged.
+Still preview-only, pending founder visual approval.

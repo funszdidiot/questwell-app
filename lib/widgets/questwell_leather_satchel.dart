@@ -8,15 +8,29 @@ class QuestwellLeatherSatchel extends StatelessWidget {
   static const asset = 'assets/images/questwell/avatar/satchel_leather_illustrated_v1.png';
   final String bodyType;
 
+  static Rect bagBounds(String bodyType) => switch (bodyType) {
+    'female' => const Rect.fromLTWH(74, 137, 62, 64),
+    'male' => const Rect.fromLTWH(69, 143, 66, 68),
+    _ => const Rect.fromLTWH(72, 141, 64, 66),
+  };
+
+  // The PNG includes transparent margins. Use the same contain/center mapping
+  // as Image.asset so the strap stays registered to the actual brass eyelet.
+  static Offset strapAttachment(String bodyType) {
+    const source = Size(1322, 1190);
+    const innerEyelet = Offset(1064, 230);
+    final bounds = bagBounds(bodyType);
+    final fitted = applyBoxFit(BoxFit.contain, source, bounds.size);
+    final image = Alignment.center.inscribe(fitted.destination, bounds);
+    return Offset(image.left + innerEyelet.dx / source.width * image.width,
+      image.top + innerEyelet.dy / source.height * image.height);
+  }
+
   @override
   Widget build(BuildContext context) => IgnorePointer(child: ExcludeSemantics(
     child: LayoutBuilder(builder: (context, constraints) {
       final scale = math.min(constraints.maxWidth / 240, constraints.maxHeight / 320);
-      final bag = switch (bodyType) {
-        'female' => const Rect.fromLTWH(74, 137, 62, 64),
-        'male' => const Rect.fromLTWH(69, 143, 66, 68),
-        _ => const Rect.fromLTWH(72, 141, 64, 66),
-      };
+      final bag = bagBounds(bodyType);
       return Stack(children: [
         Positioned.fill(child: CustomPaint(painter: _SatchelStrap(bodyType))),
         Positioned(
@@ -42,14 +56,10 @@ class _SatchelStrap extends CustomPainter {
     canvas.scale(scale);
     final female = bodyType == 'female';
     final shoulder = female ? const Offset(143, 85) : const Offset(147, 87);
-    // Bag's outer ring is at 25% of the image width; account for alpha margins.
-    final attachment = switch (bodyType) {
-      'female' => const Offset(90, 149),
-      'male' => const Offset(86, 155),
-      _ => const Offset(88, 153),
-    };
+    final attachment = QuestwellLeatherSatchel.strapAttachment(bodyType);
     final strap = Path()..moveTo(shoulder.dx, shoulder.dy)
-      ..cubicTo(137, 101, 106, 125, attachment.dx, attachment.dy);
+      ..cubicTo(shoulder.dx - 5, shoulder.dy + 21,
+        attachment.dx + 2, attachment.dy - 20, attachment.dx, attachment.dy);
     final paint = Paint()..style = PaintingStyle.stroke..strokeCap = StrokeCap.round;
     canvas.drawPath(strap, paint..color = const Color(0xFF382015)..strokeWidth = 4.5);
     canvas.drawPath(strap, paint..color = const Color(0xFF80502F)..strokeWidth = 3.3);
