@@ -422,7 +422,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
               onClass: (value) => _requestArchetypeChange(value, data),
               onEquip: (id) => _equip(data.cosmetics.firstWhere((item) => item.id == id)),
               onUnequip: (id) => _unequip(data.cosmetics.firstWhere((item) => item.id == id)),
-              onBack: () => Navigator.of(context).maybePop(),
+              onBack: () => context.safePop(),
               onMarket: () async {
                 await context.pushNamed(MarketPageWidget.routeName);
                 if (mounted) setState(_refresh);

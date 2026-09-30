@@ -3,9 +3,45 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_adventurer_view.dart';
 import 'inventory_icon_test.dart' show inventoryIconTests;
+import 'package:go_router/go_router.dart';
+import '../lib/flutter_flow/nav/nav.dart' show NavigationExtensions;
 
 void main() {
   inventoryIconTests();
+  for (final directEntry in [true, false]) {
+    testWidgets('Adventurer back returns to Hearth (direct entry: $directEntry)', (tester) async {
+      GoogleFonts.config.allowRuntimeFetching = false;
+      final router = GoRouter(
+        initialLocation: directEntry ? '/adventurer' : '/',
+        routes: [
+          GoRoute(path: '/', builder: (_, __) => const Scaffold(body: Text('Hearth destination'))),
+          GoRoute(path: '/adventurer', builder: (context, state) => Scaffold(
+            body: QuestwellAdventurerView(
+              archetype: 'scout', bodyType: 'neutral', level: 3, xp: 295, coins: 49,
+              description: 'Navigation test', mastered: false, collectionOwned: 0,
+              collectionTotal: 0, relicName: 'Compass', canClaim: false,
+              onClaim: () {}, onBack: () => context.safePop(), onMarket: () {},
+              onBody: (_) {}, onClass: (_) {}, onEquip: (_) {}, onUnequip: (_) {},
+              items: const [],
+            ),
+          )),
+        ],
+      );
+      addTearDown(router.dispose);
+      await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+      await tester.pumpAndSettle();
+      if (!directEntry) {
+        router.push('/adventurer');
+        await tester.pumpAndSettle();
+      }
+      expect(router.canPop(), !directEntry);
+      await tester.tap(find.byTooltip('Back to the Hearth'));
+      await tester.pumpAndSettle();
+      expect(find.text('Hearth destination'), findsOneWidget);
+      expect(find.byType(QuestwellAdventurerView), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+  }
   testWidgets('Appearance, ownership filters and equipment gate work at large text', (tester) async {
     GoogleFonts.config.allowRuntimeFetching = false;
     await tester.binding.setSurfaceSize(const Size(320, 2200));
