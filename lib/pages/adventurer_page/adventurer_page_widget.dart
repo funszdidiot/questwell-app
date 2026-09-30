@@ -201,12 +201,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
       await QuestwellCosmeticService.setAdventurerArchetype(archetype);
       if (!mounted) return;
       setState(_refresh);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${_archetypeLabel(archetype)} selected.'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      // The selected class border and refreshed avatar confirm success inline.
     } finally {
       if (mounted) setState(() => _savingArchetype = false);
     }
