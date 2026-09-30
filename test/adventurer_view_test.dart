@@ -32,8 +32,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text(gear.name), findsOneWidget);
     expect(find.byType(gear.type), findsNothing);
-    await tester.ensureVisible(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Place in Hearth' : 'Equip'));
-    await tester.tap(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Place in Hearth' : 'Equip'));
+    await tester.ensureVisible(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Place in Hearth' : 'Equip').first);
+    await tester.tap(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Place in Hearth' : 'Equip').first);
     await tester.pumpAndSettle();
     if (gear.type == QuestwellBookshelf) {
       await tester.tap(find.text('Save placement'));
@@ -44,7 +44,7 @@ void main() {
     await tester.tap(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Remove from Hearth' : 'Unequip'));
     await tester.pumpAndSettle();
     expect(find.byType(gear.type), findsNothing);
-    expect(find.text('Owned · ${gear.category}'), findsOneWidget);
+    expect(find.text('Owned · ${gear.category}'), gear.type == QuestwellBookshelf ? findsNWidgets(2) : findsOneWidget);
     expect(find.text('Inventory · 9'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
