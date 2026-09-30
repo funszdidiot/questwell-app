@@ -68,3 +68,14 @@ Body-specific bounds align the transparent brim opening with the hair; portrait
 framing reserves headroom for the point. Hat enabled alongside glasses in the
 shared equipment policy. Other unfinished items remain unavailable to equip.
 Asset: `assets/images/questwell/avatar/wizard_hat_illustrated_v2.png`.
+
+## Emerald Scholar Scarf integration
+
+Founder approved the illustrated emerald/gold open-drape concept. Built-in image
+generation extracted a transparent scarf sprite; no avatar or garment pixels
+changed. Body-specific scarf bounds and an opening mask preserve the shirt collar.
+Browsed all 15 fits (five classes × three bodies) in `?review=scarf-matrix`.
+Individual try-on, class/body selectors and Hearth view: `?review=scarf`.
+Added the exact scarf slug + neck category to the shared equipment allowlist and
+to the ownership/class/busy/unequip widget scenarios. Hat persistence was confirmed
+by the founder. Scarf phone sign-out/sign-in confirmation remains pending.

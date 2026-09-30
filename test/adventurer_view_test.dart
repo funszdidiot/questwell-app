@@ -62,7 +62,7 @@ void main() {
     GoogleFonts.config.allowRuntimeFetching = false;
     await tester.binding.setSurfaceSize(const Size(390, 2200));
     addTearDown(() => tester.binding.setSurfaceSize(null));
-    for (final gear in [(slug: 'round-scholar-glasses', category: 'face'), (slug: 'tiny-wizard-hat', category: 'head')]) {
+    for (final gear in [(slug: 'round-scholar-glasses', category: 'face'), (slug: 'tiny-wizard-hat', category: 'head'), (slug: 'emerald-scholar-scarf', category: 'neck')]) {
     for (final scenario in [
       (owned: true, equipped: false, locked: false, busy: false, label: 'Equip', enabled: true),
       (owned: false, equipped: false, locked: false, busy: false, label: 'View in Market', enabled: true),

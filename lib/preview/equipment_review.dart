@@ -41,7 +41,8 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
               items: ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer'].map((value) =>
                 DropdownMenuItem(value: value, child: Text(value[0].toUpperCase() + value.substring(1)))).toList(),
               onChanged: (value) { if (value != null) setState(() => _class = value); }),
-            Text(widget.headwear ? 'A little magic, perched just so. Preview only.'
+            Text(widget.neckwear ? 'Deep emerald, warm gold, and room for your collar. Preview only.'
+              : widget.headwear ? 'A little magic, perched just so. Preview only.'
               : 'A warm brass frame, with room for a little curiosity. Preview only.'),
             const SizedBox(height: 12),
             Wrap(spacing: 8, children: ['female', 'male', 'neutral'].map((body) =>
