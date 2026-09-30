@@ -440,6 +440,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
               },
               items: data.cosmetics.map((item) => AdventurerInventoryItem(
                 id: item.id, name: item.name, slug: item.slug, category: item.category, roomSlot: item.roomSlot,
+                milestoneLevel: item.milestoneLevel, unlockedAt: item.unlockedAt, source: item.source,
                 description: item.description, owned: item.owned, equipped: item.equipped,
                 archetype: item.requiredArchetype, shop: item.unlockMethod == 'shop',
                 classLocked: _classLocked(item, data.profile.adventurerArchetype),

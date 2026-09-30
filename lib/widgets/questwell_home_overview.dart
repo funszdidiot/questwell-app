@@ -51,7 +51,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
   const QuestwellHomeCharacter({super.key, required this.archetype,
     required this.className, required this.level, required this.xp,
     required this.coins, required this.mastered, required this.equippedNames, this.decorNames = const [],
-    required this.collection, required this.onCustomize, required this.onMarket});
+    required this.collection, required this.onCustomize, required this.onMarket, this.nextReward});
   final String archetype, className;
   final int level, xp, coins;
   int get xpRequired => QuestwellProgression.xpToNextLevel(level);
@@ -59,6 +59,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
   final List<String> equippedNames, decorNames;
   final List<HomeCollectionItem> collection;
   final VoidCallback onCustomize, onMarket;
+  final Widget? nextReward;
 
   @override
   Widget build(BuildContext context) => _HomePanel(child: Column(
@@ -84,25 +85,10 @@ class QuestwellHomeCharacter extends StatelessWidget {
         child: QuestwellPixelMeter(value: xp / xpRequired, kind: 'xp', height: 16, segments: 12)),
       const SizedBox(height: 6),
       Text('${(xpRequired - xp).clamp(0, xpRequired)} XP to level ${level + 1}', style: _body(12, color: _muted)),
-      const SizedBox(height: 16),
-      Text('LOADOUT', style: QuestwellTypography.sectionHeading(size: 9)),
-      const SizedBox(height: 5),
-      Text('${equippedNames.length} worn · ${decorNames.length} room items',
-        style: _body(14, color: _muted)),
-      if (equippedNames.isNotEmpty || decorNames.isNotEmpty)
-        Theme(data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: ExpansionTile(tilePadding: EdgeInsets.zero, childrenPadding: const EdgeInsets.only(bottom: 8),
-            iconColor: _gold, collapsedIconColor: _gold,
-            title: Text('View all', style: _body(14, color: _gold)),
-            children: [
-              for (final group in [('WORN EQUIPMENT', equippedNames), ('ROOM DÉCOR', decorNames)])
-                Padding(padding: const EdgeInsets.only(top: 8), child: Align(alignment: Alignment.centerLeft,
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(group.$1, style: QuestwellTypography.sectionHeading(size: 8)),
-                    const SizedBox(height: 5),
-                    Text(group.$2.isEmpty ? 'None yet.' : group.$2.join(' · '), style: _body(13, color: _muted)),
-                  ]))),
-            ])),
+      if (nextReward != null) nextReward!,
+      const SizedBox(height: 12),
+      Text('${equippedNames.length} worn · ${decorNames.length} room item${decorNames.length == 1 ? '' : 's'}',
+        style: _body(13, color: _muted)),
       const SizedBox(height: 10),
       SizedBox(width: double.infinity, child: OutlinedButton(
         onPressed: onCustomize, style: OutlinedButton.styleFrom(
@@ -111,31 +97,6 @@ class QuestwellHomeCharacter extends StatelessWidget {
           textStyle: _body(15, bold: true),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3))),
         child: const Text('Customize adventurer'))),
-      if (collection.isNotEmpty) ...[
-        const SizedBox(height: 10),
-        Theme(data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: ExpansionTile(tilePadding: EdgeInsets.zero, childrenPadding: EdgeInsets.zero,
-            iconColor: _gold, collapsedIconColor: _gold,
-            title: Text('Class collection', style: QuestwellTypography.sectionHeading(size: 10)),
-            subtitle: Text('${collection.where((item) => item.owned).length} of ${collection.length} owned · Tap to view',
-              style: _body(12, color: _muted)),
-            children: [
-              for (final item in collection) Padding(padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Row(children: [
-                  QuestwellItemPixelArt(slug: item.slug, category: item.category,
-                    archetype: item.archetype, size: 38),
-                  const SizedBox(width: 10),
-                  Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(item.name, style: _body(14, bold: true)),
-                    Text(item.equipped ? 'Equipped' : item.owned ? 'Owned' : 'Locked · Available in Market',
-                      style: _body(12, color: item.equipped ? const Color(0xFF90D7BC) : _muted)),
-                  ])),
-                ])),
-              Align(alignment: Alignment.centerLeft, child: TextButton(
-                onPressed: onMarket, style: TextButton.styleFrom(foregroundColor: _gold,
-                  minimumSize: const Size(48, 48)), child: const Text('Browse Market'))),
-            ])),
-      ],
     ],
   ));
 }

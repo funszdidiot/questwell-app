@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import '../pages/chronicle_page/chronicle_page_widget.dart';
 import '../services/questwell_cosmetic_service.dart';
 import '../services/questwell_chronicle_service.dart';
-import '../widgets/questwell_milestone_roadmap.dart';
+import '../widgets/questwell_next_reward.dart';
 import '../widgets/questwell_home_overview.dart';
 import '../widgets/questwell_chronicle_entry.dart';
+import '../widgets/questwell_adventurer_view.dart';
 
 class MilestoneRoadmapReviewApp extends StatefulWidget {
   const MilestoneRoadmapReviewApp({super.key});
@@ -36,7 +37,7 @@ class _MilestoneRoadmapReviewAppState extends State<MilestoneRoadmapReviewApp> {
     return MaterialApp(debugShowCheckedModeBanner:false,theme:ThemeData.dark(),home:Builder(builder:(ctx)=>Scaffold(
       backgroundColor:const Color(0xFF111827),body:SingleChildScrollView(child:Center(child:Column(children:[
         const SizedBox(height:16),
-        const Text('Milestone roadmap · sample profile'),
+        const Text('Simplified Hearth · sample profile'),
         Wrap(spacing:12,children:[
           DropdownButton<String>(value:state,items:['Before level 5','Preview copy','Level 5 earned']
             .map((s)=>DropdownMenuItem(value:s,child:Text(s))).toList(),onChanged:(s)=>setState(()=>state=s!)),
@@ -48,10 +49,18 @@ class _MilestoneRoadmapReviewAppState extends State<MilestoneRoadmapReviewApp> {
           SizedBox(width:width,child:Column(children:[
             QuestwellHomeCharacter(archetype:'alchemist',className:'Alchemist',level:profile.level,xp:profile.xpIntoLevel,
               coins:79,mastered:false,equippedNames:const [],decorNames:owned?const ['First Journey']:const [],
-              collection:const [],onCustomize:(){},onMarket:(){}),
-            const SizedBox(height:16),
-            QuestwellMilestoneRoadmap(profile:profile,cosmetics:[trophy],onOpenCollection:()=>ScaffoldMessenger.of(ctx)
-              .showSnackBar(const SnackBar(content:Text('Preview: opens your Adventurer collection in the app.')))),
+              collection:const [],nextReward:QuestwellNextReward(cosmetics:[trophy]),
+              onCustomize:()=>Navigator.push(ctx,MaterialPageRoute<void>(builder:(pageContext)=>Scaffold(
+                backgroundColor:const Color(0xFF111827),body:QuestwellAdventurerView(
+                  archetype:'alchemist',bodyType:'male',level:profile.level,xp:profile.totalXp,coins:79,
+                  description:'Sample profile',mastered:false,collectionOwned:0,collectionTotal:0,
+                  relicName:'Relic',canClaim:false,onClaim:(){},onBody:(_){},onClass:(_){},
+                  onEquip:(_){},onUnequip:(_){},onMarket:(){},onBack:()=>Navigator.pop(pageContext),
+                  items:[AdventurerInventoryItem(id:trophy.id,name:trophy.name,slug:trophy.slug,category:trophy.category,
+                    description:'Earned at level 5. Display on your bookcase or mantel.',owned:trophy.owned,
+                    equipped:trophy.equipped,classLocked:false,shop:false,roomSlot:trophy.roomSlot,
+                    milestoneLevel:trophy.milestoneLevel,unlockedAt:trophy.unlockedAt,source:trophy.source)],
+                )))),onMarket:(){}),
           ])),
           SizedBox(width:width,child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
             const Text('CHRONICLE'), const SizedBox(height:12),

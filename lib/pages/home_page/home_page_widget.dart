@@ -10,7 +10,7 @@ import '/services/questwell_milestone_service.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_pixel_art.dart';
-import '/widgets/questwell_milestone_roadmap.dart';
+import '/widgets/questwell_next_reward.dart';
 import '/widgets/questwell_home_sections.dart';
 import '/widgets/questwell_home_overview.dart';
 import '/widgets/questwell_campfire_background.dart';
@@ -489,19 +489,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     );
                     final xpIntoLevel = profile.xpIntoLevel;
 
-                    return Column(children: [QuestwellHomeCharacter(
+                    return QuestwellHomeCharacter(
                       archetype: profile.adventurerArchetype,
                       className: _archetypeLabel(profile.adventurerArchetype),
                       level: profile.level, xp: xpIntoLevel, coins: profile.coinBalance,
                       mastered: classMastered,
                       equippedNames: equipped.where((item) => item.category != 'room' && item.category != 'wall_art').map((item) => item.name).toList(),
                       decorNames: equipped.where((item) => item.category == 'room' || item.category == 'wall_art').map((item) => item.name).toList(),
-                      collection: data.cosmetics.where((item) =>
-                        item.requiredArchetype == profile.adventurerArchetype &&
-                        item.unlockMethod == 'shop').map((item) => HomeCollectionItem(
-                          name: item.name, slug: item.slug, category: item.category,
-                          archetype: item.requiredArchetype, owned: item.owned,
-                          equipped: item.equipped)).toList(),
+                      collection: const [],
+                      nextReward: QuestwellNextReward(cosmetics: data.cosmetics),
                       onCustomize: () async {
                         await context.pushNamed(AdventurerPageWidget.routeName);
                         if (mounted) setState(_loadHomeData);
@@ -510,14 +506,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         await context.pushNamed(MarketPageWidget.routeName);
                         if (mounted) setState(_loadHomeData);
                       },
-                    ),
-                    const SizedBox(height: 18),
-                    QuestwellMilestoneRoadmap(profile: profile, cosmetics: data.cosmetics,
-                      onOpenCollection: () async {
-                        await context.pushNamed(AdventurerPageWidget.routeName);
-                        if (mounted) setState(_loadHomeData);
-                      }),
-                    ]);
+                    );
                   },
                 ),
                 const SizedBox(height: 18),

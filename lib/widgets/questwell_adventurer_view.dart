@@ -3,6 +3,7 @@ import 'questwell_class_emblem.dart';
 import 'questwell_room_picker.dart';
 import 'questwell_wall_art.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import '../services/questwell_equipment_policy.dart';
@@ -11,9 +12,12 @@ class AdventurerInventoryItem {
   const AdventurerInventoryItem({required this.id, required this.name, required this.slug,
     required this.category, required this.description, required this.owned,
     required this.equipped, required this.classLocked, required this.shop,
-    this.archetype, this.roomSlot});
+    this.archetype, this.roomSlot, this.milestoneLevel, this.unlockedAt, this.source});
   final String id, name, slug, category, description;
   final String? archetype, roomSlot;
+  final int? milestoneLevel;
+  final DateTime? unlockedAt;
+  final String? source;
   String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}'
     : category == 'wall_art' && roomSlot != null && roomSlot != 'wall_center' ? 'wall_art:$roomSlot' : category;
   final bool owned, equipped, classLocked, shop;
@@ -44,6 +48,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
   bool _inventory = false;
   String _ownership = 'Owned';
   String _category = 'All categories';
+  String _collection = 'All collections';
   static const _gold = Color(0xFFE4C586);
   static const _muted = Color(0xFFB9C7D7);
   TextStyle _text(double size, {bool bold = false, Color color = const Color(0xFFF0E5CC)}) =>
@@ -63,6 +68,8 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
     final categories = widget.items.map((item) => item.category).toSet().toList()..sort();
     final category = categories.contains(_category) ? _category : 'All categories';
     final visible = widget.items.where((item) =>
+      (_collection == 'All collections' || (_collection == 'Trophies'
+        ? item.milestoneLevel != null : item.shop && item.archetype == widget.archetype)) &&
       (_ownership == 'All items' || (_ownership == 'Equipped' ? item.equipped : item.owned)) &&
       (category == 'All categories' || item.category == category)).toList();
     return ListView(physics: const AlwaysScrollableScrollPhysics(),
@@ -149,6 +156,16 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           _heading('YOUR COLLECTION'),
           const SizedBox(height: 8),
           Text('${equipped.length} equipped · $owned owned', style: _text(14, color: _muted)),
+          const SizedBox(height: 10),
+          Wrap(spacing: 8, runSpacing: 6, children: [
+            for (final value in const ['All collections', 'Class items', 'Trophies'])
+              ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: Text(value), selected: _collection == value,
+                onSelected: (_) => setState(() {
+                  _collection = value;
+                  _category = 'All categories';
+                  _ownership = value == 'All collections' ? 'Owned' : 'All items';
+                })),
+          ]),
           if (widget.items.any((item) => !QuestwellEquipmentPolicy.isReady(item.slug, item.category))) ...[
             const SizedBox(height: 8),
             Text('Equip outfits and accessories, or place décor in your Hearth. More items are on the way.', style: _text(14, color: _gold)),
@@ -226,6 +243,10 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       if (item.description.isNotEmpty) ...[
         const SizedBox(height: 10), Text(item.description, style: _text(14, color: _muted)),
       ],
+      if (item.milestoneLevel != null && item.owned) Padding(padding: const EdgeInsets.only(top: 8),
+        child: Text(item.unlockedAt == null ? 'Level ${item.milestoneLevel} trophy'
+          : '${item.source == 'level_milestone' ? 'Earned' : 'Added'} ${DateFormat('MMM d, yyyy').format(item.unlockedAt!.toLocal())}',
+          style: _text(13, color: _muted))),
       if (item.classLocked) Padding(padding: const EdgeInsets.only(top: 8),
         child: Text('Requires ${_label(item.archetype ?? '')} class.', style: _text(13, color: _gold))),
       const SizedBox(height: 12),
