@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
+import '../services/questwell_equipment_policy.dart';
 
 class AdventurerInventoryItem {
   const AdventurerInventoryItem({required this.id, required this.name, required this.slug,
@@ -21,11 +22,11 @@ class QuestwellAdventurerView extends StatefulWidget {
     required this.onClaim, required this.onBody, required this.onClass,
     required this.onEquip, required this.onUnequip, required this.onMarket,
     required this.onBack, this.savingAppearance = false, this.claiming = false,
-    this.busyItem, this.equipmentReady = false});
+    this.busyItem});
   final String archetype, bodyType, description, relicName;
   final int level, xp, coins, collectionOwned, collectionTotal;
   final List<AdventurerInventoryItem> items;
-  final bool mastered, canClaim, savingAppearance, claiming, equipmentReady;
+  final bool mastered, canClaim, savingAppearance, claiming;
   final String? busyItem;
   final ValueChanged<String> onBody, onClass, onEquip, onUnequip;
   final VoidCallback onClaim, onMarket, onBack;
@@ -121,9 +122,9 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           _heading('YOUR COLLECTION'),
           const SizedBox(height: 8),
           Text('${equipped.length} equipped · $owned owned', style: _text(14, color: _muted)),
-          if (!widget.equipmentReady) ...[
+          if (widget.items.any((item) => !QuestwellEquipmentPolicy.isReady(item.slug, item.category))) ...[
             const SizedBox(height: 8),
-            Text('Equipping is not available yet. Your collection is saved.', style: _text(14, color: _gold)),
+            Text('Round Scholar Glasses are ready to wear. More accessories are on the way.', style: _text(14, color: _gold)),
           ],
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 6, children: [
@@ -168,7 +169,8 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
   }
 
   Widget _item(AdventurerInventoryItem item) {
-    final busy = widget.busyItem != null;
+    final busy = widget.busyItem != null || widget.savingAppearance;
+    final ready = QuestwellEquipmentPolicy.isReady(item.slug, item.category);
     final status = item.equipped ? 'Equipped' : item.owned ? 'Owned' : 'Locked';
     return _panel(Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -190,12 +192,12 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       OutlinedButton(
         onPressed: busy ? null : item.equipped ? () => widget.onUnequip(item.id)
           : !item.owned && item.shop ? widget.onMarket
-          : item.owned && !item.classLocked && widget.equipmentReady ? () => widget.onEquip(item.id) : null,
+          : item.owned && !item.classLocked && ready ? () => widget.onEquip(item.id) : null,
         style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
               textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
         child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? 'Unequip'
           : !item.owned ? (item.shop ? 'View in Market' : 'Earn through progression')
-          : item.classLocked ? 'Class restricted' : !widget.equipmentReady ? 'Equip unavailable' : 'Equip')),
+          : item.classLocked ? 'Class restricted' : !ready ? 'Equip unavailable' : 'Equip')),
     ]));
   }
 }

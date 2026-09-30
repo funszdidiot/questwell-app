@@ -58,4 +58,47 @@ void main() {
       GoogleFonts.pressStart2p().fontFamily);
     expect(tester.takeException(), isNull);
   });
+  testWidgets('Approved glasses honor ownership, class locks, busy saves and unequip', (tester) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
+    await tester.binding.setSurfaceSize(const Size(390, 2200));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    for (final scenario in [
+      (owned: true, equipped: false, locked: false, busy: false, label: 'Equip', enabled: true),
+      (owned: false, equipped: false, locked: false, busy: false, label: 'View in Market', enabled: true),
+      (owned: true, equipped: false, locked: true, busy: false, label: 'Class restricted', enabled: false),
+      (owned: true, equipped: false, locked: false, busy: true, label: 'Saving…', enabled: false),
+      (owned: true, equipped: true, locked: true, busy: false, label: 'Unequip', enabled: true),
+    ]) {
+      await tester.pumpWidget(const SizedBox.shrink());
+      String? action;
+      await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellAdventurerView(
+        archetype: 'scholar', bodyType: 'female', level: 3, xp: 295, coins: 49,
+        description: 'Sample', mastered: false, collectionOwned: 0, collectionTotal: 1,
+        relicName: 'Relic', canClaim: false, onClaim: () {}, onBack: () {},
+        onBody: (_) {}, onClass: (_) {}, onMarket: () => action = 'market',
+        onEquip: (id) => action = 'equip:$id', onUnequip: (id) => action = 'unequip:$id',
+        busyItem: scenario.busy ? 'glasses' : null,
+        items: [AdventurerInventoryItem(id: 'glasses', name: 'Round Scholar Glasses',
+          slug: 'round-scholar-glasses', category: 'face', description: 'Brass frames',
+          owned: scenario.owned, equipped: scenario.equipped,
+          classLocked: scenario.locked, archetype: 'scholar', shop: true)],
+      ))));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Inventory · ${scenario.owned ? 1 : 0}'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('All items'));
+      await tester.pumpAndSettle();
+      final button = find.widgetWithText(OutlinedButton, scenario.label);
+      await tester.ensureVisible(button);
+      expect(tester.widget<OutlinedButton>(button).onPressed != null, scenario.enabled);
+      if (scenario.enabled) {
+        await tester.tap(button);
+        expect(action, scenario.equipped ? 'unequip:glasses' : scenario.owned ? 'equip:glasses' : 'market');
+      } else {
+        expect(action, isNull);
+      }
+      expect(tester.takeException(), isNull);
+    }
+  });
+
 }

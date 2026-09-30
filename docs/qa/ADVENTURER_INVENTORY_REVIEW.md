@@ -29,3 +29,22 @@ Pixel section headings confirmed for Adventurer, active class, Body style, Your 
 - Equipment remains gated in the real inventory pending visual acceptance.
   This fixture neither grants an item nor tests account persistence, ownership,
   class restrictions, or the equip/unequip RPCs. Those remain the next gate.
+
+## Approved glasses enabled (2026-09-30 UTC)
+
+Founder approved the glasses visual. Replaced the blanket Adventurer gate with a
+shared slug + category allowlist: only `round-scholar-glasses` in `face` can be
+newly equipped. Market and service use the same rule. Existing items can still
+be unequipped. Both pages report save failures and refresh server state.
+The catalog lists the glasses at 40 coins with no class restriction.
+
+Verified the existing RPCs using synthetic fixtures and the authenticated role
+inside a rolled-back transaction: equip/unequip, ownership rejection, class
+restriction rejection, universal glasses surviving class changes, cross-account
+read/unequip isolation, and saved state after switching test identities. Script:
+`tool/qa/equipment_rpc_check.sql`. No schema or persistent account data changed.
+This is database verification, not an actual sign-out/sign-in browser test.
+
+Widget regression scenarios cover owned/unowned glasses, class locks, busy
+saves, and removal of equipped items. The Adventurer sample preview now allows
+local Equip/Unequip. Real phone sign-out/sign-in persistence is still pending.

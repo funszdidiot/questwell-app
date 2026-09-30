@@ -1,5 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_cosmetic_service.dart';
+import '/services/questwell_equipment_policy.dart';
 import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -107,7 +108,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
     setState(() => _busyCosmeticId = cosmetic.id);
 
     try {
-      await QuestwellCosmeticService.equip(cosmetic.id);
+      await QuestwellCosmeticService.equip(cosmetic);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -115,6 +116,13 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
           behavior: SnackBarBehavior.floating,
         ),
       );
+      setState(_refresh);
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Could not save your equipment. Refresh and try again.'),
+        behavior: SnackBarBehavior.floating,
+      ));
       setState(_refresh);
     } finally {
       if (mounted) setState(() => _busyCosmeticId = null);
@@ -134,6 +142,13 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
           behavior: SnackBarBehavior.floating,
         ),
       );
+      setState(_refresh);
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Could not save your equipment. Refresh and try again.'),
+        behavior: SnackBarBehavior.floating,
+      ));
       setState(_refresh);
     } finally {
       if (mounted) setState(() => _busyCosmeticId = null);
@@ -661,21 +676,17 @@ class _MarketCard extends StatelessWidget {
           const SizedBox(height: 10),
           if (cosmetic.owned)
             OutlinedButton.icon(
-              onPressed: busy || classLocked
-                  ? null
-                  : cosmetic.equipped
-                      ? onUnequip
-                      : onEquip,
+              onPressed: busy ? null : cosmetic.equipped ? onUnequip
+                  : classLocked || !QuestwellEquipmentPolicy.isReady(cosmetic.slug, cosmetic.category)
+                      ? null : onEquip,
               icon: QuestwellNavPixelIcon(
                 kind: cosmetic.equipped ? 'quest' : 'adventurer',
                 size: 17,
               ),
               label: Text(
-                classLocked
-                    ? 'LOCKED'
-                    : cosmetic.equipped
-                        ? 'UNEQUIP'
-                        : 'EQUIP',
+                cosmetic.equipped ? 'UNEQUIP' : classLocked ? 'LOCKED'
+                    : QuestwellEquipmentPolicy.isReady(cosmetic.slug, cosmetic.category)
+                        ? 'EQUIP' : 'COMING SOON',
               ),
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(38),

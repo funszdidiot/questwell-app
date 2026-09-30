@@ -8,6 +8,7 @@ class AdventurerReviewApp extends StatefulWidget {
 }
 class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
   String _class = 'alchemist', _body = 'female';
+  bool _glassesEquipped = false;
   @override
   Widget build(BuildContext context) => MaterialApp(debugShowCheckedModeBanner: false,
     theme: ThemeData.dark(useMaterial3: true), home: Scaffold(backgroundColor: const Color(0xFF111827),
@@ -17,9 +18,10 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
           mastered: false, collectionOwned: 1, collectionTotal: 2, relicName: 'Sample mastery relic',
           canClaim: false, onClaim: () {}, onBack: () {}, onMarket: () {},
           onBody: (v) => setState(() => _body = v), onClass: (v) => setState(() => _class = v),
-          onEquip: (_) {}, onUnequip: (_) {}, items: const [
-            AdventurerInventoryItem(id: 'a', name: 'Sample travel charm', slug: 'charm', category: 'neck',
-              description: 'A little keepsake for the road.', owned: true, equipped: false, classLocked: false, shop: true),
+          onEquip: (_) => setState(() => _glassesEquipped = true),
+          onUnequip: (_) => setState(() => _glassesEquipped = false), items: [
+            AdventurerInventoryItem(id: 'a', name: 'Round Scholar Glasses', slug: 'round-scholar-glasses', category: 'face',
+              description: 'Sample ownership. Try Equip and Unequip here.', owned: true, equipped: _glassesEquipped, classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'b', name: 'Sample lantern', slug: 'lantern', category: 'room',
               description: 'A warm light for your next small win.', owned: false, equipped: false, classLocked: false, shop: true),
           ]),

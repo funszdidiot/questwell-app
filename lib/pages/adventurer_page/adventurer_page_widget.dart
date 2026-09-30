@@ -20,7 +20,6 @@ class AdventurerPageWidget extends StatefulWidget {
 }
 
 class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
-  static const bool _richEquipmentLayersReady = false;
 
   late Future<QuestwellCosmeticsSnapshot> _future;
   String? _busyCosmeticId;
@@ -41,20 +40,11 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
   }
 
   Future<void> _equip(QuestwellCosmetic cosmetic) async {
-    if (!_richEquipmentLayersReady) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Equipment visuals are being upgraded. Your item stays owned.'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-      return;
-    }
-    if (_busyCosmeticId != null) return;
+    if (_busyCosmeticId != null || _savingArchetype || _savingBodyType) return;
     setState(() => _busyCosmeticId = cosmetic.id);
 
     try {
-      await QuestwellCosmeticService.equip(cosmetic.id);
+      await QuestwellCosmeticService.equip(cosmetic);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -63,13 +53,20 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
         ),
       );
       setState(_refresh);
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Could not save your equipment. Refresh and try again.'),
+        behavior: SnackBarBehavior.floating,
+      ));
+      setState(_refresh);
     } finally {
       if (mounted) setState(() => _busyCosmeticId = null);
     }
   }
 
   Future<void> _unequip(QuestwellCosmetic cosmetic) async {
-    if (_busyCosmeticId != null) return;
+    if (_busyCosmeticId != null || _savingArchetype || _savingBodyType) return;
     setState(() => _busyCosmeticId = cosmetic.id);
 
     try {
@@ -81,6 +78,13 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
           behavior: SnackBarBehavior.floating,
         ),
       );
+      setState(_refresh);
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Could not save your equipment. Refresh and try again.'),
+        behavior: SnackBarBehavior.floating,
+      ));
       setState(_refresh);
     } finally {
       if (mounted) setState(() => _busyCosmeticId = null);
@@ -413,7 +417,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
               canClaim: collectionComplete && !masteryOwned,
               claiming: _claimingMastery, onClaim: _claimMasteryReward,
               savingAppearance: _savingBodyType || _savingArchetype,
-              equipmentReady: _richEquipmentLayersReady, busyItem: _busyCosmeticId,
+              busyItem: _busyCosmeticId,
               onBody: _chooseBodyType,
               onClass: (value) => _requestArchetypeChange(value, data),
               onEquip: (id) => _equip(data.cosmetics.firstWhere((item) => item.id == id)),
