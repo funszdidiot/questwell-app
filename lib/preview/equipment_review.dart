@@ -31,7 +31,7 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
   @override
   Widget build(BuildContext context) {
     final equipment = <String, String>{
-      if (widget.brooch && _brooch) 'accessory': QuestwellMoonstoneBrooch.previewSlug,
+      if (widget.brooch && _brooch) 'accessory': QuestwellMoonstoneBrooch.slug,
       if (widget.lantern && _lantern) 'hands': QuestwellBrassLantern.slug,
       if (widget.satchel && _satchel) 'back': QuestwellLeatherSatchel.slug,
       if (_glasses) 'face': 'round-scholar-glasses',
@@ -67,7 +67,7 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
                 title: const Text('Try on brooch'), value: _brooch,
                 onChanged: (value) => setState(() => _brooch = value)),
               Row(children: [
-                QuestwellItemPixelArt(slug: QuestwellMoonstoneBrooch.previewSlug, category: 'accessory', size: 48),
+                QuestwellItemPixelArt(slug: QuestwellMoonstoneBrooch.slug, category: 'accessory', size: 48),
                 const SizedBox(width: 12), const Text('Moonstone Brooch · inventory icon'),
               ]),
             ],

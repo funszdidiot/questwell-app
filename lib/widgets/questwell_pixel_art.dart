@@ -244,7 +244,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             if (classOverlay != null)
               ClipPath(clipper: LanternHandClipper(body), child: _assetLayer(classOverlay)),
           ],
-          if (equippedSlugs['accessory'] == QuestwellMoonstoneBrooch.previewSlug)
+          if (equippedSlugs['accessory'] == QuestwellMoonstoneBrooch.slug)
             QuestwellMoonstoneBrooch(bodyType: body),
           if (equippedSlugs['neck'] == 'emerald-scholar-scarf')
             QuestwellEmeraldScarf(bodyType: body),
@@ -3880,7 +3880,7 @@ class _ItemPainter extends CustomPainter {
       p.color = const Color(0xFFA53A32);
       canvas.drawPath(path, p);
       rect(size.width * .47, size.height * .20, size.width * .06, size.height * .50, gold);
-    } else if (slug == 'moonstone-brooch' || slug == QuestwellMoonstoneBrooch.previewSlug) {
+    } else if (slug == QuestwellMoonstoneBrooch.slug) {
       final unit = size.width / 16;
       void pixel(double x, double y, double w, double h, Color color) =>
           rect(x * unit, y * unit, w * unit, h * unit, color);

@@ -5,5 +5,6 @@ abstract final class QuestwellEquipmentPolicy {
       (slug == 'tiny-wizard-hat' && category == 'head') ||
       (slug == 'emerald-scholar-scarf' && category == 'neck') ||
       (slug == 'leather-satchel' && category == 'back') ||
-      (slug == 'brass-lantern' && category == 'hands');
+      (slug == 'brass-lantern' && category == 'hands') ||
+      (slug == 'moonstone-brooch' && category == 'accessory');
 }

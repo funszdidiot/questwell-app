@@ -14,8 +14,9 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
 
-  testWidgets('Brooch review toggles independently across every class and body', (tester) async {
-    expect(QuestwellEquipmentPolicy.isReady(QuestwellMoonstoneBrooch.previewSlug, 'accessory'), false);
+  testWidgets('Approved brooch toggles independently across every class and body', (tester) async {
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellMoonstoneBrooch.slug, 'accessory'), true);
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellMoonstoneBrooch.slug, 'neck'), false);
     for (final kind in ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer']) {
       for (final body in ['female', 'male', 'neutral']) {
         for (final enabled in [true, false]) {
@@ -23,7 +24,7 @@ void main() {
             child: QuestwellLayeredAdventurerArt(archetype: kind, avatarBodyType: body,
               equippedSlugs: {'back': QuestwellLeatherSatchel.slug,
                 'hands': QuestwellBrassLantern.slug, 'neck': 'emerald-scholar-scarf',
-                if (enabled) 'accessory': QuestwellMoonstoneBrooch.previewSlug}),
+                if (enabled) 'accessory': QuestwellMoonstoneBrooch.slug}),
           ))));
           await tester.pump();
           expect(find.byType(QuestwellMoonstoneBrooch), enabled ? findsOneWidget : findsNothing);

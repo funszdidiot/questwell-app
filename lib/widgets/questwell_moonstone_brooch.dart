@@ -1,10 +1,10 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-/// Candidate fit only; account equip remains gated until founder fit approval.
+/// Founder-approved upper-robe accessory, independent of neck and hands slots.
 class QuestwellMoonstoneBrooch extends StatelessWidget {
   const QuestwellMoonstoneBrooch({super.key, required this.bodyType});
-  static const previewSlug = 'preview-moonstone-brooch';
+  static const slug = 'moonstone-brooch';
   static const asset = 'assets/images/questwell/avatar/brooch_moonstone_illustrated_v1.png';
   final String bodyType;
 

@@ -26,7 +26,7 @@ class ScarfFitReviewApp extends StatelessWidget {
                 Text(body, style: GoogleFonts.roboto(fontSize: 14)),
                 const SizedBox(height: 6),
                 QuestwellEquippedAvatar(archetype: kind, avatarBodyType: body,
-                  height: 280, equippedSlugs: {if (brooch) 'accessory': QuestwellMoonstoneBrooch.previewSlug, if (lantern) 'hands': QuestwellBrassLantern.slug, if (satchel) 'back': QuestwellLeatherSatchel.slug, 'neck': 'emerald-scholar-scarf',
+                  height: 280, equippedSlugs: {if (brooch) 'accessory': QuestwellMoonstoneBrooch.slug, if (lantern) 'hands': QuestwellBrassLantern.slug, if (satchel) 'back': QuestwellLeatherSatchel.slug, 'neck': 'emerald-scholar-scarf',
                     'head': 'tiny-wizard-hat', 'face': 'round-scholar-glasses'}),
               ])),
             )]),

@@ -14,7 +14,9 @@ Inventory uses a 16-unit code-painted icon in the existing square treatment.
 Review routes: ?review=brooch and ?review=brooch-matrix. All five classes and
 three body styles are available, with independent accessory toggles and Hearth
 preview. Tests check all 15 combinations on/off without removing other gear.
-The preview slug is NOT equip-allowlisted; no catalog or account changes.
-Fit approval is required before inventory ownership/equip integration.
+Founder approved fit; account equipment now uses `moonstone-brooch` in the
+existing `accessory` slot. Universal, non-premium, 60 earned coins. No founder
+grant or purchase. Existing scarf, lantern, and satchel slots remain independent.
+UI tests cover equip/unequip, ownership retention, saving and class locks.
 
 Keep unmerged and unlaunched.
