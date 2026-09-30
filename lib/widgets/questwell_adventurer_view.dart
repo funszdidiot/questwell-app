@@ -171,7 +171,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
             const SizedBox(height: 6),
             Text('Try another filter, or visit the Market to explore cosmetics.', style: _text(14, color: _muted)),
           ])),
-          for (final item in visible) Padding(padding: const EdgeInsets.only(bottom: 12), child: _item(item)),
+          for (final item in visible) Padding(key: ValueKey('inventory-${item.id}'), padding: const EdgeInsets.only(bottom: 12), child: _item(item)),
           OutlinedButton(onPressed: widget.onMarket,
             style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
               textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
@@ -227,7 +227,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       const SizedBox(height: 12),
       if (room && item.owned && ready && widget.onPlace != null)
         OutlinedButton(onPressed: busy ? null : () => _place(item),
-          style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold),
+          style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold, textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
           child: Text(item.equipped ? 'Move in Hearth' : 'Place in Hearth')),
       if (!(room && item.owned && !item.equipped && ready && widget.onPlace != null))
       OutlinedButton(
