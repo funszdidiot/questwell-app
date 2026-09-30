@@ -32,9 +32,9 @@ void main() {
       expect(tester.widget<Text>(find.text(heading)).style?.fontFamily,
         GoogleFonts.pressStart2p().fontFamily, reason: '$heading must use the approved pixel heading font');
     }
-    expect(tester.widget<Text>(find.text('5 XP to level 4')).style?.fontFamily,
+    expect(tester.widget<Text>(find.text('35 XP to level 4')).style?.fontFamily,
       GoogleFonts.roboto().fontFamily);
-    expect(find.text('5 XP to level 4'), findsOneWidget);
+    expect(find.text('35 XP to level 4'), findsOneWidget);
     expect(find.text('1 worn · 2 room items'), findsOneWidget);
     expect(find.text('Fern Study · Walnut Bookshelf'), findsNothing);
     await tester.tap(find.text('View all'));

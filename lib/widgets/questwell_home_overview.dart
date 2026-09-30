@@ -1,3 +1,4 @@
+import '../services/questwell_progression.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
@@ -53,6 +54,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
     required this.collection, required this.onCustomize, required this.onMarket});
   final String archetype, className;
   final int level, xp, coins;
+  int get xpRequired => QuestwellProgression.xpToNextLevel(level);
   final bool mastered;
   final List<String> equippedNames, decorNames;
   final List<HomeCollectionItem> collection;
@@ -71,17 +73,17 @@ class QuestwellHomeCharacter extends StatelessWidget {
       ]),
       const SizedBox(height: 14),
       Wrap(spacing: 16, runSpacing: 6, children: [
-        Text('$xp / 100 XP', style: _body(14, bold: true)),
+        Text('$xp / $xpRequired XP', style: _body(14, bold: true)),
         Row(mainAxisSize: MainAxisSize.min, children: [
           const QuestwellCurrencyPixelIcon(kind: 'coin', size: 16),
           const SizedBox(width: 6), Text('$coins coins', style: _body(14, color: _gold, bold: true)),
         ]),
       ]),
       const SizedBox(height: 8),
-      Semantics(label: 'Level progress', value: '$xp out of 100 XP',
-        child: QuestwellPixelMeter(value: xp / 100, kind: 'xp', height: 16, segments: 12)),
+      Semantics(label: 'Level progress', value: '$xp out of $xpRequired XP',
+        child: QuestwellPixelMeter(value: xp / xpRequired, kind: 'xp', height: 16, segments: 12)),
       const SizedBox(height: 6),
-      Text('${100 - xp} XP to level ${level + 1}', style: _body(12, color: _muted)),
+      Text('${(xpRequired - xp).clamp(0, xpRequired)} XP to level ${level + 1}', style: _body(12, color: _muted)),
       const SizedBox(height: 16),
       Text('LOADOUT', style: QuestwellTypography.sectionHeading(size: 9)),
       const SizedBox(height: 5),

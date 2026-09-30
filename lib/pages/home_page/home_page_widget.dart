@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import '/services/questwell_task_service.dart';
+import '/services/questwell_progression.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_pixel_art.dart';
@@ -210,13 +211,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     setState(() => _completingTask = true);
 
     try {
+      final profile = (await _homeSnapshotFuture).profile;
       final reward = await QuestwellTaskService.completeTask(taskId);
 
       if (!mounted) return;
 
       final previousXp = reward.totalXp - reward.xpAwarded;
-      final previousLevel = (previousXp ~/ 100) + 1;
-      final newLevel = (reward.totalXp ~/ 100) + 1;
+      final previousLevel = QuestwellProgression.levelForXp(previousXp, legacyOffset: profile.levelXpOffset);
+      final newLevel = QuestwellProgression.levelForXp(reward.totalXp, legacyOffset: profile.levelXpOffset);
       final leveledUp = newLevel > previousLevel;
       final firstWin = previousXp == 0 && reward.xpAwarded > 0;
 
@@ -476,7 +478,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           item.unlockMethod == 'class_mastery' &&
                           item.owned,
                     );
-                    final xpIntoLevel = profile.totalXp % 100;
+                    final xpIntoLevel = profile.xpIntoLevel;
 
                     return QuestwellHomeCharacter(
                       archetype: profile.adventurerArchetype,

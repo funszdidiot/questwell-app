@@ -1,10 +1,12 @@
 import '/backend/supabase/supabase.dart';
 import 'questwell_equipment_policy.dart';
+import 'questwell_progression.dart';
 
 class QuestwellProfile {
   const QuestwellProfile({
     required this.level,
     required this.totalXp,
+    this.levelXpOffset = 0,
     required this.coinBalance,
     required this.currentEnergyMode,
     required this.onboardingCompleted,
@@ -14,6 +16,8 @@ class QuestwellProfile {
 
   final int level;
   final int totalXp;
+  final int levelXpOffset;
+  int get xpIntoLevel => QuestwellProgression.xpIntoLevel(totalXp, legacyOffset: levelXpOffset);
   final int coinBalance;
   final String currentEnergyMode;
   final bool onboardingCompleted;
@@ -26,6 +30,7 @@ class QuestwellProfile {
     return QuestwellProfile(
       level: (json['level'] as num?)?.toInt() ?? 1,
       totalXp: (json['total_xp'] as num?)?.toInt() ?? 0,
+      levelXpOffset: (json['level_xp_offset'] as num?)?.toInt() ?? 0,
       coinBalance: (json['coin_balance'] as num?)?.toInt() ?? 0,
       currentEnergyMode:
           json['current_energy_mode']?.toString() ?? 'normal',
@@ -141,7 +146,7 @@ class QuestwellCosmeticService {
     final responses = await Future.wait([
       SupaFlow.client
           .from('users')
-          .select('level,total_xp,coin_balance,current_energy_mode,onboarding_completed,adventurer_archetype,avatar_body_type')
+          .select('level,total_xp,level_xp_offset,coin_balance,current_energy_mode,onboarding_completed,adventurer_archetype,avatar_body_type')
           .eq('id', uid)
           .single(),
       SupaFlow.client
