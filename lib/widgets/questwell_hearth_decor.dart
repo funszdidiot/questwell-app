@@ -42,7 +42,7 @@ class QuestwellHearthDecor {
       // Fit the complete frame into the real wall space above the bookcase.
       height = math.min(height, shelf.top! - scene.height * .055);
       top = shelf.top! - height - scene.height * .015;
-      center = shelf.left! + shelf.width! / 2;
+      center = shelf.left! + shelf.width! * (slot == 'left' ? .44 : .56);
     }
     return Positioned(key: ValueKey('hearth-$side-art-bounds'),
       top: top, left: center - height * .58 / 2, width: height * .58, height: height,
