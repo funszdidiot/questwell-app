@@ -1,5 +1,7 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_boss_service.dart';
+import '/services/questwell_progression.dart';
+import '/services/questwell_milestone_service.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/widgets/questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
@@ -133,11 +135,21 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
     setState(() => _busyStepId = step.id);
 
     try {
+      final profile = (await QuestwellCosmeticService.load()).profile;
       final result = await QuestwellBossService.completeStep(step.id);
       if (!mounted) return;
       setState(_refresh);
 
       if (result.bossCompleted) {
+        final previousLevel = QuestwellProgression.levelForXp(result.totalXp - result.xpAwarded,
+          legacyOffset: profile.levelXpOffset);
+        final newLevel = QuestwellProgression.levelForXp(result.totalXp, legacyOffset: profile.levelXpOffset);
+        if (previousLevel < 5 && newLevel >= 5) {
+          await showFirstJourneyMilestone(context, level: newLevel,
+            xpAwarded: result.xpAwarded, coinsAwarded: result.coinsAwarded);
+          if (mounted) setState(_refresh);
+          return;
+        }
         await showDialog<void>(
           context: context,
           builder: (dialogContext) {

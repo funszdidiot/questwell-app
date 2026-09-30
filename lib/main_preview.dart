@@ -12,7 +12,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'hearth-polish') {
+  if (Uri.base.queryParameters['review'] == 'first-journey') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const HearthPolishReviewApp(firstJourney: true));
+  } else if (Uri.base.queryParameters['review'] == 'hearth-polish') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const HearthPolishReviewApp());
   } else if (Uri.base.queryParameters['review'] == 'hearth-decor') {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_hearth_decor.dart';
 import 'questwell_wall_art.dart';
+import 'questwell_first_journey.dart';
 
 class RoomOccupant {
   const RoomOccupant(this.id, this.name);
@@ -33,7 +34,10 @@ class _RoomPicker extends StatefulWidget {
   State<_RoomPicker> createState() => _RoomPickerState();
 }
 class _RoomPickerState extends State<_RoomPicker> {
-  late final labels = QuestwellHearthDecor.choices(widget.slug);
+  late final labels = Map<String, String>.from(QuestwellHearthDecor.choices(widget.slug))
+    ..removeWhere((slot, _) => slot == 'bookshelf_top' &&
+      widget.equippedSlugs['room:left'] != 'walnut-bookshelf' &&
+      widget.equippedSlugs['room:right'] != 'walnut-bookshelf');
   late String _slot = labels.containsKey(widget.currentSlot)
     ? widget.currentSlot!
     : widget.currentSlot == null && labels.containsKey('right')
@@ -69,6 +73,8 @@ class _RoomPickerState extends State<_RoomPicker> {
             Text('${wallArt ? 'Hang' : 'Place'} ${widget.name}', style: const TextStyle(fontSize: 21, color: Color(0xFFF0E5CC))),
             const SizedBox(height: 8),
             const Text('Choose a spot below. Preview first, then save.'),
+            if (widget.slug == QuestwellFirstJourney.slug) const Padding(padding: EdgeInsets.only(top: 8),
+              child: Text('The mantel is always available. Place a bookcase in the Hearth to use its top; the trophy follows it when moved.')),
             if (blockedByShelf) const Padding(padding: EdgeInsets.only(top: 8),
               child: Text('The wall art keeps its balanced arrangement. Preview how it sits above the bookshelf.')),
             if (_legacyPlacement) const Padding(

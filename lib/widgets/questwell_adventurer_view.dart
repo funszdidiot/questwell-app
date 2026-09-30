@@ -241,7 +241,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
               textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
         child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? (room || wallArt ? 'Remove from Hearth' : 'Unequip')
-          : !item.owned ? (item.shop ? 'View in Market' : 'Earn through progression')
+          : !item.owned ? (item.shop ? 'View in Market' : item.slug == 'first-journey-trophy' ? 'Unlocks at level 5' : 'Earn through progression')
           : item.classLocked ? 'Class restricted' : !ready ? (room ? 'Coming soon' : 'Equip unavailable') : (room ? 'Place in Hearth' : wallArt ? 'Hang in Hearth' : 'Equip'))),
     ]));
   }

@@ -6,10 +6,12 @@ import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
 import 'questwell_wall_art.dart';
 import 'questwell_contact_shadow.dart';
+import 'questwell_first_journey.dart';
 
 /// Authored furniture proportions and floor anchors shared by every Hearth view.
 class QuestwellHearthDecor {
   static Map<String, String> choices(String slug) => switch (slug) {
+    QuestwellFirstJourney.slug => const {'bookshelf_top': 'On the bookcase', 'mantel': 'Fireplace mantel'},
     QuestwellWallArt.fern || QuestwellWallArt.celestial => const {'wall_left': 'Left wall', 'wall_right': 'Right wall'},
     QuestwellReadingTable.slug => const {'side': 'Beside the chair'},
     QuestwellBookshelf.slug => const {'left': 'Left wall', 'right': 'Right wall'},
@@ -55,7 +57,7 @@ class QuestwellHearthDecor {
       child: QuestwellWallArt(artSlug: slug));
   }
 
-  static Positioned positioned({
+  static Rect bounds({
     required String slug, required String slot, required Size scene,
     Map<String, String> equipment = const {},
   }) {
@@ -84,13 +86,43 @@ class QuestwellHearthDecor {
     // The back wall meets the floor around .67; the avatar's boots are at .88.
     // Furniture rests between those planes and is painted behind the avatar.
     final floor = scene.height * floorDepth(slug, slot);
+    return Rect.fromLTWH(center - width / 2, floor - height, width, height);
+  }
+
+  static Positioned trophyPositioned({required String slot, required Size scene,
+    required Map<String, String> equipment}) {
+    final shelfSlot = equipment['room:right'] == QuestwellBookshelf.slug ? 'right' : 'left';
+    final shelf = bounds(slug: QuestwellBookshelf.slug, slot: shelfSlot, scene: scene, equipment: equipment);
+    final height = math.min(scene.height * .105, scene.width * .10);
+    final width = height * 1312 / 1199;
+    final onShelf = slot == 'bookshelf_top';
+    final center = onShelf ? shelf.left + shelf.width * (shelfSlot == 'right' ? .78 : .23) : scene.width * .075;
+    final surface = onShelf ? shelf.top + shelf.height * .12 : scene.height * .365;
+    return Positioned(key: const ValueKey('hearth-trophy-bounds'),
+      left: center - width * .52, top: surface - height * .94,
+      width: width, height: height,
+      child: Stack(fit: StackFit.expand, children: [
+        Positioned(left: width * .20, right: width * .10, top: height * .90, height: height * .06,
+          child: DecoratedBox(decoration: BoxDecoration(borderRadius: BorderRadius.circular(100),
+            gradient: const RadialGradient(radius: .6, colors: [Color(0x550E0906),Color(0x000E0906)])))),
+        const QuestwellFirstJourney(),
+      ]));
+  }
+
+  static Positioned positioned({required String slug, required String slot, required Size scene,
+    Map<String, String> equipment = const {}}) {
+    final shelf = slug == QuestwellBookshelf.slug;
+    final fern = slug == QuestwellFern.slug;
+    final table = slug == QuestwellReadingTable.slug;
+    final chair = slug == QuestwellReadingChair.slug;
+    final rect = bounds(slug: slug, slot: slot, scene: scene, equipment: equipment);
     final art = shelf ? const QuestwellBookshelf()
       : fern ? const QuestwellFern() : table ? const QuestwellReadingTable() : const QuestwellReadingChair();
     return Positioned(
       key: ValueKey(shelf ? 'hearth-bookshelf-bounds'
         : fern ? 'hearth-fern-bounds' : table ? 'hearth-table-bounds' : 'hearth-chair-bounds'),
-      left: center - width / 2, top: floor - height,
-      width: width, height: height,
+      left: rect.left, top: rect.top,
+      width: rect.width, height: rect.height,
       child: Transform.flip(
         key: ValueKey('hearth-$slug-facing'),
         flipX: chair && slot != 'right',

@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import '/services/questwell_task_service.dart';
 import '/services/questwell_progression.dart';
+import '/services/questwell_milestone_service.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_pixel_art.dart';
@@ -223,6 +224,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       final firstWin = previousXp == 0 && reward.xpAwarded > 0;
 
       setState(_loadHomeData);
+
+      if (previousLevel < 5 && newLevel >= 5) {
+        await showFirstJourneyMilestone(context, level: newLevel,
+          xpAwarded: reward.xpAwarded, coinsAwarded: reward.coinsAwarded);
+        if (mounted) setState(_loadHomeData);
+        return;
+      }
 
       final nextAction = await showDialog<String>(
         context: context,
