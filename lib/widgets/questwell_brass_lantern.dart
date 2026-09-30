@@ -9,9 +9,11 @@ class QuestwellBrassLantern extends StatelessWidget {
   final String bodyType;
 
   static Rect bounds(String bodyType) => switch (bodyType) {
-    'female' => const Rect.fromLTWH(143, 179, 40, 60),
-    'male' => const Rect.fromLTWH(149, 186, 40, 60),
-    _ => const Rect.fromLTWH(146, 184, 40, 60),
+    // Center the loop beneath the fingers, not the wrist. Only its crown
+    // passes behind the hand; the remaining loop stays visible below it.
+    'female' => const Rect.fromLTWH(143, 185, 40, 60),
+    'male' => const Rect.fromLTWH(145, 191, 40, 60),
+    _ => const Rect.fromLTWH(144, 190, 40, 60),
   };
 
   @override

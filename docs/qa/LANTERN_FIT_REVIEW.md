@@ -21,3 +21,8 @@ Tests exercise all five classes and three bodies with lantern on/off while
 preserving the satchel, and verify the real equipment policy rejects it.
 
 Development preview only. Keep unmerged and unlaunched.
+
+Handle revision: founder flagged the initial grip. Lowered the loop crown
+to the fingers (female +6, male +5, neutral +6 canvas pixels) and centered
+the male/neutral loop under the hand (-4/-2 horizontal pixels). Artwork,
+scale, and original hand occlusion remain unchanged. Recheck all body styles.
