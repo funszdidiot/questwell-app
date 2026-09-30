@@ -937,9 +937,9 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       key: ValueKey(slug == QuestwellBookshelf.slug ? 'hearth-bookshelf-bounds' : slug == QuestwellFern.slug ? 'hearth-fern-bounds' : 'hearth-chair-bounds'),
                       left: slot == 'right' ? null : sceneWidth * .015,
                       right: slot == 'right' ? sceneWidth * .015 : null,
-                      bottom: sceneHeight * (slot == 'front' ? .07 : .30),
-                      width: math.min(sceneWidth * (slot == 'front' ? .28 : .38), 190),
-                      height: math.min(sceneWidth * (slot == 'front' ? .30 : .40), 202),
+                      bottom: sceneHeight * (slot == 'front' ? (slug == QuestwellReadingChair.slug ? .12 : .07) : .30),
+                      width: math.min(sceneWidth * (slot == 'front' ? (slug == QuestwellReadingChair.slug ? .36 : .28) : .38), 190),
+                      height: math.min(sceneWidth * (slot == 'front' && slug != QuestwellReadingChair.slug ? .30 : .40), 202),
                       child: slug == QuestwellBookshelf.slug ? const QuestwellBookshelf()
                         : slug == QuestwellFern.slug ? const QuestwellFern() : const QuestwellReadingChair(),
                     ),
