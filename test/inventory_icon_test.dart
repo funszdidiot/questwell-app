@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:project_momentum/widgets/questwell_pixel_art.dart';
 
-void main() {
+void inventoryIconTests() {
   testWidgets('Inventory icons share a square painted treatment, never avatar assets', (tester) async {
     for (final slug in ['tiny-wizard-hat', 'emerald-scholar-scarf',
       'round-scholar-glasses', 'leather-satchel', 'wayfarer-satchel', 'lantern']) {
@@ -19,3 +19,5 @@ void main() {
     }
   });
 }
+
+void main() => inventoryIconTests();

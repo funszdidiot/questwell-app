@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_adventurer_view.dart';
+import 'inventory_icon_test.dart' show inventoryIconTests;
 
 void main() {
+  inventoryIconTests();
   testWidgets('Appearance, ownership filters and equipment gate work at large text', (tester) async {
     GoogleFonts.config.allowRuntimeFetching = false;
     await tester.binding.setSurfaceSize(const Size(320, 2200));
