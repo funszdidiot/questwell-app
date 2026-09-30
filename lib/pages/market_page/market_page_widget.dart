@@ -127,7 +127,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(cosmetic.category == 'room' ? '${cosmetic.name} placed in your Hearth.' : '${cosmetic.name} equipped.'),
+          content: Text(cosmetic.category == 'room' ? '${cosmetic.name} placed in your Hearth.' : cosmetic.category == 'wall_art' ? '${cosmetic.name} hung in your Hearth.' : '${cosmetic.name} equipped.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -153,7 +153,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(cosmetic.category == 'room' ? '${cosmetic.name} removed from your Hearth.' : '${cosmetic.name} unequipped.'),
+          content: Text((cosmetic.category == 'room' || cosmetic.category == 'wall_art') ? '${cosmetic.name} removed from your Hearth.' : '${cosmetic.name} unequipped.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -637,7 +637,7 @@ class _MarketCard extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            cosmetic.category.toUpperCase(),
+            cosmetic.category.replaceAll('_', ' ').toUpperCase(),
             style: theme.labelSmall.override(
               font: GoogleFonts.roboto(fontWeight: FontWeight.w800),
               color: const Color(0xFF9EACBE),
@@ -699,9 +699,9 @@ class _MarketCard extends StatelessWidget {
                 size: 17,
               ),
               label: Text(
-                cosmetic.equipped ? (cosmetic.category == 'room' ? 'REMOVE' : 'UNEQUIP') : classLocked ? 'LOCKED'
+                cosmetic.equipped ? ((cosmetic.category == 'room' || cosmetic.category == 'wall_art') ? 'REMOVE' : 'UNEQUIP') : classLocked ? 'LOCKED'
                     : QuestwellEquipmentPolicy.isReady(cosmetic.slug, cosmetic.category)
-                        ? (cosmetic.category == 'room' ? 'PLACE IN HEARTH' : 'EQUIP') : 'COMING SOON',
+                        ? (cosmetic.category == 'room' ? 'PLACE IN HEARTH' : cosmetic.category == 'wall_art' ? 'HANG IN HEARTH' : 'EQUIP') : 'COMING SOON',
               ),
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(38),

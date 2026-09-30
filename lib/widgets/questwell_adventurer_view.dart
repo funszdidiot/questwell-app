@@ -79,7 +79,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           QuestwellEquippedAvatar(archetype: widget.archetype, avatarBodyType: widget.bodyType,
             height: 250, artHeightFactor: .96, showRelic: widget.mastered,
             equippedSlugs: {for (final item in equipped) item.renderKey: item.slug}),
-          if (_inventory && category == 'room' && widget.items.any((item) => item.category == 'room' && item.owned)) ...[
+          if (_inventory && (category == 'room' || category == 'wall_art') && widget.items.any((item) => item.category == category && item.owned)) ...[
             const SizedBox(height: 16),
             _heading('YOUR HEARTH'),
             const SizedBox(height: 8),
@@ -207,7 +207,8 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
     final busy = widget.busyItem != null || widget.savingAppearance;
     final ready = QuestwellEquipmentPolicy.isReady(item.slug, item.category);
     final room = item.category == 'room';
-    final status = item.equipped ? (room ? 'Placed' : 'Equipped') : item.owned ? 'Owned' : 'Locked';
+    final wallArt = item.category == 'wall_art';
+    final status = item.equipped ? (room ? 'Placed' : wallArt ? 'Hung' : 'Equipped') : item.owned ? 'Owned' : 'Locked';
     return _panel(Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         QuestwellItemPixelArt(slug: item.slug, category: item.category, archetype: item.archetype, size: 48),
@@ -236,9 +237,9 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           : item.owned && !item.classLocked && ready ? () => widget.onEquip(item.id) : null,
         style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
               textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
-        child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? (room ? 'Remove from Hearth' : 'Unequip')
+        child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? (room || wallArt ? 'Remove from Hearth' : 'Unequip')
           : !item.owned ? (item.shop ? 'View in Market' : 'Earn through progression')
-          : item.classLocked ? 'Class restricted' : !ready ? (room ? 'Coming soon' : 'Equip unavailable') : (room ? 'Place in Hearth' : 'Equip'))),
+          : item.classLocked ? 'Class restricted' : !ready ? (room ? 'Coming soon' : 'Equip unavailable') : (room ? 'Place in Hearth' : wallArt ? 'Hang in Hearth' : 'Equip'))),
     ]));
   }
 }

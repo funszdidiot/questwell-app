@@ -10,5 +10,6 @@ abstract final class QuestwellEquipmentPolicy {
       (slug == 'walnut-bookshelf' && category == 'room') ||
       (slug == 'hearth-fern' && category == 'room') ||
       (slug == 'burgundy-reading-chair' && category == 'room') ||
-      (slug == 'walnut-reading-table' && category == 'room');
+      (slug == 'walnut-reading-table' && category == 'room') ||
+      (slug == 'moonlit-woodland' && category == 'wall_art');
 }

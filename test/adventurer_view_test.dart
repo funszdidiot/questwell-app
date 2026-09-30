@@ -9,11 +9,13 @@ import 'package:project_momentum/flutter_flow/nav/nav.dart' show NavigationExten
 import '../lib/preview/adventurer_review.dart';
 import '../lib/widgets/questwell_brass_lantern.dart';
 import '../lib/widgets/questwell_bookshelf.dart';
+import '../lib/widgets/questwell_wall_art.dart';
 import '../lib/widgets/questwell_moonstone_brooch.dart';
 
 void main() {
   inventoryIconTests();
   for (final gear in [
+    (name: 'Moonlit Woodland', category: 'Wall art', type: QuestwellWallArt),
     (name: 'Brass Lantern', category: 'Hands', type: QuestwellBrassLantern),
     (name: 'Moonstone Brooch', category: 'Accessory', type: QuestwellMoonstoneBrooch),
     (name: 'Walnut Bookshelf', category: 'Hearth décor', type: QuestwellBookshelf),
@@ -24,7 +26,7 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(const AdventurerReviewApp());
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Inventory · 11'));
+    await tester.tap(find.text('Inventory · 12'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('All categories'));
     await tester.pumpAndSettle();
@@ -32,20 +34,20 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text(gear.name), findsOneWidget);
     expect(find.byType(gear.type), findsNothing);
-    await tester.ensureVisible(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Place in Hearth' : 'Equip').first);
-    await tester.tap(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Place in Hearth' : 'Equip').first);
+    await tester.ensureVisible(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Place in Hearth' : gear.type == QuestwellWallArt ? 'Hang in Hearth' : 'Equip').first);
+    await tester.tap(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Place in Hearth' : gear.type == QuestwellWallArt ? 'Hang in Hearth' : 'Equip').first);
     await tester.pumpAndSettle();
     if (gear.type == QuestwellBookshelf) {
       await tester.tap(find.text('Save placement'));
       await tester.pumpAndSettle();
     }
     expect(find.byType(gear.type), findsOneWidget);
-    expect(find.text('${gear.type == QuestwellBookshelf ? 'Placed' : 'Equipped'} · ${gear.category}'), findsOneWidget);
-    await tester.tap(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Remove from Hearth' : 'Unequip'));
+    expect(find.text('${gear.type == QuestwellBookshelf ? 'Placed' : gear.type == QuestwellWallArt ? 'Hung' : 'Equipped'} · ${gear.category}'), findsOneWidget);
+    await tester.tap(find.widgetWithText(OutlinedButton, (gear.type == QuestwellBookshelf || gear.type == QuestwellWallArt) ? 'Remove from Hearth' : 'Unequip'));
     await tester.pumpAndSettle();
     expect(find.byType(gear.type), findsNothing);
     expect(find.text('Owned · ${gear.category}'), gear.type == QuestwellBookshelf ? findsNWidgets(4) : findsOneWidget);
-    expect(find.text('Inventory · 11'), findsOneWidget);
+    expect(find.text('Inventory · 12'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
   }

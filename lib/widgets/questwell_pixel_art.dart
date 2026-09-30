@@ -16,6 +16,7 @@ import 'questwell_bookshelf.dart';
 import 'questwell_fern.dart';
 import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
+import 'questwell_wall_art.dart';
 import 'questwell_hearth_decor.dart';
 
 class QuestwellPixelPalette {
@@ -932,6 +933,15 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   ),
                 ),
               ),
+              if (equippedSlugs['wall_art'] == QuestwellWallArt.slug)
+                Positioned(
+                  key: const ValueKey('hearth-wall-art-bounds'),
+                  top: sceneHeight * .01,
+                  left: (sceneWidth - math.min(sceneHeight * .17 * 1.4, sceneWidth * .24)) / 2,
+                  width: math.min(sceneHeight * .17 * 1.4, sceneWidth * .24),
+                  height: math.min(sceneHeight * .17, sceneWidth * .24 / 1.4),
+                  child: const QuestwellWallArt(),
+                ),
               for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
                   if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
@@ -3892,6 +3902,14 @@ class _ItemPainter extends CustomPainter {
       p.color = const Color(0xFFA53A32);
       canvas.drawPath(path, p);
       rect(size.width * .47, size.height * .20, size.width * .06, size.height * .50, gold);
+    } else if (slug == QuestwellWallArt.slug) {
+      final u = size.width / 16;
+      void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);
+      px(1,2,14,12,const Color(0xFF70432D));
+      px(2,3,12,10,gold); px(3,4,10,8,const Color(0xFF233F62));
+      px(9,5,2,2,paper);
+      px(4,7,2,5,const Color(0xFF244C43)); px(3,9,4,3,const Color(0xFF244C43));
+      px(8,9,4,3,const Color(0xFF70432D)); px(9,8,2,1,gold); px(9,10,1,1,gold);
     } else if (slug == QuestwellReadingTable.slug) {
       final u = size.width / 16;
       void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);
