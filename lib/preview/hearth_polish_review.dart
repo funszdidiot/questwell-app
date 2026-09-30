@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import '../widgets/questwell_pixel_art.dart';
 import '../widgets/questwell_first_journey.dart';
+import '../widgets/questwell_starlit_orrery.dart';
+import '../widgets/questwell_milestone_reward.dart';
 import '../widgets/questwell_home_overview.dart';
 
 /// Account-free fixture matching the founder's fully decorated Guardian Hearth.
 class HearthPolishReviewApp extends StatefulWidget {
-  const HearthPolishReviewApp({super.key, this.firstJourney = false});
-  final bool firstJourney;
+  const HearthPolishReviewApp({super.key, this.firstJourney = false, this.orrery = false});
+  final bool firstJourney, orrery;
   @override
   State<HearthPolishReviewApp> createState() => _HearthPolishReviewAppState();
 }
@@ -21,14 +23,15 @@ class _HearthPolishReviewAppState extends State<HearthPolishReviewApp> {
     theme: ThemeData.dark(), home: Scaffold(backgroundColor: const Color(0xFF111827),
       body: SingleChildScrollView(child: Column(children: [
         const SizedBox(height: 16),
-        Text(widget.firstJourney ? 'Level 5 milestone · sample profile' : 'Hearth polish · sample profile', style: const TextStyle(fontSize: 20)),
+        Text(widget.firstJourney ? 'Level ${widget.orrery ? 10 : 5} milestone · sample profile' : 'Hearth polish · sample profile', style: const TextStyle(fontSize: 20)),
         if (widget.firstJourney) Builder(builder: (ctx) => Wrap(spacing: 16, children: [
           TextButton(onPressed: () => setState(() => onMantel = !onMantel),
             child: Text(onMantel ? 'Trophy: mantel' : 'Trophy: bookcase')),
           TextButton(onPressed: () async {
-            await showDialog<bool>(context: ctx, builder: (_) => const FirstJourneyUnlockDialog(
-              level: 5, xpAwarded: 20, coinsAwarded: 10));
-          }, child: const Text('Preview level 5 reward')),
+            await showDialog<bool>(context: ctx, builder: (_) => QuestwellMilestoneUnlockDialog(
+              rewards: [QuestwellMilestoneReward.all[widget.orrery ? 1 : 0]],
+              level: widget.orrery ? 10 : 5, xpAwarded: 20, coinsAwarded: 10));
+          }, child: Text('Preview level ${widget.orrery ? 10 : 5} reward')),
         ])),
         Wrap(spacing: 20, crossAxisAlignment: WrapCrossAlignment.center, children: [
           DropdownButton<double>(value: width, items: [320.0,390.0].map((w) => DropdownMenuItem(value: w, child: Text('${w.toInt()} px'))).toList(),
@@ -47,7 +50,7 @@ class _HearthPolishReviewAppState extends State<HearthPolishReviewApp> {
                 'room:${shelfRight ? 'right' : 'left'}': 'walnut-bookshelf',
                 'room:${shelfRight ? 'front' : 'right'}': 'burgundy-reading-chair',
                 'room:${shelfRight ? 'left' : 'front'}': 'hearth-fern',
-                if (widget.firstJourney) 'room:${onMantel ? 'mantel' : 'bookshelf_top'}': QuestwellFirstJourney.slug,
+                if (widget.firstJourney) 'room:${onMantel ? 'mantel' : 'bookshelf_top'}': widget.orrery ? QuestwellStarlitOrrery.slug : QuestwellFirstJourney.slug,
                 'room:side': 'walnut-reading-table', 'wall_art': 'moonlit-woodland',
                 'wall_art:wall_left': 'fern-study', 'wall_art:wall_right': 'celestial-study',
                 'neck': 'emerald-scholar-scarf', 'back': 'leather-satchel',
@@ -55,9 +58,9 @@ class _HearthPolishReviewAppState extends State<HearthPolishReviewApp> {
               }),
           ])),
           SizedBox(width: width, child: QuestwellHomeCharacter(archetype: 'guardian', className: 'Guardian',
-            level: widget.firstJourney ? 5 : 4, xp: widget.firstJourney ? 0 : 55, coins: 79, mastered: false,
+            level: widget.orrery ? 10 : widget.firstJourney ? 5 : 4, xp: widget.firstJourney ? 0 : 55, coins: 79, mastered: false,
             equippedNames: const ['Brass Lantern', 'Moonstone Brooch', 'Emerald Scholar Scarf', 'Leather Satchel'],
-            decorNames: [if (widget.firstJourney) 'First Journey', 'Walnut Reading Table', 'Moonlit Woodland', 'Hearth Fern', 'Burgundy Reading Chair', 'Fern Study', 'Celestial Study', 'Walnut Bookshelf'],
+            decorNames: [if (widget.firstJourney) widget.orrery ? 'Starlit Orrery' : 'First Journey', 'Walnut Reading Table', 'Moonlit Woodland', 'Hearth Fern', 'Burgundy Reading Chair', 'Fern Study', 'Celestial Study', 'Walnut Bookshelf'],
             collection: const [], onCustomize: () {}, onMarket: () {})),
         ]),
         const SizedBox(height: 20),

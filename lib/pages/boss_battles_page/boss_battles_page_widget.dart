@@ -144,12 +144,12 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
         final previousLevel = QuestwellProgression.levelForXp(result.totalXp - result.xpAwarded,
           legacyOffset: profile.levelXpOffset);
         final newLevel = QuestwellProgression.levelForXp(result.totalXp, legacyOffset: profile.levelXpOffset);
-        if (previousLevel < 5 && newLevel >= 5) {
-          await showFirstJourneyMilestone(context, level: newLevel,
-            xpAwarded: result.xpAwarded, coinsAwarded: result.coinsAwarded);
+        if (await showQuestwellMilestones(context, previousLevel: previousLevel, level: newLevel,
+            xpAwarded: result.xpAwarded, coinsAwarded: result.coinsAwarded)) {
           if (mounted) setState(_refresh);
           return;
         }
+        if (!mounted) return;
         await showDialog<void>(
           context: context,
           builder: (dialogContext) {

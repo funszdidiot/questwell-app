@@ -7,11 +7,12 @@ import 'questwell_reading_table.dart';
 import 'questwell_wall_art.dart';
 import 'questwell_contact_shadow.dart';
 import 'questwell_first_journey.dart';
+import 'questwell_starlit_orrery.dart';
 
 /// Authored furniture proportions and floor anchors shared by every Hearth view.
 class QuestwellHearthDecor {
   static Map<String, String> choices(String slug) => switch (slug) {
-    QuestwellFirstJourney.slug => const {'bookshelf_top': 'On the bookcase', 'mantel': 'Fireplace mantel'},
+    QuestwellFirstJourney.slug || QuestwellStarlitOrrery.slug => const {'bookshelf_top': 'On the bookcase', 'mantel': 'Fireplace mantel'},
     QuestwellWallArt.fern || QuestwellWallArt.celestial => const {'wall_left': 'Left wall', 'wall_right': 'Right wall'},
     QuestwellReadingTable.slug => const {'side': 'Beside the chair'},
     QuestwellBookshelf.slug => const {'left': 'Left wall', 'right': 'Right wall'},
@@ -89,11 +90,12 @@ class QuestwellHearthDecor {
     return Rect.fromLTWH(center - width / 2, floor - height, width, height);
   }
 
-  static Positioned trophyPositioned({required String slot, required Size scene,
+  static Positioned trophyPositioned({String slug = QuestwellFirstJourney.slug, required String slot, required Size scene,
     required Map<String, String> equipment}) {
     final shelfSlot = equipment['room:right'] == QuestwellBookshelf.slug ? 'right' : 'left';
     final shelf = bounds(slug: QuestwellBookshelf.slug, slot: shelfSlot, scene: scene, equipment: equipment);
-    final height = math.min(scene.height * .105, scene.width * .10);
+    final orrery = slug == QuestwellStarlitOrrery.slug;
+    final height = math.min(scene.height * (orrery ? .13 : .105), scene.width * (orrery ? .12 : .10));
     final width = height * 1312 / 1199;
     final onShelf = slot == 'bookshelf_top';
     // The mantel belongs to the square room texture. Follow its BoxFit.cover
@@ -103,14 +105,14 @@ class QuestwellHearthDecor {
       : roomSide * .075 + (scene.width - roomSide) / 2;
     final surface = onShelf ? shelf.top + shelf.height * .12
       : roomSide * .338 + (scene.height - roomSide) * .52;
-    return Positioned(key: const ValueKey('hearth-trophy-bounds'),
-      left: center - width * .52, top: surface - height * .94,
+    return Positioned(key: ValueKey(orrery ? 'hearth-orrery-bounds' : 'hearth-trophy-bounds'),
+      left: center - width * (orrery ? .50 : .52), top: surface - height * (orrery ? .98 : .94),
       width: width, height: height,
       child: Stack(fit: StackFit.expand, children: [
-        Positioned(left: width * .20, right: width * .10, top: height * .90, height: height * .06,
+        Positioned(left: width * .20, right: width * .10, top: height * (orrery ? .95 : .90), height: height * .06,
           child: DecoratedBox(decoration: BoxDecoration(borderRadius: BorderRadius.circular(100),
             gradient: const RadialGradient(radius: .6, colors: [Color(0x550E0906),Color(0x000E0906)])))),
-        const QuestwellFirstJourney(),
+        if (orrery) const QuestwellStarlitOrrery() else const QuestwellFirstJourney(),
       ]));
   }
 

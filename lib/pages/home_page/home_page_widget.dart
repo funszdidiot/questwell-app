@@ -226,13 +226,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
       setState(_loadHomeData);
 
-      if (previousLevel < 5 && newLevel >= 5) {
-        await showFirstJourneyMilestone(context, level: newLevel,
-          xpAwarded: reward.xpAwarded, coinsAwarded: reward.coinsAwarded);
+      if (await showQuestwellMilestones(context, previousLevel: previousLevel, level: newLevel,
+          xpAwarded: reward.xpAwarded, coinsAwarded: reward.coinsAwarded)) {
         if (mounted) setState(_loadHomeData);
         return;
       }
 
+      if (!mounted) return;
       final nextAction = await showDialog<String>(
         context: context,
         builder: (dialogContext) {

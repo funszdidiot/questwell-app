@@ -34,7 +34,7 @@ begin
  if not denied or (select count(*) from public.progression_events)<>2 then raise exception 'Duplicate completion journaled twice'; end if;
  perform public.complete_task((select id from public.tasks where title='roadmap-ten'));
  if (select array_agg(level order by level) from public.progression_events where kind='level_up')<>array[5,6,7,8,9,10] then raise exception 'Skipped levels missing'; end if;
- if (select count(*) from public.progression_events where kind='milestone_reward')<>1 then raise exception 'Duplicate trophy event'; end if;
+ if (select count(*) from public.progression_events where kind='milestone_reward')<>2 then raise exception 'Missing or duplicate trophy event'; end if;
  denied:=false;
  begin insert into public.progression_events(user_id,kind,event_key,title,level,source)
  values(auth.uid(),'level_up','100','Fake',100,'progression'); exception when insufficient_privilege then denied:=true; end;
@@ -67,7 +67,7 @@ end $$;
 reset role;
 update public.users set level=level where id=current_setting('qa.roadmap_user')::uuid;
 do $$ begin
- if (select count(*) from public.progression_events where user_id=current_setting('qa.roadmap_user')::uuid)<>7 then raise exception 'Unchanged level repeated journal'; end if;
+ if (select count(*) from public.progression_events where user_id=current_setting('qa.roadmap_user')::uuid)<>8 then raise exception 'Unchanged level repeated journal'; end if;
  if has_table_privilege('anon','public.progression_events','select') then raise exception 'Anonymous journal read'; end if;
 end $$;
 rollback;

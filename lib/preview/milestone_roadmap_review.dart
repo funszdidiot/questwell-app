@@ -28,6 +28,10 @@ class _MilestoneRoadmapReviewAppState extends State<MilestoneRoadmapReviewApp> {
     }, owned: owned, equipped: owned, roomSlot: owned ? 'bookshelf_top' : null,
       source: earned ? 'level_milestone' : 'founder_testing_grant',
       unlockedAt: owned ? DateTime(2026,9,30,17,55) : null);
+    final orrery = QuestwellCosmetic.fromJson({
+      'id':'orrery','slug':'starlit-orrery','name':'Starlit Orrery','category':'room',
+      'unlock_method':'level_milestone','milestone_level':10,
+    });
     final entries = [
       if (owned) ChronicleWin(kind:'milestone_reward', title:'First Journey', completedAt:DateTime(2026,9,30,17,55),
         xp:0,coins:0,level:5,cosmeticSlug:trophy.slug,source:trophy.source),
@@ -49,7 +53,7 @@ class _MilestoneRoadmapReviewAppState extends State<MilestoneRoadmapReviewApp> {
           SizedBox(width:width,child:Column(children:[
             QuestwellHomeCharacter(archetype:'alchemist',className:'Alchemist',level:profile.level,xp:profile.xpIntoLevel,
               coins:79,mastered:false,equippedNames:const [],decorNames:owned?const ['First Journey']:const [],
-              collection:const [],nextReward:QuestwellNextReward(cosmetics:[trophy]),
+              collection:const [],nextReward:QuestwellNextReward(cosmetics:[trophy,orrery]),
               onCustomize:()=>Navigator.push(ctx,MaterialPageRoute<void>(builder:(pageContext)=>Scaffold(
                 backgroundColor:const Color(0xFF111827),body:QuestwellAdventurerView(
                   archetype:'alchemist',bodyType:'male',level:profile.level,xp:profile.totalXp,coins:79,

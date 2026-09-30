@@ -16,6 +16,9 @@ void main() {
   if (Uri.base.queryParameters['review'] == 'milestones') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const MilestoneRoadmapReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'starlit-orrery') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const HearthPolishReviewApp(firstJourney: true, orrery: true));
   } else if (Uri.base.queryParameters['review'] == 'first-journey') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const HearthPolishReviewApp(firstJourney: true));

@@ -18,6 +18,8 @@ import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
 import 'questwell_wall_art.dart';
 import 'questwell_first_journey.dart';
+import 'questwell_starlit_orrery.dart';
+import 'questwell_milestone_reward.dart';
 import 'questwell_hearth_decor.dart';
 import 'questwell_contact_shadow.dart';
 import 'questwell_class_emblem.dart';
@@ -966,9 +968,9 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       scene: Size(sceneWidth, sceneHeight),
                     ),
               for (final surface in ['mantel', 'bookshelf_top'])
-                if (equippedSlugs['room:$surface'] == QuestwellFirstJourney.slug &&
+                if (QuestwellMilestoneReward.isTrophy(equippedSlugs['room:$surface']) &&
                   (surface == 'mantel' || equippedSlugs['room:left'] == QuestwellBookshelf.slug || equippedSlugs['room:right'] == QuestwellBookshelf.slug))
-                  QuestwellHearthDecor.trophyPositioned(slot: surface,
+                  QuestwellHearthDecor.trophyPositioned(slot: surface, slug: equippedSlugs['room:$surface']!,
                     scene: Size(sceneWidth, sceneHeight), equipment: equippedSlugs),
               if (showAvatar) Positioned(
                 key: const ValueKey('hearth-contact-shadow'),
@@ -1632,6 +1634,9 @@ class QuestwellItemPixelArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (slug == QuestwellStarlitOrrery.slug) {
+      return SizedBox.square(dimension: size, child: const QuestwellStarlitOrrery());
+    }
     if (slug == QuestwellFirstJourney.slug) {
       return SizedBox.square(dimension: size, child: const QuestwellFirstJourney());
     }
