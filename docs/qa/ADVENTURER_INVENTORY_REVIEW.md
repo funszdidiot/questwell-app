@@ -108,3 +108,11 @@ The generated source image alone is not visual acceptance.
 Delivery checkpoint: founder explicitly authorized uploading the satchel artwork
 and code to funszdidiot/questwell-app on questwell-dev for preview only.
 Visual acceptance, equipment enablement, merge and launch remain gated.
+
+### Satchel fit revision 2
+
+Founder found the first in-game candidate odd. Increased and moved the bag inward
+and down so its main flap stays visible beside the forearm; narrowed and darkened
+the shoulder strap, reduced its buckle and anchored it to the bag's outer ring.
+The illustrated asset, approved robes and accessories are unchanged. This remains
+a review-only candidate, with equipment, merge and launch gated.

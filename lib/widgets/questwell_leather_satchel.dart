@@ -13,9 +13,9 @@ class QuestwellLeatherSatchel extends StatelessWidget {
     child: LayoutBuilder(builder: (context, constraints) {
       final scale = math.min(constraints.maxWidth / 240, constraints.maxHeight / 320);
       final bag = switch (bodyType) {
-        'female' => const Rect.fromLTWH(62, 133, 51, 53),
-        'male' => const Rect.fromLTWH(55, 139, 55, 57),
-        _ => const Rect.fromLTWH(59, 138, 53, 55),
+        'female' => const Rect.fromLTWH(74, 137, 62, 64),
+        'male' => const Rect.fromLTWH(69, 143, 66, 68),
+        _ => const Rect.fromLTWH(72, 141, 64, 66),
       };
       return Stack(children: [
         Positioned.fill(child: CustomPaint(painter: _SatchelStrap(bodyType))),
@@ -42,19 +42,26 @@ class _SatchelStrap extends CustomPainter {
     canvas.scale(scale);
     final female = bodyType == 'female';
     final shoulder = female ? const Offset(143, 85) : const Offset(147, 87);
-    final attachment = female ? const Offset(100, 145) : const Offset(97, 151);
+    // Bag's outer ring is at 25% of the image width; account for alpha margins.
+    final attachment = switch (bodyType) {
+      'female' => const Offset(90, 149),
+      'male' => const Offset(86, 155),
+      _ => const Offset(88, 153),
+    };
     final strap = Path()..moveTo(shoulder.dx, shoulder.dy)
-      ..cubicTo(136, 101, 112, 119, attachment.dx, attachment.dy);
+      ..cubicTo(137, 101, 106, 125, attachment.dx, attachment.dy);
     final paint = Paint()..style = PaintingStyle.stroke..strokeCap = StrokeCap.round;
-    canvas.drawPath(strap, paint..color = const Color(0xFF382015)..strokeWidth = 7);
-    canvas.drawPath(strap, paint..color = const Color(0xFF9C602F)..strokeWidth = 5.2);
-    canvas.drawPath(strap, paint..color = const Color(0xFFC48A4D)..strokeWidth = 2.2);
+    canvas.drawPath(strap, paint..color = const Color(0xFF382015)..strokeWidth = 4.5);
+    canvas.drawPath(strap, paint..color = const Color(0xFF80502F)..strokeWidth = 3.3);
+    canvas.drawPath(strap, paint..color = const Color(0xFFAC7848)..strokeWidth = .7);
     // Small brass adjustment buckle follows the diagonal strap.
     canvas.save();
-    canvas.translate(124, female ? 112 : 114);
-    canvas.rotate(.65);
-    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(-4, -5, 8, 10),
-      const Radius.circular(1.2)), paint..color = const Color(0xFFE6BB67)..strokeWidth = 1.1);
+    final metric = strap.computeMetrics().first;
+    final tangent = metric.getTangentForOffset(metric.length * .44)!;
+    canvas.translate(tangent.position.dx, tangent.position.dy);
+    canvas.rotate(tangent.angle - math.pi / 2);
+    canvas.drawRRect(RRect.fromRectAndRadius(const Rect.fromLTWH(-2.5, -3.5, 5, 7),
+      const Radius.circular(.8)), paint..color = const Color(0xFFD3A65C)..strokeWidth = .8);
     canvas.restore();
     canvas.restore();
   }
