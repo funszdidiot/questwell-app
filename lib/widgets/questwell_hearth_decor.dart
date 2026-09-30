@@ -96,8 +96,13 @@ class QuestwellHearthDecor {
     final height = math.min(scene.height * .105, scene.width * .10);
     final width = height * 1312 / 1199;
     final onShelf = slot == 'bookshelf_top';
-    final center = onShelf ? shelf.left + shelf.width * (shelfSlot == 'right' ? .78 : .23) : scene.width * .075;
-    final surface = onShelf ? shelf.top + shelf.height * .12 : scene.height * .365;
+    // The mantel belongs to the square room texture. Follow its BoxFit.cover
+    // crop and Alignment(0, .04), so the base stays on the wood at any aspect ratio.
+    final roomSide = math.max(scene.width, scene.height);
+    final center = onShelf ? shelf.left + shelf.width * (shelfSlot == 'right' ? .78 : .23)
+      : roomSide * .075 + (scene.width - roomSide) / 2;
+    final surface = onShelf ? shelf.top + shelf.height * .12
+      : roomSide * .338 + (scene.height - roomSide) * .52;
     return Positioned(key: const ValueKey('hearth-trophy-bounds'),
       left: center - width * .52, top: surface - height * .94,
       width: width, height: height,
