@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'questwell_class_emblem.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
@@ -110,8 +111,20 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 8, children: [
             for (final value in const ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer'])
-              ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: Text(_label(value)),
-                avatar: QuestwellRelicPixelArt(archetype: value, size: 22),
+              ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14,
+                  color: widget.archetype == value ? _gold : const Color(0xFFF0E5CC)),
+                label: Text(_label(value)),
+                backgroundColor: const Color(0xFF14202F),
+                selectedColor: const Color(0xFF243448),
+                disabledColor: const Color(0xFF14202F),
+                surfaceTintColor: Colors.transparent,
+                showCheckmark: false,
+                side: BorderSide(color: widget.archetype == value ? _gold : const Color(0xFF465568),
+                  width: widget.archetype == value ? 2 : 1),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                avatar: QuestwellClassEmblem(archetype: value),
+                avatarBoxConstraints: const BoxConstraints.tightFor(width: 24, height: 24),
                 selected: widget.archetype == value,
                 onSelected: widget.savingAppearance ? null : (_) => widget.onClass(value)),
           ]),

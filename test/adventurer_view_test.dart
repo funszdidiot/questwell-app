@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_adventurer_view.dart';
 import 'inventory_icon_test.dart' show inventoryIconTests;
+import '../lib/widgets/questwell_class_emblem.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_momentum/flutter_flow/nav/nav.dart' show NavigationExtensions;
 
@@ -66,6 +67,16 @@ void main() {
     await tester.pumpAndSettle();
     for (final title in ['ADVENTURER', 'Scout', 'BODY STYLE', 'YOUR CLASS', 'CLASS MASTERY']) {
       expect(tester.widget<Text>(find.byWidgetPredicate((w) => w is Text && w.data == title && w.style != null)).style?.fontFamily, GoogleFonts.pressStart2p().fontFamily);
+    }
+    expect(find.byType(QuestwellClassEmblem), findsNWidgets(5));
+    for (final element in find.byType(QuestwellClassEmblem).evaluate()) {
+      final emblem = element.widget as QuestwellClassEmblem;
+      final finder = find.byWidget(emblem);
+      expect(tester.getSize(finder), const Size(24, 24));
+      final chip = tester.widget<ChoiceChip>(find.ancestor(of: finder, matching: find.byType(ChoiceChip)));
+      expect(chip.showCheckmark, false);
+      expect(chip.side?.width, emblem.archetype == 'scout' ? 2 : 1);
+      expect(chip.backgroundColor, const Color(0xFF14202F));
     }
     expect(tester.widget<Text>(find.text('Level 3')).style?.fontFamily, GoogleFonts.roboto(fontWeight: FontWeight.w700).fontFamily);
     for (final chip in tester.widgetList<ChoiceChip>(find.byType(ChoiceChip))) {
