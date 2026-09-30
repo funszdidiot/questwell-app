@@ -26,7 +26,7 @@ class QuestwellHearthDecor {
     final heightFraction = shelf ? .34 : fern ? .25 : .27;
     final height = math.min(
       scene.width * widthFraction * (front ? 1.08 : 1) / ratio,
-      scene.height * (front ? .31 : heightFraction),
+      scene.height * (front ? (chair ? .295 : .31) : heightFraction),
     );
     final width = height * ratio;
     final center = scene.width * (front
@@ -34,7 +34,7 @@ class QuestwellHearthDecor {
       : slot == 'left' ? .30 : .85);
     // Chairs stand on the usable floor, well in front of the baseboards.
     // Retain rendering for legacy left-slot chairs until explicitly moved.
-    final floor = scene.height * (chair ? (slot == 'left' ? .82 : .95)
+    final floor = scene.height * (chair ? (slot == 'left' ? .82 : front ? .97 : .95)
       : front ? .97 : .67);
     final art = shelf ? const QuestwellBookshelf()
       : fern ? const QuestwellFern() : const QuestwellReadingChair();
