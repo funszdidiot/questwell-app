@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../widgets/questwell_pixel_art.dart';
 
 class HearthReviewApp extends StatefulWidget {
-  const HearthReviewApp({super.key});
+  const HearthReviewApp({super.key, this.bookshelf = false});
+  final bool bookshelf;
 
   @override
   State<HearthReviewApp> createState() => _HearthReviewAppState();
@@ -13,6 +14,7 @@ class _HearthReviewAppState extends State<HearthReviewApp> {
   String _archetype = 'wanderer';
   String _body = 'neutral';
   double _width = 390;
+  bool _placed = true;
 
   Widget _choice<T>(String label, T value, List<T> values,
       String Function(T) title, ValueChanged<T> changed) {
@@ -73,7 +75,18 @@ class _HearthReviewAppState extends State<HearthReviewApp> {
                     key: const ValueKey('review-hearth'),
                     height: compact ? 342 : 392,
                     archetype: _archetype, avatarBodyType: _body,
+                    equippedSlugs: {if (widget.bookshelf && _placed) 'room': 'walnut-bookshelf'},
                   ),
+                  if (widget.bookshelf) ...[
+                    const SizedBox(height: 16),
+                    const Text('Walnut Bookshelf · Hearth décor'),
+                    const SizedBox(height: 8),
+                    const QuestwellItemPixelArt(slug: 'walnut-bookshelf', category: 'room', size: 48),
+                    const SizedBox(height: 8),
+                    OutlinedButton(onPressed: () => setState(() => _placed = !_placed),
+                      child: Text(_placed ? 'Remove from Hearth' : 'Place in Hearth')),
+                    const Text('Sample placement only. No coins spent.', textAlign: TextAlign.center),
+                  ],
                   const SizedBox(height: 24),
                   const Text('Matching Adventurer portrait'),
                   const SizedBox(height: 12),

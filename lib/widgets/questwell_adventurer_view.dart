@@ -44,7 +44,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
   TextStyle _text(double size, {bool bold = false, Color color = const Color(0xFFF0E5CC)}) =>
     GoogleFonts.roboto(fontSize: size, height: 1.4, color: color,
       fontWeight: bold ? FontWeight.w700 : FontWeight.w400);
-  String _label(String value) => value.isEmpty ? 'Other' : value[0].toUpperCase() + value.substring(1).replaceAll('_', ' ');
+  String _label(String value) => value == 'room' ? 'Hearth décor' : value.isEmpty ? 'Other' : value[0].toUpperCase() + value.substring(1).replaceAll('_', ' ');
   Widget _heading(String title) => Text(title, style: QuestwellTypography.sectionHeading(size: 12));
   Widget _panel(Widget child) => Material(color: const Color(0xFF19232D),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3),
@@ -76,6 +76,14 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           QuestwellEquippedAvatar(archetype: widget.archetype, avatarBodyType: widget.bodyType,
             height: 250, artHeightFactor: .96, showRelic: widget.mastered,
             equippedSlugs: {for (final item in equipped) item.category: item.slug}),
+          if (_inventory && category == 'room' && widget.items.any((item) => item.category == 'room' && item.owned)) ...[
+            const SizedBox(height: 16),
+            _heading('YOUR HEARTH'),
+            const SizedBox(height: 8),
+            QuestwellHearthPixelScene(height: 260, archetype: widget.archetype,
+              avatarBodyType: widget.bodyType, showRelic: widget.mastered,
+              equippedSlugs: {for (final item in equipped) item.category: item.slug}),
+          ],
           const SizedBox(height: 10),
           _heading(_label(widget.archetype)),
           const SizedBox(height: 6),
@@ -138,7 +146,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           Text('${equipped.length} equipped · $owned owned', style: _text(14, color: _muted)),
           if (widget.items.any((item) => !QuestwellEquipmentPolicy.isReady(item.slug, item.category))) ...[
             const SizedBox(height: 8),
-            Text('Items marked Equip are ready to wear. More accessories are on the way.', style: _text(14, color: _gold)),
+            Text('Equip outfits and accessories, or place décor in your Hearth. More items are on the way.', style: _text(14, color: _gold)),
           ],
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 6, children: [
@@ -185,7 +193,8 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
   Widget _item(AdventurerInventoryItem item) {
     final busy = widget.busyItem != null || widget.savingAppearance;
     final ready = QuestwellEquipmentPolicy.isReady(item.slug, item.category);
-    final status = item.equipped ? 'Equipped' : item.owned ? 'Owned' : 'Locked';
+    final room = item.category == 'room';
+    final status = item.equipped ? (room ? 'Placed' : 'Equipped') : item.owned ? 'Owned' : 'Locked';
     return _panel(Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         QuestwellItemPixelArt(slug: item.slug, category: item.category, archetype: item.archetype, size: 48),
@@ -209,9 +218,9 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           : item.owned && !item.classLocked && ready ? () => widget.onEquip(item.id) : null,
         style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
               textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
-        child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? 'Unequip'
+        child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? (room ? 'Remove from Hearth' : 'Unequip')
           : !item.owned ? (item.shop ? 'View in Market' : 'Earn through progression')
-          : item.classLocked ? 'Class restricted' : !ready ? 'Equip unavailable' : 'Equip')),
+          : item.classLocked ? 'Class restricted' : !ready ? (room ? 'Coming soon' : 'Equip unavailable') : (room ? 'Place in Hearth' : 'Equip'))),
     ]));
   }
 }

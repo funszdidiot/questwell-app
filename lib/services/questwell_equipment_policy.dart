@@ -6,5 +6,6 @@ abstract final class QuestwellEquipmentPolicy {
       (slug == 'emerald-scholar-scarf' && category == 'neck') ||
       (slug == 'leather-satchel' && category == 'back') ||
       (slug == 'brass-lantern' && category == 'hands') ||
-      (slug == 'moonstone-brooch' && category == 'accessory');
+      (slug == 'moonstone-brooch' && category == 'accessory') ||
+      (slug == 'walnut-bookshelf' && category == 'room');
 }

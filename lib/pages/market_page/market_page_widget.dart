@@ -112,7 +112,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${cosmetic.name} equipped.'),
+          content: Text(cosmetic.category == 'room' ? '${cosmetic.name} placed in your Hearth.' : '${cosmetic.name} equipped.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -138,7 +138,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${cosmetic.name} unequipped.'),
+          content: Text(cosmetic.category == 'room' ? '${cosmetic.name} removed from your Hearth.' : '${cosmetic.name} unequipped.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -684,9 +684,9 @@ class _MarketCard extends StatelessWidget {
                 size: 17,
               ),
               label: Text(
-                cosmetic.equipped ? 'UNEQUIP' : classLocked ? 'LOCKED'
+                cosmetic.equipped ? (cosmetic.category == 'room' ? 'REMOVE' : 'UNEQUIP') : classLocked ? 'LOCKED'
                     : QuestwellEquipmentPolicy.isReady(cosmetic.slug, cosmetic.category)
-                        ? 'EQUIP' : 'COMING SOON',
+                        ? (cosmetic.category == 'room' ? 'PLACE IN HEARTH' : 'EQUIP') : 'COMING SOON',
               ),
               style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(38),

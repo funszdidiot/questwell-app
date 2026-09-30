@@ -48,7 +48,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${cosmetic.name} equipped.'),
+          content: Text(cosmetic.category == 'room' ? '${cosmetic.name} placed in your Hearth.' : '${cosmetic.name} equipped.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -74,7 +74,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${cosmetic.name} unequipped.'),
+          content: Text(cosmetic.category == 'room' ? '${cosmetic.name} removed from your Hearth.' : '${cosmetic.name} unequipped.'),
           behavior: SnackBarBehavior.floating,
         ),
       );

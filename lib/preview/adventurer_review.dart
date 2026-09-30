@@ -22,6 +22,9 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
           onBody: (v) => setState(() => _body = v), onClass: (v) => setState(() => _class = v),
           onEquip: (id) => setState(() { if (id == 's') { _satchelEquipped = true; } else if (id == 'a') { _glassesEquipped = true; } else { _otherEquipped.add(id); } }),
           onUnequip: (id) => setState(() { if (id == 's') { _satchelEquipped = false; } else if (id == 'a') { _glassesEquipped = false; } else { _otherEquipped.remove(id); } }), items: [
+            AdventurerInventoryItem(id: 'bookshelf', name: 'Walnut Bookshelf', slug: 'walnut-bookshelf', category: 'room',
+              description: 'Sample ownership. Warm walnut, worn books, and brass details for your Hearth.', owned: true,
+              equipped: _otherEquipped.contains('bookshelf'), classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'm', name: 'Moonstone Brooch', slug: 'moonstone-brooch', category: 'accessory',
               description: 'Sample ownership. A little moonlight for the road ahead.', owned: true,
               equipped: _otherEquipped.contains('m'), classLocked: false, shop: true),

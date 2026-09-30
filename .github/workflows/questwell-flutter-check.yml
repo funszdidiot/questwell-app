@@ -31,4 +31,4 @@ jobs:
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
       - name: Test class underlayer coverage and alignment
-        run: flutter test test/scholar_underlayer_clip_test.dart test/scout_underlayer_clip_test.dart test/alchemist_underlayer_clip_test.dart test/guardian_underlayer_clip_test.dart test/robe_wrap_test.dart test/wanderer_underlayer_clip_test.dart test/hearth_integration_test.dart test/quest_board_card_test.dart test/home_sections_test.dart test/campfire_background_test.dart test/home_overview_test.dart test/adventurer_view_test.dart
+        run: flutter test test/bookshelf_test.dart test/scholar_underlayer_clip_test.dart test/scout_underlayer_clip_test.dart test/alchemist_underlayer_clip_test.dart test/guardian_underlayer_clip_test.dart test/robe_wrap_test.dart test/wanderer_underlayer_clip_test.dart test/hearth_integration_test.dart test/quest_board_card_test.dart test/home_sections_test.dart test/campfire_background_test.dart test/home_overview_test.dart test/adventurer_view_test.dart

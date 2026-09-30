@@ -12,6 +12,7 @@ import 'questwell_emerald_scarf.dart';
 import 'questwell_leather_satchel.dart';
 import 'questwell_brass_lantern.dart';
 import 'questwell_moonstone_brooch.dart';
+import 'questwell_bookshelf.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -927,6 +928,15 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   ),
                 ),
               ),
+              if (equippedSlugs['room'] == QuestwellBookshelf.slug)
+                Positioned(
+                  key: const ValueKey('hearth-bookshelf-bounds'),
+                  right: sceneWidth * .015,
+                  bottom: sceneHeight * .30,
+                  width: math.min(sceneWidth * .38, 190),
+                  height: math.min(sceneWidth * .40, 202),
+                  child: const QuestwellBookshelf(),
+                ),
               Positioned(
                 key: const ValueKey('hearth-contact-shadow'),
                 left: avatarLeft + avatarWidth * .22,
@@ -3880,6 +3890,27 @@ class _ItemPainter extends CustomPainter {
       p.color = const Color(0xFFA53A32);
       canvas.drawPath(path, p);
       rect(size.width * .47, size.height * .20, size.width * .06, size.height * .50, gold);
+    } else if (slug == QuestwellBookshelf.slug) {
+      final unit = size.width / 16;
+      void pixel(double x, double y, double w, double h, Color color) =>
+          rect(x * unit, y * unit, w * unit, h * unit, color);
+      const walnut = Color(0xFF795032);
+      const edge = Color(0xFFB37C45);
+      pixel(2, 2, 12, 12, walnut);
+      pixel(3, 3, 10, 10, const Color(0xFF281B18));
+      for (final y in [2.0, 6.0, 10.0, 13.0]) {
+        pixel(2, y, 12, 1, edge);
+      }
+      for (final y in [3.0, 7.0, 11.0]) {
+        pixel(4, y, 2, 3, const Color(0xFF315A49));
+        pixel(7, y, 2, 3, const Color(0xFF8B3F34));
+        pixel(10, y, 2, 3, const Color(0xFF3D526D));
+        for (final x in [4.0, 7.0, 10.0]) pixel(x, y + 1, 2, .4, gold);
+      }
+      pixel(2, 2, 1, 1, gold);
+      pixel(13, 2, 1, 1, gold);
+      pixel(3, 14, 2, 1, walnut);
+      pixel(11, 14, 2, 1, walnut);
     } else if (slug == QuestwellMoonstoneBrooch.slug) {
       final unit = size.width / 16;
       void pixel(double x, double y, double w, double h, Color color) =>
