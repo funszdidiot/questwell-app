@@ -113,7 +113,8 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
             for (final value in const ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer'])
               ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14,
                   color: widget.archetype == value ? _gold : const Color(0xFFF0E5CC)),
-                label: Text(_label(value)),
+                label: ConstrainedBox(constraints: const BoxConstraints(minHeight: 24),
+                  child: Text(_label(value))),
                 backgroundColor: const Color(0xFF14202F),
                 selectedColor: const Color(0xFF243448),
                 disabledColor: const Color(0xFF14202F),
