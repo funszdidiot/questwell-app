@@ -483,7 +483,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       className: _archetypeLabel(profile.adventurerArchetype),
                       level: profile.level, xp: xpIntoLevel, coins: profile.coinBalance,
                       mastered: classMastered,
-                      equippedNames: equipped.map((item) => item.name).toList(),
+                      equippedNames: equipped.where((item) => item.category != 'room' && item.category != 'wall_art').map((item) => item.name).toList(),
+                      decorNames: equipped.where((item) => item.category == 'room' || item.category == 'wall_art').map((item) => item.name).toList(),
                       collection: data.cosmetics.where((item) =>
                         item.requiredArchetype == profile.adventurerArchetype &&
                         item.unlockMethod == 'shop').map((item) => HomeCollectionItem(

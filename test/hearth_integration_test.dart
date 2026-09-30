@@ -82,7 +82,7 @@ void main() {
           await tester.pump();
           final avatar = tester.getRect(find.byKey(const ValueKey('hearth-avatar-bounds')));
           final shadow = tester.getRect(find.byKey(const ValueKey('hearth-contact-shadow')));
-          final frame = tester.getRect(find.byType(QuestwellHearthPixelScene));
+          final frame = tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
           expect(avatar.width / avatar.height, closeTo(.75, .001));
           expect(avatar.top, greaterThan(frame.top + 25));
           expect(avatar.bottom, lessThan(frame.bottom));

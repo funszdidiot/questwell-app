@@ -48,7 +48,7 @@ void main() {
     expect(find.byType(QuestwellWallArt), findsNWidgets(3));
     await tester.tap(find.text('Right wall · Celestial Study')); await tester.pumpAndSettle();
     expect(find.byType(QuestwellWallArt), findsNWidgets(2));
-    expect(find.textContaining('bookshelf may cover'), findsOneWidget);
+    expect(find.textContaining('hang above the bookshelf'), findsOneWidget);
     await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
     expect(find.text('Replace Celestial Study?'), findsOneWidget);
     await tester.tap(find.text('Keep current item')); await tester.pumpAndSettle();

@@ -31,7 +31,7 @@ void main() {
           expect(stack.children.indexWhere((c) => c.key == const ValueKey('hearth-bookshelf-bounds')),
             lessThan(stack.children.indexWhere((c) => c.key == const ValueKey('hearth-avatar-bounds'))));
           final shelf = tester.getRect(find.byKey(const ValueKey('hearth-bookshelf-bounds')));
-          final scene = tester.getRect(find.byType(QuestwellHearthPixelScene));
+          final scene = tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
           expect(shelf.left, greaterThan(scene.left));
           expect(shelf.right, lessThan(scene.right));
           expect(shelf.bottom, lessThan(scene.bottom));

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import 'questwell_wordmark_sparkles.dart';
+import 'questwell_class_emblem.dart';
 
 const _gold = Color(0xFFE4C586);
 const _ink = Color(0xFFF0E5CC);
@@ -48,12 +49,12 @@ class HomeCollectionItem {
 class QuestwellHomeCharacter extends StatelessWidget {
   const QuestwellHomeCharacter({super.key, required this.archetype,
     required this.className, required this.level, required this.xp,
-    required this.coins, required this.mastered, required this.equippedNames,
+    required this.coins, required this.mastered, required this.equippedNames, this.decorNames = const [],
     required this.collection, required this.onCustomize, required this.onMarket});
   final String archetype, className;
   final int level, xp, coins;
   final bool mastered;
-  final List<String> equippedNames;
+  final List<String> equippedNames, decorNames;
   final List<HomeCollectionItem> collection;
   final VoidCallback onCustomize, onMarket;
 
@@ -61,7 +62,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
   Widget build(BuildContext context) => _HomePanel(child: Column(
     crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(children: [
-        QuestwellRelicPixelArt(archetype: archetype, size: 42),
+        QuestwellClassEmblem(archetype: archetype, size: 42),
         const SizedBox(width: 12),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(className, style: QuestwellTypography.sectionHeading(size: 13)),
@@ -84,8 +85,22 @@ class QuestwellHomeCharacter extends StatelessWidget {
       const SizedBox(height: 16),
       Text('LOADOUT', style: QuestwellTypography.sectionHeading(size: 9)),
       const SizedBox(height: 5),
-      Text(equippedNames.isEmpty ? 'No cosmetics equipped yet.' : equippedNames.join(' · '),
+      Text('${equippedNames.length} worn · ${decorNames.length} room items',
         style: _body(14, color: _muted)),
+      if (equippedNames.isNotEmpty || decorNames.isNotEmpty)
+        Theme(data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+          child: ExpansionTile(tilePadding: EdgeInsets.zero, childrenPadding: const EdgeInsets.only(bottom: 8),
+            iconColor: _gold, collapsedIconColor: _gold,
+            title: Text('View all', style: _body(14, color: _gold)),
+            children: [
+              for (final group in [('WORN EQUIPMENT', equippedNames), ('ROOM DÉCOR', decorNames)])
+                Padding(padding: const EdgeInsets.only(top: 8), child: Align(alignment: Alignment.centerLeft,
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text(group.$1, style: QuestwellTypography.sectionHeading(size: 8)),
+                    const SizedBox(height: 5),
+                    Text(group.$2.isEmpty ? 'None yet.' : group.$2.join(' · '), style: _body(13, color: _muted)),
+                  ]))),
+            ])),
       const SizedBox(height: 10),
       SizedBox(width: double.infinity, child: OutlinedButton(
         onPressed: onCustomize, style: OutlinedButton.styleFrom(

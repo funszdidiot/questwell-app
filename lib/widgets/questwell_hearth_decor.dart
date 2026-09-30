@@ -30,6 +30,25 @@ class QuestwellHearthDecor {
     });
   }
 
+  static Positioned wallArtPositioned({required String slug, required String side,
+    required Size scene, required Map<String, String> equipment}) {
+    final slot = side == 'wall_left' ? 'left' : 'right';
+    final hasShelf = (equipment['room:$slot'] ?? (slot == 'right' ? equipment['room'] : null)) == QuestwellBookshelf.slug;
+    var height = math.min(scene.height * .23, scene.width * .14 / .58);
+    var top = scene.height * .20;
+    var center = scene.width * (slot == 'left' ? .28 : .72);
+    if (hasShelf) {
+      final shelf = positioned(slug: QuestwellBookshelf.slug, slot: slot, scene: scene, equipment: equipment);
+      // Fit the complete frame into the real wall space above the bookcase.
+      height = math.min(height, shelf.top! - scene.height * .055);
+      top = shelf.top! - height - scene.height * .015;
+      center = shelf.left! + shelf.width! / 2;
+    }
+    return Positioned(key: ValueKey('hearth-$side-art-bounds'),
+      top: top, left: center - height * .58 / 2, width: height * .58, height: height,
+      child: QuestwellWallArt(artSlug: slug));
+  }
+
   static Positioned positioned({
     required String slug, required String slot, required Size scene,
     Map<String, String> equipment = const {},
@@ -50,7 +69,7 @@ class QuestwellHearthDecor {
     final height = math.min(
       avatarHeight * (table ? .49 : shelf ? .65 : fern ? (front ? .43 : .40) : .62),
       scene.width * (table ? .28 : shelf ? .44 : fern ? .30 : .50) / ratio,
-    );
+    ) * (shelf ? .90 : 1.0);
     final width = height * ratio;
     final center = table ? scene.width * (chairOnLeft ? .15 : .85) : shelf
       ? (slot == 'right' ? scene.width * .98 - width / 2 : scene.width * .17 + width / 2)

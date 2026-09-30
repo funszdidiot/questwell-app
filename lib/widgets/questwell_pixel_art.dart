@@ -18,6 +18,7 @@ import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
 import 'questwell_wall_art.dart';
 import 'questwell_hearth_decor.dart';
+import 'questwell_class_emblem.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -823,7 +824,19 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = QuestwellPixelPalette.forClass(archetype);
 
-    return QuestwellPixelFrame(
+    return Column(mainAxisSize: MainAxisSize.min, children: [
+      Padding(padding: const EdgeInsets.fromLTRB(4, 0, 4, 8), child: Row(children: [
+        Expanded(child: Text('THE HEARTH', style: GoogleFonts.pressStart2p(
+          fontSize: 8, color: const Color(0xFFFFD978), height: 1.4))),
+        QuestwellClassEmblem(archetype: archetype, size: 22),
+        const SizedBox(width: 6),
+        Text(archetype.toUpperCase(), style: GoogleFonts.pressStart2p(
+          fontSize: 7, color: const Color(0xFFF6E5B8), height: 1.4)),
+        if (showRelic) const Padding(padding: EdgeInsets.only(left: 6),
+          child: Icon(Icons.star, size: 14, color: Color(0xFFFFD978))),
+      ])),
+      QuestwellPixelFrame(
+      key: const ValueKey('hearth-room-bounds'),
       height: height,
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -938,7 +951,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   key: const ValueKey('hearth-wall-art-bounds'),
                   // Hang below the cornice; the foreground avatar may overlap the frame.
                   top: sceneHeight * .10,
-                  left: (sceneWidth - math.min(sceneHeight * .17 * 1.4, sceneWidth * .24)) / 2,
+                  left: sceneWidth * ((equippedSlugs['room:right'] ?? equippedSlugs['room']) == QuestwellBookshelf.slug ? .42 : .58) - math.min(sceneHeight * .17 * 1.4, sceneWidth * .24) / 2,
                   width: math.min(sceneHeight * .17 * 1.4, sceneWidth * .24),
                   height: math.min(sceneHeight * .17, sceneWidth * .24 / 1.4),
                   child: const QuestwellWallArt(),
@@ -946,14 +959,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               for (final side in ['wall_left', 'wall_right'])
                 if (equippedSlugs['wall_art:$side'] case final String art)
                   if (QuestwellWallArt.isSide(art))
-                    Positioned(
-                      key: ValueKey('hearth-$side-art-bounds'),
-                      top: sceneHeight * .20,
-                      left: sceneWidth * (side == 'wall_left' ? .28 : .72) - math.min(sceneHeight * .23 * .58, sceneWidth * .14) / 2,
-                      width: math.min(sceneHeight * .23 * .58, sceneWidth * .14),
-                      height: math.min(sceneHeight * .23, sceneWidth * .14 / .58),
-                      child: QuestwellWallArt(artSlug: art),
-                    ),
+                    QuestwellHearthDecor.wallArtPositioned(
+                      slug: art, side: side, scene: Size(sceneWidth, sceneHeight), equipment: equippedSlugs),
               for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
                   if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
@@ -1002,118 +1009,6 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(
-                right: compact ? 12 : 16,
-                top: compact ? 12 : 16,
-                child: IgnorePointer(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: compact ? 8 : 10,
-                      vertical: compact ? 6 : 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xD814151A),
-                      border: Border.all(
-                        color: palette.last.withValues(alpha: .88),
-                        width: 2,
-                      ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x77000000),
-                          offset: Offset(3, 3),
-                          blurRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        QuestwellRelicPixelArt(
-                          archetype: archetype,
-                          size: compact ? 24 : 28,
-                        ),
-                        SizedBox(width: compact ? 6 : 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              archetype.toUpperCase(),
-                              style: GoogleFonts.pressStart2p(
-                                fontSize: compact ? 6 : 7,
-                                color: const Color(0xFFF6E5B8),
-                                height: 1.0,
-                              ),
-                            ),
-                            if (showRelic) ...[
-                              const SizedBox(height: 4),
-                              Text(
-                                'MASTERED',
-                                style: GoogleFonts.roboto(
-                                  fontSize: compact ? 7 : 8,
-                                  fontWeight: FontWeight.w800,
-                                  letterSpacing: .5,
-                                  color: const Color(0xFFFFD978),
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: compact ? 14 : 18,
-                top: compact ? 12 : 16,
-                child: IgnorePointer(
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(
-                      compact ? 9 : 11,
-                      compact ? 7 : 8,
-                      compact ? 9 : 11,
-                      compact ? 6 : 7,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xCC101014),
-                      border: Border.all(
-                        color: const Color(0xFFB58742),
-                        width: 2,
-                      ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x77000000),
-                          offset: Offset(3, 3),
-                          blurRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'THE HEARTH',
-                          style: GoogleFonts.pressStart2p(
-                            fontSize: compact ? 8 : 9,
-                            color: const Color(0xFFFFD978),
-                            height: 1.0,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'HOME BASE',
-                          style: GoogleFonts.roboto(
-                            fontSize: compact ? 8 : 9,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.2,
-                            color: const Color(0xFFB8C7D8),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
               Positioned.fill(
                 child: IgnorePointer(
                   child: DecoratedBox(
@@ -1130,7 +1025,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
           );
         },
       ),
-    );
+    ),
+    ]);
   }
 }
 

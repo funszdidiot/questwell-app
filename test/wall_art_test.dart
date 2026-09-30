@@ -21,7 +21,7 @@ void main() {
               'room:front': 'hearth-fern', 'room:side': 'walnut-reading-table'})))));
         await tester.pump();
         final painting = tester.getRect(find.byKey(const ValueKey('hearth-wall-art-bounds')));
-        final scene = tester.getRect(find.byType(QuestwellHearthPixelScene));
+        final scene = tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
         expect(painting.left, greaterThan(scene.left));
         expect(painting.right, lessThan(scene.right));
         expect(painting.top, greaterThan(scene.top));

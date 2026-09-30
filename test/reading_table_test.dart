@@ -25,7 +25,7 @@ void main() {
           await tester.pump();
           final table = tester.getRect(find.byKey(const ValueKey('hearth-table-bounds')));
           final chair = tester.getRect(find.byKey(const ValueKey('hearth-chair-bounds')));
-          final scene = tester.getRect(find.byType(QuestwellHearthPixelScene));
+          final scene = tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
           expect(table.left, greaterThan(scene.left));
           expect(table.right, lessThan(scene.right));
           expect(table.bottom, lessThan(scene.bottom));

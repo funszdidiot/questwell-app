@@ -52,7 +52,7 @@ void main() {
         expect(find.byType(QuestwellBookshelf), findsOneWidget);
         expect(find.byType(QuestwellFern), findsOneWidget);
         final chair = tester.getRect(find.byKey(const ValueKey('hearth-chair-bounds')));
-        final scene = tester.getRect(find.byType(QuestwellHearthPixelScene));
+        final scene = tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
         expect(chair.left, greaterThan(scene.left));
         expect(chair.right, lessThan(scene.right));
         expect(chair.bottom, lessThan(scene.bottom));

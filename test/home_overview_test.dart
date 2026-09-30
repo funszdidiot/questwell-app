@@ -14,7 +14,7 @@ void main() {
       data: const MediaQueryData(textScaler: TextScaler.linear(1.6)),
       child: Scaffold(body: ListView(padding: const EdgeInsets.all(16), children: [
         QuestwellHomeCharacter(archetype: 'scout', className: 'Scout', level: 3,
-          xp: 95, coins: 49, mastered: true, equippedNames: const ['Trail charm'],
+          xp: 95, coins: 49, mastered: true, equippedNames: const ['Trail charm'], decorNames: const ['Fern Study', 'Walnut Bookshelf'],
           collection: const [
             HomeCollectionItem(name: 'Trail charm', slug: 'charm', category: 'accessory',
               owned: true, equipped: true),
@@ -35,6 +35,15 @@ void main() {
     expect(tester.widget<Text>(find.text('5 XP to level 4')).style?.fontFamily,
       GoogleFonts.roboto().fontFamily);
     expect(find.text('5 XP to level 4'), findsOneWidget);
+    expect(find.text('1 worn · 2 room items'), findsOneWidget);
+    expect(find.text('Fern Study · Walnut Bookshelf'), findsNothing);
+    await tester.tap(find.text('View all'));
+    await tester.pumpAndSettle();
+    expect(find.text('WORN EQUIPMENT'), findsOneWidget);
+    expect(find.text('ROOM DÉCOR'), findsOneWidget);
+    expect(find.text('Fern Study · Walnut Bookshelf'), findsOneWidget);
+    await tester.tap(find.text('View all'));
+    await tester.pumpAndSettle();
     expect(find.text('1 win this week'), findsOneWidget);
     await tester.tap(find.text('Customize adventurer'));
     expect(customized, isTrue);
