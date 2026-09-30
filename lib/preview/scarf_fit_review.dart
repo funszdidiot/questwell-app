@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/questwell_pixel_art.dart';
 import '../widgets/questwell_typography.dart';
+import '../widgets/questwell_leather_satchel.dart';
 
 class ScarfFitReviewApp extends StatelessWidget {
-  const ScarfFitReviewApp({super.key});
+  const ScarfFitReviewApp({super.key, this.satchel = false});
+  final bool satchel;
   @override
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -20,7 +22,7 @@ class ScarfFitReviewApp extends StatelessWidget {
                 Text(body, style: GoogleFonts.roboto(fontSize: 14)),
                 const SizedBox(height: 6),
                 QuestwellEquippedAvatar(archetype: kind, avatarBodyType: body,
-                  height: 280, equippedSlugs: const {'neck': 'emerald-scholar-scarf',
+                  height: 280, equippedSlugs: {if (satchel) 'back': QuestwellLeatherSatchel.previewSlug, 'neck': 'emerald-scholar-scarf',
                     'head': 'tiny-wizard-hat', 'face': 'round-scholar-glasses'}),
               ])),
             )]),

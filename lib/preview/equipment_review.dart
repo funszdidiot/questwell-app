@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/questwell_pixel_art.dart';
 import '../widgets/questwell_typography.dart';
+import '../widgets/questwell_leather_satchel.dart';
 
 /// Local visual fixture only: never owns items or writes equipment to an account.
 class EquipmentReviewApp extends StatefulWidget {
-  const EquipmentReviewApp({super.key, this.headwear = false, this.neckwear = false});
+  const EquipmentReviewApp({super.key, this.headwear = false, this.neckwear = false, this.satchel = false});
   final bool headwear;
   final bool neckwear;
+  final bool satchel;
   @override
   State<EquipmentReviewApp> createState() => _EquipmentReviewAppState();
 }
@@ -17,11 +19,13 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
   bool _glasses = true;
   bool _hat = true;
   bool _scarf = true;
+  bool _satchel = true;
   String _class = 'scholar';
 
   @override
   Widget build(BuildContext context) {
     final equipment = <String, String>{
+      if (widget.satchel && _satchel) 'back': QuestwellLeatherSatchel.previewSlug,
       if (_glasses) 'face': 'round-scholar-glasses',
       if (widget.headwear && _hat) 'head': 'tiny-wizard-hat',
       if (widget.neckwear && _scarf) 'neck': 'emerald-scholar-scarf',
@@ -34,14 +38,14 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
         body: SafeArea(child: Center(child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 430),
           child: ListView(padding: const EdgeInsets.all(18), children: [
-            Text(widget.neckwear ? 'Emerald scarf' : widget.headwear ? 'Tiny Wizard Hat' : 'Scholar glasses', style: QuestwellTypography.sectionHeading()),
+            Text(widget.satchel ? 'Leather satchel' : widget.neckwear ? 'Emerald scarf' : widget.headwear ? 'Tiny Wizard Hat' : 'Scholar glasses', style: QuestwellTypography.sectionHeading()),
             const SizedBox(height: 12),
             if (widget.neckwear) DropdownButton<String>(
               value: _class, isExpanded: true,
               items: ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer'].map((value) =>
                 DropdownMenuItem(value: value, child: Text(value[0].toUpperCase() + value.substring(1)))).toList(),
               onChanged: (value) { if (value != null) setState(() => _class = value); }),
-            Text(widget.neckwear ? 'Deep emerald, warm gold, and room for your collar. Preview only.'
+            Text(widget.satchel ? 'Worn leather, brass hardware, and space for the next adventure. Preview only.' : widget.neckwear ? 'Deep emerald, warm gold, and room for your collar. Preview only.'
               : widget.headwear ? 'A little magic, perched just so. Preview only.'
               : 'A warm brass frame, with room for a little curiosity. Preview only.'),
             const SizedBox(height: 12),
@@ -50,6 +54,9 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
                 labelStyle: GoogleFonts.roboto(fontSize: 14),
                 selected: _body == body,
                 onSelected: (_) => setState(() => _body = body))).toList()),
+            if (widget.satchel) SwitchListTile(contentPadding: EdgeInsets.zero,
+              title: const Text('Try on satchel'), value: _satchel,
+              onChanged: (value) => setState(() => _satchel = value)),
             if (widget.headwear) SwitchListTile(contentPadding: EdgeInsets.zero,
               title: const Text('Try on hat'), value: _hat,
               onChanged: (value) => setState(() => _hat = value)),

@@ -9,6 +9,7 @@ import 'wanderer_underlayer_clip.dart';
 import 'questwell_scholar_glasses.dart';
 import 'questwell_wizard_hat.dart';
 import 'questwell_emerald_scarf.dart';
+import 'questwell_leather_satchel.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -229,6 +230,12 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ),
             ),
           if (classOverlay != null) _assetLayer(classOverlay),
+          if (equippedSlugs['back'] == QuestwellLeatherSatchel.previewSlug) ...[
+            QuestwellLeatherSatchel(bodyType: body),
+            ClipPath(clipper: SatchelForearmClipper(body), child: _assetLayer(_baseAsset)),
+            if (classOverlay != null)
+              ClipPath(clipper: SatchelForearmClipper(body), child: _assetLayer(classOverlay)),
+          ],
           if (equippedSlugs['neck'] == 'emerald-scholar-scarf')
             QuestwellEmeraldScarf(bodyType: body),
           if (equippedSlugs['face'] == 'round-scholar-glasses')

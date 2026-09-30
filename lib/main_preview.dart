@@ -25,6 +25,12 @@ void main() {
   } else if (Uri.base.queryParameters['review'] == 'scarf-matrix') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const ScarfFitReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'satchel-matrix') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const ScarfFitReviewApp(satchel: true));
+  } else if (Uri.base.queryParameters['review'] == 'satchel') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const EquipmentReviewApp(headwear: true, neckwear: true, satchel: true));
   } else if (Uri.base.queryParameters['review'] == 'scarf') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const EquipmentReviewApp(headwear: true, neckwear: true));

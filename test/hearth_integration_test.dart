@@ -3,6 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_momentum/widgets/questwell_pixel_art.dart';
 import 'package:project_momentum/preview/hearth_review.dart';
+import 'package:project_momentum/preview/equipment_review.dart';
+import 'package:project_momentum/widgets/questwell_leather_satchel.dart';
+import 'package:project_momentum/widgets/questwell_emerald_scarf.dart';
+import 'package:project_momentum/services/questwell_equipment_policy.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -60,4 +64,21 @@ void main() {
     expect([scene.archetype, portrait.archetype], ['guardian', 'guardian']);
     expect(tester.takeException(), isNull);
   });
+  testWidgets('Satchel removal preserves scarf and stays unavailable in real inventory', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(390, 1800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(const EquipmentReviewApp(headwear: true, neckwear: true, satchel: true));
+    await tester.pumpAndSettle();
+    expect(find.byType(QuestwellLeatherSatchel), findsNWidgets(2));
+    expect(find.byType(QuestwellEmeraldScarf), findsNWidgets(2));
+    await tester.tap(find.text('Try on satchel'));
+    await tester.pumpAndSettle();
+    expect(find.byType(QuestwellLeatherSatchel), findsNothing);
+    expect(find.byType(QuestwellEmeraldScarf), findsNWidgets(2));
+    for (final slug in ['leather-satchel', 'wayfarer-satchel', QuestwellLeatherSatchel.previewSlug]) {
+      expect(QuestwellEquipmentPolicy.isReady(slug, 'back'), isFalse);
+    }
+    expect(tester.takeException(), isNull);
+  });
+
 }

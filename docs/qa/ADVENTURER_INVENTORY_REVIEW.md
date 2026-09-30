@@ -79,3 +79,32 @@ Individual try-on, class/body selectors and Hearth view: `?review=scarf`.
 Added the exact scarf slug + neck category to the shared equipment allowlist and
 to the ownership/class/busy/unequip widget scenarios. Hat persistence was confirmed
 by the founder. Scarf phone sign-out/sign-in confirmation remains pending.
+
+## Scarf acceptance and persistence confirmed
+
+Founder approved the female correction at `29107d8` and confirmed the scarf stays
+equipped after sign-out/sign-in (2026-09-29 America/Chicago). Scarf fit and founder
+persistence checks are complete.
+
+## Leather satchel candidate
+
+Art standard reaffirmed by the founder: all accessories must match the approved
+64-bit retro fantasy game aesthetic, evaluated at actual avatar and Hearth scale.
+The generated source image alone is not visual acceptance.
+
+- Illustrated cognac-leather bag, brass hardware, stitching and rolled parchment.
+  Generated with the built-in image tool using the previous satchel and frozen
+  female base as style references; transparent PNG preserved unchanged.
+- Body-specific shoulder strap and hip anchors; original forearm/hand layers sit
+  above the bag. Scarf stays above the strap. Original avatar and robe assets unchanged.
+- Review: `?review=satchel`; all five classes and three bodies: `?review=satchel-matrix`.
+- Review-only slug; neither actual satchel slug is enabled in the equipment policy.
+  No grants, purchases, account writes, merge or launch.
+- Next gate: founder visual approval, then ownership/equip/persistence validation.
+- Generation brief: standalone front-view cognac leather satchel bag only, no long
+  strap, rich illustrated fantasy RPG style, one brass buckle, tan stitching, small
+  rolled parchment and upper attachment rings; clean transparent background.
+
+Delivery checkpoint: founder explicitly authorized uploading the satchel artwork
+and code to funszdidiot/questwell-app on questwell-dev for preview only.
+Visual acceptance, equipment enablement, merge and launch remain gated.
