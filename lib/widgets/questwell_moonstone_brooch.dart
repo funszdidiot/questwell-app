@@ -8,12 +8,12 @@ class QuestwellMoonstoneBrooch extends StatelessWidget {
   static const asset = 'assets/images/questwell/avatar/brooch_moonstone_illustrated_v1.png';
   final String bodyType;
 
-  // Viewer-left upper robe, outside the scarf and opposite the satchel strap.
+  // Viewer-left upper lapel, above the armhole and beside the scarf.
   // The approved square asset has transparent padding around its oval shape.
   static Rect bounds(String bodyType) => switch (bodyType) {
-    'female' => const Rect.fromLTWH(84, 103, 18, 18),
-    'male' => const Rect.fromLTWH(82, 99, 18, 18),
-    _ => const Rect.fromLTWH(83, 101, 18, 18),
+    'female' => const Rect.fromLTWH(92, 87, 14, 14),
+    'male' => const Rect.fromLTWH(91, 83, 14, 14),
+    _ => const Rect.fromLTWH(91.5, 85, 14, 14),
   };
 
   @override

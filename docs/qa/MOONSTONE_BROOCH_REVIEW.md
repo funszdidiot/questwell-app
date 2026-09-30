@@ -20,3 +20,7 @@ grant or purchase. Existing scarf, lantern, and satchel slots remain independent
 UI tests cover equip/unequip, ownership retention, saving and class locks.
 
 Keep unmerged and unlaunched.
+
+Fit correction: the first anchor sat at the armhole. Move the pin higher and
+inward onto the upper lapel, and reduce the square bounds from 18 to 14 units
+so it fits the narrow lapel beside the scarf. Check scarf on/off for each body.
