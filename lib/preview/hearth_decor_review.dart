@@ -9,6 +9,7 @@ class HearthDecorReviewApp extends StatefulWidget {
 }
 class _HearthDecorReviewAppState extends State<HearthDecorReviewApp> {
   double width = 390;
+  String body = 'female';
   static const items = ['hearth-fern', 'walnut-bookshelf', 'burgundy-reading-chair'];
   static const arrangements = [[0,1,2],[1,0,2],[1,2,0]];
   static const names = ['Fern', 'Bookshelf', 'Chair'];
@@ -21,6 +22,11 @@ class _HearthDecorReviewAppState extends State<HearthDecorReviewApp> {
         const Text('Hearth décor · placement review', style: TextStyle(fontSize: 22)),
         const Text('Supported arrangements • Left / Right / Front'),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          DropdownButton<String>(value: body,
+            items: const ['female','male','neutral'].map((b) => DropdownMenuItem(
+              value: b, child: Text(b == 'neutral' ? 'Gender neutral' : b == 'male' ? 'Male' : 'Female'))).toList(),
+            onChanged: (b) => setState(() => body = b!)),
+          const SizedBox(width: 16),
           const Text('Room width: '),
           DropdownButton<double>(value: width,
             items: [320.0,390.0,768.0].map((w) => DropdownMenuItem(
@@ -33,7 +39,7 @@ class _HearthDecorReviewAppState extends State<HearthDecorReviewApp> {
               Text(order.map((i) => names[i]).join(' / ')),
               const SizedBox(height: 6),
               QuestwellHearthPixelScene(height: 310, archetype: 'alchemist',
-                avatarBodyType: 'female', equippedSlugs: {
+                avatarBodyType: body, equippedSlugs: {
                   'room:left': items[order[0]], 'room:right': items[order[1]],
                   'room:front': items[order[2]],
                 }),
