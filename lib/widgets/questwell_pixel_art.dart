@@ -979,18 +979,18 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                                 height: 1.0,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'GEAR ${equippedSlugs.length}${showRelic ? '  •  MASTERED' : ''}',
-                              style: GoogleFonts.roboto(
-                                fontSize: compact ? 7 : 8,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: .5,
-                                color: showRelic
-                                    ? const Color(0xFFFFD978)
-                                    : const Color(0xFF9FB2C5),
+                            if (showRelic) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                'MASTERED',
+                                style: GoogleFonts.roboto(
+                                  fontSize: compact ? 7 : 8,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: .5,
+                                  color: const Color(0xFFFFD978),
+                                ),
                               ),
-                            ),
+                            ],
                           ],
                         ),
                       ],

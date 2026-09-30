@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/questwell_home_sections.dart';
+import '../widgets/questwell_pixel_art.dart';
 import '../widgets/questwell_home_overview.dart';
 import '../widgets/questwell_typography.dart';
 import '../widgets/questwell_campfire_background.dart';
@@ -21,7 +22,11 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
         constraints: const BoxConstraints(maxWidth: 430),
         child: ListView(padding: const EdgeInsets.all(20), children: [
           QuestwellHomeHeader(onOpen: (_) {}),
-          const SizedBox(height: 14),
+          const SizedBox(height: 2),
+          const QuestwellPixelDivider(accent: Color(0xFFD6A84B)),
+          const SizedBox(height: 6),
+          const QuestwellHearthPixelScene(height: 342, archetype: 'scout'),
+          const SizedBox(height: 16),
           QuestwellHomeCharacter(archetype: 'scout', className: 'Scout',
             level: 3, xp: 95, coins: 49, mastered: false, equippedNames: const [],
             collection: const [

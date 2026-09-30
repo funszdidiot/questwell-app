@@ -385,11 +385,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   await context.pushNamed(route);
                   if (mounted) setState(_loadHomeData);
                 }),
-                const SizedBox(height: 10),
+                const SizedBox(height: 2),
                 const QuestwellPixelDivider(
                   accent: Color(0xFFD6A84B),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 6),
                 FutureBuilder<QuestwellCosmeticsSnapshot>(
                   future: _homeSnapshotFuture,
                   builder: (context, snapshot) {

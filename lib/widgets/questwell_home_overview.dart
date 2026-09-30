@@ -17,7 +17,7 @@ class QuestwellHomeHeader extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start, children: [
       const QuestwellBrandWordmark(),
-      const SizedBox(height: 12),
+      const SizedBox(height: 4),
       Wrap(spacing: 8, runSpacing: 4, children: [
         for (final entry in const {'quest': 'Quests', 'chronicle': 'Chronicle',
           'adventurer': 'Adventurer'}.entries)

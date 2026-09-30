@@ -33,3 +33,10 @@ Development-only cleanup requested September 29, 2026.
 ## Typography correction
 
 Founder approved the new layout, with a correction to retain the established typography rules. Questwell wordmark stays unchanged. Section headings use Press Start 2P; subheaders, descriptions, controls and supporting text retain Roboto. Restored pixel headings for class, loadout, collection, weekly momentum, Campfire Mode and the empty-board title. Shared section-heading style and regression assertions protect this hierarchy.
+
+## Final header polish
+
+- Reduced total spacing above/below header navigation by 22 logical pixels; retained 48-pixel tap targets.
+- Removed gear count from Hearth portrait badge; class and earned Mastered status remain.
+- Integrated the approved Hearth into the home review fixture for full header/scene inspection.
+- Read-only persistence review: energy mode writes to the signed-in user's row; avatar body uses the existing set_avatar_body_type RPC. Home loads both values from the profile on startup. This confirms the code paths, not a live authenticated refresh. Real-account persistence remains unverified in the agent's browser.
