@@ -4,10 +4,12 @@ import 'questwell_bookshelf.dart';
 import 'questwell_fern.dart';
 import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
+import 'questwell_wall_art.dart';
 
 /// Authored furniture proportions and floor anchors shared by every Hearth view.
 class QuestwellHearthDecor {
   static Map<String, String> choices(String slug) => switch (slug) {
+    QuestwellWallArt.fern || QuestwellWallArt.celestial => const {'wall_left': 'Left wall', 'wall_right': 'Right wall'},
     QuestwellReadingTable.slug => const {'side': 'Beside the chair'},
     QuestwellBookshelf.slug => const {'left': 'Left wall', 'right': 'Right wall'},
     QuestwellReadingChair.slug => const {'front': 'Left floor', 'right': 'Right floor'},

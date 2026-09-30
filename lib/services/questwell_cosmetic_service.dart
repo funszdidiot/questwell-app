@@ -69,7 +69,8 @@ class QuestwellCosmetic {
   final bool owned;
   final bool equipped;
   final String? roomSlot;
-  String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}' : category;
+  String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}'
+    : category == 'wall_art' && roomSlot != null && roomSlot != 'wall_center' ? 'wall_art:$roomSlot' : category;
 
   QuestwellCosmetic copyWith({
     bool? owned,

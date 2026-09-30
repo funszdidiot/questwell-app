@@ -42,6 +42,8 @@ class _HearthDecorReviewAppState extends State<HearthDecorReviewApp> {
                 avatarBodyType: body, equippedSlugs: {
                   'room:left': items[order[0]], 'room:right': items[order[1]],
                   'room:front': items[order[2]], 'room:side': 'walnut-reading-table', 'wall_art': 'moonlit-woodland',
+                  if (order[1] == 1) 'wall_art:wall_left': 'fern-study'
+                  else 'wall_art:wall_right': 'celestial-study',
                 }),
             ])),
           ]),

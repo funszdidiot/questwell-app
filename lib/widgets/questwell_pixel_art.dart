@@ -943,6 +943,17 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   height: math.min(sceneHeight * .17, sceneWidth * .24 / 1.4),
                   child: const QuestwellWallArt(),
                 ),
+              for (final side in ['wall_left', 'wall_right'])
+                if (equippedSlugs['wall_art:$side'] case final String art)
+                  if (QuestwellWallArt.isSide(art))
+                    Positioned(
+                      key: ValueKey('hearth-$side-art-bounds'),
+                      top: sceneHeight * .20,
+                      left: sceneWidth * (side == 'wall_left' ? .28 : .72) - math.min(sceneHeight * .23 * .58, sceneWidth * .14) / 2,
+                      width: math.min(sceneHeight * .23 * .58, sceneWidth * .14),
+                      height: math.min(sceneHeight * .23, sceneWidth * .14 / .58),
+                      child: QuestwellWallArt(artSlug: art),
+                    ),
               for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
                   if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
@@ -3903,6 +3914,20 @@ class _ItemPainter extends CustomPainter {
       p.color = const Color(0xFFA53A32);
       canvas.drawPath(path, p);
       rect(size.width * .47, size.height * .20, size.width * .06, size.height * .50, gold);
+    } else if (QuestwellWallArt.isSide(slug)) {
+      final u = size.width / 16;
+      void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);
+      px(3,1,10,14,const Color(0xFF70432D)); px(4,2,8,12,gold);
+      final botanical = slug == QuestwellWallArt.fern;
+      px(5,3,6,10,botanical ? paper : const Color(0xFF152D54));
+      if (botanical) {
+        const leaf = Color(0xFF397443);
+        px(7,4,1,8,leaf);
+        for (final y in [5.0,7.0,9.0]) { px(6,y,1,1,leaf); px(8,y-1,2,1,leaf); }
+      } else {
+        px(6,4,3,4,gold); px(7,4,3,3,const Color(0xFF152D54));
+        px(9,9,1,1,gold); px(7,10,1,1,gold); px(6,12,1,1,gold);
+      }
     } else if (slug == QuestwellWallArt.slug) {
       final u = size.width / 16;
       void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);

@@ -1,3 +1,4 @@
+import '../../widgets/questwell_wall_art.dart';
 import '/widgets/questwell_room_picker.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_cosmetic_service.dart';
@@ -109,7 +110,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
     setState(() => _busyCosmeticId = cosmetic.id);
 
     try {
-      if (cosmetic.category == 'room') {
+      if (cosmetic.category == 'room' || QuestwellWallArt.isSide(cosmetic.slug)) {
         final data = await QuestwellCosmeticService.load();
         if (!mounted) return;
         final equipped = data.cosmetics.where((i) => i.equipped).toList();
@@ -117,7 +118,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
           slug: cosmetic.slug, currentSlot: cosmetic.equipped ? cosmetic.roomSlot ?? 'right' : null,
           archetype: data.profile.adventurerArchetype, bodyType: data.profile.avatarBodyType,
           equippedSlugs: {for (final i in equipped) i.renderKey: i.slug},
-          occupants: {for (final i in equipped.where((i) => i.category == 'room'))
+          occupants: {for (final i in equipped.where((i) => i.category == cosmetic.category))
             i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)});
         if (pick == null) return;
         await QuestwellCosmeticService.place(cosmetic.id, pick.slot, pick.expectedOccupant);

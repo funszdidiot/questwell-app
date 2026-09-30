@@ -27,8 +27,12 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
           }); },
           onEquip: (id) => setState(() { if (id == 's') { _satchelEquipped = true; } else if (id == 'a') { _glassesEquipped = true; } else { _otherEquipped.add(id); } }),
           onUnequip: (id) => setState(() { _roomSlots.remove(id); if (id == 's') { _satchelEquipped = false; } else if (id == 'a') { _glassesEquipped = false; } else { _otherEquipped.remove(id); } }), items: [
+            for (final art in [('fern-art', 'Fern Study', 'fern-study'), ('celestial-art', 'Celestial Study', 'celestial-study')])
+              AdventurerInventoryItem(id: art.$1, name: art.$2, slug: art.$3, category: 'wall_art',
+                description: 'Sample ownership. Choose the left or right wall.', owned: true,
+                equipped: _roomSlots.containsKey(art.$1), roomSlot: _roomSlots[art.$1], classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'painting', name: 'Moonlit Woodland', slug: 'moonlit-woodland', category: 'wall_art',
-              description: 'Sample ownership. One wall piece at a time; furniture stays in place.', owned: true,
+              description: 'Sample ownership. A landscape for the center wall; side paintings and furniture stay in place.', owned: true,
               equipped: _otherEquipped.contains('painting'), classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'bookshelf', name: 'Walnut Bookshelf', slug: 'walnut-bookshelf', category: 'room',
               description: 'Sample ownership. Warm walnut, worn books, and brass details for your Hearth.', owned: true,

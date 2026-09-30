@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'questwell_class_emblem.dart';
 import 'questwell_room_picker.dart';
+import 'questwell_wall_art.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
@@ -13,7 +14,8 @@ class AdventurerInventoryItem {
     this.archetype, this.roomSlot});
   final String id, name, slug, category, description;
   final String? archetype, roomSlot;
-  String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}' : category;
+  String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}'
+    : category == 'wall_art' && roomSlot != null && roomSlot != 'wall_center' ? 'wall_art:$roomSlot' : category;
   final bool owned, equipped, classLocked, shop;
 }
 
@@ -198,7 +200,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       slug: item.slug, currentSlot: item.equipped ? item.roomSlot ?? 'right' : null,
       archetype: widget.archetype, bodyType: widget.bodyType,
       equippedSlugs: {for (final i in widget.items.where((i) => i.equipped)) i.renderKey: i.slug},
-      occupants: {for (final i in widget.items.where((i) => i.category == 'room' && i.equipped))
+      occupants: {for (final i in widget.items.where((i) => i.category == item.category && i.equipped))
         i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)});
     if (pick != null && mounted) await widget.onPlace?.call(item.id, pick.slot, pick.expectedOccupant);
   }
@@ -208,6 +210,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
     final ready = QuestwellEquipmentPolicy.isReady(item.slug, item.category);
     final room = item.category == 'room';
     final wallArt = item.category == 'wall_art';
+    final movable = room || QuestwellWallArt.isSide(item.slug);
     final status = item.equipped ? (room ? 'Placed' : wallArt ? 'Hung' : 'Equipped') : item.owned ? 'Owned' : 'Locked';
     return _panel(Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -226,11 +229,11 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       if (item.classLocked) Padding(padding: const EdgeInsets.only(top: 8),
         child: Text('Requires ${_label(item.archetype ?? '')} class.', style: _text(13, color: _gold))),
       const SizedBox(height: 12),
-      if (room && item.owned && ready && widget.onPlace != null)
+      if (movable && item.owned && ready && widget.onPlace != null)
         OutlinedButton(onPressed: busy ? null : () => _place(item),
           style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold, textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
-          child: Text(item.equipped ? 'Move in Hearth' : 'Place in Hearth')),
-      if (!(room && item.owned && !item.equipped && ready && widget.onPlace != null))
+          child: Text(item.equipped ? 'Move in Hearth' : wallArt ? 'Hang in Hearth' : 'Place in Hearth')),
+      if (!(movable && item.owned && !item.equipped && ready && widget.onPlace != null))
       OutlinedButton(
         onPressed: busy ? null : item.equipped ? () => widget.onUnequip(item.id)
           : !item.owned && item.shop ? widget.onMarket

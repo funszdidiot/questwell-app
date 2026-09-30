@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_hearth_decor.dart';
+import 'questwell_wall_art.dart';
 
 class RoomOccupant {
   const RoomOccupant(this.id, this.name);
@@ -55,16 +56,21 @@ class _RoomPickerState extends State<_RoomPicker> {
   }
   @override
   Widget build(BuildContext context) {
+    final wallArt = QuestwellWallArt.isSide(widget.slug);
+    final prefix = wallArt ? 'wall_art' : 'room';
+    final blockedByShelf = wallArt && widget.equippedSlugs['room:${_slot == 'wall_left' ? 'left' : 'right'}'] == 'walnut-bookshelf';
     final preview = Map<String, String>.from(widget.equippedSlugs)
-      ..removeWhere((key, value) => (key == 'room' || key.startsWith('room:')) && value == widget.slug)
-      ..['room:$_slot'] = widget.slug;
+      ..removeWhere((key, value) => (key == prefix || key.startsWith('$prefix:')) && value == widget.slug)
+      ..['$prefix:$_slot'] = widget.slug;
     return Dialog(backgroundColor: const Color(0xFF111827), insetPadding: const EdgeInsets.all(12),
       child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 430),
         child: SingleChildScrollView(child: Padding(padding: const EdgeInsets.all(16),
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Text('Place ${widget.name}', style: const TextStyle(fontSize: 21, color: Color(0xFFF0E5CC))),
+            Text('${wallArt ? 'Hang' : 'Place'} ${widget.name}', style: const TextStyle(fontSize: 21, color: Color(0xFFF0E5CC))),
             const SizedBox(height: 8),
             const Text('Choose a spot below. Preview first, then save.'),
+            if (blockedByShelf) const Padding(padding: EdgeInsets.only(top: 8),
+              child: Text('The bookshelf may cover part of this painting. Try the other wall for a clearer view.')),
             if (_legacyPlacement) const Padding(
               padding: EdgeInsets.only(top: 8),
               child: Text('This item now has updated placement choices. Choose a new spot and save to move it.'),
