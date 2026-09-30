@@ -29,7 +29,7 @@ void main() {
     for (final title in ['ADVENTURER', 'Scout', 'BODY STYLE', 'YOUR CLASS', 'CLASS MASTERY']) {
       expect(tester.widget<Text>(find.byWidgetPredicate((w) => w is Text && w.data == title && w.style != null)).style?.fontFamily, GoogleFonts.pressStart2p().fontFamily);
     }
-    expect(tester.widget<Text>(find.text('Level 3')).style?.fontFamily, GoogleFonts.roboto().fontFamily);
+    expect(tester.widget<Text>(find.text('Level 3')).style?.fontFamily, GoogleFonts.roboto(fontWeight: FontWeight.w700).fontFamily);
     for (final chip in tester.widgetList<ChoiceChip>(find.byType(ChoiceChip))) {
       expect(chip.labelStyle?.fontFamily, GoogleFonts.roboto().fontFamily);
     }
