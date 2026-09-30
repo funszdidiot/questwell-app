@@ -41,7 +41,7 @@ class _HearthDecorReviewAppState extends State<HearthDecorReviewApp> {
               QuestwellHearthPixelScene(height: 310, archetype: 'alchemist',
                 avatarBodyType: body, equippedSlugs: {
                   'room:left': items[order[0]], 'room:right': items[order[1]],
-                  'room:front': items[order[2]],
+                  'room:front': items[order[2]], 'room:side': 'walnut-reading-table',
                 }),
             ])),
           ]),

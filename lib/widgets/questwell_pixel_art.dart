@@ -15,6 +15,7 @@ import 'questwell_moonstone_brooch.dart';
 import 'questwell_bookshelf.dart';
 import 'questwell_fern.dart';
 import 'questwell_reading_chair.dart';
+import 'questwell_reading_table.dart';
 import 'questwell_hearth_decor.dart';
 
 class QuestwellPixelPalette {
@@ -933,9 +934,9 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               ),
               for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
-                  if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug)
+                  if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
                     QuestwellHearthDecor.positioned(
-                      slug: slug, slot: slot,
+                      slug: slug, slot: slot, equipment: equippedSlugs,
                       scene: Size(sceneWidth, sceneHeight),
                     ),
               Positioned(
@@ -3891,6 +3892,19 @@ class _ItemPainter extends CustomPainter {
       p.color = const Color(0xFFA53A32);
       canvas.drawPath(path, p);
       rect(size.width * .47, size.height * .20, size.width * .06, size.height * .50, gold);
+    } else if (slug == QuestwellReadingTable.slug) {
+      final u = size.width / 16;
+      void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);
+      const wood = Color(0xFF74452C);
+      const edge = Color(0xFFB77D46);
+      px(2,8,12,2,wood); px(2,8,12,1,edge);
+      px(3,10,2,5,wood); px(11,10,2,5,wood);
+      px(4,10,1,2,edge); px(12,10,1,2,edge);
+      px(3,6,6,2,const Color(0xFF355B41));
+      px(4,4,6,2,const Color(0xFF873C3A));
+      px(4,5,5,1,paper); px(3,7,5,1,paper);
+      px(11,6,3,1,gold); px(12,3,1,3,paper);
+      px(12,1,1,2,const Color(0xFFFFC45B));
     } else if (slug == QuestwellReadingChair.slug) {
       final u = size.width / 16;
       void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);

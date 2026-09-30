@@ -24,7 +24,7 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(const AdventurerReviewApp());
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Inventory · 10'));
+    await tester.tap(find.text('Inventory · 11'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('All categories'));
     await tester.pumpAndSettle();
@@ -45,7 +45,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(gear.type), findsNothing);
     expect(find.text('Owned · ${gear.category}'), gear.type == QuestwellBookshelf ? findsNWidgets(3) : findsOneWidget);
-    expect(find.text('Inventory · 10'), findsOneWidget);
+    expect(find.text('Inventory · 11'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
   }

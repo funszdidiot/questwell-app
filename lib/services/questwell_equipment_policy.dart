@@ -9,5 +9,6 @@ abstract final class QuestwellEquipmentPolicy {
       (slug == 'moonstone-brooch' && category == 'accessory') ||
       (slug == 'walnut-bookshelf' && category == 'room') ||
       (slug == 'hearth-fern' && category == 'room') ||
-      (slug == 'burgundy-reading-chair' && category == 'room');
+      (slug == 'burgundy-reading-chair' && category == 'room') ||
+      (slug == 'walnut-reading-table' && category == 'room');
 }
