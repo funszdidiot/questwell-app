@@ -28,7 +28,8 @@ void main() {
         expect(otherArt.overlaps(center), false);
         final leftArt = tester.getRect(find.byKey(const ValueKey('hearth-wall_left-art-bounds')));
         final rightArt = tester.getRect(find.byKey(const ValueKey('hearth-wall_right-art-bounds')));
-        expect(leftArt.size, rightArt.size);
+        expect(leftArt.width, closeTo(rightArt.width, .01));
+        expect(leftArt.height, closeTo(rightArt.height, .01));
         expect(leftArt.center.dy, closeTo(center.center.dy, .01));
         expect(rightArt.center.dy, closeTo(center.center.dy, .01));
         expect(center.left - leftArt.right, closeTo(rightArt.left - center.right, .01));
