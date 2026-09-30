@@ -44,7 +44,7 @@ void main() {
     await tester.tap(find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Remove from Hearth' : 'Unequip'));
     await tester.pumpAndSettle();
     expect(find.byType(gear.type), findsNothing);
-    expect(find.text('Owned · ${gear.category}'), gear.type == QuestwellBookshelf ? findsNWidgets(3) : findsOneWidget);
+    expect(find.text('Owned · ${gear.category}'), gear.type == QuestwellBookshelf ? findsNWidgets(4) : findsOneWidget);
     expect(find.text('Inventory · 11'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
