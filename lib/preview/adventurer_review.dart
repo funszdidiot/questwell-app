@@ -10,17 +10,22 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
   String _class = 'alchemist', _body = 'female';
   bool _glassesEquipped = false;
   bool _satchelEquipped = false;
+  final Set<String> _otherEquipped = {};
   @override
   Widget build(BuildContext context) => MaterialApp(debugShowCheckedModeBanner: false,
     theme: ThemeData.dark(useMaterial3: true), home: Scaffold(backgroundColor: const Color(0xFF111827),
       body: SafeArea(child: Center(child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 430),
         child: QuestwellAdventurerView(archetype: _class, bodyType: _body,
           level: 3, xp: 295, coins: 49, description: 'Choose a class and body style to preview your look. Sample data only.',
-          mastered: false, collectionOwned: 2, collectionTotal: 3, relicName: 'Sample mastery relic',
+          mastered: false, collectionOwned: 4, collectionTotal: 5, relicName: 'Sample mastery relic',
           canClaim: false, onClaim: () {}, onBack: () {}, onMarket: () {},
           onBody: (v) => setState(() => _body = v), onClass: (v) => setState(() => _class = v),
-          onEquip: (id) => setState(() { if (id == 's') { _satchelEquipped = true; } else { _glassesEquipped = true; } }),
-          onUnequip: (id) => setState(() { if (id == 's') { _satchelEquipped = false; } else { _glassesEquipped = false; } }), items: [
+          onEquip: (id) => setState(() { if (id == 's') { _satchelEquipped = true; } else if (id == 'a') { _glassesEquipped = true; } else { _otherEquipped.add(id); } }),
+          onUnequip: (id) => setState(() { if (id == 's') { _satchelEquipped = false; } else if (id == 'a') { _glassesEquipped = false; } else { _otherEquipped.remove(id); } }), items: [
+            AdventurerInventoryItem(id: 'h', name: 'Tiny Wizard Hat', slug: 'tiny-wizard-hat', category: 'head',
+              description: 'Sample ownership. Impractical. Essential.', owned: true, equipped: _otherEquipped.contains('h'), classLocked: false, shop: true),
+            AdventurerInventoryItem(id: 'n', name: 'Emerald Scholar Scarf', slug: 'emerald-scholar-scarf', category: 'neck',
+              description: 'Sample ownership. Emerald cloth with warm gold trim.', owned: true, equipped: _otherEquipped.contains('n'), classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'a', name: 'Round Scholar Glasses', slug: 'round-scholar-glasses', category: 'face',
               description: 'Sample ownership. Try Equip and Unequip here.', owned: true, equipped: _glassesEquipped, classLocked: false, shop: true),
             AdventurerInventoryItem(id: 's', name: 'Leather Satchel', slug: 'leather-satchel', category: 'back',

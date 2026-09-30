@@ -1706,71 +1706,11 @@ class QuestwellItemPixelArt extends StatelessWidget {
   final double size;
   final bool locked;
 
-  String? get _asset {
-    switch (slug) {
-      case 'round-scholar-glasses':
-        return 'assets/images/questwell/avatar/glasses_round_dark.webp';
-      case 'emerald-scholar-scarf':
-        return 'assets/images/questwell/avatar/scarf_emerald.webp';
-      case 'leather-satchel':
-        return QuestwellLeatherSatchel.asset;
-      case 'wayfarer-satchel':
-        return 'assets/images/questwell/avatar/satchel_leather.webp';
-      default:
-        return null;
-    }
-  }
-
-  Alignment get _alignment {
-    switch (slug) {
-      case 'round-scholar-glasses':
-        return const Alignment(0, -0.72);
-      case 'emerald-scholar-scarf':
-        return const Alignment(0, -0.35);
-      case 'leather-satchel':
-      case 'wayfarer-satchel':
-        return const Alignment(-0.18, 0.05);
-      default:
-        return Alignment.center;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final palette = QuestwellPixelPalette.forClass(archetype ?? 'wanderer');
-    final asset = _asset;
-    if (asset != null) {
-      return SizedBox.square(
-        dimension: size,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ClipRect(
-              child: Image.asset(
-                asset,
-                fit: BoxFit.cover,
-                alignment: _alignment,
-                filterQuality: FilterQuality.none,
-                gaplessPlayback: true,
-                errorBuilder: (_, __, ___) => CustomPaint(
-                  painter: _ItemPainter(
-                    slug: slug,
-                    category: category,
-                    palette: palette,
-                    locked: locked,
-                  ),
-                ),
-              ),
-            ),
-            if (locked)
-              const DecoratedBox(
-                decoration: BoxDecoration(color: Color(0x66000000)),
-              ),
-          ],
-        ),
-      );
-    }
-
+    // Inventory and Market share one retro icon treatment. Equipped avatar
+    // artwork is deliberately separate and keeps its approved detail.
+    const palette = [Color(0xFF202B35), Color(0xFF81BFAE), Color(0xFFD0A665)];
     return SizedBox.square(
       dimension: size,
       child: CustomPaint(
@@ -3789,7 +3729,55 @@ class _ItemPainter extends CustomPainter {
     final leather = const Color(0xFF8B5A32);
     final teal = const Color(0xFF76D7C4);
 
-    if (slug.contains('grimoire') || slug.contains('seal')) {
+    if (slug == 'round-scholar-glasses') {
+      // Stepped round rims, a bridge, and temples on the same 16-unit grid.
+      final unit = size.width / 16;
+      void pixel(double x, double y, double w, double h, Color color) =>
+          rect(x * unit, y * unit, w * unit, h * unit, color);
+      for (final x in [2.0, 9.0]) {
+        pixel(x + 1, 5, 3, 1, gold);
+        pixel(x, 6, 1, 4, gold);
+        pixel(x + 4, 6, 1, 4, gold);
+        pixel(x + 1, 10, 3, 1, gold);
+        pixel(x + 1, 6, 3, 4, const Color(0xFF314753));
+        pixel(x + 1, 6, 1, 1, paper);
+      }
+      pixel(7, 7, 2, 1, gold);
+      pixel(1, 6, 1, 1, gold);
+      pixel(14, 6, 1, 1, gold);
+    } else if (slug == 'tiny-wizard-hat') {
+      final unit = size.width / 16;
+      void pixel(double x, double y, double w, double h, Color color) =>
+          rect(x * unit, y * unit, w * unit, h * unit, color);
+      const midnight = Color(0xFF444366);
+      const shade = Color(0xFF302F4B);
+      pixel(8, 2, 3, 1, midnight);
+      pixel(7, 3, 3, 2, midnight);
+      pixel(6, 5, 4, 2, midnight);
+      pixel(5, 7, 6, 3, midnight);
+      pixel(9, 5, 1, 2, shade);
+      pixel(9, 7, 2, 3, shade);
+      pixel(5, 9, 6, 1, gold);
+      pixel(3, 10, 10, 2, midnight);
+      pixel(2, 12, 12, 1, shade);
+      pixel(6, 10, 1, 1, paper);
+    } else if (slug == 'emerald-scholar-scarf') {
+      final unit = size.width / 16;
+      void pixel(double x, double y, double w, double h, Color color) =>
+          rect(x * unit, y * unit, w * unit, h * unit, color);
+      const emerald = Color(0xFF27836A);
+      const shade = Color(0xFF185541);
+      pixel(3, 3, 10, 3, shade);
+      pixel(3, 4, 9, 2, emerald);
+      pixel(4, 6, 4, 7, emerald);
+      pixel(9, 6, 3, 5, shade);
+      pixel(4, 11, 4, 1, gold);
+      pixel(9, 9, 3, 1, gold);
+      pixel(4, 13, 1, 1, emerald);
+      pixel(6, 13, 1, 1, emerald);
+      pixel(9, 11, 1, 1, shade);
+      pixel(11, 11, 1, 1, shade);
+    } else if (slug.contains('grimoire') || slug.contains('seal')) {
       rect(size.width * .24, size.height * .20, size.width * .52, size.height * .58, const Color(0xFF6A337C));
       rect(size.width * .29, size.height * .24, size.width * .06, size.height * .50, gold);
       rect(size.width * .43, size.height * .35, size.width * .27, 5, paper);
