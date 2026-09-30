@@ -931,12 +931,11 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   ),
                 ),
               ),
-              for (final slot in const ['left', 'right', 'front'])
+              for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
                   if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug)
                     QuestwellHearthDecor.positioned(
                       slug: slug, slot: slot,
-                      legacyChairLeft: equippedSlugs['room:left'] == QuestwellReadingChair.slug,
                       scene: Size(sceneWidth, sceneHeight),
                     ),
               Positioned(

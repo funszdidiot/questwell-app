@@ -11,31 +11,44 @@ class QuestwellHearthDecor {
     QuestwellReadingChair.slug => const {'front': 'Left floor', 'right': 'Right floor'},
     _ => const {'left': 'Beside the fireplace', 'right': 'Near the window', 'front': 'Foreground'},
   };
+  static double floorDepth(String slug, String slot) =>
+    slug == QuestwellBookshelf.slug ? .68
+      : slug == QuestwellFern.slug && slot != 'front' ? .70 : .86;
+
+  static List<String> backToFront(Map<String, String> equipment) {
+    String slug(String slot) => equipment['room:$slot'] ??
+      (slot == 'right' ? equipment['room'] : null) ?? '';
+    return ['left', 'right', 'front']..sort((a, b) {
+      final depth = floorDepth(slug(a), a).compareTo(floorDepth(slug(b), b));
+      return depth != 0 ? depth : ['left', 'right', 'front'].indexOf(a)
+        .compareTo(['left', 'right', 'front'].indexOf(b));
+    });
+  }
+
   static Positioned positioned({
     required String slug, required String slot, required Size scene,
-    bool legacyChairLeft = false,
   }) {
     final shelf = slug == QuestwellBookshelf.slug;
     final fern = slug == QuestwellFern.slug;
     final front = slot == 'front';
     final chair = !shelf && !fern;
-    // Match the asset canvas ratio, avoiding hidden BoxFit padding that makes
-    // feet and pots float above their intended floor anchor.
     final ratio = shelf ? 1225 / 1284 : fern ? 1244 / 1264 : 1312 / 1199;
-    final widthFraction = shelf ? .25 : fern ? .20 : .26;
-    final heightFraction = shelf ? .34 : fern ? .25 : .27;
+    // Use the same authored avatar scale as the scene. A chair is adult-sized;
+    // its seat is near knee height. Overlap is intentional, never a reason to
+    // shrink furniture. Width limits only protect the outer frame.
+    final avatarHeight = math.min(scene.height * .76, scene.width * .62 * 4 / 3);
     final height = math.min(
-      scene.width * widthFraction * (front ? 1.08 : 1) / ratio,
-      scene.height * (front ? (chair ? .295 : .31) : heightFraction),
+      avatarHeight * (shelf ? .65 : fern ? (front ? .43 : .40) : .62),
+      scene.width * (shelf ? .44 : fern ? .30 : .50) / ratio,
     );
     final width = height * ratio;
-    final center = scene.width * (front
-      ? (fern && legacyChairLeft ? .85 : .17)
-      : slot == 'left' ? .30 : .85);
-    // Chairs stand on the usable floor, well in front of the baseboards.
-    // Retain rendering for legacy left-slot chairs until explicitly moved.
-    final floor = scene.height * (chair ? (slot == 'left' ? .82 : front ? .97 : .95)
-      : front ? .97 : .67);
+    final center = shelf
+      ? (slot == 'right' ? scene.width * .98 - width / 2 : scene.width * .17 + width / 2)
+      : scene.width * (chair ? (slot == 'right' ? .73 : .27)
+        : front ? .20 : slot == 'left' ? .28 : .81);
+    // The back wall meets the floor around .67; the avatar's boots are at .88.
+    // Furniture rests between those planes and is painted behind the avatar.
+    final floor = scene.height * floorDepth(slug, slot);
     final art = shelf ? const QuestwellBookshelf()
       : fern ? const QuestwellFern() : const QuestwellReadingChair();
     return Positioned(

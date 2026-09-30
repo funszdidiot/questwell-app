@@ -10,8 +10,8 @@ import '../lib/services/questwell_equipment_policy.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
-  testWidgets('Room layout separates fern and chair and clears fireplace', (tester) async {
-    for (final width in [320.0,390.0]) {
+  testWidgets('Adult furniture overlaps naturally in depth order behind the avatar', (tester) async {
+    for (final width in [320.0, 390.0]) {
       await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(width: width,
         child: const QuestwellHearthPixelScene(height: 310, equippedSlugs: {
           'room:left': QuestwellFern.slug, 'room:right': QuestwellBookshelf.slug,
@@ -20,9 +20,17 @@ void main() {
       await tester.pump();
       final fern = tester.getRect(find.byKey(const ValueKey('hearth-fern-bounds')));
       final chair = tester.getRect(find.byKey(const ValueKey('hearth-chair-bounds')));
-      final scene = tester.getRect(find.byType(QuestwellHearthPixelScene));
-      expect(fern.overlaps(chair), false);
-      expect(fern.left, greaterThan(scene.left + scene.width * .15));
+      final avatar = tester.getRect(find.byKey(const ValueKey('hearth-avatar-bounds')));
+      expect(chair.height, greaterThan(avatar.height * .50));
+      expect(chair.overlaps(fern), true);
+      expect(chair.overlaps(avatar), true);
+      expect(chair.bottom, greaterThan(fern.bottom));
+      final children = tester.widgetList<Stack>(find.byType(Stack)).firstWhere(
+        (s) => s.children.any((c) => c.key == const ValueKey('hearth-chair-bounds'))).children;
+      int index(String key) => children.indexWhere((c) => c.key == ValueKey(key));
+      expect(index('hearth-bookshelf-bounds'), lessThan(index('hearth-fern-bounds')));
+      expect(index('hearth-fern-bounds'), lessThan(index('hearth-chair-bounds')));
+      expect(index('hearth-chair-bounds'), lessThan(index('hearth-avatar-bounds')));
       expect(tester.takeException(), isNull);
     }
   });
@@ -49,11 +57,8 @@ void main() {
         expect(chair.right, lessThan(scene.right));
         expect(chair.bottom, lessThan(scene.bottom));
         expect(chair.bottom, greaterThan(scene.top + scene.height * .78));
-        final fern = tester.getRect(find.byKey(const ValueKey('hearth-fern-bounds')));
-        final shelf = tester.getRect(find.byKey(const ValueKey('hearth-bookshelf-bounds')));
-        expect(chair.overlaps(fern), false);
-        expect(chair.overlaps(shelf), false);
-        expect(fern.overlaps(shelf), false);
+        final avatar = tester.getRect(find.byKey(const ValueKey('hearth-avatar-bounds')));
+        expect(chair.height, greaterThan(avatar.height * .50));
         final facing = tester.widget<Transform>(find.byKey(
           const ValueKey('hearth-burgundy-reading-chair-facing')));
         expect(facing.transform.entry(0, 0), slot == 'right' ? 1 : -1);
