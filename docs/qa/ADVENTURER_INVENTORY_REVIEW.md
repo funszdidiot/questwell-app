@@ -133,3 +133,16 @@ Added a low-opacity shadow derived from the bag's alpha silhouette, offset 1.1px
 right / 1.3px down with 0.65px blur on the 240 x 320 canvas. Softened the strap's
 center highlight to a finer translucent brown line. Bag bounds, ring attachment,
 source art and equipment gates remain unchanged. Preview review remains pending.
+
+## Approved Leather Satchel inventory integration
+
+Founder accepted the polished direction and reported not finding the item in
+inventory. Catalog check confirmed `leather-satchel` is active, universal, back
+slot, shop unlock, 60 earned coins; founder account does not own it yet.
+Connected the approved renderer and item thumbnail to this real catalog slug,
+enabled only that exact back-slot item in the shared equipment policy, and added
+it to the owned/unowned/class-lock/busy/unequip scenarios. `wayfarer-satchel` stays
+gated. The account-free Adventurer fixture now supports independent satchel and
+glasses Equip/Unequip. No account grants, coin changes or purchases were made.
+Real account purchase and sign-out/sign-in persistence remain user checks.
+No merge to flutterflow or launch.

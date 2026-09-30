@@ -25,7 +25,7 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
   @override
   Widget build(BuildContext context) {
     final equipment = <String, String>{
-      if (widget.satchel && _satchel) 'back': QuestwellLeatherSatchel.previewSlug,
+      if (widget.satchel && _satchel) 'back': QuestwellLeatherSatchel.slug,
       if (_glasses) 'face': 'round-scholar-glasses',
       if (widget.headwear && _hat) 'head': 'tiny-wizard-hat',
       if (widget.neckwear && _scarf) 'neck': 'emerald-scholar-scarf',

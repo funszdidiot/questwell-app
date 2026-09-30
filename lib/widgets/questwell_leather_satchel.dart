@@ -2,10 +2,10 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
-/// Candidate artwork, activated only by the account-free review fixture slug.
+/// Approved satchel artwork, shared by account equipment and visual previews.
 class QuestwellLeatherSatchel extends StatelessWidget {
   const QuestwellLeatherSatchel({super.key, required this.bodyType});
-  static const previewSlug = 'preview-leather-satchel';
+  static const slug = 'leather-satchel';
   static const asset = 'assets/images/questwell/avatar/satchel_leather_illustrated_v1.png';
   final String bodyType;
 

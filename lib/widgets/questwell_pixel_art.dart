@@ -230,7 +230,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ),
             ),
           if (classOverlay != null) _assetLayer(classOverlay),
-          if (equippedSlugs['back'] == QuestwellLeatherSatchel.previewSlug) ...[
+          if (equippedSlugs['back'] == QuestwellLeatherSatchel.slug) ...[
             QuestwellLeatherSatchel(bodyType: body),
             ClipPath(clipper: SatchelForearmClipper(body), child: _assetLayer(_baseAsset)),
             if (classOverlay != null)
@@ -1713,6 +1713,7 @@ class QuestwellItemPixelArt extends StatelessWidget {
       case 'emerald-scholar-scarf':
         return 'assets/images/questwell/avatar/scarf_emerald.webp';
       case 'leather-satchel':
+        return QuestwellLeatherSatchel.asset;
       case 'wayfarer-satchel':
         return 'assets/images/questwell/avatar/satchel_leather.webp';
       default:

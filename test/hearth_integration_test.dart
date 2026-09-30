@@ -64,7 +64,7 @@ void main() {
     expect([scene.archetype, portrait.archetype], ['guardian', 'guardian']);
     expect(tester.takeException(), isNull);
   });
-  testWidgets('Satchel removal preserves scarf and stays unavailable in real inventory', (tester) async {
+  testWidgets('Satchel removal preserves scarf and only approved back-slot satchel is available', (tester) async {
     await tester.binding.setSurfaceSize(const Size(390, 1800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(const EquipmentReviewApp(headwear: true, neckwear: true, satchel: true));
@@ -75,7 +75,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(QuestwellLeatherSatchel), findsNothing);
     expect(find.byType(QuestwellEmeraldScarf), findsNWidgets(2));
-    for (final slug in ['leather-satchel', 'wayfarer-satchel', QuestwellLeatherSatchel.previewSlug]) {
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellLeatherSatchel.slug, 'back'), isTrue);
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellLeatherSatchel.slug, 'neck'), isFalse);
+    for (final slug in ['wayfarer-satchel', 'preview-leather-satchel']) {
       expect(QuestwellEquipmentPolicy.isReady(slug, 'back'), isFalse);
     }
     expect(tester.takeException(), isNull);
