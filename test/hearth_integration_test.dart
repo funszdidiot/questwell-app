@@ -7,11 +7,34 @@ import 'package:project_momentum/preview/equipment_review.dart';
 import 'package:project_momentum/widgets/questwell_leather_satchel.dart';
 import 'package:project_momentum/widgets/questwell_emerald_scarf.dart';
 import 'package:project_momentum/widgets/questwell_brass_lantern.dart';
+import 'package:project_momentum/widgets/questwell_moonstone_brooch.dart';
 import 'package:project_momentum/services/questwell_equipment_policy.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
+
+  testWidgets('Brooch review toggles independently across every class and body', (tester) async {
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellMoonstoneBrooch.previewSlug, 'accessory'), false);
+    for (final kind in ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer']) {
+      for (final body in ['female', 'male', 'neutral']) {
+        for (final enabled in [true, false]) {
+          await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(width: 240, height: 320,
+            child: QuestwellLayeredAdventurerArt(archetype: kind, avatarBodyType: body,
+              equippedSlugs: {'back': QuestwellLeatherSatchel.slug,
+                'hands': QuestwellBrassLantern.slug, 'neck': 'emerald-scholar-scarf',
+                if (enabled) 'accessory': QuestwellMoonstoneBrooch.previewSlug}),
+          ))));
+          await tester.pump();
+          expect(find.byType(QuestwellMoonstoneBrooch), enabled ? findsOneWidget : findsNothing);
+          expect(find.byType(QuestwellLeatherSatchel), findsOneWidget);
+          expect(find.byType(QuestwellBrassLantern), findsOneWidget);
+          expect(find.byType(QuestwellEmeraldScarf), findsOneWidget);
+          expect(tester.takeException(), isNull);
+        }
+      }
+    }
+  });
 
   testWidgets('Approved lantern can be removed independently across fits', (tester) async {
     expect(QuestwellEquipmentPolicy.isReady(QuestwellBrassLantern.slug, 'hands'), true);

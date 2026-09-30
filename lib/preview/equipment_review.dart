@@ -4,10 +4,12 @@ import '../widgets/questwell_pixel_art.dart';
 import '../widgets/questwell_typography.dart';
 import '../widgets/questwell_leather_satchel.dart';
 import '../widgets/questwell_brass_lantern.dart';
+import '../widgets/questwell_moonstone_brooch.dart';
 
 /// Local visual fixture only: never owns items or writes equipment to an account.
 class EquipmentReviewApp extends StatefulWidget {
-  const EquipmentReviewApp({super.key, this.headwear = false, this.neckwear = false, this.satchel = false, this.lantern = false});
+  const EquipmentReviewApp({super.key, this.headwear = false, this.neckwear = false, this.satchel = false, this.lantern = false, this.brooch = false});
+  final bool brooch;
   final bool lantern;
   final bool headwear;
   final bool neckwear;
@@ -23,11 +25,13 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
   bool _scarf = true;
   bool _satchel = true;
   bool _lantern = true;
+  bool _brooch = true;
   String _class = 'scholar';
 
   @override
   Widget build(BuildContext context) {
     final equipment = <String, String>{
+      if (widget.brooch && _brooch) 'accessory': QuestwellMoonstoneBrooch.previewSlug,
       if (widget.lantern && _lantern) 'hands': QuestwellBrassLantern.slug,
       if (widget.satchel && _satchel) 'back': QuestwellLeatherSatchel.slug,
       if (_glasses) 'face': 'round-scholar-glasses',
@@ -42,7 +46,7 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
         body: SafeArea(child: Center(child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 430),
           child: ListView(padding: const EdgeInsets.all(18), children: [
-            Text(widget.lantern ? 'Brass lantern — fit review' : widget.satchel ? 'Leather satchel' : widget.neckwear ? 'Emerald scarf' : widget.headwear ? 'Tiny Wizard Hat' : 'Scholar glasses', style: QuestwellTypography.sectionHeading()),
+            Text(widget.brooch ? 'Moonstone brooch — fit review' : widget.lantern ? 'Brass lantern — fit review' : widget.satchel ? 'Leather satchel' : widget.neckwear ? 'Emerald scarf' : widget.headwear ? 'Tiny Wizard Hat' : 'Scholar glasses', style: QuestwellTypography.sectionHeading()),
             const SizedBox(height: 12),
             if (widget.neckwear) DropdownButton<String>(
               value: _class, isExpanded: true,
@@ -58,6 +62,15 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
                 labelStyle: GoogleFonts.roboto(fontSize: 14),
                 selected: _body == body,
                 onSelected: (_) => setState(() => _body = body))).toList()),
+            if (widget.brooch) ...[
+              SwitchListTile(contentPadding: EdgeInsets.zero,
+                title: const Text('Try on brooch'), value: _brooch,
+                onChanged: (value) => setState(() => _brooch = value)),
+              Row(children: [
+                QuestwellItemPixelArt(slug: QuestwellMoonstoneBrooch.previewSlug, category: 'accessory', size: 48),
+                const SizedBox(width: 12), const Text('Moonstone Brooch · inventory icon'),
+              ]),
+            ],
             if (widget.lantern) SwitchListTile(contentPadding: EdgeInsets.zero,
               title: const Text('Try on lantern'), value: _lantern,
               onChanged: (value) => setState(() => _lantern = value)),

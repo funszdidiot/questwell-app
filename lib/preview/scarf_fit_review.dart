@@ -4,9 +4,11 @@ import '../widgets/questwell_pixel_art.dart';
 import '../widgets/questwell_typography.dart';
 import '../widgets/questwell_leather_satchel.dart';
 import '../widgets/questwell_brass_lantern.dart';
+import '../widgets/questwell_moonstone_brooch.dart';
 
 class ScarfFitReviewApp extends StatelessWidget {
-  const ScarfFitReviewApp({super.key, this.satchel = false, this.lantern = false});
+  const ScarfFitReviewApp({super.key, this.satchel = false, this.lantern = false, this.brooch = false});
+  final bool brooch;
   final bool lantern;
   final bool satchel;
   @override
@@ -24,7 +26,7 @@ class ScarfFitReviewApp extends StatelessWidget {
                 Text(body, style: GoogleFonts.roboto(fontSize: 14)),
                 const SizedBox(height: 6),
                 QuestwellEquippedAvatar(archetype: kind, avatarBodyType: body,
-                  height: 280, equippedSlugs: {if (lantern) 'hands': QuestwellBrassLantern.slug, if (satchel) 'back': QuestwellLeatherSatchel.slug, 'neck': 'emerald-scholar-scarf',
+                  height: 280, equippedSlugs: {if (brooch) 'accessory': QuestwellMoonstoneBrooch.previewSlug, if (lantern) 'hands': QuestwellBrassLantern.slug, if (satchel) 'back': QuestwellLeatherSatchel.slug, 'neck': 'emerald-scholar-scarf',
                     'head': 'tiny-wizard-hat', 'face': 'round-scholar-glasses'}),
               ])),
             )]),

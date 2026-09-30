@@ -11,6 +11,7 @@ import 'questwell_wizard_hat.dart';
 import 'questwell_emerald_scarf.dart';
 import 'questwell_leather_satchel.dart';
 import 'questwell_brass_lantern.dart';
+import 'questwell_moonstone_brooch.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -243,6 +244,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             if (classOverlay != null)
               ClipPath(clipper: LanternHandClipper(body), child: _assetLayer(classOverlay)),
           ],
+          if (equippedSlugs['accessory'] == QuestwellMoonstoneBrooch.previewSlug)
+            QuestwellMoonstoneBrooch(bodyType: body),
           if (equippedSlugs['neck'] == 'emerald-scholar-scarf')
             QuestwellEmeraldScarf(bodyType: body),
           if (equippedSlugs['face'] == 'round-scholar-glasses')
@@ -3877,6 +3880,29 @@ class _ItemPainter extends CustomPainter {
       p.color = const Color(0xFFA53A32);
       canvas.drawPath(path, p);
       rect(size.width * .47, size.height * .20, size.width * .06, size.height * .50, gold);
+    } else if (slug == 'moonstone-brooch' || slug == QuestwellMoonstoneBrooch.previewSlug) {
+      final unit = size.width / 16;
+      void pixel(double x, double y, double w, double h, Color color) =>
+          rect(x * unit, y * unit, w * unit, h * unit, color);
+      const blue = Color(0xFF89BEE6);
+      const deep = Color(0xFF456B9B);
+      const ice = Color(0xFFD9EDFA);
+      pixel(6, 2, 4, 1, gold);
+      pixel(5, 3, 6, 1, gold);
+      pixel(4, 4, 8, 7, gold);
+      pixel(5, 11, 6, 1, gold);
+      pixel(6, 12, 4, 1, gold);
+      pixel(7, 13, 2, 1, gold);
+      pixel(6, 3, 4, 9, deep);
+      pixel(5, 5, 6, 5, deep);
+      pixel(6, 4, 3, 7, blue);
+      pixel(9, 5, 1, 4, blue);
+      pixel(6, 4, 2, 2, ice);
+      pixel(7, 8, 2, 2, ice);
+      pixel(2, 5, 1, 4, gold);
+      pixel(3, 8, 1, 3, gold);
+      pixel(13, 5, 1, 4, gold);
+      pixel(12, 8, 1, 3, gold);
     } else if (slug == 'brass-lantern') {
       // Match the inventory's 16-unit grid; equipped art stays illustrated.
       final unit = size.width / 16;

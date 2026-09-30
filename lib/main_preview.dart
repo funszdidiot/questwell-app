@@ -28,6 +28,12 @@ void main() {
   } else if (Uri.base.queryParameters['review'] == 'satchel-matrix') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const ScarfFitReviewApp(satchel: true));
+  } else if (Uri.base.queryParameters['review'] == 'brooch-matrix') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const ScarfFitReviewApp(satchel: true, lantern: true, brooch: true));
+  } else if (Uri.base.queryParameters['review'] == 'brooch') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const EquipmentReviewApp(headwear: true, neckwear: true, satchel: true, lantern: true, brooch: true));
   } else if (Uri.base.queryParameters['review'] == 'lantern-matrix') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const ScarfFitReviewApp(satchel: true, lantern: true));

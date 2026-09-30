@@ -1,0 +1,33 @@
+import 'dart:math' as math;
+import 'package:flutter/material.dart';
+
+/// Candidate fit only; account equip remains gated until founder fit approval.
+class QuestwellMoonstoneBrooch extends StatelessWidget {
+  const QuestwellMoonstoneBrooch({super.key, required this.bodyType});
+  static const previewSlug = 'preview-moonstone-brooch';
+  static const asset = 'assets/images/questwell/avatar/brooch_moonstone_illustrated_v1.png';
+  final String bodyType;
+
+  // Viewer-left upper robe, outside the scarf and opposite the satchel strap.
+  // The approved square asset has transparent padding around its oval shape.
+  static Rect bounds(String bodyType) => switch (bodyType) {
+    'female' => const Rect.fromLTWH(84, 103, 18, 18),
+    'male' => const Rect.fromLTWH(82, 99, 18, 18),
+    _ => const Rect.fromLTWH(83, 101, 18, 18),
+  };
+
+  @override
+  Widget build(BuildContext context) => IgnorePointer(child: ExcludeSemantics(
+    child: LayoutBuilder(builder: (context, constraints) {
+      final scale = math.min(constraints.maxWidth / 240, constraints.maxHeight / 320);
+      final fit = bounds(bodyType);
+      return Stack(children: [Positioned(
+        left: (constraints.maxWidth - 240 * scale) / 2 + fit.left * scale,
+        top: constraints.maxHeight - 320 * scale + fit.top * scale,
+        width: fit.width * scale, height: fit.height * scale,
+        child: Image.asset(asset, fit: BoxFit.contain,
+          filterQuality: FilterQuality.high, gaplessPlayback: true),
+      )]);
+    }),
+  ));
+}
