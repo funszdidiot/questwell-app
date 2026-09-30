@@ -1,8 +1,43 @@
 # Questwell Project Status
 
-_Last verified: 2026-09-29_
+_Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
+
+## Continuation checkpoint — 2026-09-30
+
+**Current task:** Level-10 Starlit Orrery milestone verification, following the
+level-5 First Journey reward and simplified Hearth. Implementation commit:
+`16b01c781d682229d3c605b56f373013cb184061` on `questwell-dev`.
+
+**Verified:**
+- Questwell Flutter Check run `36792304091`: success.
+- Questwell Preview run `36792304186`: success.
+- Migration `20260930233919_starlit_orrery_milestone` is applied.
+- `tool/qa/starlit_orrery_check.sql` passed against the connected project using
+  synthetic accounts in a rolled-back transaction: task and boss level-10
+  unlocks; no trophy coin charge; ownership and Chronicle timestamp; duplicate
+  protection; confirmed replacement; bookcase support, move, removal and deletion;
+  mantel independence; client level-change and early-equip restrictions.
+- Browser visual review: Orrery renders on the bookcase and mantel; the level-10
+  celebration shows artwork, reward totals, Keep in inventory and Place in Hearth.
+- Existing Flutter checks include 320/390 px trophy placement, a 320 px dialog
+  with enlarged text, skipped milestone crossings, and both trophies in one room.
+
+**Preview:** https://funszdidiot.github.io/questwell-app/?review=starlit-orrery&rev=16b01c7
+
+**Remaining:** Founder iPhone Safari review and signed-in browser validation of
+complete quest → XP → unlock → place → refresh. Database tests and an account-free
+visual fixture do not substitute for that full device/session check.
+
+**Release hold:** No merge to `flutterflow`, external beta or launch is authorized.
+The existing development preview is available for review. Prior founder-check
+history also records unresolved leaked-password protection on the Free plan;
+this turn did not change or re-audit that setting.
+
+The sections below retain historical art checkpoints. Their older active-task
+and “Not Started” labels are superseded by this checkpoint for milestone,
+collection and Chronicle work; they do not imply current promotion approval.
 
 ## Current state
 
@@ -67,7 +102,7 @@ are preserved.
 See `docs/qa/GUARDIAN_FIT_REVIEW.md` and `guardian-fit-review.html`.
 Guardian is frozen; Wanderer is the current class workstream.
 
-**Active workstream:** Epic 3 — Quest Board Redesign  
+**Active workstream:** Milestone rewards / Chronicle — level-10 review  
 **Development branch:** `questwell-dev`  
 **Promoted/app branch:** `flutterflow`  
 **Last promoted milestone:** Epic 1 — Modular Avatar Foundation  
