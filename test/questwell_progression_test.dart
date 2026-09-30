@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import '../lib/services/questwell_progression.dart';
-import '../lib/services/questwell_cosmetic_service.dart';
+import 'package:project_momentum/services/questwell_progression.dart';
+import 'package:project_momentum/services/questwell_cosmetic_service.dart';
 
 void main() {
   test('Gentle curve boundaries and carryover stay consistent', () {
