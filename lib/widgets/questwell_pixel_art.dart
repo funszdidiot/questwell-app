@@ -15,6 +15,7 @@ import 'questwell_moonstone_brooch.dart';
 import 'questwell_bookshelf.dart';
 import 'questwell_fern.dart';
 import 'questwell_reading_chair.dart';
+import 'questwell_hearth_decor.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -933,17 +934,9 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               for (final slot in const ['left', 'right', 'front'])
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
                   if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug)
-                    Positioned(
-                      key: ValueKey(slug == QuestwellBookshelf.slug ? 'hearth-bookshelf-bounds' : slug == QuestwellFern.slug ? 'hearth-fern-bounds' : 'hearth-chair-bounds'),
-                      // Keep the fireplace opening clear; front decor occupies
-                      // the opposite foreground from the left alcove.
-                      left: slot == 'left' ? sceneWidth * .18 : null,
-                      right: slot == 'left' ? null : sceneWidth * (slot == 'front' ? .035 : .015),
-                      bottom: sceneHeight * (slot == 'front' ? .07 : .30),
-                      width: math.min(sceneWidth * (slot == 'left' ? .28 : .32), 176),
-                      height: math.min(sceneWidth * (slot == 'left' ? .31 : .36), 190),
-                      child: slug == QuestwellBookshelf.slug ? const QuestwellBookshelf()
-                        : slug == QuestwellFern.slug ? const QuestwellFern() : const QuestwellReadingChair(),
+                    QuestwellHearthDecor.positioned(
+                      slug: slug, slot: slot,
+                      scene: Size(sceneWidth, sceneHeight),
                     ),
               Positioned(
                 key: const ValueKey('hearth-contact-shadow'),
@@ -1049,7 +1042,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               ),
               Positioned(
                 left: compact ? 14 : 18,
-                bottom: compact ? 12 : 16,
+                top: compact ? 12 : 16,
                 child: IgnorePointer(
                   child: Container(
                     padding: EdgeInsets.fromLTRB(

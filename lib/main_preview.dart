@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'main.dart' as application;
 import 'preview/hearth_review.dart';
+import 'preview/hearth_decor_review.dart';
 import 'preview/quest_board_review.dart';
 import 'preview/home_sections_review.dart';
 import 'preview/adventurer_review.dart';
@@ -10,7 +11,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'bookshelf') {
+  if (Uri.base.queryParameters['review'] == 'hearth-decor') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const HearthDecorReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'bookshelf') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const HearthReviewApp(bookshelf: true));
   } else if (Uri.base.queryParameters['review'] == 'hearth') {
