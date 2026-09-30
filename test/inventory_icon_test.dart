@@ -5,7 +5,8 @@ import 'package:project_momentum/widgets/questwell_pixel_art.dart';
 void inventoryIconTests() {
   testWidgets('Inventory icons share a square painted treatment, never avatar assets', (tester) async {
     for (final slug in ['tiny-wizard-hat', 'emerald-scholar-scarf',
-      'round-scholar-glasses', 'leather-satchel', 'wayfarer-satchel', 'lantern']) {
+      'round-scholar-glasses', 'leather-satchel', 'wayfarer-satchel', 'lantern',
+      'starter-business-suit']) {
       for (final locked in [false, true]) {
         await tester.pumpWidget(MaterialApp(home: Center(child:
           QuestwellItemPixelArt(slug: slug, category: 'back', size: 48, locked: locked),

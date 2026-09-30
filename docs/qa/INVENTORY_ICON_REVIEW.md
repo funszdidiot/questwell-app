@@ -17,3 +17,10 @@ testing, unequipped on insertion; verified coin balance remained 49 and catalog
 price remained 60. No account identifiers are recorded here.
 
 Development preview only. Do not merge into flutterflow or launch.
+
+## Business Suit follow-up
+
+Founder approved replacing its remaining generic sigil with a charcoal jacket,
+cream shirt, and gold tie on the same 16-unit thumbnail grid. Added the starter
+suit to the sample inventory and icon regression test. Avatar art and equipment
+policy are unchanged; this item remains unavailable to equip.

@@ -3729,7 +3729,35 @@ class _ItemPainter extends CustomPainter {
     final leather = const Color(0xFF8B5A32);
     final teal = const Color(0xFF76D7C4);
 
-    if (slug == 'round-scholar-glasses') {
+    if (slug == 'starter-business-suit') {
+      final unit = size.width / 16;
+      void pixel(double x, double y, double w, double h, Color color) =>
+          rect(x * unit, y * unit, w * unit, h * unit, color);
+      const charcoal = Color(0xFF515563);
+      const shadow = Color(0xFF343743);
+      const lapel = Color(0xFF777D89);
+      // A jacket silhouette with separate sleeves, stepped lapels and a tie.
+      pixel(4, 3, 8, 2, charcoal);
+      pixel(3, 5, 10, 5, charcoal);
+      pixel(2, 6, 2, 6, charcoal);
+      pixel(12, 6, 2, 6, shadow);
+      pixel(4, 10, 8, 3, charcoal);
+      pixel(10, 5, 2, 8, shadow);
+      pixel(6, 3, 4, 4, paper);
+      pixel(7, 7, 2, 3, paper);
+      pixel(5, 3, 1, 3, lapel);
+      pixel(6, 6, 1, 2, lapel);
+      pixel(7, 8, 1, 2, lapel);
+      pixel(10, 3, 1, 3, lapel);
+      pixel(9, 6, 1, 2, lapel);
+      pixel(8, 8, 1, 2, lapel);
+      pixel(7, 4, 2, 1, gold);
+      pixel(7, 5, 1, 3, gold);
+      pixel(7, 10, 1, 1, gold);
+      pixel(9, 10, 2, 1, lapel);
+      pixel(2, 12, 2, 1, paper);
+      pixel(12, 12, 2, 1, paper);
+    } else if (slug == 'round-scholar-glasses') {
       // Stepped round rims, a bridge, and temples on the same 16-unit grid.
       final unit = size.width / 16;
       void pixel(double x, double y, double w, double h, Color color) =>
