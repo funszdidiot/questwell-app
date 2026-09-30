@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_adventurer_view.dart';
 import 'inventory_icon_test.dart' show inventoryIconTests;
 import 'package:go_router/go_router.dart';
-import '../lib/flutter_flow/nav/nav.dart' show NavigationExtensions;
+import 'package:project_momentum/flutter_flow/nav/nav.dart' show NavigationExtensions;
 
 void main() {
   inventoryIconTests();
