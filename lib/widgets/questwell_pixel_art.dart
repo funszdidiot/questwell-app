@@ -935,11 +935,13 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug)
                     Positioned(
                       key: ValueKey(slug == QuestwellBookshelf.slug ? 'hearth-bookshelf-bounds' : slug == QuestwellFern.slug ? 'hearth-fern-bounds' : 'hearth-chair-bounds'),
-                      left: slot == 'right' ? null : sceneWidth * .015,
-                      right: slot == 'right' ? sceneWidth * .015 : null,
-                      bottom: sceneHeight * (slot == 'front' ? (slug == QuestwellReadingChair.slug ? .12 : .07) : .30),
-                      width: math.min(sceneWidth * (slot == 'front' ? (slug == QuestwellReadingChair.slug ? .36 : .28) : .38), 190),
-                      height: math.min(sceneWidth * (slot == 'front' && slug != QuestwellReadingChair.slug ? .30 : .40), 202),
+                      // Keep the fireplace opening clear; front decor occupies
+                      // the opposite foreground from the left alcove.
+                      left: slot == 'left' ? sceneWidth * .18 : null,
+                      right: slot == 'left' ? null : sceneWidth * (slot == 'front' ? .035 : .015),
+                      bottom: sceneHeight * (slot == 'front' ? .07 : .30),
+                      width: math.min(sceneWidth * (slot == 'left' ? .28 : .32), 176),
+                      height: math.min(sceneWidth * (slot == 'left' ? .31 : .36), 190),
                       child: slug == QuestwellBookshelf.slug ? const QuestwellBookshelf()
                         : slug == QuestwellFern.slug ? const QuestwellFern() : const QuestwellReadingChair(),
                     ),

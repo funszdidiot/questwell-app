@@ -10,6 +10,22 @@ import '../lib/services/questwell_equipment_policy.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
+  testWidgets('Approved room layout separates fern and chair and clears fireplace', (tester) async {
+    for (final width in [320.0,390.0]) {
+      await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(width: width,
+        child: const QuestwellHearthPixelScene(height: 310, equippedSlugs: {
+          'room:left': QuestwellFern.slug, 'room:right': QuestwellBookshelf.slug,
+          'room:front': QuestwellReadingChair.slug,
+        })))));
+      await tester.pump();
+      final fern = tester.getRect(find.byKey(const ValueKey('hearth-fern-bounds')));
+      final chair = tester.getRect(find.byKey(const ValueKey('hearth-chair-bounds')));
+      final scene = tester.getRect(find.byType(QuestwellHearthPixelScene));
+      expect(fern.overlaps(chair), false);
+      expect(fern.left, greaterThan(scene.left + scene.width * .15));
+      expect(tester.takeException(), isNull);
+    }
+  });
   testWidgets('Chair fits every spot at phone widths alongside other decor', (tester) async {
     expect(QuestwellEquipmentPolicy.isReady('burgundy-reading-chair','room'), true);
     expect(QuestwellEquipmentPolicy.isReady('burgundy-reading-chair','accessory'), false);
