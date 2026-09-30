@@ -6,6 +6,7 @@ import 'scout_underlayer_clip.dart';
 import 'alchemist_underlayer_clip.dart';
 import 'guardian_underlayer_clip.dart';
 import 'wanderer_underlayer_clip.dart';
+import 'questwell_scholar_glasses.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -225,6 +226,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ),
             ),
           if (classOverlay != null) _assetLayer(classOverlay),
+          if (equippedSlugs['face'] == 'round-scholar-glasses')
+            QuestwellScholarGlasses(bodyType: body),
         ],
       ),
     );
