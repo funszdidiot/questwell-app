@@ -24,3 +24,8 @@ Keep unmerged and unlaunched.
 Fit correction: the first anchor sat at the armhole. Move the pin higher and
 inward onto the upper lapel, and reduce the square bounds from 18 to 14 units
 so it fits the narrow lapel beside the scarf. Check scarf on/off for each body.
+
+Readability polish: increased bounds to 16 units around the same corrected
+lapel centers, added a restrained contrast filter preserving alpha, and a
+subpixel alpha-shaped contact shadow. Original PNG and inventory icon unchanged.
+No external glow. Regression test locks the corrected centers.

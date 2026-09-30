@@ -14,6 +14,18 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
 
+  test('Brooch polish preserves corrected lapel centers', () {
+    for (final fit in [
+      (body: 'female', center: const Offset(99, 94)),
+      (body: 'male', center: const Offset(98, 90)),
+      (body: 'neutral', center: const Offset(98.5, 92)),
+    ]) {
+      final bounds = QuestwellMoonstoneBrooch.bounds(fit.body);
+      expect(bounds.center, fit.center);
+      expect(bounds.size, const Size(16, 16));
+    }
+  });
+
   testWidgets('Approved brooch toggles independently across every class and body', (tester) async {
     expect(QuestwellEquipmentPolicy.isReady(QuestwellMoonstoneBrooch.slug, 'accessory'), true);
     expect(QuestwellEquipmentPolicy.isReady(QuestwellMoonstoneBrooch.slug, 'neck'), false);
