@@ -5,6 +5,7 @@ import 'preview/quest_board_review.dart';
 import 'preview/home_sections_review.dart';
 import 'preview/adventurer_review.dart';
 import 'preview/equipment_review.dart';
+import 'preview/scarf_fit_review.dart';
 
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
@@ -21,6 +22,12 @@ void main() {
   } else if (Uri.base.queryParameters['review'] == 'adventurer') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const AdventurerReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'scarf-matrix') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const ScarfFitReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'scarf') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const EquipmentReviewApp(headwear: true, neckwear: true));
   } else if (Uri.base.queryParameters['review'] == 'headwear') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const EquipmentReviewApp(headwear: true));

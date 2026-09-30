@@ -8,6 +8,7 @@ import 'guardian_underlayer_clip.dart';
 import 'wanderer_underlayer_clip.dart';
 import 'questwell_scholar_glasses.dart';
 import 'questwell_wizard_hat.dart';
+import 'questwell_emerald_scarf.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -228,6 +229,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ),
             ),
           if (classOverlay != null) _assetLayer(classOverlay),
+          if (equippedSlugs['neck'] == 'emerald-scholar-scarf')
+            QuestwellEmeraldScarf(bodyType: body),
           if (equippedSlugs['face'] == 'round-scholar-glasses')
             QuestwellScholarGlasses(bodyType: body),
           if (equippedSlugs['head'] == 'tiny-wizard-hat')
