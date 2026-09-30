@@ -138,7 +138,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           Text('${equipped.length} equipped · $owned owned', style: _text(14, color: _muted)),
           if (widget.items.any((item) => !QuestwellEquipmentPolicy.isReady(item.slug, item.category))) ...[
             const SizedBox(height: 8),
-            Text('Glasses, the Tiny Wizard Hat, Emerald Scholar Scarf, and Leather Satchel are ready to wear. More accessories are on the way.', style: _text(14, color: _gold)),
+            Text('Items marked Equip are ready to wear. More accessories are on the way.', style: _text(14, color: _gold)),
           ],
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 6, children: [
