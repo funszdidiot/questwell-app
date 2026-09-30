@@ -6,11 +6,31 @@ import 'package:project_momentum/preview/hearth_review.dart';
 import 'package:project_momentum/preview/equipment_review.dart';
 import 'package:project_momentum/widgets/questwell_leather_satchel.dart';
 import 'package:project_momentum/widgets/questwell_emerald_scarf.dart';
+import 'package:project_momentum/widgets/questwell_brass_lantern.dart';
 import 'package:project_momentum/services/questwell_equipment_policy.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
+
+  testWidgets('Lantern is review-only and can be removed independently across fits', (tester) async {
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellBrassLantern.previewSlug, 'hand'), false);
+    for (final kind in ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer']) {
+      for (final body in ['female', 'male', 'neutral']) {
+        for (final enabled in [true, false]) {
+          await tester.pumpWidget(MaterialApp(home: SizedBox(width: 240, height: 320,
+            child: QuestwellLayeredAdventurerArt(archetype: kind, avatarBodyType: body,
+              equippedSlugs: {'back': QuestwellLeatherSatchel.slug,
+                if (enabled) 'hand': QuestwellBrassLantern.previewSlug}),
+          )));
+          await tester.pump();
+          expect(find.byType(QuestwellBrassLantern), enabled ? findsOneWidget : findsNothing);
+          expect(find.byType(QuestwellLeatherSatchel), findsOneWidget);
+          expect(tester.takeException(), isNull);
+        }
+      }
+    }
+  });
 
   testWidgets('All Hearth fits keep boots on the shadow at phone and tablet widths', (tester) async {
     for (final width in [320.0, 390.0, 430.0, 768.0]) {
