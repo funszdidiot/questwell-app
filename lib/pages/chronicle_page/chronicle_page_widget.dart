@@ -1,12 +1,13 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_pixel_art.dart';
+import '/widgets/questwell_chronicle_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class ChroniclePageWidget extends StatefulWidget {
-  const ChroniclePageWidget({super.key});
+  const ChroniclePageWidget({super.key, this.previewData});
+  final ChronicleSnapshot? previewData;
 
   static String routeName = 'ChroniclePage';
   static String routePath = '/chronicle';
@@ -17,6 +18,7 @@ class ChroniclePageWidget extends StatefulWidget {
 
 class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
   late Future<ChronicleSnapshot> _future;
+  String _filter = 'all';
 
   @override
   void initState() {
@@ -25,7 +27,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
   }
 
   void _refresh() {
-    _future = QuestwellChronicleService.load();
+    _future = widget.previewData == null ? QuestwellChronicleService.load() : Future.value(widget.previewData!);
   }
 
   @override
@@ -91,6 +93,8 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
           }
 
           final data = snapshot.data!;
+          final entries = data.wins.where((win) => _filter == 'all' ||
+            (_filter == 'milestones' ? !win.isActivity : win.kind == _filter)).toList();
 
           return RefreshIndicator(
             onRefresh: () async {
@@ -248,7 +252,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'RECENT WINS',
+                        'YOUR STORY',
                         style: theme.titleLarge.override(
                           font: GoogleFonts.pressStart2p(
                             fontWeight: FontWeight.w700,
@@ -262,7 +266,13 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                   ],
                 ),
                 const SizedBox(height: 12),
-                if (data.wins.isEmpty)
+                Wrap(spacing: 8, runSpacing: 6, children: [
+                  for (final filter in const {'all':'All', 'quest':'Quests', 'boss':'Bosses', 'milestones':'Milestones'}.entries)
+                    ChoiceChip(label: Text(filter.value), selected: _filter == filter.key,
+                      onSelected: (_) => setState(() => _filter = filter.key)),
+                ]),
+                const SizedBox(height: 12),
+                if (entries.isEmpty)
                   QuestwellRetroPanel(
                     padding: const EdgeInsets.all(18),
                     accent: const Color(0xFF8E6B35),
@@ -270,7 +280,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Your first page is waiting.',
+                          _filter == 'milestones' ? 'Your milestones are ahead.' : 'Your first page is waiting.',
                           style: theme.titleMedium.override(
                             font: GoogleFonts.roboto(
                               fontWeight: FontWeight.w700,
@@ -280,7 +290,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          'Complete a quest or defeat a boss and it will appear here.',
+                          _filter == 'milestones' ? 'New level-ups and trophy rewards will appear here.' : 'Complete a quest or defeat a boss and it will appear here.',
                           style: theme.bodyMedium.override(
                             font: GoogleFonts.roboto(),
                             color: const Color(0xFF67543E),
@@ -291,8 +301,8 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                     ),
                   )
                 else
-                  for (final win in data.wins.take(30)) ...[
-                    _WinCard(win: win),
+                  for (final win in entries.take(30)) ...[
+                    QuestwellChronicleEntry(win: win),
                     const SizedBox(height: 10),
                   ],
               ],
@@ -349,112 +359,6 @@ class _StatCard extends StatelessWidget {
               font: GoogleFonts.roboto(),
               color: theme.secondaryText,
               letterSpacing: 0,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _WinCard extends StatelessWidget {
-  const _WinCard({required this.win});
-
-  final ChronicleWin win;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = FlutterFlowTheme.of(context);
-    final isBoss = win.kind == 'boss';
-
-    return QuestwellParchmentPanel(
-      padding: const EdgeInsets.all(14),
-      selected: isBoss,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          QuestwellNavPixelIcon(
-            kind: isBoss ? 'boss' : 'quest',
-            size: 42,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  isBoss ? 'BOSS DEFEATED' : 'QUEST COMPLETE',
-                  style: theme.labelSmall.override(
-                    font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
-                    color: const Color(0xFF6E3B2C),
-                    letterSpacing: 1.1,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  win.title,
-                  style: theme.titleMedium.override(
-                    font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
-                    letterSpacing: 0,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  DateFormat('MMM d, yyyy').format(win.completedAt.toLocal()),
-                  style: theme.bodySmall.override(
-                    font: GoogleFonts.roboto(),
-                    color: const Color(0xFF67543E),
-                    letterSpacing: 0,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 6,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const QuestwellCurrencyPixelIcon(
-                          kind: 'xp',
-                          size: 16,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          '+${win.xp} XP',
-                          style: theme.labelMedium.override(
-                            font: GoogleFonts.roboto(
-                              fontWeight: FontWeight.w600,
-                            ),
-                            color: const Color(0xFF67543E),
-                            letterSpacing: 0,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const QuestwellCurrencyPixelIcon(
-                          kind: 'coin',
-                          size: 16,
-                        ),
-                        const SizedBox(width: 5),
-                        Text(
-                          '+${win.coins} coins',
-                          style: theme.labelMedium.override(
-                            font: GoogleFonts.roboto(
-                              fontWeight: FontWeight.w600,
-                            ),
-                            color: const Color(0xFF67543E),
-                            letterSpacing: 0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
             ),
           ),
         ],

@@ -58,6 +58,9 @@ class QuestwellCosmetic {
     required this.owned,
     required this.equipped,
     this.roomSlot,
+    this.milestoneLevel,
+    this.unlockedAt,
+    this.source,
   });
 
   final String id;
@@ -74,6 +77,9 @@ class QuestwellCosmetic {
   final bool owned;
   final bool equipped;
   final String? roomSlot;
+  final int? milestoneLevel;
+  final DateTime? unlockedAt;
+  final String? source;
   String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}'
     : category == 'wall_art' && roomSlot != null && roomSlot != 'wall_center' ? 'wall_art:$roomSlot' : category;
 
@@ -96,6 +102,9 @@ class QuestwellCosmetic {
       owned: owned ?? this.owned,
       equipped: equipped ?? this.equipped,
       roomSlot: roomSlot,
+      milestoneLevel: milestoneLevel,
+      unlockedAt: unlockedAt,
+      source: source,
     );
   }
 
@@ -104,6 +113,8 @@ class QuestwellCosmetic {
     bool owned = false,
     bool equipped = false,
     String? roomSlot,
+    DateTime? unlockedAt,
+    String? source,
   }) {
     return QuestwellCosmetic(
       id: json['id']?.toString() ?? '',
@@ -120,6 +131,9 @@ class QuestwellCosmetic {
       owned: owned,
       equipped: equipped,
       roomSlot: roomSlot,
+      milestoneLevel: (json['milestone_level'] as num?)?.toInt(),
+      unlockedAt: unlockedAt,
+      source: source,
     );
   }
 }
@@ -151,12 +165,12 @@ class QuestwellCosmeticService {
           .single(),
       SupaFlow.client
           .from('cosmetics')
-          .select('id,slug,name,category,rarity,description,price,premium,asset_key,required_archetype,unlock_method')
+          .select('id,slug,name,category,rarity,description,price,premium,asset_key,required_archetype,unlock_method,milestone_level')
           .eq('active', true)
           .order('price'),
       SupaFlow.client
           .from('user_cosmetics')
-          .select('cosmetic_id,equipped,room_slot')
+          .select('cosmetic_id,equipped,room_slot,unlocked_at,source')
           .eq('user_id', uid),
     ]);
 
@@ -181,6 +195,8 @@ class QuestwellCosmeticService {
             owned: ownedById.containsKey(row['id']?.toString() ?? ''),
             equipped: ownedById[row['id']?.toString() ?? ''] == true,
             roomSlot: ownedRows.where((owned) => owned['cosmetic_id'] == row['id']).map((owned) => owned['room_slot']?.toString()).firstOrNull,
+            unlockedAt: DateTime.tryParse(ownedRows.where((owned) => owned['cosmetic_id'] == row['id']).map((owned) => owned['unlocked_at']?.toString()).firstOrNull ?? ''),
+            source: ownedRows.where((owned) => owned['cosmetic_id'] == row['id']).map((owned) => owned['source']?.toString()).firstOrNull,
           ),
         )
         .toList();

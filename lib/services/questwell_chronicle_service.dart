@@ -7,6 +7,9 @@ class ChronicleWin {
     required this.completedAt,
     required this.xp,
     required this.coins,
+    this.cosmeticSlug,
+    this.source,
+    this.level,
   });
 
   final String kind;
@@ -14,6 +17,15 @@ class ChronicleWin {
   final DateTime completedAt;
   final int xp;
   final int coins;
+  final String? cosmeticSlug, source;
+  final int? level;
+  bool get isActivity => kind == 'quest' || kind == 'boss';
+
+  factory ChronicleWin.fromProgression(Map<String, dynamic> row) => ChronicleWin(
+    kind: row['kind'].toString(), title: row['title'].toString(),
+    completedAt: DateTime.parse(row['occurred_at'].toString()), xp: 0, coins: 0,
+    cosmeticSlug: row['cosmetic_slug']?.toString(), source: row['source']?.toString(),
+    level: (row['level'] as num?)?.toInt());
 }
 
 class ChronicleSnapshot {
@@ -30,6 +42,23 @@ class ChronicleSnapshot {
   final int totalCoinsEarned;
   final int weekWins;
   final int bossesDefeated;
+
+  factory ChronicleSnapshot.fromWins(List<ChronicleWin> entries, {DateTime? now}) {
+    final wins = List<ChronicleWin>.from(entries)
+      ..sort((a,b) {
+        final date = b.completedAt.compareTo(a.completedAt);
+        return date != 0 ? date : a.kind.compareTo(b.kind);
+      });
+    final activities = wins.where((win) => win.isActivity);
+    final today = (now ?? DateTime.now()).toLocal();
+    final startOfWeek = DateTime(today.year, today.month, today.day)
+      .subtract(Duration(days: today.weekday - 1));
+    return ChronicleSnapshot(wins: wins,
+      totalXpEarned: activities.fold<int>(0, (total, win) => total + win.xp),
+      totalCoinsEarned: activities.fold<int>(0, (total, win) => total + win.coins),
+      weekWins: activities.where((win) => !win.completedAt.isBefore(startOfWeek)).length,
+      bossesDefeated: activities.where((win) => win.kind == 'boss').length);
+  }
 }
 
 class QuestwellChronicleService {
@@ -52,6 +81,10 @@ class QuestwellChronicleService {
           .eq('user_id', uid)
           .eq('status', 'completed')
           .order('completed_at', ascending: false),
+      SupaFlow.client.from('progression_events')
+          .select('kind,title,level,cosmetic_slug,source,occurred_at')
+          .eq('user_id', uid)
+          .order('occurred_at', ascending: false),
     ]);
 
     final wins = <ChronicleWin>[];
@@ -90,26 +123,9 @@ class QuestwellChronicleService {
       );
     }
 
-    wins.sort((a, b) => b.completedAt.compareTo(a.completedAt));
-
-    final totalXpEarned =
-        wins.fold<int>(0, (total, win) => total + win.xp);
-    final totalCoinsEarned =
-        wins.fold<int>(0, (total, win) => total + win.coins);
-
-    final now = DateTime.now();
-    final startOfWeek = DateTime(now.year, now.month, now.day)
-        .subtract(Duration(days: now.weekday - 1));
-    final weekWins =
-        wins.where((win) => !win.completedAt.isBefore(startOfWeek)).length;
-    final bossesDefeated = wins.where((win) => win.kind == 'boss').length;
-
-    return ChronicleSnapshot(
-      wins: wins,
-      totalXpEarned: totalXpEarned,
-      totalCoinsEarned: totalCoinsEarned,
-      weekWins: weekWins,
-      bossesDefeated: bossesDefeated,
-    );
+    for (final raw in responses[2] as List) {
+      wins.add(ChronicleWin.fromProgression(Map<String, dynamic>.from(raw as Map)));
+    }
+    return ChronicleSnapshot.fromWins(wins);
   }
 }

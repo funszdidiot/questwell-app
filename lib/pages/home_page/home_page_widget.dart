@@ -10,6 +10,7 @@ import '/services/questwell_milestone_service.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_pixel_art.dart';
+import '/widgets/questwell_milestone_roadmap.dart';
 import '/widgets/questwell_home_sections.dart';
 import '/widgets/questwell_home_overview.dart';
 import '/widgets/questwell_campfire_background.dart';
@@ -488,7 +489,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     );
                     final xpIntoLevel = profile.xpIntoLevel;
 
-                    return QuestwellHomeCharacter(
+                    return Column(children: [QuestwellHomeCharacter(
                       archetype: profile.adventurerArchetype,
                       className: _archetypeLabel(profile.adventurerArchetype),
                       level: profile.level, xp: xpIntoLevel, coins: profile.coinBalance,
@@ -509,7 +510,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         await context.pushNamed(MarketPageWidget.routeName);
                         if (mounted) setState(_loadHomeData);
                       },
-                    );
+                    ),
+                    const SizedBox(height: 18),
+                    QuestwellMilestoneRoadmap(profile: profile, cosmetics: data.cosmetics,
+                      onOpenCollection: () async {
+                        await context.pushNamed(AdventurerPageWidget.routeName);
+                        if (mounted) setState(_loadHomeData);
+                      }),
+                    ]);
                   },
                 ),
                 const SizedBox(height: 18),
