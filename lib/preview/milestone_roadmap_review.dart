@@ -58,6 +58,6 @@ class _MilestoneRoadmapReviewAppState extends State<MilestoneRoadmapReviewApp> {
             for(final entry in entries)...[QuestwellChronicleEntry(win:entry),const SizedBox(height:10)],
           ])),
         ]),const SizedBox(height:24),
-      ])))));
+      ]))))));
   }
 }
