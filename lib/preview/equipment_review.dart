@@ -5,7 +5,8 @@ import '../widgets/questwell_typography.dart';
 
 /// Local visual fixture only: never owns items or writes equipment to an account.
 class EquipmentReviewApp extends StatefulWidget {
-  const EquipmentReviewApp({super.key});
+  const EquipmentReviewApp({super.key, this.headwear = false});
+  final bool headwear;
   @override
   State<EquipmentReviewApp> createState() => _EquipmentReviewAppState();
 }
@@ -13,11 +14,14 @@ class EquipmentReviewApp extends StatefulWidget {
 class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
   String _body = 'female';
   bool _glasses = true;
+  bool _hat = true;
 
   @override
   Widget build(BuildContext context) {
-    final equipment = _glasses
-        ? const {'face': 'round-scholar-glasses'} : const <String, String>{};
+    final equipment = <String, String>{
+      if (_glasses) 'face': 'round-scholar-glasses',
+      if (widget.headwear && _hat) 'head': 'tiny-wizard-hat',
+    };
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true).copyWith(
@@ -26,15 +30,19 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
         body: SafeArea(child: Center(child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 430),
           child: ListView(padding: const EdgeInsets.all(18), children: [
-            Text('Scholar glasses', style: QuestwellTypography.sectionHeading()),
+            Text(widget.headwear ? 'Tiny Wizard Hat' : 'Scholar glasses', style: QuestwellTypography.sectionHeading()),
             const SizedBox(height: 12),
-            const Text('A warm brass frame, with room for a little curiosity. Preview only.'),
+            Text(widget.headwear ? 'A little magic, perched just so. Preview only.'
+              : 'A warm brass frame, with room for a little curiosity. Preview only.'),
             const SizedBox(height: 12),
             Wrap(spacing: 8, children: ['female', 'male', 'neutral'].map((body) =>
               ChoiceChip(label: Text(body[0].toUpperCase() + body.substring(1)),
                 labelStyle: GoogleFonts.roboto(fontSize: 14),
                 selected: _body == body,
                 onSelected: (_) => setState(() => _body = body))).toList()),
+            if (widget.headwear) SwitchListTile(contentPadding: EdgeInsets.zero,
+              title: const Text('Try on hat'), value: _hat,
+              onChanged: (value) => setState(() => _hat = value)),
             SwitchListTile(contentPadding: EdgeInsets.zero,
               title: const Text('Try on glasses'), value: _glasses,
               onChanged: (value) => setState(() => _glasses = value)),

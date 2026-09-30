@@ -21,6 +21,9 @@ void main() {
   } else if (Uri.base.queryParameters['review'] == 'adventurer') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const AdventurerReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'headwear') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const EquipmentReviewApp(headwear: true));
   } else if (Uri.base.queryParameters['review'] == 'equipment') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const EquipmentReviewApp());

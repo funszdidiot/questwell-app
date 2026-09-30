@@ -48,3 +48,12 @@ This is database verification, not an actual sign-out/sign-in browser test.
 Widget regression scenarios cover owned/unowned glasses, class locks, busy
 saves, and removal of equipped items. The Adventurer sample preview now allows
 local Equip/Unequip. Real phone sign-out/sign-in persistence is still pending.
+
+## Tiny Wizard Hat candidate
+
+Founder confirmed glasses persistence after sign-out/sign-in. Next candidate is
+existing universal `tiny-wizard-hat` in the head slot. Added a midnight-purple,
+gold-trimmed crown layer with a bent tip and separate body anchors. Existing
+avatar and robe assets remain untouched. `?review=headwear` offers all three
+bodies, independent hat/glasses toggles, and matching portrait/Hearth views.
+The hat remains excluded from the approved equipment allowlist until reviewed.
