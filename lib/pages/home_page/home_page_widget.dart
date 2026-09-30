@@ -416,7 +416,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       showRelic: mastered,
                       equippedSlugs: {
                         for (final item in equipped)
-                          item.category: item.slug,
+                          item.renderKey: item.slug,
                       },
                     );
                   },

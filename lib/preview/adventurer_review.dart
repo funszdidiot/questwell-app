@@ -11,6 +11,7 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
   bool _glassesEquipped = false;
   bool _satchelEquipped = false;
   final Set<String> _otherEquipped = {};
+  final Map<String, String> _roomSlots = {};
   @override
   Widget build(BuildContext context) => MaterialApp(debugShowCheckedModeBanner: false,
     theme: ThemeData.dark(useMaterial3: true), home: Scaffold(backgroundColor: const Color(0xFF111827),
@@ -20,11 +21,18 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
           mastered: false, collectionOwned: 5, collectionTotal: 6, relicName: 'Sample mastery relic',
           canClaim: false, onClaim: () {}, onBack: () {}, onMarket: () {},
           onBody: (v) => setState(() => _body = v), onClass: (v) => setState(() => _class = v),
+          onPlace: (id, slot, expected) async { setState(() {
+            _roomSlots.removeWhere((key, value) => value == slot || key == id);
+            _roomSlots[id] = slot;
+          }); },
           onEquip: (id) => setState(() { if (id == 's') { _satchelEquipped = true; } else if (id == 'a') { _glassesEquipped = true; } else { _otherEquipped.add(id); } }),
-          onUnequip: (id) => setState(() { if (id == 's') { _satchelEquipped = false; } else if (id == 'a') { _glassesEquipped = false; } else { _otherEquipped.remove(id); } }), items: [
+          onUnequip: (id) => setState(() { _roomSlots.remove(id); if (id == 's') { _satchelEquipped = false; } else if (id == 'a') { _glassesEquipped = false; } else { _otherEquipped.remove(id); } }), items: [
             AdventurerInventoryItem(id: 'bookshelf', name: 'Walnut Bookshelf', slug: 'walnut-bookshelf', category: 'room',
               description: 'Sample ownership. Warm walnut, worn books, and brass details for your Hearth.', owned: true,
-              equipped: _otherEquipped.contains('bookshelf'), classLocked: false, shop: true),
+              equipped: _roomSlots.containsKey('bookshelf'), roomSlot: _roomSlots['bookshelf'], classLocked: false, shop: true),
+            AdventurerInventoryItem(id: 'fern', name: 'Hearth Fern', slug: 'hearth-fern', category: 'room',
+              description: 'Sample ownership. Green fronds in aged brass.', owned: true,
+              equipped: _roomSlots.containsKey('fern'), roomSlot: _roomSlots['fern'], classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'm', name: 'Moonstone Brooch', slug: 'moonstone-brooch', category: 'accessory',
               description: 'Sample ownership. A little moonlight for the road ahead.', owned: true,
               equipped: _otherEquipped.contains('m'), classLocked: false, shop: true),

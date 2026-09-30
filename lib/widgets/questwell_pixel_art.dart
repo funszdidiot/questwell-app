@@ -13,6 +13,7 @@ import 'questwell_leather_satchel.dart';
 import 'questwell_brass_lantern.dart';
 import 'questwell_moonstone_brooch.dart';
 import 'questwell_bookshelf.dart';
+import 'questwell_fern.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -928,15 +929,18 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   ),
                 ),
               ),
-              if (equippedSlugs['room'] == QuestwellBookshelf.slug)
-                Positioned(
-                  key: const ValueKey('hearth-bookshelf-bounds'),
-                  right: sceneWidth * .015,
-                  bottom: sceneHeight * .30,
-                  width: math.min(sceneWidth * .38, 190),
-                  height: math.min(sceneWidth * .40, 202),
-                  child: const QuestwellBookshelf(),
-                ),
+              for (final slot in const ['left', 'right', 'front'])
+                if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
+                  if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug)
+                    Positioned(
+                      key: ValueKey(slug == QuestwellBookshelf.slug ? 'hearth-bookshelf-bounds' : 'hearth-fern-bounds'),
+                      left: slot == 'right' ? null : sceneWidth * .015,
+                      right: slot == 'right' ? sceneWidth * .015 : null,
+                      bottom: sceneHeight * (slot == 'front' ? .07 : .30),
+                      width: math.min(sceneWidth * (slot == 'front' ? .28 : .38), 190),
+                      height: math.min(sceneWidth * (slot == 'front' ? .30 : .40), 202),
+                      child: slug == QuestwellBookshelf.slug ? const QuestwellBookshelf() : const QuestwellFern(),
+                    ),
               Positioned(
                 key: const ValueKey('hearth-contact-shadow'),
                 left: avatarLeft + avatarWidth * .22,
@@ -3890,6 +3894,16 @@ class _ItemPainter extends CustomPainter {
       p.color = const Color(0xFFA53A32);
       canvas.drawPath(path, p);
       rect(size.width * .47, size.height * .20, size.width * .06, size.height * .50, gold);
+    } else if (slug == QuestwellFern.slug) {
+      final u = size.width / 16;
+      void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);
+      px(5,10,6,4,const Color(0xFF95692E));
+      px(4,10,8,1,gold); px(6,14,4,1,gold);
+      for (final x in [3.0,5.0,7.0,9.0,11.0]) {
+        px(x,4+(x-7).abs()/2,2,5,const Color(0xFF315A39));
+        px(x-1,3+(x-7).abs()/2,2,2,const Color(0xFF739B43));
+      }
+      px(7,2,2,9,const Color(0xFF88A751));
     } else if (slug == QuestwellBookshelf.slug) {
       final unit = size.width / 16;
       void pixel(double x, double y, double w, double h, Color color) =>

@@ -1,0 +1,86 @@
+import 'package:flutter/material.dart';
+import 'questwell_pixel_art.dart';
+
+class RoomOccupant {
+  const RoomOccupant(this.id, this.name);
+  final String id, name;
+}
+class RoomPlacement {
+  const RoomPlacement(this.slot, this.expectedOccupant);
+  final String slot;
+  final String? expectedOccupant;
+}
+Future<RoomPlacement?> showRoomPicker(BuildContext context, {
+  required String name, required String id, required String slug,
+  required String archetype, required String bodyType,
+  required Map<String, String> equippedSlugs,
+  required Map<String, RoomOccupant> occupants, String? currentSlot,
+}) => showDialog<RoomPlacement>(context: context, builder: (_) => _RoomPicker(
+  name: name, id: id, slug: slug, archetype: archetype, bodyType: bodyType,
+  equippedSlugs: equippedSlugs, occupants: occupants, currentSlot: currentSlot));
+
+class _RoomPicker extends StatefulWidget {
+  const _RoomPicker({required this.name, required this.id, required this.slug,
+    required this.archetype, required this.bodyType, required this.equippedSlugs,
+    required this.occupants, this.currentSlot});
+  final String name, id, slug, archetype, bodyType;
+  final Map<String, String> equippedSlugs;
+  final Map<String, RoomOccupant> occupants;
+  final String? currentSlot;
+  @override
+  State<_RoomPicker> createState() => _RoomPickerState();
+}
+class _RoomPickerState extends State<_RoomPicker> {
+  late String _slot = widget.currentSlot ?? 'right';
+  static const labels = {'left': 'Left', 'right': 'Right', 'front': 'Front'};
+  Future<void> _save() async {
+    final occupant = widget.occupants[_slot];
+    if (occupant != null && occupant.id != widget.id) {
+      final confirmed = await showDialog<bool>(context: context, builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF19232D),
+        title: Text('Replace ${occupant.name}?'),
+        content: Text('${occupant.name} will return to your inventory. You will still own it.'),
+        actions: [TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Keep current item')),
+          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Replace item'))]));
+      if (confirmed != true || !mounted) return;
+    }
+    if (mounted) Navigator.pop(context, RoomPlacement(_slot, occupant?.id));
+  }
+  @override
+  Widget build(BuildContext context) {
+    final preview = Map<String, String>.from(widget.equippedSlugs)
+      ..removeWhere((key, value) => (key == 'room' || key.startsWith('room:')) && value == widget.slug)
+      ..['room:$_slot'] = widget.slug;
+    return Dialog(backgroundColor: const Color(0xFF111827), insetPadding: const EdgeInsets.all(12),
+      child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 430),
+        child: SingleChildScrollView(child: Padding(padding: const EdgeInsets.all(16),
+          child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+            Text('Place ${widget.name}', style: const TextStyle(fontSize: 21, color: Color(0xFFF0E5CC))),
+            const SizedBox(height: 8),
+            const Text('Choose a highlighted spot. Preview first, then save.'),
+            const SizedBox(height: 12),
+            Stack(children: [
+              QuestwellHearthPixelScene(height: 310, archetype: widget.archetype,
+                avatarBodyType: widget.bodyType, equippedSlugs: preview),
+              for (final entry in labels.entries)
+                Positioned(left: entry.key == 'right' ? null : 8,
+                  right: entry.key == 'right' ? 8 : null,
+                  bottom: entry.key == 'front' ? 22 : 100,
+                  child: OutlinedButton(onPressed: () => setState(() => _slot = entry.key),
+                    style: OutlinedButton.styleFrom(minimumSize: const Size(64, 48),
+                      backgroundColor: const Color(0xEA14202F),
+                      foregroundColor: const Color(0xFFF0E5CC),
+                      side: BorderSide(color: _slot == entry.key ? const Color(0xFFFFD980) : const Color(0xFF8D8065), width: _slot == entry.key ? 3 : 1)),
+                    child: Text(entry.value))),
+            ]),
+            const SizedBox(height: 12),
+            for (final entry in labels.entries)
+              RadioListTile<String>(dense: true, contentPadding: EdgeInsets.zero,
+                title: Text('${entry.value} · ${widget.occupants[entry.key]?.name ?? "Empty"}'),
+                value: entry.key, groupValue: _slot, onChanged: (value) => setState(() => _slot = value!)),
+            const SizedBox(height: 8),
+            FilledButton(onPressed: _save, child: const Text('Save placement')),
+            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          ])))));
+  }
+}

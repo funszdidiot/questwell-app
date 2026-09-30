@@ -65,6 +65,21 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     }
   }
 
+  Future<void> _place(String id, String slot, String? expected) async {
+    if (_busyCosmeticId != null) return;
+    setState(() => _busyCosmeticId = id);
+    try {
+      await QuestwellCosmeticService.place(id, slot, expected);
+      if (mounted) setState(_refresh);
+    } catch (_) {
+      if (mounted) {
+        setState(_refresh);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Could not save placement. The spot may have changed. Please try again.')));
+      }
+    } finally { if (mounted) setState(() => _busyCosmeticId = null); }
+  }
+
   Future<void> _unequip(QuestwellCosmetic cosmetic) async {
     if (_busyCosmeticId != null || _savingArchetype || _savingBodyType) return;
     setState(() => _busyCosmeticId = cosmetic.id);
@@ -413,6 +428,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
               claiming: _claimingMastery, onClaim: _claimMasteryReward,
               savingAppearance: _savingBodyType || _savingArchetype,
               busyItem: _busyCosmeticId,
+              onPlace: _place,
               onBody: _chooseBodyType,
               onClass: (value) => _requestArchetypeChange(value, data),
               onEquip: (id) => _equip(data.cosmetics.firstWhere((item) => item.id == id)),
@@ -423,7 +439,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 if (mounted) setState(_refresh);
               },
               items: data.cosmetics.map((item) => AdventurerInventoryItem(
-                id: item.id, name: item.name, slug: item.slug, category: item.category,
+                id: item.id, name: item.name, slug: item.slug, category: item.category, roomSlot: item.roomSlot,
                 description: item.description, owned: item.owned, equipped: item.equipped,
                 archetype: item.requiredArchetype, shop: item.unlockMethod == 'shop',
                 classLocked: _classLocked(item, data.profile.adventurerArchetype),

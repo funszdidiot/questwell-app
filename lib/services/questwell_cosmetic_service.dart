@@ -52,6 +52,7 @@ class QuestwellCosmetic {
     required this.unlockMethod,
     required this.owned,
     required this.equipped,
+    this.roomSlot,
   });
 
   final String id;
@@ -67,6 +68,8 @@ class QuestwellCosmetic {
   final String unlockMethod;
   final bool owned;
   final bool equipped;
+  final String? roomSlot;
+  String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}' : category;
 
   QuestwellCosmetic copyWith({
     bool? owned,
@@ -86,6 +89,7 @@ class QuestwellCosmetic {
       unlockMethod: unlockMethod,
       owned: owned ?? this.owned,
       equipped: equipped ?? this.equipped,
+      roomSlot: roomSlot,
     );
   }
 
@@ -93,6 +97,7 @@ class QuestwellCosmetic {
     Map<String, dynamic> json, {
     bool owned = false,
     bool equipped = false,
+    String? roomSlot,
   }) {
     return QuestwellCosmetic(
       id: json['id']?.toString() ?? '',
@@ -108,6 +113,7 @@ class QuestwellCosmetic {
       unlockMethod: json['unlock_method']?.toString() ?? 'shop',
       owned: owned,
       equipped: equipped,
+      roomSlot: roomSlot,
     );
   }
 }
@@ -144,7 +150,7 @@ class QuestwellCosmeticService {
           .order('price'),
       SupaFlow.client
           .from('user_cosmetics')
-          .select('cosmetic_id,equipped')
+          .select('cosmetic_id,equipped,room_slot')
           .eq('user_id', uid),
     ]);
 
@@ -168,6 +174,7 @@ class QuestwellCosmeticService {
             row,
             owned: ownedById.containsKey(row['id']?.toString() ?? ''),
             equipped: ownedById[row['id']?.toString() ?? ''] == true,
+            roomSlot: ownedRows.where((owned) => owned['cosmetic_id'] == row['id']).map((owned) => owned['room_slot']?.toString()).firstOrNull,
           ),
         )
         .toList();
@@ -201,6 +208,12 @@ class QuestwellCosmeticService {
       'equip_cosmetic',
       params: {'p_cosmetic_id': cosmeticId},
     );
+  }
+
+  static Future<void> place(String id, String slot, String? expectedOccupant) async {
+    await SupaFlow.client.rpc('place_hearth_cosmetic', params: {
+      'p_cosmetic_id': id, 'p_slot': slot, 'p_expected_occupant': expectedOccupant,
+    });
   }
 
   static Future<void> unequip(String cosmeticId) async {

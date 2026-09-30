@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'questwell_class_emblem.dart';
+import 'questwell_room_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
@@ -9,9 +10,10 @@ class AdventurerInventoryItem {
   const AdventurerInventoryItem({required this.id, required this.name, required this.slug,
     required this.category, required this.description, required this.owned,
     required this.equipped, required this.classLocked, required this.shop,
-    this.archetype});
+    this.archetype, this.roomSlot});
   final String id, name, slug, category, description;
-  final String? archetype;
+  final String? archetype, roomSlot;
+  String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}' : category;
   final bool owned, equipped, classLocked, shop;
 }
 
@@ -23,12 +25,13 @@ class QuestwellAdventurerView extends StatefulWidget {
     required this.onClaim, required this.onBody, required this.onClass,
     required this.onEquip, required this.onUnequip, required this.onMarket,
     required this.onBack, this.savingAppearance = false, this.claiming = false,
-    this.busyItem});
+    this.busyItem, this.onPlace});
   final String archetype, bodyType, description, relicName;
   final int level, xp, coins, collectionOwned, collectionTotal;
   final List<AdventurerInventoryItem> items;
   final bool mastered, canClaim, savingAppearance, claiming;
   final String? busyItem;
+  final Future<void> Function(String id, String slot, String? expectedOccupant)? onPlace;
   final ValueChanged<String> onBody, onClass, onEquip, onUnequip;
   final VoidCallback onClaim, onMarket, onBack;
   @override
@@ -75,14 +78,14 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           // Existing approved avatar renderer and assets remain the single source of truth.
           QuestwellEquippedAvatar(archetype: widget.archetype, avatarBodyType: widget.bodyType,
             height: 250, artHeightFactor: .96, showRelic: widget.mastered,
-            equippedSlugs: {for (final item in equipped) item.category: item.slug}),
+            equippedSlugs: {for (final item in equipped) item.renderKey: item.slug}),
           if (_inventory && category == 'room' && widget.items.any((item) => item.category == 'room' && item.owned)) ...[
             const SizedBox(height: 16),
             _heading('YOUR HEARTH'),
             const SizedBox(height: 8),
             QuestwellHearthPixelScene(height: 260, archetype: widget.archetype,
               avatarBodyType: widget.bodyType, showRelic: widget.mastered,
-              equippedSlugs: {for (final item in equipped) item.category: item.slug}),
+              equippedSlugs: {for (final item in equipped) item.renderKey: item.slug}),
           ],
           const SizedBox(height: 10),
           _heading(_label(widget.archetype)),
@@ -190,6 +193,16 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       ]);
   }
 
+  Future<void> _place(AdventurerInventoryItem item) async {
+    final pick = await showRoomPicker(context, name: item.name, id: item.id,
+      slug: item.slug, currentSlot: item.equipped ? item.roomSlot ?? 'right' : null,
+      archetype: widget.archetype, bodyType: widget.bodyType,
+      equippedSlugs: {for (final i in widget.items.where((i) => i.equipped)) i.renderKey: i.slug},
+      occupants: {for (final i in widget.items.where((i) => i.category == 'room' && i.equipped))
+        i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)});
+    if (pick != null && mounted) await widget.onPlace?.call(item.id, pick.slot, pick.expectedOccupant);
+  }
+
   Widget _item(AdventurerInventoryItem item) {
     final busy = widget.busyItem != null || widget.savingAppearance;
     final ready = QuestwellEquipmentPolicy.isReady(item.slug, item.category);
@@ -212,6 +225,11 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       if (item.classLocked) Padding(padding: const EdgeInsets.only(top: 8),
         child: Text('Requires ${_label(item.archetype ?? '')} class.', style: _text(13, color: _gold))),
       const SizedBox(height: 12),
+      if (room && item.owned && ready && widget.onPlace != null)
+        OutlinedButton(onPressed: busy ? null : () => _place(item),
+          style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold),
+          child: Text(item.equipped ? 'Move in Hearth' : 'Place in Hearth')),
+      if (!(room && item.owned && !item.equipped && ready && widget.onPlace != null))
       OutlinedButton(
         onPressed: busy ? null : item.equipped ? () => widget.onUnequip(item.id)
           : !item.owned && item.shop ? widget.onMarket
