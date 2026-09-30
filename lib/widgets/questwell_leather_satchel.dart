@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 /// Candidate artwork, activated only by the account-free review fixture slug.
@@ -33,6 +34,18 @@ class QuestwellLeatherSatchel extends StatelessWidget {
       final bag = bagBounds(bodyType);
       return Stack(children: [
         Positioned.fill(child: CustomPaint(painter: _SatchelStrap(bodyType))),
+        // Tight alpha-shaped contact shadow follows the bag, not its image box.
+        Positioned(
+          left: (constraints.maxWidth - 240 * scale) / 2 + (bag.left + 1.1) * scale,
+          top: constraints.maxHeight - 320 * scale + (bag.top + 1.3) * scale,
+          width: bag.width * scale, height: bag.height * scale,
+          child: ImageFiltered(
+            imageFilter: ui.ImageFilter.blur(sigmaX: .65 * scale, sigmaY: .65 * scale),
+            child: Image.asset(asset, fit: BoxFit.contain,
+              color: const Color(0x420B0806), colorBlendMode: BlendMode.srcIn,
+              filterQuality: FilterQuality.high, gaplessPlayback: true),
+          ),
+        ),
         Positioned(
           left: (constraints.maxWidth - 240 * scale) / 2 + bag.left * scale,
           top: constraints.maxHeight - 320 * scale + bag.top * scale,
@@ -63,7 +76,7 @@ class _SatchelStrap extends CustomPainter {
     final paint = Paint()..style = PaintingStyle.stroke..strokeCap = StrokeCap.round;
     canvas.drawPath(strap, paint..color = const Color(0xFF382015)..strokeWidth = 4.5);
     canvas.drawPath(strap, paint..color = const Color(0xFF80502F)..strokeWidth = 3.3);
-    canvas.drawPath(strap, paint..color = const Color(0xFFAC7848)..strokeWidth = .7);
+    canvas.drawPath(strap, paint..color = const Color(0xB396704E)..strokeWidth = .5);
     // Small brass adjustment buckle follows the diagonal strap.
     canvas.save();
     final metric = strap.computeMetrics().first;

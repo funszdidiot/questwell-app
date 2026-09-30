@@ -125,3 +125,11 @@ artwork. Both the image and strap now share the same body-specific bag bounds an
 contain/center transform, including transparent image margins. The strap follows
 a direct curve from shoulder to this ring; bag placement and other gear are unchanged.
 Still preview-only, pending founder visual approval.
+
+### Satchel material finishing pass
+
+Founder requested the proposed subtle contact shadow and softer strap highlight.
+Added a low-opacity shadow derived from the bag's alpha silhouette, offset 1.1px
+right / 1.3px down with 0.65px blur on the 240 x 320 canvas. Softened the strap's
+center highlight to a finer translucent brown line. Bag bounds, ring attachment,
+source art and equipment gates remain unchanged. Preview review remains pending.
