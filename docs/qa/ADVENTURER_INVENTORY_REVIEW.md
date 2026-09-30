@@ -57,3 +57,14 @@ gold-trimmed crown layer with a bent tip and separate body anchors. Existing
 avatar and robe assets remain untouched. `?review=headwear` offers all three
 bodies, independent hat/glasses toggles, and matching portrait/Hearth views.
 The hat remains excluded from the approved equipment allowlist until reviewed.
+
+## Illustrated hat replacement (founder approved)
+
+Rejected flat vector hat replaced with a transparent illustrated PNG extracted
+from the approved male concept using built-in image generation. Prompt preserved
+the purple felt, gold band/star, curved brim and bent point, removing the character
+and background. Original approved avatar/robe pixels remain untouched.
+Body-specific bounds align the transparent brim opening with the hair; portrait
+framing reserves headroom for the point. Hat enabled alongside glasses in the
+shared equipment policy. Other unfinished items remain unavailable to equip.
+Asset: `assets/images/questwell/avatar/wizard_hat_illustrated_v2.png`.

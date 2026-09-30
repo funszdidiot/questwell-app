@@ -58,10 +58,11 @@ void main() {
       GoogleFonts.pressStart2p().fontFamily);
     expect(tester.takeException(), isNull);
   });
-  testWidgets('Approved glasses honor ownership, class locks, busy saves and unequip', (tester) async {
+  testWidgets('Approved accessories honor ownership, class locks, busy saves and unequip', (tester) async {
     GoogleFonts.config.allowRuntimeFetching = false;
     await tester.binding.setSurfaceSize(const Size(390, 2200));
     addTearDown(() => tester.binding.setSurfaceSize(null));
+    for (final gear in [(slug: 'round-scholar-glasses', category: 'face'), (slug: 'tiny-wizard-hat', category: 'head')]) {
     for (final scenario in [
       (owned: true, equipped: false, locked: false, busy: false, label: 'Equip', enabled: true),
       (owned: false, equipped: false, locked: false, busy: false, label: 'View in Market', enabled: true),
@@ -79,7 +80,7 @@ void main() {
         onEquip: (id) => action = 'equip:$id', onUnequip: (id) => action = 'unequip:$id',
         busyItem: scenario.busy ? 'glasses' : null,
         items: [AdventurerInventoryItem(id: 'glasses', name: 'Round Scholar Glasses',
-          slug: 'round-scholar-glasses', category: 'face', description: 'Brass frames',
+          slug: gear.slug, category: gear.category, description: 'Approved accessory',
           owned: scenario.owned, equipped: scenario.equipped,
           classLocked: scenario.locked, archetype: 'scholar', shop: true)],
       ))));
@@ -98,6 +99,7 @@ void main() {
         expect(action, isNull);
       }
       expect(tester.takeException(), isNull);
+    }
     }
   });
 

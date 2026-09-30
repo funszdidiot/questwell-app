@@ -184,6 +184,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
 
     return RepaintBoundary(
       child: Stack(
+        clipBehavior: Clip.none,
         fit: StackFit.expand,
         children: [
           if (classOverlay != null)
@@ -1599,7 +1600,8 @@ class QuestwellEquippedAvatar extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: FractionallySizedBox(
               widthFactor: .90,
-              heightFactor: artHeightFactor,
+              heightFactor: equippedSlugs['head'] == 'tiny-wizard-hat'
+                  ? math.min(artHeightFactor, .88) : artHeightFactor,
               alignment: Alignment.bottomCenter,
               child: QuestwellLayeredAdventurerArt(
                 archetype: archetype,
