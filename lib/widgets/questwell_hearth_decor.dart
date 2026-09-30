@@ -36,7 +36,7 @@ class QuestwellHearthDecor {
     final hasShelf = (equipment['room:$slot'] ?? (slot == 'right' ? equipment['room'] : null)) == QuestwellBookshelf.slug;
     var height = math.min(scene.height * .23, scene.width * .14 / .58);
     var top = scene.height * .20;
-    var center = scene.width * (slot == 'left' ? .28 : .72);
+    var center = scene.width * (slot == 'left' ? .25 : .77);
     if (hasShelf) {
       final shelf = positioned(slug: QuestwellBookshelf.slug, slot: slot, scene: scene, equipment: equipment);
       // Fit the complete frame into the real wall space above the bookcase.

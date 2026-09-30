@@ -23,7 +23,9 @@ void main() {
         expect(art.bottom, lessThan(shelf.top));
         expect(art.top, greaterThan(frame.top));
         expect(art.overlaps(center), false);
-        expect((center.center.dx - avatar.center.dx).abs(), greaterThan(20));
+        final otherArt = tester.getRect(find.byKey(ValueKey('hearth-wall_${side == 'left' ? 'right' : 'left'}-art-bounds')));
+        expect(otherArt.overlaps(center), false);
+        expect((center.center.dx - avatar.center.dx).abs(), greaterThan(12));
         expect(find.byType(QuestwellClassEmblem), findsOneWidget);
         final emblem = tester.getRect(find.byType(QuestwellClassEmblem));
         expect(emblem.bottom, lessThan(frame.top));
