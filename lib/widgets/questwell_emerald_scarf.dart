@@ -13,7 +13,9 @@ class QuestwellEmeraldScarf extends StatelessWidget {
       final scale = math.min(constraints.maxWidth / 240, constraints.maxHeight / 320);
       final fit = switch (bodyType) {
         'male' => const Rect.fromLTWH(94, 65, 50, 75),
-        'female' => const Rect.fromLTWH(91, 67, 49, 73.5),
+        // Female collar anchors are (110, 76) and (129, 76): center 119.5.
+        // The sprite's visible shoulder fold begins 8% below its top edge.
+        'female' => const Rect.fromLTWH(95, 70, 49, 73.5),
         _ => const Rect.fromLTWH(94, 67, 48, 72),
       };
       return Stack(children: [Positioned(
