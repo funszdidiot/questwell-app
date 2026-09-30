@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
+import 'questwell_wordmark_sparkles.dart';
 
 const _gold = Color(0xFFE4C586);
 const _ink = Color(0xFFF0E5CC);
@@ -16,7 +17,11 @@ class QuestwellHomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const QuestwellBrandWordmark(),
+      const Row(mainAxisSize: MainAxisSize.min, children: [
+        Flexible(child: QuestwellBrandWordmark(showSubtitle: false)),
+        SizedBox(width: 3),
+        QuestwellWordmarkSparkles(),
+      ]),
       const SizedBox(height: 4),
       Wrap(spacing: 8, runSpacing: 4, children: [
         for (final entry in const {'quest': 'Quests', 'chronicle': 'Chronicle',

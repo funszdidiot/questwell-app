@@ -236,10 +236,12 @@ class QuestwellBrandWordmark extends StatelessWidget {
     super.key,
     this.compact = false,
     this.subtitle = 'Small wins. Real momentum.',
+    this.showSubtitle = true,
   });
 
   final bool compact;
   final String subtitle;
+  final bool showSubtitle;
 
   @override
   Widget build(BuildContext context) {
@@ -270,6 +272,7 @@ class QuestwellBrandWordmark extends StatelessWidget {
             ],
           ),
         ),
+        if (showSubtitle) ...[
         const SizedBox(height: 3),
         Text(
           subtitle,
@@ -282,6 +285,7 @@ class QuestwellBrandWordmark extends StatelessWidget {
             letterSpacing: .05,
           ),
         ),
+        ],
       ],
     );
   }

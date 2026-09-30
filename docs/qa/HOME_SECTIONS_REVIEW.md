@@ -40,3 +40,10 @@ Founder approved the new layout, with a correction to retain the established typ
 - Removed gear count from Hearth portrait badge; class and earned Mastered status remain.
 - Integrated the approved Hearth into the home review fixture for full header/scene inspection.
 - Read-only persistence review: energy mode writes to the signed-in user's row; avatar body uses the existing set_avatar_body_type RPC. Home loads both values from the profile on startup. This confirms the code paths, not a live authenticated refresh. Real-account persistence remains unverified in the agent's browser.
+
+## Enchanted wordmark and founder persistence confirmation
+
+- Founder confirmed avatar and Campfire selections persisted after signing out and back in on September 29, 2026. This is user-verified account evidence.
+- Removed home-header tagline while preserving the wordmark styling. Added a small warm-gold pixel sparkle trail at its right edge.
+- Sparkles animate in an isolated paint layer, ignore input, pause outside active ticker scope and remain still for reduced motion.
+- Other screens retain their existing subtitle behavior.
