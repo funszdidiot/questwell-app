@@ -86,7 +86,8 @@ void main() {
           expect(avatar.width / avatar.height, closeTo(.75, .001));
           expect(avatar.top, greaterThan(frame.top + 25));
           expect(avatar.bottom, lessThan(frame.bottom));
-          expect(avatar.top + avatar.height * 302 / 320, closeTo(shadow.center.dy, .1));
+          // Contact points are authored on the same canvas as the visible boots.
+          expect(shadow, avatar);
           final art = tester.widget<QuestwellLayeredAdventurerArt>(find.byType(QuestwellLayeredAdventurerArt));
           expect(art.archetype, kind);
           expect(art.avatarBodyType, body);

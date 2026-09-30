@@ -18,6 +18,7 @@ import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
 import 'questwell_wall_art.dart';
 import 'questwell_hearth_decor.dart';
+import 'questwell_contact_shadow.dart';
 import 'questwell_class_emblem.dart';
 
 class QuestwellPixelPalette {
@@ -965,12 +966,13 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                     ),
               if (showAvatar) Positioned(
                 key: const ValueKey('hearth-contact-shadow'),
-                left: avatarLeft + avatarWidth * .22,
-                top: footY - avatarHeight * 8 / 320 - sceneHeight * .025,
-                width: avatarWidth * .56,
-                height: sceneHeight * .05,
-                child: const IgnorePointer(
-                  child: CustomPaint(painter: _HearthBootShadowPainter()),
+                left: avatarLeft,
+                top: avatarTop,
+                width: avatarWidth,
+                height: avatarHeight,
+                child: IgnorePointer(
+                  child: CustomPaint(
+                    painter: QuestwellContactShadowPainter(avatarBodyType)),
                 ),
               ),
               if (showAvatar) Positioned(
@@ -1023,25 +1025,6 @@ class QuestwellHearthPixelScene extends StatelessWidget {
     ),
     ]);
   }
-}
-
-class _HearthBootShadowPainter extends CustomPainter {
-  const _HearthBootShadowPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // Flattened contact ovals beneath each boot, never a round central spot.
-    final p = Paint()..color = const Color(0x35000000);
-    canvas.drawOval(Rect.fromLTWH(0, size.height * .32, size.width, size.height * .36), p);
-    p.color = const Color(0x55000000);
-    for (final x in [.08, .56]) {
-      canvas.drawOval(Rect.fromLTWH(size.width * x, size.height * .36,
-        size.width * .36, size.height * .24), p);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _HearthBootShadowPainter oldDelegate) => false;
 }
 
 class _HearthAtmospherePainter extends CustomPainter {

@@ -5,6 +5,7 @@ import 'questwell_fern.dart';
 import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
 import 'questwell_wall_art.dart';
+import 'questwell_contact_shadow.dart';
 
 /// Authored furniture proportions and floor anchors shared by every Hearth view.
 class QuestwellHearthDecor {
@@ -90,23 +91,16 @@ class QuestwellHearthDecor {
         : fern ? 'hearth-fern-bounds' : table ? 'hearth-table-bounds' : 'hearth-chair-bounds'),
       left: center - width / 2, top: floor - height,
       width: width, height: height,
-      child: Stack(fit: StackFit.expand, children: [
-        Positioned(left: width * .15, right: width * .15, bottom: 0,
-          height: height * (chair ? .10 : .055),
-          child: DecoratedBox(decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            gradient: const RadialGradient(radius: .65, colors: [
-              Color(0x700E0906), Color(0x000E0906),
-            ]),
-          ))),
-        // The source chair opens toward the left. On the left side of the room
-        // mirror only its artwork so the seat opens toward the room's center.
-        Transform.flip(
-          key: ValueKey('hearth-$slug-facing'),
-          flipX: chair && slot != 'right',
-          child: art,
-        ),
-      ]),
+      child: Transform.flip(
+        key: ValueKey('hearth-$slug-facing'),
+        flipX: chair && slot != 'right',
+        child: Stack(fit: StackFit.expand, children: [
+          IgnorePointer(child: CustomPaint(
+            key: ValueKey('hearth-$slug-contact-shadow'),
+            painter: QuestwellContactShadowPainter(slug))),
+          art,
+        ]),
+      ),
     );
   }
 }
