@@ -936,6 +936,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug)
                     QuestwellHearthDecor.positioned(
                       slug: slug, slot: slot,
+                      legacyChairLeft: equippedSlugs['room:left'] == QuestwellReadingChair.slug,
                       scene: Size(sceneWidth, sceneHeight),
                     ),
               Positioned(

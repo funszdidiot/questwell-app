@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'questwell_pixel_art.dart';
+import 'questwell_hearth_decor.dart';
 
 class RoomOccupant {
   const RoomOccupant(this.id, this.name);
@@ -31,8 +32,14 @@ class _RoomPicker extends StatefulWidget {
   State<_RoomPicker> createState() => _RoomPickerState();
 }
 class _RoomPickerState extends State<_RoomPicker> {
-  late String _slot = widget.currentSlot ?? 'right';
-  static const labels = {'left': 'Left', 'right': 'Right', 'front': 'Front'};
+  late final labels = QuestwellHearthDecor.choices(widget.slug);
+  late String _slot = labels.containsKey(widget.currentSlot)
+    ? widget.currentSlot!
+    : widget.currentSlot == null && labels.containsKey('right')
+      ? 'right'
+      : labels.keys.firstWhere((slot) => !widget.occupants.containsKey(slot),
+          orElse: () => labels.keys.first);
+  bool get _legacyPlacement => widget.currentSlot != null && !labels.containsKey(widget.currentSlot);
   Future<void> _save() async {
     final occupant = widget.occupants[_slot];
     if (occupant != null && occupant.id != widget.id) {
@@ -58,6 +65,10 @@ class _RoomPickerState extends State<_RoomPicker> {
             Text('Place ${widget.name}', style: const TextStyle(fontSize: 21, color: Color(0xFFF0E5CC))),
             const SizedBox(height: 8),
             const Text('Choose a spot below. Preview first, then save.'),
+            if (_legacyPlacement) const Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Text('This item now has updated placement choices. Choose a new spot and save to move it.'),
+            ),
             const SizedBox(height: 12),
             QuestwellHearthPixelScene(height: 310, archetype: widget.archetype,
               avatarBodyType: widget.bodyType, equippedSlugs: preview),

@@ -6,12 +6,19 @@ import 'questwell_reading_chair.dart';
 
 /// Authored furniture proportions and floor anchors shared by every Hearth view.
 class QuestwellHearthDecor {
+  static Map<String, String> choices(String slug) => switch (slug) {
+    QuestwellBookshelf.slug => const {'left': 'Left wall', 'right': 'Right wall'},
+    QuestwellReadingChair.slug => const {'front': 'Left floor', 'right': 'Right floor'},
+    _ => const {'left': 'Beside the fireplace', 'right': 'Near the window', 'front': 'Foreground'},
+  };
   static Positioned positioned({
     required String slug, required String slot, required Size scene,
+    bool legacyChairLeft = false,
   }) {
     final shelf = slug == QuestwellBookshelf.slug;
     final fern = slug == QuestwellFern.slug;
     final front = slot == 'front';
+    final chair = !shelf && !fern;
     // Match the asset canvas ratio, avoiding hidden BoxFit padding that makes
     // feet and pots float above their intended floor anchor.
     final ratio = shelf ? 1225 / 1284 : fern ? 1244 / 1264 : 1312 / 1199;
@@ -22,8 +29,13 @@ class QuestwellHearthDecor {
       scene.height * (front ? .31 : heightFraction),
     );
     final width = height * ratio;
-    final center = scene.width * (front ? .17 : slot == 'left' ? .30 : .85);
-    final floor = scene.height * (front ? .97 : .64);
+    final center = scene.width * (front
+      ? (fern && legacyChairLeft ? .85 : .17)
+      : slot == 'left' ? .30 : .85);
+    // Chairs stand on the usable floor, well in front of the baseboards.
+    // Retain rendering for legacy left-slot chairs until explicitly moved.
+    final floor = scene.height * (chair ? (slot == 'left' ? .82 : .95)
+      : front ? .97 : .67);
     final art = shelf ? const QuestwellBookshelf()
       : fern ? const QuestwellFern() : const QuestwellReadingChair();
     return Positioned(
@@ -33,7 +45,7 @@ class QuestwellHearthDecor {
       width: width, height: height,
       child: Stack(fit: StackFit.expand, children: [
         Positioned(left: width * .15, right: width * .15, bottom: 0,
-          height: height * .055,
+          height: height * (chair ? .10 : .055),
           child: DecoratedBox(decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             gradient: const RadialGradient(radius: .65, colors: [

@@ -10,7 +10,7 @@ class HearthDecorReviewApp extends StatefulWidget {
 class _HearthDecorReviewAppState extends State<HearthDecorReviewApp> {
   double width = 390;
   static const items = ['hearth-fern', 'walnut-bookshelf', 'burgundy-reading-chair'];
-  static const arrangements = [[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
+  static const arrangements = [[0,1,2],[1,0,2],[1,2,0]];
   static const names = ['Fern', 'Bookshelf', 'Chair'];
   @override
   Widget build(BuildContext context) => MaterialApp(
@@ -19,7 +19,7 @@ class _HearthDecorReviewAppState extends State<HearthDecorReviewApp> {
       body: SingleChildScrollView(child: Column(children: [
         const SizedBox(height: 16),
         const Text('Hearth décor · placement review', style: TextStyle(fontSize: 22)),
-        const Text('Sample arrangements • Left / Right / Front'),
+        const Text('Supported arrangements • Left / Right / Front'),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           const Text('Room width: '),
           DropdownButton<double>(value: width,

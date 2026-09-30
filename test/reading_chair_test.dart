@@ -48,6 +48,7 @@ void main() {
         expect(chair.left, greaterThan(scene.left));
         expect(chair.right, lessThan(scene.right));
         expect(chair.bottom, lessThan(scene.bottom));
+        expect(chair.bottom, greaterThan(scene.top + scene.height * .78));
         final fern = tester.getRect(find.byKey(const ValueKey('hearth-fern-bounds')));
         final shelf = tester.getRect(find.byKey(const ValueKey('hearth-bookshelf-bounds')));
         expect(chair.overlaps(fern), false);
