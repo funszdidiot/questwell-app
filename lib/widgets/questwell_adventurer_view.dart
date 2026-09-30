@@ -85,9 +85,9 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         ])),
         const SizedBox(height: 16),
         Wrap(spacing: 8, runSpacing: 8, children: [
-          ChoiceChip(label: const Text('Appearance'), selected: !_inventory,
+          ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: const Text('Appearance'), selected: !_inventory,
             onSelected: (_) => setState(() => _inventory = false)),
-          ChoiceChip(label: Text('Inventory · $owned'), selected: _inventory,
+          ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: Text('Inventory · $owned'), selected: _inventory,
             onSelected: (_) => setState(() => _inventory = true)),
         ]),
         const SizedBox(height: 18),
@@ -98,7 +98,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           const SizedBox(height: 8),
           Wrap(spacing: 8, runSpacing: 8, children: [
             for (final value in const ['male', 'female', 'neutral'])
-              ChoiceChip(label: Text(value == 'neutral' ? 'Gender neutral' : _label(value)),
+              ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: Text(value == 'neutral' ? 'Gender neutral' : _label(value)),
                 selected: widget.bodyType == value,
                 onSelected: widget.savingAppearance ? null : (_) => widget.onBody(value)),
           ]),
@@ -109,7 +109,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 8, children: [
             for (final value in const ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer'])
-              ChoiceChip(label: Text(_label(value)),
+              ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: Text(_label(value)),
                 avatar: QuestwellRelicPixelArt(archetype: value, size: 22),
                 selected: widget.archetype == value,
                 onSelected: widget.savingAppearance ? null : (_) => widget.onClass(value)),
@@ -128,12 +128,12 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 6, children: [
             for (final value in const ['Owned', 'Equipped', 'All items'])
-              ChoiceChip(label: Text(value), selected: _ownership == value,
+              ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: Text(value), selected: _ownership == value,
                 onSelected: (_) => setState(() => _ownership = value)),
           ]),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(initialValue: category, key: ValueKey(category),
-            isExpanded: true, decoration: const InputDecoration(labelText: 'Category',
+            isExpanded: true, decoration: InputDecoration(labelText: 'Category', labelStyle: GoogleFonts.roboto(fontSize: 14),
               border: OutlineInputBorder()),
             items: [DropdownMenuItem(value: 'All categories', child: Text('All categories', style: _text(14))),
               for (final value in categories) DropdownMenuItem(value: value, child: Text(_label(value), style: _text(14)))],
@@ -141,13 +141,14 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           const SizedBox(height: 14),
           if (visible.isEmpty) _panel(Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(_ownership == 'Equipped' ? 'Nothing equipped here yet.' : 'No items in this view.',
-              style: _text(17, bold: true)),
+              style: QuestwellTypography.sectionHeading(size: 11)),
             const SizedBox(height: 6),
             Text('Try another filter, or visit the Market to explore cosmetics.', style: _text(14, color: _muted)),
           ])),
           for (final item in visible) Padding(padding: const EdgeInsets.only(bottom: 12), child: _item(item)),
           OutlinedButton(onPressed: widget.onMarket,
-            style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold),
+            style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
+              textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
             child: const Text('Browse Market')),
         ],
         const SizedBox(height: 22),
@@ -160,7 +161,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
             : '${widget.collectionOwned} of ${widget.collectionTotal} class items collected.',
             style: _text(14, color: _muted)),
           if (widget.canClaim) Padding(padding: const EdgeInsets.only(top: 10),
-            child: FilledButton(onPressed: widget.claiming ? null : widget.onClaim,
+            child: FilledButton(style: FilledButton.styleFrom(textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)), onPressed: widget.claiming ? null : widget.onClaim,
               child: Text(widget.claiming ? 'Claiming…' : 'Claim mastery relic'))),
         ])),
       ]);
@@ -190,7 +191,8 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         onPressed: busy ? null : item.equipped ? () => widget.onUnequip(item.id)
           : !item.owned && item.shop ? widget.onMarket
           : item.owned && !item.classLocked && widget.equipmentReady ? () => widget.onEquip(item.id) : null,
-        style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold),
+        style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
+              textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
         child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? 'Unequip'
           : !item.owned ? (item.shop ? 'View in Market' : 'Earn through progression')
           : item.classLocked ? 'Class restricted' : !widget.equipmentReady ? 'Equip unavailable' : 'Equip')),

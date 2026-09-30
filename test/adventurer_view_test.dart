@@ -26,6 +26,13 @@ void main() {
         ])),
     )));
     await tester.pumpAndSettle();
+    for (final title in ['ADVENTURER', 'Scout', 'BODY STYLE', 'YOUR CLASS', 'CLASS MASTERY']) {
+      expect(tester.widget<Text>(find.byWidgetPredicate((w) => w is Text && w.data == title && w.style != null)).style?.fontFamily, GoogleFonts.pressStart2p().fontFamily);
+    }
+    expect(tester.widget<Text>(find.text('Level 3')).style?.fontFamily, GoogleFonts.roboto().fontFamily);
+    for (final chip in tester.widgetList<ChoiceChip>(find.byType(ChoiceChip))) {
+      expect(chip.labelStyle?.fontFamily, GoogleFonts.roboto().fontFamily);
+    }
     await tester.ensureVisible(find.text('Female'));
     await tester.tap(find.text('Female'));
     expect(body, 'female');
@@ -47,6 +54,8 @@ void main() {
     await tester.tap(find.text('Equipped'));
     await tester.pumpAndSettle();
     expect(find.text('Nothing equipped here yet.'), findsOneWidget);
+    expect(tester.widget<Text>(find.text('Nothing equipped here yet.')).style?.fontFamily,
+      GoogleFonts.pressStart2p().fontFamily);
     expect(tester.takeException(), isNull);
   });
 }

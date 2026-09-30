@@ -12,3 +12,7 @@ Epic 4 development pass. Homepage and enchanted wordmark approved by founder.
 - Shared sample review at `?review=adventurer`; sample interactions do not write to accounts.
 - Authenticated equipment/class-change/mastery round trips not verified by the agent. Founder previously confirmed body and Campfire persistence after logout/login.
 - No merge or launch.
+
+## Typography verification
+
+Pixel section headings confirmed for Adventurer, active class, Body style, Your class, Your collection, and Class mastery. Corrected empty-state heading to Press Start 2P. Explicit Roboto styles added to selection/filter chips, category label, and action buttons instead of inheriting platform defaults. Item/relic names remain Roboto subheaders; descriptions, numbers, and ownership labels remain Roboto. Regression checks cover headings, controls, supporting text and empty state.
