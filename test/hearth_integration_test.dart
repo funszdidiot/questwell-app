@@ -13,15 +13,17 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
 
-  testWidgets('Lantern is review-only and can be removed independently across fits', (tester) async {
-    expect(QuestwellEquipmentPolicy.isReady(QuestwellBrassLantern.previewSlug, 'hand'), false);
+  testWidgets('Approved lantern can be removed independently across fits', (tester) async {
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellBrassLantern.slug, 'hands'), true);
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellBrassLantern.slug, 'room'), false);
+    expect(QuestwellEquipmentPolicy.isReady('warding-lantern', 'hands'), false);
     for (final kind in ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer']) {
       for (final body in ['female', 'male', 'neutral']) {
         for (final enabled in [true, false]) {
           await tester.pumpWidget(MaterialApp(home: SizedBox(width: 240, height: 320,
             child: QuestwellLayeredAdventurerArt(archetype: kind, avatarBodyType: body,
               equippedSlugs: {'back': QuestwellLeatherSatchel.slug,
-                if (enabled) 'hand': QuestwellBrassLantern.previewSlug}),
+                if (enabled) 'hands': QuestwellBrassLantern.slug}),
           )));
           await tester.pump();
           expect(find.byType(QuestwellBrassLantern), enabled ? findsOneWidget : findsNothing);

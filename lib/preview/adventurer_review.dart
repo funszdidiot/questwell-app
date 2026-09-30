@@ -32,8 +32,9 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
               description: 'Sample ownership. Try Equip and Unequip here.', owned: true, equipped: _satchelEquipped, classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'suit', name: 'Business Suit', slug: 'starter-business-suit', category: 'chest',
               description: 'A polished starter look for getting things done.', owned: true, equipped: false, classLocked: false, shop: false),
-            AdventurerInventoryItem(id: 'b', name: 'Sample lantern', slug: 'lantern', category: 'room',
-              description: 'A warm light for your next small win.', owned: false, equipped: false, classLocked: false, shop: true),
+            AdventurerInventoryItem(id: 'b', name: 'Brass Lantern', slug: 'brass-lantern', category: 'hands',
+              description: 'Sample ownership. A warm light for your next small win.', owned: true,
+              equipped: _otherEquipped.contains('b'), classLocked: false, shop: true),
           ]),
       ))),
     ));

@@ -6,9 +6,37 @@ import 'inventory_icon_test.dart' show inventoryIconTests;
 import '../lib/widgets/questwell_class_emblem.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_momentum/flutter_flow/nav/nav.dart' show NavigationExtensions;
+import '../lib/preview/adventurer_review.dart';
+import '../lib/widgets/questwell_brass_lantern.dart';
 
 void main() {
   inventoryIconTests();
+  testWidgets('Lantern inventory toggles the illustrated avatar and retains ownership', (tester) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
+    await tester.binding.setSurfaceSize(const Size(430, 2400));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(const AdventurerReviewApp());
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Inventory · 6'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('All categories'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Hands').last);
+    await tester.pumpAndSettle();
+    expect(find.text('Brass Lantern'), findsOneWidget);
+    expect(find.byType(QuestwellBrassLantern), findsNothing);
+    await tester.ensureVisible(find.widgetWithText(OutlinedButton, 'Equip'));
+    await tester.tap(find.widgetWithText(OutlinedButton, 'Equip'));
+    await tester.pumpAndSettle();
+    expect(find.byType(QuestwellBrassLantern), findsOneWidget);
+    expect(find.text('Equipped · Hands'), findsOneWidget);
+    await tester.tap(find.widgetWithText(OutlinedButton, 'Unequip'));
+    await tester.pumpAndSettle();
+    expect(find.byType(QuestwellBrassLantern), findsNothing);
+    expect(find.text('Owned · Hands'), findsOneWidget);
+    expect(find.text('Inventory · 6'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
   for (final directEntry in [true, false]) {
     testWidgets('Adventurer back returns to Hearth (direct entry: $directEntry)', (tester) async {
       GoogleFonts.config.allowRuntimeFetching = false;
@@ -111,7 +139,7 @@ void main() {
     GoogleFonts.config.allowRuntimeFetching = false;
     await tester.binding.setSurfaceSize(const Size(390, 2200));
     addTearDown(() => tester.binding.setSurfaceSize(null));
-    for (final gear in [(slug: 'round-scholar-glasses', category: 'face'), (slug: 'tiny-wizard-hat', category: 'head'), (slug: 'emerald-scholar-scarf', category: 'neck'), (slug: 'leather-satchel', category: 'back')]) {
+    for (final gear in [(slug: 'round-scholar-glasses', category: 'face'), (slug: 'tiny-wizard-hat', category: 'head'), (slug: 'emerald-scholar-scarf', category: 'neck'), (slug: 'leather-satchel', category: 'back'), (slug: 'brass-lantern', category: 'hands')]) {
     for (final scenario in [
       (owned: true, equipped: false, locked: false, busy: false, label: 'Equip', enabled: true),
       (owned: false, equipped: false, locked: false, busy: false, label: 'View in Market', enabled: true),

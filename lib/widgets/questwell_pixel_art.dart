@@ -237,7 +237,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             if (classOverlay != null)
               ClipPath(clipper: SatchelForearmClipper(body), child: _assetLayer(classOverlay)),
           ],
-          if (equippedSlugs['hand'] == QuestwellBrassLantern.previewSlug) ...[
+          if (equippedSlugs['hands'] == QuestwellBrassLantern.slug) ...[
             QuestwellBrassLantern(bodyType: body),
             ClipPath(clipper: LanternHandClipper(body), child: _assetLayer(_baseAsset)),
             if (classOverlay != null)
@@ -3877,6 +3877,30 @@ class _ItemPainter extends CustomPainter {
       p.color = const Color(0xFFA53A32);
       canvas.drawPath(path, p);
       rect(size.width * .47, size.height * .20, size.width * .06, size.height * .50, gold);
+    } else if (slug == 'brass-lantern') {
+      // Match the inventory's 16-unit grid; equipped art stays illustrated.
+      final unit = size.width / 16;
+      void pixel(double x, double y, double w, double h, Color color) =>
+          rect(x * unit, y * unit, w * unit, h * unit, color);
+      const brass = Color(0xFFB47A2B);
+      const shade = Color(0xFF79502A);
+      const amber = Color(0xFFE99D32);
+      const flame = Color(0xFFFFE5A1);
+      pixel(6, 1, 4, 1, gold);
+      pixel(5, 2, 1, 3, brass);
+      pixel(10, 2, 1, 3, brass);
+      pixel(6, 4, 4, 1, gold);
+      pixel(7, 4, 2, 1, teal);
+      pixel(4, 5, 8, 1, gold);
+      pixel(3, 6, 10, 1, shade);
+      pixel(4, 7, 8, 6, brass);
+      pixel(5, 7, 6, 5, amber);
+      pixel(5, 7, 1, 5, gold);
+      pixel(10, 7, 1, 5, shade);
+      pixel(7, 8, 1, 2, flame);
+      pixel(7, 10, 2, 2, paper);
+      pixel(3, 13, 10, 1, gold);
+      pixel(4, 14, 8, 1, shade);
     } else if (slug.contains('lantern')) {
       rect(size.width * .40, size.height * .15, size.width * .20, size.height * .10, gold);
       rect(size.width * .31, size.height * .28, size.width * .38, size.height * .42, const Color(0xFFB47A2B));

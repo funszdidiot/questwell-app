@@ -28,7 +28,7 @@ class _EquipmentReviewAppState extends State<EquipmentReviewApp> {
   @override
   Widget build(BuildContext context) {
     final equipment = <String, String>{
-      if (widget.lantern && _lantern) 'hand': QuestwellBrassLantern.previewSlug,
+      if (widget.lantern && _lantern) 'hands': QuestwellBrassLantern.slug,
       if (widget.satchel && _satchel) 'back': QuestwellLeatherSatchel.slug,
       if (_glasses) 'face': 'round-scholar-glasses',
       if (widget.headwear && _hat) 'head': 'tiny-wizard-hat',

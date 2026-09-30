@@ -1,10 +1,10 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-/// Review-only hand accessory. Not present in the equipment-policy allowlist.
+/// Founder-approved handheld accessory on the frozen avatar canvas.
 class QuestwellBrassLantern extends StatelessWidget {
   const QuestwellBrassLantern({super.key, required this.bodyType});
-  static const previewSlug = 'preview-brass-lantern';
+  static const slug = 'brass-lantern';
   static const asset = 'assets/images/questwell/avatar/lantern_brass_illustrated_v1.png';
   final String bodyType;
 

@@ -13,12 +13,16 @@ Body-specific positioning uses the frozen 240 x 320 canvas, with original hand
 and cuff layers restored above the handle. Opposite side from the satchel.
 
 Review routes: `?review=lantern` and `?review=lantern-matrix`.
-The preview-only hand slug is absent from the equipment allowlist. No catalog,
-price, ownership, account equipment, or database changes. Lantern fit must be
-approved before real inventory integration; final inventory icon comes then.
+Founder approved the corrected grip. Inventory integration uses `brass-lantern`
+in the existing `hands` slot, with a matching 16-unit brass/amber/teal icon.
+Catalog price: 60 earned coins, non-premium, universal (no class restriction).
+Existing room item `warding-lantern` remains unchanged. No founder grant,
+account equipment change, or coin spend is performed by this integration.
 
 Tests exercise all five classes and three bodies with lantern on/off while
-preserving the satchel, and verify the real equipment policy rejects it.
+preserving the satchel. UI tests cover ownership, busy state, class locks,
+equip/unequip actions. Transaction-rollback RPC checks cover Hands replacement,
+all class changes, ownership retention, unrelated gear and account isolation.
 
 Development preview only. Keep unmerged and unlaunched.
 
