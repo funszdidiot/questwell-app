@@ -25,7 +25,8 @@ void main() {
         expect(painting.left, greaterThan(scene.left));
         expect(painting.right, lessThan(scene.right));
         expect(painting.top, greaterThan(scene.top));
-        expect(painting.bottom, lessThan(scene.top + scene.height * .2));
+        expect(painting.top, greaterThan(scene.top + scene.height * .08));
+        expect(painting.bottom, lessThan(scene.top + scene.height * .3));
         expect(find.byType(QuestwellReadingTable), findsOneWidget);
         expect(find.byType(QuestwellWallArt), findsOneWidget);
         expect(tester.takeException(), isNull);

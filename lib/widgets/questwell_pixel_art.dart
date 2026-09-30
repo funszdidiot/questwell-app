@@ -936,7 +936,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               if (equippedSlugs['wall_art'] == QuestwellWallArt.slug)
                 Positioned(
                   key: const ValueKey('hearth-wall-art-bounds'),
-                  top: sceneHeight * .01,
+                  // Hang below the cornice; the foreground avatar may overlap the frame.
+                  top: sceneHeight * .10,
                   left: (sceneWidth - math.min(sceneHeight * .17 * 1.4, sceneWidth * .24)) / 2,
                   width: math.min(sceneHeight * .17 * 1.4, sceneWidth * .24),
                   height: math.min(sceneHeight * .17, sceneWidth * .24 / 1.4),
