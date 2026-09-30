@@ -809,6 +809,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
     this.avatarBodyType = 'neutral',
     this.equippedSlugs = const {},
     this.showRelic = false,
+    this.showAvatar = true,
   });
 
   static const _environmentAsset =
@@ -819,6 +820,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   final String avatarBodyType;
   final Map<String, String> equippedSlugs;
   final bool showRelic;
+  final bool showAvatar;
 
   @override
   Widget build(BuildContext context) {
@@ -947,20 +949,13 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                 ),
               ),
               if (equippedSlugs['wall_art'] == QuestwellWallArt.slug)
-                Positioned(
-                  key: const ValueKey('hearth-wall-art-bounds'),
-                  // Hang below the cornice; the foreground avatar may overlap the frame.
-                  top: sceneHeight * .10,
-                  left: sceneWidth * ((equippedSlugs['room:right'] ?? equippedSlugs['room']) == QuestwellBookshelf.slug ? .45 : .56) - math.min(sceneHeight * .17 * 1.4, sceneWidth * .21) / 2,
-                  width: math.min(sceneHeight * .17 * 1.4, sceneWidth * .21),
-                  height: math.min(sceneHeight * .17, sceneWidth * .21 / 1.4),
-                  child: const QuestwellWallArt(),
-                ),
+                QuestwellHearthDecor.wallArtPositioned(
+                  slug: QuestwellWallArt.slug, side: 'wall_center', scene: Size(sceneWidth, sceneHeight)),
               for (final side in ['wall_left', 'wall_right'])
                 if (equippedSlugs['wall_art:$side'] case final String art)
                   if (QuestwellWallArt.isSide(art))
                     QuestwellHearthDecor.wallArtPositioned(
-                      slug: art, side: side, scene: Size(sceneWidth, sceneHeight), equipment: equippedSlugs),
+                      slug: art, side: side, scene: Size(sceneWidth, sceneHeight)),
               for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
                   if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
@@ -968,7 +963,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       slug: slug, slot: slot, equipment: equippedSlugs,
                       scene: Size(sceneWidth, sceneHeight),
                     ),
-              Positioned(
+              if (showAvatar) Positioned(
                 key: const ValueKey('hearth-contact-shadow'),
                 left: avatarLeft + avatarWidth * .22,
                 top: footY - avatarHeight * 8 / 320 - sceneHeight * .025,
@@ -978,7 +973,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   child: CustomPaint(painter: _HearthBootShadowPainter()),
                 ),
               ),
-              Positioned(
+              if (showAvatar) Positioned(
                 key: const ValueKey('hearth-avatar-bounds'),
                 left: avatarLeft,
                 top: avatarTop,

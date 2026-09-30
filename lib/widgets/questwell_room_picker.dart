@@ -70,7 +70,7 @@ class _RoomPickerState extends State<_RoomPicker> {
             const SizedBox(height: 8),
             const Text('Choose a spot below. Preview first, then save.'),
             if (blockedByShelf) const Padding(padding: EdgeInsets.only(top: 8),
-              child: Text('This painting will hang above the bookshelf.')),
+              child: Text('The wall art keeps its balanced arrangement. Preview how it sits above the bookshelf.')),
             if (_legacyPlacement) const Padding(
               padding: EdgeInsets.only(top: 8),
               child: Text('This item now has updated placement choices. Choose a new spot and save to move it.'),

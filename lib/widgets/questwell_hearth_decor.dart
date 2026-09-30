@@ -30,22 +30,27 @@ class QuestwellHearthDecor {
     });
   }
 
-  static Positioned wallArtPositioned({required String slug, required String side,
-    required Size scene, required Map<String, String> equipment}) {
-    final slot = side == 'wall_left' ? 'left' : 'right';
-    final hasShelf = (equipment['room:$slot'] ?? (slot == 'right' ? equipment['room'] : null)) == QuestwellBookshelf.slug;
-    var height = math.min(scene.height * .23, scene.width * .14 / .58);
-    var top = scene.height * .20;
-    var center = scene.width * (slot == 'left' ? .25 : .77);
-    if (hasShelf) {
-      final shelf = positioned(slug: QuestwellBookshelf.slug, slot: slot, scene: scene, equipment: equipment);
-      // Fit the complete frame into the real wall space above the bookcase.
-      height = math.min(height, shelf.top! - scene.height * .055);
-      top = shelf.top! - height - scene.height * .015;
-      center = shelf.left! + shelf.width! * (slot == 'left' ? .44 : .56);
+  /// A single gallery composition: common centerline and equal frame-edge gaps.
+  /// Furniture and the foreground avatar can overlap it without shifting the art.
+  static Rect wallArtBounds(Size scene, String slot) {
+    final centerWidth = math.min(scene.height * .17 * 1.4, scene.width * .21);
+    final sideHeight = math.min(scene.height * .195, scene.width * .12 / .58);
+    final sideWidth = sideHeight * .58;
+    final middle = Offset(scene.width * .54, scene.height * .175);
+    if (slot == 'wall_center') {
+      return Rect.fromCenter(center: middle, width: centerWidth, height: centerWidth / 1.4);
     }
-    return Positioned(key: ValueKey('hearth-$side-art-bounds'),
-      top: top, left: center - height * .58 / 2, width: height * .58, height: height,
+    final offset = centerWidth / 2 + scene.width * .035 + sideWidth / 2;
+    return Rect.fromCenter(
+      center: middle + Offset(slot == 'wall_left' ? -offset : offset, 0),
+      width: sideWidth, height: sideHeight);
+  }
+
+  static Positioned wallArtPositioned({required String slug, required String side,
+    required Size scene}) {
+    final rect = wallArtBounds(scene, side);
+    return Positioned(key: ValueKey(side == 'wall_center' ? 'hearth-wall-art-bounds' : 'hearth-$side-art-bounds'),
+      top: rect.top, left: rect.left, width: rect.width, height: rect.height,
       child: QuestwellWallArt(artSlug: slug));
   }
 

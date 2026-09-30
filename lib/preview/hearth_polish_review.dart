@@ -12,6 +12,7 @@ class _HearthPolishReviewAppState extends State<HearthPolishReviewApp> {
   double width = 390;
   String body = 'male';
   bool shelfRight = false;
+  bool showAvatar = true;
   @override
   Widget build(BuildContext context) => MaterialApp(debugShowCheckedModeBanner: false,
     theme: ThemeData.dark(), home: Scaffold(backgroundColor: const Color(0xFF111827),
@@ -23,13 +24,14 @@ class _HearthPolishReviewAppState extends State<HearthPolishReviewApp> {
             onChanged: (w) => setState(() => width = w!)),
           DropdownButton<String>(value: body, items: ['male','female','neutral'].map((b) => DropdownMenuItem(value: b, child: Text(b))).toList(),
             onChanged: (b) => setState(() => body = b!)),
+          TextButton(onPressed: () => setState(() => showAvatar = !showAvatar), child: Text(showAvatar ? 'Hide avatar' : 'Show avatar')),
           TextButton(onPressed: () => setState(() => shelfRight = !shelfRight), child: Text(shelfRight ? 'Bookshelf: right' : 'Bookshelf: left')),
         ]),
         Wrap(spacing: 28, runSpacing: 20, alignment: WrapAlignment.center, children: [
           SizedBox(width: width, child: Column(children: [
             QuestwellHomeHeader(onOpen: (_) {}),
             const SizedBox(height: 10),
-            QuestwellHearthPixelScene(height: 342, archetype: 'guardian', avatarBodyType: body,
+            QuestwellHearthPixelScene(height: 342, archetype: 'guardian', avatarBodyType: body, showAvatar: showAvatar,
               equippedSlugs: {
                 'room:${shelfRight ? 'right' : 'left'}': 'walnut-bookshelf',
                 'room:${shelfRight ? 'front' : 'right'}': 'burgundy-reading-chair',

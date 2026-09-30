@@ -7,7 +7,7 @@ import '../lib/widgets/questwell_class_emblem.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
-  testWidgets('Full wall frames clear the smaller bookcase on either wall', (tester) async {
+  testWidgets('Balanced gallery stays stable on either bookcase wall', (tester) async {
     for (final width in [284.0,354.0]) {
       for (final side in ['left','right']) {
         await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(width: width,
@@ -20,12 +20,19 @@ void main() {
         final frame = tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
         final center = tester.getRect(find.byKey(const ValueKey('hearth-wall-art-bounds')));
         final avatar = tester.getRect(find.byKey(const ValueKey('hearth-avatar-bounds')));
-        expect(art.bottom, lessThan(shelf.top));
+        // Solid shelf artwork starts 113 px down its 1284 px transparent canvas.
+        expect(art.bottom, lessThan(shelf.top + shelf.height * 113 / 1284));
         expect(art.top, greaterThan(frame.top));
         expect(art.overlaps(center), false);
         final otherArt = tester.getRect(find.byKey(ValueKey('hearth-wall_${side == 'left' ? 'right' : 'left'}-art-bounds')));
         expect(otherArt.overlaps(center), false);
-        expect((center.center.dx - avatar.center.dx).abs(), greaterThan(12));
+        final leftArt = tester.getRect(find.byKey(const ValueKey('hearth-wall_left-art-bounds')));
+        final rightArt = tester.getRect(find.byKey(const ValueKey('hearth-wall_right-art-bounds')));
+        expect(leftArt.size, rightArt.size);
+        expect(leftArt.center.dy, closeTo(center.center.dy, .01));
+        expect(rightArt.center.dy, closeTo(center.center.dy, .01));
+        expect(center.left - leftArt.right, closeTo(rightArt.left - center.right, .01));
+        expect((center.center.dx - avatar.center.dx).abs(), greaterThan(10));
         expect(find.byType(QuestwellClassEmblem), findsOneWidget);
         final emblem = tester.getRect(find.byType(QuestwellClassEmblem));
         expect(emblem.bottom, lessThan(frame.top));
