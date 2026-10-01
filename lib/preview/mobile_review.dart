@@ -34,24 +34,25 @@ class _MobileReviewAppState extends State<MobileReviewApp> {
     debugShowCheckedModeBanner: false,
     title: 'Questwell · Mobile review',
     theme: ThemeData.dark(useMaterial3: true),
-    home: Scaffold(backgroundColor: const Color(0xFF080F16),
+    home: KeyedSubtree(key: ValueKey(screen), child: scene),
+    builder: (context, navigator) => Scaffold(backgroundColor: const Color(0xFF080F16),
       body: SafeArea(child: Column(children: [
         Padding(padding: const EdgeInsets.all(8), child: Wrap(
           spacing: 16, runSpacing: 4, crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             const Text('Questwell · Mobile preview'),
-            DropdownButton<String>(value: screen,
-              items: ['Market', 'Hearth', 'Quests', 'Adventurer', 'Chronicle', 'Expedition']
-                .map((value) => DropdownMenuItem(value: value, child: Text(value))).toList(),
-              onChanged: (value) => setState(() => screen = value!)),
-            DropdownButton<double>(value: width,
-              items: [320.0, 390.0, 430.0].map((value) => DropdownMenuItem(
-                value: value, child: Text('${value.toInt()} px'))).toList(),
-              onChanged: (value) => setState(() => width = value!)),
-            DropdownButton<double>(value: scale,
-              items: [1.0, 1.6, 2.0].map((value) => DropdownMenuItem(
-                value: value, child: Text('${(value * 100).round()}% text'))).toList(),
-              onChanged: (value) => setState(() => scale = value!)),
+            TextButton.icon(
+              onPressed: () => setState(() {
+                const screens = ['Market', 'Hearth', 'Quests', 'Adventurer', 'Chronicle', 'Expedition'];
+                screen = screens[(screens.indexOf(screen) + 1) % screens.length];
+              }),
+              icon: const Icon(Icons.navigate_next, size: 18), label: Text(screen)),
+            TextButton(onPressed: () => setState(() => width = switch (width) {
+              320 => 390, 390 => 430, _ => 320,
+            }), child: Text('${width.toInt()} px')),
+            TextButton(onPressed: () => setState(() => scale = switch (scale) {
+              1 => 1.6, 1.6 => 2, _ => 1,
+            }), child: Text('${(scale * 100).round()}% text')),
           ])),
         const Padding(padding: EdgeInsets.only(bottom: 8),
           child: Text('Sample content · Changes stay in this preview',
@@ -63,7 +64,7 @@ class _MobileReviewAppState extends State<MobileReviewApp> {
             child: ClipRect(child: MediaQuery(
               data: MediaQuery.of(context).copyWith(size: size,
                 padding: EdgeInsets.zero, textScaler: TextScaler.linear(scale)),
-              child: KeyedSubtree(key: ValueKey(screen), child: scene),
+              child: navigator!,
             ))));
         })),
         const SizedBox(height: 12),

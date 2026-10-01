@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_momentum/add_task_page/add_task_page_widget.dart';
 import 'package:project_momentum/preview/market_catalog.dart';
+import 'package:project_momentum/preview/mobile_review.dart';
 import 'package:project_momentum/services/questwell_cosmetic_models.dart';
 import 'package:project_momentum/widgets/questwell_market_view.dart';
 import 'package:project_momentum/preview/home_sections_review.dart';
@@ -87,6 +88,28 @@ void main() {
     await tester.pumpAndSettle();
     expect(purchases, 0);
     expect(find.byType(AlertDialog), findsNothing);
+  });
+
+  testWidgets('Mobile preview applies phone size and text scale to dialogs', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(1000, 850));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(const MobileReviewApp());
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('390 px')); await tester.pumpAndSettle();
+    await tester.tap(find.text('430 px')); await tester.pumpAndSettle();
+    await tester.tap(find.text('100% text')); await tester.pumpAndSettle();
+    await tester.tap(find.text('160% text')); await tester.pumpAndSettle();
+    final claim = find.widgetWithText(FilledButton, 'Claim free');
+    await tester.dragUntilVisible(claim.hitTestable(), find.byType(ListView),
+      const Offset(0, -200), maxIteration: 30);
+    await tester.tap(claim); await tester.pumpAndSettle();
+    final context = tester.element(find.byType(AlertDialog));
+    expect(MediaQuery.sizeOf(context), const Size(320, 568));
+    expect(MediaQuery.textScalerOf(context).scale(14), 28);
+    expect(find.text('Cancel').hitTestable(), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.tap(find.text('Cancel')); await tester.pumpAndSettle();
+    await tester.pumpWidget(const SizedBox());
   });
 
   for (final entry in <String, Widget>{
