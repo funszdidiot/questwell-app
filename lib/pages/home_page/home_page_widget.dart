@@ -400,16 +400,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                QuestwellHomeHeader(onOpen: (destination) async {
-                  final route = switch (destination) {
-                    'quest' => QuestBoardPageWidget.routeName,
-                    'chronicle' => ChroniclePageWidget.routeName,
-                    _ => AdventurerPageWidget.routeName,
-                  };
-                  await context.pushNamed(route);
-                  if (mounted) setState(_loadHomeData);
-                }),
-                const SizedBox(height: 2),
+                const QuestwellHomeHeader(),
+const SizedBox(height: 2),
                 const QuestwellPixelDivider(
                   accent: Color(0xFFD6A84B),
                 ),

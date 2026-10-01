@@ -11,20 +11,20 @@ class QuestwellHomeEmptyBoard extends StatelessWidget {
   Widget build(BuildContext context) => QuestwellNoticeboard(
     child: Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(22, 14, 22, 24),
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
       color: const Color(0xFFF0E0BA),
       child: Column(children: [
         Container(width: 10, height: 10, decoration: const BoxDecoration(
           color: Color(0xFFAA6343), shape: BoxShape.circle,
           boxShadow: [BoxShadow(color: Color(0x4434291F), offset: Offset(1, 2))])),
-        const SizedBox(height: 18),
+        const SizedBox(height: 10),
         Text('A little room to breathe.', textAlign: TextAlign.center,
           style: QuestwellTypography.sectionHeading(size: 12,
             color: const Color(0xFF34291F))),
-        const SizedBox(height: 10),
-        Text('Your board is clear. Add one thing when you’re ready.',
+        const SizedBox(height: 8),
+        Text('Add one thing when you’re ready.',
           textAlign: TextAlign.center,
-          style: GoogleFonts.roboto(fontSize: 16, height: 1.5,
+          style: GoogleFonts.roboto(fontSize: 15, height: 1.35,
             color: const Color(0xFF66513A))),
       ]),
     ),
@@ -45,20 +45,8 @@ class QuestwellHomeActions extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           textStyle: GoogleFonts.roboto(fontSize: 17, fontWeight: FontWeight.w700),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)))),
-      const SizedBox(height: 28),
-      Text('EXPLORE', style: QuestwellTypography.sectionHeading(size: 10, color: const Color(0xFFD6B77A))),
       const SizedBox(height: 12),
       _destination('expedition', 'Start an expedition', 'Make space for a focused session.'),
-      const SizedBox(height: 10),
-      LayoutBuilder(builder: (context, constraints) {
-        final columns = constraints.maxWidth < 330 || MediaQuery.textScalerOf(context).scale(16) > 22 ? 1 : 2;
-        return Wrap(spacing: 10, runSpacing: 10, children: [
-          for (final entry in const {'boss': 'Boss battles', 'chronicle': 'Chronicle',
-            'adventurer': 'Adventurer', 'market': 'Market'}.entries)
-            SizedBox(width: (constraints.maxWidth - (columns - 1) * 10) / columns,
-              child: _destination(entry.key, entry.value, null)),
-        ]);
-      }),
     ],
   );
 

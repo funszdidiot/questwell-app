@@ -28,15 +28,8 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
       body: QuestwellCampfireBackground(active: _campfire, child: SafeArea(child: Center(child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 430),
         child: ListView(padding: const EdgeInsets.all(20), children: [
-          QuestwellHomeHeader(onOpen: (key) => QuestwellNavigationScope.open(context, switch (key) {
-              'quest' || 'quests' => QuestwellDestination.quests,
-              'boss' => QuestwellDestination.bosses,
-              'expedition' => QuestwellDestination.expedition,
-              'market' => QuestwellDestination.market,
-              'chronicle' => QuestwellDestination.chronicle,
-              _ => QuestwellDestination.adventurer,
-            })),
-          const SizedBox(height: 2),
+          const QuestwellHomeHeader(),
+const SizedBox(height: 2),
           const QuestwellPixelDivider(accent: Color(0xFFD6A84B)),
           const SizedBox(height: 6),
           QuestwellHearthPixelScene(height: 342,

@@ -22,9 +22,9 @@ void main() {
     expect(tester.widget<Text>(find.text('A little room to breathe.')).style?.fontFamily,
       GoogleFonts.pressStart2p().fontFamily);
     for (final entry in {'Add quest': 'quests', 'Start an expedition': 'expedition',
-      'Boss battles': 'boss', 'Chronicle': 'chronicle', 'Adventurer': 'adventurer',
-      'Market': 'market'}.entries) {
+      }.entries) {
       await tester.ensureVisible(find.text(entry.key));
+      await tester.pumpAndSettle();
       await tester.tap(find.text(entry.key));
       expect(destination, entry.value);
     }

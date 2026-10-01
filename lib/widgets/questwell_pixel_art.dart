@@ -2271,6 +2271,39 @@ class _NavIconPainter extends CustomPainter {
     final paper = const Color(0xFFD8C7A3);
 
     switch (kind) {
+      case 'campfire':
+        // A 16-pixel grid keeps the flame crisp beside the retro controls.
+        const rows = [
+          '................',
+          '........r.......',
+          '.......rr.......',
+          '......rrr.......',
+          '......roor..r...',
+          '...r..roor.rr...',
+          '...rrroooorrr...',
+          '...rrooyooorr...',
+          '...roooyyoorr...',
+          '....ooyyyooo....',
+          '....ooyyyoor....',
+          '.....ooooor.....',
+          '...bbbbbbbbb....',
+          '..bbllllllbbb...',
+          '...bb....bb.....',
+          '................',
+        ];
+        const colors = {
+          'r': Color(0xFFCB603D), 'o': Color(0xFFF29A44),
+          'y': Color(0xFFFFE19A), 'b': Color(0xFF69452E),
+          'l': Color(0xFFAC7646),
+        };
+        for (var y = 0; y < rows.length; y++) {
+          for (var x = 0; x < rows[y].length; x++) {
+            final color = colors[rows[y][x]];
+            if (color != null) rect(x * size.width / 16, y * size.height / 16,
+              size.width / 16, size.height / 16, color);
+          }
+        }
+        break;
       case 'expedition':
         final mountain = Path()
           ..moveTo(size.width * .08, size.height * .78)

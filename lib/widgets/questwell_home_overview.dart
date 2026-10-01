@@ -14,29 +14,13 @@ TextStyle _body(double size, {Color color = _ink, bool bold = false}) =>
       fontWeight: bold ? FontWeight.w700 : FontWeight.w400);
 
 class QuestwellHomeHeader extends StatelessWidget {
-  const QuestwellHomeHeader({super.key, required this.onOpen});
-  final ValueChanged<String> onOpen;
+  const QuestwellHomeHeader({super.key});
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Row(mainAxisSize: MainAxisSize.min, children: [
-        Flexible(child: QuestwellBrandWordmark(showSubtitle: false)),
-        SizedBox(width: 3),
-        QuestwellWordmarkSparkles(),
-      ]),
-      const SizedBox(height: 4),
-      Wrap(spacing: 8, runSpacing: 4, children: [
-        for (final entry in const {'quest': 'Quests', 'chronicle': 'Chronicle',
-          'adventurer': 'Adventurer'}.entries)
-          TextButton.icon(onPressed: () => onOpen(entry.key),
-            icon: QuestwellNavPixelIcon(kind: entry.key, size: 18),
-            label: Text(entry.value), style: TextButton.styleFrom(
-              foregroundColor: _ink, minimumSize: const Size(48, 48),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              textStyle: _body(14, bold: true))),
-      ]),
-    ],
-  );
+  Widget build(BuildContext context) => const Row(mainAxisSize: MainAxisSize.min, children: [
+    Flexible(child: QuestwellBrandWordmark(showSubtitle: false)),
+    SizedBox(width: 3),
+    QuestwellWordmarkSparkles(),
+  ]);
 }
 
 class HomeCollectionItem {
@@ -127,7 +111,7 @@ class QuestwellHomeCampfireControl extends StatelessWidget {
   final ValueChanged<bool>? onChanged;
   @override
   Widget build(BuildContext context) => _HomePanel(warm: active, child: Row(children: [
-    const QuestwellNavPixelIcon(kind: 'expedition', size: 22),
+    const QuestwellNavPixelIcon(kind: 'campfire', size: 28),
     const SizedBox(width: 12),
     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text('Campfire Mode', style: QuestwellTypography.sectionHeading(size: 10, color: _ink)),
