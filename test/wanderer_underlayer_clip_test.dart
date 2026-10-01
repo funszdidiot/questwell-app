@@ -200,7 +200,8 @@ void main() {
             'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_${body}_v2.webp',
           ]);
           final clip = tester.widget<ClipPath>(
-            find.descendant(of: layer, matching: find.byType(ClipPath)),
+            find.descendant(of: layer, matching: find.byWidgetPredicate(
+              (widget) => widget is ClipPath && widget.clipper is WandererUnderlayerClipper)),
           ).clipper;
           expect(clip, isA<WandererUnderlayerClipper>());
           expect((clip! as WandererUnderlayerClipper).bodyType, body);
