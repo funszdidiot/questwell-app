@@ -381,6 +381,24 @@
           "sha256": "abcbdca0cc0c15850b0376a603a0586cc68b114ed81d281a8f7a922afc65296e"
         }
       ]
+    },
+    "wanderer_short_coat_cuffs_v2": {
+      "visual_approval": "pending_founder_review",
+      "description": "Painted single-edge cuffs without hollow openings; body-specific wrist registration.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_short_v2.webp",
+          "sha256": "74a0b872b65c8d167fa852e9a4f467353c4ef7aacdfb93cc68c1e597f2fd131d"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_short_v2.webp",
+          "sha256": "3aa405bc32ac2f2dcecd94db0acd72a6b9576338e188b88cfd2e61a80da36281"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_short_v2.webp",
+          "sha256": "9f01b8760bec36d624f46524ce133794ffac4f4c71b7978a4123bac9d1054c75"
+        }
+      ]
     }
   },
   "approved_layers": {

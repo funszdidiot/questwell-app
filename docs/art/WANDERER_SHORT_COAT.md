@@ -23,3 +23,14 @@ Neutral: Create the ANDROGYNOUS NEUTRAL body fit of this short Wanderer travel c
 ## Verification
 
 Asset lock verification preserves all previously approved assets. Regression tests cover matching body assets, sleeve ends, clear lower legs, removal of cuff overlays, satchel restoration, replacement outfits, and short rear layering. Visual review uses the live Wayfarer review screen before founder approval.
+
+## Cuff revision v2 — October 1, 2026
+
+Founder reported disconnected cuffs. Close-up showed painted dark oval openings across the wrist; these were removed using built-in ImageGen edits with each registered v1 sprite as reference. Sleeve fabric now ends in a single thin gold edge. No runtime cuff overlay is added.
+
+Female source: `exec-0afb1967-0e48-400e-b21a-0261af3781b9.png`, resized to240×320. Male: `exec-0abce699-03be-4270-83ba-5d8330661f49.png`, resized218×308, offset12,2. Neutral: `exec-52ed6186-e7a4-4b73-bbd2-949de0385a87.png`, resized218×306, offset12,0. Lossless assets end in `short_v2.webp`.
+
+Female prompt:
+Use case: precise-object-edit. Edit only both CUFF ENDS of this exact short brown Wanderer coat. This garment will be layered over a character's hands. Existing cuffs are wrong: large black oval empty holes facing the viewer make wrists look disconnected. REPLACE the visible dark oval faces with continuous brown sleeve fabric and a thin aged-gold hem at the bottom. Front cloth edge should curve gently DOWN in its middle, wrapping snugly over a wrist, no visible hollow oval, no black cap, no thick rolled ring, no separate band. Narrow subtly toward wrists. Leave hands absent and transparent beyond sleeve edge. Keep sleeve end positions fixed at roughly y680, same arms/pose, short hem, collar, gold stars, buttons, pockets, torso, brown painterly cloth and 64-bit retro fantasy style. Preserve exact original placement on 960x1280 transparent canvas, collar y285 and hem y825. Change nothing except final 40 pixels of both sleeves. Transparent background.
+
+Male and neutral edits used their own v1 fit references plus corrected female cuff style: replace dark hollow oval cuffs and thick double rings with continuous brown cloth and a single thin gold hem at the wrist, transparent immediately beyond edge, no hands or body; retain original body proportions, short hem and64-bit painterly style. Requested original sleeve end positions male y700 and neutral y685 on960×1280. Registered results to the source240×320 body canvas after generation.
