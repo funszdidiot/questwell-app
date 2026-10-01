@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Grimoire spine grip correction — 2026-10-01 America/Chicago
+
+Founder rejected the first fit as unnatural: a relaxed hand had been restored over the cover. Replaced that treatment with an integrated, detailed book-and-gripping-hand sprite. The thumb presses the cover and fingers curl around the spine. A grimoire-only base visibility mask removes the original hand; the class cuff restores above the new wrist. Body-specific wrist registration replaces the old floating-book offsets. Frozen base/class artwork, inventory icon, catalog rules and account state remain unchanged. Updated built-in edit prompt/provenance: `docs/art/ANNOTATED_GRIMOIRE.md`.
+
+Verified build `85a0303ac9de8915bcbbec893c4c49c8d0a558fd`: Flutter Check 36818573291 and Preview 36818573300 passed, including new tests for other-body preservation, no original-hand restoration, all-body grip loading, unequip restoration and stale cloak-loadout suppression. Browser inspected female, male and neutral avatar/Hearth grips and neutral unequip/restoration. Enlarged real browser capture inspected the male thumb, fingers and sleeve join. Proof saved: `grimoire-grip-review.jpg` (in-app frame plus enlarged hand detail). Verified review: `?review=grimoire&rev=85a0303`. Founder visual approval pending; development preview only, no merge or launch.
+
 ## Annotated Grimoire equipped-art upgrade — 2026-09-30 America/Chicago
 
 Replaced the handheld canvas placeholder with detailed 64-bit-style plum leather, gold hardware, worn ivory pages and annotation tabs. Three registered body placements restore the existing hand and class cuff over the upper cover edge. Updated the matching 16-bit icon. Shared cloak conflict confirmation and server-side equipment rules remain unchanged. Scholar-only, rare, hands slot, 160 coins. No account changes. Prompt and source: `docs/art/ANNOTATED_GRIMOIRE.md`.

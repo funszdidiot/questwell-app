@@ -133,3 +133,10 @@ Build `4477ab07a9b51a86ace491130e18196dfba0acc1`: Flutter Check 36817616481 and 
 
 Preceding Wayfarer Satchel was approved and granted to the founder inventory; ownership verified, coin balance and equipped items unchanged.
 
+
+## Grimoire spine grip correction — 2026-10-01 America/Chicago
+
+Founder rejected the first fit as unnatural: a relaxed hand had been restored over the cover. Replaced that treatment with an integrated, detailed book-and-gripping-hand sprite. The thumb presses the cover and fingers curl around the spine. A grimoire-only base visibility mask removes the original hand; the class cuff restores above the new wrist. Body-specific wrist registration replaces the old floating-book offsets. Frozen base/class artwork, inventory icon, catalog rules and account state remain unchanged. Updated built-in edit prompt/provenance: `docs/art/ANNOTATED_GRIMOIRE.md`.
+
+Verified build `85a0303ac9de8915bcbbec893c4c49c8d0a558fd`: Flutter Check 36818573291 and Preview 36818573300 passed, including new tests for other-body preservation, no original-hand restoration, all-body grip loading, unequip restoration and stale cloak-loadout suppression. Browser inspected female, male and neutral avatar/Hearth grips and neutral unequip/restoration. Enlarged real browser capture inspected the male thumb, fingers and sleeve join. Proof saved: `grimoire-grip-review.jpg` (in-app frame plus enlarged hand detail). Verified review: `?review=grimoire&rev=85a0303`. Founder visual approval pending; development preview only, no merge or launch.
+
