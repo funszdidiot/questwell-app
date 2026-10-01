@@ -16,6 +16,9 @@ Pending activation:
 - Review and apply tool/qa/class_mastery_relic_catalog_candidate.sql to an
   approved development database. It converts existing mastery rewards to room
   décor, preserving IDs, ownership, class restrictions, and collection criteria.
+  It also adds a class-relic branch to the existing placement RPC: left/right
+  pedestals, mantel, or a supported bookcase top. These changes must activate
+  together; the current server otherwise rejects class relics on surfaces.
 - Exercise the existing claim/place/move/remove RPCs with a development account.
   Confirm a locked reward cannot be placed, another user's item cannot be placed,
   a changed occupant requires fresh confirmation, and a class change unequips
