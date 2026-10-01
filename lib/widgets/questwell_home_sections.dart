@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import 'questwell_quest_card.dart';
@@ -18,13 +17,13 @@ class QuestwellHomeEmptyBoard extends StatelessWidget {
           color: Color(0xFFAA6343), shape: BoxShape.circle,
           boxShadow: [BoxShadow(color: Color(0x4434291F), offset: Offset(1, 2))])),
         const SizedBox(height: 10),
-        Text('A little room to breathe.', textAlign: TextAlign.center,
+        Text('Room to breathe.', textAlign: TextAlign.center,
           style: QuestwellTypography.sectionHeading(size: 12,
             color: const Color(0xFF34291F))),
         const SizedBox(height: 8),
         Text('Add one thing when you’re ready.',
           textAlign: TextAlign.center,
-          style: GoogleFonts.roboto(fontSize: 15, height: 1.35,
+          style: QuestwellTypography.body(fontSize: 15,
             color: const Color(0xFF66513A))),
       ]),
     ),
@@ -43,7 +42,7 @@ class QuestwellHomeActions extends StatelessWidget {
         style: FilledButton.styleFrom(backgroundColor: const Color(0xFF326F69),
           foregroundColor: Colors.white, minimumSize: const Size.fromHeight(52),
           padding: const EdgeInsets.all(15),
-          textStyle: GoogleFonts.roboto(fontSize: 17, fontWeight: FontWeight.w700),
+          textStyle: QuestwellTypography.body(fontSize: 16, height: 1.3, fontWeight: FontWeight.w700),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)))),
       const SizedBox(height: 12),
       _destination('expedition', 'Start an expedition', 'Make space for a focused session.'),
@@ -61,11 +60,11 @@ class QuestwellHomeActions extends StatelessWidget {
         QuestwellNavPixelIcon(kind: kind, size: 22),
         const SizedBox(width: 12),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(title, style: GoogleFonts.roboto(fontSize: 15,
+          Text(title, style: QuestwellTypography.body(fontSize: 16,
             fontWeight: FontWeight.w700, color: const Color(0xFFF0E5CC))),
           if (subtitle != null) ...[
             const SizedBox(height: 5),
-            Text(subtitle, style: GoogleFonts.roboto(fontSize: 13, height: 1.4,
+            Text(subtitle, style: QuestwellTypography.body(fontSize: 14,
               color: const Color(0xFFAFBBC7))),
           ],
         ])),

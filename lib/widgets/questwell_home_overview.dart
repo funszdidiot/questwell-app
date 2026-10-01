@@ -1,6 +1,5 @@
 import '../services/questwell_progression.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import 'questwell_wordmark_sparkles.dart';
@@ -10,7 +9,7 @@ const _gold = Color(0xFFE4C586);
 const _ink = Color(0xFFF0E5CC);
 const _muted = Color(0xFFB9C7D7);
 TextStyle _body(double size, {Color color = _ink, bool bold = false}) =>
-    GoogleFonts.roboto(fontSize: size, height: 1.35, color: color,
+    QuestwellTypography.body(fontSize: size, color: color,
       fontWeight: bold ? FontWeight.w700 : FontWeight.w400);
 
 class QuestwellHomeHeader extends StatelessWidget {
@@ -78,7 +77,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
         onPressed: onCustomize, style: OutlinedButton.styleFrom(
           minimumSize: const Size.fromHeight(48), foregroundColor: _ink,
           side: const BorderSide(color: Color(0xFF766342)),
-          textStyle: _body(15, bold: true),
+          textStyle: _body(16, bold: true),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3))),
         child: const Text('Customize adventurer'))),
     ],
@@ -114,7 +113,7 @@ class QuestwellHomeCampfireControl extends StatelessWidget {
     const QuestwellNavPixelIcon(kind: 'campfire', size: 28),
     const SizedBox(width: 12),
     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text('Campfire Mode', style: QuestwellTypography.sectionHeading(size: 10, color: _ink)),
+      Text('Campfire Mode', style: QuestwellTypography.sectionHeading(size: 11, color: _ink)),
       Text(active ? 'One gentle quest. A little warmth.' : 'Lower the pace. Focus on one quest.',
         style: _body(13, color: _muted)),
     ])),
