@@ -17,8 +17,6 @@ import 'questwell_fern.dart';
 import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
 import 'questwell_wall_art.dart';
-import 'questwell_first_journey.dart';
-import 'questwell_starlit_orrery.dart';
 import 'questwell_milestone_reward.dart';
 import 'questwell_hearth_decor.dart';
 import 'questwell_contact_shadow.dart';
@@ -975,8 +973,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               for (final slot in ['left','right','front'])
                 if (equippedSlugs['room:$slot'] == 'warding-lantern')
                   Positioned(key: const ValueKey('hearth-warding-lantern-bounds'),
-                    left: sceneWidth*(slot=='left'?.24:slot=='right'?.78:.16),
-                    top: sceneHeight*(slot=='front'?.65:.48), width: sceneWidth*.10, height: sceneHeight*.21,
+                    left: sceneWidth*(slot=='left' ? .24 : slot=='right' ? .78 : .16),
+                    top: sceneHeight*(slot=='front' ? .65 : .48), width: sceneWidth*.10, height: sceneHeight*.21,
                     child: const QuestwellCatalogRoomArt(slug:'warding-lantern')),
               for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)

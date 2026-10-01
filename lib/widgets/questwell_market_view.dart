@@ -16,6 +16,9 @@ class QuestwellMarketView extends StatefulWidget {
 }
 class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   String category='All',query='';
+  final searchController=TextEditingController();
+  @override
+  void dispose(){searchController.dispose();super.dispose();}
   bool affordable=false,owned=false,myClass=true;
   static const cream=Color(0xFFF1E4C9),muted=Color(0xFFA9BEB8),gold=Color(0xFFE0BF79),ink=Color(0xFF253E3D);
   bool room(QuestwellCosmetic item)=>['room','wall_art'].contains(item.category);
@@ -33,7 +36,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   }
   bool canAct(QuestwellCosmetic i)=>widget.busyId==null&&!restricted(i)&&!i.equipped&&
     QuestwellEquipmentPolicy.isReady(i.slug,i.category)&&(i.owned||i.price<=widget.data.profile.coinBalance);
-  Future<void> activate(QuestwellCosmetic i) async {
+  Future<void> _activateItem(QuestwellCosmetic i) async {
     if(!canAct(i))return;
     if(i.owned){await widget.onEquip(i);return;}
     final confirmed=await showDialog<bool>(context:context,builder:(ctx)=>AlertDialog(
@@ -79,7 +82,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
           TextButton(onPressed:()=>Navigator.pop(ctx),child:const Text('Back to shop')),
         ])))));
     if(!mounted)return;
-    if(result=='activate')await activate(item);
+    if(result=='activate')await _activateItem(item);
     if(result=='remove')await widget.onUnequip(item);
     if(result=='move')await widget.onEquip(item);
   }
@@ -102,7 +105,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
             Text('${all.where((i)=>i.owned).length} / ${all.length} collected',style:const TextStyle(color:muted,fontSize:12)),
           ])])),
       const SizedBox(height:20),
-      TextField(onChanged:(v)=>setState(()=>query=v),style:const TextStyle(color:cream),decoration:InputDecoration(
+      TextField(controller:searchController,onChanged:(v)=>setState(()=>query=v),style:const TextStyle(color:cream),decoration:InputDecoration(
         hintText:'Find your next treasure',hintStyle:const TextStyle(color:muted),prefixIcon:const Icon(Icons.search,color:muted),
         filled:true,fillColor:const Color(0xFF192F32),border:OutlineInputBorder(borderRadius:BorderRadius.circular(10),borderSide:BorderSide.none))),
       const SizedBox(height:12),
@@ -117,7 +120,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       const SizedBox(height:18),Text('${items.length} treasures',style:const TextStyle(color:muted,fontSize:12)),const SizedBox(height:10),
       if(items.isEmpty) Padding(padding:const EdgeInsets.symmetric(vertical:35),child:Column(children:[
         const Icon(Icons.search_off,color:gold,size:32),const SizedBox(height:12),const Text('No treasures match these filters.',style:TextStyle(color:cream)),
-        TextButton(onPressed:()=>setState((){category='All';owned=false;affordable=false;myClass=true;}),child:const Text('Reset filters'))])),
+        TextButton(onPressed:()=>setState((){category='All';owned=false;affordable=false;myClass=true;query='';searchController.clear();}),child:const Text('Reset filters'))])),
       LayoutBuilder(builder:(context,constraints){final width=constraints.maxWidth>650?(constraints.maxWidth-14)/2:constraints.maxWidth;
         return Wrap(spacing:14,runSpacing:12,children:[for(final i in items) SizedBox(width:width,child:card(i))]);}),
       const SizedBox(height:22),const Text('Coins come from your quests. Every purchase stays in your inventory.',textAlign:TextAlign.center,style:TextStyle(color:muted,fontSize:12,height:1.5)),
@@ -140,7 +143,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       if(restricted(item))Padding(padding:const EdgeInsets.only(top:8),child:Text('Requires ${title(item.requiredArchetype!)} class',style:const TextStyle(color:Color(0xFF88534C),fontSize:12))),
       const SizedBox(height:10),Wrap(alignment:WrapAlignment.spaceBetween,spacing:8,runSpacing:5,children:[
         TextButton(onPressed:()=>details(item),style:TextButton.styleFrom(foregroundColor:ink),child:const Text('Preview')),
-        FilledButton(onPressed:canAct(item)?()=>activate(item):null,
+        FilledButton(onPressed:canAct(item)?()=>_activateItem(item):null,
           style:FilledButton.styleFrom(backgroundColor:ink,foregroundColor:cream,disabledBackgroundColor:const Color(0xFFDDD4BE),disabledForegroundColor:const Color(0xFF656B5D)),child:Text(action(item))),
       ]),
     ]));
