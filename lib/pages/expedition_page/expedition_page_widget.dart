@@ -17,7 +17,7 @@ class ExpeditionPageWidget extends StatefulWidget {
 class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   Timer? _timer;
   int _selectedMinutes = 25;
-  int _secondsRemaining = 25 * 60;
+  late final ValueNotifier<int> _secondsRemaining.value = ValueNotifier<int>(25 * 60);
   bool _running = false;
   bool _finished = false;
   DateTime? _deadline;
@@ -25,6 +25,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   @override
   void dispose() {
     _timer?.cancel();
+    _secondsRemaining.value.dispose();
     super.dispose();
   }
 
@@ -32,16 +33,16 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
     if (_running) return;
     setState(() {
       _selectedMinutes = minutes;
-      _secondsRemaining = minutes * 60;
+      _secondsRemaining.value = minutes * 60;
       _finished = false;
     });
   }
 
   void _start() {
-    if (_running || _secondsRemaining <= 0) return;
+    if (_running || _secondsRemaining.value <= 0) return;
 
     _timer?.cancel();
-    _deadline = DateTime.now().add(Duration(seconds: _secondsRemaining));
+    _deadline = DateTime.now().add(Duration(seconds: _secondsRemaining.value));
 
     setState(() {
       _running = true;
@@ -59,14 +60,14 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
         timer.cancel();
         _deadline = null;
         setState(() {
-          _secondsRemaining = 0;
+          _secondsRemaining.value = 0;
           _running = false;
           _finished = true;
         });
         return;
       }
 
-      setState(() => _secondsRemaining = (remaining / 1000).ceil());
+      _secondsRemaining.value = (remaining / 1000).ceil();
     });
   }
 
@@ -75,10 +76,10 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
     final remaining = _deadline?.difference(DateTime.now()).inMilliseconds ?? 0;
     _deadline = null;
     setState(() {
-      _secondsRemaining =
+      _secondsRemaining.value =
           (remaining / 1000).ceil().clamp(0, _selectedMinutes * 60).toInt();
       _running = false;
-      _finished = _secondsRemaining == 0;
+      _finished = _secondsRemaining.value == 0;
     });
   }
 
@@ -88,23 +89,19 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
     setState(() {
       _running = false;
       _finished = false;
-      _secondsRemaining = _selectedMinutes * 60;
+      _secondsRemaining.value = _selectedMinutes * 60;
     });
   }
 
-  String get _timeLabel {
-    final minutes = _secondsRemaining ~/ 60;
-    final seconds = _secondsRemaining % 60;
+  String _timeLabel(int secondsRemaining) {
+    final minutes = secondsRemaining ~/ 60;
+    final seconds = secondsRemaining % 60;
     return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
-    final progress = _selectedMinutes == 0
-        ? 0.0
-        : 1 - (_secondsRemaining / (_selectedMinutes * 60));
-
     return Scaffold(
       backgroundColor: theme.primaryBackground,
       appBar: AppBar(
@@ -188,22 +185,36 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                 size: 38,
                               ),
                         const SizedBox(height: 10),
-                        Text(
-                          _timeLabel,
-                          style: theme.displaySmall.override(
-                            font: GoogleFonts.roboto(
-                              fontWeight: FontWeight.w800,
-                            ),
-                            color: const Color(0xFFF2E7CE),
-                            letterSpacing: 1.5,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        QuestwellPixelMeter(
-                          value: progress,
-                          kind: 'xp',
-                          height: 20,
-                          segments: 16,
+                        ValueListenableBuilder<int>(
+                          valueListenable: _secondsRemaining,
+                          builder: (context, secondsRemaining, child) {
+                            final progress = _selectedMinutes == 0
+                                ? 0.0
+                                : 1 -
+                                    (secondsRemaining /
+                                        (_selectedMinutes * 60));
+                            return Column(
+                              children: [
+                                Text(
+                                  _timeLabel(secondsRemaining),
+                                  style: theme.displaySmall.override(
+                                    font: GoogleFonts.roboto(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                    color: const Color(0xFFF2E7CE),
+                                    letterSpacing: 1.5,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                QuestwellPixelMeter(
+                                  value: progress,
+                                  kind: 'xp',
+                                  height: 20,
+                                  segments: 16,
+                                ),
+                              ],
+                            );
+                          },
                         ),
                         const SizedBox(height: 9),
                         Text(
@@ -276,7 +287,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                   if (!_running && !_finished) ...[
                     const SizedBox(height: 8),
                     TextButton(
-                      onPressed: _secondsRemaining ==
+                      onPressed: _secondsRemaining.value ==
                               _selectedMinutes * 60
                           ? null
                           : _reset,
