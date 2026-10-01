@@ -1,4 +1,5 @@
 import '/backend/supabase/supabase.dart';
+import '/backend/supabase/questwell_network.dart';
 
 class QuestwellTaskCompletionResult {
   const QuestwellTaskCompletionResult({
@@ -32,10 +33,10 @@ class QuestwellTaskService {
   static Future<QuestwellTaskCompletionResult> completeTask(
     String taskId,
   ) async {
-    final response = await SupaFlow.client.rpc(
+    final response = await QuestwellNetwork.write(() => SupaFlow.client.rpc(
       'complete_task',
       params: {'p_task_id': taskId},
-    );
+    ));
 
     if (response is! List || response.isEmpty) {
       throw StateError('Questwell did not receive a completion result.');
