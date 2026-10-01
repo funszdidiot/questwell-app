@@ -24,7 +24,9 @@ Flutter Check `36795837785` and Preview `36795837810` succeeded. The journal tes
 cover 320 px enlarged text, filtering, and access to history after 30 entries.
 Browser review passed at 320 and 390 px with the actual Chronicle widget using
 sample history: all entries, milestone filter, and empty journal.
-**Review state:** Chronicle design candidate; founder visual acceptance pending.
+**Review state:** Founder approved the Chronicle design at 7:29 p.m.
+America/Chicago on 2026-09-30 (“It’s good”). Visual review is complete;
+no merge, external beta or launch is authorized.
 **Hold:** Development preview only. No merge, external beta or launch authorized.
 
 ## Continuation checkpoint — 2026-09-30
@@ -141,7 +143,7 @@ Guardian is frozen; Wanderer is the current class workstream.
 | 4 | Adventurer / Inventory Overhaul | ⚪ Not Started |
 | 5 | Market Overhaul | ⚪ Not Started |
 | 6 | Boss Battles Overhaul | ⚪ Not Started |
-| 7 | Chronicle / Achievement Overhaul | 🧪 Development review |
+| 7 | Chronicle / Achievement Overhaul | ✅ Visual design approved; unmerged |
 | 8 | Campfire / Expedition / Secondary Modes | ⚪ Not Started |
 | 9 | Global UI / FX Polish | ⚪ Not Started |
 | 10 | Cross-Platform Validation | 🟡 Ongoing |
