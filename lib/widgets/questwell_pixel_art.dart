@@ -4118,4 +4118,13 @@ class _BossPainter extends CustomPainter {
         final w = size.width * (.22 + (i % 3) * .03);
         rect(size.width * (.18 + (i % 4) * .16), size.height * (.12 + i * .055), w, 13, paper);
       }
-      rect(size.width * .40, size.height * .55, size.width * .20
+      rect(size.width * .40, size.height * .55, size.width * .20, size.height * .28, const Color(0xFF382B26));
+      rect(size.width * .44, size.height * .63, 8, 8, ember);
+      rect(size.width * .55, size.height * .63, 8, 8, ember);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _BossPainter oldDelegate) =>
+      oldDelegate.bossType != bossType;
+}
