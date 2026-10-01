@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../lib/widgets/questwell_boss_encounter.dart';
+import '../lib/widgets/questwell_pixel_art.dart';
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  GoogleFonts.config.allowRuntimeFetching = false;
+  Widget scene({String id = 'sample', bool reduced = false, bool persist = false,
+      double progress = 0, bool defeated = false}) => MaterialApp(home: MediaQuery(
+    data: MediaQueryData(disableAnimations: reduced), child: Center(child: SizedBox(width: 360,
+      child: QuestwellBossEncounter(encounterId: id, persistEntrance: persist,
+        progress: progress, defeated: defeated)))));
+  testWidgets('Entrance reaches dialogue and YOUR MOVE, with health from task progress', (tester) async {
+    await tester.pumpWidget(scene());
+    expect(find.text('BOSS APPROACHING'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('You said you’d do it tomorrow.'), findsOneWidget);
+    expect(find.text('YOUR MOVE'), findsOneWidget);
+    await tester.pumpWidget(scene(progress: 1 / 3));
+    expect(tester.widget<QuestwellPixelMeter>(find.byType(QuestwellPixelMeter)).value, closeTo(2 / 3, .001));
+    expect(find.text('BOSS APPROACHING'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets('Skip persists and does not replay after remount', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    await tester.pumpWidget(scene(id: 'persistent-test', persist: true));
+    await tester.pump(); await tester.pump(const Duration(milliseconds: 100));
+    await tester.tap(find.byKey(const ValueKey('skip-boss-entrance')));
+    await tester.pumpAndSettle();
+    expect(find.text('YOUR MOVE'), findsOneWidget);
+    expect((await SharedPreferences.getInstance()).getBool('questwell.boss.intro.v1.persistent-test'), isTrue);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pumpWidget(scene(id: 'persistent-test', persist: true));
+    await tester.pumpAndSettle();
+    expect(find.text('BOSS APPROACHING'), findsNothing);
+    expect(find.text('YOUR MOVE'), findsOneWidget);
+  });
+  testWidgets('Reduced motion and resumed battles bypass moving entrance; defeat shows zero health', (tester) async {
+    await tester.pumpWidget(scene(reduced: true)); await tester.pumpAndSettle();
+    expect(find.text('YOUR MOVE'), findsOneWidget);
+    expect(tester.binding.hasScheduledFrame, isFalse);
+    await tester.pumpWidget(scene(reduced: true, progress: 1, defeated: true)); await tester.pumpAndSettle();
+    expect(find.text('VICTORY'), findsOneWidget);
+    expect(tester.widget<QuestwellPixelMeter>(find.byType(QuestwellPixelMeter)).value, 0);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pumpWidget(scene(id: 'resumed', progress: .5)); await tester.pumpAndSettle();
+    expect(find.text('BOSS APPROACHING'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+}

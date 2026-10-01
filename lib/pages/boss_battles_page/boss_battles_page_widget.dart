@@ -4,6 +4,7 @@ import '/services/questwell_progression.dart';
 import '/services/questwell_milestone_service.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/widgets/questwell_pixel_art.dart';
+import '/widgets/questwell_boss_encounter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,6 +22,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
   late Future<List<QuestwellBossBattle>> _future;
   String? _busyStepId;
   bool _campfireMode = false;
+  QuestwellCosmeticsSnapshot? _appearance;
 
   @override
   void initState() {
@@ -37,7 +39,10 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
     try {
       final data = await QuestwellCosmeticService.load();
       if (!mounted) return;
-      setState(() => _campfireMode = data.profile.campfireMode);
+      setState(() {
+        _campfireMode = data.profile.campfireMode;
+        _appearance = data;
+      });
     } catch (_) {
       // Boss Battles still works if profile mode cannot be loaded.
     }
@@ -609,10 +614,19 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      QuestwellBossPixelArt(
-                        bossType: battle.bossType,
-                        height: isFeatured ? 245 : 160,
-                      ),
+                      if (battle.bossType == 'inbox_hydra')
+                        QuestwellBossEncounter(
+                          key: ValueKey('encounter-${battle.id}'),
+                          encounterId: battle.id,
+                          progress: battle.progress,
+                          defeated: battle.completed,
+                          archetype: _appearance?.profile.adventurerArchetype ?? 'wanderer',
+                          body: _appearance?.profile.avatarBodyType ?? 'neutral',
+                          equipment: {for (final item in _appearance?.cosmetics ?? <QuestwellCosmetic>[])
+                            if (item.equipped) item.renderKey: item.slug},
+                        )
+                      else
+                        QuestwellBossPixelArt(bossType: battle.bossType, height: isFeatured ? 245 : 160),
                       const SizedBox(height: 14),
                       Row(
                         children: [
@@ -684,7 +698,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                         ],
                       ),
                       const SizedBox(height: 7),
-                      QuestwellPixelMeter(
+                      if (battle.bossType != 'inbox_hydra') QuestwellPixelMeter(
                         value: battle.completed ? 0 : 1 - battle.progress,
                         kind: 'hp',
                         height: 18,
