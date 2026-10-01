@@ -16,15 +16,15 @@ class QuestwellMarketShopfront extends StatelessWidget {
       boxShadow: const [BoxShadow(color: Color(0x60000000), offset: Offset(0, 5))],
     ),
     child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      AspectRatio(aspectRatio: 1536 / 1024, child: LayoutBuilder(
+      AspectRatio(aspectRatio: 2, child: LayoutBuilder(
         builder: (context, constraints) => Stack(children: [
           Positioned.fill(child: ExcludeSemantics(child:
-            Image.asset('assets/images/questwell_market_shopfront_v2.webp',
+            Image.asset('assets/images/questwell_market_shopfront_v3.webp',
               fit: BoxFit.contain, filterQuality: FilterQuality.medium))),
-          Positioned(left: constraints.maxWidth * .27,
-            right: constraints.maxWidth * .27,
-            top: constraints.maxHeight * .175,
-            bottom: constraints.maxHeight * .68,
+          Positioned(left: constraints.maxWidth * .30,
+            right: constraints.maxWidth * .30,
+            top: constraints.maxHeight * .32,
+            bottom: constraints.maxHeight * .49,
             child: Center(child: Semantics(header: true, child: FittedBox(
               fit: BoxFit.scaleDown, child: Text('MARKET',
               textAlign: TextAlign.center,
