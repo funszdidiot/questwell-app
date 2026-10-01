@@ -23,7 +23,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'expedition') {
+  if (Uri.base.queryParameters['review'] == 'campfire') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const ExpeditionReviewApp(quickFinish: true));
+  } else if (Uri.base.queryParameters['review'] == 'expedition') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const ExpeditionReviewApp());
   } else if (Uri.base.queryParameters['review'] == 'boss') {

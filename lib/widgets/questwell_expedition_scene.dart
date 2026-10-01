@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 /// Paint-only ambience over the approved illustration; never ticks page data.
 class QuestwellExpeditionScene extends StatefulWidget {
-  const QuestwellExpeditionScene({super.key, this.motion = true});
+  const QuestwellExpeditionScene({super.key, this.motion = true, this.campfire = false});
+  final bool campfire;
   final bool motion;
   @override
   State<QuestwellExpeditionScene> createState() => _QuestwellExpeditionSceneState();
@@ -54,15 +55,21 @@ class _QuestwellExpeditionSceneState extends State<QuestwellExpeditionScene>
   }
   @override
   Widget build(BuildContext context) => Semantics(
-    label: 'Lantern-lit woodland path and stone bridge leading toward a moonlit citadel',
+    label: widget.campfire
+        ? 'A welcoming campfire beneath ancient trees, overlooking a moonlit citadel'
+        : 'Lantern-lit woodland path and stone bridge leading toward a moonlit citadel',
     image: true,
     child: AspectRatio(aspectRatio: 1.5, child: ClipRect(child: Stack(fit: StackFit.expand, children: [
-      RepaintBoundary(child: Image.asset('assets/images/questwell_expedition_trail_v1.webp',
-        key: const ValueKey('expedition-trail-art'), fit: BoxFit.cover,
+      RepaintBoundary(child: Image.asset(widget.campfire
+          ? 'assets/images/questwell_campfire_rest_v1.webp'
+          : 'assets/images/questwell_expedition_trail_v1.webp',
+        key: ValueKey(widget.campfire ? 'expedition-campfire-art' : 'expedition-trail-art'), fit: BoxFit.cover,
         excludeFromSemantics: true, filterQuality: FilterQuality.low)),
       Positioned.fill(child: IgnorePointer(child: ExcludeSemantics(child: RepaintBoundary(
-        child: CustomPaint(key: const ValueKey('expedition-ambience'),
-          painter: _TrailAmbience(_ambience, still: _still)),
+        child: CustomPaint(key: ValueKey(widget.campfire ? 'campfire-ambience' : 'expedition-ambience'),
+          painter: widget.campfire
+              ? _CampfireAmbience(_ambience, still: _still)
+              : _TrailAmbience(_ambience, still: _still)),
       )))),
     ]))),
   );
@@ -198,4 +205,70 @@ class _TrailAmbience extends CustomPainter {
   }
   @override
   bool shouldRepaint(covariant _TrailAmbience oldDelegate) => oldDelegate.still != still;
+}
+
+/// Firelight and ember paths repaint independently of the artwork and timer.
+class _CampfireAmbience extends CustomPainter {
+  _CampfireAmbience(this.phase, {required this.still}) : super(repaint: phase);
+  final Animation<double> phase;
+  final bool still;
+  @override
+  void paint(Canvas canvas, Size size) {
+    final progress = still ? .25 : phase.value;
+    final t = progress * math.pi * 2;
+    final breath = (1 + math.sin(t * 4)) / 2;
+    final fire = Offset(size.width * .518, size.height * .74);
+    final glowRadius = size.width * (.115 + breath * .012);
+    canvas.save();
+    canvas.clipRect(Offset.zero & size);
+    final glow = Rect.fromCircle(center: fire, radius: glowRadius);
+    canvas.drawCircle(fire, glowRadius, Paint()..shader = RadialGradient(colors: [
+      const Color(0xFFFFAB42).withValues(alpha: .12 + breath * .12),
+      const Color(0x00FFAB42),
+    ]).createShader(glow));
+    // The animated tongues sit within the illustrated fire, above the logs.
+    for (var i = 0; i < 4; i++) {
+      final sway = math.sin(t * 4 + i * 1.6);
+      final lift = (1 + math.sin(t * 6 + i * 1.3)) / 2;
+      final x = size.width * (.487 + i * .019);
+      final base = size.height * (.741 + (i % 2) * .008);
+      final height = size.height * (.063 + lift * .055);
+      final width = size.width * .017;
+      final tipX = x + sway * size.width * .012;
+      final flame = Path()..moveTo(x - width, base)
+        ..cubicTo(x - width * 1.2, base - height * .38,
+          tipX + width * .2, base - height * .63, tipX, base - height)
+        ..cubicTo(tipX + width * .9, base - height * .58,
+          x + width * 1.3, base - height * .2, x + width, base)
+        ..close();
+      canvas.drawPath(flame, Paint()..shader = const LinearGradient(
+        begin: Alignment.bottomCenter, end: Alignment.topCenter,
+        colors: [Color(0xD9FFF3B0), Color(0xBFFFCA5C), Color(0x55FF741E)],
+      ).createShader(Rect.fromLTWH(x - width * 2, base - height, width * 4, height)));
+    }
+    // Smoothly fading sparks rise at staggered phases, with no abrupt reset.
+    for (var i = 0; i < 18; i++) {
+      final rise = (progress * 2 + i / 18) % 1;
+      final alpha = math.sin(rise * math.pi) * .90;
+      final x = size.width * (.49 + (i * .017 % .065)
+        + math.sin(t * 2 + i) * .011 + (rise * (i.isEven ? -.018 : .018)));
+      final y = size.height * (.72 - rise * (.23 + i % 3 * .025));
+      final point = Offset(x, y);
+      final core = (size.width * .004).clamp(1.4, 2.4).toDouble();
+      canvas.drawCircle(point, core * 2.4,
+        Paint()..color = const Color(0xFFFF9C3B).withValues(alpha: alpha * .18));
+      canvas.drawRect(Rect.fromCenter(center: point, width: core, height: core * 1.5),
+        Paint()..color = const Color(0xFFFFD67E).withValues(alpha: alpha));
+    }
+    // The campsite lantern breathes more slowly than the flames.
+    final lantern = Offset(size.width * .103, size.height * .565);
+    final radius = size.width * .05;
+    canvas.drawCircle(lantern, radius, Paint()..shader = RadialGradient(colors: [
+      const Color(0xFFFFCF73).withValues(alpha: .12 + .10 * (1 + math.sin(t * 2)) / 2),
+      const Color(0x00FFCF73),
+    ]).createShader(Rect.fromCircle(center: lantern, radius: radius)));
+    canvas.restore();
+  }
+  @override
+  bool shouldRepaint(covariant _CampfireAmbience oldDelegate) => oldDelegate.still != still;
 }

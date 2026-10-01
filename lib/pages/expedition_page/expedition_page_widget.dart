@@ -7,7 +7,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 
 class ExpeditionPageWidget extends StatefulWidget {
-  const ExpeditionPageWidget({super.key});
+  const ExpeditionPageWidget({
+    super.key,
+    this.initialDuration = const Duration(minutes: 25),
+    this.clock,
+  });
+
+  /// Also supports a short local-only session in the development review.
+  final Duration initialDuration;
+  @visibleForTesting
+  final DateTime Function()? clock;
 
   static String routeName = 'ExpeditionPage';
   static String routePath = '/expedition';
@@ -19,12 +28,34 @@ class ExpeditionPageWidget extends StatefulWidget {
 class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   Timer? _timer;
   int _selectedMinutes = 25;
-  late final ValueNotifier<int> _secondsRemaining = ValueNotifier<int>(25 * 60);
+  late final ValueNotifier<int> _secondsRemaining;
+  late int _sessionSeconds;
+  bool _campfirePreloaded = false;
   bool _running = false;
   bool _finished = false;
   bool _started = false;
   bool _sceneMotion = true;
   DateTime? _deadline;
+
+  DateTime _now() => widget.clock?.call() ?? DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    _sessionSeconds = widget.initialDuration.inSeconds;
+    if (_sessionSeconds < 1) _sessionSeconds = 1;
+    _selectedMinutes = _sessionSeconds % 60 == 0 ? _sessionSeconds ~/ 60 : 0;
+    _secondsRemaining = ValueNotifier<int>(_sessionSeconds);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_campfirePreloaded) {
+      _campfirePreloaded = true;
+      precacheImage(const AssetImage('assets/images/questwell_campfire_rest_v1.webp'), context);
+    }
+  }
 
   @override
   void dispose() {
@@ -38,7 +69,8 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
     setState(() {
       _started = false;
       _selectedMinutes = minutes;
-      _secondsRemaining.value = minutes * 60;
+      _sessionSeconds = minutes * 60;
+      _secondsRemaining.value = _sessionSeconds;
       _finished = false;
     });
   }
@@ -47,7 +79,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
     if (_running || _secondsRemaining.value <= 0) return;
 
     _timer?.cancel();
-    _deadline = DateTime.now().add(Duration(seconds: _secondsRemaining.value));
+    _deadline = _now().add(Duration(seconds: _secondsRemaining.value));
 
     setState(() {
       _started = true;
@@ -61,7 +93,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
         return;
       }
 
-      final remaining = _deadline!.difference(DateTime.now()).inMilliseconds;
+      final remaining = _deadline!.difference(_now()).inMilliseconds;
       if (remaining <= 0) {
         timer.cancel();
         _deadline = null;
@@ -79,11 +111,11 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
 
   void _pause() {
     _timer?.cancel();
-    final remaining = _deadline?.difference(DateTime.now()).inMilliseconds ?? 0;
+    final remaining = _deadline?.difference(_now()).inMilliseconds ?? 0;
     _deadline = null;
     setState(() {
       _secondsRemaining.value =
-          (remaining / 1000).ceil().clamp(0, _selectedMinutes * 60).toInt();
+          (remaining / 1000).ceil().clamp(0, _sessionSeconds).toInt();
       _running = false;
       _finished = _secondsRemaining.value == 0;
     });
@@ -96,7 +128,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
       _started = false;
       _running = false;
       _finished = false;
-      _secondsRemaining.value = _selectedMinutes * 60;
+      _secondsRemaining.value = _sessionSeconds;
     });
   }
 
@@ -137,7 +169,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
           padding: const EdgeInsets.fromLTRB(20, 18, 20, 32),
           children: [
             Text(
-              'SET OUT. DO ONE THING.',
+              _finished ? 'REST BY THE FIRE.' : 'SET OUT. DO ONE THING.',
               style: theme.headlineSmall.override(
                 font: GoogleFonts.pressStart2p(
                   fontWeight: FontWeight.w700,
@@ -147,8 +179,18 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
               ),
             ),
             const SizedBox(height: 18),
-            if (_finished) const QuestwellExpeditionPixelScene(height: 200, campfire: true)
-            else QuestwellExpeditionScene(motion: _sceneMotion),
+            AnimatedSwitcher(
+              key: const ValueKey('expedition-scene-transition'),
+              duration: MediaQuery.disableAnimationsOf(context) || !_sceneMotion
+                  ? Duration.zero : const Duration(milliseconds: 900),
+              switchInCurve: Curves.easeInOut,
+              switchOutCurve: Curves.easeInOut,
+              child: QuestwellExpeditionScene(
+                key: ValueKey(_finished),
+                campfire: _finished,
+                motion: _sceneMotion,
+              ),
+            ),
             const SizedBox(height: 22),
             Container(
               width: double.infinity,
@@ -178,11 +220,11 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                         ValueListenableBuilder<int>(
                           valueListenable: _secondsRemaining,
                           builder: (context, secondsRemaining, child) {
-                            final progress = _selectedMinutes == 0
+                            final progress = _sessionSeconds == 0
                                 ? 0.0
                                 : 1 -
                                     (secondsRemaining /
-                                        (_selectedMinutes * 60));
+                                        (_sessionSeconds));
                             return Column(
                               children: [
                                 Text(
@@ -275,7 +317,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                           ),
                           label: Text(
                             _finished
-                                ? 'Reset'
+                                ? 'Return to trail'
                                 : _running
                                     ? 'Pause'
                                     : _started

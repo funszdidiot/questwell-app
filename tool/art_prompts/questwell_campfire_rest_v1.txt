@@ -1,0 +1,8 @@
+Built-in image generation
+
+Repository asset: assets/images/questwell_campfire_rest_v1.webp
+Source: generated_images/exec-520b7db7-5c26-4449-ace6-7029c113b274.png
+Project asset: /workspace/scratch/6cdbaeab5f84/questwell_campfire_rest_v1.webp
+
+Prompt:
+Use case: stylized-concept. Asset type: finished-session background illustration for Questwell's Campfire scene, matched to the supplied Expedition artwork. Input image: style and world reference, not an edit target. Create a new landscape 1536x1024, 3:2 composition in the same richly detailed high-resolution pixel-art fantasy aesthetic. A welcoming woodland campsite at blue twilight, sheltered beneath old trees and mossy ruins, with a small stone-ring campfire in the lower-middle foreground, its center at approximately 50% of width and 76% of height. A modest orange flame and glowing logs; the fire must be clearly readable when reduced to phone size. Warm light spilling over an inviting clear patch of earth, an empty log seat and a folded bedroll nearby, a brass lantern. Through the trees in the upper-right distance, the same moonlit citadel above a misty valley, much quieter and less dominant than the campfire. Forest green, midnight blue, warm amber, quiet sense of safety after a journey. Crisp textured pixel brushwork, warm/cool lighting matching reference. Keep foreground fire unobstructed with open air above it for animated embers. No people, no creatures, no text, no UI, no borders, no icons, no logos. Produce one cohesive game illustration, not a mockup.

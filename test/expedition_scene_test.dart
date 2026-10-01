@@ -7,10 +7,10 @@ import 'package:project_momentum/pages/expedition_page/expedition_page_widget.da
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
-  Widget scene({bool motion = true, bool reduced = false, bool ticker = true}) =>
+  Widget scene({bool motion = true, bool reduced = false, bool ticker = true, bool campfire = false}) =>
     MaterialApp(home: MediaQuery(data: MediaQueryData(disableAnimations: reduced),
       child: TickerMode(enabled: ticker, child: Center(child: SizedBox(width: 320,
-        child: QuestwellExpeditionScene(motion: motion))))));
+        child: QuestwellExpeditionScene(motion: motion, campfire: campfire))))));
 
   testWidgets('Ambience repaints without rebuilding art and stops when motion is disabled', (tester) async {
     await tester.pumpWidget(scene());
@@ -31,6 +31,38 @@ void main() {
       expect(find.byKey(const ValueKey('expedition-trail-art')), findsOneWidget);
     }
     await tester.pumpWidget(scene());
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(tester.binding.hasScheduledFrame, isTrue);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    await tester.pump();
+    expect(tester.binding.hasScheduledFrame, isFalse);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pump();
+    expect(tester.binding.hasScheduledFrame, isTrue);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump();
+    expect(tester.binding.hasScheduledFrame, isFalse);
+  });
+
+  testWidgets('Campfire repaints without rebuilding art and stops when motion is disabled', (tester) async {
+    await tester.pumpWidget(scene(campfire: true));
+    await tester.pump(const Duration(milliseconds: 100));
+    final art = tester.widget<Image>(find.byKey(const ValueKey('expedition-campfire-art')));
+    final painter = tester.widget<CustomPaint>(find.byKey(const ValueKey('campfire-ambience'))).painter!;
+    var paints = 0;
+    void repaint() => paints++;
+    painter.addListener(repaint);
+    await tester.pump(const Duration(seconds: 1));
+    expect(paints, greaterThan(0));
+    expect(identical(art, tester.widget<Image>(find.byKey(const ValueKey('expedition-campfire-art')))), isTrue);
+    painter.removeListener(repaint);
+    for (final mode in [scene(motion: false, campfire: true), scene(reduced: true, campfire: true), scene(ticker: false, campfire: true)]) {
+      await tester.pumpWidget(mode);
+      await tester.pumpAndSettle();
+      expect(tester.binding.hasScheduledFrame, isFalse);
+      expect(find.byKey(const ValueKey('expedition-campfire-art')), findsOneWidget);
+    }
+    await tester.pumpWidget(scene(campfire: true));
     await tester.pump(const Duration(milliseconds: 100));
     expect(tester.binding.hasScheduledFrame, isTrue);
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
@@ -87,4 +119,53 @@ void main() {
     expect(find.byTooltip('Animate scenery'), findsOneWidget);
     expect(tester.binding.hasScheduledFrame, isFalse);
   });
+
+  for (final reduced in [false, true]) {
+    testWidgets('Completion reveals campfire and reset restores trail (reduced=$reduced)', (tester) async {
+      tester.view.physicalSize = const Size(320, 1700);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      var now = DateTime(2026, 10, 1, 12);
+      await tester.pumpWidget(MaterialApp(home: MediaQuery(
+        data: MediaQueryData(disableAnimations: reduced, textScaler: const TextScaler.linear(1.5)),
+        child: ExpeditionPageWidget(initialDuration: const Duration(seconds: 5), clock: () => now))));
+      await tester.pump(const Duration(milliseconds: 100));
+      final transition = find.byKey(const ValueKey('expedition-scene-transition'));
+      final before = tester.getSize(transition);
+      expect(find.text('00:05'), findsOneWidget);
+      await tester.ensureVisible(find.text('Begin Expedition'));
+      await tester.pump();
+      await tester.tap(find.text('Begin Expedition'));
+      await tester.pump();
+      now = now.add(const Duration(seconds: 3));
+      await tester.pump(const Duration(seconds: 3));
+      expect(find.text('00:02'), findsOneWidget);
+      now = now.add(const Duration(seconds: 2));
+      await tester.pump(const Duration(seconds: 2));
+      expect(find.text('EXPEDITION COMPLETE'), findsOneWidget);
+      expect(find.text('REST BY THE FIRE.'), findsOneWidget);
+      expect(find.byKey(const ValueKey('expedition-campfire-art')), findsOneWidget);
+      expect(tester.getSize(transition), before);
+      if (!reduced) {
+        await tester.pump(const Duration(milliseconds: 450));
+        expect(find.byKey(const ValueKey('expedition-trail-art')), findsOneWidget);
+      }
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.byKey(const ValueKey('expedition-trail-art')), findsNothing);
+      if (reduced) expect(tester.binding.hasScheduledFrame, isFalse);
+      await tester.ensureVisible(find.text('Return to trail'));
+      await tester.pump();
+      await tester.tap(find.text('Return to trail'));
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.byKey(const ValueKey('expedition-campfire-art')), findsNothing);
+      expect(find.byKey(const ValueKey('expedition-trail-art')), findsOneWidget);
+      expect(find.text('00:05'), findsOneWidget);
+      expect(find.text('Begin Expedition'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pump();
+    });
+  }
 }
