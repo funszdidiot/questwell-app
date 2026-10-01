@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Ticket Troll — workshop revision — 2026-10-01
+
+Founder approved revised Swarm and requested next boss. Ticket Troll introduced in `b7da736dcd0325730b9fb3345be025bece2360ce`. User requested less British visual impression; current `d6a81be25edcca6339c05d2c3705ad4a9312e703` replaces formal waistcoat/collar/ornament with patched leather work apron, rough tunic/trousers and plain reinforced stamp. User authorized sending revised version. Weighted entry bobs/settling shudder, "Have you tried opening another ticket?" taunt and QUEUE CONQUERED victory. Seven detailed bosses now in practice and production encounter renderer. Server task/reward logic unchanged.
+
+Flutter Check 36835000391 and Preview 36835000389 passed. Browser verified revised clothes, entrance frames, full dialogue/spacing, and three practice attacks yielding zero HP, VICTORY and QUEUE CONQUERED. Review: https://funszdidiot.github.io/questwell-app/?review=boss&boss=ticket_troll&rev=d6a81be . In-app founder review pending. Real account rewards not exercised. No merge or launch. Male Wanderer cuffs remain deferred and unapproved.
+
 ## Notification Swarm — smaller-bell revision — 2026-10-01
 
 Founder approved Printer Poltergeist ("Perfect") and requested next boss. Notification Swarm implemented in `b4d987dd3a6806b659a861d221213b04ccf72066`; user requested smaller/more bells, then approved v2 ("I like it. Send it"). Current `7ba858767c657f6bb5c848dd0aafe4ef88e09404` uses seven smaller bells plus two envelopes with no giant central bell. Group sweeps in with fluttering motion; individual wings are not separately animated. Taunt "Just one more ping." and QUIET RESTORED practice victory. Six detailed bosses selectable. Real Swarm encounters use new scene; server task/reward logic unchanged.
