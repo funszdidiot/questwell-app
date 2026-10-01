@@ -99,6 +99,20 @@ void main() {
     expect(find.text('VICTORY'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+  testWidgets('Ticket Troll shows its taunt and settles after stomping', (tester) async {
+    await tester.pumpWidget(scene(id: 'troll', type: 'ticket_troll'));
+    expect(find.text('TICKET TROLL'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('Have you tried opening another ticket?'), findsOneWidget);
+    expect(find.byWidgetPredicate((w) => w is Image && w.image is AssetImage &&
+      (w.image as AssetImage).assetName.endsWith('questwell_ticket_troll_v1.webp')), findsOneWidget);
+    expect(tester.binding.hasScheduledFrame, isFalse);
+    await tester.pumpWidget(scene(id: 'troll', type: 'ticket_troll', reduced: true, progress: 1, defeated: true));
+    await tester.pumpAndSettle();
+    expect(find.text('TICKET TROLL · DEFEATED'), findsOneWidget);
+    expect(find.text('VICTORY'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
   testWidgets('Skip persists and does not replay after remount', (tester) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(scene(id: 'persistent-test', persist: true));
