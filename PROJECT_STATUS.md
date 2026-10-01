@@ -4,6 +4,16 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Full outfit and stale preview correction — 2026-09-30 America/Chicago
+
+Founder approved the Moss v2 collar and requested both cloaks in inventory; both grants completed with ownership and coins preserved. A subsequent phone screenshot showed the pre-closed-cloak sleeves and collar. Current Home and Adventurer share the same renderer; the screenshot is consistent with an older loaded app build, not a separate Hearth renderer.
+
+Emerald Scarf now draws beneath an equipped closed cloak so it cannot cover the leaf clasp. Added a full Wanderer/scarf/satchel/brooch/moth fixture at `?review=cloaks&outfit=wanderer&rev=914d2db`. No account equipment changes were made for this fix. Approved art and base/class assets remain unchanged.
+
+The preview now publishes a revision manifest and checks for updates at startup, on returning to the app, and every minute while visible. A newer deployment offers an explicit refresh; it never interrupts unsaved work automatically. Refresh preserves the current route. Only this app's legacy Flutter service worker registration is retired; account storage is untouched. An old tab must open the current build once to receive this update-checking code.
+
+Verified build `914d2db47e2fbbf9951796262c0d9b5d0ca17709`: Flutter Check 36815097513 and Preview 36815097522 passed. Four update-handler tests cover explicit refresh, preserved routes, scoped worker retirement, dismissal, offline/invalid manifests, and visibility changes. Full-outfit layering regression checks run on all three bodies. Browser inspected male, female, and neutral Wanderer with the full accessory set and the male Hearth scene; clasp clear, hands covered, satchel retained. Main app's deployed revision was verified at `?rev=914d2db`; browser is signed out, so outfit QA used the shared-renderer fixture. Proof: `wanderer-cloak-fixed.jpg`. No merge to flutterflow or launch.
+
 ## Moss Cloak collar redraw — 2026-09-30 America/Chicago
 
 Founder reported the Moss collar still looked wrong after the closed-drape change. The original bitmap had horizontal folds across its neck opening; clipping could not resolve that art defect. Used built-in image-generation edit mode to redraw the neckline as a clean V meeting a single leaf clasp, with a short joined wool section below it. New versioned asset: `assets/images/questwell_moss_cloak_v2.webp`. Equipped hand-coverage/swap rules and Hearthguard remain unchanged. Full prompt and provenance are in `docs/art/CLOAK_ART.md`.
