@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../services/questwell_boss_service.dart';
+import '../models/questwell_boss.dart';
 import '../widgets/questwell_boss_board.dart';
 
 class BossReviewApp extends StatefulWidget {

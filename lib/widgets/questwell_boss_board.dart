@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/questwell_boss_service.dart';
+import '../models/questwell_boss.dart';
 import 'questwell_boss_encounter.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';

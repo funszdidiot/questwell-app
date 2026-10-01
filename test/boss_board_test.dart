@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../lib/services/questwell_boss_service.dart';
+import '../lib/models/questwell_boss.dart';
 import '../lib/widgets/questwell_boss_board.dart';
 import '../lib/widgets/questwell_boss_encounter.dart';
 
