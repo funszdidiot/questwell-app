@@ -1,4 +1,5 @@
 import '/backend/supabase/supabase.dart';
+import '/backend/supabase/questwell_network.dart';
 
 class QuestwellBossStep {
   const QuestwellBossStep({
@@ -129,7 +130,7 @@ class QuestwellBossService {
     required List<String> steps,
     String bossType = 'inbox_hydra',
   }) async {
-    final response = await SupaFlow.client.rpc(
+    final response = await QuestwellNetwork.write(() => SupaFlow.client.rpc(
       'create_boss_battle',
       params: {
         'p_title': title,
@@ -138,15 +139,15 @@ class QuestwellBossService {
         'p_reward_coins': 50,
         'p_boss_type': bossType,
       },
-    );
+    ));
     return response?.toString() ?? '';
   }
 
   static Future<BossStepCompletionResult> completeStep(String stepId) async {
-    final response = await SupaFlow.client.rpc(
+    final response = await QuestwellNetwork.write(() => SupaFlow.client.rpc(
       'complete_boss_step',
       params: {'p_step_id': stepId},
-    );
+    ));
 
     if (response is! List || response.isEmpty) {
       throw StateError('No boss step result returned.');
