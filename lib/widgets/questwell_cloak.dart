@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 /// Continuous front drapes wrap over the outfit; forearms are restored above them.
@@ -62,22 +61,31 @@ class QuestwellCloakForegroundClipper extends CustomClipper<Path> {
     final scale=math.min(size.width/240,size.height/320);
     final left=(size.width-240*scale)/2, top=size.height-320*scale;
     final female=body=='female';
-    final path=Path()..addRect(Rect.fromLTRB(0,0,240,female?76:75));
+    final path=Path()..addRect(const Rect.fromLTRB(0,0,240,73));
+    // Restore the actual skin contour down into the collar opening. Never
+    // restore a horizontal strip of the shirt or cut the neck off at the jaw.
+    final neckLeft = female ? 111.0 : 109.0;
+    final neckRight = female ? 127.0 : 129.0;
+    path.moveTo(neckLeft,70);
+    path.lineTo(neckLeft,76);
+    path.quadraticBezierTo(neckLeft+1,80,120,female ? 83 : 84);
+    path.quadraticBezierTo(neckRight-1,80,neckRight,75);
+    path.lineTo(neckRight,70);path.close();
     // The sleeves emerge below the shoulder cape. Follow the angled forearms,
     // not a horizontal cut across the entire cloak.
     if (female) {
-      path.moveTo(77,124);path.quadraticBezierTo(85,121,91,127);
+      path.moveTo(73,141);path.quadraticBezierTo(80,137,88,142);
       path.lineTo(84,163);path.quadraticBezierTo(91,180,85,192);
       path.lineTo(69,197);path.lineTo(63,183);path.lineTo(69,162);path.close();
-      path.moveTo(149,127);path.quadraticBezierTo(157,122,163,127);
+      path.moveTo(152,142);path.quadraticBezierTo(159,137,167,142);
       path.lineTo(171,163);path.lineTo(179,180);path.lineTo(175,194);
       path.lineTo(158,197);path.lineTo(151,181);path.lineTo(155,164);path.close();
     } else {
       final dy=body=='male'?3.0:0.0;
-      path.moveTo(71,126+dy);path.quadraticBezierTo(82,122+dy,89,129+dy);
+      path.moveTo(67,140+dy);path.quadraticBezierTo(76,136+dy,85,142+dy);
       path.lineTo(80,167+dy);path.lineTo(85,186+dy);path.lineTo(77,198+dy);
       path.lineTo(62,197+dy);path.lineTo(57,183+dy);path.lineTo(63,167+dy);path.close();
-      path.moveTo(150,128+dy);path.quadraticBezierTo(159,122+dy,166,128+dy);
+      path.moveTo(154,142+dy);path.quadraticBezierTo(161,137+dy,170,142+dy);
       path.lineTo(175,167+dy);path.lineTo(182,184+dy);path.lineTo(177,198+dy);
       path.lineTo(162,201+dy);path.lineTo(153,188+dy);path.lineTo(157,169+dy);path.close();
     }
@@ -88,57 +96,16 @@ class QuestwellCloakForegroundClipper extends CustomClipper<Path> {
   bool shouldReclip(covariant QuestwellCloakForegroundClipper oldClipper) => oldClipper.body!=body;
 }
 
-/// Blend the original sleeves out from beneath the capelet instead of exposing
-/// a hard cut edge. The head and hands stay fully opaque.
+/// Upper sleeves remain underneath the capelet; only the lower forearms and
+/// the contoured neck emerge above it. Source shading supplies the overlap.
 class QuestwellCloakForeground extends StatelessWidget {
   const QuestwellCloakForeground({super.key, required this.body, required this.children});
   final String body;
   final List<Widget> children;
   @override
-  Widget build(BuildContext context) => IgnorePointer(child: CustomPaint(
-    foregroundPainter: _CloakContactShadow(body),
-    child: ShaderMask(
-      blendMode: BlendMode.dstIn,
-      shaderCallback: (rect) {
-        final scale = math.min(rect.width/240, rect.height/320);
-        final top = rect.height-320*scale;
-        return ui.Gradient.linear(Offset(0,top), Offset(0,top+320*scale),
-          const [Colors.white,Colors.white,Colors.transparent,Colors.white,Colors.white],
-          const [0,.30,.375,.425,1]);
-      },
-      child: ClipPath(clipper: QuestwellCloakForegroundClipper(body),
-        child: Stack(fit: StackFit.expand, children: children)),
-    ),
-  ));
-}
-
-class _CloakContactShadow extends CustomPainter {
-  const _CloakContactShadow(this.body);
-  final String body;
-  @override
-  void paint(Canvas canvas, Size size) {
-    final scale = math.min(size.width/240,size.height/320);
-    canvas.save();
-    canvas.clipPath(QuestwellCloakForegroundClipper(body).getClip(size));
-    canvas.translate((size.width-240*scale)/2,size.height-320*scale);
-    canvas.scale(scale);
-    final female = body=='female';
-    final dy = body=='male' ? 3.0 : 0.0;
-    final shadow = Path()
-      ..moveTo(female ? 76 : 70, 127+dy)
-      ..quadraticBezierTo(female ? 84 : 80,133+dy,female ? 90 : 88,129+dy)
-      ..moveTo(150,130+dy)
-      ..quadraticBezierTo(158,133+dy,female ? 165 : 168,129+dy);
-    canvas.drawPath(shadow, Paint()
-      ..color=const Color(0x350C1114)
-      ..style=PaintingStyle.stroke
-      ..strokeWidth=3
-      ..strokeCap=StrokeCap.round
-      ..maskFilter=const MaskFilter.blur(BlurStyle.normal,2));
-    canvas.restore();
-  }
-  @override
-  bool shouldRepaint(covariant _CloakContactShadow oldDelegate) => oldDelegate.body!=body;
+  Widget build(BuildContext context) => IgnorePointer(child:
+    ClipPath(clipper: QuestwellCloakForegroundClipper(body),
+      child: Stack(fit: StackFit.expand, children: children)));
 }
 
 /// The outer cloak replaces class lapels and epaulettes. Preserve the central
@@ -153,11 +120,16 @@ class QuestwellCloakUnderlayerClipper extends CustomClipper<Path> {
     final female = body=='female';
     final path = Path()
       ..moveTo(106,94)..lineTo(136,94)
-      ..quadraticBezierTo(145,102,female ? 153 : 155,123)
-      ..lineTo(female ? 159 : 163,135)
-      ..lineTo(240,139)..lineTo(240,320)..lineTo(0,320)
-      ..lineTo(0,139)..lineTo(female ? 78 : 74,135)
-      ..lineTo(female ? 84 : 82,123)
+      ..quadraticBezierTo(146,102,female ? 154 : 157,118)
+      // Sleeves remain whole beneath the outer capelet, avoiding cut shoulders.
+      ..quadraticBezierTo(162,123,180,123)
+      ..lineTo(240,123)..lineTo(240,202)..lineTo(153,202)
+      // The undercoat finishes inside the outer drapes, above the boot line.
+      ..quadraticBezierTo(144,236,136,265)
+      ..quadraticBezierTo(121,271,104,265)
+      ..quadraticBezierTo(97,238,89,202)
+      ..lineTo(0,202)..lineTo(0,123)..lineTo(60,123)
+      ..quadraticBezierTo(76,123,female ? 84 : 81,118)
       ..quadraticBezierTo(96,102,106,94)..close();
     return path.transform((Matrix4.identity()..scale(scale,scale)).storage)
       .shift(Offset(dx,dy));

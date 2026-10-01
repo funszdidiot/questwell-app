@@ -28,7 +28,13 @@ void main() {
       expect(path.contains(const Offset(70,180)),isTrue);
       expect(path.contains(const Offset(170,180)),isTrue);
       final front = QuestwellCloakForegroundClipper(body).getClip(const Size(240,320));
-      expect(front.contains(const Offset(120,81)),isFalse,reason:'No restored shirt strip over cloak');
+      expect(front.contains(const Offset(120,81)),isTrue,reason:'Restore the curved skin neckline');
+      expect(front.contains(const Offset(106,81)),isFalse,reason:'No restored shirt collar');
+      expect(front.contains(const Offset(133,81)),isFalse,reason:'No restored shirt collar');
+      expect(front.contains(const Offset(82,128)),isFalse,reason:'Upper sleeves remain beneath capelet');
+      expect(path.contains(const Offset(85,281)),isFalse,reason:'No outer gold undercoat hem');
+      expect(path.contains(const Offset(150,281)),isFalse,reason:'No outer gold undercoat hem');
+      expect(path.contains(const Offset(120,255)),isTrue,reason:'Keep the central undercoat');
     }
   });
   testWidgets('Both cloaks load on every supported class and body without hiding base layers', (tester) async {
