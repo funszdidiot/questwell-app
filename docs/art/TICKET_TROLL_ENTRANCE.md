@@ -1,6 +1,6 @@
 # Ticket Troll
 
-Built-in image generation. Asset: `assets/images/questwell_ticket_troll_v1.webp`, resized to 640 px preserving alpha.
+Built-in image generation. Asset: `assets/images/questwell_ticket_troll_v2.webp`, resized to 640 px preserving alpha.
 
 ## Prompt
 
@@ -9,3 +9,9 @@ Use case: stylized-concept. Production game enemy sprite for Questwell, detailed
 ## Integration
 
 Troll enters with two weighted bobs and a short settling shudder. Own taunt plus shared skip/persistence/reduced-motion/ticker lifecycle; no idle ticker. Real Ticket Troll encounters use equipped-avatar scene. Practice `?review=boss&boss=ticket_troll` includes three request-completion steps and QUEUE CONQUERED victory. Server task/reward logic unchanged. Swarm approved; Troll awaiting review. Male Wanderer cuffs deferred.
+
+## Founder clothing revision
+
+User requested a less British visual impression. V2 replaces formal waistcoat/collar/ornament with rugged workshop clothing and a plain stamp, preserving identity and pose. Built-in image edit, v1 as reference, alpha retained.
+
+undefined
