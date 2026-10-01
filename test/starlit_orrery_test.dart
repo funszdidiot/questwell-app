@@ -28,7 +28,7 @@ void main() {
           final shelf = tester.getRect(find.byKey(const ValueKey('hearth-bookshelf-bounds')));
           expect(trophy.left, greaterThan(shelf.left));
           expect(trophy.right, lessThan(shelf.right));
-          expect(trophy.bottom, closeTo(shelf.top + shelf.height * .12 + trophy.height * .02, .1));
+          expect(trophy.bottom, closeTo(shelf.top + shelf.height * .145 + trophy.height * .02, .1));
           final stack = tester.widgetList<Stack>(find.byType(Stack)).firstWhere(
             (s) => s.children.any((c) => c.key == const ValueKey('hearth-orrery-bounds')));
           expect(stack.children.indexWhere((c) => c.key == const ValueKey('hearth-orrery-bounds')),
