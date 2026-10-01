@@ -19,8 +19,8 @@ class ScholarCuffReplacementClipper extends CustomClipper<Path> {
     final dy = size.height - 320 * scale;
     final path = Path()..fillType = PathFillType.evenOdd..addRect(Offset.zero & size);
     for (final cuff in _cuffs(body)) {
-      path.addRect(Rect.fromLTWH(dx + cuff.left * scale, dy + cuff.top * scale,
-        cuff.width * scale, (cuff.height + 2) * scale));
+      path.addRect(Rect.fromLTWH(dx + cuff.left * scale, dy + (cuff.top + 5) * scale,
+        cuff.width * scale, (cuff.height - 3) * scale));
     }
     return path;
   }
@@ -49,6 +49,9 @@ class _ScholarCuffPainter extends CustomPainter {
       canvas.save();
       canvas.translate(cuff.left, cuff.top);
       canvas.scale(cuff.width / 24, cuff.height / 15);
+      canvas.saveLayer(const Rect.fromLTWH(-1, -1, 26, 18), Paint());
+      final right = cuff.left > 120;
+      final curve = right ? 2.8 : 3.5;
       // A tapered sleeve flows into a cylindrical cuff. The front edge dips
       // below the side returns; the dark opening remains above the knuckles.
       final sleeve = Path()..moveTo(2, 0)..lineTo(22, 0)
@@ -62,7 +65,7 @@ class _ScholarCuffPainter extends CustomPainter {
       // Recessed lining and front lip occlude the wrist instead of ending flat.
       canvas.drawOval(const Rect.fromLTWH(1, 10, 22, 5), Paint()..color = const Color(0xFF100E1E));
       for (final y in [6.0, 10.8]) {
-        final trim = Path()..moveTo(.8, y)..cubicTo(5, y + 3.5, 19, y + 3.5, 23.2, y);
+        final trim = Path()..moveTo(.8, y)..cubicTo(5, y + curve, 19, y + curve, 23.2, y);
         canvas.drawPath(trim, Paint()..style = PaintingStyle.stroke..strokeWidth = 2.2
           ..color = const Color(0xFF694523));
         canvas.drawPath(trim, Paint()..style = PaintingStyle.stroke..strokeWidth = 1.1
@@ -75,6 +78,14 @@ class _ScholarCuffPainter extends CustomPainter {
       canvas.drawPath(star, Paint()..color = const Color(0xFFD5AD5F));
       canvas.drawLine(const Offset(12, 7), const Offset(12, 10.5),
         Paint()..strokeWidth = .6..color = const Color(0xFFF6DB96));
+      // Feather into the original sleeve texture over five source pixels.
+      // This retains the cloth folds instead of leaving a straight patch seam.
+      canvas.drawRect(const Rect.fromLTWH(-1, -1, 26, 18), Paint()
+        ..blendMode = BlendMode.dstIn
+        ..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter,
+          colors: [Colors.transparent, Colors.white, Colors.white],
+          stops: [0, .35, 1]).createShader(const Rect.fromLTWH(0, 0, 24, 15)));
+      canvas.restore();
       canvas.restore();
     }
     canvas.restore();

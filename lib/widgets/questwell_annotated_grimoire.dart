@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class QuestwellAnnotatedGrimoire extends StatelessWidget {
   const QuestwellAnnotatedGrimoire({super.key, required this.bodyType});
   static const slug = 'annotated-grimoire';
-  static const asset = 'assets/images/questwell_annotated_grimoire_grip_v2.webp';
+  static const asset = 'assets/images/questwell_annotated_grimoire_grip_v3.webp';
   final String bodyType;
 
   static Rect bounds(String body) {
@@ -31,7 +31,9 @@ class QuestwellAnnotatedGrimoire extends StatelessWidget {
         left: (constraints.maxWidth - 240 * scale) / 2 + fit.left * scale,
         top: constraints.maxHeight - 320 * scale + fit.top * scale,
         width: fit.width * scale, height: fit.height * scale,
-        child: Transform.flip(flipX: true,
+        child: Transform.rotate(angle: .055,
+          alignment: const Alignment(766 / 1062 * 2 - 1, 17 / 1481 * 2 - 1),
+          child: Transform.flip(flipX: true,
           child: Stack(fit: StackFit.expand, clipBehavior: Clip.none, children: [
             Transform.translate(offset: Offset(.65 * scale, .8 * scale),
               child: ImageFiltered(
@@ -41,7 +43,7 @@ class QuestwellAnnotatedGrimoire extends StatelessWidget {
                   filterQuality: FilterQuality.high, gaplessPlayback: true))),
             Image.asset(asset, fit: BoxFit.contain,
               filterQuality: FilterQuality.high, gaplessPlayback: true),
-          ])),
+          ]))),
       )]);
     }),
   ));

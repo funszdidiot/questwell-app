@@ -1,3 +1,11 @@
+## Tight grip and blended cuffs — 2026-10-01
+
+Built-in image generation edited the v2 grip to close the loose finger loop and increase spine contact. Output `generated_images/exec-00be3be0-0cd8-46de-998e-ae261c48a3c3.png`; project asset `assets/images/questwell_annotated_grimoire_grip_v3.webp`, half-size WebP with original alpha. Runtime mirroring preserves the correct left hand. A 0.055-radian inward tilt pivots at the registered wrist. Scholar cuff overlays feather into the retained sleeve texture over five source pixels and use slightly different left/right trim curves.
+
+Final built-in edit prompt:
+
+Use case: precise-object-edit. Edit target: the supplied transparent integrated grimoire and hand sprite. Change only the finger grip: tighten the four fingers snugly against the spine, close the loose C-shaped space between index finger and thumb, press the thumb pad firmly onto the cover beside the spine, show small contact shadows and subtle compressed fingertips so the book has weight. Keep exactly the existing wrist position, hand orientation, warm peach skin, book dimensions, violet leather, gold sun ornament and corners, page tabs, red bookmark, lighting, transparent canvas composition. This source is mirrored by the app, so DO NOT change handedness or mirror it. Keep the wrist entering from top near the left spine, thumb on viewer-right and fingers on viewer-left. Detailed 64-bit retro fantasy game sprite, matching the existing art, crisp painted texture. No sleeve, no extra limbs, no background, no text. Actual transparent background. Preserve original 1062 by 1481 composition and top wrist center near (296,17).
+
 ## Left-hand orientation and Scholar cuffs — 2026-10-01
 
 Founder review identified the v2 sprite as the opposite hand. Mirror the entire integrated book/grip at render time so the avatar's left thumb faces inward and the book rests toward the thigh. Register the mirrored source wrist at (766,17), keeping all three body wrist anchors fixed. The original art and 16-bit icon are unchanged.
