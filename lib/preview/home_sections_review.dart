@@ -46,7 +46,10 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
           const SizedBox(height: 16),
           QuestwellHomeCharacter(archetype: widget.loadout?.archetype ?? 'scout',
             className: _classLabel,
-            level: 3, xp: 95, coins: 49, mastered: widget.loadout?.mastered.contains(widget.loadout?.archetype) ?? false, equippedNames: const [],
+            level: 3, xp: 95, coins: 49, mastered: widget.loadout?.mastered.contains(widget.loadout?.archetype) ?? false, equippedNames: [for (final e in (widget.loadout?.equipment ?? <String, String>{}).entries)
+              if (!e.key.startsWith('room') && !e.key.startsWith('wall_art')) e.value],
+            decorNames: [for (final e in (widget.loadout?.equipment ?? <String, String>{}).entries)
+              if (e.key.startsWith('room') || e.key.startsWith('wall_art')) e.value],
             collection: const [
               HomeCollectionItem(name: 'Scout cloak', slug: 'scout_cloak', category: 'outfit',
                 archetype: 'scout', owned: false, equipped: false),
