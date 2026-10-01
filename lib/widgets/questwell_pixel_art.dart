@@ -10,6 +10,7 @@ import 'questwell_scholar_glasses.dart';
 import 'questwell_wizard_hat.dart';
 import 'questwell_emerald_scarf.dart';
 import 'questwell_leather_satchel.dart';
+import 'questwell_wayfarer_satchel.dart';
 import 'questwell_brass_lantern.dart';
 import 'questwell_moonstone_brooch.dart';
 import 'questwell_bookshelf.dart';
@@ -279,8 +280,12 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body),
           if (equippedSlugs['hands'] == 'annotated-grimoire')
             ClipPath(clipper: LanternHandClipper(body), child: baseLayer()),
-          if (equippedSlugs['back'] == QuestwellLeatherSatchel.slug) ...[
-            QuestwellLeatherSatchel(bodyType: body),
+          if (equippedSlugs['back'] == QuestwellLeatherSatchel.slug ||
+              equippedSlugs['back'] == QuestwellWayfarerSatchel.slug) ...[
+            if (equippedSlugs['back'] == QuestwellWayfarerSatchel.slug)
+              QuestwellWayfarerSatchel(bodyType: body)
+            else
+              QuestwellLeatherSatchel(bodyType: body),
             ClipPath(clipper: SatchelForearmClipper(body), child: baseLayer()),
             if (classOverlay != null)
               ClipPath(clipper: SatchelForearmClipper(body), child: classLayer(classOverlay)),

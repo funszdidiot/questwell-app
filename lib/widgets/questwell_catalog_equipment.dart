@@ -28,15 +28,6 @@ class _EquipmentPainter extends CustomPainter {
     void fill(Path path,Color color){p.shader=null;p.style=PaintingStyle.fill;p.color=color;c.drawPath(path,p);}
     void line(Path path,Color color,double width){p.shader=null;p.style=PaintingStyle.stroke;p.strokeWidth=width;p.color=color;c.drawPath(path,p);p.style=PaintingStyle.fill;}
     if(rear){c.restore();return;}
-    if(items['back']=='wayfarer-satchel') {
-      final strap=Path()..moveTo(148,85+y)..quadraticBezierTo(129,125+y,91,164+y);
-      line(strap,const Color(0xFF342A23),7);line(strap,const Color(0xFF98744B),4);
-      final bag=RRect.fromRectAndRadius(Rect.fromLTWH(70,152+y,42,40),const Radius.circular(5));
-      p.color=const Color(0xFF263E35);c.drawRRect(bag,p);p.color=const Color(0xFF53715A);c.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(70,152+y,42,17),const Radius.circular(4)),p);
-      p.color=const Color(0xFFD0B279);c.drawRect(Rect.fromLTWH(87,164+y,8,9),p);p.color=const Color(0xFF624B35);c.drawRect(Rect.fromLTWH(89,166+y,4,5),p);
-      p.color=const Color(0xFFDBCBA2);c.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(66,147+y,50,7),const Radius.circular(3)),p);
-      line(Path()..moveTo(77,148+y)..lineTo(77,156+y)..moveTo(105,148+y)..lineTo(105,156+y),const Color(0xFF735237),2);
-    }
     if(items['hands']=='annotated-grimoire') {
       final x=female?145.0:150.0;
       p.color=const Color(0xFF34233D);c.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(x,182+y,31,40),const Radius.circular(2)),p);

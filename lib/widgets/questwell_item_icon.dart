@@ -109,9 +109,9 @@ class QuestwellItemIconPainter extends CustomPainter {
     } else if(slug.contains('satchel')) {
       final way=slug=='wayfarer-satchel';
       r(10,4,12,2,woodDark);r(8,6,3,8,woodDark);r(21,6,3,8,woodDark);r(10,6,2,5,goldShade);
-      panel(4,13,24,15,way?greenDark:wood,way?green:woodLight,woodDark);panel(5,11,22,9,way?green:woodLight,way?mint:gold,woodDark);
+      panel(4,13,24,15,way?const Color(0xFF414B2C):wood,way?const Color(0xFF76804A):woodLight,woodDark);panel(5,11,22,9,way?const Color(0xFF626D3D):woodLight,way?const Color(0xFFA4A66B):gold,woodDark);
       panel(13,17,6,6,gold,cream,goldShade);r(15,18,2,3,woodDark);r(7,23,3,1,goldShade);r(22,23,3,1,goldShade);
-      if(way){r(5,9,22,3,cream);r(8,8,1,5,wood);r(23,8,1,5,wood);}
+      if(way){r(5,26,22,2,wood);r(14,13,4,4,wood);r(14,23,4,3,wood);r(5,9,22,3,cream);r(6,11,20,1,goldShade);r(8,8,2,5,wood);r(22,8,2,5,wood);r(25,9,2,3,gold);r(26,10,1,1,woodDark);}
     } else if(slug.contains('grimoire')||slug.contains('seal')) {
       panel(7,4,20,24,purple,purple,purpleDark);r(8,5,3,22,goldShade);r(11,6,13,1,cream);r(12,25,12,1,cream);
       r(25,8,3,4,red);r(25,16,4,3,blue);gem(16,12,gold);r(14,20,8,1,cream);r(15,22,5,1,gold);r(5,6,2,21,purpleDark);
