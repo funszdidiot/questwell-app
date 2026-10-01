@@ -430,7 +430,7 @@ class _FrictionChoice extends StatelessWidget {
                             size: 15,
                           ),
                           const SizedBox(width: 5),
-                          Text(
+                          Flexible(child: Text(
                             reward.split(' • ').first,
                             style: theme.labelMedium.override(
                               font: GoogleFonts.roboto(
@@ -439,7 +439,7 @@ class _FrictionChoice extends StatelessWidget {
                               color: const Color(0xFF6E3B2C),
                               letterSpacing: 0,
                             ),
-                          ),
+                          )),
                         ],
                       ),
                       Row(
@@ -450,7 +450,7 @@ class _FrictionChoice extends StatelessWidget {
                             size: 15,
                           ),
                           const SizedBox(width: 5),
-                          Text(
+                          Flexible(child: Text(
                             reward.split(' • ').last,
                             style: theme.labelMedium.override(
                               font: GoogleFonts.roboto(
@@ -459,7 +459,7 @@ class _FrictionChoice extends StatelessWidget {
                               color: const Color(0xFF6E3B2C),
                               letterSpacing: 0,
                             ),
-                          ),
+                          )),
                         ],
                       ),
                     ],
