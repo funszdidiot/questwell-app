@@ -92,13 +92,13 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     final items=all.where((i)=>(category=='All'||group(i)==category)&&(!myClass||!restricted(i))&&
       (!owned||i.owned)&&(!affordable||i.owned||i.price<=widget.data.profile.coinBalance)&&
       ('${i.name} ${i.description}'.toLowerCase().contains(query.toLowerCase().trim()))).toList()
-      ..sort((a,b){final own=(a.owned?1:0).compareTo(b.owned?1:0);return own!=0?own:a.price.compareTo(b.price);});
+      ..sort((a,b){final price=a.price.compareTo(b.price);return price!=0?price:a.name.compareTo(b.name);});
     return RefreshIndicator(onRefresh:widget.onRefresh,child:ListView(padding:const EdgeInsets.fromLTRB(18,8,18,30),children:[
       Container(padding:const EdgeInsets.all(20),decoration:BoxDecoration(color:const Color(0xFF23453F),border:Border.all(color:const Color(0xFF678475)),borderRadius:BorderRadius.circular(14)),
         child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
           const Text('THE GUILD EMPORIUM',style:TextStyle(color:gold,letterSpacing:2,fontSize:11,fontWeight:FontWeight.w800)),
-          const SizedBox(height:10),const Text('A little wonder,\nwell earned.',style:TextStyle(fontFamily:'serif',fontSize:30,height:1.1,color:cream)),
-          const SizedBox(height:12),const Text('Wear it. Bring a companion. Make your Hearth your own.',style:TextStyle(color:Color(0xFFC0D2C7),height:1.4)),
+          const SizedBox(height:10),const Text('The Market',style:TextStyle(fontFamily:'serif',fontSize:30,height:1.1,color:cream)),
+          const SizedBox(height:12),const Text('Rare finds, class gear, and questionable fashion choices.',style:TextStyle(color:Color(0xFFC0D2C7),height:1.4)),
           const SizedBox(height:16),Wrap(spacing:14,runSpacing:10,crossAxisAlignment:WrapCrossAlignment.center,children:[
             Container(padding:const EdgeInsets.symmetric(horizontal:12,vertical:8),decoration:BoxDecoration(color:const Color(0xFF142D2B),borderRadius:BorderRadius.circular(20)),
               child:Text('◈  ${widget.data.profile.coinBalance} coins',style:const TextStyle(color:gold,fontWeight:FontWeight.w700,fontSize:16))),
@@ -117,7 +117,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
         FilterChip(label:const Text('Affordable'),selected:affordable,onSelected:(v)=>setState(()=>affordable=v)),
         FilterChip(label:const Text('Owned'),selected:owned,onSelected:(v)=>setState(()=>owned=v)),
       ]),
-      const SizedBox(height:18),Text('${items.length} treasures',style:const TextStyle(color:muted,fontSize:12)),const SizedBox(height:10),
+      const SizedBox(height:18),Text('${items.length} ${items.length==1?'treasure':'treasures'}',style:const TextStyle(color:muted,fontSize:12)),const SizedBox(height:10),
       if(items.isEmpty) Padding(padding:const EdgeInsets.symmetric(vertical:35),child:Column(children:[
         const Icon(Icons.search_off,color:gold,size:32),const SizedBox(height:12),const Text('No treasures match these filters.',style:TextStyle(color:cream)),
         TextButton(onPressed:()=>setState((){category='All';owned=false;affordable=false;myClass=true;query='';searchController.clear();}),child:const Text('Reset filters'))])),

@@ -45,7 +45,7 @@ void main(){
     await tester.pumpWidget(MaterialApp(theme:ThemeData.dark(),home:Scaffold(body:MediaQuery(data:const MediaQueryData(textScaler:TextScaler.linear(1.3)),child:QuestwellMarketView(data:data,onPurchase:(_)async{purchased++;},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{})))));
     await tester.pumpAndSettle();expect(tester.takeException(),isNull);
     await tester.enterText(find.byType(TextField),'moss-green');await tester.pumpAndSettle();
-    final buy=find.widgetWithText(FilledButton,'Buy · 90 coins');await tester.ensureVisible(buy);await tester.tap(buy);await tester.pumpAndSettle();
+    final buy=find.widgetWithText(FilledButton,'Buy · 90 coins');await tester.scrollUntilVisible(buy,180,scrollable:find.byType(Scrollable).first);await tester.tap(buy);await tester.pumpAndSettle();
     expect(find.text('Buy Moss-Green Cloak?'),findsOneWidget);expect(purchased,0);
     await tester.tap(find.text('Cancel'));await tester.pumpAndSettle();expect(purchased,0);
     await tester.tap(buy);await tester.pumpAndSettle();await tester.tap(find.text('Buy item'));await tester.pumpAndSettle();expect(purchased,1);
