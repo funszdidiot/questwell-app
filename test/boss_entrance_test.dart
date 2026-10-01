@@ -85,6 +85,20 @@ void main() {
     expect(find.text('VICTORY'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+  testWidgets('Notification Swarm settles its flutter and uses its own dialogue', (tester) async {
+    await tester.pumpWidget(scene(id: 'swarm', type: 'notification_swarm'));
+    expect(find.text('NOTIFICATION SWARM'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('Just one more ping.'), findsOneWidget);
+    expect(find.byWidgetPredicate((w) => w is Image && w.image is AssetImage &&
+      (w.image as AssetImage).assetName.endsWith('questwell_notification_swarm_v1.webp')), findsOneWidget);
+    expect(tester.binding.hasScheduledFrame, isFalse);
+    await tester.pumpWidget(scene(id: 'swarm', type: 'notification_swarm', reduced: true, progress: 1, defeated: true));
+    await tester.pumpAndSettle();
+    expect(find.text('NOTIFICATION SWARM · DEFEATED'), findsOneWidget);
+    expect(find.text('VICTORY'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
   testWidgets('Skip persists and does not replay after remount', (tester) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(scene(id: 'persistent-test', persist: true));
