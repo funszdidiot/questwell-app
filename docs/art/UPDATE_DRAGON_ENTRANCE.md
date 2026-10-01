@@ -8,4 +8,5 @@ Use case: stylized-concept. Production enemy sprite for Questwell, detailed 64-b
 
 ## Integration
 
-Dragon swoops from above/right, bounces and settles. Own taunt plus shared skip/persistence/reduced-motion/ticker lifecycle; no idle ticker. Real Update Dragon encounters use equipped-avatar scene. Practice `?review=boss&boss=update_dragon` includes three upgrade-checkpoint steps and UPGRADE COMPLETE victory. Server task/reward logic unchanged. Troll approved; Dragon awaiting review. All eight current boss types now have detailed encounter art. Male Wanderer cuffs deferred.
+Dragon descends directly from above the arena, bounces and settles. Own taunt plus shared skip/persistence/reduced-motion/ticker lifecycle; no idle ticker. Real Update Dragon encounters use equipped-avatar scene. Practice `?review=boss&boss=update_dragon` includes three upgrade-checkpoint steps and UPGRADE COMPLETE victory. Server task/reward logic unchanged. Troll approved; Dragon awaiting review. All eight current boss types now have detailed encounter art. Male Wanderer cuffs deferred.
+User explicitly requested swoop from above; horizontal entrance translation is zero for Dragon and initial vertical offset clears the arena.

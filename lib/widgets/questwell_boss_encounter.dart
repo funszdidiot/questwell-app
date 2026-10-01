@@ -123,8 +123,8 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                   Positioned.fill(child: CustomPaint(painter: _ArenaPainter(dust: land))),
                   Positioned(left: width * .03, bottom: 24, width: width * .42, height: 190, child: avatar),
                   Positioned(right: width * .01, bottom: 23, width: width * .59, height: 230,
-                    child: Transform.translate(offset: Offset((1 - slide) * (_kraken ? 65 : width + 40),
-                      lift + (_dragon ? -(1 - slide) * 170 : _swarm ? -math.sin(slide * math.pi * 2) * 35 : _printer ? -(1 - slide) * 80 : _kraken ? (1 - slide) * 290 : 0)),
+                    child: Transform.translate(offset: Offset((1 - slide) * (_dragon ? 0 : _kraken ? 65 : width + 40),
+                      lift + (_dragon ? -(1 - slide) * 390 : _swarm ? -math.sin(slide * math.pi * 2) * 35 : _printer ? -(1 - slide) * 80 : _kraken ? (1 - slide) * 290 : 0)),
                       child: AnimatedOpacity(duration: Duration(milliseconds: _reduced ? 0 : 650),
                         opacity: widget.defeated ? .15 : 1, child: Transform.rotate(angle: wobble, child: Transform.scale(
                           scaleX: 1 + squash, scaleY: 1 - squash, alignment: Alignment.bottomCenter, child: sprite))))),
