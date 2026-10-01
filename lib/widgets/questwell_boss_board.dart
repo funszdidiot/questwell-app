@@ -50,6 +50,19 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
   @override
   void initState() { super.initState(); _selected = widget.initialBattleId; }
   @override
+  void didUpdateWidget(covariant QuestwellBossBoard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // A creation result can arrive before the refreshed battle list.
+    // Keep that requested ID until its battle arrives.
+    if (widget.initialBattleId != null &&
+        widget.initialBattleId != oldWidget.initialBattleId) {
+      _selected = widget.initialBattleId;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted && _scroll.hasClients) _scroll.jumpTo(0);
+      });
+    }
+  }
+  @override
   void dispose() { _scroll.dispose(); super.dispose(); }
   void _select(String id) {
     setState(() => _selected = id);

@@ -10,6 +10,7 @@ class BossReviewApp extends StatefulWidget {
 }
 class _BossReviewAppState extends State<BossReviewApp> {
   int _replay = 0;
+  String? _createdBattleId;
   bool _motion = true, _campfire = false;
   String _state = 'battles';
   final _done = <String>{};
@@ -62,9 +63,13 @@ class _BossReviewAppState extends State<BossReviewApp> {
           final entries = steps.map((s) => s.text.trim()).where((s) => s.isNotEmpty).toList();
           if (title.text.trim().isEmpty || entries.length < 2) { change(() => error = 'Add a title and at least two attacks.'); return; }
           final id = 'custom-${_extra.length}';
-          setState(() => _extra.add(QuestwellBossBattle(id: id, title: title.text.trim(), bossType: type,
+          setState(() {
+            _createdBattleId = id;
+            _state = 'battles';
+            _extra.add(QuestwellBossBattle(id: id, title: title.text.trim(), bossType: type,
             status: 'open', rewardXp: 100, rewardCoins: 50, steps: [for (var i = 0; i < entries.length; i++)
-              QuestwellBossStep(id: '$id-$i', title: entries[i], position: i, completed: false)])));
+              QuestwellBossStep(id: '$id-$i', title: entries[i], position: i, completed: false)]));
+          });
           Navigator.pop(dialogContext);
         }, child: const Text('Start battle')),
       ])));
@@ -76,7 +81,7 @@ class _BossReviewAppState extends State<BossReviewApp> {
       MediaQuery(data: MediaQuery.of(context).copyWith(disableAnimations: !_motion),
         child: Scaffold(backgroundColor: const Color(0xFF111827), body: SafeArea(
           child: QuestwellBossBoard(key: ValueKey(_replay), battles: _state == 'empty' ? [] : _battles,
-            initialBattleId: Uri.base.queryParameters['boss'], failed: _state == 'error', practice: true,
+            initialBattleId: _createdBattleId ?? Uri.base.queryParameters['boss'], failed: _state == 'error', practice: true,
             campfire: _campfire, archetype: 'scholar', body: 'female',
             equipment: const {'neck': 'emerald-scholar-scarf', 'accessory': 'moonstone-brooch'},
             onHome: () => launchUrl(Uri.base.replace(query: '', fragment: ''), webOnlyWindowName: '_self'),

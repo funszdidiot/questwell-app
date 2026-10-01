@@ -22,6 +22,7 @@ class BossBattlesPageWidget extends StatefulWidget {
 class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
   late Future<List<QuestwellBossBattle>> _future;
   String? _busyStepId;
+  String? _createdBattleId;
   bool _campfireMode = false;
   QuestwellCosmeticsSnapshot? _appearance;
 
@@ -112,7 +113,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
     ];
     var bossType = 'inbox_hydra';
 
-    final created = await showModalBottomSheet<bool>(
+    final created = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
@@ -240,13 +241,13 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                       }
 
                       try {
-                        await QuestwellBossService.createBattle(
+                        final battleId = await QuestwellBossService.createBattle(
                           title: title,
                           steps: steps,
                           bossType: bossType,
                         );
                         if (context.mounted) {
-                          Navigator.of(context).pop(true);
+                          Navigator.of(context).pop(battleId);
                         }
                       } catch (_) {
                         if (!context.mounted) return;
@@ -275,8 +276,11 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       controller.dispose();
     }
 
-    if (created == true && mounted) {
-      setState(_refresh);
+    if (created != null && created.isNotEmpty && mounted) {
+      setState(() {
+        _createdBattleId = created;
+        _refresh();
+      });
     }
   }
 
@@ -287,6 +291,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       future: _future,
       builder: (context, snapshot) => QuestwellBossBoard(
         battles: snapshot.data ?? const [],
+        initialBattleId: _createdBattleId,
         loading: !snapshot.hasData && !snapshot.hasError,
         failed: snapshot.hasError,
         busyStepId: _busyStepId,

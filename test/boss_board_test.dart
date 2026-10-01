@@ -14,10 +14,10 @@ void main() {
     steps: [QuestwellBossStep(id: '$id-1', title: 'Finish the first action', position: 0, completed: won),
       QuestwellBossStep(id: '$id-2', title: 'Close the loop', position: 1, completed: won)]);
   int homes = 0, attacks = 0, creates = 0;
-  Widget page(List<QuestwellBossBattle> data, {bool failed = false, bool loading = false, String? busy}) => MaterialApp(
+  Widget page(List<QuestwellBossBattle> data, {bool failed = false, bool loading = false, String? busy, String? selected}) => MaterialApp(
     home: MediaQuery(data: const MediaQueryData(disableAnimations: true), child: Scaffold(
       body: QuestwellBossBoard(battles: data, practice: true, failed: failed, loading: loading,
-        busyStepId: busy, onHome: () => homes++, onCreate: () => creates++,
+        busyStepId: busy, initialBattleId: selected, onHome: () => homes++, onCreate: () => creates++,
         onAttack: (_, __) => attacks++, onRetry: () {}))));
   testWidgets('Only selected battle owns an arena; queue selection changes focus', (tester) async {
     tester.view.physicalSize = const Size(390, 1700); tester.view.devicePixelRatio = 1;
@@ -33,6 +33,37 @@ void main() {
     expect(find.byType(QuestwellBossVictoryPanel), findsOneWidget);
     await tester.ensureVisible(find.text('Choose next battle'));
     await tester.tap(find.text('Choose next battle')); await tester.pumpAndSettle();
+    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets('Newly created battle opens after refresh and returns to the arena', (tester) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(page([battle('a'), battle('b')]));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const ValueKey('select-b')));
+    await tester.tap(find.byKey(const ValueKey('select-b')));
+    await tester.pumpAndSettle();
+    await tester.drag(find.byType(ListView), const Offset(0, -400));
+    await tester.pumpAndSettle();
+
+    // FutureBuilder may retain the old list while the create refresh is pending.
+    await tester.pumpWidget(page([battle('a'), battle('b')], selected: 'c'));
+    await tester.pumpAndSettle();
+    await tester.pumpWidget(page([battle('a'), battle('b'), battle('c')], selected: 'c'));
+    await tester.pumpAndSettle();
+    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'c');
+    expect(tester.getTopLeft(find.byType(QuestwellBossEncounter)).dy, greaterThanOrEqualTo(0));
+    expect(tester.getBottomRight(find.byType(QuestwellBossEncounter)).dy, lessThan(844));
+
+    // A later refresh must respect a manual selection, not reopen the created battle.
+    await tester.ensureVisible(find.byKey(const ValueKey('select-a')));
+    await tester.tap(find.byKey(const ValueKey('select-a')));
+    await tester.pumpAndSettle();
+    await tester.pumpWidget(page([battle('a'), battle('b'), battle('c')], selected: 'c'));
+    await tester.pumpAndSettle();
     expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
     expect(tester.takeException(), isNull);
   });
