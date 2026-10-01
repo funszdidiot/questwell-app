@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../lib/add_task_page/add_task_page_widget.dart';
-import '../lib/preview/market_catalog.dart';
-import '../lib/services/questwell_cosmetic_models.dart';
-import '../lib/widgets/questwell_market_view.dart';
-import '../lib/preview/home_sections_review.dart';
-import '../lib/preview/quest_board_review.dart';
-import '../lib/preview/adventurer_review.dart';
+import 'package:project_momentum/add_task_page/add_task_page_widget.dart';
+import 'package:project_momentum/preview/market_catalog.dart';
+import 'package:project_momentum/services/questwell_cosmetic_models.dart';
+import 'package:project_momentum/widgets/questwell_market_view.dart';
+import 'package:project_momentum/preview/home_sections_review.dart';
+import 'package:project_momentum/preview/quest_board_review.dart';
+import 'package:project_momentum/preview/adventurer_review.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +42,8 @@ void main() {
     await tester.tap(find.text('Hard to Start'));
     tester.view.resetViewInsets();
     await tester.pumpAndSettle();
-    final post = find.widgetWithText(FilledButton, 'Post to Quest Board');
+    final post = find.ancestor(of: find.text('Post to Quest Board'),
+      matching: find.byWidgetPredicate((widget) => widget is FilledButton));
     await tester.ensureVisible(post);
     await tester.pumpAndSettle();
     expect(post.hitTestable(), findsOneWidget);
