@@ -88,7 +88,7 @@ class QuestwellBossService {
     final uid = SupaFlow.client.auth.currentUser?.id;
     if (uid == null) throw StateError('Authentication required.');
 
-    final responses = await Future.wait([
+    final responses = await QuestwellNetwork.read(() => Future.wait([
       SupaFlow.client
           .from('boss_battles')
           .select('id,title,status,reward_xp,reward_coins,boss_type,created_at')
@@ -99,7 +99,7 @@ class QuestwellBossService {
           .select('id,boss_id,title,position,completed')
           .eq('user_id', uid)
           .order('position', ascending: true),
-    ]);
+    ]));
 
     final battleRows = List<Map<String, dynamic>>.from(
       (responses[0] as List).map((row) => Map<String, dynamic>.from(row as Map)),
