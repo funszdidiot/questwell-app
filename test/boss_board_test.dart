@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/models/questwell_boss.dart';
+import '../lib/models/questwell_boss_unlocks.dart';
+import '../lib/widgets/questwell_boss_picker.dart';
+import '../lib/services/questwell_progression.dart';
 import '../lib/widgets/questwell_boss_board.dart';
 import '../lib/widgets/questwell_boss_encounter.dart';
 
@@ -87,5 +90,55 @@ void main() {
     await tester.pumpWidget(page([battle('a')])); await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(FilledButton, 'Attack').first); await tester.pump();
     expect(attacks, 1); expect(tester.takeException(), isNull);
+  });
+
+  test('Every boss unlocks exactly at its approved level', () {
+    expect(QuestwellBossUnlocks.levels.values.toList(), [1, 3, 5, 7, 10, 13, 16, 20]);
+    for (final entry in QuestwellBossUnlocks.levels.entries) {
+      expect(QuestwellBossUnlocks.available(entry.key, entry.value - 1), isFalse);
+      expect(QuestwellBossUnlocks.available(entry.key, entry.value), isTrue);
+      expect(QuestwellBossUnlocks.xpRemaining(entry.key,
+        QuestwellProgression.totalAtLevel(entry.value), 0), 0);
+    }
+    expect(QuestwellBossUnlocks.available('unknown', 100), isFalse);
+    expect(QuestwellBossUnlocks.next(1), 'meeting_mimic');
+    expect(QuestwellBossUnlocks.next(20), isNull);
+    expect(QuestwellBossUnlocks.xpRemaining('meeting_mimic', 0, 100), 115);
+    expect(QuestwellBossUnlocks.progress('meeting_mimic', 0, 100), closeTo(100 / 215, .001));
+  });
+  testWidgets('Picker exposes locked bosses but rejects selecting them', (tester) async {
+    String selected = 'inbox_hydra';
+    await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellBossPicker(
+      value: selected, level: 1, onChanged: (value) => selected = value))));
+    final picker = tester.widget<DropdownButtonFormField<String>>(find.byType(DropdownButtonFormField<String>));
+    final menu = tester.widget<DropdownButton<String>>(find.byType(DropdownButton<String>));
+    expect(menu.items!.length, 8);
+    expect(menu.items!.where((item) => item.enabled).map((item) => item.value), ['inbox_hydra']);
+    picker.onChanged!('update_dragon');
+    expect(selected, 'inbox_hydra');
+    await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellBossPicker(
+      value: selected, level: 3, onChanged: (value) => selected = value))));
+    final unlocked = tester.widget<DropdownButtonFormField<String>>(find.byType(DropdownButtonFormField<String>));
+    final updatedMenu = tester.widget<DropdownButton<String>>(find.byType(DropdownButton<String>));
+    expect(updatedMenu.items!.where((item) => item.enabled).length, 2);
+    unlocked.onChanged!('meeting_mimic');
+    expect(selected, 'meeting_mimic');
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets('Unlock progress fits narrow screens and honors legacy XP', (tester) async {
+    tester.view.physicalSize = const Size(320, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(MaterialApp(home: MediaQuery(
+      data: const MediaQueryData(textScaler: TextScaler.linear(1.5)),
+      child: const Scaffold(body: Padding(padding: EdgeInsets.all(18),
+        child: QuestwellBossUnlockProgress(level: 2, totalXp: 0, offset: 100))))));
+    expect(find.text('115 XP to unlock'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const MaterialApp(home: Scaffold(
+      body: QuestwellBossUnlockProgress(level: 20, totalXp: 4465))));
+    expect(find.text('Level 20 · All eight bosses unlocked'), findsOneWidget);
+    expect(find.byType(LinearProgressIndicator), findsNothing);
   });
 }

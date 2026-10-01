@@ -4,6 +4,8 @@ import '/services/questwell_progression.dart';
 import '/services/questwell_milestone_service.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/widgets/questwell_boss_board.dart';
+import '/widgets/questwell_boss_picker.dart';
+import '/models/questwell_boss_unlocks.dart';
 import '/pages/home_page/home_page_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +68,8 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       setState(_refresh);
 
       if (result.bossCompleted) {
+        await _loadCampfireMode();
+        if (!mounted) return;
         final previousLevel = QuestwellProgression.levelForXp(result.totalXp - result.xpAwarded,
           legacyOffset: profile.levelXpOffset);
         final newLevel = QuestwellProgression.levelForXp(result.totalXp, legacyOffset: profile.levelXpOffset);
@@ -105,6 +109,10 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
   }
 
   Future<void> _showCreateBattle() async {
+    await _loadCampfireMode();
+    if (!mounted) return;
+    final profile = _appearance?.profile;
+    final level = profile?.level ?? 1;
     final titleController = TextEditingController();
     final stepControllers = [
       TextEditingController(),
@@ -158,47 +166,12 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     ),
                   ),
                   const SizedBox(height: 14),
-                  DropdownButtonFormField<String>(
-                    initialValue: bossType,
-                    decoration: const InputDecoration(labelText: 'Boss'),
-                    items: const [
-                      DropdownMenuItem(
-                        value: 'inbox_hydra',
-                        child: Text('Inbox Hydra'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'meeting_mimic',
-                        child: Text('Meeting Mimic'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'spreadsheet_slime',
-                        child: Text('Spreadsheet Slime'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'calendar_kraken',
-                        child: Text('Calendar Kraken'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'printer_poltergeist',
-                        child: Text('Printer Poltergeist'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'notification_swarm',
-                        child: Text('Notification Swarm'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'ticket_troll',
-                        child: Text('Ticket Troll'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'update_dragon',
-                        child: Text('Update Dragon'),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      if (value != null) setSheetState(() => bossType = value);
-                    },
-                  ),
+                  QuestwellBossUnlockProgress(level: level,
+                    totalXp: profile?.totalXp ?? 0, offset: profile?.levelXpOffset ?? 0,
+                    known: profile != null),
+                  const SizedBox(height: 12),
+                  QuestwellBossPicker(value: bossType, level: level,
+                    onChanged: (value) => setSheetState(() => bossType = value)),
                   const SizedBox(height: 18),
                   Text(
                     'Attack plan',
@@ -248,6 +221,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                         return;
                       }
 
+                      if (!QuestwellBossUnlocks.available(bossType, level)) return;
                       try {
                         final battleId = await QuestwellBossService.createBattle(
                           title: title,
@@ -300,6 +274,11 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       builder: (context, snapshot) => QuestwellBossBoard(
         battles: snapshot.data ?? const [],
         initialBattleId: _createdBattleId,
+        unlockProgress: QuestwellBossUnlockProgress(
+          level: _appearance?.profile.level ?? 1,
+          totalXp: _appearance?.profile.totalXp ?? 0,
+          offset: _appearance?.profile.levelXpOffset ?? 0,
+          known: _appearance != null),
         loading: !snapshot.hasData && !snapshot.hasError,
         failed: snapshot.hasError,
         busyStepId: _busyStepId,

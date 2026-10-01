@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/questwell_boss.dart';
 import '../widgets/questwell_boss_board.dart';
+import '../widgets/questwell_boss_picker.dart';
+import '../models/questwell_boss_unlocks.dart';
+import '../services/questwell_progression.dart';
 
 class BossReviewApp extends StatefulWidget {
   const BossReviewApp({super.key});
@@ -10,6 +13,7 @@ class BossReviewApp extends StatefulWidget {
 }
 class _BossReviewAppState extends State<BossReviewApp> {
   int _replay = 0;
+  int _level = 1;
   String? _createdBattleId;
   bool _motion = true, _campfire = false;
   String _state = 'battles';
@@ -32,7 +36,8 @@ class _BossReviewAppState extends State<BossReviewApp> {
     'update_dragon': ['Save your work and check the update', 'Install one planned update', 'Restart and confirm everything works'],
   };
   List<QuestwellBossBattle> get _battles => [
-    for (final type in questwellBossNames.keys) QuestwellBossBattle(
+    for (final type in questwellBossNames.keys)
+      if (QuestwellBossUnlocks.available(type, _level)) QuestwellBossBattle(
       id: type, title: _titles[type]!, bossType: type, rewardXp: 100, rewardCoins: 50,
       status: List.generate(3, (i) => '$type-$i').every(_done.contains) ? 'completed' : 'open',
       steps: [for (var i = 0; i < 3; i++) QuestwellBossStep(id: '$type-$i', title: _steps[type]![i],
@@ -51,9 +56,11 @@ class _BossReviewAppState extends State<BossReviewApp> {
       title: const Text('Start a practice battle'),
       content: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, children: [
         TextField(controller: title, decoration: const InputDecoration(labelText: 'Your challenge')),
-        DropdownButtonFormField<String>(initialValue: type, isExpanded: true,
-          items: [for (final e in questwellBossNames.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
-          onChanged: (v) => type = v ?? type),
+        QuestwellBossUnlockProgress(level: _level,
+          totalXp: QuestwellProgression.totalAtLevel(_level)),
+        const SizedBox(height: 12),
+        QuestwellBossPicker(value: type, level: _level,
+          onChanged: (value) => change(() => type = value)),
         for (var i = 0; i < steps.length; i++) TextField(controller: steps[i], decoration: InputDecoration(labelText: 'Attack ${i + 1}')),
         const SizedBox(height: 10),
         OutlinedButton.icon(
@@ -68,6 +75,7 @@ class _BossReviewAppState extends State<BossReviewApp> {
         FilledButton(onPressed: () {
           final entries = steps.map((s) => s.text.trim()).where((s) => s.isNotEmpty).toList();
           if (title.text.trim().isEmpty || entries.length < 2) { change(() => error = 'Add a title and at least two attacks.'); return; }
+          if (!QuestwellBossUnlocks.available(type, _level)) return;
           final id = 'custom-${_extra.length}';
           setState(() {
             _createdBattleId = id;
@@ -88,6 +96,8 @@ class _BossReviewAppState extends State<BossReviewApp> {
         child: Scaffold(backgroundColor: const Color(0xFF111827), body: SafeArea(
           child: QuestwellBossBoard(key: ValueKey(_replay), battles: _state == 'empty' ? [] : _battles,
             initialBattleId: _createdBattleId ?? Uri.base.queryParameters['boss'], failed: _state == 'error', practice: true,
+            unlockProgress: QuestwellBossUnlockProgress(level: _level,
+              totalXp: QuestwellProgression.totalAtLevel(_level)),
             campfire: _campfire, archetype: 'scholar', body: 'female',
             equipment: const {'neck': 'emerald-scholar-scarf', 'accessory': 'moonstone-brooch'},
             onHome: () => launchUrl(Uri.base.replace(query: '', fragment: ''), webOnlyWindowName: '_self'),
@@ -95,6 +105,13 @@ class _BossReviewAppState extends State<BossReviewApp> {
             onRetry: () => setState(() => _state = 'battles'),
             footer: ExpansionTile(title: const Text('Preview controls'), children: [
               OutlinedButton(onPressed: () => setState(() { _done.clear(); _replay++; }), child: const Text('Reset practice battles')),
+              const Text('Simulated level · preview only; does not change your account'),
+              DropdownButton<int>(value: _level,
+                items: [for (final level in QuestwellBossUnlocks.levels.values)
+                  DropdownMenuItem(value: level, child: Text('Level $level'))],
+                onChanged: (level) { if (level != null) setState(() {
+                  _level = level; _createdBattleId = null; _replay++;
+                }); }),
               SwitchListTile(title: const Text('Animations'), value: _motion, onChanged: (v) => setState(() => _motion = v)),
               SwitchListTile(title: const Text('Campfire mode'), value: _campfire, onChanged: (v) => setState(() => _campfire = v)),
               Wrap(spacing: 8, children: [for (final state in ['battles', 'empty', 'error']) ChoiceChip(

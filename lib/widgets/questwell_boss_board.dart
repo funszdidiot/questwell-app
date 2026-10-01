@@ -30,7 +30,7 @@ class QuestwellBossBoard extends StatefulWidget {
     required this.onCreate, required this.onAttack, this.onRefresh, this.onRetry,
     this.loading = false, this.failed = false, this.busyStepId, this.campfire = false,
     this.archetype = 'wanderer', this.body = 'neutral', this.equipment = const {},
-    this.practice = false, this.initialBattleId, this.footer});
+    this.practice = false, this.initialBattleId, this.footer, this.unlockProgress});
   final List<QuestwellBossBattle> battles;
   final VoidCallback onHome, onCreate;
   final void Function(QuestwellBossBattle, QuestwellBossStep) onAttack;
@@ -40,7 +40,7 @@ class QuestwellBossBoard extends StatefulWidget {
   final String? busyStepId, initialBattleId;
   final String archetype, body;
   final Map<String, String> equipment;
-  final Widget? footer;
+  final Widget? footer, unlockProgress;
   @override
   State<QuestwellBossBoard> createState() => _QuestwellBossBoardState();
 }
@@ -100,6 +100,10 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
             label: const Text('Start a battle')),
         ]),
         const SizedBox(height: 8),
+        if (widget.unlockProgress != null) ...[
+          widget.unlockProgress!,
+          const SizedBox(height: 12),
+        ],
         if (widget.practice) ...[
           Text('PRACTICE PREVIEW · sample battles and rewards', style: QuestwellTypography.body(fontSize: 12, color: _muted)),
           const SizedBox(height: 8),
