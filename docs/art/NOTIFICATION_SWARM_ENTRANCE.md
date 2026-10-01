@@ -9,3 +9,9 @@ Use case: stylized-concept. Production game enemy sprite for Questwell, detailed
 ## Integration
 
 Coordinated swarm sprite sweeps in on a wavering path and flutters into place. This animates the group, not individual wings. Own taunt plus shared skip/persistence/reduced-motion/ticker lifecycle; no idle ticker. Production Notification Swarm encounters use equipped-avatar scene. Practice `?review=boss&boss=notification_swarm` includes three attention-management steps and QUIET RESTORED victory. Server task/reward logic unchanged. Printer approved; Swarm awaiting review. Male Wanderer cuffs deferred.
+
+## Founder revision — smaller, more numerous bells
+
+User requested smaller bells and more of them. Current asset: `assets/images/questwell_notification_swarm_v2.webp`. V1 retained as history, no longer rendered. Built-in image edit with v1 reference, transparency preserved; resized for app use.
+
+undefined

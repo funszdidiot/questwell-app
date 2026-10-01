@@ -91,7 +91,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Just one more ping.'), findsOneWidget);
     expect(find.byWidgetPredicate((w) => w is Image && w.image is AssetImage &&
-      (w.image as AssetImage).assetName.endsWith('questwell_notification_swarm_v1.webp')), findsOneWidget);
+      (w.image as AssetImage).assetName.endsWith('questwell_notification_swarm_v2.webp')), findsOneWidget);
     expect(tester.binding.hasScheduledFrame, isFalse);
     await tester.pumpWidget(scene(id: 'swarm', type: 'notification_swarm', reduced: true, progress: 1, defeated: true));
     await tester.pumpAndSettle();

@@ -73,7 +73,7 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
   void dispose() { _intro.dispose(); super.dispose(); }
   @override
   Widget build(BuildContext context) {
-    final sprite = RepaintBoundary(child: Image.asset(_swarm ? 'assets/images/questwell_notification_swarm_v1.webp' : _printer ? 'assets/images/questwell_printer_poltergeist_v1.webp' : _kraken ? 'assets/images/questwell_calendar_kraken_v1.webp' : _slime ? 'assets/images/questwell_spreadsheet_slime_v1.webp' : _mimic ? 'assets/images/questwell_meeting_mimic_v1.webp' : 'assets/images/questwell_inbox_hydra_v1.webp',
+    final sprite = RepaintBoundary(child: Image.asset(_swarm ? 'assets/images/questwell_notification_swarm_v2.webp' : _printer ? 'assets/images/questwell_printer_poltergeist_v1.webp' : _kraken ? 'assets/images/questwell_calendar_kraken_v1.webp' : _slime ? 'assets/images/questwell_spreadsheet_slime_v1.webp' : _mimic ? 'assets/images/questwell_meeting_mimic_v1.webp' : 'assets/images/questwell_inbox_hydra_v1.webp',
       fit: BoxFit.contain, semanticLabel: _swarm ? 'Notification Swarm, mischievous winged bells and sealed messages' : _printer ? 'Printer Poltergeist, a haunted brass and wood printer trailing ghostly paper' : _kraken ? 'Calendar Kraken, a violet tentacled creature clutching appointment scrolls and a brass watch' : _slime ? 'Spreadsheet Slime, an emerald jelly creature tangled in parchment grids' : _mimic
         ? 'Meeting Mimic, an enchanted burgundy conference chair with a toothy grin'
         : 'Inbox Hydra, a three-headed serpent guarding a pile of letters'));
