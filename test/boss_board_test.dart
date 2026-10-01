@@ -22,6 +22,25 @@ void main() {
       body: QuestwellBossBoard(battles: data, practice: true, failed: failed, loading: loading,
         busyStepId: busy, initialBattleId: selected, onHome: () => homes++, onCreate: () => creates++,
         onAttack: (_, __) => attacks++, onRetry: () {}))));
+  testWidgets('Mailroom is bundled and exclusive to Hydra at narrow width', (tester) async {
+    tester.view.physicalSize = const Size(320, 1700);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(page([battle('a'), battle('b')]));
+    await tester.pumpAndSettle();
+    final background = find.byKey(const ValueKey('hydra-mailroom-arena'));
+    expect(background, findsOneWidget);
+    expect(tester.widget<Image>(background).image,
+      isA<AssetImage>().having((asset) => asset.assetName, 'asset',
+        'assets/images/questwell_hydra_mailroom_v1.webp'));
+    expect(tester.takeException(), isNull);
+    await tester.ensureVisible(find.byKey(const ValueKey('select-b')));
+    await tester.tap(find.byKey(const ValueKey('select-b')));
+    await tester.pumpAndSettle();
+    expect(background, findsNothing);
+    expect(tester.takeException(), isNull);
+  });
   testWidgets('Only selected battle owns an arena; queue selection changes focus', (tester) async {
     tester.view.physicalSize = const Size(390, 1700); tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize); addTearDown(tester.view.resetDevicePixelRatio);

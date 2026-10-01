@@ -23,6 +23,7 @@ class QuestwellBossEncounter extends StatefulWidget {
 
 class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
     with TickerProviderStateMixin {
+  bool get _hydra => widget.bossType == 'inbox_hydra';
   bool get _dragon => widget.bossType == 'update_dragon';
   bool get _troll => widget.bossType == 'ticket_troll';
   bool get _swarm => widget.bossType == 'notification_swarm';
@@ -130,16 +131,27 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
           ])),
         LayoutBuilder(builder: (context, constraints) {
           final width = constraints.maxWidth;
+          final arenaHeight = width < 400 ? 300.0 : 330.0;
+          // Bottom-aligned cover keeps the mailroom walkway beneath the fighters.
+          final stageBottom = _hydra ? math.max(arenaHeight, width / 1.5) * .20 : 24.0;
           return Semantics(label: arriving ? 'Boss entrance. Tap to skip.' : 'Boss encounter',
             child: GestureDetector(onTap: arriving ? _skip : null,
-              child: Container(height: width < 400 ? 300 : 330, clipBehavior: Clip.hardEdge,
+              child: Container(height: arenaHeight, clipBehavior: Clip.hardEdge,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter,
                     colors: [Color(0xFF10222A), Color(0xFF242133), Color(0xFF392A28)])),
                 child: Stack(children: [
-                  Positioned.fill(child: CustomPaint(painter: _ArenaPainter(dust: land))),
-                  Positioned(left: width * .03, bottom: 24, width: width * .42, height: 190, child: avatar),
-                  Positioned(right: width * .01, bottom: 23, width: width * .59, height: 230,
+                  if (_hydra)
+                    Positioned.fill(child: RepaintBoundary(child: Image.asset(
+                      'assets/images/questwell_hydra_mailroom_v1.webp',
+                      key: const ValueKey('hydra-mailroom-arena'),
+                      fit: BoxFit.cover, alignment: Alignment.bottomCenter,
+                      excludeFromSemantics: true, filterQuality: FilterQuality.low,
+                      errorBuilder: (_, __, ___) => CustomPaint(painter: _ArenaPainter(dust: land)))))
+                  else
+                    Positioned.fill(child: CustomPaint(painter: _ArenaPainter(dust: land))),
+                  Positioned(left: width * .03, bottom: stageBottom, width: width * .42, height: 190, child: avatar),
+                  Positioned(right: width * .01, bottom: stageBottom - 1, width: width * .59, height: 230,
                     child: Transform.translate(offset: Offset(recoil + (1 - slide) * (_dragon ? 0 : _kraken ? 65 : width + 40),
                       lift + (_dragon ? -(1 - slide) * 390 : _swarm ? -math.sin(slide * math.pi * 2) * 35 : _printer ? -(1 - slide) * 80 : _kraken ? (1 - slide) * 290 : 0)),
                       child: AnimatedOpacity(duration: Duration(milliseconds: _reduced ? 0 : 650),
