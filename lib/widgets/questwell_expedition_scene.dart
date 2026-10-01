@@ -133,43 +133,66 @@ class _TrailAmbience extends CustomPainter {
     canvas.clipPath(pools);
     final ripple = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1536 / size.width * .75
+      ..strokeWidth = 1536 / size.width * 1.25
       ..strokeCap = StrokeCap.round;
-    // Local surface shimmer, rather than lines sliding down over the landscape.
-    for (var i = 0; i < 32; i++) {
-      final lower = i >= 23;
-      final x = lower ? 1410.0 + (i * 29 % 110) : 944.0 + (i * 47 % 320);
-      final y = lower ? 959.0 + (i * 7 % 32) : 784.0 + (i * 11 % 74);
-      final sway = math.sin(t * 2 + i * .9) * 5;
-      final brightness = (1 + math.sin(t * 2 + i * 1.3)) / 2;
-      ripple.color = const Color(0xFFBBE5ED).withValues(alpha: .10 + brightness * .22);
-      final wave = Path()..moveTo(x + sway, y)
-        ..quadraticBezierTo(x + sway + 9, y + math.sin(t * 2 + i) * 1.5,
-          x + sway + 17 + i % 3 * 5, y);
+    // Deliberate tracks stay in the visible pools. Their travel and minimum
+    // screen-space width remain readable when the scene shrinks to a phone.
+    const tracks = [
+      Offset(942, 788), Offset(984, 792), Offset(1031, 796),
+      Offset(1070, 800), Offset(1112, 797), Offset(1044, 825),
+      Offset(1090, 829), Offset(1140, 840), Offset(1195, 850),
+      Offset(1032, 840), Offset(1070, 850), Offset(1234, 854),
+      Offset(1420, 966), Offset(1460, 965), Offset(1500, 971),
+      Offset(1448, 975), Offset(1484, 980), Offset(1510, 986),
+    ];
+    for (var i = 0; i < tracks.length; i++) {
+      final travel = ((still ? .25 : phase.value) * 4 + i * .173) % 1;
+      final strength = math.sin(travel * math.pi);
+      final x = tracks[i].dx + travel * 32;
+      final y = tracks[i].dy + travel * 3;
+      final wave = Path()..moveTo(x, y)
+        ..quadraticBezierTo(x + 14, y - 2.5, x + 28 + i % 3 * 5, y);
+      // A soft teal body and a brighter crest read as water, without flashes.
+      ripple.strokeWidth = 1536 / size.width * 3;
+      ripple.color = const Color(0xFF69BFCF).withValues(alpha: strength * .24);
+      canvas.drawPath(wave, ripple);
+      ripple.strokeWidth = 1536 / size.width * 1.25;
+      ripple.color = const Color(0xFFD6F3F7).withValues(alpha: strength * .76);
       canvas.drawPath(wave, ripple);
     }
     // The lantern reflection stays directly below the bridge lantern.
     for (var i = 0; i < 10; i++) {
       final pulse = (1 + math.sin(t * 2 + i * .8)) / 2;
       final y = 791.0 + i * 7;
-      final halfWidth = 5.0 + i * .7 + pulse * 4;
-      ripple.color = const Color(0xFFFFD38A).withValues(alpha: .14 + pulse * .25);
+      final halfWidth = 6.0 + i * .7 + pulse * 9;
+      ripple.color = const Color(0xFFFFD38A).withValues(alpha: .22 + pulse * .40);
       canvas.drawLine(Offset(1084 - halfWidth, y), Offset(1084 + halfWidth, y), ripple);
     }
     canvas.restore();
-    // Short falling highlights follow the individual cascades between rocks.
+    // Longer, brighter falling crests and foam make the tiny cascades legible.
     for (var f = 0; f < _fallCourses.length; f++) {
       final metric = _fallCourses[f];
       for (var strand = 0; strand < 3; strand++) {
         canvas.save();
-        canvas.translate(strand * 3.0, 0);
-        final travel = ((still ? .25 : phase.value) * 6 + strand / 3 + f * .23) % 1;
-        ripple.color = const Color(0xFFCCEAF2)
-          .withValues(alpha: .40 * math.sin(travel * math.pi));
+        canvas.translate(strand * 4.0, 0);
+        final travel = ((still ? .25 : phase.value) * 8 + strand / 3 + f * .23) % 1;
+        ripple.strokeWidth = 1536 / size.width * 1.5;
+        ripple.color = const Color(0xFFE1F6FF)
+          .withValues(alpha: .85 * math.sin(travel * math.pi));
         canvas.drawPath(metric.extractPath(metric.length * travel,
-          metric.length * math.min(1.0, travel + .24)), ripple);
+          metric.length * math.min(1.0, travel + .50)), ripple);
         canvas.restore();
       }
+    }
+    const foamCenters = [Offset(1330, 928), Offset(1360, 935), Offset(1466, 943)];
+    for (var i = 0; i < foamCenters.length; i++) {
+      final spread = ((still ? .25 : phase.value) * 4 + i / 3) % 1;
+      ripple.strokeWidth = 1536 / size.width;
+      ripple.color = const Color(0xFFD6F3F7)
+        .withValues(alpha: .6 * math.sin(spread * math.pi));
+      canvas.drawArc(Rect.fromCenter(center: foamCenters[i],
+        width: 12 + spread * 28, height: 3 + spread * 7),
+        0, math.pi, false, ripple);
     }
     canvas.restore();
   }
