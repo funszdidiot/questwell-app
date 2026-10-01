@@ -4,6 +4,14 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Pathfinder Boots detailed art — 2026-10-01
+
+Created detailed 64-bit-style chestnut leather boots with olive cuffs and antique brass buckles using built-in image generation. Matching 16-bit inventory/Market icon uses the existing 32px painter. Replaced the old generic boot shapes with individually registered left/right sprites for female, male and neutral. A conditional base mask removes original shoes; garment and cloak fronts overlap boot shafts. Prompt, asset paths and crop provenance: `docs/art/PATHFINDER_BOOTS.md`.
+
+Verified `758657c890e5923bffdfefa50d7563941df57373`: Flutter Check 36822919793 and Preview 36822919595 passed, including new boot load/unequip/cloak tests and asset integrity verification. Live browser checked all three Scout bodies, both cloaks, Scholar robe overlap, unequip restoration, matching icon and full Hearth scene. Preview `?review=boots`. Existing Scout-only/rare/160-coin catalog rules retained. Boots await founder visual approval; no inventory grant or account change.
+
+Grimoire status: founder requested inventory grant after cuff polish; grant verified as owned, unequipped, with 79 coins unchanged.
+
 ## Scholar cuff final polish — 2026-10-01
 
 Founder requested narrower openings and softer gold. Cuffs taper from the sleeve into a narrower wrist opening; thinner muted gold bands and low-contrast cloth folds reduce the separate polished-band look. Grimoire grip/tilt unchanged. Build `761e87ed152275c6182310437130cea59987907a`: Flutter Check 36821727168 and Preview 36821727167 passed. Browser inspected female, male, and neutral portrait/Hearth fits plus male close-up. Awaiting founder visual approval; no inventory or coin changes.
