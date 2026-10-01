@@ -13,7 +13,7 @@ class QuestwellCampfireBackground extends StatefulWidget {
 class _QuestwellCampfireBackgroundState extends State<QuestwellCampfireBackground>
     with SingleTickerProviderStateMixin {
   late final AnimationController _drift = AnimationController(
-    vsync: this, duration: const Duration(seconds: 24));
+    vsync: this, duration: const Duration(seconds: 16));
   bool _reduceMotion = false;
 
   void _syncMotion() {
@@ -56,41 +56,57 @@ class _QuestwellCampfireBackgroundState extends State<QuestwellCampfireBackgroun
       ))),
     )),
     widget.child,
+    // Keep a few sparks visible beside opaque cards without covering content.
+    if (widget.active) Positioned.fill(child: IgnorePointer(
+      child: ExcludeSemantics(child: RepaintBoundary(child: CustomPaint(
+        painter: _EmberPainter(_drift, still: _reduceMotion, edgesOnly: true),
+      ))),
+    )),
   ]);
 }
 
 class _EmberPainter extends CustomPainter {
-  _EmberPainter(this.drift, {required this.still}) : super(repaint: drift);
+  _EmberPainter(this.drift, {required this.still, this.edgesOnly = false}) : super(repaint: drift);
   final Animation<double> drift;
   final bool still;
+  final bool edgesOnly;
   @override
   void paint(Canvas canvas, Size size) {
     canvas.save();
     canvas.clipRect(Offset.zero & size);
-    final glow = Paint()..shader = const RadialGradient(
+    final warmth = still ? .5 : .5 + .5 * math.sin(drift.value * math.pi * 4);
+    if (!edgesOnly) {
+    final glow = Paint()..shader = RadialGradient(
       center: Alignment(0, 1.1), radius: 1.2,
-      colors: [Color(0x354E281C), Color(0x00763C24)],
+      colors: [
+        const Color(0xFFB85C29).withValues(alpha: .20 + warmth * .09),
+        const Color(0x00763C24),
+      ],
     ).createShader(Offset.zero & size);
     canvas.drawRect(Offset.zero & size, glow);
+    }
     final paint = Paint()..isAntiAlias = false;
-    // One cycle is 24 seconds, with fixed seeds and no sudden twinkling.
-    for (var i = 0; i < 30; i++) {
+    // Slow, continuous drift and a gentle eight-second warmth cycle.
+    for (var i = 0; i < (edgesOnly ? 16 : 44); i++) {
       final phase = ((still ? .35 : drift.value) + i * i * .137 + i * .217) % 1;
-      final baseX = ((i * .381966 + .07) % 1) * size.width;
-      final x = (baseX + math.sin(phase * math.pi * 2 + i) * 14).roundToDouble();
+      final baseX = edgesOnly
+          ? (i.isEven ? 5.0 : size.width - 10)
+          : ((i * .381966 + .07) % 1) * size.width;
+      final x = (baseX + math.sin(phase * math.pi * 2 + i) * (edgesOnly ? 3 : 22)).roundToDouble();
       final y = ((1 - phase) * (size.height + 30) - 15).roundToDouble();
       final edgeFade = math.min(1.0, math.min(phase, 1 - phase) * 7);
-      final side = i % 4 == 0 ? 4.0 : 2.0;
+      final side = i % 4 == 0 ? 5.0 : 3.0;
       paint.color = (i % 3 == 0 ? const Color(0xFFFFD27C) : const Color(0xFFEF9454))
-        .withValues(alpha: edgeFade * (i % 3 == 0 ? .65 : .42));
+        .withValues(alpha: edgeFade * (i % 3 == 0 ? .90 : .68));
       canvas.drawRect(Rect.fromLTWH(x, y, side, side), paint);
-      if (side == 4) {
-        paint.color = const Color(0xFFE7733F).withValues(alpha: edgeFade * .16);
-        canvas.drawRect(Rect.fromLTWH(x, y + side, 2, 4), paint);
+      if (side == 5) {
+        paint.color = const Color(0xFFE7733F).withValues(alpha: edgeFade * .32);
+        canvas.drawRect(Rect.fromLTWH(x, y + side, 2, 7), paint);
       }
     }
     canvas.restore();
   }
   @override
-  bool shouldRepaint(covariant _EmberPainter oldDelegate) => oldDelegate.still != still;
+  bool shouldRepaint(covariant _EmberPainter oldDelegate) => oldDelegate.still != still ||
+      oldDelegate.edgesOnly != edgesOnly;
 }
