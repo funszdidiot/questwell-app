@@ -23,7 +23,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'new-quest') {
+  if (Uri.base.queryParameters['review'] == 'mastery') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'Adventurer', masteryPreview: true)));
+  } else if (Uri.base.queryParameters['review'] == 'new-quest') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'New quest')));
   } else if (Uri.base.queryParameters['review'] == 'navigation') {
@@ -94,7 +97,7 @@ void main() {
     runApp(QuestwellPreviewNavigationHost(child: const HomeSectionsReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'adventurer') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const AdventurerReviewApp()));
+    runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'Adventurer')));
   } else if (Uri.base.queryParameters['review'] == 'scarf-matrix') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const ScarfFitReviewApp()));
@@ -129,3 +132,4 @@ void main() {
     application.main();
   }
 }
+

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'adventurer_review.dart';
+import 'review_loadout.dart';
 import 'boss_review.dart';
 import '../widgets/questwell_app_navigation.dart';
 import 'chronicle_review.dart';
@@ -13,22 +14,24 @@ import '../widgets/questwell_market_view.dart';
 
 /// Dev-only fixtures. All purchases and equipment changes stay in memory.
 class MobileReviewApp extends StatefulWidget {
-  const MobileReviewApp({super.key, this.initialScreen = 'Market'});
+  const MobileReviewApp({super.key, this.initialScreen = 'Market', this.masteryPreview = false});
   final String initialScreen;
+  final bool masteryPreview;
   @override
   State<MobileReviewApp> createState() => _MobileReviewAppState();
 }
 
 class _MobileReviewAppState extends State<MobileReviewApp> {
   late String screen = widget.initialScreen;
+  final _loadout = QuestwellReviewLoadout();
   double width = 390;
   double scale = 1;
   Widget get scene => switch (screen) {
-    'Hearth' => const HomeSectionsReviewApp(),
+    'Hearth' => HomeSectionsReviewApp(loadout: _loadout),
     'Boss Battles' => const BossReviewApp(),
     'Quests' => const QuestBoardReviewApp(),
     'New quest' => const QuestBoardReviewApp(openNewQuest: true),
-    'Adventurer' => const AdventurerReviewApp(),
+    'Adventurer' => AdventurerReviewApp(loadout: _loadout, masteryPreview: widget.masteryPreview),
     'Chronicle' => const ChronicleReviewApp(),
     'Expedition' => const ExpeditionReviewApp(),
     _ => const _SampleMarket(),
@@ -131,3 +134,4 @@ class _QuestwellPreviewNavigationHostState extends State<QuestwellPreviewNavigat
       key: ValueKey(destination), initialScreen: destination!.label),
   );
 }
+

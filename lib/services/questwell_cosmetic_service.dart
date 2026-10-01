@@ -1,13 +1,40 @@
 import '/backend/supabase/supabase.dart';
 import '/backend/supabase/questwell_network.dart';
 import 'questwell_equipment_policy.dart';
+import 'questwell_cosmetic_sync.dart';
 import 'questwell_cosmetic_models.dart';
 export 'questwell_cosmetic_models.dart';
 
 class QuestwellCosmeticService {
   const QuestwellCosmeticService._();
 
-  static Future<QuestwellCosmeticsSnapshot> load() async {
+  static final changes = QuestwellCosmeticSync();
+
+  static Future<QuestwellCosmeticsSnapshot> load() {
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    return changes.read(() async {
+      if (uid == null || SupaFlow.client.auth.currentUser?.id != uid) {
+        throw StateError('Authentication changed.');
+      }
+      final snapshot = await _load();
+      if (SupaFlow.client.auth.currentUser?.id != uid) {
+        throw StateError('Authentication changed.');
+      }
+      return snapshot;
+    });
+  }
+
+  static Future<T> _write<T>(Future<T> Function() operation) {
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    return changes.write(() {
+      if (uid == null || SupaFlow.client.auth.currentUser?.id != uid) {
+        throw StateError('Authentication changed.');
+      }
+      return QuestwellNetwork.write(operation);
+    });
+  }
+
+  static Future<QuestwellCosmeticsSnapshot> _load() async {
     final uid = SupaFlow.client.auth.currentUser?.id;
     if (uid == null) {
       throw StateError('Authentication required.');
@@ -64,7 +91,7 @@ class QuestwellCosmeticService {
   }
 
   static Future<int> purchase(String cosmeticId) async {
-    final response = await QuestwellNetwork.write(() => SupaFlow.client.rpc(
+    final response = await _write(() => SupaFlow.client.rpc(
       'purchase_cosmetic',
       params: {'p_cosmetic_id': cosmeticId},
     ));
@@ -82,20 +109,20 @@ class QuestwellCosmeticService {
       throw StateError('This item is not ready to equip.');
     }
     final cosmeticId = cosmetic.id;
-    await QuestwellNetwork.write(() => SupaFlow.client.rpc(
+    await _write(() => SupaFlow.client.rpc(
       'equip_cosmetic_loadout',
       params: {'p_cosmetic_id': cosmeticId, 'p_expected_conflict': expectedConflict},
     ));
   }
 
   static Future<void> place(String id, String slot, String? expectedOccupant) async {
-    await QuestwellNetwork.write(() => SupaFlow.client.rpc('place_hearth_cosmetic', params: {
+    await _write(() => SupaFlow.client.rpc('place_hearth_cosmetic', params: {
       'p_cosmetic_id': id, 'p_slot': slot, 'p_expected_occupant': expectedOccupant,
     }));
   }
 
   static Future<void> unequip(String cosmeticId) async {
-    await QuestwellNetwork.write(() => SupaFlow.client.rpc(
+    await _write(() => SupaFlow.client.rpc(
       'unequip_cosmetic',
       params: {'p_cosmetic_id': cosmeticId},
     ));
@@ -111,7 +138,7 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    await QuestwellNetwork.write(() => SupaFlow.client
+    await _write(() => SupaFlow.client
         .from('users')
         .update({'current_energy_mode': mode})
         .eq('id', uid));
@@ -123,7 +150,7 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    await QuestwellNetwork.write(() => SupaFlow.client
+    await _write(() => SupaFlow.client
         .from('users')
         .update({'onboarding_completed': true})
         .eq('id', uid));
@@ -135,7 +162,7 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    final response = await QuestwellNetwork.write(() => SupaFlow.client.rpc('claim_class_mastery_reward'));
+    final response = await _write(() => SupaFlow.client.rpc('claim_class_mastery_reward'));
     return response.toString();
   }
 
@@ -150,7 +177,7 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    await QuestwellNetwork.write(() => SupaFlow.client.rpc(
+    await _write(() => SupaFlow.client.rpc(
       'set_avatar_body_type',
       params: {'p_body_type': bodyType},
     ));
@@ -178,9 +205,10 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    await QuestwellNetwork.write(() => SupaFlow.client.rpc(
+    await _write(() => SupaFlow.client.rpc(
       'set_adventurer_archetype',
       params: {'p_archetype': archetype},
     ));
   }
 }
+

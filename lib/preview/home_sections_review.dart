@@ -1,5 +1,7 @@
 import '../widgets/questwell_app_navigation.dart';
 import 'package:flutter/material.dart';
+import 'review_loadout.dart';
+import '../widgets/questwell_mastery_relic.dart';
 import '../widgets/questwell_home_sections.dart';
 import '../widgets/questwell_pixel_art.dart';
 import '../widgets/questwell_home_overview.dart';
@@ -7,13 +9,22 @@ import '../widgets/questwell_typography.dart';
 import '../widgets/questwell_campfire_background.dart';
 
 class HomeSectionsReviewApp extends StatefulWidget {
-  const HomeSectionsReviewApp({super.key});
+  const HomeSectionsReviewApp({super.key, this.loadout});
+  final QuestwellReviewLoadout? loadout;
   @override
   State<HomeSectionsReviewApp> createState() => _HomeSectionsReviewAppState();
 }
 
 class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
   bool _campfire = false;
+  String get _classLabel {
+    final value = widget.loadout?.archetype ?? 'scout';
+    return value[0].toUpperCase() + value.substring(1);
+  }
+  String _roomSlug(String id) => QuestwellMasteryRelic.supports(id) ? id : switch (id) {
+    'bookshelf' => 'walnut-bookshelf', 'fern' => 'hearth-fern',
+    'chair' => 'burgundy-reading-chair', 'table' => 'walnut-reading-table', _ => id,
+  };
   @override
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -33,10 +44,15 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
           const SizedBox(height: 2),
           const QuestwellPixelDivider(accent: Color(0xFFD6A84B)),
           const SizedBox(height: 6),
-          const QuestwellHearthPixelScene(height: 342, archetype: 'scout'),
+          QuestwellHearthPixelScene(height: 342,
+            archetype: widget.loadout?.archetype ?? 'scout', avatarBodyType: widget.loadout?.body ?? 'neutral',
+            showRelic: widget.loadout?.mastered.contains(widget.loadout?.archetype) ?? false,
+            equippedSlugs: {for (final entry in (widget.loadout?.roomSlots ?? <String, String>{}).entries)
+              'room:${entry.value}': _roomSlug(entry.key)}),
           const SizedBox(height: 16),
-          QuestwellHomeCharacter(archetype: 'scout', className: 'Scout',
-            level: 3, xp: 95, coins: 49, mastered: false, equippedNames: const [],
+          QuestwellHomeCharacter(archetype: widget.loadout?.archetype ?? 'scout',
+            className: _classLabel,
+            level: 3, xp: 95, coins: 49, mastered: widget.loadout?.mastered.contains(widget.loadout?.archetype) ?? false, equippedNames: const [],
             collection: const [
               HomeCollectionItem(name: 'Scout cloak', slug: 'scout_cloak', category: 'outfit',
                 archetype: 'scout', owned: false, equipped: false),
@@ -67,3 +83,4 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
     ),
   );
 }
+

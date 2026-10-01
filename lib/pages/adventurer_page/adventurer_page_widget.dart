@@ -186,7 +186,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
   }
 
   Future<void> _chooseBodyType(String bodyType) async {
-    if (_savingBodyType) return;
+    if (_savingBodyType || _savingArchetype) return;
 
     final previous = _avatarBodyOverride;
     setState(() {
@@ -216,7 +216,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
   }
 
   Future<void> _chooseArchetype(String archetype) async {
-    if (_savingArchetype) return;
+    if (_savingArchetype || _savingBodyType) return;
     setState(() => _savingArchetype = true);
 
     try {
@@ -224,6 +224,10 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
       if (!mounted) return;
       setState(_refresh);
       // The selected class border and refreshed avatar confirm success inline.
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Class change failed. Please try again.')));
     } finally {
       if (mounted) setState(() => _savingArchetype = false);
     }
@@ -463,3 +467,4 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     );
   }
 }
+

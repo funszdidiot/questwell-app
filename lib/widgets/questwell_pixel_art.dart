@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'questwell_mastery_relic.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'scholar_underlayer_clip.dart';
@@ -1035,7 +1036,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                     child: const QuestwellCatalogRoomArt(slug:'warding-lantern')),
               for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
-                  if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
+                  if (QuestwellMasteryRelic.supports(slug) || slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
                     QuestwellHearthDecor.positioned(
                       slug: slug, slot: slot, equipment: equippedSlugs,
                       scene: Size(sceneWidth, sceneHeight),
@@ -1677,15 +1678,7 @@ class QuestwellRelicPixelArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.square(
-      dimension: size,
-      child: CustomPaint(
-        painter: _RelicPainter(
-          archetype: archetype,
-          palette: QuestwellPixelPalette.forClass(archetype),
-        ),
-      ),
-    );
+    return QuestwellMasteryRelic(archetype: archetype, size: size);
   }
 }
 
@@ -1707,6 +1700,9 @@ class QuestwellItemPixelArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (QuestwellMasteryRelic.supports(slug)) {
+      return QuestwellMasteryRelic(archetype: QuestwellMasteryRelic.classFor(slug), size: size);
+    }
     // Earned trophies keep their approved reward artwork; shop icons share
     // the 16-bit catalog treatment.
     if (slug == QuestwellStarlitOrrery.slug) {
@@ -3620,77 +3616,8 @@ class _EquippedAvatarPainter extends CustomPainter {
       oldDelegate.portrait != portrait;
 }
 
-class _RelicPainter extends CustomPainter {
-  _RelicPainter({required this.archetype, required this.palette});
-  final String archetype;
-  final List<Color> palette;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final p = Paint()..isAntiAlias = false;
-    final c = Offset(size.width / 2, size.height / 2);
-
-    p.color = const Color(0x33111111);
-    canvas.drawCircle(c, size.shortestSide * .46, p);
-    p.color = palette.last;
-    canvas.drawCircle(c, size.shortestSide * .34, p);
-    p.color = palette[1];
-    canvas.drawCircle(c, size.shortestSide * .25, p);
-    p.color = const Color(0xFF17151A);
-
-    switch (archetype) {
-      case 'scholar':
-        canvas.drawRect(
-          Rect.fromCenter(center: c, width: size.width * .34, height: size.height * .42),
-          p,
-        );
-        p.color = palette.last;
-        canvas.drawRect(
-          Rect.fromCenter(center: c, width: size.width * .06, height: size.height * .26),
-          p,
-        );
-        break;
-      case 'scout':
-        p.style = PaintingStyle.stroke;
-        p.strokeWidth = 4;
-        canvas.drawCircle(c, size.shortestSide * .18, p);
-        canvas.drawLine(Offset(c.dx, c.dy - 17), Offset(c.dx + 10, c.dy + 11), p);
-        p.style = PaintingStyle.fill;
-        break;
-      case 'alchemist':
-        canvas.drawRect(Rect.fromCenter(center: Offset(c.dx, c.dy - 11), width: 8, height: 14), p);
-        canvas.drawCircle(Offset(c.dx, c.dy + 7), size.shortestSide * .16, p);
-        break;
-      case 'guardian':
-        final path = Path()
-          ..moveTo(c.dx, c.dy - 20)
-          ..lineTo(c.dx + 17, c.dy - 10)
-          ..lineTo(c.dx + 12, c.dy + 18)
-          ..lineTo(c.dx, c.dy + 26)
-          ..lineTo(c.dx - 12, c.dy + 18)
-          ..lineTo(c.dx - 17, c.dy - 10)
-          ..close();
-        canvas.drawPath(path, p);
-        break;
-      default:
-        p.style = PaintingStyle.stroke;
-        p.strokeWidth = 4;
-        canvas.drawCircle(c, size.shortestSide * .18, p);
-        for (var i = 0; i < 8; i++) {
-          final a = i * math.pi / 4;
-          canvas.drawLine(
-            Offset(c.dx + math.cos(a) * 10, c.dy + math.sin(a) * 10),
-            Offset(c.dx + math.cos(a) * 22, c.dy + math.sin(a) * 22),
-            p,
-          );
-        }
-        p.style = PaintingStyle.fill;
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _RelicPainter oldDelegate) =>
-      oldDelegate.archetype != archetype;
+class _RelicPainter extends QuestwellMasteryRelicPainter {
+  _RelicPainter({required String archetype, required List<Color> palette}) : super(archetype);
 }
 
 
@@ -4128,3 +4055,4 @@ class _BossPainter extends CustomPainter {
   bool shouldRepaint(covariant _BossPainter oldDelegate) =>
       oldDelegate.bossType != bossType;
 }
+

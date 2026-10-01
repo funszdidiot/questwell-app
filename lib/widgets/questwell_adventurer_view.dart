@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'questwell_class_emblem.dart';
+import 'questwell_mastery_relic.dart';
 import 'questwell_room_picker.dart';
 import 'questwell_wall_art.dart';
 import 'package:intl/intl.dart';
@@ -62,13 +63,15 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
 
   @override
   Widget build(BuildContext context) {
+    final masteryItem = widget.items.where((item) => item.owned &&
+      item.slug == QuestwellMasteryRelic.slugs[widget.archetype]).firstOrNull;
     final owned = widget.items.where((item) => item.owned).length;
     final equipped = widget.items.where((item) => item.equipped).toList();
     final categories = widget.items.map((item) => item.category).toSet().toList()..sort();
     final category = categories.contains(_category) ? _category : 'All categories';
     final visible = widget.items.where((item) =>
       (_collection == 'All collections' || (_collection == 'Trophies'
-        ? item.milestoneLevel != null : item.shop && item.archetype == widget.archetype)) &&
+        ? item.milestoneLevel != null || QuestwellMasteryRelic.supports(item.slug) : item.shop && item.archetype == widget.archetype)) &&
       (_ownership == 'All items' || (_ownership == 'Equipped' ? item.equipped : item.owned)) &&
       (category == 'All categories' || item.category == category)).toList();
     return ListView(physics: const AlwaysScrollableScrollPhysics(),
@@ -199,11 +202,24 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         _panel(Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           _heading('CLASS MASTERY'),
           const SizedBox(height: 10),
-          Text(widget.relicName, style: _text(16, bold: true)),
+          Center(child: QuestwellMasteryRelic(archetype: widget.archetype, size: 112)),
+          const SizedBox(height: 8),
+          Text(QuestwellMasteryRelic.names[widget.archetype] ?? widget.relicName,
+            style: _text(16, bold: true)),
           const SizedBox(height: 6),
-          Text(widget.mastered ? 'Mastery relic claimed.'
+          Text(widget.mastered ? 'A keepsake of your class mastery. Yours to display.'
             : '${widget.collectionOwned} of ${widget.collectionTotal} class items collected.',
             style: _text(14, color: _muted)),
+          if (masteryItem != null && masteryItem.category == 'room' && widget.onPlace != null) ...[
+            const SizedBox(height: 12),
+            OutlinedButton(onPressed: widget.busyItem != null || widget.savingAppearance ? null : () => _place(masteryItem),
+              style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48),
+                foregroundColor: _gold, textStyle: QuestwellTypography.control()),
+              child: Text(masteryItem.equipped ? 'Move relic in Hearth' : 'Place relic in Hearth')),
+            if (masteryItem.equipped) TextButton(
+              onPressed: widget.busyItem != null || widget.savingAppearance ? null : () => widget.onUnequip(masteryItem.id),
+              child: const Text('Return relic to inventory')),
+          ],
           if (widget.canClaim) Padding(padding: const EdgeInsets.only(top: 10),
             child: FilledButton(style: FilledButton.styleFrom(textStyle: QuestwellTypography.body(fontSize: 14, fontWeight: FontWeight.w700)), onPressed: widget.claiming ? null : widget.onClaim,
               child: Text(widget.claiming ? 'Claiming…' : 'Claim mastery relic'))),
@@ -250,7 +266,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         child: Text('Requires ${_label(item.archetype ?? '')} class.', style: _text(13, color: _gold))),
       const SizedBox(height: 12),
       if (movable && item.owned && ready && widget.onPlace != null)
-        OutlinedButton(onPressed: busy ? null : () => _place(item),
+        OutlinedButton(onPressed: busy || item.classLocked ? null : () => _place(item),
           style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold, textStyle: QuestwellTypography.body(fontSize: 14, fontWeight: FontWeight.w700)),
           child: Text(item.equipped ? 'Move in Hearth' : wallArt ? 'Hang in Hearth' : 'Place in Hearth')),
       if (!(movable && item.owned && !item.equipped && ready && widget.onPlace != null))
@@ -266,3 +282,4 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
     ]));
   }
 }
+

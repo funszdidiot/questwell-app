@@ -46,13 +46,23 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     super.initState();
     _model = createModel(context, () => HomePageModel());
     _loadHomeData();
+    QuestwellCosmeticService.changes.addListener(_cosmeticsChanged);
   }
 
   void _loadHomeData() {
-    _homeSnapshotFuture = QuestwellCosmeticService.load();
+    _loadCosmetics();
     _momentumFuture = QuestwellChronicleService.load();
+  }
+
+  void _cosmeticsChanged() {
+    if (mounted) setState(_loadCosmetics);
+  }
+
+  void _loadCosmetics() {
+    final request = QuestwellCosmeticService.load();
+    _homeSnapshotFuture = request;
     _homeSnapshotFuture.then((data) {
-      if (!mounted) return;
+      if (!mounted || !identical(request, _homeSnapshotFuture)) return;
       if (_campfireMode != data.profile.campfireMode ||
           _onboardingCompleted != data.profile.onboardingCompleted) {
         setState(() {
@@ -158,6 +168,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   void dispose() {
+    QuestwellCosmeticService.changes.removeListener(_cosmeticsChanged);
     _model.dispose();
     super.dispose();
   }
@@ -895,3 +906,4 @@ class _RewardChip extends StatelessWidget {
     );
   }
 }
+

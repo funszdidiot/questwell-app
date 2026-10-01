@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'questwell_mastery_relic.dart';
 import 'package:flutter/material.dart';
 import 'questwell_bookshelf.dart';
 import 'questwell_fern.dart';
@@ -63,6 +64,7 @@ class QuestwellHearthDecor {
     required String slug, required String slot, required Size scene,
     Map<String, String> equipment = const {},
   }) {
+    final relic = QuestwellMasteryRelic.supports(slug);
     final shelf = slug == QuestwellBookshelf.slug;
     final fern = slug == QuestwellFern.slug;
     final front = slot == 'front';
@@ -71,14 +73,14 @@ class QuestwellHearthDecor {
     final hasTable = equipment['room:side'] == QuestwellReadingTable.slug;
     final chairOnLeft = equipment['room:front'] == QuestwellReadingChair.slug ||
       equipment['room:left'] == QuestwellReadingChair.slug;
-    final ratio = shelf ? 1225 / 1284 : fern ? 1244 / 1264 : table ? 1213 / 1296 : 1312 / 1199;
+    final ratio = relic ? 2 / 3 : shelf ? 1225 / 1284 : fern ? 1244 / 1264 : table ? 1213 / 1296 : 1312 / 1199;
     // Use the same authored avatar scale as the scene. A chair is adult-sized;
     // its seat is near knee height. Overlap is intentional, never a reason to
     // shrink furniture. Width limits only protect the outer frame.
     final avatarHeight = math.min(scene.height * .76, scene.width * .62 * 4 / 3);
     final height = math.min(
-      avatarHeight * (table ? .49 : shelf ? .65 : fern ? (front ? .43 : .40) : .62),
-      scene.width * (table ? .28 : shelf ? .44 : fern ? .30 : .50) / ratio,
+      avatarHeight * (relic ? .49 : table ? .49 : shelf ? .65 : fern ? (front ? .43 : .40) : .62),
+      scene.width * (relic ? .23 : table ? .28 : shelf ? .44 : fern ? .30 : .50) / ratio,
     ) * (shelf ? .90 : 1.0);
     final width = height * ratio;
     final center = table ? scene.width * (chairOnLeft ? .15 : .85) : shelf
@@ -137,15 +139,16 @@ class QuestwellHearthDecor {
 
   static Positioned positioned({required String slug, required String slot, required Size scene,
     Map<String, String> equipment = const {}}) {
+    final relic = QuestwellMasteryRelic.supports(slug);
     final shelf = slug == QuestwellBookshelf.slug;
     final fern = slug == QuestwellFern.slug;
     final table = slug == QuestwellReadingTable.slug;
     final chair = slug == QuestwellReadingChair.slug;
     final rect = bounds(slug: slug, slot: slot, scene: scene, equipment: equipment);
-    final art = shelf ? const QuestwellBookshelf()
+    final art = relic ? QuestwellMasteryDisplay(archetype: QuestwellMasteryRelic.classFor(slug)) : shelf ? const QuestwellBookshelf()
       : fern ? const QuestwellFern() : table ? const QuestwellReadingTable() : const QuestwellReadingChair();
     return Positioned(
-      key: ValueKey(shelf ? 'hearth-bookshelf-bounds'
+      key: ValueKey(relic ? 'hearth-$slug-bounds' : shelf ? 'hearth-bookshelf-bounds'
         : fern ? 'hearth-fern-bounds' : table ? 'hearth-table-bounds' : 'hearth-chair-bounds'),
       left: rect.left, top: rect.top,
       width: rect.width, height: rect.height,
@@ -162,3 +165,4 @@ class QuestwellHearthDecor {
     );
   }
 }
+

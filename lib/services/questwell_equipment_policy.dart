@@ -18,5 +18,6 @@ abstract final class QuestwellEquipmentPolicy {
       (isClosedCloak(nextSlug) && currentCategory == 'hands') ||
       (nextCategory == 'hands' && isClosedCloak(currentSlug));
   static bool isReady(String slug, String category) => shopCategories[slug] == category ||
-    (['first-journey-trophy','starlit-orrery'].contains(slug) && category == 'room');
+    (['first-journey-trophy','starlit-orrery','scholar-seal','scout-compass','alchemist-phial','guardian-crest','wanderer-star-map'].contains(slug) && category == 'room');
 }
+
