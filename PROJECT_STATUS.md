@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Wanderer cuff correction — 2026-10-01
+
+Founder approved the Pathfinder Boots appearance and flagged the same wrist-wrap issue on the Wanderer coat. Added registered Wanderer cuffs for female/male/neutral: curved recessed openings, narrower ends, subdued double gold trim, and brown cloth shading blended into sleeves. Old cuff ends are masked on all garment restoration passes; satchels retain correct arm overlap. New cuffs are hidden under closed cloaks and replacement business suits. Frozen source art and manifest remain unchanged.
+
+Final `be1756c07d9318f7e49b981c05c153b21554f163`: Flutter Check 36823891013 and Preview 36823890821 passed. The original body-switching test was updated to select its body clipper explicitly after cuff masks added extra ClipPaths; its anatomy assertions remain intact. Live review checked all three bodies, male close-up, satchel overlap and Moss Cloak concealment. `?review=wayfarer` shows the production rendering change. No account changes. Boots approved visually, inventory grant not yet requested; Wanderer cuffs await founder review.
+
 ## Pathfinder Boots detailed art — 2026-10-01
 
 Created detailed 64-bit-style chestnut leather boots with olive cuffs and antique brass buckles using built-in image generation. Matching 16-bit inventory/Market icon uses the existing 32px painter. Replaced the old generic boot shapes with individually registered left/right sprites for female, male and neutral. A conditional base mask removes original shoes; garment and cloak fronts overlap boot shafts. Prompt, asset paths and crop provenance: `docs/art/PATHFINDER_BOOTS.md`.
