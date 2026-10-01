@@ -10,7 +10,7 @@ class ExpeditionReviewApp extends StatelessWidget {
     debugShowCheckedModeBanner: false,
     title: 'Questwell · Expedition preview',
     theme: ThemeData(brightness: Brightness.dark, useMaterial3: false),
-    home: Column(children: [
+    home: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       if (quickFinish) const Material(
         color: Color(0xFF244C3E),
         child: SafeArea(bottom: false, child: Padding(
