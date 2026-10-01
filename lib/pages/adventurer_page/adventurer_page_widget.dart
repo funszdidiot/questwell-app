@@ -1,3 +1,4 @@
+import '/widgets/questwell_app_navigation.dart';
 import '/widgets/questwell_equipment_swap.dart';
 import '/auth/supabase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -326,7 +327,8 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
 
     return Scaffold(
       backgroundColor: const Color(0xFF111827),
-      bottomNavigationBar: SafeArea(top: false, child: Padding(
+      bottomNavigationBar: Column(mainAxisSize: MainAxisSize.min, children: [
+        SafeArea(top: false, bottom: false, child: Padding(
         padding: const EdgeInsets.fromLTRB(18, 8, 18, 12),
         child: OutlinedButton(
           onPressed: _signingOut ? null : _signOut,
@@ -339,6 +341,8 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
             style: GoogleFonts.roboto(fontSize: 15, fontWeight: FontWeight.w700)),
         ),
       )),
+        const QuestwellAppNavigation(current: QuestwellDestination.adventurer),
+      ]),
       body: SafeArea(
         top: true,
         child: FutureBuilder<QuestwellCosmeticsSnapshot>(
@@ -439,7 +443,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
               onClass: (value) => _requestArchetypeChange(value, data),
               onEquip: (id) => _equip(data.cosmetics.firstWhere((item) => item.id == id)),
               onUnequip: (id) => _unequip(data.cosmetics.firstWhere((item) => item.id == id)),
-              onBack: () => context.safePop(),
+              onBack: () => QuestwellNavigationScope.open(context, QuestwellDestination.hearth),
               onMarket: () async {
                 await context.pushNamed(MarketPageWidget.routeName);
                 if (mounted) setState(_refresh);

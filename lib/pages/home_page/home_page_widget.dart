@@ -1,3 +1,4 @@
+import '/widgets/questwell_app_navigation.dart';
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -376,6 +377,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
+        bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.hearth),
         key: scaffoldKey,
         backgroundColor: const Color(0xFF111827),
         body: QuestwellCampfireBackground(

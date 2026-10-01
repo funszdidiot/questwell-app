@@ -1,3 +1,4 @@
+import '/widgets/questwell_app_navigation.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_boss_service.dart';
 import '/services/questwell_progression.dart';
@@ -268,6 +269,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.bosses),
     backgroundColor: const Color(0xFF111827),
     body: SafeArea(child: FutureBuilder<List<QuestwellBossBattle>>(
       future: _future,

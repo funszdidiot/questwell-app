@@ -1,3 +1,4 @@
+import '/widgets/questwell_app_navigation.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_expedition_scene.dart';
@@ -132,6 +133,22 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
     });
   }
 
+  Future<void> _navigate(QuestwellDestination destination) async {
+    if (_started && !_finished) {
+      final leave = await showDialog<bool>(context: context, builder: (dialogContext) => AlertDialog(
+        scrollable: true,
+        title: const Text('Leave this expedition?'),
+        content: const Text('Leaving ends this timer. You can stay and finish your current session.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('Stay here')),
+          TextButton(onPressed: () => Navigator.pop(dialogContext, true), child: const Text('End and leave')),
+        ],
+      ));
+      if (leave != true || !mounted) return;
+    }
+    if (mounted) QuestwellNavigationScope.open(context, destination);
+  }
+
   String _timeLabel(int secondsRemaining) {
     final minutes = secondsRemaining ~/ 60;
     final seconds = secondsRemaining % 60;
@@ -142,6 +159,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
     return Scaffold(
+        bottomNavigationBar: QuestwellAppNavigation(current: QuestwellDestination.expedition, onSelect: _navigate),
       backgroundColor: theme.primaryBackground,
       appBar: AppBar(
         backgroundColor: theme.primaryBackground,

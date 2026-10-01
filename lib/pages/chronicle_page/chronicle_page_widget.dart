@@ -1,3 +1,4 @@
+import '/widgets/questwell_app_navigation.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_chronicle_entry.dart';
 import '/widgets/questwell_typography.dart';
@@ -31,12 +32,13 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.chronicle),
     backgroundColor: const Color(0xFF111A20),
     body: SafeArea(child: Center(child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 760),
       child: Column(children: [
         Padding(padding: const EdgeInsets.fromLTRB(12, 12, 18, 12), child: Row(children: [
-          IconButton(tooltip: 'Back to the Hearth', onPressed: () => Navigator.of(context).maybePop(),
+          IconButton(tooltip: 'Back to the Hearth', onPressed: () => QuestwellNavigationScope.open(context, QuestwellDestination.hearth),
             icon: const Icon(Icons.arrow_back, color: _gold)),
           const SizedBox(width: 6),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

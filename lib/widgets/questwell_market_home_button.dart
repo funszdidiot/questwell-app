@@ -7,11 +7,11 @@ class QuestwellMarketHomeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Tooltip(
-    message: 'Go home',
+    message: 'Go to Hearth',
     child: TextButton.icon(
       onPressed: onHome,
-      icon: const Icon(Icons.arrow_back_rounded, size: 22),
-      label: const Text('Home'),
+      icon: const Icon(Icons.home_outlined, size: 22),
+      label: const Text('Hearth'),
       style: TextButton.styleFrom(
         foregroundColor: const Color(0xFFE0BF79),
         textStyle: QuestwellTypography.control(),

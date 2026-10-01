@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'adventurer_review.dart';
+import 'boss_review.dart';
+import '../widgets/questwell_app_navigation.dart';
 import 'chronicle_review.dart';
 import 'expedition_review.dart';
 import 'home_sections_review.dart';
@@ -11,17 +13,19 @@ import '../widgets/questwell_market_view.dart';
 
 /// Dev-only fixtures. All purchases and equipment changes stay in memory.
 class MobileReviewApp extends StatefulWidget {
-  const MobileReviewApp({super.key});
+  const MobileReviewApp({super.key, this.initialScreen = 'Market'});
+  final String initialScreen;
   @override
   State<MobileReviewApp> createState() => _MobileReviewAppState();
 }
 
 class _MobileReviewAppState extends State<MobileReviewApp> {
-  String screen = 'Market';
+  late String screen = widget.initialScreen;
   double width = 390;
   double scale = 1;
   Widget get scene => switch (screen) {
     'Hearth' => const HomeSectionsReviewApp(),
+    'Boss Battles' => const BossReviewApp(),
     'Quests' => const QuestBoardReviewApp(),
     'Adventurer' => const AdventurerReviewApp(),
     'Chronicle' => const ChronicleReviewApp(),
@@ -34,7 +38,15 @@ class _MobileReviewAppState extends State<MobileReviewApp> {
     debugShowCheckedModeBanner: false,
     title: 'Questwell · Mobile review',
     theme: ThemeData.dark(useMaterial3: true),
-    home: KeyedSubtree(key: ValueKey(screen), child: scene),
+    home: QuestwellNavigationScope(
+      onSelect: (destination) => setState(() => screen = destination.label),
+      child: Column(children: [
+        Expanded(child: KeyedSubtree(key: ValueKey(screen), child: scene)),
+        if (!['Chronicle', 'Expedition'].contains(screen))
+          QuestwellAppNavigation(current: QuestwellDestination.values.firstWhere(
+            (destination) => destination.label == screen)),
+      ]),
+    ),
     builder: (context, navigator) => Scaffold(backgroundColor: const Color(0xFF080F16),
       body: SafeArea(child: Column(children: [
         Padding(padding: const EdgeInsets.all(8), child: Wrap(
@@ -43,7 +55,7 @@ class _MobileReviewAppState extends State<MobileReviewApp> {
             const Text('Questwell · Mobile preview'),
             TextButton.icon(
               onPressed: () => setState(() {
-                const screens = ['Market', 'Hearth', 'Quests', 'Adventurer', 'Chronicle', 'Expedition'];
+                const screens = ['Market', 'Hearth', 'Quests', 'Boss Battles', 'Adventurer', 'Chronicle', 'Expedition'];
                 screen = screens[(screens.indexOf(screen) + 1) % screens.length];
               }),
               icon: const Icon(Icons.navigate_next, size: 18), label: Text(screen)),
@@ -100,5 +112,21 @@ class _SampleMarketState extends State<_SampleMarket> {
         onEquip: (item) async { setState(() => equipped[item.category] = item.slug); },
         onUnequip: (item) async { setState(() => equipped.remove(item.category)); },
       )),
+  );
+}
+
+class QuestwellPreviewNavigationHost extends StatefulWidget {
+  const QuestwellPreviewNavigationHost({super.key, required this.child});
+  final Widget child;
+  @override
+  State<QuestwellPreviewNavigationHost> createState() => _QuestwellPreviewNavigationHostState();
+}
+class _QuestwellPreviewNavigationHostState extends State<QuestwellPreviewNavigationHost> {
+  QuestwellDestination? destination;
+  @override
+  Widget build(BuildContext context) => QuestwellNavigationScope(
+    onSelect: (value) => setState(() => destination = value),
+    child: destination == null ? widget.child : MobileReviewApp(
+      key: ValueKey(destination), initialScreen: destination!.label),
   );
 }

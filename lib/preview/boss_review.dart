@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import '../widgets/questwell_app_navigation.dart';
 import '../models/questwell_boss.dart';
 import '../widgets/questwell_boss_board.dart';
 import '../widgets/questwell_boss_picker.dart';
@@ -100,7 +100,7 @@ class _BossReviewAppState extends State<BossReviewApp> {
               totalXp: QuestwellProgression.totalAtLevel(_level)),
             campfire: _campfire, archetype: 'scholar', body: 'female',
             equipment: const {'neck': 'emerald-scholar-scarf', 'accessory': 'moonstone-brooch'},
-            onHome: () => launchUrl(Uri.base.replace(query: '', fragment: ''), webOnlyWindowName: '_self'),
+            onHome: () => QuestwellNavigationScope.open(context, QuestwellDestination.hearth),
             onCreate: () => _create(context), onAttack: (b, s) => setState(() => _done.add(s.id)),
             onRetry: () => setState(() => _state = 'battles'),
             footer: ExpansionTile(title: const Text('Preview controls'), children: [

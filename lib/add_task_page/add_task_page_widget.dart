@@ -121,7 +121,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                   children: [
                     Row(children: [
                       QuestwellTopActionButton(
-                        kind: 'back', tooltip: 'Back to the Hearth',
+                        kind: 'back', tooltip: 'Back',
                         onTap: () => context.safePop(),
                       ),
                       const Spacer(),

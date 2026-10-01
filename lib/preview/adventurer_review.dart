@@ -1,3 +1,4 @@
+import '../widgets/questwell_app_navigation.dart';
 import 'package:flutter/material.dart';
 import '../widgets/questwell_adventurer_view.dart';
 
@@ -19,7 +20,7 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
         child: QuestwellAdventurerView(archetype: _class, bodyType: _body,
           level: 3, xp: 295, coins: 49, description: 'Choose a class and body style to preview your look. Sample data only.',
           mastered: false, collectionOwned: 5, collectionTotal: 6, relicName: 'Sample mastery relic',
-          canClaim: false, onClaim: () {}, onBack: () {}, onMarket: () {},
+          canClaim: false, onClaim: () {}, onBack: () => QuestwellNavigationScope.open(context, QuestwellDestination.hearth), onMarket: () => QuestwellNavigationScope.open(context, QuestwellDestination.market),
           onBody: (v) => setState(() => _body = v), onClass: (v) => setState(() => _class = v),
           onPlace: (id, slot, expected) async { setState(() {
             _roomSlots.removeWhere((key, value) => value == slot || key == id);

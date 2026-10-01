@@ -1,3 +1,4 @@
+import '/widgets/questwell_app_navigation.dart';
 import '/widgets/questwell_equipment_swap.dart';
 import 'package:go_router/go_router.dart';
 import '/pages/home_page/home_page_widget.dart';
@@ -136,6 +137,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.market),
     backgroundColor: const Color(0xFF101C21),
     appBar: AppBar(
       backgroundColor: const Color(0xFF101C21),

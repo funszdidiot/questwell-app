@@ -1,3 +1,4 @@
+import '/widgets/questwell_app_navigation.dart';
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -152,6 +153,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+        bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.quests),
       backgroundColor: const Color(0xFF0E1724),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
@@ -180,7 +182,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                   QuestwellTopActionButton(
                     kind: 'back',
                     tooltip: 'Back to the Hearth',
-                    onTap: () => context.safePop(),
+                    onTap: () => QuestwellNavigationScope.open(context, QuestwellDestination.hearth),
                   ),
                   const SizedBox(width: 10),
                   Expanded(

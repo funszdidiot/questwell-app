@@ -1,3 +1,4 @@
+import '../widgets/questwell_app_navigation.dart';
 import 'package:flutter/material.dart';
 import '../widgets/questwell_home_sections.dart';
 import '../widgets/questwell_pixel_art.dart';
@@ -21,7 +22,14 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
       body: QuestwellCampfireBackground(active: _campfire, child: SafeArea(child: Center(child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 430),
         child: ListView(padding: const EdgeInsets.all(20), children: [
-          QuestwellHomeHeader(onOpen: (_) {}),
+          QuestwellHomeHeader(onOpen: (key) => QuestwellNavigationScope.open(context, switch (key) {
+              'quest' || 'quests' => QuestwellDestination.quests,
+              'boss' => QuestwellDestination.bosses,
+              'expedition' => QuestwellDestination.expedition,
+              'market' => QuestwellDestination.market,
+              'chronicle' => QuestwellDestination.chronicle,
+              _ => QuestwellDestination.adventurer,
+            })),
           const SizedBox(height: 2),
           const QuestwellPixelDivider(accent: Color(0xFFD6A84B)),
           const SizedBox(height: 6),
@@ -34,9 +42,9 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
                 archetype: 'scout', owned: false, equipped: false),
               HomeCollectionItem(name: 'Trail accessory', slug: 'trail_accessory', category: 'accessory',
                 archetype: 'scout', owned: true, equipped: false),
-            ], onCustomize: () {}, onMarket: () {}),
+            ], onCustomize: () => QuestwellNavigationScope.open(context, QuestwellDestination.adventurer), onMarket: () => QuestwellNavigationScope.open(context, QuestwellDestination.market)),
           const SizedBox(height: 12),
-          QuestwellHomeMomentum(wins: 4, bosses: 0, onOpen: () {}),
+          QuestwellHomeMomentum(wins: 4, bosses: 0, onOpen: () => QuestwellNavigationScope.open(context, QuestwellDestination.chronicle)),
           const SizedBox(height: 12),
           QuestwellHomeCampfireControl(active: _campfire,
             onChanged: (value) => setState(() => _campfire = value)),
@@ -46,7 +54,14 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
           const SizedBox(height: 14),
           const QuestwellHomeEmptyBoard(),
           const SizedBox(height: 14),
-          QuestwellHomeActions(onOpen: (_) {}),
+          QuestwellHomeActions(onOpen: (key) => QuestwellNavigationScope.open(context, switch (key) {
+              'quest' || 'quests' => QuestwellDestination.quests,
+              'boss' => QuestwellDestination.bosses,
+              'expedition' => QuestwellDestination.expedition,
+              'market' => QuestwellDestination.market,
+              'chronicle' => QuestwellDestination.chronicle,
+              _ => QuestwellDestination.adventurer,
+            })),
         ]),
       )))),
     ),
