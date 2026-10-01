@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_momentum/add_task_page/add_task_page_widget.dart';
 import 'package:project_momentum/preview/quest_board_review.dart';
 
@@ -99,6 +100,33 @@ void main() {
     await tester.tap(find.text('Back to quests')); await tester.pumpAndSettle();
     expect(find.text('QUEST BOARD'), findsOneWidget);
     expect(find.text('NEW QUEST'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Successful posting returns a saved result to the board', (tester) async {
+    bool? posted;
+    final router = GoRouter(routes: [
+      GoRoute(path: '/', builder: (context, state) => Scaffold(body: TextButton(
+        child: const Text('Create quest'),
+        onPressed: () async { posted = await context.push<bool>('/new'); },
+      ))),
+      GoRoute(path: '/new', builder: (context, state) => AddTaskPageWidget(
+        onCreate: (title, friction, xp, coins) async {},
+      )),
+    ]);
+    addTearDown(router.dispose);
+    await tester.binding.setSurfaceSize(const Size(430, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(MaterialApp.router(routerConfig: router, theme: ThemeData.dark()));
+    await tester.tap(find.text('Create quest'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextFormField), 'A visible new quest');
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tap(tester, 'Easy');
+    await tap(tester, 'Post to Quest Board');
+    await tester.pumpAndSettle();
+    expect(posted, isTrue);
+    expect(find.text('Create quest'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

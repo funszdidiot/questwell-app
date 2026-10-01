@@ -80,7 +80,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
       });
       }
 
-      if (mounted) _close();
+      if (mounted) _close(posted: true);
     } catch (_) {
       if (!mounted) return;
       setState(() => _feedback = 'Could not add this quest. Please try again.');
@@ -92,11 +92,11 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
   bool get _hasDraft => _model.taskTitleFieldTextController.text.trim().isNotEmpty ||
       _model.selectedFriction != 0;
 
-  void _close() {
+  void _close({bool posted = false}) {
     if (widget.onClose != null) {
       widget.onClose!();
     } else if (context.canPop()) {
-      context.pop();
+      context.pop(posted);
     } else {
       context.goNamed('QuestBoardPage');
     }

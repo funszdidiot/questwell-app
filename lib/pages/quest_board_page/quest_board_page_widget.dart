@@ -65,7 +65,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
       queryFn: (q) => q
           .eqOrNull('user_id', currentUserUid)
           .eqOrNull('status', 'open')
-          .order('created_at', ascending: true),
+          .order('created_at', ascending: false),
       limit: 50,
     );
     _bossFuture = QuestwellBossService.loadBattles();
@@ -166,8 +166,18 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
             padding: const EdgeInsets.fromLTRB(18, 20, 18, 24),
             children: [
               QuestwellBoardHeading(completed: _completedThisVisit, onAdd: () async {
-                await context.pushNamed(AddTaskPageWidget.routeName);
-                if (mounted) setState(_refresh);
+                final posted = await context.pushNamed<bool>(AddTaskPageWidget.routeName);
+                if (!mounted) return;
+                setState(() {
+                  if (posted == true) _filter = 'today';
+                  _refresh();
+                });
+                if (posted == true) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('Quest posted to your board.'),
+                    behavior: SnackBarBehavior.floating,
+                  ));
+                }
               }),
               const SizedBox(height: 12),
               Wrap(

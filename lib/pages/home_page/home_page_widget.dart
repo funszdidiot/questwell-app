@@ -712,6 +712,22 @@ const SizedBox(height: 2),
                           if (index != visibleTasks.length - 1)
                             const SizedBox(height: 10),
                         ],
+                        if (tasks.length > visibleTasks.length) ...[
+                          const SizedBox(height: 10),
+                          Text(
+                            _campfireMode
+                                ? 'One gentle quest at a time. Your other quests are safe on the board.'
+                                : 'More quests are waiting on your board.',
+                            style: theme.bodyMedium,
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              await context.pushNamed(QuestBoardPageWidget.routeName);
+                              if (mounted) setState(_loadHomeData);
+                            },
+                            child: const Text('View all quests'),
+                          ),
+                        ],
                       ],
                     );
                   },
