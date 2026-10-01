@@ -41,3 +41,13 @@ Six-familiar atlas prompt: Exact 3-column by 2-row transparent atlas; detailed r
 Development build `3923e33b2b87197d42b5cd9313ee954e7962f8f3`: Flutter Check 36806039882 and Preview 36806039936 passed. Seven companions × three body types and reduced-motion/TickerMode tests passed. Browser inspected dragon female and neutral fit, avatar/Hearth placement, and glass slime transparent sprite/class selection. Founder visual review remains pending.
 
 Market/inventory follow-up verified on build `4b9b553169c44bfcf95864f4a22214cb5a00daa5`: Flutter Check 36806853312 and Preview 36806853289 passed. Browser verified the 16-bit dragon icon and 320-coin Market listing. All seven remain owned with 79 coins and no familiar automatically equipped.
+
+## Dragon smoke and rainy glass — 2026-09-30
+
+Founder requested a small animated nose exhale and an animated Rainy Window. Three shaded smoke puffs now emerge from the dragon's registered nostril, drift upward/left, expand, and fade, followed by a pause. Smoke shares the existing breathing transform and timer. The window's rain streaks and slower sliding beads animate behind its registered pane mask, keeping the wooden frame and room still. Only the overlay repaints.
+
+Reduced motion hides the smoke and preserves static rainy glass. Both controllers stop when their route's TickerMode is inactive and dispose on removal. The account-free companion review now shows an optional Rainy Window alongside the dragon; the Animations switch controls both. Actual in-app effects follow equipped items. No equipment, inventory, price, or database changes.
+
+Added raster checks for changing rain/smoke frames, smoke ascent/rest intervals, and no paint on the window's mullions or adjacent wall, plus reduced-motion/inactive/unequip checks.
+
+Verified build `e977695c942263cdcd930513ef92b6c618be7162`: Flutter Check 36807592855 and Preview 36807592810 passed. Browser confirmed smoke placement and moving glass, with a 6.5-second capture. Founder-requested Rainy Window inventory grant confirmed owned and unplaced with balance unchanged at 79.

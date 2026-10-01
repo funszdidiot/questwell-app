@@ -4,6 +4,14 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Dragon smoke and animated Rainy Window — 2026-09-30
+
+Added a small three-puff smoke exhale at the dragon's nose, with upward drift, expansion, fading, and a pause between bursts. Smoke follows the existing breathing transform. Rainy Window now animates falling streaks and slower sliding beads within the registered glass panes. Wooden mullions and room artwork stay still. Reduced motion hides smoke and retains static rainy glass; hidden routes stop both timers.
+
+**Development build:** `e977695c942263cdcd930513ef92b6c618be7162`. Flutter Check `36807592855` and Preview `36807592810` passed, including raster movement/mask checks and reduced-motion/inactive/unequip behavior. Browser verified nose placement, visible smoke, and rain confined to the glass. Captured a 6.5-second animated review. `?review=companions&rev=e977695` shows both effects with toggles.
+
+Founder also requested Rainy Window in her inventory. Idempotent founder grant confirmed owned, not automatically placed, with 79 coins unchanged. Place via Inventory → Room → Rainy Window → Window alcove. No merge or launch.
+
 ## All familiars in Market and founder inventory — 2026-09-30
 
 Founder requested all seven familiars in the Market with 16-bit icons and in her inventory. The six existing shop entries remain active. Emerald Dragon is now an epic all-class familiar at 320 coins, with a dedicated 32-pixel icon shared by Market and Inventory and detailed equipped artwork. Granted all seven missing ownership records as founder grants, preserving equipment and coins (79). Existing class-specific equip rules remain in force.
