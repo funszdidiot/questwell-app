@@ -2,7 +2,6 @@ import '../../widgets/questwell_wall_art.dart';
 import '/widgets/questwell_room_picker.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/widgets/questwell_market_view.dart';
-import '/widgets/questwell_typography.dart';
 import 'package:flutter/material.dart';
 
 class MarketPageWidget extends StatefulWidget {
@@ -129,7 +128,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: const Color(0xFF101C21),
-    appBar: AppBar(backgroundColor: const Color(0xFF101C21), title: Text('MARKET',style:QuestwellTypography.sectionHeading(size:14))),
+    appBar: AppBar(backgroundColor: const Color(0xFF101C21)),
     body: SafeArea(top: false, child: FutureBuilder<QuestwellCosmeticsSnapshot>(
       future: _future, builder: (context, snapshot) {
         if (snapshot.hasError) return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [

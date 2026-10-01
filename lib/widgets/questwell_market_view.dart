@@ -99,8 +99,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     return RefreshIndicator(onRefresh:widget.onRefresh,child:ListView(padding:const EdgeInsets.fromLTRB(18,8,18,30),children:[
       Container(padding:const EdgeInsets.all(20),decoration:BoxDecoration(color:const Color(0xFF23453F),border:Border.all(color:const Color(0xFF678475)),borderRadius:BorderRadius.circular(14)),
         child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
-          Text('THE GUILD EMPORIUM',style:QuestwellTypography.sectionHeading(size:9,color:gold)),
-          const SizedBox(height:10),Text('The Market',style:QuestwellTypography.body(fontSize:26,height:1.25,fontWeight:FontWeight.w700,color:cream)),
+          Text('MARKET',style:QuestwellTypography.sectionHeading(size:18,color:gold)),
           const SizedBox(height:12),Text('Rare finds, class gear, and questionable fashion choices.',style:QuestwellTypography.body(color:Color(0xFFC0D2C7),height:1.4)),
           const SizedBox(height:16),Wrap(spacing:14,runSpacing:10,crossAxisAlignment:WrapCrossAlignment.center,children:[
             Container(padding:const EdgeInsets.symmetric(horizontal:12,vertical:8),decoration:BoxDecoration(color:const Color(0xFF142D2B),borderRadius:BorderRadius.circular(20)),
