@@ -4,6 +4,14 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Moss Cloak and Hearthguard Mantle fit review — 2026-09-30
+
+Replaced the two basic vector cloaks with detailed illustrated retro fantasy garment layers: moss wool with leaf embroidery/brass clasp, and burgundy Hearthguard with shield/hearth motifs. Long drapes sit behind the unchanged class outfit; front capelets follow the shoulder hems. Body-specific registration supports female, male, and neutral. Market/Inventory icons, prices, class restrictions, ownership, and approved avatar assets remain unchanged.
+
+**Development build:** `1f8d86445982bc4ade44d58d9ee995fa37a101fb`. Flutter Check `36808923953` and Preview `36808923990` passed. Frozen avatar integrity verifier passed. New render coverage checks all 18 supported cloak/class/body combinations and removal. Browser checked all six garment/body fits and their Hearth rendering. Transparent central openings, visible hands, and boot clearance verified.
+
+Review: `?review=cloaks&rev=1f8d864`. Founder visual approval pending; no merge or launch. Generation prompts and registration notes: `docs/art/CLOAK_ART.md`. Next remaining gear: Wayfarer Satchel, Annotated Grimoire, Pathfinder Boots.
+
 ## Market Home arrow — 2026-09-30
 
 Added a persistent gold left arrow with a Home label above the Market. It navigates directly to HomePage through GoRouter, including direct Market entry, and remains available during scrolling, loading, and errors. Uses a 48-pixel touch target and Go home tooltip. Shared button is also shown in the sample Market, where it opens the sample Home.

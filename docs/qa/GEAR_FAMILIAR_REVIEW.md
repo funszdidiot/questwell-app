@@ -51,3 +51,7 @@ Reduced motion hides the smoke and preserves static rainy glass. Both controller
 Added raster checks for changing rain/smoke frames, smoke ascent/rest intervals, and no paint on the window's mullions or adjacent wall, plus reduced-motion/inactive/unequip checks.
 
 Verified build `e977695c942263cdcd930513ef92b6c618be7162`: Flutter Check 36807592855 and Preview 36807592810 passed. Browser confirmed smoke placement and moving glass, with a 6.5-second capture. Founder-requested Rainy Window inventory grant confirmed owned and unplaced with balance unchanged at 79.
+
+## Cloak first-set review
+
+Build `1f8d86445982bc4ade44d58d9ee995fa37a101fb` adds detailed Moss Cloak and Hearthguard Mantle layers and `?review=cloaks`. Flutter Check 36808923953 and Preview 36808923990 passed, including 18 supported class/body/garment combinations and removal. Browser checked all six garment/body fits. Founder visual approval pending. Remaining next set: Wayfarer Satchel, Annotated Grimoire, Pathfinder Boots. No inventory grants or database changes in this pass. Art prompts are in `docs/art/CLOAK_ART.md`.
