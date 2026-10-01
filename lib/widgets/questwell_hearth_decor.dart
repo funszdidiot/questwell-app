@@ -12,7 +12,10 @@ import 'questwell_starlit_orrery.dart';
 
 /// Authored furniture proportions and floor anchors shared by every Hearth view.
 class QuestwellHearthDecor {
-  static Map<String, String> choices(String slug) => switch (slug) {
+  static Map<String, String> choices(String slug) => QuestwellMasteryRelic.supports(slug)
+    ? const {'mantel': 'On the fireplace mantel', 'bookshelf_top': 'On the bookcase',
+      'left': 'Left wall pedestal', 'right': 'Window-side pedestal'}
+    : switch (slug) {
     'rainy-window' => const {'window': 'Window alcove'},
     QuestwellFirstJourney.slug || QuestwellStarlitOrrery.slug => const {'bookshelf_top': 'On the bookcase', 'mantel': 'Fireplace mantel'},
     QuestwellWallArt.fern || QuestwellWallArt.celestial => const {'wall_left': 'Left wall', 'wall_right': 'Right wall'},
@@ -22,7 +25,7 @@ class QuestwellHearthDecor {
     _ => const {'left': 'Beside the fireplace', 'right': 'Near the window', 'front': 'Foreground'},
   };
   static double floorDepth(String slug, String slot) =>
-    slug == QuestwellReadingTable.slug ? .89
+    QuestwellMasteryRelic.supports(slug) ? .74 : slug == QuestwellReadingTable.slug ? .89
       : slug == QuestwellBookshelf.slug ? .68
       : slug == QuestwellFern.slug && slot != 'front' ? .70 : .86;
 
@@ -79,11 +82,11 @@ class QuestwellHearthDecor {
     // shrink furniture. Width limits only protect the outer frame.
     final avatarHeight = math.min(scene.height * .76, scene.width * .62 * 4 / 3);
     final height = math.min(
-      avatarHeight * (relic ? .49 : table ? .49 : shelf ? .65 : fern ? (front ? .43 : .40) : .62),
+      avatarHeight * (relic ? .44 : table ? .49 : shelf ? .65 : fern ? (front ? .43 : .40) : .62),
       scene.width * (relic ? .23 : table ? .28 : shelf ? .44 : fern ? .30 : .50) / ratio,
     ) * (shelf ? .90 : 1.0);
     final width = height * ratio;
-    final center = table ? scene.width * (chairOnLeft ? .15 : .85) : shelf
+    final center = relic ? scene.width * (slot == 'left' ? .24 : .85) : table ? scene.width * (chairOnLeft ? .15 : .85) : shelf
       ? (slot == 'right' ? scene.width * .98 - width / 2 : scene.width * .17 + width / 2)
       : scene.width * (chair ? (slot == 'right' ? (hasTable ? .64 : .73) : (hasTable ? .36 : .27))
         : front ? .20 : slot == 'left' ? .28 : .81);
@@ -91,6 +94,24 @@ class QuestwellHearthDecor {
     // Furniture rests between those planes and is painted behind the avatar.
     final floor = scene.height * floorDepth(slug, slot);
     return Rect.fromLTWH(center - width / 2, floor - height, width, height);
+  }
+
+  /// Compact surface collectibles use the artifact alone, without the floor stand.
+  static Positioned relicSurfacePositioned({required String slug, required String slot,
+    required Size scene, required Map<String, String> equipment}) {
+    final onShelf = slot == 'bookshelf_top';
+    final shelfSlot = equipment['room:right'] == QuestwellBookshelf.slug ? 'right' : 'left';
+    final shelf = bounds(slug: QuestwellBookshelf.slug, slot: shelfSlot, scene: scene, equipment: equipment);
+    final height = onShelf ? shelf.height * .25 : math.min(scene.height * .12, scene.width * .10);
+    final width = height * .90;
+    final roomSide = math.max(scene.width, scene.height);
+    final center = onShelf ? shelf.left + shelf.width * (shelfSlot == 'right' ? .75 : .25)
+      : roomSide * .084 + (scene.width - roomSide) / 2;
+    final surface = onShelf ? shelf.top + shelf.height * .12
+      : roomSide * .337 + (scene.height - roomSide) * .52;
+    return Positioned(key: ValueKey('hearth-$slug-surface-bounds'),
+      left: center - width / 2, top: surface - height, width: width, height: height,
+      child: QuestwellMasteryDisplay(archetype: QuestwellMasteryRelic.classFor(slug), surface: true));
   }
 
   static Positioned trophyPositioned({String slug = QuestwellFirstJourney.slug, required String slot, required Size scene,

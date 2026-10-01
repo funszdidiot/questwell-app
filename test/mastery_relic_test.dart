@@ -6,6 +6,7 @@ import 'package:project_momentum/widgets/questwell_app_navigation.dart';
 import 'package:project_momentum/widgets/questwell_adventurer_view.dart';
 import 'package:project_momentum/widgets/questwell_mastery_relic.dart';
 import 'package:project_momentum/widgets/questwell_pixel_art.dart';
+import 'package:project_momentum/widgets/questwell_room_picker.dart';
 import 'package:project_momentum/services/questwell_equipment_policy.dart';
 
 void main() {
@@ -48,29 +49,33 @@ void main() {
     await reveal(tester, 'Place relic in Hearth');
     await tester.tap(find.text('Place relic in Hearth')); await tester.pumpAndSettle();
     expect(find.text('Place Guardian Crest'), findsOneWidget);
+    expect(find.text('On the fireplace mantel'), findsOneWidget);
+    expect(find.text('On the bookcase'), findsNothing);
+    expect(find.text('Foreground'), findsNothing);
     await tester.ensureVisible(find.text('Save placement')); await tester.pumpAndSettle();
     await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
     expect(tester.widget<QuestwellAdventurerView>(find.byType(QuestwellAdventurerView))
       .items.singleWhere((i) => i.slug == 'guardian-crest').equipped, isTrue);
     await tester.tap(nav('Hearth')); await tester.pumpAndSettle();
     expect(tester.widget<QuestwellHearthPixelScene>(find.byType(QuestwellHearthPixelScene))
-      .equippedSlugs['room:right'], 'guardian-crest');
+      .equippedSlugs['room:mantel'], 'guardian-crest');
     expect(find.byType(QuestwellMasteryDisplay), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('All five earned collectibles render in every floor slot', (tester) async {
+  testWidgets('All five relics render on surfaces and supported side pedestals', (tester) async {
     await tester.binding.setSurfaceSize(const Size(390, 700));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     for (final entry in QuestwellMasteryRelic.slugs.entries) {
       expect(QuestwellEquipmentPolicy.isReady(entry.value,'room'), isTrue);
       expect(QuestwellEquipmentPolicy.isReady(entry.value,'hands'), isFalse);
-      for (final slot in ['left','right','front']) {
+      for (final slot in ['left','right','mantel','bookshelf_top']) {
         await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellHearthPixelScene(
-          archetype: entry.key, height: 342, equippedSlugs: {'room:$slot':entry.value}))));
+          archetype: entry.key, height: 342, equippedSlugs: {'room:$slot':entry.value, if (slot == 'bookshelf_top') 'room:left':'walnut-bookshelf'}))));
         await tester.pumpAndSettle();
         expect(find.byType(QuestwellMasteryDisplay), findsOneWidget);
-        final bounds = tester.getRect(find.byKey(ValueKey('hearth-${entry.value}-bounds')));
+        final bounds = tester.getRect(find.byKey(ValueKey(slot == 'mantel' || slot == 'bookshelf_top'
+          ? 'hearth-${entry.value}-surface-bounds' : 'hearth-${entry.value}-bounds')));
         final room = tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
         expect(bounds.left, greaterThanOrEqualTo(room.left));
         expect(bounds.right, lessThanOrEqualTo(room.right));
@@ -79,4 +84,29 @@ void main() {
       }
     }
   });
+
+  testWidgets('Bookcase unlocks its surface and an occupied spot requires confirmation', (tester) async {
+    RoomPlacement? saved;
+    await tester.pumpWidget(MaterialApp(home: Scaffold(body: Builder(builder: (context) =>
+      TextButton(onPressed: () async { saved = await showRoomPicker(context,
+        name: 'Scholar Seal', id: 'seal', slug: 'scholar-seal', archetype: 'scholar', bodyType: 'female',
+        equippedSlugs: const {'room:left':'walnut-bookshelf'},
+        occupants: const {'mantel':RoomOccupant('other','First Journey'),
+          'left':RoomOccupant('shelf','Walnut Bookshelf')}); }, child: const Text('Place'))))));
+    await tester.tap(find.text('Place')); await tester.pumpAndSettle();
+    expect(find.text('On the bookcase'), findsOneWidget);
+    // Prefer an available surface rather than defaulting to an occupied spot.
+    expect(tester.widget<RadioListTile<String>>(find.widgetWithText(RadioListTile<String>, 'On the bookcase')).groupValue,
+      'bookshelf_top');
+    await tester.ensureVisible(find.text('On the fireplace mantel'));
+    await tester.tap(find.text('On the fireplace mantel')); await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Save placement'));
+    await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
+    expect(find.text('Replace First Journey?'), findsOneWidget);
+    await tester.tap(find.text('Keep current item')); await tester.pumpAndSettle();
+    expect(saved, isNull);
+    expect(find.text('Place Scholar Seal'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
 }

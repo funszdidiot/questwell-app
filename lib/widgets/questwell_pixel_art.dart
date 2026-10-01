@@ -1042,9 +1042,13 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       scene: Size(sceneWidth, sceneHeight),
                     ),
               for (final surface in ['mantel', 'bookshelf_top'])
-                if (QuestwellMilestoneReward.isTrophy(equippedSlugs['room:$surface']) &&
+                if ((QuestwellMilestoneReward.isTrophy(equippedSlugs['room:$surface']) ||
+                    QuestwellMasteryRelic.supports(equippedSlugs['room:$surface'])) &&
                   (surface == 'mantel' || equippedSlugs['room:left'] == QuestwellBookshelf.slug || equippedSlugs['room:right'] == QuestwellBookshelf.slug))
-                  QuestwellHearthDecor.trophyPositioned(slot: surface, slug: equippedSlugs['room:$surface']!,
+                  if (QuestwellMasteryRelic.supports(equippedSlugs['room:$surface']))
+                    QuestwellHearthDecor.relicSurfacePositioned(slot: surface, slug: equippedSlugs['room:$surface']!,
+                      scene: Size(sceneWidth, sceneHeight), equipment: equippedSlugs)
+                  else QuestwellHearthDecor.trophyPositioned(slot: surface, slug: equippedSlugs['room:$surface']!,
                     scene: Size(sceneWidth, sceneHeight), equipment: equippedSlugs),
               if (showAvatar) Positioned(
                 key: const ValueKey('hearth-contact-shadow'),

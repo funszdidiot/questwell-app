@@ -43,7 +43,7 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
             for (final entry in QuestwellMasteryRelic.slugs.entries)
               AdventurerInventoryItem(id: entry.value, name: QuestwellMasteryRelic.names[entry.key]!,
                 slug: entry.value, category: 'room', archetype: entry.key,
-                description: 'A keepsake of class mastery. Display it on its stand in your Hearth.',
+                description: 'A keepsake of class mastery. Display it on the mantel, bookcase, or a walnut pedestal.',
                 owned: _loadout.mastered.contains(entry.key), equipped: _loadout.roomSlots.containsKey(entry.value),
                 roomSlot: _loadout.roomSlots[entry.value], classLocked: entry.key != _class, shop: false),
             for (final art in [('fern-art', 'Fern Study', 'fern-study'), ('celestial-art', 'Celestial Study', 'celestial-study')])

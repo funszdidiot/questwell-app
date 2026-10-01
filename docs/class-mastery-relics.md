@@ -3,8 +3,12 @@
 Required follow-through; Hearth placement is outside the launch-critical MVP.
 
 Implemented on questwell-dev:
-- Five matching collectible symbols for the character sheet and inventory.
-- Relics on display stands using existing left, right, and foreground Hearth spots.
+- Five 32-pixel collectible icons for mastery, inventory, and avatar badges.
+- Illustrated relics on the mantel or bookcase, or matching walnut floor stands
+  along the left/window-side walls. No new foreground placement.
+- Bookcase placement requires a placed bookcase. Occupied spots show the item
+  being replaced; saving still requires replacement confirmation.
+- Old foreground placements remain visible until moved to an updated spot.
 - Claim, place, move, remove, and replacement confirmation in the shared UI.
 - Appearance saves invalidate Hearth data; reads wait for pending saves.
 

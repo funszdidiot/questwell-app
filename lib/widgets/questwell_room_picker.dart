@@ -3,6 +3,7 @@ import 'questwell_pixel_art.dart';
 import 'questwell_hearth_decor.dart';
 import 'questwell_wall_art.dart';
 import 'questwell_milestone_reward.dart';
+import 'questwell_mastery_relic.dart';
 
 class RoomOccupant {
   const RoomOccupant(this.id, this.name);
@@ -40,10 +41,10 @@ class _RoomPickerState extends State<_RoomPicker> {
       widget.equippedSlugs['room:right'] != 'walnut-bookshelf');
   late String _slot = labels.containsKey(widget.currentSlot)
     ? widget.currentSlot!
-    : widget.currentSlot == null && labels.containsKey('right')
+    : !QuestwellMasteryRelic.supports(widget.slug) && labels.containsKey('right') && !widget.occupants.containsKey('right')
       ? 'right'
       : labels.keys.firstWhere((slot) => !widget.occupants.containsKey(slot),
-          orElse: () => labels.keys.first);
+        orElse: () => labels.keys.first);
   bool get _legacyPlacement => widget.currentSlot != null && !labels.containsKey(widget.currentSlot);
   Future<void> _save() async {
     final occupant = widget.occupants[_slot];
@@ -73,8 +74,10 @@ class _RoomPickerState extends State<_RoomPicker> {
             Text('${wallArt ? 'Hang' : 'Place'} ${widget.name}', style: const TextStyle(fontSize: 21, color: Color(0xFFF0E5CC))),
             const SizedBox(height: 8),
             const Text('Choose a spot below. Preview first, then save.'),
-            if (QuestwellMilestoneReward.isTrophy(widget.slug)) const Padding(padding: EdgeInsets.only(top: 8),
-              child: Text('The mantel is always available. Place a bookcase in the Hearth to use its top; the trophy follows it when moved.')),
+            if (QuestwellMasteryRelic.supports(widget.slug)) const Padding(padding: EdgeInsets.only(top: 8),
+              child: Text('Display the relic on a surface, or on a walnut pedestal along a side wall. The center stays clear for your adventurer.')),
+            if (QuestwellMilestoneReward.isTrophy(widget.slug) || QuestwellMasteryRelic.supports(widget.slug)) const Padding(padding: EdgeInsets.only(top: 8),
+              child: Text('The mantel is always available. Place a bookcase in the Hearth to use its top; the collectible follows it when moved.')),
             if (blockedByShelf) const Padding(padding: EdgeInsets.only(top: 8),
               child: Text('The wall art keeps its balanced arrangement. Preview how it sits above the bookshelf.')),
             if (_legacyPlacement) const Padding(
@@ -91,7 +94,10 @@ class _RoomPickerState extends State<_RoomPicker> {
                 selected: _slot == entry.key, selectedTileColor: const Color(0xFF243448),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6),
                   side: BorderSide(color: _slot == entry.key ? const Color(0xFFE4C586) : const Color(0xFF465568))),
-                title: Text('${entry.value} · ${widget.occupants[entry.key]?.name ?? "Empty"}'),
+                title: Text(entry.value),
+                subtitle: Text(widget.occupants[entry.key] == null ? 'Available'
+                  : widget.occupants[entry.key]!.id == widget.id ? 'Placed here'
+                  : 'Replaces ${widget.occupants[entry.key]!.name}'),
                 value: entry.key, groupValue: _slot, onChanged: (value) => setState(() => _slot = value!)),
             const SizedBox(height: 8),
             FilledButton(onPressed: _save, child: const Text('Save placement')),
@@ -99,3 +105,4 @@ class _RoomPickerState extends State<_RoomPicker> {
           ])))));
   }
 }
+

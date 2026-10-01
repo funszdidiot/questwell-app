@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-/// One collectible design shared by mastery, inventory, and the Hearth.
+/// Crisp 32-pixel collectible icons for mastery, inventory, and avatar badges.
 class QuestwellMasteryRelic extends StatelessWidget {
   const QuestwellMasteryRelic({super.key, required this.archetype, this.size = 96});
   final String archetype;
@@ -22,16 +22,17 @@ class QuestwellMasteryRelic extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
     label: names[archetype] ?? names['wanderer'], image: true,
-    child: SizedBox.square(dimension: size, child: _MasteryAsset(archetype: archetype, symbol: true)),
+    child: SizedBox.square(dimension: size, child: CustomPaint(painter: QuestwellMasteryRelicPainter(archetype))),
   );
 }
 
 /// Furniture and its relic are one authored sprite, so light and perspective agree.
 class QuestwellMasteryDisplay extends StatelessWidget {
-  const QuestwellMasteryDisplay({super.key, required this.archetype});
+  const QuestwellMasteryDisplay({super.key, required this.archetype, this.surface = false});
   final String archetype;
+  final bool surface;
   @override
-  Widget build(BuildContext context) => _MasteryAsset(archetype: archetype);
+  Widget build(BuildContext context) => _MasteryAsset(archetype: archetype, symbol: surface);
 }
 
 class _MasteryAsset extends StatelessWidget {
@@ -69,146 +70,90 @@ class _MasteryAsset extends StatelessWidget {
   }
 }
 
+/// Integer grid, limited palette, and stepped contours: no smooth vector edges.
 class QuestwellMasteryRelicPainter extends CustomPainter {
   const QuestwellMasteryRelicPainter(this.archetype);
   final String archetype;
-  static const ink = Color(0xFF251D27);
-  static const brass = Color(0xFFA77739);
-  static const gold = Color(0xFFE9C77E);
-  static const light = Color(0xFFFFECC0);
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.save();
-    canvas.clipRect(Offset.zero & size);
-    final unit = math.min(size.width, size.height) / 128;
-    canvas.translate((size.width - 128 * unit) / 2, (size.height - 128 * unit) / 2);
-    canvas.scale(unit);
-    final p = Paint()..isAntiAlias = true;
-    void rect(double x, double y, double w, double h, Color color) {
-      p..color = color..style = PaintingStyle.fill;
-      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
+    final unit = math.min(size.width, size.height) / 32;
+    final origin = Offset((size.width - 32 * unit) / 2, (size.height - 32 * unit) / 2);
+    final paint = Paint()..isAntiAlias = false;
+    const ink = Color(0xFF292333), bronze = Color(0xFF986339),
+      gold = Color(0xFFDCAA55), light = Color(0xFFFFE3A0),
+      paper = Color(0xFFF2D6A1), shade = Color(0xFFC29766);
+    void block(int x, int y, int w, int h, Color color) {
+      paint.color = color;
+      canvas.drawRect(Rect.fromLTRB(
+        (origin.dx + x * unit).roundToDouble(), (origin.dy + y * unit).roundToDouble(),
+        (origin.dx + (x + w) * unit).roundToDouble(), (origin.dy + (y + h) * unit).roundToDouble()), paint);
     }
-    void line(double x, double y, double x2, double y2, Color color, [double width = 2]) {
-      p..color = color..strokeWidth = width..style = PaintingStyle.stroke;
-      canvas.drawLine(Offset(x, y), Offset(x2, y2), p);
-      p.style = PaintingStyle.fill;
+    void disk(int cx, int cy, int radius, Color color) {
+      for (var y = -radius; y <= radius; y++) {
+        final half = math.sqrt(radius * radius - y * y).floor();
+        block(cx - half, cy + y, half * 2 + 1, 1, color);
+      }
     }
-    void circle(double x, double y, double r, Color color) {
-      p..color = color..style = PaintingStyle.fill;
-      canvas.drawCircle(Offset(x, y), r, p);
+    void star(int x, int y) {
+      block(x, y-1, 1, 3, light); block(x-1,y,3,1,light);
     }
-    void shape(List<Offset> points, Color color) {
-      final path = Path()..addPolygon(points, true);
-      p..color = color..style = PaintingStyle.fill;
-      canvas.drawPath(path, p);
-    }
-    // Every relic rests on the same walnut and brass collector's plinth.
-    p.color = const Color(0x33000000);
-    canvas.drawOval(const Rect.fromLTWH(21, 114, 86, 9), p);
-    rect(27, 102, 74, 13, ink);
-    rect(30, 103, 68, 7, const Color(0xFF67442E));
-    rect(27, 100, 74, 4, brass);
-    rect(30, 100, 68, 1.5, gold);
-    rect(24, 113, 80, 5, const Color(0xFF3B2924));
-    rect(25, 113, 78, 1.5, brass);
-    rect(54, 105, 20, 7, brass);
-    rect(57, 106, 14, 2, gold);
-
     switch (archetype) {
-      case 'scholar':
-        // Gilt archive seal, mounted in burgundy enamel.
-        rect(59, 79, 10, 21, brass);
-        rect(49, 97, 30, 3, gold);
-        circle(64, 49, 39, ink);
-        circle(64, 48, 36, brass);
-        circle(64, 47, 32, gold);
-        circle(64, 47, 28, const Color(0xFF652E46));
-        circle(64, 47, 24, const Color(0xFF432333));
-        for (var i = 0; i < 16; i++) {
-          final a = i * math.pi / 8;
-          circle(64 + 32 * math.cos(a), 47 + 32 * math.sin(a), 1.3, light);
-        }
-        shape(const [Offset(41,34),Offset(60,37),Offset(64,41),Offset(68,37),Offset(87,34),Offset(87,64),Offset(68,67),Offset(64,70),Offset(60,67),Offset(41,64)], brass);
-        shape(const [Offset(44,36),Offset(61,40),Offset(62,64),Offset(44,61)], light);
-        shape(const [Offset(66,40),Offset(84,36),Offset(84,61),Offset(66,64)], const Color(0xFFE4C98A));
-        line(64,41,64,67,ink);
-        for (var y = 45.0; y < 58; y += 5) {
-          line(48,y,58,y+2,brass,1);
-          line(70,y+2,80,y,brass,1);
-        }
-        circle(64,23,3,const Color(0xFFB787D9));
-        break;
-      case 'scout':
-        rect(59, 79, 10, 21, brass);
-        rect(49, 97, 30, 3, gold);
-        circle(64, 46, 38, ink);
-        circle(64, 45, 35, brass);
-        circle(64, 44, 31, gold);
-        circle(64, 44, 27, const Color(0xFF193F3B));
-        circle(64, 44, 22, const Color(0xFF28534A));
-        for (var i = 0; i < 16; i++) {
-          final a = i * math.pi / 8;
-          line(64+24*math.cos(a),44+24*math.sin(a),
-            64+(i%4==0?18:21)*math.cos(a),44+(i%4==0?18:21)*math.sin(a),gold,1.5);
-        }
-        shape(const [Offset(64,19),Offset(70,44),Offset(64,69),Offset(58,44)], light);
-        shape(const [Offset(64,19),Offset(70,44),Offset(64,45)], const Color(0xFFD98565));
-        shape(const [Offset(42,44),Offset(64,38),Offset(86,44),Offset(64,50)], brass);
-        circle(64,44,4,ink); circle(64,43,2.5,gold);
-        line(44,23,51,19,light);
-        break;
       case 'alchemist':
-        rect(42,92,44,8,brass);
-        rect(37,87,5,11,gold); rect(86,87,5,11,gold);
-        final glass = Path()..moveTo(53,26)..lineTo(75,26)..lineTo(75,42)
-          ..cubicTo(100,60,99,91,78,96)..lineTo(50,96)
-          ..cubicTo(29,91,28,60,53,42)..close();
-        p.color = ink; canvas.drawPath(glass,p);
-        canvas.save(); canvas.clipPath(glass);
-        p.shader = const LinearGradient(colors:[Color(0xFF387B78),Color(0xFF91CAB4),Color(0xFF25514C)])
-          .createShader(const Rect.fromLTWH(36,26,56,70));
-        canvas.drawRect(const Rect.fromLTWH(38,28,52,66),p); p.shader=null;
-        p.color=const Color(0xFF3B946B);
-        canvas.drawOval(const Rect.fromLTWH(38,60,52,18),p);
-        rect(37,69,54,27,const Color(0xFF2F745B));
-        circle(71,76,5,const Color(0xFFB3DF8C));
-        circle(56,84,3,const Color(0xFF86BE78));
-        line(47,57,44,73,light,3); line(60,30,60,43,light,2);
-        canvas.restore();
-        rect(49,23,30,7,brass); rect(51,23,26,2,light);
-        rect(55,13,18,10,ink); rect(57,14,14,8,const Color(0xFF946A48));
-        rect(49,48,30,5,brass);
-        shape(const [Offset(64,51),Offset(70,60),Offset(64,69),Offset(58,60)],gold);
-        circle(64,60,3,const Color(0xFFBBE7B0));
+        block(12,2,8,5,ink); block(13,3,6,3,bronze); block(13,3,4,1,light);
+        block(11,7,10,2,gold); block(12,9,8,6,ink);
+        block(13,9,6,6,const Color(0xFF83BCA9));
+        block(10,14,12,2,ink); block(8,16,16,2,ink);
+        block(6,18,20,8,ink); block(8,26,16,3,ink);
+        block(10,29,12,1,ink); block(8,18,16,8,const Color(0xFF285E58));
+        block(10,16,12,2,const Color(0xFF83BCA9));
+        block(9,21,14,6,const Color(0xFF3D9161)); block(11,27,10,1,const Color(0xFF285E58));
+        block(9,18,2,5,paper); block(14,10,1,4,paper);
+        block(12,17,8,2,gold); block(15,19,2,3,light);
+        block(18,23,2,2,const Color(0xFFB9DD87)); block(12,25,1,1,light);
         break;
       case 'guardian':
-        rect(60,83,8,17,brass); rect(45,97,38,3,gold);
-        shape(const [Offset(64,10),Offset(101,24),Offset(96,65),Offset(84,82),Offset(64,94),Offset(44,82),Offset(32,65),Offset(27,24)],ink);
-        shape(const [Offset(64,14),Offset(97,27),Offset(92,64),Offset(80,80),Offset(64,89),Offset(48,80),Offset(36,64),Offset(31,27)],gold);
-        shape(const [Offset(64,20),Offset(90,30),Offset(85,62),Offset(75,75),Offset(64,83),Offset(53,75),Offset(43,62),Offset(38,30)],const Color(0xFF713844));
-        shape(const [Offset(64,20),Offset(90,30),Offset(85,62),Offset(75,75),Offset(64,83)],const Color(0xFF4C2938));
-        rect(59,32,10,37,gold); rect(48,43,32,8,gold);
-        shape(const [Offset(64,28),Offset(72,39),Offset(64,50),Offset(56,39)],light);
-        circle(64,39,3,const Color(0xFF92B4DB));
-        for (final pt in const [Offset(35,29),Offset(93,29),Offset(64,87)]) circle(pt.dx,pt.dy,2,light);
+        block(14,2,4,1,ink); block(9,3,14,2,ink); block(5,5,22,3,ink);
+        block(6,8,20,11,ink); block(8,19,16,4,ink); block(11,23,10,3,ink);
+        block(14,26,4,3,ink); block(7,6,18,2,gold); block(8,8,16,10,gold);
+        block(10,18,12,4,gold); block(12,22,8,3,gold); block(15,25,2,2,gold);
+        block(9,8,14,9,const Color(0xFF924A54)); block(11,17,10,4,const Color(0xFF713443));
+        block(13,21,6,2,const Color(0xFF713443)); block(16,8,7,9,const Color(0xFF713443));
+        block(15,9,2,12,light); block(11,13,10,2,light);
+        block(15,10,2,2,const Color(0xFF9DBCCB)); block(8,6,7,1,light);
+        break;
+      case 'wanderer':
+        block(5,5,22,22,ink); block(3,7,3,18,ink); block(26,3,3,23,ink);
+        block(5,6,22,20,gold); block(7,7,18,17,const Color(0xFF293D60));
+        block(5,7,2,17,light); block(25,5,2,19,bronze); block(7,24,18,2,bronze);
+        for (final point in const [Offset(10,18),Offset(11,17),Offset(12,16),Offset(13,15),Offset(14,14),Offset(16,14),Offset(17,15),Offset(18,16),Offset(19,14),Offset(20,12),Offset(21,11),Offset(19,18),Offset(20,20)]) {
+          block(point.dx.toInt(),point.dy.toInt(),1,1,gold);
+        }
+        star(10,19); star(14,13); star(18,16); star(22,10); star(21,21);
+        block(10,10,1,1,paper); block(15,21,1,1,paper);
         break;
       default:
-        rect(58,82,12,18,brass); rect(45,97,38,3,gold);
-        shape(const [Offset(29,19),Offset(96,13),Offset(104,81),Offset(37,87)],ink);
-        shape(const [Offset(32,22),Offset(93,17),Offset(100,78),Offset(40,83)],brass);
-        shape(const [Offset(37,26),Offset(89,22),Offset(95,74),Offset(44,78)],const Color(0xFF24374F));
-        line(44,58,58,39,gold,1.5); line(58,39,75,47,gold,1.5);
-        line(75,47,84,31,gold,1.5); line(75,47,82,66,gold,1.5);
-        line(44,58,61,69,gold,1.5); line(61,69,82,66,gold,1.5);
-        for (final pt in const [Offset(44,58),Offset(58,39),Offset(75,47),Offset(84,31),Offset(82,66),Offset(61,69)]) {
-          circle(pt.dx,pt.dy,2.8,gold); circle(pt.dx-.6,pt.dy-.6,1.2,light);
+        disk(16,16,13,ink); disk(16,16,11,bronze); disk(16,15,10,gold);
+        disk(16,15,8,archetype == 'scholar' ? const Color(0xFF68344B) : const Color(0xFF29584F));
+        block(10,6,7,1,light); block(7,9,1,4,light);
+        if (archetype == 'scholar') {
+          block(9,11,6,11,bronze); block(17,11,6,11,bronze); block(15,12,2,12,bronze);
+          block(9,10,5,10,paper); block(14,11,1,10,paper);
+          block(17,11,1,10,shade); block(18,10,5,10,shade);
+          block(10,13,3,1,bronze); block(10,16,3,1,bronze);
+          block(19,13,3,1,bronze); block(19,16,3,1,bronze);
+          block(15,12,2,9,ink);
+        } else {
+          block(16,7,1,3,light); block(16,21,1,3,gold);
+          block(7,15,3,1,gold); block(23,15,3,1,gold);
+          for (var row=0; row<8; row++) {
+            final half = row ~/ 3;
+            block(16-half,8+row,half*2+1,1,const Color(0xFFD77858));
+            block(16-half,22-row,half*2+1,1,paper);
+          }
+          block(14,14,5,3,ink); block(15,14,3,2,light);
         }
-        circle(49,34,1,light); circle(86,55,1,light); circle(68,28,1,light);
-        line(40,79,98,74,light,1);
     }
-    canvas.restore();
   }
   @override
-  bool shouldRepaint(covariant QuestwellMasteryRelicPainter oldDelegate) =>
-      oldDelegate.archetype != archetype;
+  bool shouldRepaint(covariant QuestwellMasteryRelicPainter oldDelegate) => oldDelegate.archetype != archetype;
 }
