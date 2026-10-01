@@ -44,6 +44,15 @@ void main(){
     final data=QuestwellCosmeticsSnapshot(profile:const QuestwellProfile(level:4,totalXp:355,coinBalance:650,currentEnergyMode:'normal',onboardingCompleted:true,adventurerArchetype:'scholar',avatarBodyType:'male'),cosmetics:items);
     await tester.pumpWidget(MaterialApp(theme:ThemeData.dark(),home:Scaffold(body:MediaQuery(data:const MediaQueryData(textScaler:TextScaler.linear(1.6)),child:QuestwellMarketView(data:data,onPurchase:(_)async{purchased++;},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{})))));
     await tester.pumpAndSettle();expect(tester.takeException(),isNull);
+    final categories=find.byType(SingleChildScrollView);
+    final effects=find.widgetWithText(TextButton,'Effects');
+    await tester.dragUntilVisible(effects.hitTestable(),categories,const Offset(-160,0));
+    await tester.tap(effects);await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('market-starter-business-suit')),findsNothing);
+    final all=find.widgetWithText(TextButton,'All');
+    await tester.dragUntilVisible(all.hitTestable(),categories,const Offset(160,0));
+    await tester.tap(all);await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('market-starter-business-suit')),findsOneWidget);
     await tester.enterText(find.byType(TextField),'moss-green');await tester.pumpAndSettle();
     FocusManager.instance.primaryFocus?.unfocus();await tester.pumpAndSettle();
     final buy=find.widgetWithText(FilledButton,'Buy · 90 coins');await tester.dragUntilVisible(buy.hitTestable(),find.byType(ListView),const Offset(0,-180),maxIteration:20);await tester.pumpAndSettle();await tester.tap(buy);await tester.pumpAndSettle();
