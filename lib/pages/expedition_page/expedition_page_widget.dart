@@ -17,7 +17,7 @@ class ExpeditionPageWidget extends StatefulWidget {
 class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   Timer? _timer;
   int _selectedMinutes = 25;
-  late final ValueNotifier<int> _secondsRemaining.value = ValueNotifier<int>(25 * 60);
+  late final ValueNotifier<int> _secondsRemaining = ValueNotifier<int>(25 * 60);
   bool _running = false;
   bool _finished = false;
   DateTime? _deadline;
@@ -25,7 +25,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   @override
   void dispose() {
     _timer?.cancel();
-    _secondsRemaining.value.dispose();
+    _secondsRemaining.dispose();
     super.dispose();
   }
 
