@@ -59,3 +59,10 @@ Build `1f8d86445982bc4ade44d58d9ee995fa37a101fb` adds detailed Moss Cloak and He
 ## Cloak fit correction
 
 Founder rejected the first fit because the cloaks did not wrap or sit correctly. Build `f0b91a805aff2860f69233043766f56b1e04a7f3` replaces the short front capelet clip with continuous front panels and restores original forearms/hands/class sleeves above the fabric. Registration is narrower and centered per body. Flutter Check 36809650001 and Preview 36809649944 passed. Browser inspected both garments across all three bodies in avatar/Hearth views; no disconnected panels or hidden hands observed. Review `?review=cloaks&rev=f0b91a8`. Visual approval remains pending; no merge or launch.
+
+## Cloak shoulder and hem polish — 2026-09-30 America/Chicago
+
+Founder approved a refinement pass on the corrected fit. Softened sleeve emergence with a short alpha blend and subtle contact shadows. Tapered the hem by 7% with a 1.2-pixel lateral drape, keeping neckline registration, full embroidery, and boot clearance. Artwork and icons are unchanged.
+
+Verified development build `433f8228e16e7e4dd5213aa1a2ec97c54edb8ae0`: Flutter Check 36810444631 and Preview 36810444494 passed, including frozen asset integrity and existing cloak render/removal coverage. Browser inspected both garments on all three bodies in avatar and Hearth views. Review: `?review=cloaks&rev=433f822`. Founder visual approval pending; no merge or launch.
+

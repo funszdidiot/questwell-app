@@ -22,3 +22,10 @@ Use case: stylized-concept. Production equippable garment sprite for Questwell d
 ## Wrapping correction verification
 
 Build `f0b91a805aff2860f69233043766f56b1e04a7f3` narrows and centers both garments per body and preserves continuous shoulder-to-hem panels. Flutter Check 36809650001 and Preview 36809649944 passed. Both garments were inspected in the browser on all three bodies, including Hearth rendering. Founder visual approval pending.
+
+## Cloak shoulder and hem polish — 2026-09-30 America/Chicago
+
+Founder approved a refinement pass on the corrected fit. Softened sleeve emergence with a short alpha blend and subtle contact shadows. Tapered the hem by 7% with a 1.2-pixel lateral drape, keeping neckline registration, full embroidery, and boot clearance. Artwork and icons are unchanged.
+
+Verified development build `433f8228e16e7e4dd5213aa1a2ec97c54edb8ae0`: Flutter Check 36810444631 and Preview 36810444494 passed, including frozen asset integrity and existing cloak render/removal coverage. Browser inspected both garments on all three bodies in avatar and Hearth views. Review: `?review=cloaks&rev=433f822`. Founder visual approval pending; no merge or launch.
+

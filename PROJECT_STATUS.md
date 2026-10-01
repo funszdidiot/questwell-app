@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Cloak shoulder and hem polish — 2026-09-30 America/Chicago
+
+Founder approved a refinement pass on the corrected fit. Softened sleeve emergence with a short alpha blend and subtle contact shadows. Tapered the hem by 7% with a 1.2-pixel lateral drape, keeping neckline registration, full embroidery, and boot clearance. Artwork and icons are unchanged.
+
+Verified development build `433f8228e16e7e4dd5213aa1a2ec97c54edb8ae0`: Flutter Check 36810444631 and Preview 36810444494 passed, including frozen asset integrity and existing cloak render/removal coverage. Browser inspected both garments on all three bodies in avatar and Hearth views. Review: `?review=cloaks&rev=433f822`. Founder visual approval pending; no merge or launch.
+
 ## Cloak wrapping correction — 2026-10-01 UTC
 
 Founder rejected the first cloak fit: garments did not wrap or sit correctly. Replaced the disconnected front shoulder treatment with continuous front drapes, restored the original head/forearms/class sleeves above the fabric, and narrowed/centered registration for each body. Existing handheld accessories draw above the new garment layers.
