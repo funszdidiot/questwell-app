@@ -4,6 +4,10 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Scholar cuff final polish — 2026-10-01
+
+Founder requested narrower openings and softer gold. Cuffs taper from the sleeve into a narrower wrist opening; thinner muted gold bands and low-contrast cloth folds reduce the separate polished-band look. Grimoire grip/tilt unchanged. Build `761e87ed152275c6182310437130cea59987907a`: Flutter Check 36821727168 and Preview 36821727167 passed. Browser inspected female, male, and neutral portrait/Hearth fits plus male close-up. Awaiting founder visual approval; no inventory or coin changes.
+
 ## Grimoire grip refinement and cuff blending — 2026-10-01
 
 Founder authorized a tighter grip, blended cuff seams, and a slight inward tilt. Built-in image edit v3 closes the finger loop and strengthens spine contact. The sprite pivots 0.055 radians at the registered wrist. Cuffs blend into retained sleeve cloth above the original trim; the final mask removes the ghost ornament caught in close-up. Prompt and asset path: `docs/art/ANNOTATED_GRIMOIRE.md`.
