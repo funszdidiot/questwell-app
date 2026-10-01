@@ -7,26 +7,26 @@ import '../lib/widgets/questwell_pixel_art.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching=false;
-  test('Cloak depth mask keeps faces and hands in front without cutting across the torso', () {
+  test('Closed cloak keeps faces in front and hands inside', () {
     for (final body in ['female','male','neutral']) {
       final path=QuestwellCloakForegroundClipper(body).getClip(const Size(240,320));
       expect(path.contains(const Offset(120,50)),isTrue);
-      expect(path.contains(Offset(body=='female'?77:70,184)),isTrue);
-      expect(path.contains(const Offset(168,184)),isTrue);
+      expect(path.contains(Offset(body=='female'?77:70,184)),isFalse);
+      expect(path.contains(const Offset(168,184)),isFalse);
       expect(path.contains(const Offset(120,100)),isFalse,reason:'Keep clasp visible');
       expect(path.contains(const Offset(101,155)),isFalse,reason:'Keep front drapes continuous');
       expect(path.contains(const Offset(90,250)),isFalse,reason:'Keep lower cloak over outfit');
     }
   });
-  test('Cloaks occlude class collar and epaulettes while keeping torso and cuffs', () {
+  test('Cloaks occlude class collar, sleeves, hands and epaulettes while keeping torso', () {
     for (final body in ['female','male','neutral']) {
       final path = QuestwellCloakUnderlayerClipper(body).getClip(const Size(240,320));
       expect(path.contains(const Offset(120,82)),isFalse,reason:'No competing class collar');
       expect(path.contains(const Offset(80,103)),isFalse,reason:'Left shoulder trim stays tucked');
       expect(path.contains(const Offset(160,103)),isFalse,reason:'Right shoulder trim stays tucked');
       expect(path.contains(const Offset(120,150)),isTrue);
-      expect(path.contains(const Offset(70,180)),isTrue);
-      expect(path.contains(const Offset(170,180)),isTrue);
+      expect(path.contains(const Offset(70,180)),isFalse);
+      expect(path.contains(const Offset(170,180)),isFalse);
       final front = QuestwellCloakForegroundClipper(body).getClip(const Size(240,320));
       expect(front.contains(const Offset(120,81)),isTrue,reason:'Restore the curved skin neckline');
       expect(front.contains(const Offset(106,81)),isFalse,reason:'No restored shirt collar');
@@ -35,6 +35,15 @@ void main() {
       expect(path.contains(const Offset(85,281)),isFalse,reason:'No outer gold undercoat hem');
       expect(path.contains(const Offset(150,281)),isFalse,reason:'No outer gold undercoat hem');
       expect(path.contains(const Offset(120,255)),isTrue,reason:'Keep the central undercoat');
+    }
+  });
+  test('Closed cloak base mask hides both hands but preserves face and boots',(){
+    for(final body in ['female','male','neutral']) {
+      final path=QuestwellClosedCloakBodyClipper(body).getClip(const Size(240,320));
+      expect(path.contains(const Offset(70,185)),isFalse);
+      expect(path.contains(const Offset(169,185)),isFalse);
+      expect(path.contains(const Offset(120,50)),isTrue);
+      expect(path.contains(const Offset(99,298)),isTrue);
     }
   });
   testWidgets('Both cloaks load on every supported class and body without hiding base layers', (tester) async {

@@ -76,14 +76,14 @@ class QuestwellCosmeticService {
     return (row['remaining_coins'] as num?)?.toInt() ?? 0;
   }
 
-  static Future<void> equip(QuestwellCosmetic cosmetic) async {
+  static Future<void> equip(QuestwellCosmetic cosmetic, {String? expectedConflict}) async {
     if (!cosmetic.owned || !QuestwellEquipmentPolicy.isReady(cosmetic.slug, cosmetic.category)) {
       throw StateError('This item is not ready to equip.');
     }
     final cosmeticId = cosmetic.id;
     await SupaFlow.client.rpc(
-      'equip_cosmetic',
-      params: {'p_cosmetic_id': cosmeticId},
+      'equip_cosmetic_loadout',
+      params: {'p_cosmetic_id': cosmeticId, 'p_expected_conflict': expectedConflict},
     );
   }
 

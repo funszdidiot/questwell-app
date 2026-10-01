@@ -12,6 +12,11 @@ abstract final class QuestwellEquipmentPolicy {
     'walnut-reading-table':'room', 'rainy-window':'room', 'warding-lantern':'room',
     'moonlit-woodland':'wall_art', 'fern-study':'wall_art', 'celestial-study':'wall_art',
   };
+  static bool isClosedCloak(String slug) =>
+      slug == 'moss-green-cloak' || slug == 'hearthguard-mantle';
+  static bool conflicts(String nextSlug, String nextCategory, String currentSlug, String currentCategory) =>
+      (isClosedCloak(nextSlug) && currentCategory == 'hands') ||
+      (nextCategory == 'hands' && isClosedCloak(currentSlug));
   static bool isReady(String slug, String category) => shopCategories[slug] == category ||
     (['first-journey-trophy','starlit-orrery'].contains(slug) && category == 'room');
 }

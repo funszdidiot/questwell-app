@@ -27,7 +27,7 @@ class _CloakReviewAppState extends State<CloakReviewApp> {
           child: ListView(padding: const EdgeInsets.all(18), children: [
             Text('Cloaks for the journey', style: QuestwellTypography.sectionHeading()),
             const SizedBox(height: 8),
-            const Text('Leaf-stitched wool or a guardian’s mantle. Try the fit on your adventurer.'),
+            const Text('A full drape with hands tucked inside. Closed cloaks cannot be worn with handheld items.'),
             const SizedBox(height: 12),
             Wrap(spacing: 8, children: [
               for (final entry in const {'moss-green-cloak':'Moss Cloak','hearthguard-mantle':'Hearthguard'}.entries)

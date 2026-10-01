@@ -1,3 +1,4 @@
+import '../lib/widgets/questwell_equipment_swap.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,6 +16,27 @@ void main(){
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching=false;
   final items=marketReviewCatalog.map((r)=>QuestwellCosmetic.fromJson(r)).toList();
+  test('Closed cloaks conflict with held items in both directions only',(){
+    for(final cloak in ['moss-green-cloak','hearthguard-mantle']) {
+      expect(QuestwellEquipmentPolicy.conflicts(cloak,'chest','brass-lantern','hands'),isTrue);
+      expect(QuestwellEquipmentPolicy.conflicts('annotated-grimoire','hands',cloak,'chest'),isTrue);
+      expect(QuestwellEquipmentPolicy.conflicts(cloak,'chest','leather-satchel','back'),isFalse);
+      expect(QuestwellEquipmentPolicy.conflicts(cloak,'chest','tiny-owl-familiar','familiar'),isFalse);
+    }
+    expect(QuestwellEquipmentPolicy.conflicts('starter-business-suit','chest','brass-lantern','hands'),isFalse);
+  });
+  testWidgets('Equipment swap clearly offers cancel and confirm',(tester)async{
+    final cloak=items.firstWhere((i)=>i.slug=='moss-green-cloak');
+    final held=items.firstWhere((i)=>i.slug=='brass-lantern');
+    bool? result;
+    await tester.pumpWidget(MaterialApp(home:Builder(builder:(context)=>TextButton(
+      onPressed:()async{result=await confirmCloakSwap(context,cloak,held);},child:const Text('Try swap')))));
+    await tester.tap(find.text('Try swap'));await tester.pumpAndSettle();
+    expect(find.textContaining('Closed cloaks cover your hands.'),findsOneWidget);
+    await tester.tap(find.text('Keep current'));await tester.pumpAndSettle();expect(result,isFalse);
+    await tester.tap(find.text('Try swap'));await tester.pumpAndSettle();
+    await tester.tap(find.text('Swap equipment'));await tester.pumpAndSettle();expect(result,isTrue);
+  });
   test('All 30 current shop entries have distinct, nonempty 16-bit icons and equipment routes',()async{
     expect(items.length,30);
     final fingerprints=<String>{};

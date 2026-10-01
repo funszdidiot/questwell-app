@@ -1,3 +1,4 @@
+import '../widgets/questwell_equipment_swap.dart';
 import 'package:flutter/material.dart';
 import '../services/questwell_cosmetic_models.dart';
 import '../widgets/questwell_market_view.dart';
@@ -29,7 +30,12 @@ class _MarketReviewAppState extends State<MarketReviewApp> {
         occupants:{for(final item in items.where((j)=>j.equipped&&j.roomSlot!=null))item.roomSlot!:RoomOccupant(item.id,item.name)});
       if(pick==null||!mounted)return;
       setState((){equipped.removeWhere((k,v)=>v==i.slug);equipped['${i.category}:${pick.slot}']=i.slug;slots[i.slug]=pick.slot;});
-    }else{setState(()=>equipped[i.category]=i.slug);}
+    }else{
+      final conflict=cloakConflict(i,items);
+      if(conflict!=null&&!await confirmCloakSwap(context,i,conflict))return;
+      if(!mounted)return;
+      setState((){if(conflict!=null)equipped.remove(conflict.category);equipped[i.category]=i.slug;});
+    }
   }
   @override
   Widget build(BuildContext context)=>MaterialApp(debugShowCheckedModeBanner:false,

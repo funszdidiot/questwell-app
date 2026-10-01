@@ -1,3 +1,4 @@
+import '/widgets/questwell_equipment_swap.dart';
 import '/auth/supabase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/auth_page/auth_page_widget.dart';
@@ -44,7 +45,12 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     setState(() => _busyCosmeticId = cosmetic.id);
 
     try {
-      await QuestwellCosmeticService.equip(cosmetic);
+      final current = await QuestwellCosmeticService.load();
+      if (!mounted) return;
+      final conflict = cloakConflict(cosmetic,current.cosmetics);
+      if (conflict != null && !await confirmCloakSwap(context,cosmetic,conflict)) return;
+      if (!mounted) return;
+      await QuestwellCosmeticService.equip(cosmetic,expectedConflict:conflict?.id);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

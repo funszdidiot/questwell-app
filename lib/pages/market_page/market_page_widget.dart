@@ -1,3 +1,4 @@
+import '/widgets/questwell_equipment_swap.dart';
 import 'package:go_router/go_router.dart';
 import '/pages/home_page/home_page_widget.dart';
 import '/widgets/questwell_market_home_button.dart';
@@ -80,7 +81,12 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
         if (pick == null) return;
         await QuestwellCosmeticService.place(cosmetic.id, pick.slot, pick.expectedOccupant);
       } else {
-        await QuestwellCosmeticService.equip(cosmetic);
+        final current = await QuestwellCosmeticService.load();
+      if (!mounted) return;
+      final conflict = cloakConflict(cosmetic,current.cosmetics);
+      if (conflict != null && !await confirmCloakSwap(context,cosmetic,conflict)) return;
+      if (!mounted) return;
+      await QuestwellCosmeticService.equip(cosmetic,expectedConflict:conflict?.id);
       }
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

@@ -51,8 +51,7 @@ class QuestwellCloak extends StatelessWidget {
   ));
 }
 
-/// Head and forearms overlap the cloak, making the cloth fall behind the arms
-/// while its uninterrupted front panels cover the sides of the torso and hips.
+/// Only the head and curved neck emerge above a closed cloak.
 class QuestwellCloakForegroundClipper extends CustomClipper<Path> {
   const QuestwellCloakForegroundClipper(this.body);
   final String body;
@@ -71,24 +70,6 @@ class QuestwellCloakForegroundClipper extends CustomClipper<Path> {
     path.quadraticBezierTo(neckLeft+1,80,120,female ? 83 : 84);
     path.quadraticBezierTo(neckRight-1,80,neckRight,75);
     path.lineTo(neckRight,70);path.close();
-    // The sleeves emerge below the shoulder cape. Follow the angled forearms,
-    // not a horizontal cut across the entire cloak.
-    if (female) {
-      path.moveTo(73,141);path.quadraticBezierTo(80,137,88,142);
-      path.lineTo(84,163);path.quadraticBezierTo(91,180,85,192);
-      path.lineTo(69,197);path.lineTo(63,183);path.lineTo(69,162);path.close();
-      path.moveTo(152,142);path.quadraticBezierTo(159,137,167,142);
-      path.lineTo(171,163);path.lineTo(179,180);path.lineTo(175,194);
-      path.lineTo(158,197);path.lineTo(151,181);path.lineTo(155,164);path.close();
-    } else {
-      final dy=body=='male'?3.0:0.0;
-      path.moveTo(67,140+dy);path.quadraticBezierTo(76,136+dy,85,142+dy);
-      path.lineTo(80,167+dy);path.lineTo(85,186+dy);path.lineTo(77,198+dy);
-      path.lineTo(62,197+dy);path.lineTo(57,183+dy);path.lineTo(63,167+dy);path.close();
-      path.moveTo(154,142+dy);path.quadraticBezierTo(161,137+dy,170,142+dy);
-      path.lineTo(175,167+dy);path.lineTo(182,184+dy);path.lineTo(177,198+dy);
-      path.lineTo(162,201+dy);path.lineTo(153,188+dy);path.lineTo(157,169+dy);path.close();
-    }
     return path.transform((Matrix4.identity()..scale(scale,scale)).storage)
       .shift(Offset(left,top));
   }
@@ -117,23 +98,43 @@ class QuestwellCloakUnderlayerClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     final scale = math.min(size.width/240,size.height/320);
     final dx = (size.width-240*scale)/2, dy = size.height-320*scale;
-    final female = body=='female';
     final path = Path()
       ..moveTo(106,94)..lineTo(136,94)
-      ..quadraticBezierTo(146,102,female ? 154 : 157,118)
-      // Sleeves remain whole beneath the outer capelet, avoiding cut shoulders.
-      ..quadraticBezierTo(162,123,180,123)
-      ..lineTo(240,123)..lineTo(240,202)..lineTo(153,202)
-      // The undercoat finishes inside the outer drapes, above the boot line.
+      ..quadraticBezierTo(142,145,145,190)
       ..quadraticBezierTo(144,236,136,265)
       ..quadraticBezierTo(121,271,104,265)
-      ..quadraticBezierTo(97,238,89,202)
-      ..lineTo(0,202)..lineTo(0,123)..lineTo(60,123)
-      ..quadraticBezierTo(76,123,female ? 84 : 81,118)
-      ..quadraticBezierTo(96,102,106,94)..close();
+      ..quadraticBezierTo(97,238,98,190)
+      ..quadraticBezierTo(99,145,106,94)..close();
     return path.transform((Matrix4.identity()..scale(scale,scale)).storage)
       .shift(Offset(dx,dy));
   }
   @override
   bool shouldReclip(covariant QuestwellCloakUnderlayerClipper oldClipper) => oldClipper.body!=body;
+}
+
+/// Keep the original face, hair, central outfit and legs; hide arms and hands
+/// inside the full outer drape without changing the approved source assets.
+class QuestwellClosedCloakBodyClipper extends CustomClipper<Path> {
+  const QuestwellClosedCloakBodyClipper(this.body);
+  final String body;
+  @override
+  Path getClip(Size size) {
+    final scale = math.min(size.width/240,size.height/320);
+    final path = Path()
+      ..addRect(const Rect.fromLTRB(0,0,240,77))
+      ..addRect(const Rect.fromLTRB(100,70,140,205))
+      ..addRect(const Rect.fromLTRB(0,205,240,320));
+    if (body=='female') {
+      path.moveTo(65,70);path.lineTo(107,70);path.lineTo(106,82);
+      path.lineTo(93,86);path.lineTo(86,100);path.lineTo(84,117);
+      path.lineTo(68,117);path.close();
+      path.moveTo(136,70);path.lineTo(174,70);path.lineTo(174,115);
+      path.lineTo(156,115);path.lineTo(155,99);path.lineTo(149,90);
+      path.lineTo(137,84);path.close();
+    }
+    return path.transform((Matrix4.identity()..scale(scale,scale)).storage)
+      .shift(Offset((size.width-240*scale)/2,size.height-320*scale));
+  }
+  @override
+  bool shouldReclip(covariant QuestwellClosedCloakBodyClipper oldClipper) => oldClipper.body!=body;
 }

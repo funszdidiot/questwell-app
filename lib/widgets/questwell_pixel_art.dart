@@ -196,6 +196,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   // body-specific canvas. Do not apply another generic scale/offset here.
   @override
   Widget build(BuildContext context) {
+    final equippedSlugs = QuestwellCloak.supports(this.equippedSlugs['chest'])
+        ? ({...this.equippedSlugs}..remove('hands')) : this.equippedSlugs;
     final classOverlay = equippedSlugs['chest'] == 'starter-business-suit' ? null : _classOverlayAsset;
     final rearRevision = archetype == 'wanderer' ? 'v2' : 'v1';
     final body = ['male', 'female'].contains(avatarBodyType)
@@ -208,6 +210,10 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           : image;
     }
 
+    Widget baseLayer() => QuestwellCloak.supports(equippedSlugs['chest'])
+        ? ClipPath(clipper: QuestwellClosedCloakBodyClipper(body), child: _assetLayer(_baseAsset))
+        : _assetLayer(_baseAsset);
+
     return RepaintBoundary(
       child: Stack(
         clipBehavior: Clip.none,
@@ -219,31 +225,31 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           if (QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body, rear: true),
           if (equippedSlugs['chest'] == 'starter-business-suit')
-            _assetLayer(_baseAsset)
+            baseLayer()
           else if (archetype == 'scholar')
             ClipPath(
               clipper: ScholarUnderlayerClipper(avatarBodyType),
-              child: _assetLayer(_baseAsset),
+              child: baseLayer(),
             )
           else if (archetype == 'scout')
             ClipPath(
               clipper: ScoutUnderlayerClipper(avatarBodyType),
-              child: _assetLayer(_baseAsset),
+              child: baseLayer(),
             )
           else if (archetype == 'alchemist')
             ClipPath(
               clipper: AlchemistUnderlayerClipper(avatarBodyType),
-              child: _assetLayer(_baseAsset),
+              child: baseLayer(),
             )
           else if (archetype == 'guardian')
             ClipPath(
               clipper: GuardianUnderlayerClipper(avatarBodyType),
-              child: _assetLayer(_baseAsset),
+              child: baseLayer(),
             )
           else if (archetype == 'wanderer')
             ClipPath(
               clipper: WandererUnderlayerClipper(avatarBodyType),
-              child: _assetLayer(_baseAsset),
+              child: baseLayer(),
             )
           else
             _assetLayer(
@@ -262,22 +268,22 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           if (QuestwellCloak.supports(equippedSlugs['chest'])) ...[
             QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body),
             QuestwellCloakForeground(body: body, children: [
-              _assetLayer(_baseAsset),
+              baseLayer(),
               if (classOverlay != null) classLayer(classOverlay),
             ]),
           ],
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body),
           if (equippedSlugs['hands'] == 'annotated-grimoire')
-            ClipPath(clipper: LanternHandClipper(body), child: _assetLayer(_baseAsset)),
+            ClipPath(clipper: LanternHandClipper(body), child: baseLayer()),
           if (equippedSlugs['back'] == QuestwellLeatherSatchel.slug) ...[
             QuestwellLeatherSatchel(bodyType: body),
-            ClipPath(clipper: SatchelForearmClipper(body), child: _assetLayer(_baseAsset)),
+            ClipPath(clipper: SatchelForearmClipper(body), child: baseLayer()),
             if (classOverlay != null)
               ClipPath(clipper: SatchelForearmClipper(body), child: _assetLayer(classOverlay)),
           ],
           if (equippedSlugs['hands'] == QuestwellBrassLantern.slug) ...[
             QuestwellBrassLantern(bodyType: body),
-            ClipPath(clipper: LanternHandClipper(body), child: _assetLayer(_baseAsset)),
+            ClipPath(clipper: LanternHandClipper(body), child: baseLayer()),
             if (classOverlay != null)
               ClipPath(clipper: LanternHandClipper(body), child: _assetLayer(classOverlay)),
           ],
