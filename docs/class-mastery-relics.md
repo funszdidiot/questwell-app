@@ -12,18 +12,22 @@ Implemented on questwell-dev:
 - Claim, place, move, remove, and replacement confirmation in the shared UI.
 - Appearance saves invalidate Hearth data; reads wait for pending saves.
 
-Pending activation:
-- Review and apply tool/qa/class_mastery_relic_catalog_candidate.sql to an
-  approved development database. It converts existing mastery rewards to room
-  décor, preserving IDs, ownership, class restrictions, and collection criteria.
-  It also adds a class-relic branch to the existing placement RPC: left/right
-  pedestals, mantel, or a supported bookcase top. These changes must activate
-  together; the current server otherwise rejects class relics on surfaces.
-- Exercise the existing claim/place/move/remove RPCs with a development account.
-  Confirm a locked reward cannot be placed, another user's item cannot be placed,
-  a changed occupant requires fresh confirmation, and a class change unequips
-  incompatible relics.
-- Founder visual approval before any launch or promotion.
+Database activation completed with explicit founder approval on 2026-10-01:
+- Applied migration `activate_class_mastery_hearth_relics` to Project Momentum
+  (`bdzcazkyypopbanbjnud`). The reviewed SQL is retained in
+  `tool/qa/class_mastery_relic_catalog_candidate.sql`.
+- All five class-mastery catalog items are active room décor.
+- The placement RPC now accepts their left/right pedestals, mantel, and supported
+  bookcase top. Other item-specific placement rules are preserved.
+- Post-apply queries verified all five categories, the added server rules,
+  unchanged earned-reward rows, and unchanged function permissions.
+- Security advisor reported no database findings. Its only warning was the
+  existing Auth leaked-password-protection setting; this change does not alter Auth.
 
-The account-free review uses sample ownership and local placement only.
-The candidate has not been applied to the live database.
+Remaining account validation:
+- Exercise claim/place/move/remove through a signed-in development account.
+  Confirm class restrictions, ownership, bookcase support, and stale-occupant
+  confirmation in the UI.
+- Founder visual approval before launch or promotion. No branch merge performed.
+
+The account-free review continues to use sample ownership and local placement.

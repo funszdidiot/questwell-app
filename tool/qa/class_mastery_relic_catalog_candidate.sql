@@ -1,4 +1,5 @@
--- CANDIDATE ONLY: database activation requires explicit founder approval.
+-- APPLIED 2026-10-01 with explicit founder approval to bdzcazkyypopbanbjnud.
+-- Migration: activate_class_mastery_hearth_relics. Retained here as the reviewed SQL.
 -- Applies catalog and placement rules together in one transaction.
 -- No ownership, reward requirements, item IDs, XP, or coin values change.
 begin;
