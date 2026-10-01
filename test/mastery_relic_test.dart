@@ -86,7 +86,7 @@ void main() {
           expect(facing.transform.storage[0], slot == 'right' ? 1 : -1);
           expect(bounds.center.dx, slot == 'right' ? greaterThan(room.center.dx) : lessThan(room.center.dx));
           final depth = (bounds.bottom - room.top) / room.height;
-          expect(depth, slot == 'front' ? greaterThan(.85) : lessThan(.65));
+          expect(depth, slot == 'front' ? greaterThan(.85) : inInclusiveRange(.66, .73));
         }
         expect(tester.takeException(), isNull);
       }

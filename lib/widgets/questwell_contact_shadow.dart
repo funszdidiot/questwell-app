@@ -48,6 +48,17 @@ class QuestwellContactShadowPainter extends CustomPainter {
       case 'hearth-fern':
         oval(.51, .908, .41, .065, alpha: 36);
         oval(.51, .906, .32, .025, alpha: 58);
+      case 'scholar-seal':
+      case 'scout-compass':
+      case 'alchemist-phial':
+      case 'guardian-crest':
+      case 'wanderer-star-map':
+        // Cropped display sprites share a narrow walnut stand. Match its
+        // three visible feet, rather than using the avatar's boot shadows.
+        oval(.50, .932, .65, .090, alpha: 32);
+        oval(.24, .902, .18, .035, alpha: 88);
+        oval(.58, .974, .19, .035, alpha: 94);
+        oval(.79, .876, .16, .030, alpha: 66);
       default:
         // All avatar bodies use the same 240 × 320 canvas and boot baseline.
         oval(.525, .968, .55, .037, alpha: 20);

@@ -26,7 +26,7 @@ class QuestwellHearthDecor {
     _ => const {'left': 'Beside the fireplace', 'right': 'Near the window', 'front': 'Foreground'},
   };
   static double floorDepth(String slug, String slot) =>
-    QuestwellMasteryRelic.supports(slug) ? (slot == 'front' ? .89 : .61) : slug == QuestwellReadingTable.slug ? .89
+    QuestwellMasteryRelic.supports(slug) ? (slot == 'front' ? .89 : .68) : slug == QuestwellReadingTable.slug ? .89
       : slug == QuestwellBookshelf.slug ? .68
       : slug == QuestwellFern.slug && slot != 'front' ? .70 : .86;
 
@@ -93,11 +93,11 @@ class QuestwellHearthDecor {
         : front ? .20 : slot == 'left' ? .28 : .81);
     // The back wall meets the floor around .67; the avatar's boots are at .88.
     // Furniture rests between those planes and is painted behind the avatar.
-    // Rear spots follow the room texture's cover crop, so a short picker
-    // viewport cannot lift the pedestal feet onto the back wall.
+    // Ground the rear pedestals on the first clear floorboards, below the
+    // wall trim. Follow the texture crop in shorter placement previews.
     final roomSide = math.max(scene.width, scene.height);
     final floor = relic && !front
-      ? roomSide * .61 + (scene.height - roomSide) * .52
+      ? roomSide * .68 + (scene.height - roomSide) * .52
       : scene.height * floorDepth(slug, slot);
     return Rect.fromLTWH(center - width / 2, floor - height, width, height);
   }
