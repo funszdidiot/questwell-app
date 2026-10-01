@@ -13,7 +13,7 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    final responses = await Future.wait([
+    final responses = await QuestwellNetwork.read(() => Future.wait([
       SupaFlow.client
           .from('users')
           .select('level,total_xp,level_xp_offset,coin_balance,current_energy_mode,onboarding_completed,adventurer_archetype,avatar_body_type')
@@ -28,7 +28,7 @@ class QuestwellCosmeticService {
           .from('user_cosmetics')
           .select('cosmetic_id,equipped,room_slot,unlocked_at,source')
           .eq('user_id', uid),
-    ]);
+    ]));
 
     final profile =
         QuestwellProfile.fromJson(Map<String, dynamic>.from(responses[0] as Map));
@@ -89,9 +89,9 @@ class QuestwellCosmeticService {
   }
 
   static Future<void> place(String id, String slot, String? expectedOccupant) async {
-    await SupaFlow.client.rpc('place_hearth_cosmetic', params: {
+    await QuestwellNetwork.write(() => SupaFlow.client.rpc('place_hearth_cosmetic', params: {
       'p_cosmetic_id': id, 'p_slot': slot, 'p_expected_occupant': expectedOccupant,
-    });
+    }));
   }
 
   static Future<void> unequip(String cosmeticId) async {
@@ -111,10 +111,10 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    await SupaFlow.client
+    await QuestwellNetwork.write(() => SupaFlow.client
         .from('users')
         .update({'current_energy_mode': mode})
-        .eq('id', uid);
+        .eq('id', uid));
   }
 
   static Future<void> completeOnboarding() async {
@@ -123,10 +123,10 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    await SupaFlow.client
+    await QuestwellNetwork.write(() => SupaFlow.client
         .from('users')
         .update({'onboarding_completed': true})
-        .eq('id', uid);
+        .eq('id', uid));
   }
 
   static Future<String> claimClassMasteryReward() async {
