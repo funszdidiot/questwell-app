@@ -17,6 +17,10 @@ class ChroniclePageWidget extends StatefulWidget {
 class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
   late Future<ChronicleSnapshot> _future;
   String _filter = 'all';
+  final _search = TextEditingController();
+  String _query = '';
+  @override
+  void dispose() { _search.dispose(); super.dispose(); }
   int _visibleCount = 30;
   static const _gold = Color(0xFFE4C586);
   static const _muted = Color(0xFFBDB6A6);
@@ -60,15 +64,18 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
             ])));
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: _gold));
           final data = snapshot.data!;
-          final entries = data.wins.where((win) => _filter == 'all' ||
-            (_filter == 'milestones' ? !win.isActivity : win.kind == _filter)).toList();
+          final entries = data.wins.where((win) =>
+            (_filter == 'all' || (_filter == 'milestones' ? !win.isActivity : win.kind == _filter)) &&
+            win.title.toLowerCase().contains(_query)).toList();
           final groups = <DateTime, List<ChronicleWin>>{};
           for (final win in entries.take(_visibleCount)) {
             final local = win.completedAt.toLocal();
             final day = DateTime(local.year, local.month, local.day);
             groups.putIfAbsent(day, () => []).add(win);
           }
-          final empty = switch (_filter) {
+          final empty = _query.isNotEmpty
+              ? ('No matching entries.', 'Try another quest name or choose a different filter.')
+              : switch (_filter) {
             'quest' => ('Your next small win belongs here.', 'Complete a quest to add it to these pages.'),
             'boss' => ('A victory worth a page.', 'Completed boss battles will appear here.'),
             'milestones' => ('Your milestones are ahead.', 'Level-ups and trophy rewards will appear here.'),
@@ -82,6 +89,38 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
               const SizedBox(height: 22),
               Text('YOUR STORY', style: QuestwellTypography.sectionHeading(size: 10)),
               const SizedBox(height: 10),
+              TextField(
+                controller: _search,
+                style: _text(16),
+                textInputAction: TextInputAction.search,
+                onChanged: (value) => setState(() {
+                  _query = value.trim().toLowerCase();
+                  _visibleCount = 30;
+                }),
+                onSubmitted: (_) => FocusScope.of(context).unfocus(),
+                decoration: InputDecoration(
+                  labelText: 'Search your Chronicle',
+                  hintText: 'Find a previous quest…',
+                  labelStyle: _text(14, color: _muted),
+                  hintStyle: _text(14, color: _muted),
+                  filled: true, fillColor: const Color(0xFF1D282E),
+                  prefixIcon: const Icon(Icons.search, color: _gold),
+                  suffixIcon: _search.text.isEmpty ? null : IconButton(
+                    tooltip: 'Clear search',
+                    icon: const Icon(Icons.close, color: _gold),
+                    onPressed: () => setState(() {
+                      _search.clear(); _query = ''; _visibleCount = 30;
+                    }),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                    borderSide: const BorderSide(color: Color(0xFF52605C))),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(4),
+                    borderSide: const BorderSide(color: _gold, width: 2)),
+                ),
+              ),
+              const SizedBox(height: 12),
               Wrap(spacing: 7, runSpacing: 6, children: [
                 for (final filter in const {'all':'All', 'quest':'Quests', 'boss':'Bosses', 'milestones':'Milestones'}.entries)
                   ChoiceChip(label: Text(filter.value), selected: _filter == filter.key,

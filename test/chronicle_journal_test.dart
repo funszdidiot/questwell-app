@@ -48,4 +48,40 @@ void main() {
     expect(find.text('Show earlier pages'), findsNothing);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('search finds older titles, combines filters, and clears', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(390, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final date = DateTime(2026, 9, 30, 18);
+    final wins = [
+      for (var i = 0; i < 31; i++)
+        ChronicleWin(kind: 'quest', title: 'Recorded win $i',
+          completedAt: date.subtract(Duration(minutes: i)), xp: 10, coins: 5),
+      ChronicleWin(kind: 'quest', title: 'Send the proposal',
+        completedAt: date.subtract(const Duration(days: 5)), xp: 20, coins: 10),
+      ChronicleWin(kind: 'boss', title: 'Proposal dragon',
+        completedAt: date.subtract(const Duration(days: 6)), xp: 25, coins: 50),
+    ];
+    await tester.pumpWidget(MaterialApp(theme: ThemeData.dark(),
+      home: ChroniclePageWidget(previewData: ChronicleSnapshot.fromWins(wins, now: date))));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '  PROPOSAL  ');
+    await tester.pumpAndSettle();
+    expect(find.text('Send the proposal'), findsOneWidget);
+    expect(find.text('Proposal dragon'), findsOneWidget);
+    expect(find.text('Recorded win 0'), findsNothing);
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Quests'));
+    await tester.pumpAndSettle();
+    expect(find.text('Send the proposal'), findsOneWidget);
+    expect(find.text('Proposal dragon'), findsNothing);
+    await tester.enterText(find.byType(TextField), 'no such quest');
+    await tester.pumpAndSettle();
+    expect(find.text('No matching entries.'), findsOneWidget);
+    await tester.tap(find.byTooltip('Clear search'));
+    await tester.pumpAndSettle();
+    expect(tester.widget<TextField>(find.byType(TextField)).controller!.text, isEmpty);
+    expect(find.text('No matching entries.'), findsNothing);
+    expect(find.text('Recorded win 0'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }
