@@ -1,4 +1,5 @@
 import '/backend/supabase/supabase.dart';
+import '/backend/supabase/questwell_network.dart';
 
 class ChronicleWin {
   const ChronicleWin({
@@ -68,7 +69,7 @@ class QuestwellChronicleService {
     final uid = SupaFlow.client.auth.currentUser?.id;
     if (uid == null) throw StateError('Authentication required.');
 
-    final responses = await Future.wait([
+    final responses = await QuestwellNetwork.read(() => Future.wait([
       SupaFlow.client
           .from('tasks')
           .select('id,title,xp_value,coin_value,completed_at')
@@ -85,7 +86,7 @@ class QuestwellChronicleService {
           .select('kind,title,level,cosmetic_slug,source,occurred_at')
           .eq('user_id', uid)
           .order('occurred_at', ascending: false),
-    ]);
+    ]));
 
     final wins = <ChronicleWin>[];
 
