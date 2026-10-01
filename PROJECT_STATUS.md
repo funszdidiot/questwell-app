@@ -4,6 +4,21 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Market browsing controls — 2026-09-30
+
+Founder-approved shopfront retained. Search and filters now share one compact
+forest-green panel. Categories occupy a horizontally scrolling text-tab row
+with a gold selection underline. The three availability/ownership filters use
+explicit green/gold styles and 44 px minimum touch targets; they wrap when
+large text requires it. Added clear search. Existing category, class, price,
+ownership and purchase logic is unchanged.
+
+**Development build:** `eaf249a2f94d92cb2df07508227006c7c4be5052`.
+Flutter Check `36802775839` and Preview `36802775787` passed. The 320 px /
+160% text test now verifies reaching Effects, returning to All, and purchasing
+a searched item. Browser review passed at 320 and 390 px. Development only;
+no merge, external beta or launch.
+
 ## Market shopfront balance — 2026-09-30
 
 Founder rejected the primitive storefront, then requested a middle ground
@@ -11,7 +26,8 @@ after seeing the ornate illustrated direction. The new v3 uses a compact
 2:1 pixel-art façade with a draped green awning, warm lanterns, a simple brass
 and walnut sign, and a few potions, books, and crystals. The real MARKET label
 is fitted to the sign; tagline, coins, filters, and equipment stay unchanged.
-The artwork is pending founder review, not assumed approved.
+Founder approved this shopfront at 8:45 p.m. America/Chicago on September 30,
+2026 ("I like it") and requested cleanup of the controls beneath it.
 
 **Development build:** `4491a21975cd16aca2aa885ea73cbd85f7383f07`.
 Flutter Check `36802061217` and Preview `36802061193` passed. Existing
