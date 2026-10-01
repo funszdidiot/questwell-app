@@ -93,7 +93,12 @@ class QuestwellHearthDecor {
         : front ? .20 : slot == 'left' ? .28 : .81);
     // The back wall meets the floor around .67; the avatar's boots are at .88.
     // Furniture rests between those planes and is painted behind the avatar.
-    final floor = scene.height * floorDepth(slug, slot);
+    // Rear spots follow the room texture's cover crop, so a short picker
+    // viewport cannot lift the pedestal feet onto the back wall.
+    final roomSide = math.max(scene.width, scene.height);
+    final floor = relic && !front
+      ? roomSide * .61 + (scene.height - roomSide) * .52
+      : scene.height * floorDepth(slug, slot);
     return Rect.fromLTWH(center - width / 2, floor - height, width, height);
   }
 
