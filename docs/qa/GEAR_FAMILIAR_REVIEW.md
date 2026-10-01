@@ -124,3 +124,12 @@ Founder authorized the remaining gear pass, starting with the Wayfarer Satchel, 
 
 Verified code build `f12473e122536fac67499d943fa8165a662ec76a`: Flutter Check 36816403718 and Preview 36816403711 passed. Locked asset verification passed. Browser inspected male, female and neutral in open Wanderer outfits and Moss Cloaks; bag/strap removal and restoration passed. Visual QA used normal pointer interaction; accessibility-enabled browser automation was unreliable and was not counted as a verified accessibility test. Review `?review=wayfarer&rev=f12473e`; proof `wayfarer-satchel-fit.jpg`. Founder design review pending. Annotated Grimoire and Pathfinder Boots remain next. Development preview only; no merge or launch.
 
+
+## Annotated Grimoire equipped-art upgrade — 2026-09-30 America/Chicago
+
+Replaced the handheld canvas placeholder with detailed 64-bit-style plum leather, gold hardware, worn ivory pages and annotation tabs. Three registered body placements restore the existing hand and class cuff over the upper cover edge. Updated the matching 16-bit icon. Shared cloak conflict confirmation and server-side equipment rules remain unchanged. Scholar-only, rare, hands slot, 160 coins. No account changes. Prompt and source: `docs/art/ANNOTATED_GRIMOIRE.md`.
+
+Build `4477ab07a9b51a86ace491130e18196dfba0acc1`: Flutter Check 36817616481 and Preview 36817616421 passed. Browser visually inspected female, male and neutral Scholar grips in avatar/Hearth views. Cancel retained the book; confirmed book-to-cloak and cloak-to-book swaps passed. Final female Hearth view was inspected, but the browser transport disconnected before saving a screenshot artifact. Verified review route: `?review=grimoire&rev=4477ab0`. Founder visual approval pending; Pathfinder Boots next. Development preview only; no merge or launch.
+
+Preceding Wayfarer Satchel was approved and granted to the founder inventory; ownership verified, coin balance and equipped items unchanged.
+

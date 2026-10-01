@@ -4,6 +4,14 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Annotated Grimoire equipped-art upgrade — 2026-09-30 America/Chicago
+
+Replaced the handheld canvas placeholder with detailed 64-bit-style plum leather, gold hardware, worn ivory pages and annotation tabs. Three registered body placements restore the existing hand and class cuff over the upper cover edge. Updated the matching 16-bit icon. Shared cloak conflict confirmation and server-side equipment rules remain unchanged. Scholar-only, rare, hands slot, 160 coins. No account changes. Prompt and source: `docs/art/ANNOTATED_GRIMOIRE.md`.
+
+Build `4477ab07a9b51a86ace491130e18196dfba0acc1`: Flutter Check 36817616481 and Preview 36817616421 passed. Browser visually inspected female, male and neutral Scholar grips in avatar/Hearth views. Cancel retained the book; confirmed book-to-cloak and cloak-to-book swaps passed. Final female Hearth view was inspected, but the browser transport disconnected before saving a screenshot artifact. Verified review route: `?review=grimoire&rev=4477ab0`. Founder visual approval pending; Pathfinder Boots next. Development preview only; no merge or launch.
+
+Preceding Wayfarer Satchel was approved and granted to the founder inventory; ownership verified, coin balance and equipped items unchanged.
+
 ## Wayfarer Satchel equipped-art upgrade — 2026-09-30 America/Chicago
 
 Founder authorized the remaining gear pass, starting with the Wayfarer Satchel, and reconfirmed detailed 64-bit-style equipped art. Replaced its canvas placeholder with transparent illustrated olive canvas, leather trim, brass buckle/rings and rolled map. Registered a separate shoulder strap to the upper-right ring and body-specific bag placements. Shared cloak-aware forearm restoration preserves natural hand overlap in open outfits and keeps hands hidden beneath closed cloaks. Updated its shared 16-bit Market/Inventory icon to match the olive/leather/map palette. Wanderer restriction, 160-coin price, back slot, ownership and equipped state are unchanged. Built-in generation prompt and source details: `docs/art/WAYFARER_SATCHEL.md`.
