@@ -4,6 +4,24 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Typography review — 2026-09-30
+
+**Development build:** `04c1c0b5be19488afce9055b61cfb75df9b39d18`.
+Market, Adventurer / Inventory, and Chronicle now share a Roboto body style.
+Pixel section headings remain. Market item titles use 17 px bold text,
+descriptions use 14 px text with 1.4 line height, and controls use explicit
+Roboto styles. Chronicle event labels and timestamps are now 12 px; filters
+use 14 px. The restored Market tagline and approved design remain.
+
+**Verified:** Flutter Check `36799787259` and Preview `36799787267` passed.
+Existing Market, Inventory, and Chronicle layout tests cover 320 px screens
+with 160% text scaling. Browser review confirmed Market at 320 and 390 px,
+Chronicle, and Inventory cards. No layout overflow observed.
+
+**App:** https://funszdidiot.github.io/questwell-app/?rev=04c1c0b
+
+Development preview only; no merge to `flutterflow`, external beta or launch.
+
 ## Market equipment and icons — 2026-09-30, 8:02 p.m. America/Chicago
 
 **Development build:** `25a0f104fbc6d4c0466d602338d55d9ae189948d`.
