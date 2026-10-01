@@ -73,3 +73,10 @@ Founder identified class shoulder trim protruding beside the cloaks and a stray 
 
 Verified build `9c75bd16527501f3b99e4ea700149cb87f6565af`: Flutter Check 36811239939 and Preview 36811239886 passed. New mask checks cover both shoulder tips, competing collar, visible torso/cuffs, and the removed shirt strip; existing 18 cloak/class/body combinations and removal remain covered. Browser inspected both cloaks on all three bodies in avatar and Hearth views, confirming hidden shoulder trim and clear outer collars. Review: `?review=cloaks&rev=9c75bd1`. Founder visual approval remains pending; no merge or launch.
 
+
+## Cloak contour correction — 2026-09-30 America/Chicago
+
+Founder requested correction of the harsh neck band, cut-out sleeve transitions, and competing inner hem. Replaced the horizontal neck cutoff with a skin-following curved opening. Upper sleeves now remain below the capelet; only lower forearms restore above the cloth. Removed the synthetic shoulder fade/shadow. The inner class coat now ends within a curved knee/calf silhouette, hiding its outer gold corners near the boots.
+
+Verified development build `2c77a41a504595f7a852203cea7863d7d5b85bbc`: Flutter Check 36811842575 and Preview 36811842602 passed. Mask checks cover restored neck skin, excluded shirt collar, upper sleeve depth, preserved cuffs, and tucked hem. Browser inspected both cloaks on all three bodies in avatar/Hearth views, plus an enlarged neckline capture. Review: `?review=cloaks&rev=2c77a41`. Founder visual approval pending; no merge or launch.
+
