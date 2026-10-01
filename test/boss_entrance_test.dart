@@ -40,6 +40,21 @@ void main() {
     expect(tester.binding.hasScheduledFrame, isFalse);
     expect(tester.takeException(), isNull);
   });
+  testWidgets('Spreadsheet Slime reveals its taunt and settles its squash animation', (tester) async {
+    await tester.pumpWidget(scene(id: 'slime', type: 'spreadsheet_slime'));
+    expect(find.text('SPREADSHEET SLIME'), findsOneWidget);
+    expect(find.text('BOSS APPROACHING'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('It worked in the other tab.'), findsOneWidget);
+    expect(find.byWidgetPredicate((w) => w is Image && w.image is AssetImage &&
+      (w.image as AssetImage).assetName.endsWith('questwell_spreadsheet_slime_v1.webp')), findsOneWidget);
+    expect(tester.binding.hasScheduledFrame, isFalse);
+    await tester.pumpWidget(scene(id: 'slime', type: 'spreadsheet_slime', reduced: true, progress: 1, defeated: true));
+    await tester.pumpAndSettle();
+    expect(find.text('SPREADSHEET SLIME · DEFEATED'), findsOneWidget);
+    expect(find.text('VICTORY'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
   testWidgets('Skip persists and does not replay after remount', (tester) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(scene(id: 'persistent-test', persist: true));

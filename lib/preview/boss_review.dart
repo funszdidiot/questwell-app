@@ -10,12 +10,14 @@ class BossReviewApp extends StatefulWidget {
 }
 class _BossReviewAppState extends State<BossReviewApp> {
   int _replay = 0;
-  String _boss = Uri.base.queryParameters['boss'] == 'meeting_mimic' ? 'meeting_mimic' : 'inbox_hydra';
+  String _boss = const ['meeting_mimic', 'spreadsheet_slime'].contains(Uri.base.queryParameters['boss'])
+    ? Uri.base.queryParameters['boss']! : 'inbox_hydra';
+  bool get _slime => _boss == 'spreadsheet_slime';
   bool get _mimic => _boss == 'meeting_mimic';
   final _done = <int>{};
   bool _motion = true;
   String _body = 'female';
-  List<String> get _steps => _mimic ? ['Name the decision this meeting needs', 'Write a three-point agenda', 'Send the decision and next steps'] : ['Sort the three threads that matter', 'Send one useful reply', 'Archive what no longer needs you'];
+  List<String> get _steps => _slime ? ['Choose the tab that needs attention', 'Fix one formula or messy column', 'Check the totals and save your work'] : _mimic ? ['Name the decision this meeting needs', 'Write a three-point agenda', 'Send the decision and next steps'] : ['Sort the three threads that matter', 'Send one useful reply', 'Archive what no longer needs you'];
   @override
   Widget build(BuildContext context) => MaterialApp(debugShowCheckedModeBanner: false,
     theme: ThemeData.dark(useMaterial3: true), home: Builder(builder: (context) =>
@@ -25,11 +27,11 @@ class _BossReviewAppState extends State<BossReviewApp> {
             child: ListView(padding: const EdgeInsets.all(18), children: [
               Text('BOSS BATTLES', style: QuestwellTypography.sectionHeading()),
               const SizedBox(height: 8),
-              Text(_mimic ? 'One agenda. One decision. Meeting adjourned.' : 'One reply. One thread. One head at a time.'),
+              Text(_slime ? 'One tab. One formula. A little less chaos.' : _mimic ? 'One agenda. One decision. Meeting adjourned.' : 'One reply. One thread. One head at a time.'),
               const SizedBox(height: 10),
               Wrap(spacing: 8, children: [
-                for (final type in ['inbox_hydra', 'meeting_mimic']) ChoiceChip(
-                  label: Text(type == 'inbox_hydra' ? 'Inbox Hydra' : 'Meeting Mimic'),
+                for (final type in ['inbox_hydra', 'meeting_mimic', 'spreadsheet_slime']) ChoiceChip(
+                  label: Text(type == 'inbox_hydra' ? 'Inbox Hydra' : type == 'meeting_mimic' ? 'Meeting Mimic' : 'Spreadsheet Slime'),
                   selected: _boss == type,
                   onSelected: (_) => setState(() { _boss = type; _done.clear(); _replay++; })),
               ]),
@@ -38,7 +40,7 @@ class _BossReviewAppState extends State<BossReviewApp> {
                 persistEntrance: false, progress: _done.length / 3, defeated: _done.length == 3,
                 archetype: 'scholar', body: _body, equipment: const {'neck': 'emerald-scholar-scarf', 'accessory': 'moonstone-brooch'}),
               const SizedBox(height: 16),
-              Text(_done.length == 3 ? (_mimic ? 'MEETING ADJOURNED' : 'BACKLOG BANISHED') : 'YOUR ATTACK PLAN', style: QuestwellTypography.sectionHeading()),
+              Text(_done.length == 3 ? (_slime ? 'SHEET SORTED' : _mimic ? 'MEETING ADJOURNED' : 'BACKLOG BANISHED') : 'YOUR ATTACK PLAN', style: QuestwellTypography.sectionHeading()),
               const SizedBox(height: 10),
               for (var i = 0; i < _steps.length; i++) Padding(padding: const EdgeInsets.only(bottom: 8),
                 child: QuestwellParchmentPanel(padding: const EdgeInsets.all(10), child: Row(children: [

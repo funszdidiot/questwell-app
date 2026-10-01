@@ -23,9 +23,10 @@ class QuestwellBossEncounter extends StatefulWidget {
 
 class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
     with SingleTickerProviderStateMixin {
+  bool get _slime => widget.bossType == 'spreadsheet_slime';
   bool get _mimic => widget.bossType == 'meeting_mimic';
-  String get _name => _mimic ? 'MEETING MIMIC' : 'INBOX HYDRA';
-  String get taunt => _mimic ? 'This could have been an email.' : 'You said you’d do it tomorrow.';
+  String get _name => _slime ? 'SPREADSHEET SLIME' : _mimic ? 'MEETING MIMIC' : 'INBOX HYDRA';
+  String get taunt => _slime ? 'It worked in the other tab.' : _mimic ? 'This could have been an email.' : 'You said you’d do it tomorrow.';
   static final _seen = <String>{};
   late final AnimationController _intro = AnimationController(
     vsync: this, duration: const Duration(milliseconds: 3200))
@@ -69,8 +70,8 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
   void dispose() { _intro.dispose(); super.dispose(); }
   @override
   Widget build(BuildContext context) {
-    final sprite = RepaintBoundary(child: Image.asset(_mimic ? 'assets/images/questwell_meeting_mimic_v1.webp' : 'assets/images/questwell_inbox_hydra_v1.webp',
-      fit: BoxFit.contain, semanticLabel: _mimic
+    final sprite = RepaintBoundary(child: Image.asset(_slime ? 'assets/images/questwell_spreadsheet_slime_v1.webp' : _mimic ? 'assets/images/questwell_meeting_mimic_v1.webp' : 'assets/images/questwell_inbox_hydra_v1.webp',
+      fit: BoxFit.contain, semanticLabel: _slime ? 'Spreadsheet Slime, an emerald jelly creature tangled in parchment grids' : _mimic
         ? 'Meeting Mimic, an enchanted burgundy conference chair with a toothy grin'
         : 'Inbox Hydra, a three-headed serpent guarding a pile of letters'));
     final avatar = RepaintBoundary(child: QuestwellLayeredAdventurerArt(
@@ -82,6 +83,7 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
       final land = ((t - .43) / .13).clamp(0.0, 1.0);
       final lift = _reduced ? 0.0 : -math.sin(land * math.pi) * (_mimic ? 25 : 9);
       final wobble = _reduced || !_mimic ? 0.0 : math.sin(land * math.pi * 3) * (1 - land) * .07;
+      final squash = _reduced || !_slime ? 0.0 : math.sin(land * math.pi * 2) * (1 - land) * .22;
       final letters = (((t - .53) / .30).clamp(0.0, 1.0) * taunt.length).floor();
       final hp = widget.defeated ? 0.0 : (1 - widget.progress).clamp(0.0, 1.0);
       final fill = ((t - .82) / .16).clamp(0.0, 1.0);
@@ -110,7 +112,8 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                   Positioned(right: width * .01, bottom: 23, width: width * .59, height: 230,
                     child: Transform.translate(offset: Offset((1 - slide) * (width + 40), lift),
                       child: AnimatedOpacity(duration: Duration(milliseconds: _reduced ? 0 : 650),
-                        opacity: widget.defeated ? .15 : 1, child: Transform.rotate(angle: wobble, child: sprite)))),
+                        opacity: widget.defeated ? .15 : 1, child: Transform.rotate(angle: wobble, child: Transform.scale(
+                          scaleX: 1 + squash, scaleY: 1 - squash, alignment: Alignment.bottomCenter, child: sprite))))),
                   if (t >= .53 && !widget.defeated)
                     Positioned(top: 19, left: 14, right: 14, child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end, children: [
