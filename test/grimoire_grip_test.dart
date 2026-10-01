@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../lib/widgets/questwell_annotated_grimoire.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
+import '../lib/widgets/questwell_scholar_cuffs.dart';
 
 void main() {
   test('Grip mask removes only the relaxed hand and keeps cuff and other body parts', () {
@@ -17,6 +18,13 @@ void main() {
         reason: 'The old hand must never be restored over the new grip');
     }
   });
+  test('Left-hand grip registers its mirrored wrist on every body', () {
+    for (final body in ['female', 'male', 'neutral']) {
+      final bounds = QuestwellAnnotatedGrimoire.bounds(body);
+      final expectedX = body == 'female' ? 162.0 : body == 'male' ? 166.5 : 164.8;
+      expect(bounds.left + bounds.width * 766 / 1062, closeTo(expectedX, .001));
+    }
+  });
   testWidgets('Each body loads the integrated grip and unequipping restores its normal hand', (tester) async {
     final mask = find.byWidgetPredicate((w) => w is ClipPath && w.clipper is GrimoireHandUnderlayerClipper);
     for (final body in ['female', 'male', 'neutral']) {
@@ -28,15 +36,18 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(find.byType(QuestwellAnnotatedGrimoire), findsOneWidget);
       expect(mask, findsOneWidget);
+      expect(find.byType(QuestwellScholarCuffs), findsOneWidget);
       final images = tester.widgetList<Image>(find.byType(Image));
       expect(images.any((image) => image.image is AssetImage &&
         (image.image as AssetImage).assetName == QuestwellAnnotatedGrimoire.asset), isTrue);
       await tester.pumpWidget(scene({}));
       await tester.pumpAndSettle();
       expect(mask, findsNothing);
+      expect(find.byType(QuestwellScholarCuffs), findsOneWidget);
       expect(find.byType(QuestwellAnnotatedGrimoire), findsNothing);
       await tester.pumpWidget(scene({'hands': 'annotated-grimoire', 'chest': 'moss-green-cloak'}));
       await tester.pumpAndSettle();
+      expect(find.byType(QuestwellScholarCuffs), findsNothing);
       expect(mask, findsNothing, reason: 'Stale held gear cannot replace hands under a cloak');
       expect(find.byType(QuestwellAnnotatedGrimoire), findsNothing);
       expect(tester.takeException(), isNull);

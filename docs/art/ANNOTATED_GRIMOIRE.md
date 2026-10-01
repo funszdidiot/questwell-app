@@ -1,3 +1,9 @@
+## Left-hand orientation and Scholar cuffs — 2026-10-01
+
+Founder review identified the v2 sprite as the opposite hand. Mirror the entire integrated book/grip at render time so the avatar's left thumb faces inward and the book rests toward the thigh. Register the mirrored source wrist at (766,17), keeping all three body wrist anchors fixed. The original art and 16-bit icon are unchanged.
+
+Replace both flat Scholar cuff ends with body-registered curved cuffs: tapered violet fabric, curved gold trim, dark recessed lining, and a front lip over the wrist. Clip the old cuff region from every robe restoration pass. Apply cuffs above held items, omit under closed cloaks and business suits, and preserve the frozen robe/base files and integrity manifest.
+
 # Annotated Grimoire — detailed equipped artwork
 
 ## Dedicated spine grip correction — 2026-10-01 America/Chicago

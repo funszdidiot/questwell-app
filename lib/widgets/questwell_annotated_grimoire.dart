@@ -15,8 +15,10 @@ class QuestwellAnnotatedGrimoire extends StatelessWidget {
       'male' => (const Offset(166.5, 175), .046),
       _ => (const Offset(164.8, 174), .044),
     };
-    // Source wrist center (296,17), original 1062 x 1481 transparent canvas.
-    return Rect.fromLTWH(wrist.dx - 296 * factor, wrist.dy - 17 * factor,
+    // Mirror the integrated grip to the avatar LEFT hand (viewer right).
+    // Its thumb faces inward; the book rests against the thigh.
+    // Mirrored wrist center: (1062 - 296, 17).
+    return Rect.fromLTWH(wrist.dx - 766 * factor, wrist.dy - 17 * factor,
       1062 * factor, 1481 * factor);
   }
 
@@ -29,7 +31,8 @@ class QuestwellAnnotatedGrimoire extends StatelessWidget {
         left: (constraints.maxWidth - 240 * scale) / 2 + fit.left * scale,
         top: constraints.maxHeight - 320 * scale + fit.top * scale,
         width: fit.width * scale, height: fit.height * scale,
-        child: Stack(fit: StackFit.expand, clipBehavior: Clip.none, children: [
+        child: Transform.flip(flipX: true,
+          child: Stack(fit: StackFit.expand, clipBehavior: Clip.none, children: [
             Transform.translate(offset: Offset(.65 * scale, .8 * scale),
               child: ImageFiltered(
                 imageFilter: ui.ImageFilter.blur(sigmaX: .45 * scale, sigmaY: .45 * scale),
@@ -38,7 +41,7 @@ class QuestwellAnnotatedGrimoire extends StatelessWidget {
                   filterQuality: FilterQuality.high, gaplessPlayback: true))),
             Image.asset(asset, fit: BoxFit.contain,
               filterQuality: FilterQuality.high, gaplessPlayback: true),
-          ]),
+          ])),
       )]);
     }),
   ));
