@@ -149,8 +149,8 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
           final width = constraints.maxWidth;
           final arenaHeight = width < 400 ? 300.0 : 330.0;
           // Bottom-aligned cover keeps each illustrated stage beneath the fighters.
-          final stageBottom = (_hydra || _mimic || _slime || _kraken || _printer)
-            ? math.max(arenaHeight, width / 1.5) * (_printer ? .24 : .20) : 24.0;
+          final stageBottom = (_hydra || _mimic || _slime || _kraken || _printer || _swarm)
+            ? math.max(arenaHeight, width / 1.5) * (_swarm ? .28 : _printer ? .24 : .20) : 24.0;
           return Semantics(label: arriving ? 'Boss entrance. Tap to skip.' : 'Boss encounter',
             child: GestureDetector(onTap: arriving ? _skip : null,
               child: Container(key: const ValueKey('boss-arena'), height: arenaHeight, clipBehavior: Clip.hardEdge,
@@ -158,21 +158,23 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                   gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter,
                     colors: [Color(0xFF10222A), Color(0xFF242133), Color(0xFF392A28)])),
                 child: Stack(children: [
-                  if (_hydra || _mimic || _slime || _kraken || _printer)
+                  if (_hydra || _mimic || _slime || _kraken || _printer || _swarm)
                     Positioned.fill(child: RepaintBoundary(child: Image.asset(
-                      _printer ? 'assets/images/questwell_printer_printworks_v1.webp'
+                      _swarm ? 'assets/images/questwell_swarm_belltower_v1.webp'
+                        : _printer ? 'assets/images/questwell_printer_printworks_v1.webp'
                         : _kraken ? 'assets/images/questwell_kraken_observatory_v1.webp'
                         : _slime ? 'assets/images/questwell_slime_archive_v1.webp'
                         : _mimic ? 'assets/images/questwell_mimic_conference_v1.webp'
                         : 'assets/images/questwell_hydra_mailroom_v1.webp',
-                      key: ValueKey(_printer ? 'printer-printworks-arena' : _kraken ? 'kraken-observatory-arena' : _slime ? 'slime-archive-arena' : _mimic ? 'mimic-conference-arena' : 'hydra-mailroom-arena'),
+                      key: ValueKey(_swarm ? 'swarm-belltower-arena' : _printer ? 'printer-printworks-arena' : _kraken ? 'kraken-observatory-arena' : _slime ? 'slime-archive-arena' : _mimic ? 'mimic-conference-arena' : 'hydra-mailroom-arena'),
                       fit: BoxFit.cover, alignment: Alignment.bottomCenter,
                       excludeFromSemantics: true, filterQuality: FilterQuality.low,
                       errorBuilder: (_, __, ___) => CustomPaint(painter: _ArenaPainter(dust: land)))))
                   else
                     Positioned.fill(child: CustomPaint(painter: _ArenaPainter(dust: land))),
                   Positioned(left: width * .03, bottom: stageBottom, width: width * .42, height: 190, child: avatar),
-                  Positioned(right: width * .01, bottom: stageBottom - 1, width: width * .59, height: 230,
+                  Positioned(right: width * .01, bottom: stageBottom - 1, width: width * .59,
+                    height: _swarm ? math.min(230.0, arenaHeight - stageBottom) : 230,
                     child: Transform.translate(offset: Offset(recoil + (1 - slide) * (_dragon ? 0 : _kraken ? 65 : width + 40),
                       lift + (_dragon ? -(1 - slide) * 390 : _swarm ? -math.sin(slide * math.pi * 2) * 35 : _printer ? -(1 - slide) * 80 : _kraken ? (1 - slide) * 290 : 0)),
                       child: AnimatedOpacity(duration: Duration(milliseconds: _reduced ? 0 : 650),
