@@ -1,5 +1,7 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/widgets/questwell_pixel_art.dart';
+import '/widgets/questwell_expedition_scene.dart';
+import '/widgets/questwell_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
@@ -20,6 +22,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   late final ValueNotifier<int> _secondsRemaining = ValueNotifier<int>(25 * 60);
   bool _running = false;
   bool _finished = false;
+  bool _sceneMotion = true;
   DateTime? _deadline;
 
   @override
@@ -108,6 +111,11 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
         backgroundColor: theme.primaryBackground,
         elevation: 0,
         foregroundColor: theme.primaryText,
+        actions: [IconButton(
+          tooltip: _sceneMotion ? 'Pause scenery' : 'Animate scenery',
+          onPressed: () => setState(() => _sceneMotion = !_sceneMotion),
+          icon: Icon(_sceneMotion ? Icons.motion_photos_pause_outlined : Icons.motion_photos_on_outlined),
+        )],
         title: Text(
           'EXPEDITION',
           style: theme.titleLarge.override(
@@ -121,7 +129,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
       ),
       body: SafeArea(
         top: false,
-        child: ListView(
+        child: Center(child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 600), child: ListView(
           padding: const EdgeInsets.fromLTRB(20, 18, 20, 32),
           children: [
             Text(
@@ -144,10 +152,8 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
               ),
             ),
             const SizedBox(height: 18),
-            QuestwellExpeditionPixelScene(
-              height: 155,
-              campfire: _finished,
-            ),
+            if (_finished) const QuestwellExpeditionPixelScene(height: 200, campfire: true)
+            else QuestwellExpeditionScene(motion: _sceneMotion),
             const SizedBox(height: 22),
             QuestwellRetroPanel(
               padding: const EdgeInsets.all(18),
@@ -247,6 +253,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                               ? null
                               : (_) => _choosePreset(minutes),
                           label: Text('$minutes min'),
+                          labelStyle: QuestwellTypography.control(),
                         ),
                     ],
                   ),
@@ -275,6 +282,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                     : 'Begin Expedition',
                           ),
                           style: FilledButton.styleFrom(
+                            textStyle: QuestwellTypography.control(),
                             minimumSize: const Size.fromHeight(50),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(2),
@@ -287,6 +295,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                   if (!_running && !_finished) ...[
                     const SizedBox(height: 8),
                     TextButton(
+                      style: TextButton.styleFrom(textStyle: QuestwellTypography.control()),
                       onPressed: _secondsRemaining.value ==
                               _selectedMinutes * 60
                           ? null
@@ -324,7 +333,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
               ),
             ),
           ],
-        ),
+        ))),
       ),
     );
   }
