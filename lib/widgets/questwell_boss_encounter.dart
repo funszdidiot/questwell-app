@@ -149,8 +149,8 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
           final width = constraints.maxWidth;
           final arenaHeight = width < 400 ? 300.0 : 330.0;
           // Bottom-aligned cover keeps each illustrated stage beneath the fighters.
-          final stageBottom = (_hydra || _mimic || _slime || _kraken || _printer || _swarm || _troll)
-            ? math.max(arenaHeight, width / 1.5) * (_swarm ? .28 : _troll ? .26 : _printer ? .24 : .20) : 24.0;
+          final stageBottom = (_hydra || _mimic || _slime || _kraken || _printer || _swarm || _troll || _dragon)
+            ? math.max(arenaHeight, width / 1.5) * (_swarm ? .28 : _troll ? .26 : _printer ? .24 : _dragon ? .23 : .20) : 24.0;
           return Semantics(label: arriving ? 'Boss entrance. Tap to skip.' : 'Boss encounter',
             child: GestureDetector(onTap: arriving ? _skip : null,
               child: Container(key: const ValueKey('boss-arena'), height: arenaHeight, clipBehavior: Clip.hardEdge,
@@ -158,16 +158,17 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                   gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter,
                     colors: [Color(0xFF10222A), Color(0xFF242133), Color(0xFF392A28)])),
                 child: Stack(children: [
-                  if (_hydra || _mimic || _slime || _kraken || _printer || _swarm || _troll)
+                  if (_hydra || _mimic || _slime || _kraken || _printer || _swarm || _troll || _dragon)
                     Positioned.fill(child: RepaintBoundary(child: Image.asset(
-                      _troll ? 'assets/images/questwell_troll_cavern_v1.webp'
+                      _dragon ? 'assets/images/questwell_dragon_citadel_v1.webp'
+                        : _troll ? 'assets/images/questwell_troll_cavern_v1.webp'
                         : _swarm ? 'assets/images/questwell_swarm_belltower_v1.webp'
                         : _printer ? 'assets/images/questwell_printer_printworks_v1.webp'
                         : _kraken ? 'assets/images/questwell_kraken_observatory_v1.webp'
                         : _slime ? 'assets/images/questwell_slime_archive_v1.webp'
                         : _mimic ? 'assets/images/questwell_mimic_conference_v1.webp'
                         : 'assets/images/questwell_hydra_mailroom_v1.webp',
-                      key: ValueKey(_troll ? 'troll-cavern-arena' : _swarm ? 'swarm-belltower-arena' : _printer ? 'printer-printworks-arena' : _kraken ? 'kraken-observatory-arena' : _slime ? 'slime-archive-arena' : _mimic ? 'mimic-conference-arena' : 'hydra-mailroom-arena'),
+                      key: ValueKey(_dragon ? 'dragon-citadel-arena' : _troll ? 'troll-cavern-arena' : _swarm ? 'swarm-belltower-arena' : _printer ? 'printer-printworks-arena' : _kraken ? 'kraken-observatory-arena' : _slime ? 'slime-archive-arena' : _mimic ? 'mimic-conference-arena' : 'hydra-mailroom-arena'),
                       fit: BoxFit.cover, alignment: Alignment.bottomCenter,
                       excludeFromSemantics: true, filterQuality: FilterQuality.low,
                       errorBuilder: (_, __, ___) => CustomPaint(painter: _ArenaPainter(dust: land)))))

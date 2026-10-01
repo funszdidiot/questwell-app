@@ -35,9 +35,10 @@ void main() {
       'printer_poltergeist': ['printer-printworks-arena', 'questwell_printer_printworks_v1.webp'],
       'notification_swarm': ['swarm-belltower-arena', 'questwell_swarm_belltower_v1.webp'],
       'ticket_troll': ['troll-cavern-arena', 'questwell_troll_cavern_v1.webp'],
+      'update_dragon': ['dragon-citadel-arena', 'questwell_dragon_citadel_v1.webp'],
     };
     for (final width in [320.0, 560.0]) {
-      for (final type in [...stages.keys, 'update_dragon']) {
+      for (final type in [...stages.keys, 'unknown_boss']) {
         await tester.pumpWidget(MaterialApp(home: MediaQuery(
           data: const MediaQueryData(disableAnimations: true, textScaler: TextScaler.linear(1.5)),
           child: Center(child: SizedBox(width: width, child: QuestwellBossEncounter(
@@ -57,9 +58,11 @@ void main() {
         }
         expect(tester.getRect(find.byKey(const ValueKey('boss-dialogue'))).bottom,
           lessThanOrEqualTo(tester.getTopLeft(find.byKey(const ValueKey('boss-arena'))).dy));
-        if (type == 'notification_swarm' || type == 'ticket_troll') {
+        if (type == 'notification_swarm' || type == 'ticket_troll' || type == 'update_dragon') {
           final boss = find.byWidgetPredicate((widget) => widget is Image &&
-            widget.semanticLabel == (type == 'ticket_troll'
+            widget.semanticLabel == (type == 'update_dragon'
+              ? 'Update Dragon, a copper dragon guarding brass gears and upgrade scrolls'
+              : type == 'ticket_troll'
               ? 'Ticket Troll, a grumpy mossy stone clerk holding a stamp and a stack of requests'
               : 'Notification Swarm, mischievous winged bells and sealed messages'));
           expect(tester.getTopLeft(boss).dy,
