@@ -4,6 +4,14 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## All familiars in Market and founder inventory — 2026-09-30
+
+Founder requested all seven familiars in the Market with 16-bit icons and in her inventory. The six existing shop entries remain active. Emerald Dragon is now an epic all-class familiar at 320 coins, with a dedicated 32-pixel icon shared by Market and Inventory and detailed equipped artwork. Granted all seven missing ownership records as founder grants, preserving equipment and coins (79). Existing class-specific equip rules remain in force.
+
+**Development build:** `4b9b553169c44bfcf95864f4a22214cb5a00daa5`. Flutter Check `36806853312` and Preview `36806853289` passed. Catalog coverage checks all 30 shop items, including seven familiars, with unique nonempty icons and equipment routes. Database read-back confirmed seven owned familiars; authenticated dragon equip/unequip and slot checks passed with rollback. Browser verified the dragon Market listing and 16-bit icon. An earlier preview-catalog comma error was fixed before deployment.
+
+Repeatable catalog seed: `tool/catalog/emerald_dragon.sql`. Inventory account identifiers stay out of repository documentation. Development preview only; no merge or launch. Remaining five gear designs are the next art set.
+
 ## Detailed familiars and Emerald Dragon review — 2026-09-30
 
 Founder approved the stronger Market motion and requested the remaining equippable gear/familiar art before Boss Battles, in detailed 64-bit retro fantasy style. Six existing familiars now render dedicated transparent equipped sprites while their Market/Inventory icons remain 16-bit. Added the requested Emerald Dragon as the default companion review candidate.

@@ -2,6 +2,14 @@
 
 User direction: detailed 64-bit retro fantasy equipped art; existing compact Market/Inventory icons remain 16-bit. Review small sets in the app. No external beta or flutterflow merge.
 
+## Market and founder inventory update — 2026-09-30
+
+Founder requested all seven familiars in the Market with 16-bit icons and in her inventory. The six existing entries were already active shop items. Added Emerald Dragon as an epic, all-class companion at 320 coins; repeatable catalog seed is `tool/catalog/emerald_dragon.sql`. Added a native 32-pixel dragon icon using the existing 16-bit icon renderer shared by Market and Inventory. Equipped artwork remains detailed retro fantasy.
+
+Granted seven missing familiar ownership records to the verified founder account with `source=founder_grant`, preserving existing ownership and equipment via conflict-do-nothing. No coins charged; balance remained 79. Account identifiers are not stored in this document. Read-back confirmed all seven owned and active in the shop. Existing class restrictions remain intact. Dragon equip/unequip through the authenticated public RPCs passed in a rolled-back transaction, including the one-familiar slot check.
+
+The paragraph below records the earlier art-review state; the dragon is now a Market item.
+
 ## First set: companions
 
 Six existing familiars now have dedicated transparent equipped artwork, separate from inventory icons: mushroom, tiny owl, archive owl, glass slime, signal fox, moss moth. Added Emerald Dragon candidate requested by user. Dragon is available in the account-free development review (`?review=companions`), not yet a priced live catalog item. No ownership, prices, class locks, or database changes.
@@ -31,3 +39,5 @@ Six-familiar atlas prompt: Exact 3-column by 2-row transparent atlas; detailed r
 ## Verification
 
 Development build `3923e33b2b87197d42b5cd9313ee954e7962f8f3`: Flutter Check 36806039882 and Preview 36806039936 passed. Seven companions × three body types and reduced-motion/TickerMode tests passed. Browser inspected dragon female and neutral fit, avatar/Hearth placement, and glass slime transparent sprite/class selection. Founder visual review remains pending.
+
+Market/inventory follow-up verified on build `4b9b553169c44bfcf95864f4a22214cb5a00daa5`: Flutter Check 36806853312 and Preview 36806853289 passed. Browser verified the 16-bit dragon icon and 320-coin Market listing. All seven remain owned with 79 coins and no familiar automatically equipped.
