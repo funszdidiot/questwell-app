@@ -7,6 +7,17 @@ import '../lib/widgets/questwell_pixel_art.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching=false;
+  test('Cloak depth mask keeps faces and hands in front without cutting across the torso', () {
+    for (final body in ['female','male','neutral']) {
+      final path=QuestwellCloakForegroundClipper(body).getClip(const Size(240,320));
+      expect(path.contains(const Offset(120,50)),isTrue);
+      expect(path.contains(Offset(body=='female'?77:70,184)),isTrue);
+      expect(path.contains(const Offset(168,184)),isTrue);
+      expect(path.contains(const Offset(120,100)),isFalse,reason:'Keep clasp visible');
+      expect(path.contains(const Offset(101,155)),isFalse,reason:'Keep front drapes continuous');
+      expect(path.contains(const Offset(90,250)),isFalse,reason:'Keep lower cloak over outfit');
+    }
+  });
   testWidgets('Both cloaks load on every supported class and body without hiding base layers', (tester) async {
     for (final slug in ['moss-green-cloak','hearthguard-mantle']) {
       final classes=slug=='hearthguard-mantle'?['guardian']:['scholar','scout','alchemist','guardian','wanderer'];

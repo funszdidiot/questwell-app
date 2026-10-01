@@ -252,9 +252,13 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ),
             ),
           if (classOverlay != null) _assetLayer(classOverlay),
-          QuestwellCatalogEquipment(equipment: equippedSlugs, body: body),
-          if (QuestwellCloak.supports(equippedSlugs['chest']))
+          if (QuestwellCloak.supports(equippedSlugs['chest'])) ...[
             QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body),
+            ClipPath(clipper: QuestwellCloakForegroundClipper(body), child: _assetLayer(_baseAsset)),
+            if (classOverlay != null)
+              ClipPath(clipper: QuestwellCloakForegroundClipper(body), child: _assetLayer(classOverlay)),
+          ],
+          QuestwellCatalogEquipment(equipment: equippedSlugs, body: body),
           if (equippedSlugs['hands'] == 'annotated-grimoire')
             ClipPath(clipper: LanternHandClipper(body), child: _assetLayer(_baseAsset)),
           if (equippedSlugs['back'] == QuestwellLeatherSatchel.slug) ...[
