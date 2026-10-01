@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../widgets/questwell_boss_encounter.dart';
-import '../widgets/questwell_pixel_art.dart';
-import '../widgets/questwell_typography.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../services/questwell_boss_service.dart';
+import '../widgets/questwell_boss_board.dart';
 
 class BossReviewApp extends StatefulWidget {
   const BossReviewApp({super.key});
@@ -10,60 +10,85 @@ class BossReviewApp extends StatefulWidget {
 }
 class _BossReviewAppState extends State<BossReviewApp> {
   int _replay = 0;
-  String _boss = const ['meeting_mimic', 'spreadsheet_slime', 'calendar_kraken', 'printer_poltergeist', 'notification_swarm', 'ticket_troll', 'update_dragon'].contains(Uri.base.queryParameters['boss'])
-    ? Uri.base.queryParameters['boss']! : 'inbox_hydra';
-  bool get _dragon => _boss == 'update_dragon';
-  bool get _troll => _boss == 'ticket_troll';
-  bool get _swarm => _boss == 'notification_swarm';
-  bool get _printer => _boss == 'printer_poltergeist';
-  bool get _kraken => _boss == 'calendar_kraken';
-  bool get _slime => _boss == 'spreadsheet_slime';
-  bool get _mimic => _boss == 'meeting_mimic';
-  final _done = <int>{};
-  bool _motion = true;
-  String _body = 'female';
-  List<String> get _steps => _dragon ? ['Save your work and check the update', 'Install one planned update', 'Restart and confirm everything works'] : _troll ? ['Choose the oldest useful request', 'Write down what done looks like', 'Finish the next action and close the loop'] : _swarm ? ['Silence one distracting channel', 'Clear the alerts that need no action', 'Choose one message worth answering'] : _printer ? ['Check the paper tray and connection', 'Clear the stalled print queue', 'Print one test page'] : _kraken ? ['Choose one priority for today', 'Protect a block of focus time', 'Move or decline one optional commitment'] : _slime ? ['Choose the tab that needs attention', 'Fix one formula or messy column', 'Check the totals and save your work'] : _mimic ? ['Name the decision this meeting needs', 'Write a three-point agenda', 'Send the decision and next steps'] : ['Sort the three threads that matter', 'Send one useful reply', 'Archive what no longer needs you'];
+  bool _motion = true, _campfire = false;
+  String _state = 'battles';
+  final _done = <String>{};
+  final _extra = <QuestwellBossBattle>[];
+  static const _titles = {
+    'inbox_hydra': 'Tame the inbox backlog', 'meeting_mimic': 'Make the planning meeting count',
+    'spreadsheet_slime': 'Clean up the project tracker', 'calendar_kraken': 'Make room for focused work',
+    'printer_poltergeist': 'Get the paperwork moving', 'notification_swarm': 'Clear the afternoon noise',
+    'ticket_troll': 'Close the oldest useful request', 'update_dragon': 'Finish the overdue upgrade',
+  };
+  static const _steps = {
+    'inbox_hydra': ['Sort the three threads that matter', 'Send one useful reply', 'Archive what no longer needs you'],
+    'meeting_mimic': ['Name the decision this meeting needs', 'Write a three-point agenda', 'Send the decision and next steps'],
+    'spreadsheet_slime': ['Choose the tab that needs attention', 'Fix one formula or messy column', 'Check the totals and save your work'],
+    'calendar_kraken': ['Choose one priority for today', 'Protect a block of focus time', 'Move or decline one optional commitment'],
+    'printer_poltergeist': ['Check the paper tray and connection', 'Clear the stalled print queue', 'Print one test page'],
+    'notification_swarm': ['Silence one distracting channel', 'Clear alerts that need no action', 'Choose one message worth answering'],
+    'ticket_troll': ['Choose the oldest useful request', 'Write down what done looks like', 'Finish the next action and close the loop'],
+    'update_dragon': ['Save your work and check the update', 'Install one planned update', 'Restart and confirm everything works'],
+  };
+  List<QuestwellBossBattle> get _battles => [
+    for (final type in questwellBossNames.keys) QuestwellBossBattle(
+      id: type, title: _titles[type]!, bossType: type, rewardXp: 100, rewardCoins: 50,
+      status: List.generate(3, (i) => '$type-$i').every(_done.contains) ? 'completed' : 'open',
+      steps: [for (var i = 0; i < 3; i++) QuestwellBossStep(id: '$type-$i', title: _steps[type]![i],
+        position: i, completed: _done.contains('$type-$i'))]),
+    for (final b in _extra) QuestwellBossBattle(id: b.id, title: b.title, bossType: b.bossType,
+      rewardXp: b.rewardXp, rewardCoins: b.rewardCoins,
+      status: b.steps.every((s) => _done.contains(s.id)) ? 'completed' : 'open',
+      steps: [for (final s in b.steps) QuestwellBossStep(id: s.id, title: s.title, position: s.position, completed: _done.contains(s.id))]),
+  ];
+  Future<void> _create(BuildContext context) async {
+    final title = TextEditingController();
+    final steps = List.generate(3, (_) => TextEditingController());
+    var type = 'inbox_hydra';
+    String? error;
+    await showDialog<void>(context: context, builder: (dialogContext) => StatefulBuilder(builder: (context, change) => AlertDialog(
+      title: const Text('Start a practice battle'),
+      content: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, children: [
+        TextField(controller: title, decoration: const InputDecoration(labelText: 'Your challenge')),
+        DropdownButtonFormField<String>(initialValue: type, isExpanded: true,
+          items: [for (final e in questwellBossNames.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
+          onChanged: (v) => type = v ?? type),
+        for (var i = 0; i < 3; i++) TextField(controller: steps[i], decoration: InputDecoration(labelText: 'Attack ${i + 1}')),
+        if (error != null) Text(error!, style: const TextStyle(color: Colors.amber)),
+        const SizedBox(height: 8), const Text('Practice only. Your account is unchanged.'),
+      ])), actions: [
+        TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Cancel')),
+        FilledButton(onPressed: () {
+          final entries = steps.map((s) => s.text.trim()).where((s) => s.isNotEmpty).toList();
+          if (title.text.trim().isEmpty || entries.length < 2) { change(() => error = 'Add a title and at least two attacks.'); return; }
+          final id = 'custom-${_extra.length}';
+          setState(() => _extra.add(QuestwellBossBattle(id: id, title: title.text.trim(), bossType: type,
+            status: 'open', rewardXp: 100, rewardCoins: 50, steps: [for (var i = 0; i < entries.length; i++)
+              QuestwellBossStep(id: '$id-$i', title: entries[i], position: i, completed: false)])));
+          Navigator.pop(dialogContext);
+        }, child: const Text('Start battle')),
+      ])));
+    title.dispose(); for (final s in steps) { s.dispose(); }
+  }
   @override
   Widget build(BuildContext context) => MaterialApp(debugShowCheckedModeBanner: false,
     theme: ThemeData.dark(useMaterial3: true), home: Builder(builder: (context) =>
       MediaQuery(data: MediaQuery.of(context).copyWith(disableAnimations: !_motion),
         child: Scaffold(backgroundColor: const Color(0xFF111827), body: SafeArea(
-          child: Center(child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 470),
-            child: ListView(padding: const EdgeInsets.all(18), children: [
-              Text('BOSS BATTLES', style: QuestwellTypography.sectionHeading()),
-              const SizedBox(height: 8),
-              Text(_dragon ? 'Small checkpoints. One safe upgrade.' : _troll ? 'One request. One clear finish.' : _swarm ? 'Quiet the noise. Choose what matters.' : _printer ? 'One check. One page. Peace restored.' : _kraken ? 'Protect your next useful hour.' : _slime ? 'One tab. One formula. A little less chaos.' : _mimic ? 'One agenda. One decision. Meeting adjourned.' : 'One reply. One thread. One head at a time.'),
-              const SizedBox(height: 10),
-              Wrap(spacing: 8, children: [
-                for (final type in ['inbox_hydra', 'meeting_mimic', 'spreadsheet_slime', 'calendar_kraken', 'printer_poltergeist', 'notification_swarm', 'ticket_troll', 'update_dragon']) ChoiceChip(
-                  label: Text(type == 'inbox_hydra' ? 'Inbox Hydra' : type == 'meeting_mimic' ? 'Meeting Mimic' : type == 'spreadsheet_slime' ? 'Spreadsheet Slime' : type == 'calendar_kraken' ? 'Calendar Kraken' : type == 'printer_poltergeist' ? 'Printer Poltergeist' : type == 'notification_swarm' ? 'Notification Swarm' : type == 'ticket_troll' ? 'Ticket Troll' : 'Update Dragon'),
-                  selected: _boss == type,
-                  onSelected: (_) => setState(() { _boss = type; _done.clear(); _replay++; })),
-              ]),
-              const SizedBox(height: 14),
-              QuestwellBossEncounter(key: ValueKey(_replay), encounterId: 'preview-$_boss-$_replay', bossType: _boss,
-                persistEntrance: false, progress: _done.length / 3, defeated: _done.length == 3,
-                archetype: 'scholar', body: _body, equipment: const {'neck': 'emerald-scholar-scarf', 'accessory': 'moonstone-brooch'}),
-              const SizedBox(height: 16),
-              Text(_done.length == 3 ? (_dragon ? 'UPGRADE COMPLETE' : _troll ? 'QUEUE CONQUERED' : _swarm ? 'QUIET RESTORED' : _printer ? 'JAM BANISHED' : _kraken ? 'TIME RECLAIMED' : _slime ? 'SHEET SORTED' : _mimic ? 'MEETING ADJOURNED' : 'BACKLOG BANISHED') : 'YOUR ATTACK PLAN', style: QuestwellTypography.sectionHeading()),
-              const SizedBox(height: 10),
-              for (var i = 0; i < _steps.length; i++) Padding(padding: const EdgeInsets.only(bottom: 8),
-                child: QuestwellParchmentPanel(padding: const EdgeInsets.all(10), child: Row(children: [
-                  Expanded(child: Text(_steps[i], style: TextStyle(color: const Color(0xFF30261D),
-                    decoration: _done.contains(i) ? TextDecoration.lineThrough : null))),
-                  TextButton(onPressed: _done.contains(i) ? null : () => setState(() => _done.add(i)),
-                    child: Text(_done.contains(i) ? 'Done' : 'ATTACK', style: const TextStyle(color: Color(0xFF56371E)))),
-                ]))),
-              if (_done.length == 3) const Padding(padding: EdgeInsets.symmetric(vertical: 12),
-                child: Text('VICTORY LOOT\n+100 XP  ·  +50 coins\nSample reward — your account is unchanged.',
-                  textAlign: TextAlign.center, style: TextStyle(color: Color(0xFFF2D79B), height: 1.6))),
-              OutlinedButton(onPressed: () => setState(() { _done.clear(); _replay++; }), child: const Text('Replay entrance')),
-              SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Animations'), value: _motion,
-                onChanged: (value) => setState(() => _motion = value)),
-              Wrap(spacing: 8, children: ['female', 'male', 'neutral'].map((body) => ChoiceChip(
-                label: Text(body), selected: body == _body, onSelected: (_) => setState(() => _body = body))).toList()),
-              const SizedBox(height: 10),
-              const Text('Practice encounter · these attacks do not complete real tasks or award coins.',
-                style: TextStyle(fontSize: 12, color: Color(0xFFB7C4D4))),
-            ]))))))));
+          child: QuestwellBossBoard(key: ValueKey(_replay), battles: _state == 'empty' ? [] : _battles,
+            initialBattleId: Uri.base.queryParameters['boss'], failed: _state == 'error', practice: true,
+            campfire: _campfire, archetype: 'scholar', body: 'female',
+            equipment: const {'neck': 'emerald-scholar-scarf', 'accessory': 'moonstone-brooch'},
+            onHome: () => launchUrl(Uri.base.replace(query: '', fragment: ''), webOnlyWindowName: '_self'),
+            onCreate: () => _create(context), onAttack: (b, s) => setState(() => _done.add(s.id)),
+            onRetry: () => setState(() => _state = 'battles'),
+            footer: ExpansionTile(title: const Text('Preview controls'), children: [
+              OutlinedButton(onPressed: () => setState(() { _done.clear(); _replay++; }), child: const Text('Reset practice battles')),
+              SwitchListTile(title: const Text('Animations'), value: _motion, onChanged: (v) => setState(() => _motion = v)),
+              SwitchListTile(title: const Text('Campfire mode'), value: _campfire, onChanged: (v) => setState(() => _campfire = v)),
+              Wrap(spacing: 8, children: [for (final state in ['battles', 'empty', 'error']) ChoiceChip(
+                label: Text(state), selected: state == _state, onSelected: (_) => setState(() => _state = state))]),
+            ]),
+          ),
+        )))));
 }
