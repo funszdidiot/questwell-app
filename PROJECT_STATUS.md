@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Cloak wrapping correction — 2026-10-01 UTC
+
+Founder rejected the first cloak fit: garments did not wrap or sit correctly. Replaced the disconnected front shoulder treatment with continuous front drapes, restored the original head/forearms/class sleeves above the fabric, and narrowed/centered registration for each body. Existing handheld accessories draw above the new garment layers.
+
+**Development build:** `f0b91a805aff2860f69233043766f56b1e04a7f3`. Flutter Check `36809650001` and Preview `36809649944` passed, including the cloak render/removal and foreground-mask checks. Browser inspected both garments on female, male, and neutral in avatar and Hearth views. Shoulder-to-hem fabric continuity, exposed hands, centered neckline, and boot clearance verified. Review: `?review=cloaks&rev=f0b91a8`. Founder visual approval remains pending. No merge or launch.
+
 ## Moss Cloak and Hearthguard Mantle fit review — 2026-09-30
 
 Replaced the two basic vector cloaks with detailed illustrated retro fantasy garment layers: moss wool with leaf embroidery/brass clasp, and burgundy Hearthguard with shield/hearth motifs. Long drapes sit behind the unchanged class outfit; front capelets follow the shoulder hems. Body-specific registration supports female, male, and neutral. Market/Inventory icons, prices, class restrictions, ownership, and approved avatar assets remain unchanged.

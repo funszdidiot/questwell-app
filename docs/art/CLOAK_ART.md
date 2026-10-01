@@ -9,7 +9,7 @@ Generated with the built-in image-generation tool for the founder-requested deta
 - Runtime registration: `lib/widgets/questwell_cloak.dart`
 - Review route: `?review=cloaks`
 
-Transparent source artwork was cropped to its garment bounds and converted to WebP. Both assets have a genuinely transparent open center. Separate long rear drapes and clipped front capelets preserve the existing class outfit, hands, and avatar body. Female, male, and neutral registrations vary the shoulder width and hem length. Original avatar and class assets were not modified; their integrity verifier passed.
+Transparent source artwork was cropped to its garment bounds and converted to WebP. Both assets have a genuinely transparent open center. Continuous front drapes wrap over the class outfit. A body-specific foreground mask restores the original head, forearms, hands, and class sleeves above the fabric. The first clipped-capelet fit was rejected by the founder and superseded by this correction. Female, male, and neutral registrations vary the shoulder width and hem length. Original avatar and class assets were not modified; their integrity verifier passed.
 
 ## Moss-Green Cloak prompt
 
@@ -18,3 +18,7 @@ Use case: stylized-concept. Production equippable garment sprite for Questwell d
 ## Hearthguard Mantle prompt
 
 Use case: stylized-concept. Production equippable garment sprite for Questwell detailed 64-bit era retro fantasy RPG. ONE isolated Hearthguard mantle viewed straight from the front, draped on an invisible upright human body, no person or mannequin visible. Rich oxblood burgundy wool with deep wine velvet lining, narrow antique brass-gold binding, tailored compact shoulder capelet with understated layered scalloped edges, tiny embroidered gold shield and hearth-flame motifs around shoulders and hem, small round bronze shield clasp connecting collar ends. A short standing collar, no hood, no armor spikes, no fur. Rounded fitted shoulders and long slender folds extending to mid-calf; opens WIDELY down entire center so a full outfit and both arms can remain visible; preserve a large genuinely TRANSPARENT open central region from just below collar to bottom, absolutely no shirt or torso or lining panel filling that opening. Taller than wide, restrained natural silhouette, front symmetrical, tails gently flare outward at bottom. Full garment isolated centered on genuine transparent background, complete hem, generous padding. Polished detailed fantasy sprite illustration with fine deliberate pixel clusters, rich material shading and crisp silhouette, matching high-detail retro anime fantasy avatar clothing. No head, hair, skin, arms, hands, legs, boots, body, stand, hanger, floor, extra props, text or watermark.
+
+## Wrapping correction verification
+
+Build `f0b91a805aff2860f69233043766f56b1e04a7f3` narrows and centers both garments per body and preserves continuous shoulder-to-hem panels. Flutter Check 36809650001 and Preview 36809649944 passed. Both garments were inspected in the browser on all three bodies, including Hearth rendering. Founder visual approval pending.

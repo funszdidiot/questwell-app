@@ -55,3 +55,7 @@ Verified build `e977695c942263cdcd930513ef92b6c618be7162`: Flutter Check 3680759
 ## Cloak first-set review
 
 Build `1f8d86445982bc4ade44d58d9ee995fa37a101fb` adds detailed Moss Cloak and Hearthguard Mantle layers and `?review=cloaks`. Flutter Check 36808923953 and Preview 36808923990 passed, including 18 supported class/body/garment combinations and removal. Browser checked all six garment/body fits. Founder visual approval pending. Remaining next set: Wayfarer Satchel, Annotated Grimoire, Pathfinder Boots. No inventory grants or database changes in this pass. Art prompts are in `docs/art/CLOAK_ART.md`.
+
+## Cloak fit correction
+
+Founder rejected the first fit because the cloaks did not wrap or sit correctly. Build `f0b91a805aff2860f69233043766f56b1e04a7f3` replaces the short front capelet clip with continuous front panels and restores original forearms/hands/class sleeves above the fabric. Registration is narrower and centered per body. Flutter Check 36809650001 and Preview 36809649944 passed. Browser inspected both garments across all three bodies in avatar/Hearth views; no disconnected panels or hidden hands observed. Review `?review=cloaks&rev=f0b91a8`. Visual approval remains pending; no merge or launch.
