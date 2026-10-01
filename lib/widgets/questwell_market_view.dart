@@ -44,12 +44,13 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     if(!canAct(i))return;
     if(i.owned){await widget.onEquip(i);return;}
     final confirmed=await showDialog<bool>(context:context,builder:(ctx)=>AlertDialog(
+      scrollable:true,
       titleTextStyle:QuestwellTypography.body(fontSize:20,fontWeight:FontWeight.w700,color:cream),
       contentTextStyle:QuestwellTypography.body(color:cream),
       title:Text(i.price==0?'Claim ${i.name}?':'Buy ${i.name}?'),
       content:Text(i.price==0?'Add this item to your inventory for free.':'${i.price} coins · ${widget.data.profile.coinBalance-i.price} coins will remain.\n\nYou can equip or place it from your inventory.'),
-      actions:[TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>Navigator.pop(ctx,false),child:Text('Cancel')),
-        FilledButton(style:FilledButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>Navigator.pop(ctx,true),child:Text(i.price==0?'Claim item':'Buy item'))]));
+      actions:[TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:()=>Navigator.pop(ctx,false),child:Text('Cancel')),
+        FilledButton(style:FilledButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:()=>Navigator.pop(ctx,true),child:Text(i.price==0?'Claim item':'Buy item'))]));
     if(confirmed==true&&mounted)await widget.onPurchase(i);
   }
   Map<String,String> preview(QuestwellCosmetic item) {
@@ -82,10 +83,10 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
           Text(item.requiredArchetype==null?'Available to every class':'For ${title(item.requiredArchetype!)} adventurers',style:QuestwellTypography.body(color:muted)),
           Text(item.owned?'Already in your inventory':item.price==0?'Free': '${item.price} coins',style:QuestwellTypography.body(color:gold,fontWeight:FontWeight.bold)),
           const SizedBox(height:20),
-          FilledButton(style:FilledButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:canAct(item)?()=>Navigator.pop(ctx,'activate'):null,child:Text(action(item))),
-          if(item.equipped&&widget.busyId==null) TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>Navigator.pop(ctx,'remove'),child:Text(room(item)?'Return to inventory':'Unequip')),
-          if(item.equipped&&room(item)&&widget.busyId==null) TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>Navigator.pop(ctx,'move'),child:Text('Move item')),
-          TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>Navigator.pop(ctx),child:Text('Back to shop')),
+          FilledButton(style:FilledButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:canAct(item)?()=>Navigator.pop(ctx,'activate'):null,child:Text(action(item))),
+          if(item.equipped&&widget.busyId==null) TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:()=>Navigator.pop(ctx,'remove'),child:Text(room(item)?'Return to inventory':'Unequip')),
+          if(item.equipped&&room(item)&&widget.busyId==null) TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:()=>Navigator.pop(ctx,'move'),child:Text('Move item')),
+          TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:()=>Navigator.pop(ctx),child:Text('Back to shop')),
         ])))));
     if(!mounted)return;
     if(result=='activate')await _activateItem(item);
@@ -109,7 +110,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       const SizedBox(height:10),
       if(items.isEmpty) Padding(padding:const EdgeInsets.symmetric(vertical:35),child:Column(children:[
         const Icon(Icons.search_off,color:gold,size:32),const SizedBox(height:12),Text('No treasures match these filters.',style:QuestwellTypography.body(color:cream)),
-        TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>setState((){category='All';owned=false;affordable=false;myClass=true;query='';searchController.clear();}),child:Text('Reset filters'))])),
+        TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:()=>setState((){category='All';owned=false;affordable=false;myClass=true;query='';searchController.clear();}),child:Text('Reset filters'))])),
       LayoutBuilder(builder:(context,constraints){final width=constraints.maxWidth>650?(constraints.maxWidth-14)/2:constraints.maxWidth;
         return Wrap(spacing:14,runSpacing:12,children:[for(final i in items) SizedBox(key:ValueKey(i.id),width:width,child:QuestwellPurchaseGlow(owned:i.owned,child:card(i)))]);}),
       const SizedBox(height:22),Text('Coins come from your quests. Every purchase stays in your inventory.',textAlign:TextAlign.center,style:QuestwellTypography.body(color:muted,fontSize:12,height:1.5)),
@@ -153,7 +154,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                     foregroundColor:category==name?gold:muted,
                     textStyle:QuestwellTypography.body(fontSize:14,
                       fontWeight:category==name?FontWeight.w700:FontWeight.w400),
-                    minimumSize:const Size(0,44),
+                    minimumSize:const Size(48,48),
                     padding:const EdgeInsets.symmetric(horizontal:12,vertical:10),
                     tapTargetSize:MaterialTapTargetSize.shrinkWrap,
                     shape:RoundedRectangleBorder(borderRadius:BorderRadius.circular(4))),
@@ -177,7 +178,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
         shape:RoundedRectangleBorder(borderRadius:BorderRadius.circular(6)),
         textStyle:QuestwellTypography.body(fontSize:13,
           fontWeight:selected?FontWeight.w600:FontWeight.w400),
-        minimumSize:const Size(0,44),
+        minimumSize:const Size(48,48),
         padding:const EdgeInsets.symmetric(horizontal:10,vertical:10),
         tapTargetSize:MaterialTapTargetSize.shrinkWrap),
       child:Row(mainAxisSize:MainAxisSize.min,children:[
@@ -201,7 +202,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       const SizedBox(height:10),Text(item.description,maxLines:2,overflow:TextOverflow.ellipsis,style:QuestwellTypography.body(color:Color(0xFF5E6559),height:1.4,fontSize:14)),
       if(restricted(item))Padding(padding:const EdgeInsets.only(top:8),child:Text('Requires ${title(item.requiredArchetype!)} class',style:QuestwellTypography.body(color:Color(0xFF88534C),fontSize:13))),
       const SizedBox(height:10),Wrap(alignment:WrapAlignment.spaceBetween,spacing:8,runSpacing:5,children:[
-        TextButton(onPressed:()=>details(item),style:TextButton.styleFrom(foregroundColor:ink,textStyle:QuestwellTypography.control()),child:Text('Preview')),
+        TextButton(onPressed:()=>details(item),style:TextButton.styleFrom(foregroundColor:ink,textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),child:Text('Preview')),
         FilledButton(onPressed:canAct(item)?()=>_activateItem(item):null,
           style:FilledButton.styleFrom(textStyle:QuestwellTypography.control(),backgroundColor:ink,foregroundColor:cream,disabledBackgroundColor:const Color(0xFFDDD4BE),disabledForegroundColor:const Color(0xFF656B5D)),child:Text(action(item))),
       ]),

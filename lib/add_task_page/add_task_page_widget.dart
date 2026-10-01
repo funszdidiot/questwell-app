@@ -3,6 +3,7 @@ import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/widgets/questwell_pixel_art.dart';
+import '/widgets/questwell_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'add_task_page_model.dart';
@@ -110,6 +111,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
         body: SafeArea(
           top: true,
           child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             padding: const EdgeInsets.fromLTRB(18, 16, 18, 30),
             child: Center(
               child: ConstrainedBox(
@@ -117,49 +119,20 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Row(
-                      children: [
-                        QuestwellTopActionButton(
-                          kind: 'back',
-                          tooltip: 'Back to the Hearth',
-                          onTap: () => context.safePop(),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'QUEST BOARD',
-                                style: theme.headlineMedium.override(
-                                  font: GoogleFonts.pressStart2p(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  fontSize: 21,
-                                  color: const Color(0xFFF2D9A0),
-                                  letterSpacing: .5,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Turn one real-life task into your next adventure.',
-                                style: theme.bodyMedium.override(
-                                  font: GoogleFonts.inter(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  color: const Color(0xFFB7C4D4),
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const QuestwellNavPixelIcon(
-                          kind: 'quest',
-                          size: 36,
-                        ),
-                      ],
-                    ),
+                    Row(children: [
+                      QuestwellTopActionButton(
+                        kind: 'back', tooltip: 'Back to the Hearth',
+                        onTap: () => context.safePop(),
+                      ),
+                      const Spacer(),
+                      const QuestwellNavPixelIcon(kind: 'quest', size: 36),
+                    ]),
+                    const SizedBox(height: 12),
+                    Text('QUEST BOARD', style: QuestwellTypography.sectionHeading(
+                      size: 16, color: const Color(0xFFF2D9A0))),
+                    const SizedBox(height: 8),
+                    Text('Turn one real-life task into your next adventure.',
+                      style: QuestwellTypography.body(color: const Color(0xFFB7C4D4))),
                     const SizedBox(height: 12),
                     const QuestwellPixelDivider(
                       accent: Color(0xFFD6A84B),
@@ -190,7 +163,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                           Text(
                             'What needs to get done?',
                             style: theme.titleMedium.override(
-                              font: GoogleFonts.interTight(
+                              font: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w800,
                               ),
                               color: const Color(0xFF30261D),
@@ -201,7 +174,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                           Text(
                             'Make it concrete enough that you will know when it is finished.',
                             style: theme.bodyMedium.override(
-                              font: GoogleFonts.inter(),
+                              font: GoogleFonts.roboto(),
                               color: const Color(0xFF67543E),
                               letterSpacing: 0,
                             ),
@@ -211,6 +184,10 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                             controller: _model.taskTitleFieldTextController,
                             focusNode: _model.taskTitleFieldFocusNode,
                             autofocus: true,
+                            minLines: 1,
+                            maxLines: 3,
+                            textInputAction: TextInputAction.done,
+                            onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
                             textCapitalization: TextCapitalization.sentences,
                             decoration: InputDecoration(
                               hintText: 'Reply to Jordan about the proposal',
@@ -236,7 +213,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                               ),
                             ),
                             style: theme.bodyLarge.override(
-                              font: GoogleFonts.inter(
+                              font: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w600,
                               ),
                               color: const Color(0xFF30261D),
@@ -262,7 +239,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                     Text(
                       'Questwell rewards friction, not perfection. Pick how this task feels right now.',
                       style: theme.bodyMedium.override(
-                        font: GoogleFonts.inter(),
+                        font: GoogleFonts.roboto(),
                         color: const Color(0xFFB7C4D4),
                         letterSpacing: 0,
                       ),
@@ -341,10 +318,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                           _saving
                               ? 'Posting Quest...'
                               : 'Post to Quest Board',
-                          style: GoogleFonts.pressStart2p(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: QuestwellTypography.control(),
                         ),
                         style: FilledButton.styleFrom(
                           minimumSize: const Size.fromHeight(54),
@@ -429,7 +403,7 @@ class _FrictionChoice extends StatelessWidget {
                   Text(
                     title,
                     style: theme.titleMedium.override(
-                      font: GoogleFonts.interTight(fontWeight: FontWeight.w800),
+                      font: GoogleFonts.roboto(fontWeight: FontWeight.w800),
                       color: const Color(0xFF30261D),
                       letterSpacing: 0,
                     ),
@@ -438,7 +412,7 @@ class _FrictionChoice extends StatelessWidget {
                   Text(
                     subtitle,
                     style: theme.bodySmall.override(
-                      font: GoogleFonts.inter(),
+                      font: GoogleFonts.roboto(),
                       color: const Color(0xFF67543E),
                       letterSpacing: 0,
                     ),
@@ -459,7 +433,7 @@ class _FrictionChoice extends StatelessWidget {
                           Text(
                             reward.split(' • ').first,
                             style: theme.labelMedium.override(
-                              font: GoogleFonts.inter(
+                              font: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w700,
                               ),
                               color: const Color(0xFF6E3B2C),
@@ -479,7 +453,7 @@ class _FrictionChoice extends StatelessWidget {
                           Text(
                             reward.split(' • ').last,
                             style: theme.labelMedium.override(
-                              font: GoogleFonts.inter(
+                              font: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w700,
                               ),
                               color: const Color(0xFF6E3B2C),
@@ -504,3 +478,4 @@ class _FrictionChoice extends StatelessWidget {
     );
   }
 }
+

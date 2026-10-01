@@ -6,6 +6,7 @@ import '/services/questwell_boss_service.dart';
 import '/services/questwell_task_service.dart';
 import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_quest_card.dart';
+import '/widgets/questwell_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -161,8 +162,8 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
         foregroundColor: const Color(0xFF1B1712),
         icon: const Icon(Icons.add),
         label: Text(
-          'NEW QUEST',
-          style: GoogleFonts.pressStart2p(fontSize: 9),
+          'New quest',
+          style: QuestwellTypography.control(),
         ),
       ),
       body: SafeArea(
@@ -475,6 +476,7 @@ class _BoardFilter extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Container(
+          constraints: const BoxConstraints(minHeight: 48),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
             color: selected ? const Color(0xFFF2E0B4) : const Color(0xFF152234),
