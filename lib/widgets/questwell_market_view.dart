@@ -4,6 +4,7 @@ import '../services/questwell_equipment_policy.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_hearth_decor.dart';
 import 'questwell_typography.dart';
+import 'questwell_market_shopfront.dart';
 
 class QuestwellMarketView extends StatefulWidget {
   const QuestwellMarketView({super.key,required this.data,required this.onPurchase,
@@ -97,15 +98,8 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       ('${i.name} ${i.description}'.toLowerCase().contains(query.toLowerCase().trim()))).toList()
       ..sort((a,b){final price=a.price.compareTo(b.price);return price!=0?price:a.name.compareTo(b.name);});
     return RefreshIndicator(onRefresh:widget.onRefresh,child:ListView(padding:const EdgeInsets.fromLTRB(18,8,18,30),children:[
-      Container(padding:const EdgeInsets.all(20),decoration:BoxDecoration(color:const Color(0xFF23453F),border:Border.all(color:const Color(0xFF678475)),borderRadius:BorderRadius.circular(14)),
-        child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
-          Text('MARKET',style:QuestwellTypography.sectionHeading(size:18,color:gold)),
-          const SizedBox(height:12),Text('Rare finds, class gear, and questionable fashion choices.',style:QuestwellTypography.body(color:Color(0xFFC0D2C7),height:1.4)),
-          const SizedBox(height:16),Wrap(spacing:14,runSpacing:10,crossAxisAlignment:WrapCrossAlignment.center,children:[
-            Container(padding:const EdgeInsets.symmetric(horizontal:12,vertical:8),decoration:BoxDecoration(color:const Color(0xFF142D2B),borderRadius:BorderRadius.circular(20)),
-              child:Text('◈  ${widget.data.profile.coinBalance} coins',style:QuestwellTypography.body(color:gold,fontWeight:FontWeight.w700,fontSize:16))),
-            Text('${all.where((i)=>i.owned).length} / ${all.length} collected',style:QuestwellTypography.body(color:muted,fontSize:12)),
-          ])])),
+      QuestwellMarketShopfront(coins:widget.data.profile.coinBalance,
+        owned:all.where((i)=>i.owned).length,total:all.length),
       const SizedBox(height:20),
       TextField(controller:searchController,onChanged:(v)=>setState(()=>query=v),style:QuestwellTypography.body(color:cream),decoration:InputDecoration(
         hintText:'Find your next treasure',hintStyle:QuestwellTypography.body(color:muted),prefixIcon:const Icon(Icons.search,color:muted),
