@@ -69,7 +69,7 @@ class _ShopLightPainter extends CustomPainter {
       final progress=(local-.3)/2;
       final alpha=math.sin(progress*math.pi)*.85;
       final unit=size.width/355;
-      final x=size.width*(right?.749:.119);
+      final x=size.width*(right ? .749 : .119);
       final y=size.height*(.565-.07*progress);
       final paint=Paint()..isAntiAlias=false
         ..color=(right?const Color(0xFFBCF3EF):const Color(0xFFEAD0FF))
