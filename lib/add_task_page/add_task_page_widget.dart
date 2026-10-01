@@ -26,6 +26,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
   late AddTaskPageModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _saving = false;
+  String? _feedback;
 
   @override
   void initState() {
@@ -53,27 +54,17 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
     final title = _model.taskTitleFieldTextController.text.trim();
 
     if (title.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Give this quest a name first.'),
-          behavior: SnackBarBehavior.fixed,
-        ),
-      );
+      setState(() => _feedback = 'Give this quest a name first.');
       return;
     }
 
     if (_model.selectedFriction == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Choose how hard this feels right now.'),
-          behavior: SnackBarBehavior.fixed,
-        ),
-      );
+      setState(() => _feedback = 'Choose how hard this feels right now.');
       return;
     }
 
     if (_saving) return;
-    setState(() => _saving = true);
+    setState(() { _saving = true; _feedback = null; });
 
     try {
       if (widget.onCreate != null) {
@@ -92,12 +83,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
       if (mounted) _close();
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Could not add this quest. Please try again.'),
-          behavior: SnackBarBehavior.fixed,
-        ),
-      );
+      setState(() => _feedback = 'Could not add this quest. Please try again.');
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -232,6 +218,11 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
               ]);
             }),
             const SizedBox(height: 22),
+            if (_feedback != null) ...[
+              Semantics(liveRegion: true, child: Text(_feedback!,
+                style: QuestwellTypography.body(color: const Color(0xFFFFD5A6)))),
+              const SizedBox(height: 12),
+            ],
             FilledButton.icon(
               onPressed: _saving ? null : _saveQuest,
               icon: _saving ? const SizedBox(width: 18, height: 18,
