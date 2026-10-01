@@ -88,8 +88,57 @@ class _FamiliarIdleState extends State<_FamiliarIdle> with SingleTickerProviderS
                 IgnorePointer(child: CustomPaint(
                   painter: QuestwellDragonSmokePainter(phase: _clock.value))),
               ])
-            : child));
+            : hover
+              ? Stack(clipBehavior: Clip.none, fit: StackFit.expand, children: [
+                  CustomPaint(painter: QuestwellMothMagicPainter(phase: _clock.value)),
+                  child!,
+                ])
+              : child));
     }));
+}
+
+/// Staggered golden wing-dust: drifts outward and falls away as the moth hovers.
+/// Uses the familiar's clock, including its reduced-motion and offscreen pause.
+class QuestwellMothMagicPainter extends CustomPainter {
+  const QuestwellMothMagicPainter({required this.phase});
+  final double phase;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.save();
+    canvas.scale(size.width / 57, size.height / 54);
+    final paint = Paint()..isAntiAlias = false;
+    for (var i = 0; i < 14; i++) {
+      final age = (phase + i / 14) % 1;
+      final side = i.isEven ? -1.0 : 1.0;
+      final shimmer = math.sin(age * math.pi);
+      final opacity = math.pow(shimmer, .7).toDouble() * .95;
+      final x = 28.5 + side * (16 + i % 3 * 3 + age * 5) +
+          math.sin((age + i * .17) * math.pi * 2) * 3;
+      final y = 12 + i % 4 * 7 + age * 24;
+      final radius = (i % 4 == 0 ? 1.5 : .85) + shimmer * .4;
+      // A restrained amber halo and crisp stepped cores suit the retro artwork.
+      paint.color = const Color(0xFFFFBA43).withValues(alpha: opacity * .14);
+      canvas.drawCircle(Offset(x, y), radius * 2.6, paint);
+      paint.color = const Color(0xFFFFD76A).withValues(alpha: opacity);
+      if (i % 3 == 0) {
+        canvas.drawRect(Rect.fromCenter(center: Offset(x, y),
+          width: radius * 2.8, height: .85), paint);
+        canvas.drawRect(Rect.fromCenter(center: Offset(x, y),
+          width: .85, height: radius * 2.8), paint);
+      } else {
+        canvas.drawRect(Rect.fromCenter(center: Offset(x, y),
+          width: radius * 1.4, height: radius * 1.4), paint);
+      }
+      paint.color = const Color(0xFFFFF3BC).withValues(alpha: opacity);
+      canvas.drawRect(Rect.fromCenter(center: Offset(x, y), width: .8, height: .8), paint);
+    }
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant QuestwellMothMagicPainter oldDelegate) =>
+      oldDelegate.phase != phase;
 }
 
 /// A brief, three-puff exhale registered to the sprite's visible nostril.
