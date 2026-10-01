@@ -4,6 +4,31 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Market equipment and icons — 2026-09-30, 8:02 p.m. America/Chicago
+
+**Development build:** `25a0f104fbc6d4c0466d602338d55d9ae189948d`.
+All 29 active Market items have equip/place renderers. Shared 16-bit-style
+icons now appear in Market and Inventory. The shop has search, category and
+ownership filters, try-on previews, purchase confirmation, equip and placement.
+The founder likes the new design and requested the former tagline; restored
+“Rare finds, class gear, and questionable fashion choices.”
+
+**Verified:** Flutter Check `36798907024` passed all 123 tests and analysis;
+Preview `36798907027` deployed successfully. 105 database purchase/equip/unequip
+cases passed across five synthetic class accounts in a rolled-back transaction.
+All locked avatar asset checksums pass. Browser review confirmed new icons,
+companion purchase and equip, cloak fit, rain aligned to the existing window,
+and the restored tagline. No founder
+coins, ownership or equipment were changed by these checks.
+
+**App:** https://funszdidiot.github.io/questwell-app/?rev=25a0f10
+
+**Sample shop:** https://funszdidiot.github.io/questwell-app/?review=market&rev=25a0f10
+
+See `docs/qa/MARKET_EQUIPMENT_REVIEW.md`. New item artwork is available for
+founder review; the design feedback is not blanket approval of every new fit.
+No merge to `flutterflow`, external beta or launch.
+
 ## Founder acceptance and Chronicle work — 2026-09-30
 
 At 7:17 p.m. America/Chicago, the founder confirmed “Everything is good to go”
