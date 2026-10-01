@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Printer Poltergeist arcade entrance — 2026-10-01
+
+Founder requested next boss after Kraken. Printer Poltergeist added in `88631a29e36e5710ee0243f2ace35ddf5b176bf9`: haunted brass/wood printing machine with cyan wisps and curling paper, drift from above/right and short mechanical shudder, "Paper jam. Naturally." taunt. Production Printer encounters use shared equipped-avatar scene. Five detailed bosses selectable in practice. Server task/reward logic unchanged.
+
+Flutter Check 36833163820 and Preview 36833163802 succeeded. Printer tests cover art/dialogue, animation settling, reduced motion and defeat. Browser verified entrance frames, paper/avatar/dialogue clearance, fitted typography, and three practice attacks producing zero HP, VICTORY and JAM BANISHED. Review: https://funszdidiot.github.io/questwell-app/?review=boss&boss=printer_poltergeist&rev=88631a2 . Founder in-app review pending; real account rewards not exercised. No merge or launch. Male Wanderer cuffs remain deferred and unapproved.
+
 ## Calendar Kraken arcade entrance — 2026-10-01
 
 Founder approved Spreadsheet Slime ("Love it") and requested next boss. Calendar Kraken added in `7bb1d2ef50e2053dcae8590ccb0df1b54f56f5fa`: violet tentacled creature with appointment scrolls/brass watch, rising entrance with rolling settle, "I found a gap in your calendar." taunt. Shared equipped-avatar scene and health/defeat states integrated for real Calendar Kraken encounters. Four detailed bosses selectable in practice. No server task/reward changes.
