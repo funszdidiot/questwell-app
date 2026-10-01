@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'scholar_underlayer_clip.dart';
 import 'questwell_scholar_cuffs.dart';
+import 'questwell_wanderer_cuffs.dart';
 import 'scout_underlayer_clip.dart';
 import 'alchemist_underlayer_clip.dart';
 import 'guardian_underlayer_clip.dart';
@@ -211,7 +212,10 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       final image = archetype == 'scholar' &&
               !QuestwellCloak.supports(equippedSlugs['chest'])
           ? ClipPath(clipper: ScholarCuffReplacementClipper(body), child: _assetLayer(asset))
-          : _assetLayer(asset);
+          : archetype == 'wanderer' &&
+                  !QuestwellCloak.supports(equippedSlugs['chest'])
+              ? ClipPath(clipper: WandererCuffReplacementClipper(body), child: _assetLayer(asset))
+              : _assetLayer(asset);
       return QuestwellCloak.supports(equippedSlugs['chest'])
           ? ClipPath(clipper: QuestwellCloakUnderlayerClipper(body), child: image)
           : image;
@@ -316,6 +320,9 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           if (archetype == 'scholar' && classOverlay != null &&
               !QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellScholarCuffs(body: body),
+          if (archetype == 'wanderer' && classOverlay != null &&
+              !QuestwellCloak.supports(equippedSlugs['chest']))
+            QuestwellWandererCuffs(body: body),
           if (equippedSlugs['accessory'] == QuestwellMoonstoneBrooch.slug)
             QuestwellMoonstoneBrooch(bodyType: body),
           if (equippedSlugs['neck'] == 'emerald-scholar-scarf' &&
