@@ -31,6 +31,9 @@ void main() {
     await tester.pumpWidget(page([battle('a'), battle('b', won: true)])); await tester.pumpAndSettle();
     expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
     expect(find.byType(QuestwellBossVictoryPanel), findsOneWidget);
+    await tester.ensureVisible(find.text('Choose next battle'));
+    await tester.tap(find.text('Choose next battle')); await tester.pumpAndSettle();
+    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
     expect(tester.takeException(), isNull);
   });
   testWidgets('Home and create remain reachable in empty, loading and error states', (tester) async {

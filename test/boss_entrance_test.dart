@@ -20,7 +20,12 @@ void main() {
     expect(find.text('You said you’d do it tomorrow.'), findsOneWidget);
     expect(find.text('YOUR MOVE'), findsOneWidget);
     await tester.pumpWidget(scene(progress: 1 / 3));
+    expect(tester.widget<QuestwellPixelMeter>(find.byType(QuestwellPixelMeter)).value, closeTo(1, .001));
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(tester.widget<QuestwellPixelMeter>(find.byType(QuestwellPixelMeter)).value, greaterThan(2 / 3));
+    await tester.pumpAndSettle();
     expect(tester.widget<QuestwellPixelMeter>(find.byType(QuestwellPixelMeter)).value, closeTo(2 / 3, .001));
+    expect(tester.binding.hasScheduledFrame, isFalse);
     expect(find.text('BOSS APPROACHING'), findsNothing);
     expect(tester.takeException(), isNull);
   });
