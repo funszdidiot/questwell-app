@@ -4,6 +4,17 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Detailed familiars and Emerald Dragon review — 2026-09-30
+
+Founder approved the stronger Market motion and requested the remaining equippable gear/familiar art before Boss Battles, in detailed 64-bit retro fantasy style. Six existing familiars now render dedicated transparent equipped sprites while their Market/Inventory icons remain 16-bit. Added the requested Emerald Dragon as the default companion review candidate.
+
+Development preview: `?review=companions&rev=3923e33`. All seven can be tried on with female, male, and neutral bodies and viewed in the Hearth. Ground companions have a fixed boot baseline; moss moth hovers. Idle motion respects reduced motion and inactive screens. Dragon is a design preview, not yet a priced Market item. No database, class-lock, price, ownership, approved avatar, or room-art changes.
+
+**Development build:** `3923e33b2b87197d42b5cd9313ee954e7962f8f3`.
+Flutter Check `36806039882` and Preview `36806039936` succeeded. Automated coverage checks all seven familiars across three body types and reduced-motion/route muting. Browser review confirmed dragon and glass-slime transparency, body switching, avatar and Hearth placement.
+
+Visual approval pending. Next art set: Moss Green Cloak, Hearthguard Mantle, Wayfarer Satchel, Annotated Grimoire, Pathfinder Boots. See `docs/qa/GEAR_FAMILIAR_REVIEW.md`. Development preview only; no merge, external beta or launch.
+
 ## Stronger Market motion and simpler balance — 2026-09-30
 
 Founder requested less-subtle animation and removal of the #/# collected count.
