@@ -22,6 +22,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   late final ValueNotifier<int> _secondsRemaining = ValueNotifier<int>(25 * 60);
   bool _running = false;
   bool _finished = false;
+  bool _started = false;
   bool _sceneMotion = true;
   DateTime? _deadline;
 
@@ -35,6 +36,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   void _choosePreset(int minutes) {
     if (_running) return;
     setState(() {
+      _started = false;
       _selectedMinutes = minutes;
       _secondsRemaining.value = minutes * 60;
       _finished = false;
@@ -48,6 +50,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
     _deadline = DateTime.now().add(Duration(seconds: _secondsRemaining.value));
 
     setState(() {
+      _started = true;
       _running = true;
       _finished = false;
     });
@@ -90,6 +93,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
     _timer?.cancel();
     _deadline = null;
     setState(() {
+      _started = false;
       _running = false;
       _finished = false;
       _secondsRemaining.value = _selectedMinutes * 60;
@@ -146,29 +150,18 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
             if (_finished) const QuestwellExpeditionPixelScene(height: 200, campfire: true)
             else QuestwellExpeditionScene(motion: _sceneMotion),
             const SizedBox(height: 22),
-            QuestwellRetroPanel(
-              padding: const EdgeInsets.all(18),
-              accent: const Color(0xFF8E6B35),
-              background: const Color(0xFF15141B),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(22),
+              decoration: BoxDecoration(
+                color: const Color(0xFF171F1B),
+                border: Border.all(color: const Color(0xFF8E7548), width: 1.5),
+                borderRadius: BorderRadius.circular(4),
+              ),
               child: Column(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF17151A),
-                      border: Border.all(
-                        color: const Color(0xFF8E6B35),
-                        width: 3,
-                      ),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x55322018),
-                          offset: Offset(4, 4),
-                          blurRadius: 0,
-                        ),
-                      ],
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     child: Column(
                       children: [
                         _finished
@@ -219,7 +212,10 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                               ? 'EXPEDITION COMPLETE'
                               : _running
                                   ? 'STAY WITH THE QUEST'
-                                  : 'READY WHEN YOU ARE',
+                                  : _started
+                                      ? 'REST. THE PATH CAN WAIT.'
+                                      : 'READY WHEN YOU ARE',
+                          textAlign: TextAlign.center,
                           style: theme.labelSmall.override(
                             font: GoogleFonts.roboto(
                               fontWeight: FontWeight.w800,
@@ -244,7 +240,19 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                               ? null
                               : (_) => _choosePreset(minutes),
                           label: Text('$minutes min'),
-                          labelStyle: QuestwellTypography.control(),
+                          labelStyle: QuestwellTypography.control(
+                            color: _selectedMinutes == minutes
+                                ? const Color(0xFFFFE8B4)
+                                : const Color(0xFFDBE3DA)),
+                          selectedColor: const Color(0xFF2A4C3B),
+                          backgroundColor: const Color(0xFF202E26),
+                          disabledColor: const Color(0xFF24332B),
+                          checkmarkColor: const Color(0xFFE4C586),
+                          side: BorderSide(
+                            color: _selectedMinutes == minutes
+                                ? const Color(0xFFBFA168)
+                                : const Color(0xFF52604F)),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                         ),
                     ],
                   ),
@@ -270,11 +278,17 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                 ? 'Reset'
                                 : _running
                                     ? 'Pause'
-                                    : 'Begin Expedition',
+                                    : _started
+                                        ? 'Resume Expedition'
+                                        : 'Begin Expedition',
                           ),
                           style: FilledButton.styleFrom(
                             textStyle: QuestwellTypography.control(),
-                            minimumSize: const Size.fromHeight(50),
+                            backgroundColor: const Color(0xFF244C3E),
+                            foregroundColor: const Color(0xFFFFF0C9),
+                            side: const BorderSide(color: Color(0xFFBFA168), width: 1.5),
+                            elevation: 0,
+                            minimumSize: const Size.fromHeight(52),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(2),
                             ),
@@ -286,11 +300,11 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                   if (!_running && !_finished) ...[
                     const SizedBox(height: 8),
                     TextButton(
-                      style: TextButton.styleFrom(textStyle: QuestwellTypography.control()),
-                      onPressed: _secondsRemaining.value ==
-                              _selectedMinutes * 60
-                          ? null
-                          : _reset,
+                      style: TextButton.styleFrom(
+                        textStyle: QuestwellTypography.control(),
+                        foregroundColor: const Color(0xFFE4C586),
+                        disabledForegroundColor: const Color(0xFF8C978D)),
+                      onPressed: _started ? _reset : null,
                       child: const Text('Reset timer'),
                     ),
                   ],
@@ -316,7 +330,9 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                           ? 'A quest well traveled. Rest by the fire, adventurer. Every small victory is worth celebrating.'
                           : _running
                               ? 'Steady onward, adventurer. One task, one stretch of trail. Every small step is a little victory.'
-                              : 'You don’t need to see the whole path to take the first step. Choose one small task, adventurer. Your journey begins here.',
+                              : _started
+                                  ? 'Take a breath, adventurer. Your progress is safe, and the path will be here when you’re ready.'
+                                  : 'You don’t need to see the whole path to take the first step. Choose one small task, adventurer. Your journey begins here.',
                       style: theme.bodyMedium.override(
                         font: GoogleFonts.roboto(),
                         color: const Color(0xFFF2E7CE),

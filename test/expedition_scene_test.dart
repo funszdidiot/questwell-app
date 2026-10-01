@@ -67,7 +67,18 @@ void main() {
     expect(find.text('Pause'), findsOneWidget);
     await tester.tap(find.text('Pause'));
     await tester.pumpAndSettle();
+    expect(find.text('Resume Expedition'), findsOneWidget);
+    await tester.tap(find.text('Resume Expedition'));
+    await tester.pump();
+    expect(find.text('Pause'), findsOneWidget);
+    await tester.tap(find.text('Pause'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Reset timer'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Reset timer'));
+    await tester.pumpAndSettle();
     expect(find.text('Begin Expedition'), findsOneWidget);
+    expect(find.text('15:00'), findsOneWidget);
     expect(tester.takeException(), isNull);
     await tester.ensureVisible(find.byTooltip('Pause scenery'));
     await tester.pumpAndSettle();
