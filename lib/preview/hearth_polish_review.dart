@@ -43,7 +43,7 @@ class _HearthPolishReviewAppState extends State<HearthPolishReviewApp> {
         ]),
         Wrap(spacing: 28, runSpacing: 20, alignment: WrapAlignment.center, children: [
           SizedBox(width: width, child: Column(children: [
-            QuestwellHomeHeader(onOpen: (_) {}),
+            const QuestwellHomeHeader(),
             const SizedBox(height: 10),
             QuestwellHearthPixelScene(height: 342, archetype: 'guardian', avatarBodyType: body, showAvatar: showAvatar,
               equippedSlugs: {
