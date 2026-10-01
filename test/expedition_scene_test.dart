@@ -150,15 +150,19 @@ void main() {
       if (!reduced) {
         await tester.pump(const Duration(milliseconds: 450));
         expect(find.byKey(const ValueKey('expedition-trail-art')), findsOneWidget);
+        final outgoingOpacity = find.ancestor(
+          of: find.byKey(const ValueKey('expedition-trail-art')),
+          matching: find.byType(Opacity));
+        expect(tester.widget<Opacity>(outgoingOpacity.first).opacity, 1.0);
       }
-      await tester.pump(const Duration(seconds: 1));
+      await tester.pump(const Duration(seconds: 3));
       expect(find.byKey(const ValueKey('expedition-trail-art')), findsNothing);
       if (reduced) expect(tester.binding.hasScheduledFrame, isFalse);
       await tester.ensureVisible(find.text('Return to trail'));
       await tester.pump();
       await tester.tap(find.text('Return to trail'));
       await tester.pump();
-      await tester.pump(const Duration(seconds: 1));
+      await tester.pump(const Duration(seconds: 3));
       expect(find.byKey(const ValueKey('expedition-campfire-art')), findsNothing);
       expect(find.byKey(const ValueKey('expedition-trail-art')), findsOneWidget);
       expect(find.text('00:05'), findsOneWidget);

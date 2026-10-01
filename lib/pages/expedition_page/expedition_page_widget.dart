@@ -182,9 +182,20 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
             AnimatedSwitcher(
               key: const ValueKey('expedition-scene-transition'),
               duration: MediaQuery.disableAnimationsOf(context) || !_sceneMotion
-                  ? Duration.zero : const Duration(milliseconds: 900),
-              switchInCurve: Curves.easeInOut,
-              switchOutCurve: Curves.easeInOut,
+                  ? Duration.zero : const Duration(milliseconds: 2200),
+              switchInCurve: Curves.easeInOutSine,
+              switchOutCurve: Curves.easeInOutSine,
+              // Keep the outgoing scene opaque behind the incoming fade.
+              // This avoids the dark dip of fading both layers at once.
+              transitionBuilder: (child, animation) => AnimatedBuilder(
+                animation: animation,
+                child: child,
+                builder: (context, scene) => Opacity(
+                  opacity: animation.status == AnimationStatus.reverse
+                      ? 1.0 : animation.value,
+                  child: scene,
+                ),
+              ),
               child: QuestwellExpeditionScene(
                 key: ValueKey(_finished),
                 campfire: _finished,

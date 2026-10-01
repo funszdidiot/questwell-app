@@ -13,7 +13,7 @@ class QuestwellExpeditionScene extends StatefulWidget {
 class _QuestwellExpeditionSceneState extends State<QuestwellExpeditionScene>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final AnimationController _ambience = AnimationController(
-    vsync: this, duration: const Duration(seconds: 8));
+    vsync: this, duration: const Duration(seconds: 24));
   bool _foreground = true;
   bool _still = false;
   @override
@@ -79,6 +79,8 @@ class _TrailAmbience extends CustomPainter {
   _TrailAmbience(this.phase, {required this.still}) : super(repaint: phase);
   final Animation<double> phase;
   final bool still;
+  // Three familiar ambience cycles share one longer, occasional breeze cycle.
+  double get _effectPhase => phase.value * 3;
   static const _lanterns = [Offset(.05, .625), Offset(.21, .43),
     Offset(.255, .386), Offset(.309, .444), Offset(.421, .57),
     Offset(.697, .578), Offset(.595, .57)];
@@ -89,9 +91,10 @@ class _TrailAmbience extends CustomPainter {
   ].map((path) => path.computeMetrics().first).toList(growable: false);
   @override
   void paint(Canvas canvas, Size size) {
-    final t = (still ? .25 : phase.value) * math.pi * 2;
+    final t = (still ? .25 : _effectPhase) * math.pi * 2;
     canvas.save();
     canvas.clipRect(Offset.zero & size);
+    _paintLeafRustle(canvas, size, phase.value, still: still, campfire: false);
     // Warm, clearly visible breathing light; continuous curves avoid flashes.
     for (var i = 0; i < _lanterns.length; i++) {
       final point = Offset(_lanterns[i].dx * size.width, _lanterns[i].dy * size.height);
@@ -153,7 +156,7 @@ class _TrailAmbience extends CustomPainter {
       Offset(1448, 975), Offset(1484, 980), Offset(1510, 986),
     ];
     for (var i = 0; i < tracks.length; i++) {
-      final travel = ((still ? .25 : phase.value) * 4 + i * .173) % 1;
+      final travel = ((still ? .25 : _effectPhase) * 4 + i * .173) % 1;
       final strength = math.sin(travel * math.pi);
       final x = tracks[i].dx + travel * 32;
       final y = tracks[i].dy + travel * 3;
@@ -182,7 +185,7 @@ class _TrailAmbience extends CustomPainter {
       for (var strand = 0; strand < 3; strand++) {
         canvas.save();
         canvas.translate(strand * 4.0, 0);
-        final travel = ((still ? .25 : phase.value) * 8 + strand / 3 + f * .23) % 1;
+        final travel = ((still ? .25 : _effectPhase) * 8 + strand / 3 + f * .23) % 1;
         ripple.strokeWidth = 1536 / size.width * 1.5;
         ripple.color = const Color(0xFFE1F6FF)
           .withValues(alpha: .85 * math.sin(travel * math.pi));
@@ -193,7 +196,7 @@ class _TrailAmbience extends CustomPainter {
     }
     const foamCenters = [Offset(1330, 928), Offset(1360, 935), Offset(1466, 943)];
     for (var i = 0; i < foamCenters.length; i++) {
-      final spread = ((still ? .25 : phase.value) * 4 + i / 3) % 1;
+      final spread = ((still ? .25 : _effectPhase) * 4 + i / 3) % 1;
       ripple.strokeWidth = 1536 / size.width;
       ripple.color = const Color(0xFFD6F3F7)
         .withValues(alpha: .6 * math.sin(spread * math.pi));
@@ -212,15 +215,18 @@ class _CampfireAmbience extends CustomPainter {
   _CampfireAmbience(this.phase, {required this.still}) : super(repaint: phase);
   final Animation<double> phase;
   final bool still;
+  // Three familiar ambience cycles share one longer, occasional breeze cycle.
+  double get _effectPhase => phase.value * 3;
   @override
   void paint(Canvas canvas, Size size) {
-    final progress = still ? .25 : phase.value;
+    final progress = still ? .25 : _effectPhase;
     final t = progress * math.pi * 2;
     final breath = (1 + math.sin(t * 4)) / 2;
     final fire = Offset(size.width * .518, size.height * .74);
     final glowRadius = size.width * (.115 + breath * .012);
     canvas.save();
     canvas.clipRect(Offset.zero & size);
+    _paintLeafRustle(canvas, size, phase.value, still: still, campfire: true);
     final glow = Rect.fromCircle(center: fire, radius: glowRadius);
     canvas.drawCircle(fire, glowRadius, Paint()..shader = RadialGradient(colors: [
       const Color(0xFFFFAB42).withValues(alpha: .12 + breath * .12),
@@ -271,4 +277,48 @@ class _CampfireAmbience extends CustomPainter {
   }
   @override
   bool shouldRepaint(covariant _CampfireAmbience oldDelegate) => oldDelegate.still != still;
+}
+
+/// Small foliage accents sway only during two short breezes in each 24-second
+/// cycle. The base art stays fixed; there is no camera or whole-image motion.
+void _paintLeafRustle(Canvas canvas, Size size, double phase,
+    {required bool still, required bool campfire}) {
+  final anchors = campfire
+      ? const [Offset(.40, .095), Offset(.49, .054), Offset(.58, .076),
+          Offset(.66, .032), Offset(.074, .864), Offset(.125, .91)]
+      : const [Offset(.43, .079), Offset(.51, .044), Offset(.60, .078),
+          Offset(.68, .025), Offset(.063, .837), Offset(.121, .892)];
+  double gust(double start) {
+    final u = (phase - start) / .13;
+    if (still || u <= 0 || u >= 1) return 0;
+    final envelope = math.sin(u * math.pi);
+    return envelope * envelope * math.sin(u * math.pi * 3);
+  }
+  final scale = (size.width / 560).clamp(.65, 1.5).toDouble();
+  for (var group = 0; group < anchors.length; group++) {
+    final delay = group * .012;
+    final breeze = gust(.12 + delay) + gust(.66 + delay);
+    canvas.save();
+    canvas.translate(anchors[group].dx * size.width, anchors[group].dy * size.height);
+    canvas.scale(scale);
+    canvas.rotate((group.isEven ? -.28 : .32) + breeze * .18);
+    final stem = Paint()..color = const Color(0xFF41472B)
+      ..strokeWidth = 1;
+    canvas.drawLine(Offset.zero, Offset(15 + breeze * 2, 7), stem);
+    for (var leaf = 0; leaf < 5; leaf++) {
+      canvas.save();
+      canvas.translate(3.0 + leaf * 2.9, leaf * 1.3);
+      canvas.rotate((leaf.isEven ? -.75 : .85) + breeze * (.18 + leaf * .035));
+      final blade = Path()..moveTo(0, 0)..lineTo(2, -2)
+        ..lineTo(5, -3)..lineTo(8, -1)..lineTo(6, 2)
+        ..lineTo(3, 2)..close();
+      canvas.drawPath(blade, Paint()..color =
+        (leaf.isEven ? const Color(0xFF465132) : const Color(0xFF596039)));
+      canvas.drawLine(const Offset(1, 0), const Offset(6, -1),
+        Paint()..color = const Color(0xFF7B7947).withValues(alpha: .55)
+          ..strokeWidth = .7);
+      canvas.restore();
+    }
+    canvas.restore();
+  }
 }
