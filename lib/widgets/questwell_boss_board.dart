@@ -97,7 +97,7 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
             style: QuestwellTypography.body(fontSize: 12, color: _muted)),
           TextButton.icon(onPressed: widget.onCreate, icon: const Icon(Icons.add, size: 18),
             style: TextButton.styleFrom(foregroundColor: _gold, minimumSize: const Size(48, 48),
-              textStyle: QuestwellTypography.body(fontSize: 14)),
+              textStyle: QuestwellTypography.control()),
             label: const Text('Start a battle')),
         ]),
         const SizedBox(height: 8),
@@ -116,7 +116,8 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
           Text('Your battles could not be loaded.', style: QuestwellTypography.control(color: _gold)),
           const SizedBox(height: 6),
           Text('Check your connection and try again.', style: QuestwellTypography.body(color: _muted)),
-          TextButton(onPressed: widget.onRetry, child: const Text('Try again')),
+          TextButton(onPressed: widget.onRetry,
+            style: TextButton.styleFrom(textStyle: QuestwellTypography.control()), child: const Text('Try again')),
         ]))
         else if (battle == null) _panel(Column(children: [
           const QuestwellNavPixelIcon(kind: 'boss', size: 48),
@@ -141,11 +142,12 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
               xp: battle.rewardXp, coins: battle.rewardCoins, practice: widget.practice),
             const SizedBox(height: 8),
             OutlinedButton(onPressed: open.isEmpty ? widget.onCreate : () => _select(open.first.id),
-              style: OutlinedButton.styleFrom(foregroundColor: _gold, minimumSize: const Size.fromHeight(48)),
+              style: OutlinedButton.styleFrom(foregroundColor: _gold, minimumSize: const Size.fromHeight(48),
+                textStyle: QuestwellTypography.control()),
               child: Text(open.isEmpty ? 'Start a new battle' : 'Choose next battle')),
           ]
           else Wrap(spacing: 16, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: [
-            Text('ON VICTORY', style: QuestwellTypography.sectionHeading(size: 9)),
+            Text('ON VICTORY', style: QuestwellTypography.sectionHeading(size: 10)),
             Text('+${battle.rewardXp} XP', style: QuestwellTypography.control(color: _gold)),
             Text('+${battle.rewardCoins} coins', style: QuestwellTypography.control(color: _gold)),
           ]),
@@ -188,6 +190,7 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
     final action = step.completed ? null : Semantics(label: 'Complete attack: ${step.title}', child: FilledButton(
       onPressed: widget.busyStepId != null || battle.completed ? null : () => widget.onAttack(battle, step),
       style: FilledButton.styleFrom(backgroundColor: const Color(0xFF274B43), foregroundColor: Colors.white,
+        textStyle: QuestwellTypography.control(),
         minimumSize: const Size(88, 48), padding: const EdgeInsets.symmetric(horizontal: 16),
         shape: const RoundedRectangleBorder()),
       child: busy ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Text('Attack')));
@@ -199,7 +202,7 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
           color: next ? const Color(0xFF786342) : const Color(0xFF95B79F), size: 22),
         const SizedBox(width: 10),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          if (next) Text('NEXT ATTACK', style: QuestwellTypography.body(fontSize: 10, fontWeight: FontWeight.w700, color: const Color(0xFF70582E))),
+          if (next) Text('NEXT ATTACK', style: QuestwellTypography.body(fontSize: 12, fontWeight: FontWeight.w700, color: const Color(0xFF70582E))),
           Text(step.title, style: QuestwellTypography.body(fontSize: next ? 16 : 14,
             color: step.completed ? _muted : foreground, fontWeight: FontWeight.w600)),
         ])),

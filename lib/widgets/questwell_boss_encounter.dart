@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'questwell_typography.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'questwell_pixel_art.dart';
 
@@ -124,7 +124,7 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
         Container(padding: const EdgeInsets.all(12), color: const Color(0xFF1E2029),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Text(widget.defeated ? '$_name · DEFEATED' : _name,
-              style: GoogleFonts.pressStart2p(fontSize: 11, height: 1.5, color: const Color(0xFFF1D79B))),
+              style: QuestwellTypography.sectionHeading(size: 11, color: const Color(0xFFF1D79B))),
             const SizedBox(height: 9),
             Semantics(label: 'Boss health ${(hp * 100).round()} percent',
               child: QuestwellPixelMeter(value: displayedHp * fill, kind: 'hp', height: 14, segments: 12)),
@@ -141,9 +141,9 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                 child: ExcludeSemantics(child: Stack(children: [
                   // Reserve the complete wrapped height throughout the typewriter reveal.
                   Opacity(opacity: 0, child: RichText(textScaler: MediaQuery.textScalerOf(context), text: TextSpan(text: taunt,
-                    style: const TextStyle(color: Color(0xFF30271E), fontSize: 16, height: 1.3, fontWeight: FontWeight.w700)))),
+                    style: QuestwellTypography.body(color: const Color(0xFF30271E), fontSize: 16, height: 1.3, fontWeight: FontWeight.w700)))),
                   Text(t >= .53 ? taunt.substring(0, letters) : '',
-                    style: const TextStyle(color: Color(0xFF30271E), fontSize: 16, height: 1.3, fontWeight: FontWeight.w700)),
+                    style: QuestwellTypography.body(color: const Color(0xFF30271E), fontSize: 16, height: 1.3, fontWeight: FontWeight.w700)),
                 ]))))),
         LayoutBuilder(builder: (context, constraints) {
           final width = constraints.maxWidth;
@@ -189,14 +189,15 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                     Positioned.fill(child: ColoredBox(color: const Color(0x88101922), child: Center(
                       child: Container(padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 10),
                         width: double.infinity, color: const Color(0xEE211A24), child: Text('BOSS APPROACHING',
-                          textAlign: TextAlign.center, style: GoogleFonts.pressStart2p(fontSize: 12, height: 1.6,
+                          textAlign: TextAlign.center, style: QuestwellTypography.sectionHeading(size: 12,
                             color: const Color(0xFFF2D594))))))),
                   Positioned(bottom: 6, left: 0, right: 0, child: Text(widget.defeated ? 'VICTORY' : arriving ? 'Tap to skip' : 'YOUR MOVE',
                     textAlign: TextAlign.center, style: arriving
-                      ? const TextStyle(fontSize: 12, color: Color(0xFFD9D2BE))
-                      : GoogleFonts.pressStart2p(fontSize: 10, color: const Color(0xFFF3D998)))),
+                      ? QuestwellTypography.body(fontSize: 12, color: const Color(0xFFD9D2BE))
+                      : QuestwellTypography.sectionHeading(size: 10, color: const Color(0xFFF3D998)))),
                   if (arriving) Positioned(top: 0, right: 0, child: TextButton(
-                    key: const ValueKey('skip-boss-entrance'), onPressed: _skip, child: const Text('Skip'))),
+                    key: const ValueKey('skip-boss-entrance'), onPressed: _skip,
+                    style: TextButton.styleFrom(textStyle: QuestwellTypography.control()), child: const Text('Skip'))),
                 ]))));
         }),
       ]));
