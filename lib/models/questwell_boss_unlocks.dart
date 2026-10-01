@@ -17,10 +17,12 @@ class QuestwellBossUnlocks {
     }
     return null;
   }
-  static int xpRemaining(String type, int totalXp, int offset) =>
-      (QuestwellProgression.totalAtLevel(levels[type] ?? 1) -
-          (totalXp < 0 ? 0 : totalXp) - (offset < 0 ? 0 : offset))
-          .clamp(0, 1 << 53).toInt();
+  static int xpRemaining(String type, int totalXp, int offset) {
+    final remaining = QuestwellProgression.totalAtLevel(levels[type] ?? 1) -
+        (totalXp < 0 ? 0 : totalXp) - (offset < 0 ? 0 : offset);
+    // Avoid large bit-shift bounds: Dart web uses 32-bit bitwise operations.
+    return remaining > 0 ? remaining : 0;
+  }
   static double progress(String type, int totalXp, int offset) {
     final target = levels[type] ?? 1;
     var previous = 1;
