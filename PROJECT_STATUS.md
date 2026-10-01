@@ -4,11 +4,17 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Boss page redesign — 2026-10-01
+
+Founder approved Update Dragon ("Perfect"), then requested further boss page work and authorized the redesign. Code a9b069350871bae91dedb5aeba5fdd992a90c935; model isolation fix dfbb9967ff5a74b1fdf18d4e7ed432c153fb9b34. Shared board now presents one featured animated encounter, direct Hearth arrow, Start a battle action, clear attack progress/completed rows, compact selectable battle queue, collapsed defeated battles, and shared victory rewards panel. Real victory dialog uses server-returned XP/coins. Navigation remains available during loading/empty/error; all attack buttons lock during a save. Existing service operations/reward behavior preserved; data model definitions extracted without behavior changes.
+
+Flutter Check 36837783122 and Preview 36837783102 passed. Browser verified three practice attacks, completed rows, victory/sample rewards, and selection of next boss with scroll-to-top. Practice route uses same board without account writes. Actual signed-in rewards not exercised. Preview: https://funszdidiot.github.io/questwell-app/?review=boss&rev=a9b0693 . Founder page review pending. All eight boss art/entrances approved. No merge, launch, or external beta. Male Wanderer cuffs remain deferred and unapproved.
+
 ## Update Dragon — overhead entrance — 2026-10-01
 
 Founder approved revised Ticket Troll and authorized Update Dragon. Initial art/scene `bc181cef56adaa4d3e91d6b2ff001e6c32c2d680`; user explicitly requested a swoop from above. Current `bab3c160e49de6fd02198f0fdbbb061c2ace5788` descends directly from above the arena with no horizontal entry translation, then bounces and settles. Copper/teal dragon with gear/scroll hoard, runtime flipped to face player. Taunt "Just one quick restart." and UPGRADE COMPLETE victory. All eight existing boss types now have detailed art/entrance scenes in production renderer and practice selector. Server task/reward logic unchanged.
 
-Flutter Check 36835868363 and Preview 36835868487 succeeded. Browser verified overhead entry frames, full art/dialogue clearance and three sample attacks yielding zero HP, VICTORY and UPGRADE COMPLETE. Review: https://funszdidiot.github.io/questwell-app/?review=boss&boss=update_dragon&rev=bab3c16 . Dragon founder review pending. Real account rewards not exercised. No merge or launch. Male Wanderer cuffs remain deferred and unapproved; revisit after remaining build review.
+Flutter Check 36835868363 and Preview 36835868487 succeeded. Browser verified overhead entry frames, full art/dialogue clearance and three sample attacks yielding zero HP, VICTORY and UPGRADE COMPLETE. Review: https://funszdidiot.github.io/questwell-app/?review=boss&boss=update_dragon&rev=bab3c16 . Dragon subsequently approved by founder ("Perfect"). Real account rewards not exercised. No merge or launch. Male Wanderer cuffs remain deferred and unapproved; revisit after remaining build review.
 
 ## Ticket Troll — workshop revision — 2026-10-01
 
