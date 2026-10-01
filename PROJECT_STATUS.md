@@ -4,6 +4,20 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Fantasy Market shopfront — 2026-09-30
+
+Founder requested a shopfront header in the fantasy / retro style. Replaced the
+plain header with a responsive native pixel-art façade: forest-green and
+parchment awning, timber framing, lit display windows, brass lanterns, and a
+hanging walnut MARKET sign. The title remains real accessible text; the
+original tagline, coin balance, and collected count remain below the façade.
+
+**Development build:** `0b38dcb72783d8f7d9e30fecc65181d68957769f`.
+Flutter Check `36801258007` and Preview `36801258048` passed, including the
+320 px / 160% text Market test. Browser review confirmed the façade and text
+at 320 and 390 px. Artwork is ready for founder review. Development preview
+only; no merge, external beta or launch.
+
 ## Market title refinement — 2026-09-30
 
 Founder requested one pixel-style “MARKET” heading with the original tagline
