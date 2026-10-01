@@ -42,48 +42,52 @@ class _ShopLightPainter extends CustomPainter {
       (0.221, 0.435, 0.65), (0.779, 0.435, 0.65)];
     for (var i = 0; i < lights.length; i++) {
       final light = lights[i];
-      final strength = 0.27 + 0.14 * math.sin(seconds * math.pi / 2 + i * 1.7)
-        + 0.025 * math.sin(seconds * math.pi * 2 / 3 + i);
+      final strength = 0.48 + 0.22 * math.sin(seconds * math.pi / 2 + i * 1.7)
+        + 0.035 * math.sin(seconds * math.pi * 2 / 3 + i);
       final center = Offset(size.width * light.$1, size.height * light.$2);
-      final radius = size.width * .065 * light.$3;
+      final radius = size.width * (.072+.012*math.sin(seconds*math.pi/2+i)) * light.$3;
       final paint = Paint()..shader = RadialGradient(colors: [
         const Color(0xFFFFCF73).withValues(alpha: strength),
         const Color(0xFFFFB647).withValues(alpha: strength * .65),
         const Color(0x00FFB647),
       ], stops: const [0, .4, 1]).createShader(Rect.fromCircle(center:center,radius:radius));
       canvas.drawCircle(center, radius, paint);
-      // A small bright flame changes height inside the lantern glass.
+      // Readable pixel flame movement stays inside the lantern glass.
       final unit=size.width/355;
       final flame=Paint()..isAntiAlias=false
         ..color=const Color(0xFFFFF1B8).withValues(alpha:strength+.22);
-      final height=(5+2*math.sin(seconds*math.pi+i))*unit*light.$3;
-      canvas.drawRect(Rect.fromLTWH(center.dx-unit,center.dy-height/2,
-        2*unit,height),flame);
-      canvas.drawRect(Rect.fromLTWH(center.dx,center.dy-height/2-unit,
+      final height=(8+3*math.sin(seconds*math.pi+i))*unit*light.$3;
+      final sway=math.sin(seconds*math.pi+i)*unit;
+      canvas.drawRect(Rect.fromLTWH(center.dx-1.5*unit+sway,center.dy-height/2,
+        3*unit,height),flame);
+      canvas.drawRect(Rect.fromLTWH(center.dx+sway,center.dy-height/2-unit,
         unit,unit),flame);
     }
-    // Alternate bottles every three seconds; one readable bubble at a time.
-    final right=(seconds~/3).isOdd;
-    final local=seconds%3;
-    if(local>=.3 && local<=2.3){
-      final progress=(local-.3)/2;
-      final alpha=math.sin(progress*math.pi)*.85;
-      final unit=size.width/355;
-      final x=size.width*(right ? .749 : .119);
-      final y=size.height*(.565-.07*progress);
-      final paint=Paint()..isAntiAlias=false
-        ..color=(right?const Color(0xFFBCF3EF):const Color(0xFFEAD0FF))
-          .withValues(alpha:alpha);
-      final bubble=Rect.fromCenter(center:Offset(x+math.sin(progress*math.pi)*2*unit,y),
-        width:3*unit,height:3*unit);
-      paint.style=PaintingStyle.stroke;paint.strokeWidth=unit;
-      canvas.drawRect(bubble,paint);
-      if(progress<.55){
+    // Two staggered pixel bubbles per bottle, with a clear upward travel.
+    final unit=size.width/355;
+    for(var side=0;side<2;side++){
+      final x=size.width*(side==0 ? .119 : .749);
+      final color=side==0?const Color(0xFFEAD0FF):const Color(0xFFBCF3EF);
+      for(var bubble=0;bubble<2;bubble++){
+        final progress=((seconds+side*1.25+bubble*1.5)%3)/3;
+        final alpha=math.pow(math.sin(progress*math.pi),.65).toDouble()*.95;
+        final center=Offset(x+math.sin(progress*math.pi*2+side)*3*unit,
+          size.height*(.57-.14*progress));
+        final edge=(3+math.sin(progress*math.pi))*unit;
+        final paint=Paint()..isAntiAlias=false..color=color.withValues(alpha:alpha)
+          ..style=PaintingStyle.stroke..strokeWidth=1.2*unit;
+        canvas.drawRect(Rect.fromCenter(center:center,width:edge,height:edge),paint);
         paint.style=PaintingStyle.fill;
-        final center=Offset(x,size.height*.62);
-        canvas.drawRect(Rect.fromCenter(center:center,width:unit,height:6*unit),paint);
-        canvas.drawRect(Rect.fromCenter(center:center,width:6*unit,height:unit),paint);
+        canvas.drawRect(Rect.fromLTWH(center.dx-edge/2,center.dy-edge/2,
+          1.5*unit,1.5*unit),paint);
       }
+      final shimmer=(math.sin(seconds*math.pi*2/3+side*math.pi)+1)/2;
+      final paint=Paint()..isAntiAlias=false
+        ..color=color.withValues(alpha:.25+.65*shimmer);
+      final center=Offset(x,size.height*.62);
+      final arm=(4+4*shimmer)*unit;
+      canvas.drawRect(Rect.fromCenter(center:center,width:1.5*unit,height:arm),paint);
+      canvas.drawRect(Rect.fromCenter(center:center,width:arm,height:1.5*unit),paint);
     }
   }
   @override

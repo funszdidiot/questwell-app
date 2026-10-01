@@ -100,8 +100,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       ('${i.name} ${i.description}'.toLowerCase().contains(query.toLowerCase().trim()))).toList()
       ..sort((a,b){final price=a.price.compareTo(b.price);return price!=0?price:a.name.compareTo(b.name);});
     return RefreshIndicator(onRefresh:widget.onRefresh,child:ListView(padding:const EdgeInsets.fromLTRB(18,8,18,30),children:[
-      QuestwellMarketShopfront(coins:widget.data.profile.coinBalance,
-        owned:all.where((i)=>i.owned).length,total:all.length),
+      QuestwellMarketShopfront(coins:widget.data.profile.coinBalance),
       const SizedBox(height:16),
       _browseControls(),
       const SizedBox(height:14),
