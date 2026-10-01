@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Wayfarer Satchel equipped-art upgrade — 2026-09-30 America/Chicago
+
+Founder authorized the remaining gear pass, starting with the Wayfarer Satchel, and reconfirmed detailed 64-bit-style equipped art. Replaced its canvas placeholder with transparent illustrated olive canvas, leather trim, brass buckle/rings and rolled map. Registered a separate shoulder strap to the upper-right ring and body-specific bag placements. Shared cloak-aware forearm restoration preserves natural hand overlap in open outfits and keeps hands hidden beneath closed cloaks. Updated its shared 16-bit Market/Inventory icon to match the olive/leather/map palette. Wanderer restriction, 160-coin price, back slot, ownership and equipped state are unchanged. Built-in generation prompt and source details: `docs/art/WAYFARER_SATCHEL.md`.
+
+Verified code build `f12473e122536fac67499d943fa8165a662ec76a`: Flutter Check 36816403718 and Preview 36816403711 passed. Locked asset verification passed. Browser inspected male, female and neutral in open Wanderer outfits and Moss Cloaks; bag/strap removal and restoration passed. Visual QA used normal pointer interaction; accessibility-enabled browser automation was unreliable and was not counted as a verified accessibility test. Review `?review=wayfarer&rev=f12473e`; proof `wayfarer-satchel-fit.jpg`. Founder design review pending. Annotated Grimoire and Pathfinder Boots remain next. Development preview only; no merge or launch.
+
 ## Moss Moth golden particles — 2026-09-30 America/Chicago
 
 Added fourteen staggered gold motes and stepped star sparkles around the equipped Moss Moth. Wing-dust drifts outward/downward and fades, sharing the existing hover clock and reduced-motion/offscreen pause. Sprite and inventory icon assets are unchanged.
