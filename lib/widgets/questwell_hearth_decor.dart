@@ -102,21 +102,22 @@ class QuestwellHearthDecor {
     final height = orrery
       ? (onShelf ? shelf.height * .23
         : math.min(scene.height * .095, scene.width * .085))
-      : math.min(scene.height * .105, scene.width * .10);
+      : (onShelf ? math.min(scene.height * .105, scene.width * .10)
+        : math.min(scene.height * .085, scene.width * .080));
     final width = height * 1312 / 1199;
     // The mantel belongs to the square room texture. Follow its BoxFit.cover
     // crop and Alignment(0, .04), so the base stays on the wood at any aspect ratio.
     final roomSide = math.max(scene.width, scene.height);
     final center = onShelf ? shelf.left + shelf.width * (shelfSlot == 'right' ? (orrery ? .75 : .78) : (orrery ? .25 : .23))
-      : roomSide * (orrery ? .082 : .075) + (scene.width - roomSide) / 2;
+      : roomSide * .082 + (scene.width - roomSide) / 2;
     final surface = onShelf ? shelf.top + shelf.height * (orrery ? .145 : .12)
-      : roomSide * (orrery ? .345 : .338) + (scene.height - roomSide) * .52;
+      : roomSide * .345 + (scene.height - roomSide) * .52;
     return Positioned(key: ValueKey(orrery ? 'hearth-orrery-bounds' : 'hearth-trophy-bounds'),
       left: center - width * (orrery ? .49 : .52), top: surface - height * (orrery ? .98 : .94),
       width: width, height: height,
       child: Stack(fit: StackFit.expand, children: [
         Positioned(left: width * .20, right: width * (orrery ? .20 : .10),
-          top: height * (orrery ? .89 : .90), height: height * (orrery ? .09 : .06),
+          top: height * (orrery || !onShelf ? .89 : .90), height: height * (orrery ? .09 : .06),
           child: DecoratedBox(decoration: BoxDecoration(borderRadius: BorderRadius.circular(100),
             gradient: const RadialGradient(radius: .6, colors: [Color(0x550E0906),Color(0x000E0906)])))),
         if (orrery) const QuestwellStarlitOrrery() else const QuestwellFirstJourney(),
