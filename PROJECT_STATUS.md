@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Moss Moth golden particles — 2026-09-30 America/Chicago
+
+Added fourteen staggered gold motes and stepped star sparkles around the equipped Moss Moth. Wing-dust drifts outward/downward and fades, sharing the existing hover clock and reduced-motion/offscreen pause. Sprite and inventory icon assets are unchanged.
+
+Verified build `a8dec4b5b4dd70eeaeb1ffda13d1f1f6338bea99`: Flutter Check 36815650283 and Preview 36815650276 passed. Browser inspected moving particles beside the full Wanderer outfit in avatar and Hearth views at normal size. Captured multiple live phases and proof `moth-golden-magic.jpg`. The previous build's update notice appeared; its Refresh Questwell button correctly loaded the new revision. Development preview only; no merge or launch.
+
 ## Full outfit and stale preview correction — 2026-09-30 America/Chicago
 
 Founder approved the Moss v2 collar and requested both cloaks in inventory; both grants completed with ownership and coins preserved. A subsequent phone screenshot showed the pre-closed-cloak sleeves and collar. Current Home and Adventurer share the same renderer; the screenshot is consistent with an older loaded app build, not a separate Hearth renderer.

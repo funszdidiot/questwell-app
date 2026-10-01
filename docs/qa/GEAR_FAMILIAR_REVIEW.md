@@ -110,3 +110,10 @@ The preview now publishes a revision manifest and checks for updates at startup,
 
 Verified build `914d2db47e2fbbf9951796262c0d9b5d0ca17709`: Flutter Check 36815097513 and Preview 36815097522 passed. Four update-handler tests cover explicit refresh, preserved routes, scoped worker retirement, dismissal, offline/invalid manifests, and visibility changes. Full-outfit layering regression checks run on all three bodies. Browser inspected male, female, and neutral Wanderer with the full accessory set and the male Hearth scene; clasp clear, hands covered, satchel retained. Main app's deployed revision was verified at `?rev=914d2db`; browser is signed out, so outfit QA used the shared-renderer fixture. Proof: `wanderer-cloak-fixed.jpg`. No merge to flutterflow or launch.
 
+
+## Moss Moth golden particles — 2026-09-30 America/Chicago
+
+Added fourteen staggered gold motes and stepped star sparkles around the equipped Moss Moth. Wing-dust drifts outward/downward and fades, sharing the existing hover clock and reduced-motion/offscreen pause. Sprite and inventory icon assets are unchanged.
+
+Verified build `a8dec4b5b4dd70eeaeb1ffda13d1f1f6338bea99`: Flutter Check 36815650283 and Preview 36815650276 passed. Browser inspected moving particles beside the full Wanderer outfit in avatar and Hearth views at normal size. Captured multiple live phases and proof `moth-golden-magic.jpg`. The previous build's update notice appeared; its Refresh Questwell button correctly loaded the new revision. Development preview only; no merge or launch.
+
