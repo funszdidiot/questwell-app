@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_expedition_scene.dart';
-import '../lib/pages/expedition_page/expedition_page_widget.dart';
+import 'package:project_momentum/pages/expedition_page/expedition_page_widget.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
