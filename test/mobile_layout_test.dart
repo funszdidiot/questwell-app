@@ -93,7 +93,9 @@ void main() {
   testWidgets('Mobile preview applies phone size and text scale to dialogs', (tester) async {
     await tester.binding.setSurfaceSize(const Size(1000, 850));
     addTearDown(() => tester.binding.setSurfaceSize(null));
-    await tester.pumpWidget(const MobileReviewApp());
+    await tester.pumpWidget(const MediaQuery(
+      data: MediaQueryData(size: Size(1000, 850), disableAnimations: true),
+      child: MobileReviewApp()));
     await tester.pumpAndSettle();
     await tester.tap(find.text('390 px')); await tester.pumpAndSettle();
     await tester.tap(find.text('430 px')); await tester.pumpAndSettle();
