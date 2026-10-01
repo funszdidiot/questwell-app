@@ -4,6 +4,14 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Inbox Hydra arcade entrance — 2026-10-01
+
+Implemented the first boss encounter art/entrance pass in `8c6b3b2eab8b9d869a5bf5055dde62993abb157a`: detailed retro-fantasy Inbox Hydra, equipped player appearance, darkened BOSS APPROACHING banner, slide-in/bounce/dust, typewriter taunt, filling health meter, YOUR MOVE cue, and defeat fade. Tap/Skip supported; entrance remembered per encounter, bypassed for existing progress, reduced-motion still state, inactive-route ticker pause. Other bosses and server task/reward logic unchanged.
+
+Flutter Check 36829985533 and Preview 36829985688 succeeded. Tests cover timing, skip, persistence, rebuild, reduced motion, resumed encounters, health changes and defeat. Browser review verified slide/warning, finished dialogue, first attack reducing health, and three practice attacks producing zero HP/VICTORY/sample loot. Review URL: https://funszdidiot.github.io/questwell-app/?review=boss&rev=8c6b3b2 . Practice controls do not write account tasks/rewards. Signed-in real-task reward flow was not exercised. Founder visual review pending; no merge or launch.
+
+Founder-requested Victory Sparkle and Focus Tonic inventory grants were also completed and verified: both owned, unequipped, coin balance and prior equipped items unchanged. Male Wanderer cuffs remain explicitly deferred and unapproved.
+
 ## Victory Sparkle and Focus Tonic effects — 2026-10-01
 
 Implemented the authorized effects pass: Victory Sparkle uses two staggered golden star flourishes and drifting flecks with a quiet interval; Focus Tonic uses slow rising sage bubbles and small glints. Shared production renderer covers Adventurer and Hearth. Existing 16-bit icons/catalog rules retained; no account changes. Direct CustomPainter repaint isolates animation from avatar builds; reduced motion uses still art and inactive routes/unequip stop the clock.
