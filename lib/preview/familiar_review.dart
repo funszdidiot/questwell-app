@@ -14,6 +14,7 @@ class _FamiliarReviewAppState extends State<FamiliarReviewApp> {
   String _slug = 'emerald-dragon';
   String _body = 'female';
   bool _motion = true;
+  bool _rain = true;
   @override
   Widget build(BuildContext context) {
     final archetype = switch (_slug) {
@@ -45,14 +46,16 @@ class _FamiliarReviewAppState extends State<FamiliarReviewApp> {
                 ChoiceChip(label: Text(body[0].toUpperCase() + body.substring(1)),
                   selected: body == _body,
                   onSelected: (_) => setState(() => _body = body))).toList()),
-              SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Idle animation'),
+              SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Animations'),
                 value: _motion, onChanged: (value) => setState(() => _motion = value)),
               QuestwellEquippedAvatar(archetype: archetype, avatarBodyType: _body,
                 equippedSlugs: equipment, height: 340, artHeightFactor: .98),
               Text('At the Hearth', style: QuestwellTypography.sectionHeading()),
               const SizedBox(height: 12),
               QuestwellHearthPixelScene(archetype: archetype, avatarBodyType: _body,
-                equippedSlugs: equipment, height: 342),
+                equippedSlugs: {...equipment, if (_rain) 'room:window': 'rainy-window'}, height: 342),
+              SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Rainy window'),
+                value: _rain, onChanged: (value) => setState(() => _rain = value)),
               const SizedBox(height: 12),
               Text('Sample try-on · find these companions in the Market.',
                 style: const TextStyle(color: Color(0xFFB9C6BD), fontSize: 13)),

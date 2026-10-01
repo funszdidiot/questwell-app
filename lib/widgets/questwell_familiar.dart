@@ -81,6 +81,44 @@ class _FamiliarIdleState extends State<_FamiliarIdle> with SingleTickerProviderS
       return Transform.translate(offset: Offset(0, hover ? wave * 3 : 0),
         child: Transform.scale(alignment: Alignment.bottomCenter,
           scaleX: 1 + wave * (hover ? .05 : slime ? .035 : .006),
-          scaleY: 1 + wave * (slime ? -.04 : .018), child: child));
+          scaleY: 1 + wave * (slime ? -.04 : .018),
+          child: widget.slug == 'emerald-dragon'
+            ? Stack(clipBehavior: Clip.none, fit: StackFit.expand, children: [
+                child!,
+                IgnorePointer(child: CustomPaint(
+                  painter: QuestwellDragonSmokePainter(phase: _clock.value))),
+              ])
+            : child));
     }));
+}
+
+/// A brief, three-puff exhale registered to the sprite's visible nostril.
+/// Shares the breathing transform so the origin never slides off the nose.
+class QuestwellDragonSmokePainter extends CustomPainter {
+  const QuestwellDragonSmokePainter({required this.phase});
+  final double phase;
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.save();
+    canvas.scale(size.width / 72, size.height / 80);
+    final paint = Paint()..isAntiAlias = false;
+    for (var i = 0; i < 3; i++) {
+      final age = (phase - i * .075) / .59;
+      if (age <= 0 || age >= 1) continue;
+      final opacity = math.sin(age * math.pi) * .68;
+      final x = 18.0 - age * 23;
+      final y = 25.2 - age * 18 - math.sin(age * math.pi) * 2;
+      final puff = 1.1 + age * 3.6;
+      paint.color = const Color(0xFFC5C9BD).withValues(alpha: opacity);
+      // Softly shaded clusters retain the stepped edges of the retro artwork.
+      canvas.drawRect(Rect.fromLTWH(x-puff, y-puff*.5, puff*2, puff), paint);
+      canvas.drawRect(Rect.fromLTWH(x-puff*.55, y-puff, puff*1.1, puff*2), paint);
+      paint.color = const Color(0xFFE8E5D7).withValues(alpha: opacity * .55);
+      canvas.drawRect(Rect.fromLTWH(x-puff*.55, y-puff*.6, puff, puff*.65), paint);
+    }
+    canvas.restore();
+  }
+  @override
+  bool shouldRepaint(covariant QuestwellDragonSmokePainter oldDelegate) =>
+    oldDelegate.phase != phase;
 }

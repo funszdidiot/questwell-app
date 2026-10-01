@@ -130,10 +130,39 @@ class _RoomArt extends CustomPainter {
   bool shouldRepaint(covariant _RoomArt oldDelegate)=>oldDelegate.slug!=slug;
 }
 
+/// Only the glass layer repaints; room art and wooden framing remain cached.
+class QuestwellRainyWindow extends StatefulWidget {
+  const QuestwellRainyWindow({super.key});
+  @override
+  State<QuestwellRainyWindow> createState() => _QuestwellRainyWindowState();
+}
+class _QuestwellRainyWindowState extends State<QuestwellRainyWindow>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _rain = AnimationController(
+    vsync: this, duration: const Duration(seconds: 6));
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context) || !TickerMode.of(context)) {
+      _rain.stop();
+      _rain.value = 0;
+    } else if (!_rain.isAnimating) {
+      _rain.repeat();
+    }
+  }
+  @override
+  void dispose() { _rain.dispose(); super.dispose(); }
+  @override
+  Widget build(BuildContext context) => IgnorePointer(child: RepaintBoundary(
+    child: AnimatedBuilder(animation: _rain, builder: (context, _) =>
+      CustomPaint(painter: QuestwellRainyWindowOverlay(phase: _rain.value)))));
+}
+
 /// Glass coordinates are registered to hearth_environment_v2's 768px canvas.
 /// Match its cover crop exactly, leaving every wooden mullion unobscured.
 class QuestwellRainyWindowOverlay extends CustomPainter {
-  const QuestwellRainyWindowOverlay();
+  const QuestwellRainyWindowOverlay({this.phase = 0});
+  final double phase;
   @override
   void paint(Canvas canvas,Size size) {
     final side=math.max(size.width,size.height);
@@ -153,13 +182,27 @@ class QuestwellRainyWindowOverlay extends CustomPainter {
     canvas.clipPath(panes);
     final p=Paint()..color=const Color(0x99435762);
     canvas.drawRect(const Rect.fromLTWH(720,60,50,320),p);
-    p.color=const Color(0xBBC1E2DE);p.strokeWidth=1.5;p.isAntiAlias=true;
-    for(var i=0;i<66;i++){
-      final x=723.0+(i*13)%47,y=68.0+(i*37)%310;
-      canvas.drawLine(Offset(x,y),Offset(x-3,y+10),p);
+    p.isAntiAlias=true;
+    for(var i=0;i<40;i++) {
+      final near=i%3==0;
+      final travel=((i*37)+phase*320*(near?2:1))%320;
+      final x=726.0+(i*13)%48-travel*.025;
+      final y=60.0+travel;
+      p.color=near?const Color(0xCDD3ECE7):const Color(0x808EBACB);
+      p.strokeWidth=near?1.8:1.1;
+      canvas.drawLine(Offset(x,y),Offset(x-2.5,y+(near?13:8)),p);
+    }
+    // A few slower beads slide down the inside of the glass.
+    for(var i=0;i<5;i++) {
+      final y=60.0+(i*67+phase*320)%320;
+      final x=729.0+(i*11)%38;
+      p.color=const Color(0x809CBBC9);p.strokeWidth=2.2;
+      canvas.drawLine(Offset(x,y-18),Offset(x,y),p);
+      p.color=const Color(0xCCD4E4E5);
+      canvas.drawOval(Rect.fromCenter(center:Offset(x,y),width:2.6,height:4),p);
     }
     canvas.restore();
   }
   @override
-  bool shouldRepaint(covariant QuestwellRainyWindowOverlay oldDelegate)=>false;
+  bool shouldRepaint(covariant QuestwellRainyWindowOverlay oldDelegate)=>oldDelegate.phase!=phase;
 }
