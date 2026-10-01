@@ -12,7 +12,7 @@ class QuestwellCloak extends StatelessWidget {
     slug == 'moss-green-cloak' || slug == 'hearthguard-mantle';
   static String asset(String slug) => slug == 'hearthguard-mantle'
     ? 'assets/images/questwell_guardian_mantle_v1.webp'
-    : 'assets/images/questwell_moss_cloak_v1.webp';
+    : 'assets/images/questwell_moss_cloak_v2.webp';
   static Rect bounds(String body, String slug) {
     final mantle = slug == 'hearthguard-mantle';
     return switch (body) {
