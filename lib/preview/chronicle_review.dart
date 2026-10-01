@@ -1,3 +1,4 @@
+import 'quest_board_review.dart';
 import 'package:flutter/material.dart';
 import '../pages/chronicle_page/chronicle_page_widget.dart';
 import '../services/questwell_chronicle_service.dart';
@@ -11,6 +12,7 @@ class ChronicleReviewApp extends StatefulWidget {
 class _ChronicleReviewAppState extends State<ChronicleReviewApp> {
   double width = 390;
   bool empty = false;
+  final _copies = <({String title, String effort, int xp, int coins})>[];
   @override
   Widget build(BuildContext context) {
     final today = DateTime.now();
@@ -32,8 +34,11 @@ class _ChronicleReviewAppState extends State<ChronicleReviewApp> {
           TextButton(onPressed:()=>setState(()=>width=width==390?320:390),child:Text('${width.toInt()} px')),
           TextButton(onPressed:()=>setState(()=>empty=!empty),child:Text(empty?'Show sample history':'Show empty journal')),
         ]),
-        Expanded(child:Center(child:SizedBox(width:width,child:ChroniclePageWidget(
-          key:ValueKey(empty),previewData:ChronicleSnapshot.fromWins(empty?[]:entries,now:today))))),
+        Expanded(child:Center(child:SizedBox(width:width,child:Builder(builder: (context) => ChroniclePageWidget(
+          key:ValueKey(empty),previewData:ChronicleSnapshot.fromWins(empty?[]:entries,now:today),
+          onRepeat: (win) async { _copies.add((title: win.title, effort: win.xp <= 10 ? 'Easy' : 'Annoying', xp: win.xp, coins: win.coins)); },
+          onOpenBoard: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => QuestBoardReviewApp(initialQuests: List.of(_copies)))),
+        ))))),
       ]))));
   }
 }

@@ -5,9 +5,12 @@ import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 
 class QuestwellChronicleEntry extends StatelessWidget {
-  const QuestwellChronicleEntry({super.key, required this.win, this.embedded = false});
+  const QuestwellChronicleEntry({super.key, required this.win, this.embedded = false,
+    this.onRepeat, this.repeating = false, this.repeated = false});
   final ChronicleWin win;
   final bool embedded;
+  final VoidCallback? onRepeat;
+  final bool repeating, repeated;
   TextStyle _text(double size, {bool bold = false, Color color = const Color(0xFF443426)}) =>
     QuestwellTypography.body(fontSize: size, height: 1.4, color: color,
       fontWeight: bold ? FontWeight.w700 : FontWeight.w400);
@@ -53,6 +56,21 @@ class QuestwellChronicleEntry extends StatelessWidget {
         ]) else Text(preview ? 'A preview copy for your Hearth.' : isReward
           ? 'Level ${win.level} trophy unlocked. Yours to keep.'
           : 'Another step in your journey.', style: _text(13)),
+        if (win.kind == 'quest' && (onRepeat != null || repeating || repeated)) ...[
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: repeating || repeated ? null : onRepeat,
+            style: TextButton.styleFrom(
+              foregroundColor: const Color(0xFF315E4E),
+              disabledForegroundColor: const Color(0xFF635744),
+              minimumSize: const Size(48, 48),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+              textStyle: QuestwellTypography.control(),
+            ),
+            child: Text(repeating ? 'Adding quest…'
+              : repeated ? 'Added to board' : 'Do this quest again'),
+          ),
+        ],
       ])),
     ]);
     if (embedded) return Padding(padding: const EdgeInsets.symmetric(vertical: 16), child: content);

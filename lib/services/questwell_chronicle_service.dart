@@ -11,8 +11,10 @@ class ChronicleWin {
     this.cosmeticSlug,
     this.source,
     this.level,
+    this.taskId,
   });
 
+  final String? taskId;
   final String kind;
   final String title;
   final DateTime completedAt;
@@ -65,6 +67,27 @@ class ChronicleSnapshot {
 class QuestwellChronicleService {
   const QuestwellChronicleService._();
 
+  /// Creates an open copy only; completion remains the sole reward path.
+  static Future<void> repeatQuest(ChronicleWin win) async {
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null || win.kind != 'quest' || win.taskId == null) {
+      throw StateError('A completed quest and signed-in adventurer are required.');
+    }
+    final originals = await TasksTable().queryRows(queryFn: (q) => q
+      .eqOrNull('id', win.taskId).eqOrNull('user_id', uid)
+      .eqOrNull('status', 'completed'), limit: 1);
+    if (originals.isEmpty) throw StateError('The original quest is unavailable.');
+    final original = originals.single;
+    await TasksTable().insert({
+      'user_id': uid,
+      'title': original.title,
+      'friction_level': original.frictionLevel,
+      'xp_value': original.xpValue,
+      'coin_value': original.coinValue,
+      'status': 'open',
+    });
+  }
+
   static Future<ChronicleSnapshot> load() async {
     final uid = SupaFlow.client.auth.currentUser?.id;
     if (uid == null) throw StateError('Authentication required.');
@@ -97,6 +120,7 @@ class QuestwellChronicleService {
       wins.add(
         ChronicleWin(
           kind: 'quest',
+          taskId: row['id']?.toString(),
           title: (row['title']?.toString().trim().isNotEmpty ?? false)
               ? row['title'].toString()
               : 'Completed quest',

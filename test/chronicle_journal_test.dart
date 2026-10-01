@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -82,6 +83,60 @@ void main() {
     expect(tester.widget<TextField>(find.byType(TextField)).controller!.text, isEmpty);
     expect(find.text('No matching entries.'), findsNothing);
     expect(find.text('Recorded win 0'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('repeat creates once, preserves history, and offers the board', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(390, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final win = ChronicleWin(kind: 'quest', title: 'Repeat a small win',
+      completedAt: DateTime(2026, 10, 1), xp: 20, coins: 10);
+    final data = ChronicleSnapshot.fromWins([win]);
+    final pending = Completer<void>();
+    var calls = 0;
+    var opened = false;
+    await tester.pumpWidget(MaterialApp(theme: ThemeData.dark(), home: ChroniclePageWidget(
+      previewData: data,
+      onRepeat: (original) { expect(original, same(win)); calls++; return pending.future; },
+      onOpenBoard: () => opened = true)));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Do this quest again'));
+    await tester.tap(find.text('Do this quest again'));
+    await tester.pump();
+    await tester.tap(find.text('Adding quest…'));
+    expect(calls, 1);
+    pending.complete();
+    await tester.pumpAndSettle();
+    expect(find.text('Added to board'), findsOneWidget);
+    expect(find.text('Repeat a small win'), findsOneWidget);
+    expect(data.wins, [win]);
+    expect(data.totalXpEarned, 20);
+    await tester.tap(find.text('View board'));
+    await tester.pumpAndSettle();
+    expect(opened, isTrue);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('failed repeat can retry; bosses cannot repeat as quests', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(390, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    var calls = 0;
+    final date = DateTime(2026, 10, 1);
+    await tester.pumpWidget(MaterialApp(theme: ThemeData.dark(), home: ChroniclePageWidget(
+      previewData: ChronicleSnapshot.fromWins([
+        ChronicleWin(kind: 'quest', title: 'Try again', completedAt: date, xp: 10, coins: 5),
+        ChronicleWin(kind: 'boss', title: 'Hydra', completedAt: date, xp: 25, coins: 50),
+      ]),
+      onRepeat: (_) async { if (++calls == 1) throw StateError('offline'); })));
+    await tester.pumpAndSettle();
+    expect(find.text('Do this quest again'), findsOneWidget);
+    await tester.ensureVisible(find.text('Do this quest again'));
+    await tester.tap(find.text('Do this quest again')); await tester.pumpAndSettle();
+    expect(find.text('Could not copy this quest. Please try again.'), findsOneWidget);
+    expect(find.text('Added to board'), findsNothing);
+    await tester.tap(find.text('Do this quest again')); await tester.pumpAndSettle();
+    expect(calls, 2);
+    expect(find.text('Added to board'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

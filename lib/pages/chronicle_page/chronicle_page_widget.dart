@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ChroniclePageWidget extends StatefulWidget {
-  const ChroniclePageWidget({super.key, this.previewData});
+  const ChroniclePageWidget({super.key, this.previewData, this.onRepeat, this.onOpenBoard});
   final ChronicleSnapshot? previewData;
+  final Future<void> Function(ChronicleWin)? onRepeat;
+  final VoidCallback? onOpenBoard;
   static String routeName = 'ChroniclePage';
   static String routePath = '/chronicle';
   @override
@@ -17,6 +19,29 @@ class ChroniclePageWidget extends StatefulWidget {
 class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
   late Future<ChronicleSnapshot> _future;
   String _filter = 'all';
+  ChronicleWin? _repeating;
+  final _repeated = <ChronicleWin>{};
+
+  Future<void> _repeat(ChronicleWin win) async {
+    if (_repeating != null || _repeated.contains(win)) return;
+    setState(() => _repeating = win);
+    try {
+      await (widget.onRepeat ?? QuestwellChronicleService.repeatQuest)(win);
+      if (!mounted) return;
+      setState(() => _repeated.add(win));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Fresh quest added. Rewards come when you complete it.'),
+        action: SnackBarAction(label: 'View board', onPressed: widget.onOpenBoard ??
+          () => QuestwellNavigationScope.open(context, QuestwellDestination.quests)),
+      ));
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Could not copy this quest. Please try again.')));
+    } finally {
+      if (mounted) setState(() => _repeating = null);
+    }
+  }
   final _search = TextEditingController();
   String _query = '';
   @override
@@ -152,7 +177,12 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                   const SizedBox(height: 10),
                   const Divider(height: 1, color: Color(0xFFCAB58D)),
                   for (var i = 0; i < group.value.length; i++) ...[
-                    QuestwellChronicleEntry(win: group.value[i], embedded: true),
+                    QuestwellChronicleEntry(win: group.value[i], embedded: true,
+                      repeating: identical(_repeating, group.value[i]),
+                      repeated: _repeated.contains(group.value[i]),
+                      onRepeat: group.value[i].kind == 'quest' &&
+                          (widget.onRepeat != null || (widget.previewData == null && group.value[i].taskId != null))
+                        ? () => _repeat(group.value[i]) : null),
                     if (i < group.value.length - 1) const Divider(height: 1, color: Color(0xFFD5C39D)),
                   ],
                 ])),

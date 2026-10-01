@@ -5,8 +5,9 @@ import '../widgets/questwell_app_navigation.dart';
 import '../widgets/questwell_typography.dart';
 
 class QuestBoardReviewApp extends StatefulWidget {
-  const QuestBoardReviewApp({super.key, this.openNewQuest = false});
+  const QuestBoardReviewApp({super.key, this.openNewQuest = false, this.initialQuests = const []});
   final bool openNewQuest;
+  final List<({String title, String effort, int xp, int coins})> initialQuests;
   @override
   State<QuestBoardReviewApp> createState() => _QuestBoardReviewAppState();
 }
@@ -20,6 +21,12 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
     (title: 'Clear one small corner of your desk', effort: 'Low Energy', xp: 10, coins: 2),
     (title: 'Outline the first three steps of your project', effort: 'High Impact', xp: 40, coins: 8),
   ];
+  @override
+  void initState() {
+    super.initState();
+    _quests.insertAll(0, widget.initialQuests);
+  }
+
   bool visible(int i) => !_done.contains(i) && switch (_filter) {
     'pinned' => _pinned.contains(i),
     'low' => _quests[i].effort == 'Low Energy',
