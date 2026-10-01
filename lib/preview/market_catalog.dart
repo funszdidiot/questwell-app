@@ -346,7 +346,7 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "premium": false,
     "required_archetype": "guardian",
     "unlock_method": "shop"
-  }
+  },
   {
     "id": "9beb0f5f-53df-418b-8396-63643937d7d0",
     "slug": "emerald-dragon",
