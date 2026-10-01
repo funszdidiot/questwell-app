@@ -142,15 +142,6 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                 letterSpacing: .3,
               ),
             ),
-            const SizedBox(height: 6),
-            Text(
-              'A quiet focus session with no streaks, rankings, or guilt.',
-              style: theme.bodyMedium.override(
-                font: GoogleFonts.roboto(),
-                color: theme.secondaryText,
-                letterSpacing: 0,
-              ),
-            ),
             const SizedBox(height: 18),
             if (_finished) const QuestwellExpeditionPixelScene(height: 200, campfire: true)
             else QuestwellExpeditionScene(motion: _sceneMotion),
@@ -321,10 +312,16 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'If 15 minutes feels like too much, leave. The point is to help you begin, not trap you in a timer.',
+                      _finished
+                          ? 'A quest well traveled. Rest by the fire, adventurer. Every small victory is worth celebrating.'
+                          : _running
+                              ? 'Steady onward, adventurer. One task, one stretch of trail. Every small step is a little victory.'
+                              : 'You don’t need to see the whole path to take the first step. Choose one small task, adventurer. Your journey begins here.',
                       style: theme.bodyMedium.override(
                         font: GoogleFonts.roboto(),
-                        color: theme.secondaryText,
+                        color: const Color(0xFFF2E7CE),
+                        fontSize: 15,
+                        lineHeight: 1.5,
                         letterSpacing: 0,
                       ),
                     ),
