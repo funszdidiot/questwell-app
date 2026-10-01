@@ -22,50 +22,51 @@ class QuestwellMasteryRelic extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(
     label: names[archetype] ?? names['wanderer'], image: true,
-    child: SizedBox.square(dimension: size, child: CustomPaint(
-      painter: QuestwellMasteryRelicPainter(archetype))),
+    child: SizedBox.square(dimension: size, child: _MasteryAsset(archetype: archetype, symbol: true)),
   );
 }
 
-/// A furniture-sized display; its base rests on the room's existing floor slots.
+/// Furniture and its relic are one authored sprite, so light and perspective agree.
 class QuestwellMasteryDisplay extends StatelessWidget {
   const QuestwellMasteryDisplay({super.key, required this.archetype});
   final String archetype;
   @override
-  Widget build(BuildContext context) => LayoutBuilder(builder: (context, constraints) =>
-    Stack(fit: StackFit.expand, children: [
-      const CustomPaint(painter: _MasteryPedestalPainter()),
-      Positioned(top: 0, left: 0, right: 0, height: constraints.maxHeight * .60,
-        child: QuestwellMasteryRelic(archetype: archetype)),
-    ]));
+  Widget build(BuildContext context) => _MasteryAsset(archetype: archetype);
 }
 
-class _MasteryPedestalPainter extends CustomPainter {
-  const _MasteryPedestalPainter();
+class _MasteryAsset extends StatelessWidget {
+  const _MasteryAsset({required this.archetype, this.symbol = false});
+  final String archetype;
+  final bool symbol;
+  static const fullBounds = <String, Rect>{
+    'alchemist': Rect.fromLTWH(148,80,729,1397),
+    'scholar': Rect.fromLTWH(133,48,761,1443),
+    'scout': Rect.fromLTWH(141,36,741,1358),
+    'guardian': Rect.fromLTWH(142,44,748,1395),
+    'wanderer': Rect.fromLTWH(119,27,789,1448),
+  };
+  static const symbolBounds = <String, Rect>{
+    'alchemist': Rect.fromLTWH(337,75,345,530),
+    'scholar': Rect.fromLTWH(310,44,390,500),
+    'scout': Rect.fromLTWH(304,32,423,500),
+    'guardian': Rect.fromLTWH(322,40,379,480),
+    'wanderer': Rect.fromLTWH(285,24,470,527),
+  };
   @override
-  void paint(Canvas canvas, Size size) {
-    canvas.save();
-    canvas.scale(size.width / 128, size.height / 192);
-    final p = Paint();
-    void rect(double x, double y, double w, double h, int color) {
-      p.color = Color(color);
-      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
-    }
-    rect(28, 107, 72, 8, 0xFFB6894D);
-    rect(31, 107, 66, 2, 0xFFE9C77E);
-    rect(34, 115, 60, 62, 0xFF392E2D);
-    rect(39, 117, 50, 58, 0xFF574032);
-    rect(46, 121, 36, 47, 0xFF342B29);
-    rect(48, 123, 32, 43, 0xFF65503C);
-    rect(39, 116, 3, 59, 0xFF9C7546);
-    rect(87, 116, 3, 59, 0xFF805C3B);
-    rect(31, 175, 66, 6, 0xFFAC8247);
-    rect(26, 181, 76, 7, 0xFF3C2C26);
-    rect(27, 181, 74, 2, 0xFFBA9254);
-    canvas.restore();
+  Widget build(BuildContext context) {
+    final name = fullBounds.containsKey(archetype) ? archetype : 'wanderer';
+    final crop = (symbol ? symbolBounds : fullBounds)[name]!;
+    // A display viewport preserves the original alpha and anchors its actual
+    // feet to the floor. Symbols use the same artwork's upper artifact detail.
+    return FittedBox(fit: BoxFit.contain, alignment: Alignment.bottomCenter,
+      child: SizedBox(width: crop.width, height: crop.height,
+        child: ClipRect(child: OverflowBox(alignment: Alignment.topLeft,
+          minWidth: 1024, maxWidth: 1024, minHeight: 1536, maxHeight: 1536,
+          child: Transform.translate(offset: Offset(-crop.left,-crop.top),
+            child: Image.asset('assets/images/questwell/hearth/mastery/${name}_display_v2.webp',
+              width: 1024, height: 1536, fit: BoxFit.fill, filterQuality: FilterQuality.medium,
+              errorBuilder: (_, __, ___) => const SizedBox.shrink()))))));
   }
-  @override
-  bool shouldRepaint(covariant _MasteryPedestalPainter oldDelegate) => false;
 }
 
 class QuestwellMasteryRelicPainter extends CustomPainter {

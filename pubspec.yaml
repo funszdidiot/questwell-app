@@ -121,7 +121,7 @@ flutter:
     - assets/images/questwell/avatar/classes/alchemist/
     - assets/images/questwell/avatar/classes/guardian/
     - assets/images/questwell/avatar/classes/wanderer/
-    - assets/images/questwell/hearth/
+    - assets/images/questwell/hearth/\n    - assets/images/questwell/hearth/mastery/
     - assets/videos/
     - assets/audios/
     - assets/rive_animations/
