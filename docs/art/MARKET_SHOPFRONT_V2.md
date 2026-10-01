@@ -1,0 +1,10 @@
+# Market shopfront v2
+
+Generated with the built-in image-generation tool on 2026-09-30 for the
+founder-requested richer fantasy/retro Market header. Production asset:
+`assets/images/questwell_market_shopfront_v2.webp` (1536 x 1024, WebP quality 84).
+No avatar, equipment, or icon assets changed. Sign text is a Flutter overlay.
+
+Generation prompt:
+
+Use case: stylized-concept. Create a production game UI background asset for Questwell's fantasy Market header, not a UI mockup. Landscape 1536x1024 image. A close front-facing view of an inviting fantasy curiosity shop storefront at dusk, sophisticated high-detail retro RPG pixel art, hand-crafted 32-bit / 64-bit era illustrated pixel environments, crisp small pixel clusters with rich layered shading, warm amber light against deep forest-green and midnight teal. Weathered walnut timber architecture, dimensional draped forest-green cloth awning with a few faded parchment stripes and scalloped edge, brass lanterns glowing warmly at each side, two deep inset glass display windows densely stocked with tiny jewel-toned potion bottles, old books, rolled scrolls and a small celestial brass instrument. Ivy climbs a corner, subtle worn stone threshold, no people. The composition must be useful as a mobile header: tightly frame just the shop façade, no sky, no street panorama, no big empty margins. Essential centerpiece: one large horizontal BLANK dark walnut wooden hanging sign with ornate brass corner fittings, chains and carved border. Sign centered horizontally, occupying x=25%-75% and y=18%-42% of the whole image, hung in front of the upper awning; its interior must be uncluttered dark wood so actual app text can overlay it. NO letters or words anywhere, no logos, no watermark. Below sign, the shop windows and door should establish rich depth and intriguing wares. Calm lower edge, deep shaded green blends with #192F2C. A polished cozy dark-academia fantasy game merchant environment, tactile and atmospheric, avoid flat vector shapes, avoid crude rectangular toy shop, avoid photorealism, avoid blurred painterly pixels. Preserve strong readable forms at 350px display width.
