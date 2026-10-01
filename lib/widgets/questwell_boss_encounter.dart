@@ -23,14 +23,15 @@ class QuestwellBossEncounter extends StatefulWidget {
 
 class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
     with SingleTickerProviderStateMixin {
+  bool get _dragon => widget.bossType == 'update_dragon';
   bool get _troll => widget.bossType == 'ticket_troll';
   bool get _swarm => widget.bossType == 'notification_swarm';
   bool get _printer => widget.bossType == 'printer_poltergeist';
   bool get _kraken => widget.bossType == 'calendar_kraken';
   bool get _slime => widget.bossType == 'spreadsheet_slime';
   bool get _mimic => widget.bossType == 'meeting_mimic';
-  String get _name => _troll ? 'TICKET TROLL' : _swarm ? 'NOTIFICATION SWARM' : _printer ? 'PRINTER POLTERGEIST' : _kraken ? 'CALENDAR KRAKEN' : _slime ? 'SPREADSHEET SLIME' : _mimic ? 'MEETING MIMIC' : 'INBOX HYDRA';
-  String get taunt => _troll ? 'Have you tried opening another ticket?' : _swarm ? 'Just one more ping.' : _printer ? 'Paper jam. Naturally.' : _kraken ? 'I found a gap in your calendar.' : _slime ? 'It worked in the other tab.' : _mimic ? 'This could have been an email.' : 'You said you’d do it tomorrow.';
+  String get _name => _dragon ? 'UPDATE DRAGON' : _troll ? 'TICKET TROLL' : _swarm ? 'NOTIFICATION SWARM' : _printer ? 'PRINTER POLTERGEIST' : _kraken ? 'CALENDAR KRAKEN' : _slime ? 'SPREADSHEET SLIME' : _mimic ? 'MEETING MIMIC' : 'INBOX HYDRA';
+  String get taunt => _dragon ? 'Just one quick restart.' : _troll ? 'Have you tried opening another ticket?' : _swarm ? 'Just one more ping.' : _printer ? 'Paper jam. Naturally.' : _kraken ? 'I found a gap in your calendar.' : _slime ? 'It worked in the other tab.' : _mimic ? 'This could have been an email.' : 'You said you’d do it tomorrow.';
   static final _seen = <String>{};
   late final AnimationController _intro = AnimationController(
     vsync: this, duration: const Duration(milliseconds: 3200))
@@ -74,10 +75,10 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
   void dispose() { _intro.dispose(); super.dispose(); }
   @override
   Widget build(BuildContext context) {
-    final sprite = RepaintBoundary(child: Image.asset(_troll ? 'assets/images/questwell_ticket_troll_v2.webp' : _swarm ? 'assets/images/questwell_notification_swarm_v2.webp' : _printer ? 'assets/images/questwell_printer_poltergeist_v1.webp' : _kraken ? 'assets/images/questwell_calendar_kraken_v1.webp' : _slime ? 'assets/images/questwell_spreadsheet_slime_v1.webp' : _mimic ? 'assets/images/questwell_meeting_mimic_v1.webp' : 'assets/images/questwell_inbox_hydra_v1.webp',
-      fit: BoxFit.contain, semanticLabel: _troll ? 'Ticket Troll, a grumpy mossy stone clerk holding a stamp and a stack of requests' : _swarm ? 'Notification Swarm, mischievous winged bells and sealed messages' : _printer ? 'Printer Poltergeist, a haunted brass and wood printer trailing ghostly paper' : _kraken ? 'Calendar Kraken, a violet tentacled creature clutching appointment scrolls and a brass watch' : _slime ? 'Spreadsheet Slime, an emerald jelly creature tangled in parchment grids' : _mimic
+    final sprite = RepaintBoundary(child: Transform.flip(flipX: _dragon, child: Image.asset(_dragon ? 'assets/images/questwell_update_dragon_v1.webp' : _troll ? 'assets/images/questwell_ticket_troll_v2.webp' : _swarm ? 'assets/images/questwell_notification_swarm_v2.webp' : _printer ? 'assets/images/questwell_printer_poltergeist_v1.webp' : _kraken ? 'assets/images/questwell_calendar_kraken_v1.webp' : _slime ? 'assets/images/questwell_spreadsheet_slime_v1.webp' : _mimic ? 'assets/images/questwell_meeting_mimic_v1.webp' : 'assets/images/questwell_inbox_hydra_v1.webp',
+      fit: BoxFit.contain, semanticLabel: _dragon ? 'Update Dragon, a copper dragon guarding brass gears and upgrade scrolls' : _troll ? 'Ticket Troll, a grumpy mossy stone clerk holding a stamp and a stack of requests' : _swarm ? 'Notification Swarm, mischievous winged bells and sealed messages' : _printer ? 'Printer Poltergeist, a haunted brass and wood printer trailing ghostly paper' : _kraken ? 'Calendar Kraken, a violet tentacled creature clutching appointment scrolls and a brass watch' : _slime ? 'Spreadsheet Slime, an emerald jelly creature tangled in parchment grids' : _mimic
         ? 'Meeting Mimic, an enchanted burgundy conference chair with a toothy grin'
-        : 'Inbox Hydra, a three-headed serpent guarding a pile of letters'));
+        : 'Inbox Hydra, a three-headed serpent guarding a pile of letters')));
     final avatar = RepaintBoundary(child: QuestwellLayeredAdventurerArt(
       archetype: widget.archetype, avatarBodyType: widget.body, equippedSlugs: widget.equipment));
     return AnimatedBuilder(animation: _intro, builder: (context, _) {
@@ -85,10 +86,11 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
       final arriving = t < 1;
       final slide = Curves.easeOutCubic.transform(((t - .15) / .28).clamp(0.0, 1.0));
       final land = ((t - .43) / .13).clamp(0.0, 1.0);
-      final lift = _reduced ? 0.0 : _troll
+      final lift = _reduced ? 0.0 : _dragon ? -math.sin(land * math.pi) * 20 : _troll
         ? -math.sin(slide * math.pi * 2).abs() * (1 - slide) * 18 - math.sin(land * math.pi) * 4
         : -math.sin(land * math.pi) * (_mimic ? 25 : 9);
-      final wobble = _reduced ? 0.0 : _troll
+      final wobble = _reduced ? 0.0 : _dragon
+        ? -(1 - slide) * .18 + math.sin(land * math.pi * 2) * (1 - land) * .06 : _troll
         ? math.sin(land * math.pi * 4) * (1 - land) * .04 : _swarm
         ? math.sin(slide * math.pi * 4) * (1 - slide) * .12 + math.sin(land * math.pi * 4) * (1 - land) * .055 : _printer
         ? math.sin(land * math.pi * 6) * (1 - land) * .045 : _kraken
@@ -122,7 +124,7 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                   Positioned(left: width * .03, bottom: 24, width: width * .42, height: 190, child: avatar),
                   Positioned(right: width * .01, bottom: 23, width: width * .59, height: 230,
                     child: Transform.translate(offset: Offset((1 - slide) * (_kraken ? 65 : width + 40),
-                      lift + (_swarm ? -math.sin(slide * math.pi * 2) * 35 : _printer ? -(1 - slide) * 80 : _kraken ? (1 - slide) * 290 : 0)),
+                      lift + (_dragon ? -(1 - slide) * 170 : _swarm ? -math.sin(slide * math.pi * 2) * 35 : _printer ? -(1 - slide) * 80 : _kraken ? (1 - slide) * 290 : 0)),
                       child: AnimatedOpacity(duration: Duration(milliseconds: _reduced ? 0 : 650),
                         opacity: widget.defeated ? .15 : 1, child: Transform.rotate(angle: wobble, child: Transform.scale(
                           scaleX: 1 + squash, scaleY: 1 - squash, alignment: Alignment.bottomCenter, child: sprite))))),

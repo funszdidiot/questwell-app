@@ -113,6 +113,20 @@ void main() {
     expect(find.text('VICTORY'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+  testWidgets('Update Dragon reaches its dialogue and settles after landing', (tester) async {
+    await tester.pumpWidget(scene(id: 'dragon', type: 'update_dragon'));
+    expect(find.text('UPDATE DRAGON'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('Just one quick restart.'), findsOneWidget);
+    expect(find.byWidgetPredicate((w) => w is Image && w.image is AssetImage &&
+      (w.image as AssetImage).assetName.endsWith('questwell_update_dragon_v1.webp')), findsOneWidget);
+    expect(tester.binding.hasScheduledFrame, isFalse);
+    await tester.pumpWidget(scene(id: 'dragon', type: 'update_dragon', reduced: true, progress: 1, defeated: true));
+    await tester.pumpAndSettle();
+    expect(find.text('UPDATE DRAGON · DEFEATED'), findsOneWidget);
+    expect(find.text('VICTORY'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
   testWidgets('Skip persists and does not replay after remount', (tester) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(scene(id: 'persistent-test', persist: true));
