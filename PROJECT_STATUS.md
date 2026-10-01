@@ -4,6 +4,10 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Wanderer male and neutral cuff fit v3 — 2026-10-01
+
+Founder flagged flared corners and off-center hands on male and gender-neutral v2. Added separately tapered v3 sleeve artwork registered to wrist centers. Female remains v2. Live close-ups checked male and neutral without satchel, plus male satchel overlap; thinner hems now follow wrist angles without the former projecting corners. Flutter Check36827443913 and Preview36827443909 passed for `213b251f1b9f3ab7af787a785d8357af593b81a2`. Preview `?review=wayfarer&rev=213b251`. Awaiting founder review; no account changes.
+
 ## Wanderer short-coat cuff revision — 2026-10-01
 
 Founder reported disconnected cuffs. Close-up confirmed the artwork painted empty dark oval sleeve openings across the wrists. New body-specific v2 coat sprites remove those openings and replace double rolled rings with a single thin gold cloth edge. No runtime cuff overlays. Verified female close-up, male with satchel, neutral without satchel, and Hearth rendering. Flutter Check36826583890 and Preview36826584043 passed for `77fa755384d14fa9a17603f2f286b089186e79fb`. Preview `?review=wayfarer&rev=77fa755`. Awaiting founder visual review. No account changes.
