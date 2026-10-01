@@ -43,7 +43,7 @@ void main() {
     addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(page([battle('a'), battle('b')]));
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.byKey(const ValueKey('select-b')));
+    await tester.scrollUntilVisible(find.byKey(const ValueKey('select-b')), 200);
     await tester.tap(find.byKey(const ValueKey('select-b')));
     await tester.pumpAndSettle();
     await tester.drag(find.byType(ListView), const Offset(0, -400));
@@ -59,7 +59,7 @@ void main() {
     expect(tester.getBottomRight(find.byType(QuestwellBossEncounter)).dy, lessThan(844));
 
     // A later refresh must respect a manual selection, not reopen the created battle.
-    await tester.ensureVisible(find.byKey(const ValueKey('select-a')));
+    await tester.scrollUntilVisible(find.byKey(const ValueKey('select-a')), 200);
     await tester.tap(find.byKey(const ValueKey('select-a')));
     await tester.pumpAndSettle();
     await tester.pumpWidget(page([battle('a'), battle('b'), battle('c')], selected: 'c'));
