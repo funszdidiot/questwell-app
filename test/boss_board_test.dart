@@ -22,6 +22,34 @@ void main() {
       body: QuestwellBossBoard(battles: data, practice: true, failed: failed, loading: loading,
         busyStepId: busy, initialBattleId: selected, onHome: () => homes++, onCreate: () => creates++,
         onAttack: (_, __) => attacks++, onRetry: () {}))));
+  testWidgets('Slime archive loads only for Slime, with clear dialogue at phone and wide widths', (tester) async {
+    tester.view.physicalSize = const Size(600, 1700);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    for (final width in [320.0, 560.0]) {
+      for (final type in ['spreadsheet_slime', 'calendar_kraken']) {
+        await tester.pumpWidget(MaterialApp(home: MediaQuery(
+          data: const MediaQueryData(disableAnimations: true, textScaler: TextScaler.linear(1.5)),
+          child: Center(child: SizedBox(width: width, child: QuestwellBossEncounter(
+            key: ValueKey('$type-$width'), encounterId: '$type-$width',
+            bossType: type, persistEntrance: false))))));
+        await tester.pumpAndSettle();
+        final art = find.byKey(const ValueKey('slime-archive-arena'));
+        if (type == 'spreadsheet_slime') {
+          expect(art, findsOneWidget);
+          expect(tester.widget<Image>(art).image,
+            isA<AssetImage>().having((asset) => asset.assetName, 'asset',
+              'assets/images/questwell_slime_archive_v1.webp'));
+        } else {
+          expect(art, findsNothing);
+        }
+        expect(tester.getRect(find.byKey(const ValueKey('boss-dialogue'))).bottom,
+          lessThanOrEqualTo(tester.getTopLeft(find.byKey(const ValueKey('boss-arena'))).dy));
+        expect(tester.takeException(), isNull);
+      }
+    }
+  });
   testWidgets('Approved arenas follow the selected boss at narrow width', (tester) async {
     tester.view.physicalSize = const Size(320, 1700);
     tester.view.devicePixelRatio = 1;
