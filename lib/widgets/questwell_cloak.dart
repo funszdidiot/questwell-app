@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 /// Continuous front drapes wrap over the outfit; forearms are restored above them.
@@ -21,6 +22,14 @@ class QuestwellCloak extends StatelessWidget {
       _ => Rect.fromLTWH(mantle ? 42 : 40, 77, mantle ? 156 : 160, 211),
     };
   }
+  static Matrix4 drapeTransform(double width, double height, double lean) {
+    const taper = .93;
+    final perspective = (1/taper - 1)/height;
+    return Matrix4.identity()
+      ..setEntry(3, 1, perspective)
+      ..setEntry(0, 1, width*perspective/2 + lean/(height*taper))
+      ..setEntry(1, 1, 1/taper);
+  }
   @override
   Widget build(BuildContext context) => IgnorePointer(child: ExcludeSemantics(
     child: LayoutBuilder(builder: (context, constraints) {
@@ -32,7 +41,13 @@ class QuestwellCloak extends StatelessWidget {
       return Stack(clipBehavior: Clip.none, children: [Positioned(
         left: (constraints.maxWidth - 240*scale)/2 + fit.left*scale,
         top: constraints.maxHeight - 320*scale + fit.top*scale,
-        width: fit.width*scale, height: fit.height*scale, child: artwork)]);
+        width: fit.width*scale, height: fit.height*scale,
+        child: Transform(
+          // Keep the neckline registered; taper the hem without cropping its
+          // embroidery. A tiny lateral fall avoids a perfectly mirrored skirt.
+          transform: drapeTransform(fit.width*scale, fit.height*scale,
+            slug == 'hearthguard-mantle' ? -1.2*scale : 1.2*scale),
+          child: artwork))]);
     }),
   ));
 }
@@ -71,4 +86,57 @@ class QuestwellCloakForegroundClipper extends CustomClipper<Path> {
   }
   @override
   bool shouldReclip(covariant QuestwellCloakForegroundClipper oldClipper) => oldClipper.body!=body;
+}
+
+/// Blend the original sleeves out from beneath the capelet instead of exposing
+/// a hard cut edge. The head and hands stay fully opaque.
+class QuestwellCloakForeground extends StatelessWidget {
+  const QuestwellCloakForeground({super.key, required this.body, required this.children});
+  final String body;
+  final List<Widget> children;
+  @override
+  Widget build(BuildContext context) => IgnorePointer(child: CustomPaint(
+    foregroundPainter: _CloakContactShadow(body),
+    child: ShaderMask(
+      blendMode: BlendMode.dstIn,
+      shaderCallback: (rect) {
+        final scale = math.min(rect.width/240, rect.height/320);
+        final top = rect.height-320*scale;
+        return ui.Gradient.linear(Offset(0,top), Offset(0,top+320*scale),
+          const [Colors.white,Colors.white,Colors.transparent,Colors.white,Colors.white],
+          const [0,.30,.375,.425,1]);
+      },
+      child: ClipPath(clipper: QuestwellCloakForegroundClipper(body),
+        child: Stack(fit: StackFit.expand, children: children)),
+    ),
+  ));
+}
+
+class _CloakContactShadow extends CustomPainter {
+  const _CloakContactShadow(this.body);
+  final String body;
+  @override
+  void paint(Canvas canvas, Size size) {
+    final scale = math.min(size.width/240,size.height/320);
+    canvas.save();
+    canvas.clipPath(QuestwellCloakForegroundClipper(body).getClip(size));
+    canvas.translate((size.width-240*scale)/2,size.height-320*scale);
+    canvas.scale(scale);
+    final female = body=='female';
+    final dy = body=='male' ? 3.0 : 0.0;
+    final shadow = Path()
+      ..moveTo(female ? 76 : 70, 127+dy)
+      ..quadraticBezierTo(female ? 84 : 80,133+dy,female ? 90 : 88,129+dy)
+      ..moveTo(150,130+dy)
+      ..quadraticBezierTo(158,133+dy,female ? 165 : 168,129+dy);
+    canvas.drawPath(shadow, Paint()
+      ..color=const Color(0x350C1114)
+      ..style=PaintingStyle.stroke
+      ..strokeWidth=3
+      ..strokeCap=StrokeCap.round
+      ..maskFilter=const MaskFilter.blur(BlurStyle.normal,2));
+    canvas.restore();
+  }
+  @override
+  bool shouldRepaint(covariant _CloakContactShadow oldDelegate) => oldDelegate.body!=body;
 }
