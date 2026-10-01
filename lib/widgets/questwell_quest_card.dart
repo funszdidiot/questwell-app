@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'questwell_pixel_art.dart';
+import 'questwell_typography.dart';
 
 /// Shared by the signed-in board and the account-free visual review.
 class QuestwellQuestCard extends StatelessWidget {
@@ -50,9 +50,9 @@ class QuestwellQuestCard extends StatelessWidget {
         label: Text(busy ? 'Completing…' : 'Complete quest'),
         style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-          backgroundColor: const Color(0xFF326F69), foregroundColor: Colors.white,
+          backgroundColor: const Color(0xFF244C3E), foregroundColor: Colors.white,
           textStyle: GoogleFonts.roboto(fontSize: 15, fontWeight: FontWeight.w700),
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
       )),
     ]),
     )),
@@ -74,25 +74,54 @@ class _QuestTag extends StatelessWidget {
 }
 
 class QuestwellBoardHeading extends StatelessWidget {
-  const QuestwellBoardHeading({super.key, this.completed = 0});
+  const QuestwellBoardHeading({super.key, this.completed = 0, this.onAdd});
   final int completed;
+  final VoidCallback? onAdd;
   @override
-  Widget build(BuildContext context) => QuestwellRetroPanel(
-    accent: const Color(0xFFD6A84B), background: const Color(0xFF211E29),
-    padding: const EdgeInsets.all(18),
-    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text('QUEST BOARD', style: GoogleFonts.pressStart2p(fontSize: 15,
-        height: 1.6, color: const Color(0xFFF2D9A0))),
-      const SizedBox(height: 10),
-      Text('One small win at a time.', style: GoogleFonts.roboto(
-        fontSize: 17, color: const Color(0xFFE0E7EE))),
-      const SizedBox(height: 10),
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Text('QUEST BOARD', style: QuestwellTypography.sectionHeading(size: 14)),
+      const SizedBox(height: 8),
+      Text('One small win at a time.', style: QuestwellTypography.body(
+        fontSize: 17, color: const Color(0xFFF0E5CC))),
+      const SizedBox(height: 6),
       Text(completed == 0 ? 'Pick a quest that fits your energy.'
         : '$completed ${completed == 1 ? 'quest' : 'quests'} finished this visit. Keep your momentum.',
-        style: GoogleFonts.roboto(fontSize: 13, height: 1.4,
-          color: const Color(0xFFB7C4D4))),
-    ]),
+        style: QuestwellTypography.body(fontSize: 13, color: const Color(0xFFB9C7D7))),
+      if (onAdd != null) ...[
+        const SizedBox(height: 18),
+        FilledButton.icon(onPressed: onAdd,
+          icon: const Icon(Icons.add, size: 20), label: const Text('New quest'),
+          style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            backgroundColor: const Color(0xFFE4C586), foregroundColor: const Color(0xFF263528),
+            textStyle: QuestwellTypography.control(),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)))),
+      ],
+    ],
   );
+}
+
+class QuestwellBoardFilter extends StatelessWidget {
+  const QuestwellBoardFilter({super.key, required this.label, required this.icon,
+    required this.selected, required this.onTap});
+  final String label;
+  final IconData icon;
+  final bool selected;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) => Semantics(selected: selected,
+    child: OutlinedButton.icon(onPressed: onTap,
+      icon: Icon(icon, size: 17), label: Text(label),
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size(48, 48),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        foregroundColor: selected ? const Color(0xFFE4C586) : const Color(0xFFB9C7D7),
+        backgroundColor: selected ? const Color(0xFF293C32) : const Color(0xFF152332),
+        side: BorderSide(color: selected ? const Color(0xFF9E8754) : const Color(0xFF43536A)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        textStyle: QuestwellTypography.control()),
+    ));
 }
 
 class _QuestPinPainter extends CustomPainter {
@@ -125,10 +154,10 @@ class QuestwellNoticeboard extends StatelessWidget {
   final Widget child;
   @override
   Widget build(BuildContext context) => DecoratedBox(
-    decoration: BoxDecoration(border: Border.all(color: const Color(0xFF9E7546), width: 3),
+    decoration: BoxDecoration(border: Border.all(color: const Color(0xFF9E7546), width: 2),
       boxShadow: const [BoxShadow(color: Color(0x66000000), offset: Offset(3, 4))]),
     child: CustomPaint(painter: _NoticeboardWoodPainter(),
-      child: Padding(padding: const EdgeInsets.all(13), child: child)),
+      child: Padding(padding: const EdgeInsets.all(10), child: child)),
   );
 }
 

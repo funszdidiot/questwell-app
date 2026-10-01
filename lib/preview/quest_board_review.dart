@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/questwell_quest_card.dart';
+import '../widgets/questwell_app_navigation.dart';
+import '../widgets/questwell_typography.dart';
 
 class QuestBoardReviewApp extends StatefulWidget {
   const QuestBoardReviewApp({super.key});
@@ -10,52 +12,93 @@ class QuestBoardReviewApp extends StatefulWidget {
 class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
   final _done = <int>{};
   final _pinned = <int>{0};
-  bool _pinnedOnly = false;
-  static const _titles = ['Send the email you have been putting off',
-    'Clear one small corner of your desk', 'Outline the first three steps of your project'];
+  String _filter = 'all';
+  final _quests = [
+    (title: 'Send the email you have been putting off', effort: 'Hard to Start', xp: 30, coins: 6),
+    (title: 'Clear one small corner of your desk', effort: 'Low Energy', xp: 10, coins: 2),
+    (title: 'Outline the first three steps of your project', effort: 'High Impact', xp: 40, coins: 8),
+  ];
+  bool visible(int i) => !_done.contains(i) && switch (_filter) {
+    'pinned' => _pinned.contains(i),
+    'low' => _quests[i].effort == 'Low Energy',
+    'high' => _quests[i].effort != 'Low Energy',
+    'boss' => false,
+    _ => true,
+  };
+
+  Future<void> _add(BuildContext context) async {
+    final controller = TextEditingController();
+    final title = await showDialog<String>(context: context, builder: (context) => AlertDialog(
+      scrollable: true, title: const Text('New sample quest'),
+      content: TextField(controller: controller, autofocus: true, minLines: 1, maxLines: 3,
+        textCapitalization: TextCapitalization.sentences,
+        decoration: const InputDecoration(labelText: 'What needs to get done?')),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        FilledButton(onPressed: () {
+          if (controller.text.trim().isNotEmpty) Navigator.pop(context, controller.text.trim());
+        }, child: const Text('Add quest')),
+      ],
+    ));
+    // Wait for the dialog's outgoing transition before disposing its field.
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    controller.dispose();
+    if (!mounted || title == null) return;
+    setState(() {
+      _quests.add((title: title, effort: 'Low Energy', xp: 10, coins: 2));
+      _filter = 'all';
+    });
+  }
+
   @override
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData.dark(useMaterial3: true),
-    home: Scaffold(backgroundColor: const Color(0xFF0E1724),
+    home: Scaffold(backgroundColor: const Color(0xFF111827),
       body: SafeArea(child: Center(child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 430),
-        child: ListView(padding: const EdgeInsets.all(16), children: [
-          const Text('Quest Board · design review', textAlign: TextAlign.center),
-          const SizedBox(height: 8),
-          const Text('Sample quests only. Nothing changes your account.',
-            textAlign: TextAlign.center, style: TextStyle(color: Color(0xFFB7C4D4))),
-          const SizedBox(height: 18),
-          QuestwellBoardHeading(completed: _done.length),
-          const SizedBox(height: 16),
-          Wrap(spacing: 8, children: [
-            ChoiceChip(label: const Text('All quests'), selected: !_pinnedOnly,
-              onSelected: (_) => setState(() => _pinnedOnly = false)),
-            ChoiceChip(label: const Text('Pinned'), selected: _pinnedOnly,
-              onSelected: (_) => setState(() => _pinnedOnly = true)),
-          ]),
+        constraints: const BoxConstraints(maxWidth: 760),
+        child: Builder(builder: (context) => ListView(
+          padding: const EdgeInsets.fromLTRB(18, 20, 18, 24), children: [
+          QuestwellBoardHeading(completed: _done.length, onAdd: () => _add(context)),
           const SizedBox(height: 12),
-          QuestwellNoticeboard(child: Column(children: [
-          for (var i = 0; i < _titles.length; i++)
-            if (!_done.contains(i) && (!_pinnedOnly || _pinned.contains(i)))
+          Wrap(spacing: 8, runSpacing: 8, children: [
+            for (final item in const [
+              ('all', 'All quests', Icons.calendar_today_outlined),
+              ('low', 'Low Energy', Icons.bolt_outlined),
+              ('high', 'Bigger quests', Icons.landscape_outlined),
+              ('boss', 'Bosses', Icons.sports_mma_outlined),
+              ('pinned', 'Pinned', Icons.star_border),
+            ]) QuestwellBoardFilter(label: item.$2, icon: item.$3,
+              selected: _filter == item.$1, onTap: () => setState(() => _filter = item.$1)),
+          ]),
+          const SizedBox(height: 22),
+          Text(_filter == 'boss' ? 'BOSS QUESTS' : 'YOUR NEXT WIN',
+            style: QuestwellTypography.sectionHeading(size: 10)),
+          const SizedBox(height: 12),
+          if (_filter == 'boss') OutlinedButton(
+            onPressed: () => QuestwellNavigationScope.open(context, QuestwellDestination.bosses),
+            child: const Text('Open Boss Battles'))
+          else QuestwellNoticeboard(child: Column(children: [
+            for (var i = 0; i < _quests.length; i++) if (visible(i))
               Padding(padding: const EdgeInsets.only(bottom: 14),
-                child: QuestwellQuestCard(title: _titles[i],
-                  effort: ['Hard to Start', 'Low Energy', 'High Impact'][i],
-                  xp: [30, 10, 40][i], coins: [6, 2, 8][i],
+                child: QuestwellQuestCard(title: _quests[i].title,
+                  effort: _quests[i].effort, xp: _quests[i].xp, coins: _quests[i].coins,
                   favorite: _pinned.contains(i),
                   onFavorite: () => setState(() {
                     if (!_pinned.add(i)) _pinned.remove(i);
                   }),
                   onComplete: () => setState(() => _done.add(i)),
                 )),
-          if (!_titles.asMap().keys.any((i) => !_done.contains(i) && (!_pinnedOnly || _pinned.contains(i))))
-            Padding(padding: const EdgeInsets.all(20), child: Text(
-              _pinnedOnly ? 'No pinned quests here. Pin a quest in All quests.'
-                : 'Board clear. Enjoy your small wins.', textAlign: TextAlign.center)),
+            if (!_quests.asMap().keys.any(visible))
+              Padding(padding: const EdgeInsets.all(20), child: Text(
+                _filter == 'pinned' ? 'No pinned quests here. Pin a quest in All quests.'
+                  : 'No quests in this lane right now.', textAlign: TextAlign.center,
+                style: QuestwellTypography.body(color: const Color(0xFFF0E5CC)))),
           ])),
-          TextButton(onPressed: () => setState(() { _done.clear(); _pinnedOnly = false; }),
+          const SizedBox(height: 12),
+          TextButton(onPressed: () => setState(() { _done.clear(); _filter = 'all'; }),
             child: const Text('Reset sample quests')),
-        ]),
+        ])),
       ))),
     ),
   );

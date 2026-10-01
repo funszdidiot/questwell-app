@@ -38,4 +38,31 @@ void main() {
     expect(find.text('1 quest finished this visit. Keep your momentum.'), findsOneWidget);
     expect(find.byType(QuestwellQuestCard), findsNWidgets(2));
   });
+
+  testWidgets('Board filters and creation remain usable on a short phone with large text', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(320, 568));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(const MediaQuery(
+      data: MediaQueryData(size: Size(320, 568), textScaler: TextScaler.linear(2), disableAnimations: true),
+      child: QuestBoardReviewApp()));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    final low = find.widgetWithText(QuestwellBoardFilter, 'Low Energy');
+    await tester.ensureVisible(low); await tester.pumpAndSettle();
+    await tester.tap(low); await tester.pumpAndSettle();
+    expect(find.text('Clear one small corner of your desk'), findsOneWidget);
+    expect(find.text('Send the email you have been putting off'), findsNothing);
+    final all = find.widgetWithText(QuestwellBoardFilter, 'All quests');
+    await tester.ensureVisible(all); await tester.pumpAndSettle();
+    await tester.tap(all); await tester.pumpAndSettle();
+    final create = find.text('New quest');
+    await tester.ensureVisible(create); await tester.pumpAndSettle();
+    await tester.tap(create); await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'Take one small step');
+    await tester.tap(find.text('Add quest')); await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.text('Take one small step'), findsOneWidget);
+    expect(find.byType(QuestwellQuestCard), findsNWidgets(4));
+    expect(tester.takeException(), isNull);
+  });
 }

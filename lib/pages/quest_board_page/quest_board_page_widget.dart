@@ -7,7 +7,6 @@ import '/services/questwell_boss_service.dart';
 import '/services/questwell_task_service.dart';
 import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_quest_card.dart';
-import '/widgets/questwell_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -154,106 +153,57 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
 
     return Scaffold(
         bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.quests),
-      backgroundColor: const Color(0xFF0E1724),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          await context.pushNamed(AddTaskPageWidget.routeName);
-          if (mounted) setState(_refresh);
-        },
-        backgroundColor: const Color(0xFFD6A84B),
-        foregroundColor: const Color(0xFF1B1712),
-        icon: const Icon(Icons.add),
-        label: Text(
-          'New quest',
-          style: QuestwellTypography.control(),
-        ),
-      ),
+      backgroundColor: const Color(0xFF111827),
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async {
             setState(_refresh);
             await Future.wait([_tasksFuture, _bossFuture]);
           },
-          child: ListView(
-            padding: const EdgeInsets.fromLTRB(14, 14, 14, 110),
+          child: Center(child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 760),
+            child: ListView(
+            padding: const EdgeInsets.fromLTRB(18, 20, 18, 24),
             children: [
-              Row(
-                children: [
-                  QuestwellTopActionButton(
-                    kind: 'back',
-                    tooltip: 'Back to the Hearth',
-                    onTap: () => QuestwellNavigationScope.open(context, QuestwellDestination.hearth),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        QuestwellBrandWordmark(
-                          compact:
-                              MediaQuery.sizeOf(context).width < 390,
-                        ),
-                      ],
-                    ),
-                  ),
-                  QuestwellTopActionButton(
-                    kind: 'chronicle',
-                    tooltip: 'Chronicle',
-                    onTap: () => context.pushNamed(
-                      ChroniclePageWidget.routeName,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  QuestwellTopActionButton(
-                    kind: 'adventurer',
-                    tooltip: 'Adventurer',
-                    onTap: () => context.pushNamed(
-                      AdventurerPageWidget.routeName,
-                    ),
-                  ),
-                ],
-              ),
+              QuestwellBoardHeading(completed: _completedThisVisit, onAdd: () async {
+                await context.pushNamed(AddTaskPageWidget.routeName);
+                if (mounted) setState(_refresh);
+              }),
               const SizedBox(height: 12),
-              const QuestwellPixelDivider(accent: Color(0xFFD6A84B)),
-              const SizedBox(height: 12),
-              QuestwellBoardHeading(completed: _completedThisVisit),
-              const SizedBox(height: 12),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
+              Wrap(
+                spacing: 8, runSpacing: 8,
                   children: [
-                    _BoardFilter(
+                    QuestwellBoardFilter(
                       label: 'All quests',
                       icon: Icons.calendar_today_outlined,
                       selected: _filter == 'today',
                       onTap: () => setState(() => _filter = 'today'),
                     ),
-                    _BoardFilter(
+                    QuestwellBoardFilter(
                       label: 'Low Energy',
                       icon: Icons.bolt_outlined,
                       selected: _filter == 'low',
                       onTap: () => setState(() => _filter = 'low'),
                     ),
-                    _BoardFilter(
+                    QuestwellBoardFilter(
                       label: 'Bigger quests',
                       icon: Icons.landscape_outlined,
                       selected: _filter == 'high',
                       onTap: () => setState(() => _filter = 'high'),
                     ),
-                    _BoardFilter(
+                    QuestwellBoardFilter(
                       label: 'Bosses',
                       icon: Icons.sports_mma_outlined,
                       selected: _filter == 'boss',
                       onTap: () => setState(() => _filter = 'boss'),
                     ),
-                    _BoardFilter(
+                    QuestwellBoardFilter(
                       label: 'Pinned',
                       icon: Icons.star_border,
                       selected: _filter == 'favorites',
                       onTap: () => setState(() => _filter = 'favorites'),
                     ),
                   ],
-                ),
               ),
               const SizedBox(height: 14),
               if (_filter == 'boss') FutureBuilder<List<QuestwellBossBattle>>(
@@ -352,9 +302,8 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
               const SizedBox(height: 18),
               Text(
                 _filter == 'boss' ? 'BOSS QUESTS' : 'YOUR NEXT WIN',
-                textAlign: TextAlign.center,
                 style: GoogleFonts.pressStart2p(
-                  fontSize: 12,
+                  fontSize: 10,
                   color: const Color(0xFFF2D9A0),
                 ),
               ),
@@ -451,76 +400,9 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                 ),
               ),
             ],
-          ),
+          ))),
         ),
       ),
     );
   }
 }
-
-class _BoardFilter extends StatelessWidget {
-  const _BoardFilter({
-    required this.label,
-    required this.icon,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final IconData icon;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          constraints: const BoxConstraints(minHeight: 48),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          decoration: BoxDecoration(
-            color: selected ? const Color(0xFFF2E0B4) : const Color(0xFF152234),
-            border: Border.all(
-              color: selected
-                  ? const Color(0xFFE4B85E)
-                  : const Color(0xFF43536A),
-              width: 2,
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x66000000),
-                offset: Offset(3, 3),
-                blurRadius: 0,
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                size: 17,
-                color: selected
-                    ? const Color(0xFF2D2418)
-                    : const Color(0xFFE1D7C1),
-              ),
-              const SizedBox(width: 7),
-              Text(
-                label,
-                style: GoogleFonts.roboto(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: selected
-                      ? const Color(0xFF2D2418)
-                      : const Color(0xFFE1D7C1),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
