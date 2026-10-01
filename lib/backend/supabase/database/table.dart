@@ -1,4 +1,5 @@
 import 'database.dart';
+import '../questwell_network.dart';
 
 abstract class SupabaseTable<T extends SupabaseDataRow> {
   String get tableName;
@@ -13,7 +14,8 @@ abstract class SupabaseTable<T extends SupabaseDataRow> {
     final select = _select();
     var query = queryFn(select);
     query = limit != null ? query.limit(limit) : query;
-    return query.select().then((rows) => rows.map(createRow).toList());
+    return QuestwellNetwork.read(() => query.select())
+        .then((rows) => rows.map(createRow).toList());
   }
 
   /// Fetches one page of rows, starting at row [offset] and returning at most
@@ -25,38 +27,38 @@ abstract class SupabaseTable<T extends SupabaseDataRow> {
     required int pageSize,
   }) {
     final select = _select();
-    return queryFn(select)
+    return QuestwellNetwork.read(() => queryFn(select)
         .range(offset, offset + pageSize - 1)
-        .select()
+        .select())
         .then((rows) => rows.map(createRow).toList());
   }
 
   Future<List<T>> querySingleRow({
     required PostgrestTransformBuilder Function(PostgrestFilterBuilder) queryFn,
-  }) =>
-      queryFn(_select())
-          .limit(1)
-          .select()
-          .maybeSingle()
-          .catchError((e) => print('Error querying row: $e'))
-          .then((r) => [if (r != null) createRow(r)]);
+  }) async {
+    final row = await QuestwellNetwork.read(
+      () => queryFn(_select()).limit(1).select().maybeSingle(),
+    );
+    return [if (row != null) createRow(row)];
+  }
 
-  Future<T> insert(Map<String, dynamic> data) => SupaFlow.client
+  Future<T> insert(Map<String, dynamic> data) =>
+      QuestwellNetwork.write(() => SupaFlow.client
       .from(tableName)
       .insert(data)
       .select()
       .limit(1)
       .single()
-      .then(createRow);
+      ).then(createRow);
 
   Future<T> upsert(Map<String, dynamic> data, {String? onConflict}) =>
-      SupaFlow.client
+      QuestwellNetwork.write(() => SupaFlow.client
           .from(tableName)
           .upsert(data, onConflict: onConflict)
           .select()
           .limit(1)
           .single()
-          .then(createRow);
+          ).then(createRow);
 
   Future<List<T>> update({
     required Map<String, dynamic> data,
@@ -66,10 +68,11 @@ abstract class SupabaseTable<T extends SupabaseDataRow> {
   }) async {
     final update = matchingRows(SupaFlow.client.from(tableName).update(data));
     if (!returnRows) {
-      await update;
+      await QuestwellNetwork.write(() => update);
       return [];
     }
-    return update.select().then((rows) => rows.map(createRow).toList());
+    return QuestwellNetwork.write(() => update.select())
+        .then((rows) => rows.map(createRow).toList());
   }
 
   Future<List<T>> delete({
@@ -79,10 +82,11 @@ abstract class SupabaseTable<T extends SupabaseDataRow> {
   }) async {
     final delete = matchingRows(SupaFlow.client.from(tableName).delete());
     if (!returnRows) {
-      await delete;
+      await QuestwellNetwork.write(() => delete);
       return [];
     }
-    return delete.select().then((rows) => rows.map(createRow).toList());
+    return QuestwellNetwork.write(() => delete.select())
+        .then((rows) => rows.map(createRow).toList());
   }
 }
 
