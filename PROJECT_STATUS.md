@@ -4,6 +4,16 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Closed cloaks and handheld equipment rule — 2026-09-30 America/Chicago
+
+Founder authorized cloaks covering the hands with no simultaneous carried item. Both cloak renders now keep arms and hands beneath continuous cloth; a body mask preserves approved head/hair/neck and legs. Satchel overlap uses the same class mask, so bags cannot restore an exposed arm. Stale conflicting render maps suppress held art while a cloak is present. Artwork files and 16-bit icons remain unchanged.
+
+Market and Inventory load fresh equipment before a named swap confirmation. Cancel keeps the loadout. The new authenticated `equip_cosmetic_loadout` RPC checks the expected conflicting item under the profile row lock, then atomically equips the requested item and removes incompatible cloak/hand gear. The existing equip RPC also enforces incompatibility for older clients. Other categories, ownership, and coins are preserved. No existing conflicting loadouts were found; no founder equipment was changed.
+
+Idempotent database change: `tool/qa/closed_cloak_loadout.sql` (applied). Synthetic authenticated verification: `tool/qa/closed_cloak_loadout_check.sql` passed before and after applying, testing both cloaks, both directions, unconfirmed/stale swaps, legacy enforcement, unrelated equipment, and unchanged balances/ownership. All fixture writes rolled back. Advisor check found no new function/security findings; existing leaked-password-protection warning remains outside this change.
+
+Verified development build `98bceba948cc631596e7b9eb4c6a91b367538ba4`: Flutter Check 36812933068 and Preview 36812933124 passed, including closed-hand masks, stale held-art suppression with satchel, conflict policy, dialog cancel/confirm, and supported cloak/class/body render coverage. Browser inspected both garments across all three bodies in avatar/Hearth views. Preview cancel, cloak-to-lantern, and lantern-to-cloak confirmation flows passed. Review: `?review=cloaks&rev=98bceba`, with Try holding a lantern. Founder visual approval pending; no merge, external beta, or launch.
+
 ## Cloak contour correction — 2026-09-30 America/Chicago
 
 Founder requested correction of the harsh neck band, cut-out sleeve transitions, and competing inner hem. Replaced the horizontal neck cutoff with a skin-following curved opening. Upper sleeves now remain below the capelet; only lower forearms restore above the cloth. Removed the synthetic shoulder fade/shadow. The inner class coat now ends within a curved knee/calf silhouette, hiding its outer gold corners near the boots.
