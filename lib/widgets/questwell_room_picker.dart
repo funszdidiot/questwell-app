@@ -75,7 +75,7 @@ class _RoomPickerState extends State<_RoomPicker> {
             const SizedBox(height: 8),
             const Text('Choose a spot below. Preview first, then save.'),
             if (QuestwellMasteryRelic.supports(widget.slug)) const Padding(padding: EdgeInsets.only(top: 8),
-              child: Text('Use a surface for the relic alone, or a side-wall pedestal.')),
+              child: Text('Display the relic on a surface, or choose one of three pedestal spots.')),
             if (QuestwellMasteryRelic.supports(widget.slug) && !labels.containsKey('bookshelf_top')) const Padding(padding: EdgeInsets.only(top: 8),
               child: Text('Place a bookcase to unlock its top.')),
             if (QuestwellMilestoneReward.isTrophy(widget.slug)) const Padding(padding: EdgeInsets.only(top: 8),

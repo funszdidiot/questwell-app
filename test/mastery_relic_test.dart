@@ -52,6 +52,7 @@ void main() {
     expect(find.text('On the fireplace mantel'), findsOneWidget);
     expect(find.text('On the bookcase'), findsNothing);
     expect(find.text('Foreground'), findsNothing);
+    expect(find.text('Front left pedestal'), findsOneWidget);
     await tester.ensureVisible(find.text('Save placement')); await tester.pumpAndSettle();
     await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
     expect(tester.widget<QuestwellAdventurerView>(find.byType(QuestwellAdventurerView))
@@ -63,13 +64,13 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('All five relics render on surfaces and supported side pedestals', (tester) async {
+  testWidgets('All five relics render on surfaces and three marked pedestal spots', (tester) async {
     await tester.binding.setSurfaceSize(const Size(390, 700));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     for (final entry in QuestwellMasteryRelic.slugs.entries) {
       expect(QuestwellEquipmentPolicy.isReady(entry.value,'room'), isTrue);
       expect(QuestwellEquipmentPolicy.isReady(entry.value,'hands'), isFalse);
-      for (final slot in ['left','right','mantel','bookshelf_top']) {
+      for (final slot in ['left','right','front','mantel','bookshelf_top']) {
         await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellHearthPixelScene(
           archetype: entry.key, height: 342, equippedSlugs: {'room:$slot':entry.value, if (slot == 'bookshelf_top') 'room:left':'walnut-bookshelf'}))));
         await tester.pumpAndSettle();
@@ -80,6 +81,13 @@ void main() {
         expect(bounds.left, greaterThanOrEqualTo(room.left));
         expect(bounds.right, lessThanOrEqualTo(room.right));
         expect(bounds.bottom, lessThanOrEqualTo(room.bottom));
+        if (['left','right','front'].contains(slot)) {
+          final facing = tester.widget<Transform>(find.byKey(ValueKey('hearth-${entry.value}-facing')));
+          expect(facing.transform.storage[0], slot == 'right' ? 1 : -1);
+          expect(bounds.center.dx, slot == 'right' ? greaterThan(room.center.dx) : lessThan(room.center.dx));
+          final depth = (bounds.bottom - room.top) / room.height;
+          expect(depth, slot == 'front' ? greaterThan(.85) : lessThan(.65));
+        }
         expect(tester.takeException(), isNull);
       }
     }
