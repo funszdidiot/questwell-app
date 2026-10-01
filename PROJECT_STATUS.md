@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Update Dragon — overhead entrance — 2026-10-01
+
+Founder approved revised Ticket Troll and authorized Update Dragon. Initial art/scene `bc181cef56adaa4d3e91d6b2ff001e6c32c2d680`; user explicitly requested a swoop from above. Current `bab3c160e49de6fd02198f0fdbbb061c2ace5788` descends directly from above the arena with no horizontal entry translation, then bounces and settles. Copper/teal dragon with gear/scroll hoard, runtime flipped to face player. Taunt "Just one quick restart." and UPGRADE COMPLETE victory. All eight existing boss types now have detailed art/entrance scenes in production renderer and practice selector. Server task/reward logic unchanged.
+
+Flutter Check 36835868363 and Preview 36835868487 succeeded. Browser verified overhead entry frames, full art/dialogue clearance and three sample attacks yielding zero HP, VICTORY and UPGRADE COMPLETE. Review: https://funszdidiot.github.io/questwell-app/?review=boss&boss=update_dragon&rev=bab3c16 . Dragon founder review pending. Real account rewards not exercised. No merge or launch. Male Wanderer cuffs remain deferred and unapproved; revisit after remaining build review.
+
 ## Ticket Troll — workshop revision — 2026-10-01
 
 Founder approved revised Swarm and requested next boss. Ticket Troll introduced in `b7da736dcd0325730b9fb3345be025bece2360ce`. User requested less British visual impression; current `d6a81be25edcca6339c05d2c3705ad4a9312e703` replaces formal waistcoat/collar/ornament with patched leather work apron, rough tunic/trousers and plain reinforced stamp. User authorized sending revised version. Weighted entry bobs/settling shudder, "Have you tried opening another ticket?" taunt and QUEUE CONQUERED victory. Seven detailed bosses now in practice and production encounter renderer. Server task/reward logic unchanged.
