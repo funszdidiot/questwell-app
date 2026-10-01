@@ -56,7 +56,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Give this quest a name first.'),
-          behavior: SnackBarBehavior.floating,
+          behavior: SnackBarBehavior.fixed,
         ),
       );
       return;
@@ -66,7 +66,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Choose how hard this feels right now.'),
-          behavior: SnackBarBehavior.floating,
+          behavior: SnackBarBehavior.fixed,
         ),
       );
       return;
@@ -95,7 +95,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Could not add this quest. Please try again.'),
-          behavior: SnackBarBehavior.floating,
+          behavior: SnackBarBehavior.fixed,
         ),
       );
     } finally {

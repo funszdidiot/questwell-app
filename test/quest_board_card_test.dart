@@ -48,7 +48,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
     final low = find.widgetWithText(QuestwellBoardFilter, 'Low Energy');
-    await tester.ensureVisible(low); await tester.pumpAndSettle();
+    await tester.dragUntilVisible(low.hitTestable(), find.byType(ListView),
+      const Offset(0, -140), maxIteration: 30); await tester.pumpAndSettle();
     await tester.tap(low); await tester.pumpAndSettle();
     expect(find.text('Clear one small corner of your desk'), findsOneWidget);
     expect(find.text('Send the email you have been putting off'), findsNothing);
