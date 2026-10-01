@@ -4,6 +4,8 @@ import '../widgets/questwell_market_view.dart';
 import '../widgets/questwell_room_picker.dart';
 import '../widgets/questwell_wall_art.dart';
 import 'market_catalog.dart';
+import 'home_sections_review.dart';
+import '../widgets/questwell_market_home_button.dart';
 
 /// Interactive sample shop; never connects to an account or spends real coins.
 class MarketReviewApp extends StatefulWidget {
@@ -40,6 +42,10 @@ class _MarketReviewAppState extends State<MarketReviewApp> {
         TextButton(onPressed:()=>setState(()=>width=width==390?320:390),child:Text('${width.toInt()} px')),
         TextButton(onPressed:()=>setState(()=>coins=coins==0?650:0),child:const Text('Toggle coin balance')),
       ])),
+      SizedBox(width:width,child:Align(alignment:Alignment.centerLeft,
+        child:Builder(builder:(context)=>QuestwellMarketHomeButton(onHome:()=>
+          Navigator.of(context).pushReplacement(MaterialPageRoute<void>(
+            builder:(_)=>const HomeSectionsReviewApp())))))),
       Expanded(child:Center(child:SizedBox(width:width,child:Builder(builder:(ctx)=>QuestwellMarketView(
         data:QuestwellCosmeticsSnapshot(profile:QuestwellProfile(level:4,totalXp:355,coinBalance:coins,
           currentEnergyMode:'normal',onboardingCompleted:true,adventurerArchetype:archetype,avatarBodyType:body),cosmetics:items),

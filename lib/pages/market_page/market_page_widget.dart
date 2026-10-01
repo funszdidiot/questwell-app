@@ -1,3 +1,6 @@
+import 'package:go_router/go_router.dart';
+import '/pages/home_page/home_page_widget.dart';
+import '/widgets/questwell_market_home_button.dart';
 import '../../widgets/questwell_wall_art.dart';
 import '/widgets/questwell_room_picker.dart';
 import '/services/questwell_cosmetic_service.dart';
@@ -128,7 +131,16 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: const Color(0xFF101C21),
-    appBar: AppBar(backgroundColor: const Color(0xFF101C21)),
+    appBar: AppBar(
+      backgroundColor: const Color(0xFF101C21),
+      automaticallyImplyLeading: false,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      leadingWidth: 116,
+      leading: Padding(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: QuestwellMarketHomeButton(
+          onHome: () => context.goNamed(HomePageWidget.routeName))),
+    ),
     body: SafeArea(top: false, child: FutureBuilder<QuestwellCosmeticsSnapshot>(
       future: _future, builder: (context, snapshot) {
         if (snapshot.hasError) return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
