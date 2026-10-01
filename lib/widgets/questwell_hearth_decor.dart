@@ -96,6 +96,7 @@ class QuestwellHearthDecor {
     final shelf = bounds(slug: QuestwellBookshelf.slug, slot: shelfSlot, scene: scene, equipment: equipment);
     final orrery = slug == QuestwellStarlitOrrery.slug;
     final onShelf = slot == 'bookshelf_top';
+    final compassOnMantel = !orrery && !onShelf;
     // The Orrery's broad plinth needs a furniture-relative scale. Its rear
     // feet sit higher in the image than the front foot, so anchor the latter
     // inside the visible top plane rather than on the rear edge of the wood.
@@ -111,16 +112,25 @@ class QuestwellHearthDecor {
     final center = onShelf ? shelf.left + shelf.width * (shelfSlot == 'right' ? (orrery ? .75 : .78) : (orrery ? .25 : .23))
       : roomSide * .082 + (scene.width - roomSide) / 2;
     final surface = onShelf ? shelf.top + shelf.height * (orrery ? .145 : .12)
-      : roomSide * .345 + (scene.height - roomSide) * .52;
+      : roomSide * (compassOnMantel ? .340 : .345) + (scene.height - roomSide) * .52;
+    // The mantel recedes toward the left. The compass artwork's plinth
+    // recedes toward the right, so face it into the room on this surface.
+    // Align its visible wood edge (.955), not the transparent shadow below it.
+    final baseX = compassOnMantel ? .48 : orrery ? .49 : .52;
+    final baseY = compassOnMantel ? .955 : orrery ? .98 : .94;
     return Positioned(key: ValueKey(orrery ? 'hearth-orrery-bounds' : 'hearth-trophy-bounds'),
-      left: center - width * (orrery ? .49 : .52), top: surface - height * (orrery ? .98 : .94),
+      left: center - width * baseX, top: surface - height * baseY,
       width: width, height: height,
       child: Stack(fit: StackFit.expand, children: [
         Positioned(left: width * .20, right: width * (orrery ? .20 : .10),
           top: height * (orrery || !onShelf ? .89 : .90), height: height * (orrery ? .09 : .06),
           child: DecoratedBox(decoration: BoxDecoration(borderRadius: BorderRadius.circular(100),
             gradient: const RadialGradient(radius: .6, colors: [Color(0x550E0906),Color(0x000E0906)])))),
-        if (orrery) const QuestwellStarlitOrrery() else const QuestwellFirstJourney(),
+        if (orrery) const QuestwellStarlitOrrery()
+        else Transform.flip(
+          key: const ValueKey('hearth-compass-facing'),
+          flipX: compassOnMantel,
+          child: const QuestwellFirstJourney()),
       ]));
   }
 
