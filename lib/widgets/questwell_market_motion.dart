@@ -42,28 +42,48 @@ class _ShopLightPainter extends CustomPainter {
       (0.221, 0.435, 0.65), (0.779, 0.435, 0.65)];
     for (var i = 0; i < lights.length; i++) {
       final light = lights[i];
-      final strength = 0.11 + 0.035 * math.sin(seconds * math.pi / 2 + i * 1.7)
-        + 0.015 * math.sin(seconds * math.pi * 2 / 3 + i);
+      final strength = 0.27 + 0.14 * math.sin(seconds * math.pi / 2 + i * 1.7)
+        + 0.025 * math.sin(seconds * math.pi * 2 / 3 + i);
       final center = Offset(size.width * light.$1, size.height * light.$2);
-      final radius = size.width * .042 * light.$3;
+      final radius = size.width * .065 * light.$3;
       final paint = Paint()..shader = RadialGradient(colors: [
         const Color(0xFFFFCF73).withValues(alpha: strength),
-        const Color(0xFFFFB647).withValues(alpha: strength * .45),
+        const Color(0xFFFFB647).withValues(alpha: strength * .65),
         const Color(0x00FFB647),
       ], stops: const [0, .4, 1]).createShader(Rect.fromCircle(center:center,radius:radius));
       canvas.drawCircle(center, radius, paint);
+      // A small bright flame changes height inside the lantern glass.
+      final unit=size.width/355;
+      final flame=Paint()..isAntiAlias=false
+        ..color=const Color(0xFFFFF1B8).withValues(alpha:strength+.22);
+      final height=(5+2*math.sin(seconds*math.pi+i))*unit*light.$3;
+      canvas.drawRect(Rect.fromLTWH(center.dx-unit,center.dy-height/2,
+        2*unit,height),flame);
+      canvas.drawRect(Rect.fromLTWH(center.dx,center.dy-height/2-unit,
+        unit,unit),flame);
     }
-    // One quiet glint at a time, alternating bottles six seconds apart.
-    final right = seconds >= 6;
-    final local = seconds - (right ? 7.0 : 1.0);
-    if (local >= 0 && local <= 1.3) {
-      final alpha = math.sin(local / 1.3 * math.pi) * .55;
-      final center = Offset(size.width * (right ? .749 : .119), size.height * .62);
-      final unit = size.width / 355;
-      final paint = Paint()..isAntiAlias=false
-        ..color=const Color(0xFFFFECC6).withValues(alpha:alpha);
-      canvas.drawRect(Rect.fromCenter(center:center,width:unit,height:5*unit),paint);
-      canvas.drawRect(Rect.fromCenter(center:center,width:5*unit,height:unit),paint);
+    // Alternate bottles every three seconds; one readable bubble at a time.
+    final right=(seconds~/3).isOdd;
+    final local=seconds%3;
+    if(local>=.3 && local<=2.3){
+      final progress=(local-.3)/2;
+      final alpha=math.sin(progress*math.pi)*.85;
+      final unit=size.width/355;
+      final x=size.width*(right?.749:.119);
+      final y=size.height*(.565-.07*progress);
+      final paint=Paint()..isAntiAlias=false
+        ..color=(right?const Color(0xFFBCF3EF):const Color(0xFFEAD0FF))
+          .withValues(alpha:alpha);
+      final bubble=Rect.fromCenter(center:Offset(x+math.sin(progress*math.pi)*2*unit,y),
+        width:3*unit,height:3*unit);
+      paint.style=PaintingStyle.stroke;paint.strokeWidth=unit;
+      canvas.drawRect(bubble,paint);
+      if(progress<.55){
+        paint.style=PaintingStyle.fill;
+        final center=Offset(x,size.height*.62);
+        canvas.drawRect(Rect.fromCenter(center:center,width:unit,height:6*unit),paint);
+        canvas.drawRect(Rect.fromCenter(center:center,width:6*unit,height:unit),paint);
+      }
     }
   }
   @override
