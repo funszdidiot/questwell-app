@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Grimoire grip refinement and cuff blending — 2026-10-01
+
+Founder authorized a tighter grip, blended cuff seams, and a slight inward tilt. Built-in image edit v3 closes the finger loop and strengthens spine contact. The sprite pivots 0.055 radians at the registered wrist. Cuffs blend into retained sleeve cloth above the original trim; the final mask removes the ghost ornament caught in close-up. Prompt and asset path: `docs/art/ANNOTATED_GRIMOIRE.md`.
+
+Art build `7c1260af190adf7dbe668eb5507c7e0f895e5adb` passed Flutter Check 36820957046 and Preview 36820956990. Browser review covered female, male, neutral, portrait/Hearth, and neutral unequip. Frozen assets verified. No inventory, equip, or coin changes; founder visual approval pending. Later network-handling work is preserved.
+
 ## Grimoire handedness and curved Scholar cuffs — 2026-10-01
 
 Founder identified the v2 grip as backward and the Scholar cuffs as flat. The integrated grip is now mirrored to the avatar's left hand, with its thumb inward and the book against the thigh; its wrist remains registered per body. Both Scholar cuff ends now have curved gold trim, recessed lining, and a front lip over the wrist. The old cuff regions are hidden on every robe restoration pass. Frozen base/robe files and their integrity checks are unchanged.
