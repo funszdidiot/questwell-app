@@ -1,4 +1,5 @@
 import '/backend/supabase/supabase.dart';
+import '/backend/supabase/questwell_network.dart';
 import 'questwell_equipment_policy.dart';
 import 'questwell_cosmetic_models.dart';
 export 'questwell_cosmetic_models.dart';
@@ -63,10 +64,10 @@ class QuestwellCosmeticService {
   }
 
   static Future<int> purchase(String cosmeticId) async {
-    final response = await SupaFlow.client.rpc(
+    final response = await QuestwellNetwork.write(() => SupaFlow.client.rpc(
       'purchase_cosmetic',
       params: {'p_cosmetic_id': cosmeticId},
-    );
+    ));
 
     if (response is! List || response.isEmpty) {
       throw StateError('No purchase result returned.');
@@ -81,10 +82,10 @@ class QuestwellCosmeticService {
       throw StateError('This item is not ready to equip.');
     }
     final cosmeticId = cosmetic.id;
-    await SupaFlow.client.rpc(
+    await QuestwellNetwork.write(() => SupaFlow.client.rpc(
       'equip_cosmetic_loadout',
       params: {'p_cosmetic_id': cosmeticId, 'p_expected_conflict': expectedConflict},
-    );
+    ));
   }
 
   static Future<void> place(String id, String slot, String? expectedOccupant) async {
@@ -94,10 +95,10 @@ class QuestwellCosmeticService {
   }
 
   static Future<void> unequip(String cosmeticId) async {
-    await SupaFlow.client.rpc(
+    await QuestwellNetwork.write(() => SupaFlow.client.rpc(
       'unequip_cosmetic',
       params: {'p_cosmetic_id': cosmeticId},
-    );
+    ));
   }
 
   static Future<void> setEnergyMode(String mode) async {
@@ -134,7 +135,7 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    final response = await SupaFlow.client.rpc('claim_class_mastery_reward');
+    final response = await QuestwellNetwork.write(() => SupaFlow.client.rpc('claim_class_mastery_reward'));
     return response.toString();
   }
 
@@ -149,10 +150,10 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    await SupaFlow.client.rpc(
+    await QuestwellNetwork.write(() => SupaFlow.client.rpc(
       'set_avatar_body_type',
       params: {'p_body_type': bodyType},
-    );
+    ));
   }
 
   static Future<void> setAdventurerArchetype(String archetype) async {
@@ -177,9 +178,9 @@ class QuestwellCosmeticService {
       throw StateError('Authentication required.');
     }
 
-    await SupaFlow.client.rpc(
+    await QuestwellNetwork.write(() => SupaFlow.client.rpc(
       'set_adventurer_archetype',
       params: {'p_archetype': archetype},
-    );
+    ));
   }
 }
