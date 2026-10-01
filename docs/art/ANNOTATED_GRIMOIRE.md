@@ -1,5 +1,17 @@
 # Annotated Grimoire — detailed equipped artwork
 
+## Dedicated spine grip correction — 2026-10-01 America/Chicago
+
+The founder rejected the v1 book sitting behind a relaxed hand. Built-in image editing created an integrated book-and-gripping-hand sprite, with the thumb on the cover and fingers around the spine. This is an equipped-item overlay; frozen avatar and class artwork files remain unchanged. A grimoire-only visibility mask removes the original relaxed hand. The class cuff restores above the replacement wrist. Unequipping or swapping to a cloak removes the grip overlay and its hand mask.
+
+Source: `generated_images/exec-a138ee77-f972-451b-8d8f-47a17d501280.png` (1062 × 1481 RGBA). Active project asset: `assets/images/questwell_annotated_grimoire_grip_v2.webp` (resized to approximately 531 × 741, quality 92, alpha preserved). Wrist registration uses source anchor (296,17) and per-body scales/anchors. The Market/Inventory icon remains book-only.
+
+### Grip edit prompt
+
+Use case: precise-object-edit. Image 1 is the existing Questwell grimoire edit target; preserve this exact plum leather book, gold sun medallion, corner hardware, page block, annotation tabs and ribbon. Image 2 is a style/skin-color reference ONLY for the avatar's existing hand; do not copy its relaxed pose or pixel enlargement. Create a transparent equipped game sprite showing the same closed book actually HELD by ONE small warm-peach cartoon-fantasy hand at its upper-left SPINE edge. The wrist enters vertically from ABOVE at the left spine, with a short bare wrist whose top is horizontal for joining a downward-hanging sleeve. The thumb presses over the front cover just right of the spine; the four fingers curl naturally around the left spine and behind the book. A clear anatomically believable carrying grip, not a relaxed fist pasted over the cover, not fingertips resting on top, not holding a handle. Hand width about 40 percent of the book width, subtle dark outlines and warm golden-peach shading matching the reference avatar. The short wrist extends about 12 percent of the book height above the book top; no forearm beyond that, no sleeve, no second hand, no person. Keep the book fully visible, upright, with the upper-left cover partly occluded by the thumb and fingers as physically appropriate. Preserve the detailed 64-bit-era painted fantasy sprite look; use simple readable hand shapes at small avatar scale, not photoreal skin. Genuinely transparent background and clean alpha, no background shadows, no other objects. Leave modest transparent margins. The result must be one integrated BOOK-AND-GRIPPING-HAND sprite so the hand cannot detach or float.
+
+## Original v1 artwork and fit (superseded)
+
 Created 2026-09-30 America/Chicago using built-in image generation with transparent output.
 Source: `generated_images/exec-a94a1e90-30b1-4afe-aa56-0be8ecc4727d.png` (1024 × 1536 RGBA).
 Project asset: `assets/images/questwell_annotated_grimoire_v1.webp` (356 × 500, quality 92). Cropped with transparent padding at 984 × 1380 +32+80, then resized; alpha preserved.

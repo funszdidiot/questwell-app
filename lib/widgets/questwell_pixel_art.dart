@@ -214,7 +214,9 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
 
     Widget baseLayer() => QuestwellCloak.supports(equippedSlugs['chest'])
         ? ClipPath(clipper: QuestwellClosedCloakBodyClipper(body), child: _assetLayer(_baseAsset))
-        : _assetLayer(_baseAsset);
+        : equippedSlugs['hands'] == QuestwellAnnotatedGrimoire.slug
+          ? ClipPath(clipper: GrimoireHandUnderlayerClipper(body), child: _assetLayer(_baseAsset))
+          : _assetLayer(_baseAsset);
 
     return RepaintBoundary(
       child: Stack(
@@ -291,9 +293,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           ],
           if (equippedSlugs['hands'] == QuestwellAnnotatedGrimoire.slug) ...[
             QuestwellAnnotatedGrimoire(bodyType: body),
-            ClipPath(clipper: LanternHandClipper(body), child: baseLayer()),
             if (classOverlay != null)
-              ClipPath(clipper: LanternHandClipper(body), child: classLayer(classOverlay)),
+              ClipPath(clipper: GrimoireCuffClipper(body), child: classLayer(classOverlay)),
           ],
           if (equippedSlugs['hands'] == QuestwellBrassLantern.slug) ...[
             QuestwellBrassLantern(bodyType: body),
