@@ -8,7 +8,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   for (final kind in ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer']) {
     for (final body in ['male', 'female', 'neutral']) {
-      final rearRevision = kind == 'wanderer' ? 'v2' : 'v1';
+      final rearRevision = kind == 'wanderer' ? 'short_v1' : 'v1';
       final rear = 'assets/images/questwell/avatar/classes/$kind/${kind}_rear_${body}_wrap_$rearRevision.webp';
       test('$kind $body rear is continuous cloth with clear head and feet', () async {
         final bytes = await rootBundle.load(rear);
@@ -19,7 +19,7 @@ void main() {
           expect([image.width, image.height], [240, 320]);
           final pixels = (await image.toByteData(format: ui.ImageByteFormat.rawRgba))!;
           int alpha(int x, int y) => pixels.getUint8((y * 240 + x) * 4 + 3);
-          for (var y = 180; y <= 244; y++) {
+          for (var y = 180; y <= (kind == 'wanderer' ? 190 : 244); y++) {
             // A rear coat is a single fabric surface, not another pair of
             // front tails. The base legs occlude its center at render time.
             expect(alpha(120, y), greaterThanOrEqualTo(250));
@@ -33,7 +33,7 @@ void main() {
             expect(runs, 1, reason: '$kind $body split rear at row $y');
           }
           for (var y = 0; y < 320; y++) {
-            if (y >= 140 && y < 268) continue;
+            if (y >= 140 && y < (kind == 'wanderer' ? 195 : 268)) continue;
             for (var x = 0; x < 240; x++) {
               expect(alpha(x, y), lessThan(128), reason: 'Rear extends into head/feet');
             }

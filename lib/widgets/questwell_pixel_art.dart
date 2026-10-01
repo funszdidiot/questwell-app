@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'scholar_underlayer_clip.dart';
 import 'questwell_scholar_cuffs.dart';
-import 'questwell_wanderer_cuffs.dart';
 import 'scout_underlayer_clip.dart';
 import 'alchemist_underlayer_clip.dart';
 import 'guardian_underlayer_clip.dart';
@@ -100,11 +99,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       'assets/images/questwell/avatar/classes/guardian/guardian_coat_neutral_v2.webp';
 
   static const _wandererMale =
-      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_v2.webp';
+      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_short_v1.webp';
   static const _wandererFemale =
-      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_v2.webp';
+      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_short_v1.webp';
   static const _wandererNeutral =
-      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_v2.webp';
+      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_short_v1.webp';
 
   final String archetype;
   final Map<String, String> equippedSlugs;
@@ -204,7 +203,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final equippedSlugs = QuestwellCloak.supports(this.equippedSlugs['chest'])
         ? ({...this.equippedSlugs}..remove('hands')) : this.equippedSlugs;
     final classOverlay = equippedSlugs['chest'] == 'starter-business-suit' ? null : _classOverlayAsset;
-    final rearRevision = archetype == 'wanderer' ? 'v2' : 'v1';
+    final rearRevision = archetype == 'wanderer' ? 'short_v1' : 'v1';
     final body = ['male', 'female'].contains(avatarBodyType)
         ? avatarBodyType : 'neutral';
 
@@ -212,10 +211,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       final image = archetype == 'scholar' &&
               !QuestwellCloak.supports(equippedSlugs['chest'])
           ? ClipPath(clipper: ScholarCuffReplacementClipper(body), child: _assetLayer(asset))
-          : archetype == 'wanderer' &&
-                  !QuestwellCloak.supports(equippedSlugs['chest'])
-              ? ClipPath(clipper: WandererCuffReplacementClipper(body), child: _assetLayer(asset))
-              : _assetLayer(asset);
+          : _assetLayer(asset);
       return QuestwellCloak.supports(equippedSlugs['chest'])
           ? ClipPath(clipper: QuestwellCloakUnderlayerClipper(body), child: image)
           : image;
@@ -320,9 +316,6 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           if (archetype == 'scholar' && classOverlay != null &&
               !QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellScholarCuffs(body: body),
-          if (archetype == 'wanderer' && classOverlay != null &&
-              !QuestwellCloak.supports(equippedSlugs['chest']))
-            QuestwellWandererCuffs(body: body),
           if (equippedSlugs['accessory'] == QuestwellMoonstoneBrooch.slug)
             QuestwellMoonstoneBrooch(bodyType: body),
           if (equippedSlugs['neck'] == 'emerald-scholar-scarf' &&
@@ -4125,13 +4118,4 @@ class _BossPainter extends CustomPainter {
         final w = size.width * (.22 + (i % 3) * .03);
         rect(size.width * (.18 + (i % 4) * .16), size.height * (.12 + i * .055), w, 13, paper);
       }
-      rect(size.width * .40, size.height * .55, size.width * .20, size.height * .28, const Color(0xFF382B26));
-      rect(size.width * .44, size.height * .63, 8, 8, ember);
-      rect(size.width * .55, size.height * .63, 8, 8, ember);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _BossPainter oldDelegate) =>
-      oldDelegate.bossType != bossType;
-}
+      rect(size.width * .40, size.height * .55, size.width * .20

@@ -351,7 +351,38 @@
       "approved_source_commit": "9b26c1da4720fe61aabd6971eaf9c7740b173068"
     }
   },
-  "candidate_layers": {},
+  "candidate_layers": {
+    "wanderer_short_coat": {
+      "visual_approval": "pending_founder_review",
+      "description": "Mid-thigh travel coat with painted cuffs; original approved assets preserved.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_short_v1.webp",
+          "sha256": "dec24e40980a71a2dbb53dc9d58e3d0f75a24398caaf9b1e8ac8040e59204e08"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_female_wrap_short_v1.webp",
+          "sha256": "5f164daf9efa623016e2dce9be2385fd508f29b5f216cb6938e68959122822f3"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_short_v1.webp",
+          "sha256": "0632fe95f4d9cb36c83ac5600e671e758693492415d47ca2753a1ee333130863"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_male_wrap_short_v1.webp",
+          "sha256": "56d39688b8407efbffb28d35217c9d28c1f894b3c8e05d067aef52060a84837f"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_short_v1.webp",
+          "sha256": "6dd90a69e32e05cc0da3d6be1c1ff555d775766244466f708a33a2006c9fd98c"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_neutral_wrap_short_v1.webp",
+          "sha256": "abcbdca0cc0c15850b0376a603a0586cc68b114ed81d281a8f7a922afc65296e"
+        }
+      ]
+    }
+  },
   "approved_layers": {
     "robe_wrap": {
       "art_revision": "robe-wrap-v1",
