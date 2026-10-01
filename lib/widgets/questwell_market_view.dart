@@ -3,6 +3,7 @@ import '../services/questwell_cosmetic_models.dart';
 import '../services/questwell_equipment_policy.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_hearth_decor.dart';
+import 'questwell_typography.dart';
 
 class QuestwellMarketView extends StatefulWidget {
   const QuestwellMarketView({super.key,required this.data,required this.onPurchase,
@@ -40,10 +41,12 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     if(!canAct(i))return;
     if(i.owned){await widget.onEquip(i);return;}
     final confirmed=await showDialog<bool>(context:context,builder:(ctx)=>AlertDialog(
+      titleTextStyle:QuestwellTypography.body(fontSize:20,fontWeight:FontWeight.w700,color:cream),
+      contentTextStyle:QuestwellTypography.body(color:cream),
       title:Text(i.price==0?'Claim ${i.name}?':'Buy ${i.name}?'),
       content:Text(i.price==0?'Add this item to your inventory for free.':'${i.price} coins · ${widget.data.profile.coinBalance-i.price} coins will remain.\n\nYou can equip or place it from your inventory.'),
-      actions:[TextButton(onPressed:()=>Navigator.pop(ctx,false),child:const Text('Cancel')),
-        FilledButton(onPressed:()=>Navigator.pop(ctx,true),child:Text(i.price==0?'Claim item':'Buy item'))]));
+      actions:[TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>Navigator.pop(ctx,false),child:Text('Cancel')),
+        FilledButton(style:FilledButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>Navigator.pop(ctx,true),child:Text(i.price==0?'Claim item':'Buy item'))]));
     if(confirmed==true&&mounted)await widget.onPurchase(i);
   }
   Map<String,String> preview(QuestwellCosmetic item) {
@@ -62,24 +65,24 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       backgroundColor:const Color(0xFF182B2E),showDragHandle:true,
       builder:(ctx)=>SafeArea(child:ConstrainedBox(constraints:BoxConstraints(maxHeight:MediaQuery.sizeOf(ctx).height*.88),
         child:SingleChildScrollView(padding:const EdgeInsets.fromLTRB(22,0,22,24),child:Column(mainAxisSize:MainAxisSize.min,crossAxisAlignment:CrossAxisAlignment.stretch,children:[
-          Text(item.name,style:const TextStyle(fontSize:25,fontWeight:FontWeight.w700,color:cream)),
-          Text('${title(item.rarity)} · ${title(item.category.replaceAll('_',' '))}',style:const TextStyle(color:gold)),
+          Text(item.name,style:QuestwellTypography.body(fontSize:25,fontWeight:FontWeight.w700,color:cream)),
+          Text('${title(item.rarity)} · ${title(item.category.replaceAll('_',' '))}',style:QuestwellTypography.body(color:gold)),
           const SizedBox(height:16),
           if(room(item))QuestwellHearthPixelScene(height:265,archetype:widget.data.profile.adventurerArchetype,
             avatarBodyType:widget.data.profile.avatarBodyType,equippedSlugs:preview(item))
           else SizedBox(height:265,child:QuestwellLayeredAdventurerArt(
             archetype:item.requiredArchetype??widget.data.profile.adventurerArchetype,
             avatarBodyType:widget.data.profile.avatarBodyType,equippedSlugs:preview(item))),
-          const SizedBox(height:10),const Text('Try-on preview',textAlign:TextAlign.center,style:TextStyle(color:muted,fontSize:12)),
-          const SizedBox(height:16),Text(item.description,style:const TextStyle(color:cream,height:1.5)),
+          const SizedBox(height:10),Text('Try-on preview',textAlign:TextAlign.center,style:QuestwellTypography.body(color:muted,fontSize:12)),
+          const SizedBox(height:16),Text(item.description,style:QuestwellTypography.body(color:cream,height:1.5)),
           const SizedBox(height:12),
-          Text(item.requiredArchetype==null?'Available to every class':'For ${title(item.requiredArchetype!)} adventurers',style:const TextStyle(color:muted)),
-          Text(item.owned?'Already in your inventory':item.price==0?'Free': '${item.price} coins',style:const TextStyle(color:gold,fontWeight:FontWeight.bold)),
+          Text(item.requiredArchetype==null?'Available to every class':'For ${title(item.requiredArchetype!)} adventurers',style:QuestwellTypography.body(color:muted)),
+          Text(item.owned?'Already in your inventory':item.price==0?'Free': '${item.price} coins',style:QuestwellTypography.body(color:gold,fontWeight:FontWeight.bold)),
           const SizedBox(height:20),
-          FilledButton(onPressed:canAct(item)?()=>Navigator.pop(ctx,'activate'):null,child:Text(action(item))),
-          if(item.equipped&&widget.busyId==null) TextButton(onPressed:()=>Navigator.pop(ctx,'remove'),child:Text(room(item)?'Return to inventory':'Unequip')),
-          if(item.equipped&&room(item)&&widget.busyId==null) TextButton(onPressed:()=>Navigator.pop(ctx,'move'),child:const Text('Move item')),
-          TextButton(onPressed:()=>Navigator.pop(ctx),child:const Text('Back to shop')),
+          FilledButton(style:FilledButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:canAct(item)?()=>Navigator.pop(ctx,'activate'):null,child:Text(action(item))),
+          if(item.equipped&&widget.busyId==null) TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>Navigator.pop(ctx,'remove'),child:Text(room(item)?'Return to inventory':'Unequip')),
+          if(item.equipped&&room(item)&&widget.busyId==null) TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>Navigator.pop(ctx,'move'),child:Text('Move item')),
+          TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>Navigator.pop(ctx),child:Text('Back to shop')),
         ])))));
     if(!mounted)return;
     if(result=='activate')await _activateItem(item);
@@ -96,34 +99,34 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     return RefreshIndicator(onRefresh:widget.onRefresh,child:ListView(padding:const EdgeInsets.fromLTRB(18,8,18,30),children:[
       Container(padding:const EdgeInsets.all(20),decoration:BoxDecoration(color:const Color(0xFF23453F),border:Border.all(color:const Color(0xFF678475)),borderRadius:BorderRadius.circular(14)),
         child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
-          const Text('THE GUILD EMPORIUM',style:TextStyle(color:gold,letterSpacing:2,fontSize:11,fontWeight:FontWeight.w800)),
-          const SizedBox(height:10),const Text('The Market',style:TextStyle(fontFamily:'serif',fontSize:30,height:1.1,color:cream)),
-          const SizedBox(height:12),const Text('Rare finds, class gear, and questionable fashion choices.',style:TextStyle(color:Color(0xFFC0D2C7),height:1.4)),
+          Text('THE GUILD EMPORIUM',style:QuestwellTypography.sectionHeading(size:9,color:gold)),
+          const SizedBox(height:10),Text('The Market',style:QuestwellTypography.body(fontSize:26,height:1.25,fontWeight:FontWeight.w700,color:cream)),
+          const SizedBox(height:12),Text('Rare finds, class gear, and questionable fashion choices.',style:QuestwellTypography.body(color:Color(0xFFC0D2C7),height:1.4)),
           const SizedBox(height:16),Wrap(spacing:14,runSpacing:10,crossAxisAlignment:WrapCrossAlignment.center,children:[
             Container(padding:const EdgeInsets.symmetric(horizontal:12,vertical:8),decoration:BoxDecoration(color:const Color(0xFF142D2B),borderRadius:BorderRadius.circular(20)),
-              child:Text('◈  ${widget.data.profile.coinBalance} coins',style:const TextStyle(color:gold,fontWeight:FontWeight.w700,fontSize:16))),
-            Text('${all.where((i)=>i.owned).length} / ${all.length} collected',style:const TextStyle(color:muted,fontSize:12)),
+              child:Text('◈  ${widget.data.profile.coinBalance} coins',style:QuestwellTypography.body(color:gold,fontWeight:FontWeight.w700,fontSize:16))),
+            Text('${all.where((i)=>i.owned).length} / ${all.length} collected',style:QuestwellTypography.body(color:muted,fontSize:12)),
           ])])),
       const SizedBox(height:20),
-      TextField(controller:searchController,onChanged:(v)=>setState(()=>query=v),style:const TextStyle(color:cream),decoration:InputDecoration(
-        hintText:'Find your next treasure',hintStyle:const TextStyle(color:muted),prefixIcon:const Icon(Icons.search,color:muted),
+      TextField(controller:searchController,onChanged:(v)=>setState(()=>query=v),style:QuestwellTypography.body(color:cream),decoration:InputDecoration(
+        hintText:'Find your next treasure',hintStyle:QuestwellTypography.body(color:muted),prefixIcon:const Icon(Icons.search,color:muted),
         filled:true,fillColor:const Color(0xFF192F32),border:OutlineInputBorder(borderRadius:BorderRadius.circular(10),borderSide:BorderSide.none))),
       const SizedBox(height:12),
       Wrap(spacing:7,runSpacing:5,children:[for(final name in ['All','Wearables','Companions','Hearth','Effects'])
-        ChoiceChip(label:Text(name),selected:category==name,onSelected:(_)=>setState(()=>category=name),selectedColor:gold,labelStyle:TextStyle(color:category==name?ink:cream))]),
+        ChoiceChip(label:Text(name),selected:category==name,onSelected:(_)=>setState(()=>category=name),selectedColor:gold,labelStyle:QuestwellTypography.body(color:category==name?ink:cream))]),
       const SizedBox(height:7),
       Wrap(spacing:7,runSpacing:5,children:[
-        FilterChip(label:const Text('My class'),selected:myClass,onSelected:(v)=>setState(()=>myClass=v)),
-        FilterChip(label:const Text('Affordable'),selected:affordable,onSelected:(v)=>setState(()=>affordable=v)),
-        FilterChip(label:const Text('Owned'),selected:owned,onSelected:(v)=>setState(()=>owned=v)),
+        FilterChip(labelStyle:QuestwellTypography.body(fontSize:14),label:Text('My class'),selected:myClass,onSelected:(v)=>setState(()=>myClass=v)),
+        FilterChip(labelStyle:QuestwellTypography.body(fontSize:14),label:Text('Affordable'),selected:affordable,onSelected:(v)=>setState(()=>affordable=v)),
+        FilterChip(labelStyle:QuestwellTypography.body(fontSize:14),label:Text('Owned'),selected:owned,onSelected:(v)=>setState(()=>owned=v)),
       ]),
-      const SizedBox(height:18),Text('${items.length} ${items.length==1?'treasure':'treasures'}',style:const TextStyle(color:muted,fontSize:12)),const SizedBox(height:10),
+      const SizedBox(height:18),Text('${items.length} ${items.length==1?'treasure':'treasures'}',style:QuestwellTypography.body(color:muted,fontSize:12)),const SizedBox(height:10),
       if(items.isEmpty) Padding(padding:const EdgeInsets.symmetric(vertical:35),child:Column(children:[
-        const Icon(Icons.search_off,color:gold,size:32),const SizedBox(height:12),const Text('No treasures match these filters.',style:TextStyle(color:cream)),
-        TextButton(onPressed:()=>setState((){category='All';owned=false;affordable=false;myClass=true;query='';searchController.clear();}),child:const Text('Reset filters'))])),
+        const Icon(Icons.search_off,color:gold,size:32),const SizedBox(height:12),Text('No treasures match these filters.',style:QuestwellTypography.body(color:cream)),
+        TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>setState((){category='All';owned=false;affordable=false;myClass=true;query='';searchController.clear();}),child:Text('Reset filters'))])),
       LayoutBuilder(builder:(context,constraints){final width=constraints.maxWidth>650?(constraints.maxWidth-14)/2:constraints.maxWidth;
         return Wrap(spacing:14,runSpacing:12,children:[for(final i in items) SizedBox(width:width,child:card(i))]);}),
-      const SizedBox(height:22),const Text('Coins come from your quests. Every purchase stays in your inventory.',textAlign:TextAlign.center,style:TextStyle(color:muted,fontSize:12,height:1.5)),
+      const SizedBox(height:22),Text('Coins come from your quests. Every purchase stays in your inventory.',textAlign:TextAlign.center,style:QuestwellTypography.body(color:muted,fontSize:12,height:1.5)),
     ]));
   }
   Widget card(QuestwellCosmetic item)=>Container(
@@ -134,17 +137,17 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
         Container(width:80,height:80,decoration:BoxDecoration(color:const Color(0xFF213C3B),borderRadius:BorderRadius.circular(8),border:Border.all(color:const Color(0xFF436153),width:2)),
           alignment:Alignment.center,child:QuestwellItemPixelArt(slug:item.slug,category:item.category,size:64,locked:restricted(item))),
         const SizedBox(width:13),Expanded(child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
-          Text('${title(item.rarity)} · ${group(item)}',style:const TextStyle(color:Color(0xFF6B6655),fontSize:11,fontWeight:FontWeight.w600)),
-          const SizedBox(height:4),Text(item.name,style:const TextStyle(color:ink,fontSize:18,fontFamily:'serif',fontWeight:FontWeight.bold,height:1.1)),
-          const SizedBox(height:7),Text(item.owned?(item.equipped?'✓ In use':'✓ Owned'):item.price==0?'Free':'◈ ${item.price} coins',style:const TextStyle(color:Color(0xFF675125),fontSize:13,fontWeight:FontWeight.w700)),
+          Text('${title(item.rarity)} · ${group(item)}',style:QuestwellTypography.body(color:Color(0xFF6B6655),fontSize:12,fontWeight:FontWeight.w600)),
+          const SizedBox(height:4),Text(item.name,style:QuestwellTypography.body(color:ink,fontSize:17,fontWeight:FontWeight.w700,height:1.35)),
+          const SizedBox(height:7),Text(item.owned?(item.equipped?'✓ In use':'✓ Owned'):item.price==0?'Free':'◈ ${item.price} coins',style:QuestwellTypography.body(color:Color(0xFF675125),fontSize:13,fontWeight:FontWeight.w700)),
         ])),
       ])),
-      const SizedBox(height:10),Text(item.description,maxLines:2,overflow:TextOverflow.ellipsis,style:const TextStyle(color:Color(0xFF5E6559),height:1.35,fontSize:12)),
-      if(restricted(item))Padding(padding:const EdgeInsets.only(top:8),child:Text('Requires ${title(item.requiredArchetype!)} class',style:const TextStyle(color:Color(0xFF88534C),fontSize:12))),
+      const SizedBox(height:10),Text(item.description,maxLines:2,overflow:TextOverflow.ellipsis,style:QuestwellTypography.body(color:Color(0xFF5E6559),height:1.4,fontSize:14)),
+      if(restricted(item))Padding(padding:const EdgeInsets.only(top:8),child:Text('Requires ${title(item.requiredArchetype!)} class',style:QuestwellTypography.body(color:Color(0xFF88534C),fontSize:13))),
       const SizedBox(height:10),Wrap(alignment:WrapAlignment.spaceBetween,spacing:8,runSpacing:5,children:[
-        TextButton(onPressed:()=>details(item),style:TextButton.styleFrom(foregroundColor:ink),child:const Text('Preview')),
+        TextButton(onPressed:()=>details(item),style:TextButton.styleFrom(foregroundColor:ink,textStyle:QuestwellTypography.control()),child:Text('Preview')),
         FilledButton(onPressed:canAct(item)?()=>_activateItem(item):null,
-          style:FilledButton.styleFrom(backgroundColor:ink,foregroundColor:cream,disabledBackgroundColor:const Color(0xFFDDD4BE),disabledForegroundColor:const Color(0xFF656B5D)),child:Text(action(item))),
+          style:FilledButton.styleFrom(textStyle:QuestwellTypography.control(),backgroundColor:ink,foregroundColor:cream,disabledBackgroundColor:const Color(0xFFDDD4BE),disabledForegroundColor:const Color(0xFF656B5D)),child:Text(action(item))),
       ]),
     ]));
 }

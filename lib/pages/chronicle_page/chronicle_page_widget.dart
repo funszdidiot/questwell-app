@@ -2,7 +2,6 @@ import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_chronicle_entry.dart';
 import '/widgets/questwell_typography.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class ChroniclePageWidget extends StatefulWidget {
@@ -27,7 +26,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
       ? QuestwellChronicleService.load() : Future.value(widget.previewData!);
   }
   TextStyle _text(double size, {Color color = const Color(0xFFF1E7CF), bool bold = false}) =>
-    GoogleFonts.roboto(fontSize: size, height: 1.4, color: color,
+    QuestwellTypography.body(fontSize: size, height: 1.4, color: color,
       fontWeight: bold ? FontWeight.w700 : FontWeight.w400);
 
   @override
@@ -55,7 +54,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
               const SizedBox(height: 8),
               Text('Your recorded progress is safe. Try opening it again.', style: _text(14, color: _muted), textAlign: TextAlign.center),
               const SizedBox(height: 12),
-              OutlinedButton(onPressed: () => setState(_refresh), child: const Text('Try again')),
+              OutlinedButton(style:OutlinedButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed: () => setState(_refresh), child: const Text('Try again')),
             ])));
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: _gold));
           final data = snapshot.data!;
@@ -87,7 +86,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                     showCheckmark: false, selectedColor: _gold,
                     backgroundColor: const Color(0xFF1D282E),
                     side: BorderSide(color: _filter == filter.key ? _gold : const Color(0xFF52605C)),
-                    labelStyle: _text(13, bold: _filter == filter.key,
+                    labelStyle: _text(14, bold: _filter == filter.key,
                       color: _filter == filter.key ? const Color(0xFF35291C) : const Color(0xFFE2DFD3)),
                     onSelected: (_) => setState(() { _filter = filter.key; _visibleCount = 30; })),
               ]),
@@ -120,7 +119,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
               ],
               if (entries.length > _visibleCount)
                 OutlinedButton(onPressed: () => setState(() => _visibleCount += 30),
-                  style: OutlinedButton.styleFrom(foregroundColor: _gold, minimumSize: const Size.fromHeight(48)),
+                  style: OutlinedButton.styleFrom(textStyle:QuestwellTypography.control(),foregroundColor: _gold, minimumSize: const Size.fromHeight(48)),
                   child: const Text('Show earlier pages')),
               if (entries.isNotEmpty && entries.length <= _visibleCount)
                 Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: Text(
@@ -161,8 +160,8 @@ class _JournalSummary extends StatelessWidget {
             ]) SizedBox(width: width, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Icon(stat.$3, size: 18, color: const Color(0xFFCAA367)),
               const SizedBox(height: 4),
-              Text(stat.$1, style: GoogleFonts.roboto(fontSize: 25, fontWeight: FontWeight.w700, color: const Color(0xFFF3E4C3))),
-              Text(stat.$2, style: GoogleFonts.roboto(fontSize: 12, height: 1.4, color: const Color(0xFFD1C2AA))),
+              Text(stat.$1, style: QuestwellTypography.body(fontSize: 25, fontWeight: FontWeight.w700, color: const Color(0xFFF3E4C3))),
+              Text(stat.$2, style: QuestwellTypography.body(fontSize: 12, height: 1.4, color: const Color(0xFFD1C2AA))),
             ])),
           ]);
         }),

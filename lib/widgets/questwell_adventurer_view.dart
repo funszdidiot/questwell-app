@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'questwell_class_emblem.dart';
 import 'questwell_room_picker.dart';
 import 'questwell_wall_art.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
@@ -52,7 +51,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
   static const _gold = Color(0xFFE4C586);
   static const _muted = Color(0xFFB9C7D7);
   TextStyle _text(double size, {bool bold = false, Color color = const Color(0xFFF0E5CC)}) =>
-    GoogleFonts.roboto(fontSize: size, height: 1.4, color: color,
+    QuestwellTypography.body(fontSize: size, height: 1.4, color: color,
       fontWeight: bold ? FontWeight.w700 : FontWeight.w400);
   String _label(String value) => value == 'room' ? 'Hearth décor' : value.isEmpty ? 'Other' : value[0].toUpperCase() + value.substring(1).replaceAll('_', ' ');
   Widget _heading(String title) => Text(title, style: QuestwellTypography.sectionHeading(size: 12));
@@ -107,9 +106,9 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         ])),
         const SizedBox(height: 16),
         Wrap(spacing: 8, runSpacing: 8, children: [
-          ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: const Text('Appearance'), selected: !_inventory,
+          ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14), label: const Text('Appearance'), selected: !_inventory,
             onSelected: (_) => setState(() => _inventory = false)),
-          ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: Text('Inventory · $owned'), selected: _inventory,
+          ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14), label: Text('Inventory · $owned'), selected: _inventory,
             onSelected: (_) => setState(() => _inventory = true)),
         ]),
         const SizedBox(height: 18),
@@ -120,7 +119,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           const SizedBox(height: 8),
           Wrap(spacing: 8, runSpacing: 8, children: [
             for (final value in const ['male', 'female', 'neutral'])
-              ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: Text(value == 'neutral' ? 'Gender neutral' : _label(value)),
+              ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14), label: Text(value == 'neutral' ? 'Gender neutral' : _label(value)),
                 selected: widget.bodyType == value,
                 onSelected: widget.savingAppearance ? null : (_) => widget.onBody(value)),
           ]),
@@ -131,7 +130,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 8, children: [
             for (final value in const ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer'])
-              ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14,
+              ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14,
                   color: widget.archetype == value ? _gold : const Color(0xFFF0E5CC)),
                 label: ConstrainedBox(constraints: const BoxConstraints(minHeight: 24),
                   child: Text(_label(value))),
@@ -159,7 +158,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 6, children: [
             for (final value in const ['All collections', 'Class items', 'Trophies'])
-              ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: Text(value), selected: _collection == value,
+              ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14), label: Text(value), selected: _collection == value,
                 onSelected: (_) => setState(() {
                   _collection = value;
                   _category = 'All categories';
@@ -173,12 +172,12 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 6, children: [
             for (final value in const ['Owned', 'Equipped', 'All items'])
-              ChoiceChip(labelStyle: GoogleFonts.roboto(fontSize: 14), label: Text(value), selected: _ownership == value,
+              ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14), label: Text(value), selected: _ownership == value,
                 onSelected: (_) => setState(() => _ownership = value)),
           ]),
           const SizedBox(height: 10),
           DropdownButtonFormField<String>(initialValue: category, key: ValueKey(category),
-            isExpanded: true, decoration: InputDecoration(labelText: 'Category', labelStyle: GoogleFonts.roboto(fontSize: 14),
+            isExpanded: true, decoration: InputDecoration(labelText: 'Category', labelStyle: QuestwellTypography.body(fontSize: 14),
               border: OutlineInputBorder()),
             items: [DropdownMenuItem(value: 'All categories', child: Text('All categories', style: _text(14))),
               for (final value in categories) DropdownMenuItem(value: value, child: Text(_label(value), style: _text(14)))],
@@ -193,7 +192,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           for (final item in visible) Padding(key: ValueKey('inventory-${item.id}'), padding: const EdgeInsets.only(bottom: 12), child: _item(item)),
           OutlinedButton(onPressed: widget.onMarket,
             style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
-              textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
+              textStyle: QuestwellTypography.body(fontSize: 14, fontWeight: FontWeight.w700)),
             child: const Text('Browse Market')),
         ],
         const SizedBox(height: 22),
@@ -206,7 +205,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
             : '${widget.collectionOwned} of ${widget.collectionTotal} class items collected.',
             style: _text(14, color: _muted)),
           if (widget.canClaim) Padding(padding: const EdgeInsets.only(top: 10),
-            child: FilledButton(style: FilledButton.styleFrom(textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)), onPressed: widget.claiming ? null : widget.onClaim,
+            child: FilledButton(style: FilledButton.styleFrom(textStyle: QuestwellTypography.body(fontSize: 14, fontWeight: FontWeight.w700)), onPressed: widget.claiming ? null : widget.onClaim,
               child: Text(widget.claiming ? 'Claiming…' : 'Claim mastery relic'))),
         ])),
       ]);
@@ -252,7 +251,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       const SizedBox(height: 12),
       if (movable && item.owned && ready && widget.onPlace != null)
         OutlinedButton(onPressed: busy ? null : () => _place(item),
-          style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold, textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
+          style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold, textStyle: QuestwellTypography.body(fontSize: 14, fontWeight: FontWeight.w700)),
           child: Text(item.equipped ? 'Move in Hearth' : wallArt ? 'Hang in Hearth' : 'Place in Hearth')),
       if (!(movable && item.owned && !item.equipped && ready && widget.onPlace != null))
       OutlinedButton(
@@ -260,7 +259,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           : !item.owned && item.shop ? widget.onMarket
           : item.owned && !item.classLocked && ready ? () => widget.onEquip(item.id) : null,
         style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
-              textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700)),
+              textStyle: QuestwellTypography.body(fontSize: 14, fontWeight: FontWeight.w700)),
         child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? (room || wallArt ? 'Remove from Hearth' : 'Unequip')
           : !item.owned ? (item.shop ? 'View in Market' : item.milestoneLevel != null ? 'Unlocks at level ${item.milestoneLevel}' : item.slug == 'first-journey-trophy' ? 'Unlocks at level 5' : 'Earn through progression')
           : item.classLocked ? 'Class restricted' : !ready ? (room ? 'Coming soon' : 'Equip unavailable') : (room ? 'Place in Hearth' : wallArt ? 'Hang in Hearth' : 'Equip'))),

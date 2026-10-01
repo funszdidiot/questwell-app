@@ -42,7 +42,7 @@ void main(){
     await tester.binding.setSurfaceSize(const Size(320,1000));addTearDown(()=>tester.binding.setSurfaceSize(null));
     var purchased=0;
     final data=QuestwellCosmeticsSnapshot(profile:const QuestwellProfile(level:4,totalXp:355,coinBalance:650,currentEnergyMode:'normal',onboardingCompleted:true,adventurerArchetype:'scholar',avatarBodyType:'male'),cosmetics:items);
-    await tester.pumpWidget(MaterialApp(theme:ThemeData.dark(),home:Scaffold(body:MediaQuery(data:const MediaQueryData(textScaler:TextScaler.linear(1.3)),child:QuestwellMarketView(data:data,onPurchase:(_)async{purchased++;},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{})))));
+    await tester.pumpWidget(MaterialApp(theme:ThemeData.dark(),home:Scaffold(body:MediaQuery(data:const MediaQueryData(textScaler:TextScaler.linear(1.6)),child:QuestwellMarketView(data:data,onPurchase:(_)async{purchased++;},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{})))));
     await tester.pumpAndSettle();expect(tester.takeException(),isNull);
     await tester.enterText(find.byType(TextField),'moss-green');await tester.pumpAndSettle();
     FocusManager.instance.primaryFocus?.unfocus();await tester.pumpAndSettle();
