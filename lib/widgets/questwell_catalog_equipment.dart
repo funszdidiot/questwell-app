@@ -27,29 +27,6 @@ class _EquipmentPainter extends CustomPainter {
     final p=Paint()..isAntiAlias=true;
     void fill(Path path,Color color){p.shader=null;p.style=PaintingStyle.fill;p.color=color;c.drawPath(path,p);}
     void line(Path path,Color color,double width){p.shader=null;p.style=PaintingStyle.stroke;p.strokeWidth=width;p.color=color;c.drawPath(path,p);p.style=PaintingStyle.fill;}
-    final cloak=items['chest']=='moss-green-cloak'||items['chest']=='hearthguard-mantle';
-    final guardian=items['chest']=='hearthguard-mantle';
-    final main=guardian?const Color(0xFF803646):const Color(0xFF38634D);
-    final dark=guardian?const Color(0xFF3D2434):const Color(0xFF192E29);
-    if(cloak) {
-      if(rear) {
-        final path=Path()..moveTo(90,81+y)..quadraticBezierTo(120,68+y,150,83+y)
-          ..cubicTo(179,127,173,208,187,262)..quadraticBezierTo(153,282,118,264)
-          ..quadraticBezierTo(81,281,54,260)..cubicTo(65,203,60,120,90,81+y)..close();
-        p.shader=LinearGradient(colors:[dark,main,dark,main,dark]).createShader(const Rect.fromLTWH(54,80,133,192));c.drawPath(path,p);p.shader=null;
-        line(path,const Color(0xFFAB8750),1.3);
-        for(final x in [71.0,84.0,155.0,167.0])line(Path()..moveTo(120+(x-120)*.5,98)..quadraticBezierTo(x,185,x-3,260),dark.withValues(alpha:.7),2);
-      } else {
-        final shoulders=Path()..moveTo(92,77+y)..quadraticBezierTo(76,80+y,68,98+y)
-          ..quadraticBezierTo(80,111+y,109,109+y)..lineTo(119,90+y)..lineTo(130,109+y)
-          ..quadraticBezierTo(152,111+y,169,99+y)..quadraticBezierTo(163,82+y,145,77+y)
-          ..quadraticBezierTo(120,100+y,92,77+y)..close();
-        fill(shoulders,main);line(shoulders,const Color(0xFFB19763),1.2);
-        line(Path()..moveTo(80,97+y)..quadraticBezierTo(100,106+y,113,98+y),dark,2);
-        line(Path()..moveTo(135,98+y)..quadraticBezierTo(151,107+y,161,97+y),dark,2);
-        p.color=const Color(0xFFD2B678);c.drawOval(Rect.fromLTWH(116,94+y,9,7),p);p.color=guardian?const Color(0xFFEAC785):const Color(0xFF8DC3A6);c.drawOval(Rect.fromLTWH(118,95+y,5,4),p);
-      }
-    }
     if(rear){c.restore();return;}
     if(items['back']=='wayfarer-satchel') {
       final strap=Path()..moveTo(148,85+y)..quadraticBezierTo(129,125+y,91,164+y);

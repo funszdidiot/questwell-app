@@ -26,6 +26,7 @@ import 'questwell_first_journey.dart';
 import 'questwell_starlit_orrery.dart';
 import 'questwell_catalog_equipment.dart';
 import 'questwell_familiar.dart';
+import 'questwell_cloak.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -208,6 +209,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           if (classOverlay != null)
             _assetLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body, rear: true),
+          if (QuestwellCloak.supports(equippedSlugs['chest']))
+            QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body, rear: true),
           if (equippedSlugs['chest'] == 'starter-business-suit')
             _assetLayer(_baseAsset)
           else if (archetype == 'scholar')
@@ -250,6 +253,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             ),
           if (classOverlay != null) _assetLayer(classOverlay),
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body),
+          if (QuestwellCloak.supports(equippedSlugs['chest']))
+            QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body),
           if (equippedSlugs['hands'] == 'annotated-grimoire')
             ClipPath(clipper: LanternHandClipper(body), child: _assetLayer(_baseAsset)),
           if (equippedSlugs['back'] == QuestwellLeatherSatchel.slug) ...[
