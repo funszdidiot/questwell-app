@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Notification Swarm — smaller-bell revision — 2026-10-01
+
+Founder approved Printer Poltergeist ("Perfect") and requested next boss. Notification Swarm implemented in `b4d987dd3a6806b659a861d221213b04ccf72066`; user requested smaller/more bells, then approved v2 ("I like it. Send it"). Current `7ba858767c657f6bb5c848dd0aafe4ef88e09404` uses seven smaller bells plus two envelopes with no giant central bell. Group sweeps in with fluttering motion; individual wings are not separately animated. Taunt "Just one more ping." and QUIET RESTORED practice victory. Six detailed bosses selectable. Real Swarm encounters use new scene; server task/reward logic unchanged.
+
+Flutter Check 36834097083 and Preview 36834096769 succeeded. Browser verified revised art/clearance, warning/entrance frames, dialogue and three sample attacks producing zero HP/VICTORY/QUIET RESTORED. Review: https://funszdidiot.github.io/questwell-app/?review=boss&boss=notification_swarm&rev=7ba8587 . Artwork approved; revised in-app result delivered for review. Real account rewards not exercised. No merge or launch. Male Wanderer cuffs remain deferred and unapproved.
+
 ## Printer Poltergeist arcade entrance — 2026-10-01
 
 Founder requested next boss after Kraken. Printer Poltergeist added in `88631a29e36e5710ee0243f2ace35ddf5b176bf9`: haunted brass/wood printing machine with cyan wisps and curling paper, drift from above/right and short mechanical shudder, "Paper jam. Naturally." taunt. Production Printer encounters use shared equipped-avatar scene. Five detailed bosses selectable in practice. Server task/reward logic unchanged.
