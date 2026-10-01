@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'preview/effects_review.dart';
 import 'main.dart' as application;
 import 'preview/hearth_review.dart';
 import 'preview/chronicle_review.dart';
@@ -20,7 +21,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'boots') {
+  if (Uri.base.queryParameters['review'] == 'effects') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const EffectsReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'boots') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const BootsReviewApp());
   } else if (Uri.base.queryParameters['review'] == 'grimoire') {

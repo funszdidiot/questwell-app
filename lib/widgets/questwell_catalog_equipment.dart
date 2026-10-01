@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'questwell_cosmetic_effect.dart';
 
 /// New catalog layers use the same authored 240×320 registration as the avatar.
 /// Garments are continuous canvas shapes; familiars have a dedicated art layer.
@@ -9,35 +10,13 @@ class QuestwellCatalogEquipment extends StatelessWidget {
   final String body;
   final bool rear;
   @override
-  Widget build(BuildContext context) => IgnorePointer(child: CustomPaint(
-    key: ValueKey(rear?'catalog-rear-equipment':'catalog-front-equipment'),
-    painter: _EquipmentPainter(equipment,body,rear)));
-}
-class _EquipmentPainter extends CustomPainter {
-  const _EquipmentPainter(this.items,this.body,this.rear);
-  final Map<String,String> items;
-  final String body;
-  final bool rear;
-  @override
-  void paint(Canvas c, Size size) {
-    final s=math.min(size.width/240,size.height/320);
-    c.save();c.translate((size.width-240*s)/2,size.height-320*s);c.scale(s);
-    final p=Paint()..isAntiAlias=true;
-    if(rear){c.restore();return;}
-    if(items['effect']=='victory-sparkle'||items['effect']=='focus-tonic') {
-      final tonic=items['effect']=='focus-tonic';
-      for(var i=0;i<8;i++) {
-        final x=i.isEven?51.0-(i%3)*5:185.0+(i%3)*5;
-        final sy=98.0+i*24;
-        p.color=tonic?const Color(0xBB95D3A0):const Color(0xCCF3D898);
-        if(tonic){p.style=PaintingStyle.stroke;p.strokeWidth=1.2;c.drawCircle(Offset(x,sy),2+i%3,p);p.style=PaintingStyle.fill;}
-        else {c.drawRect(Rect.fromLTWH(x-3,sy,7,1.5),p);c.drawRect(Rect.fromLTWH(x,sy-3,1.5,7),p);}
-      }
+  Widget build(BuildContext context) {
+    final slug = equipment['effect'];
+    if (rear || (slug != 'victory-sparkle' && slug != 'focus-tonic')) {
+      return const SizedBox.shrink();
     }
-    c.restore();
+    return QuestwellCosmeticEffect(key: ValueKey(slug), slug: slug!);
   }
-  @override
-  bool shouldRepaint(covariant _EquipmentPainter oldDelegate)=>oldDelegate.items!=items||oldDelegate.body!=body||oldDelegate.rear!=rear;
 }
 
 /// The window occupies its own architectural slot; lanterns use floor spots.
