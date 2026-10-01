@@ -38,7 +38,7 @@ class _BossReviewAppState extends State<BossReviewApp> {
   List<QuestwellBossBattle> get _battles => [
     for (final type in questwellBossNames.keys)
       if (QuestwellBossUnlocks.available(type, _level)) QuestwellBossBattle(
-      id: type, title: _titles[type]!, bossType: type, rewardXp: 100, rewardCoins: 50,
+      id: type, title: _titles[type]!, bossType: type, rewardXp: QuestwellBossRewards.victoryXp, rewardCoins: QuestwellBossRewards.victoryCoins,
       status: List.generate(3, (i) => '$type-$i').every(_done.contains) ? 'completed' : 'open',
       steps: [for (var i = 0; i < 3; i++) QuestwellBossStep(id: '$type-$i', title: _steps[type]![i],
         position: i, completed: _done.contains('$type-$i'))]),
@@ -81,7 +81,7 @@ class _BossReviewAppState extends State<BossReviewApp> {
             _createdBattleId = id;
             _state = 'battles';
             _extra.add(QuestwellBossBattle(id: id, title: title.text.trim(), bossType: type,
-            status: 'open', rewardXp: 100, rewardCoins: 50, steps: [for (var i = 0; i < entries.length; i++)
+            status: 'open', rewardXp: QuestwellBossRewards.victoryXp, rewardCoins: QuestwellBossRewards.victoryCoins, steps: [for (var i = 0; i < entries.length; i++)
               QuestwellBossStep(id: '$id-$i', title: entries[i], position: i, completed: false)]));
           });
           Navigator.pop(dialogContext);

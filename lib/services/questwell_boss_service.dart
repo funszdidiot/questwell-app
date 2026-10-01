@@ -58,8 +58,8 @@ class QuestwellBossService {
       params: {
         'p_title': title,
         'p_steps': steps,
-        'p_reward_xp': 100,
-        'p_reward_coins': 50,
+        'p_reward_xp': QuestwellBossRewards.victoryXp,
+        'p_reward_coins': QuestwellBossRewards.victoryCoins,
         'p_boss_type': bossType,
       },
     ));

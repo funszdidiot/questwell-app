@@ -129,6 +129,22 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
             Semantics(label: 'Boss health ${(hp * 100).round()} percent',
               child: QuestwellPixelMeter(value: displayedHp * fill, kind: 'hp', height: 14, segments: 12)),
           ])),
+        // Dialogue owns its own layout space, never the fighters' paint area.
+        if (!widget.defeated)
+          Container(key: const ValueKey('boss-dialogue'),
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            color: const Color(0xFF1E2029),
+            child: Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              decoration: BoxDecoration(color: const Color(0xFFF1E5C6),
+                border: Border.all(color: const Color(0xFF9E7B46), width: 2)),
+              child: Semantics(label: t >= .53 ? taunt : 'Boss approaching',
+                child: ExcludeSemantics(child: Stack(children: [
+                  // Reserve the complete wrapped height throughout the typewriter reveal.
+                  Opacity(opacity: 0, child: RichText(textScaler: MediaQuery.textScalerOf(context), text: TextSpan(text: taunt,
+                    style: const TextStyle(color: Color(0xFF30271E), fontSize: 16, height: 1.3, fontWeight: FontWeight.w700)))),
+                  Text(t >= .53 ? taunt.substring(0, letters) : '',
+                    style: const TextStyle(color: Color(0xFF30271E), fontSize: 16, height: 1.3, fontWeight: FontWeight.w700)),
+                ]))))),
         LayoutBuilder(builder: (context, constraints) {
           final width = constraints.maxWidth;
           final arenaHeight = width < 400 ? 300.0 : 330.0;
@@ -136,7 +152,7 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
           final stageBottom = _hydra ? math.max(arenaHeight, width / 1.5) * .20 : 24.0;
           return Semantics(label: arriving ? 'Boss entrance. Tap to skip.' : 'Boss encounter',
             child: GestureDetector(onTap: arriving ? _skip : null,
-              child: Container(height: arenaHeight, clipBehavior: Clip.hardEdge,
+              child: Container(key: const ValueKey('boss-arena'), height: arenaHeight, clipBehavior: Clip.hardEdge,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter,
                     colors: [Color(0xFF10222A), Color(0xFF242133), Color(0xFF392A28)])),
@@ -160,16 +176,6 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                   if (impact < 1 && !_reduced)
                     Positioned.fill(child: IgnorePointer(child: CustomPaint(
                       painter: _ImpactPainter(progress: impact, victory: widget.defeated)))),
-                  if (t >= .53 && !widget.defeated)
-                    Positioned(top: 19, left: 14, right: 14, child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end, children: [
-                        Container(width: double.infinity, padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                          decoration: BoxDecoration(color: const Color(0xFFF1E5C6),
-                            border: Border.all(color: const Color(0xFF9E7B46), width: 3)),
-                          child: Semantics(label: taunt, child: ExcludeSemantics(child: Text(taunt.substring(0, letters),
-                            style: const TextStyle(color: Color(0xFF30271E), fontSize: 16, height: 1.3, fontWeight: FontWeight.w700))))),
-                        Padding(padding: const EdgeInsets.only(right: 52), child: CustomPaint(size: const Size(18, 12), painter: _BubbleTail())),
-                      ])),
                   if (t < .32 && !widget.defeated)
                     Positioned.fill(child: ColoredBox(color: const Color(0x88101922), child: Center(
                       child: Container(padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 10),
@@ -189,12 +195,6 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
   }
 }
 
-class _BubbleTail extends CustomPainter {
-  @override
-  void paint(Canvas c, Size s) { c.drawPath(Path()..moveTo(0, 0)..lineTo(s.width, 0)..lineTo(s.width * .65, s.height)..close(), Paint()..color = const Color(0xFFF1E5C6)); }
-  @override
-  bool shouldRepaint(covariant _BubbleTail oldDelegate) => false;
-}
 class _ArenaPainter extends CustomPainter {
   const _ArenaPainter({required this.dust});
   final double dust;

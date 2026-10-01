@@ -111,6 +111,21 @@ void main() {
     expect(attacks, 1); expect(tester.takeException(), isNull);
   });
 
+  test('Boss XP is 25 per victory and does not grow with step count', () {
+    expect(QuestwellBossRewards.victoryXp, 25);
+    expect(QuestwellBossRewards.victoryCoins, 50);
+    expect(QuestwellProgression.levelForXp(25 * 3), 1);
+    expect(QuestwellProgression.levelForXp(25 * 4), 2);
+    for (final count in [2, 3, 20]) {
+      final b = QuestwellBossBattle.fromJson({'id': 'test'}, [
+        for (var i = 0; i < count; i++)
+          QuestwellBossStep(id: '$i', title: 'Step', position: i, completed: false),
+      ]);
+      expect(b.rewardXp, 25);
+    }
+    // Historical server-recorded rewards remain truthful until an approved rollout.
+    expect(QuestwellBossBattle.fromJson({'reward_xp': 100}, []).rewardXp, 100);
+  });
   test('Every boss unlocks exactly at its approved level', () {
     expect(QuestwellBossUnlocks.levels.values.toList(), [1, 3, 5, 7, 10, 13, 16, 20]);
     for (final entry in QuestwellBossUnlocks.levels.entries) {

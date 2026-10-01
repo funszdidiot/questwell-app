@@ -1,3 +1,10 @@
+/// One reward per completed battle, never multiplied by its task steps.
+class QuestwellBossRewards {
+  const QuestwellBossRewards._();
+  static const victoryXp = 25;
+  static const victoryCoins = 50;
+}
+
 class QuestwellBossStep {
   const QuestwellBossStep({
     required this.id,
@@ -54,7 +61,7 @@ class QuestwellBossBattle {
       id: json['id']?.toString() ?? '',
       title: json['title']?.toString() ?? 'Boss Battle',
       status: json['status']?.toString() ?? 'open',
-      rewardXp: (json['reward_xp'] as num?)?.toInt() ?? 100,
+      rewardXp: (json['reward_xp'] as num?)?.toInt() ?? QuestwellBossRewards.victoryXp,
       rewardCoins: (json['reward_coins'] as num?)?.toInt() ?? 50,
       bossType: json['boss_type']?.toString() ?? 'inbox_hydra',
       steps: steps,

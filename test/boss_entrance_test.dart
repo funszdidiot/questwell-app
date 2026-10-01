@@ -9,10 +9,29 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
   Widget scene({String id = 'sample', bool reduced = false, bool persist = false,
-      double progress = 0, bool defeated = false, String type = 'inbox_hydra'}) => MaterialApp(home: MediaQuery(
-    data: MediaQueryData(disableAnimations: reduced), child: Center(child: SizedBox(width: 360,
+      double progress = 0, bool defeated = false, String type = 'inbox_hydra', double width = 360, double textScale = 1}) => MaterialApp(home: MediaQuery(
+    data: MediaQueryData(disableAnimations: reduced, textScaler: TextScaler.linear(textScale)), child: Center(child: SizedBox(width: width,
       child: QuestwellBossEncounter(encounterId: id, persistEntrance: persist, bossType: type,
         progress: progress, defeated: defeated)))));
+  testWidgets('All boss dialogue stays above the arena at narrow width and large text', (tester) async {
+    tester.view.physicalSize = const Size(320, 1700);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    for (final type in ['inbox_hydra', 'meeting_mimic', 'spreadsheet_slime',
+      'calendar_kraken', 'printer_poltergeist', 'notification_swarm', 'ticket_troll', 'update_dragon']) {
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpWidget(scene(id: type, type: type, width: 320, textScale: 1.5));
+      await tester.pump();
+      final arena = find.byKey(const ValueKey('boss-arena'));
+      final initialTop = tester.getTopLeft(arena).dy;
+      await tester.pumpAndSettle();
+      final dialogue = tester.getRect(find.byKey(const ValueKey('boss-dialogue')));
+      expect(dialogue.bottom, lessThanOrEqualTo(tester.getTopLeft(arena).dy));
+      expect(tester.getTopLeft(arena).dy, initialTop);
+      expect(tester.takeException(), isNull);
+    }
+  });
   testWidgets('Entrance reaches dialogue and YOUR MOVE, with health from task progress', (tester) async {
     await tester.pumpWidget(scene());
     expect(find.text('BOSS APPROACHING'), findsOneWidget);
