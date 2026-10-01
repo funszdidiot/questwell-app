@@ -22,20 +22,8 @@ class _EquipmentPainter extends CustomPainter {
   void paint(Canvas c, Size size) {
     final s=math.min(size.width/240,size.height/320);
     c.save();c.translate((size.width-240*s)/2,size.height-320*s);c.scale(s);
-    final female=body=='female';
     final p=Paint()..isAntiAlias=true;
-    void fill(Path path,Color color){p.shader=null;p.style=PaintingStyle.fill;p.color=color;c.drawPath(path,p);}
-    void line(Path path,Color color,double width){p.shader=null;p.style=PaintingStyle.stroke;p.strokeWidth=width;p.color=color;c.drawPath(path,p);p.style=PaintingStyle.fill;}
     if(rear){c.restore();return;}
-    if(items['feet']=='pathfinder-boots') {
-      for(final x in [female?89.0:88.0,female?140.0:141.0]) {
-        final path=Path()..moveTo(x,259)..lineTo(x+16,259)..lineTo(x+18,288)..quadraticBezierTo(x+25,294,x+23,299)..lineTo(x-3,299)..lineTo(x-2,290)..close();
-        fill(path,const Color(0xFF59422D));line(path,const Color(0xFF2C2923),1.7);
-        line(Path()..moveTo(x+2,264)..lineTo(x+14,264),const Color(0xFFBF9F62),3);
-        for(final ly in [273.0,278.0,283.0])line(Path()..moveTo(x+4,ly)..lineTo(x+12,ly),const Color(0xFFB29564),1);
-        line(Path()..moveTo(x-2,297)..lineTo(x+22,297),const Color(0xFF302B26),3);
-      }
-    }
     if(items['effect']=='victory-sparkle'||items['effect']=='focus-tonic') {
       final tonic=items['effect']=='focus-tonic';
       for(var i=0;i<8;i++) {

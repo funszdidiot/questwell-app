@@ -36,7 +36,26 @@ class QuestwellItemIconPainter extends CustomPainter {
     void panel(int x,int y,int w,int h,Color c,Color light,Color dark) {
       r(x,y,w,h,ink);r(x+1,y+1,w-2,h-2,c);r(x+1,y+1,w-2,1,light);r(x+1,y+1,1,h-2,light);r(x+w-2,y+2,1,h-3,dark);r(x+2,y+h-2,w-3,1,dark);
     }
-    if (slug == 'emerald-dragon') {
+    if (slug == 'pathfinder-boots') {
+      // Paired 32px leather boots, olive folded cuffs and brass ankle buckles.
+      const leather = Color(0xFF704832), light = Color(0xFFA16B46),
+        shadow = Color(0xFF3C2B27), olive = Color(0xFF66633D),
+        oliveLight = Color(0xFF96905B), brass = Color(0xFFC4A366);
+      for (final x in [6, 19]) {
+        r(x, 5, 8, 18, ink); r(x+1, 7, 6, 15, leather);
+        r(x+1, 10, 2, 9, light); r(x+6, 11, 1, 11, shadow);
+        r(x-1, 4, 10, 6, ink); r(x, 5, 8, 4, olive);
+        r(x, 5, 7, 1, oliveLight); r(x+1, 9, 6, 1, brass);
+        r(x, 19, 8, 3, shadow); r(x+1, 19, 6, 1, light);
+        r(x+3, 18, 3, 4, brass); r(x+4, 19, 1, 2, shadow);
+      }
+      r(3, 22, 11, 5, ink); r(1, 25, 13, 4, ink);
+      r(4, 22, 9, 4, leather); r(2, 26, 11, 2, leather);
+      r(3, 25, 7, 1, light); r(2, 28, 12, 2, shadow);
+      r(19, 22, 10, 5, ink); r(19, 25, 12, 4, ink);
+      r(20, 22, 8, 4, leather); r(20, 26, 10, 2, leather);
+      r(23, 25, 6, 1, light); r(19, 28, 12, 2, shadow);
+    } else if (slug == 'emerald-dragon') {
       // Stepped emerald wings, golden horns, sage belly, and curled tail.
       r(3,12,3,11,ink);r(6,10,3,15,ink);r(9,14,3,10,ink);
       r(4,14,2,7,greenDark);r(6,12,2,11,green);r(8,17,2,6,mint);

@@ -14,6 +14,7 @@ import 'questwell_leather_satchel.dart';
 import 'questwell_wayfarer_satchel.dart';
 import 'questwell_brass_lantern.dart';
 import 'questwell_annotated_grimoire.dart';
+import 'questwell_pathfinder_boots.dart';
 import 'questwell_moonstone_brooch.dart';
 import 'questwell_bookshelf.dart';
 import 'questwell_fern.dart';
@@ -216,11 +217,15 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           : image;
     }
 
+    Widget baseImage() => equippedSlugs['feet'] == QuestwellPathfinderBoots.slug
+        ? ClipPath(clipper: PathfinderBaseClipper(body), child: _assetLayer(_baseAsset))
+        : _assetLayer(_baseAsset);
+
     Widget baseLayer() => QuestwellCloak.supports(equippedSlugs['chest'])
-        ? ClipPath(clipper: QuestwellClosedCloakBodyClipper(body), child: _assetLayer(_baseAsset))
+        ? ClipPath(clipper: QuestwellClosedCloakBodyClipper(body), child: baseImage())
         : equippedSlugs['hands'] == QuestwellAnnotatedGrimoire.slug
-          ? ClipPath(clipper: GrimoireHandUnderlayerClipper(body), child: _assetLayer(_baseAsset))
-          : _assetLayer(_baseAsset);
+          ? ClipPath(clipper: GrimoireHandUnderlayerClipper(body), child: baseImage())
+          : baseImage();
 
     return RepaintBoundary(
       child: Stack(
@@ -272,6 +277,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
                 ),
               ),
             ),
+          if (equippedSlugs['feet'] == QuestwellPathfinderBoots.slug)
+            QuestwellPathfinderBoots(bodyType: body),
           if (classOverlay != null) classLayer(classOverlay),
           // Neckwear is tucked beneath a closed cloak, keeping its clasp clear.
           if (QuestwellCloak.supports(equippedSlugs['chest']) &&
