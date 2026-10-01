@@ -36,6 +36,8 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   bool _finished = false;
   bool _started = false;
   bool _sceneMotion = true;
+  bool _exitPending = false;
+  bool get _hasUnfinishedSession => _started && !_finished;
   DateTime? _deadline;
 
   DateTime _now() => widget.clock?.call() ?? DateTime.now();
@@ -134,19 +136,31 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   }
 
   Future<void> _navigate(QuestwellDestination destination) async {
-    if (_started && !_finished) {
-      final leave = await showDialog<bool>(context: context, builder: (dialogContext) => AlertDialog(
-        scrollable: true,
-        title: const Text('Leave this expedition?'),
-        content: const Text('Leaving ends this timer. You can stay and finish your current session.'),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('Stay here')),
-          TextButton(onPressed: () => Navigator.pop(dialogContext, true), child: const Text('End and leave')),
-        ],
-      ));
-      if (leave != true || !mounted) return;
+    if (_exitPending) return;
+    _exitPending = true;
+    try {
+      if (_hasUnfinishedSession) {
+        final leave = await showDialog<bool>(
+          context: context,
+          builder: (dialogContext) => AlertDialog(
+            scrollable: true,
+            title: const Text('Leave this expedition?'),
+            content: const Text('Leaving ends this timer. You can stay and finish your current session.'),
+            actions: [
+              TextButton(onPressed: () => Navigator.pop(dialogContext, false),
+                child: const Text('Stay here')),
+              TextButton(onPressed: () => Navigator.pop(dialogContext, true),
+                child: const Text('End and leave')),
+            ],
+          ),
+        );
+        if (leave != true || !mounted) return;
+        _reset();
+      }
+      if (mounted) QuestwellNavigationScope.open(context, destination);
+    } finally {
+      _exitPending = false;
     }
-    if (mounted) QuestwellNavigationScope.open(context, destination);
   }
 
   String _timeLabel(int secondsRemaining) {
@@ -158,10 +172,23 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
-    return Scaffold(
+    return PopScope<Object?>(
+      canPop: !_hasUnfinishedSession,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop && _hasUnfinishedSession) {
+          _navigate(QuestwellDestination.hearth);
+        }
+      },
+      child: Scaffold(
         bottomNavigationBar: QuestwellAppNavigation(current: QuestwellDestination.expedition, onSelect: _navigate),
       backgroundColor: theme.primaryBackground,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          tooltip: 'Back to the Hearth',
+          icon: const Icon(Icons.home_outlined),
+          onPressed: () => _navigate(QuestwellDestination.hearth),
+        ),
         backgroundColor: theme.primaryBackground,
         elevation: 0,
         foregroundColor: theme.primaryText,
@@ -419,6 +446,6 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
           ],
         ))),
       ),
-    );
+    ));
   }
 }
