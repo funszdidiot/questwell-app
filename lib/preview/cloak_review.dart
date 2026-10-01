@@ -1,3 +1,6 @@
+import '../widgets/questwell_equipment_swap.dart';
+import '../services/questwell_cosmetic_models.dart';
+import 'market_catalog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/questwell_pixel_art.dart';
@@ -13,11 +16,24 @@ class _CloakReviewAppState extends State<CloakReviewApp> {
   String _body = 'female';
   String _class = 'scholar';
   bool _wear = true;
+  bool _held = false;
+  QuestwellCosmetic _item(String slug) => QuestwellCosmetic.fromJson(
+    marketReviewCatalog.firstWhere((i)=>i['slug']==slug),owned:true);
+  Future<void> _wearCloak(BuildContext context,bool wear) async {
+    if(wear && _held && !await confirmCloakSwap(context,_item(_slug),_item('brass-lantern')))return;
+    if(!mounted)return;
+    setState((){_wear=wear;if(wear)_held=false;});
+  }
+  Future<void> _holdLantern(BuildContext context) async {
+    if(_wear && !await confirmCloakSwap(context,_item('brass-lantern'),_item(_slug)))return;
+    if(!mounted)return;
+    setState((){_wear=false;_held=true;});
+  }
   @override
   Widget build(BuildContext context) {
     final mantle = _slug == 'hearthguard-mantle';
     final archetype = mantle ? 'guardian' : _class;
-    final equipment = <String,String>{if (_wear) 'chest': _slug};
+    final equipment = <String,String>{if (_wear) 'chest': _slug, if(_held) 'hands':'brass-lantern'};
     return MaterialApp(debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true).copyWith(
         textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme)),
@@ -44,8 +60,11 @@ class _CloakReviewAppState extends State<CloakReviewApp> {
                 DropdownMenuItem(value: value, child: Text(value[0].toUpperCase()+value.substring(1)))).toList(),
               onChanged: (value) { if (value != null) setState(() => _class = value); })
             else const Padding(padding: EdgeInsets.symmetric(vertical: 12), child: Text('Guardian class')),
-            SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Try on cloak'),
-              value: _wear, onChanged: (value) => setState(() => _wear = value)),
+            Builder(builder:(context)=>SwitchListTile(contentPadding: EdgeInsets.zero, title: const Text('Try on cloak'),
+              value: _wear, onChanged: (value) => _wearCloak(context,value))),
+            Builder(builder:(context)=>Align(alignment:Alignment.centerLeft,child:TextButton.icon(
+              onPressed:()=>_holdLantern(context),icon:const Icon(Icons.swap_horiz),
+              label:Text(_held?'Lantern equipped':'Try holding a lantern')))),
             QuestwellEquippedAvatar(archetype: archetype, avatarBodyType: _body,
               equippedSlugs: equipment, height: 340, artHeightFactor: .98),
             const SizedBox(height: 12),

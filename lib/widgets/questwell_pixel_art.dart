@@ -279,13 +279,13 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             QuestwellLeatherSatchel(bodyType: body),
             ClipPath(clipper: SatchelForearmClipper(body), child: baseLayer()),
             if (classOverlay != null)
-              ClipPath(clipper: SatchelForearmClipper(body), child: _assetLayer(classOverlay)),
+              ClipPath(clipper: SatchelForearmClipper(body), child: classLayer(classOverlay)),
           ],
           if (equippedSlugs['hands'] == QuestwellBrassLantern.slug) ...[
             QuestwellBrassLantern(bodyType: body),
             ClipPath(clipper: LanternHandClipper(body), child: baseLayer()),
             if (classOverlay != null)
-              ClipPath(clipper: LanternHandClipper(body), child: _assetLayer(classOverlay)),
+              ClipPath(clipper: LanternHandClipper(body), child: classLayer(classOverlay)),
           ],
           if (equippedSlugs['accessory'] == QuestwellMoonstoneBrooch.slug)
             QuestwellMoonstoneBrooch(bodyType: body),

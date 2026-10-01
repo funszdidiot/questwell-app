@@ -1,3 +1,4 @@
+import '../lib/widgets/questwell_brass_lantern.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -45,6 +46,14 @@ void main() {
       expect(path.contains(const Offset(120,50)),isTrue);
       expect(path.contains(const Offset(99,298)),isTrue);
     }
+  });
+  testWidgets('Closed cloak hides held art in a stale loadout and works with a satchel',(tester)async{
+    await tester.pumpWidget(const MaterialApp(home:SizedBox(width:240,height:320,
+      child:QuestwellLayeredAdventurerArt(archetype:'scholar',avatarBodyType:'female',
+        equippedSlugs:{'chest':'moss-green-cloak','hands':'brass-lantern','back':'leather-satchel'}))));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(),isNull);
+    expect(find.byType(QuestwellBrassLantern),findsNothing);
   });
   testWidgets('Both cloaks load on every supported class and body without hiding base layers', (tester) async {
     for (final slug in ['moss-green-cloak','hearthguard-mantle']) {
