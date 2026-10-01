@@ -4,6 +4,10 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Wanderer short-coat cuff revision — 2026-10-01
+
+Founder reported disconnected cuffs. Close-up confirmed the artwork painted empty dark oval sleeve openings across the wrists. New body-specific v2 coat sprites remove those openings and replace double rolled rings with a single thin gold cloth edge. No runtime cuff overlays. Verified female close-up, male with satchel, neutral without satchel, and Hearth rendering. Flutter Check36826583890 and Preview36826584043 passed for `77fa755384d14fa9a17603f2f286b089186e79fb`. Preview `?review=wayfarer&rev=77fa755`. Awaiting founder visual review. No account changes.
+
 ## Wanderer short travel coat — 2026-10-01
 
 Founder rejected the runtime cuff overlays as artificial, then requested the newly generated tailored design in a shorter Wanderer version. Added separate detailed 64-bit-style female, male and neutral sprites with rounded upper/mid-thigh hems, warm brown fabric and gold stars/piping. Cuffs are part of each painted sleeve; runtime Wanderer cuff overlays are no longer rendered. Matching rear layers end above the short front hem. Original approved v2 assets and frozen body masks remain unchanged. Provenance: `docs/art/WANDERER_SHORT_COAT.md`.
