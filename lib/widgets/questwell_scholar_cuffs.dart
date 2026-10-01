@@ -19,8 +19,8 @@ class ScholarCuffReplacementClipper extends CustomClipper<Path> {
     final dy = size.height - 320 * scale;
     final path = Path()..fillType = PathFillType.evenOdd..addRect(Offset.zero & size);
     for (final cuff in _cuffs(body)) {
-      path.addRect(Rect.fromLTWH(dx + cuff.left * scale, dy + (cuff.top + 5) * scale,
-        cuff.width * scale, (cuff.height - 3) * scale));
+      path.addRect(Rect.fromLTWH(dx + cuff.left * scale, dy + (cuff.top + 1) * scale,
+        cuff.width * scale, (cuff.height + 1) * scale));
     }
     return path;
   }
@@ -49,12 +49,12 @@ class _ScholarCuffPainter extends CustomPainter {
       canvas.save();
       canvas.translate(cuff.left, cuff.top);
       canvas.scale(cuff.width / 24, cuff.height / 15);
-      canvas.saveLayer(const Rect.fromLTWH(-1, -1, 26, 18), Paint());
+      canvas.saveLayer(const Rect.fromLTWH(-1, -5, 26, 22), Paint());
       final right = cuff.left > 120;
       final curve = right ? 2.8 : 3.5;
       // A tapered sleeve flows into a cylindrical cuff. The front edge dips
       // below the side returns; the dark opening remains above the knuckles.
-      final sleeve = Path()..moveTo(2, 0)..lineTo(22, 0)
+      final sleeve = Path()..moveTo(3, -4)..lineTo(21, -4)
         ..lineTo(24, 10)..quadraticBezierTo(24, 12, 22, 13)
         ..quadraticBezierTo(12, 16, 2, 13)
         ..quadraticBezierTo(0, 12, 0, 10)..close();
@@ -80,11 +80,11 @@ class _ScholarCuffPainter extends CustomPainter {
         Paint()..strokeWidth = .6..color = const Color(0xFFF6DB96));
       // Feather into the original sleeve texture over five source pixels.
       // This retains the cloth folds instead of leaving a straight patch seam.
-      canvas.drawRect(const Rect.fromLTWH(-1, -1, 26, 18), Paint()
+      canvas.drawRect(const Rect.fromLTWH(-1, -5, 26, 22), Paint()
         ..blendMode = BlendMode.dstIn
         ..shader = const LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter,
           colors: [Colors.transparent, Colors.white, Colors.white],
-          stops: [0, .35, 1]).createShader(const Rect.fromLTWH(0, 0, 24, 15)));
+          stops: [0, .263, 1]).createShader(const Rect.fromLTWH(0, -4, 24, 19)));
       canvas.restore();
       canvas.restore();
     }
