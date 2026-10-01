@@ -18,6 +18,9 @@ jobs:
       - name: Verify approved and candidate class assets
         run: python3 tool/verify_avatar_assets.py
 
+      - name: Test preview update handling
+        run: node --test tool/qa/preview_updates_test.cjs
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:

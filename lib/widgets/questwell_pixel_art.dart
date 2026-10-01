@@ -265,6 +265,10 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ),
             ),
           if (classOverlay != null) classLayer(classOverlay),
+          // Neckwear is tucked beneath a closed cloak, keeping its clasp clear.
+          if (QuestwellCloak.supports(equippedSlugs['chest']) &&
+              equippedSlugs['neck'] == 'emerald-scholar-scarf')
+            QuestwellEmeraldScarf(bodyType: body),
           if (QuestwellCloak.supports(equippedSlugs['chest'])) ...[
             QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body),
             QuestwellCloakForeground(body: body, children: [
@@ -289,7 +293,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           ],
           if (equippedSlugs['accessory'] == QuestwellMoonstoneBrooch.slug)
             QuestwellMoonstoneBrooch(bodyType: body),
-          if (equippedSlugs['neck'] == 'emerald-scholar-scarf')
+          if (equippedSlugs['neck'] == 'emerald-scholar-scarf' &&
+              !QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellEmeraldScarf(bodyType: body),
           if (equippedSlugs['face'] == 'round-scholar-glasses')
             QuestwellScholarGlasses(bodyType: body),

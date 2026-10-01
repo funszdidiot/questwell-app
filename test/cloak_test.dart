@@ -1,4 +1,5 @@
 import '../lib/widgets/questwell_brass_lantern.dart';
+import '../lib/widgets/questwell_emerald_scarf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,6 +55,22 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(),isNull);
     expect(find.byType(QuestwellBrassLantern),findsNothing);
+  });
+  testWidgets('Full Wanderer outfit keeps the scarf beneath the cloak clasp', (tester) async {
+    for (final body in ['male', 'female', 'neutral']) {
+      await tester.pumpWidget(MaterialApp(home: SizedBox(width: 240, height: 320,
+        child: QuestwellLayeredAdventurerArt(archetype: 'wanderer', avatarBodyType: body,
+          equippedSlugs: const {'chest': 'moss-green-cloak', 'neck': 'emerald-scholar-scarf',
+            'back': 'leather-satchel', 'accessory': 'moonstone-brooch'}))));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(find.byType(QuestwellEmeraldScarf), findsOneWidget);
+      final layers = tester.widgetList<Stack>(find.byType(Stack)).firstWhere(
+        (stack) => stack.children.any((child) => child is QuestwellEmeraldScarf)).children;
+      final scarf = layers.indexWhere((child) => child is QuestwellEmeraldScarf);
+      final cloak = layers.indexWhere((child) => child is QuestwellCloak && !child.rear);
+      expect(scarf, lessThan(cloak), reason: 'The scarf cannot cover the approved leaf clasp');
+    }
   });
   testWidgets('Both cloaks load on every supported class and body without hiding base layers', (tester) async {
     for (final slug in ['moss-green-cloak','hearthguard-mantle']) {

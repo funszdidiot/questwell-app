@@ -17,6 +17,16 @@ class _CloakReviewAppState extends State<CloakReviewApp> {
   String _class = 'scholar';
   bool _wear = true;
   bool _held = false;
+  bool _accessories = false;
+  @override
+  void initState() {
+    super.initState();
+    if (Uri.base.queryParameters['outfit'] == 'wanderer') {
+      _class = 'wanderer';
+      _body = 'male';
+      _accessories = true;
+    }
+  }
   QuestwellCosmetic _item(String slug) => QuestwellCosmetic.fromJson(
     marketReviewCatalog.firstWhere((i)=>i['slug']==slug),owned:true);
   Future<void> _wearCloak(BuildContext context,bool wear) async {
@@ -33,7 +43,16 @@ class _CloakReviewAppState extends State<CloakReviewApp> {
   Widget build(BuildContext context) {
     final mantle = _slug == 'hearthguard-mantle';
     final archetype = mantle ? 'guardian' : _class;
-    final equipment = <String,String>{if (_wear) 'chest': _slug, if(_held) 'hands':'brass-lantern'};
+    final equipment = <String,String>{
+      if (_wear) 'chest': _slug,
+      if (_held) 'hands': 'brass-lantern',
+      if (_accessories) ...{
+        'neck': 'emerald-scholar-scarf',
+        'back': 'leather-satchel',
+        'accessory': 'moonstone-brooch',
+        'familiar': 'moss-moth',
+      },
+    };
     return MaterialApp(debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(useMaterial3: true).copyWith(
         textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme)),
@@ -65,6 +84,10 @@ class _CloakReviewAppState extends State<CloakReviewApp> {
             Builder(builder:(context)=>Align(alignment:Alignment.centerLeft,child:TextButton.icon(
               onPressed:()=>_holdLantern(context),icon:const Icon(Icons.swap_horiz),
               label:Text(_held?'Lantern equipped':'Try holding a lantern')))),
+            SwitchListTile(contentPadding: EdgeInsets.zero,
+              title: const Text('Scarf, satchel, brooch & moth'),
+              value: _accessories,
+              onChanged: (value) => setState(() => _accessories = value)),
             QuestwellEquippedAvatar(archetype: archetype, avatarBodyType: _body,
               equippedSlugs: equipment, height: 340, artHeightFactor: .98),
             const SizedBox(height: 12),
