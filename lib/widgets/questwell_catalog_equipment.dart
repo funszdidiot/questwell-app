@@ -137,3 +137,37 @@ class _RoomArt extends CustomPainter {
   @override
   bool shouldRepaint(covariant _RoomArt oldDelegate)=>oldDelegate.slug!=slug;
 }
+
+/// Glass coordinates are registered to hearth_environment_v2's 768px canvas.
+/// Match its cover crop exactly, leaving every wooden mullion unobscured.
+class QuestwellRainyWindowOverlay extends CustomPainter {
+  const QuestwellRainyWindowOverlay();
+  @override
+  void paint(Canvas canvas,Size size) {
+    final side=math.max(size.width,size.height);
+    canvas.save();canvas.clipRect(Offset.zero & size);
+    canvas.translate((size.width-side)/2,(size.height-side)*.52);
+    canvas.scale(side/768);
+    final panes=Path();
+    void pane(List<Offset> points){panes.addPolygon(points,true);}
+    pane(const [Offset(725,151),Offset(724,132),Offset(731,104),Offset(744,83),Offset(750,80),Offset(750,145)]);
+    pane(const [Offset(759,72),Offset(768,66),Offset(768,143),Offset(758,145)]);
+    pane(const [Offset(724,166),Offset(750,158),Offset(750,222),Offset(725,225)]);
+    pane(const [Offset(759,156),Offset(768,153),Offset(768,221),Offset(759,222)]);
+    pane(const [Offset(725,236),Offset(750,232),Offset(750,297),Offset(725,298)]);
+    pane(const [Offset(759,232),Offset(768,230),Offset(768,297),Offset(759,297)]);
+    pane(const [Offset(725,308),Offset(750,306),Offset(750,372),Offset(725,370)]);
+    pane(const [Offset(759,306),Offset(768,306),Offset(768,375),Offset(759,373)]);
+    canvas.clipPath(panes);
+    final p=Paint()..color=const Color(0x99435762);
+    canvas.drawRect(const Rect.fromLTWH(720,60,50,320),p);
+    p.color=const Color(0xBBC1E2DE);p.strokeWidth=1.5;p.isAntiAlias=true;
+    for(var i=0;i<66;i++){
+      final x=723.0+(i*13)%47,y=68.0+(i*37)%310;
+      canvas.drawLine(Offset(x,y),Offset(x-3,y+10),p);
+    }
+    canvas.restore();
+  }
+  @override
+  bool shouldRepaint(covariant QuestwellRainyWindowOverlay oldDelegate)=>false;
+}

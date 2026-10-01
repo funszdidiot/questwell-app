@@ -969,9 +969,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                     QuestwellHearthDecor.wallArtPositioned(
                       slug: art, side: side, scene: Size(sceneWidth, sceneHeight)),
               if (equippedSlugs['room:window'] == 'rainy-window')
-                Positioned(key: const ValueKey('hearth-rainy-window-bounds'),
-                  left: sceneWidth*.82, top: sceneHeight*.10, width: sceneWidth*.15, height: sceneHeight*.39,
-                  child: const QuestwellCatalogRoomArt(slug:'rainy-window')),
+                const Positioned.fill(key: ValueKey('hearth-rainy-window-bounds'),
+                  child: IgnorePointer(child: CustomPaint(painter: QuestwellRainyWindowOverlay()))),
               for (final slot in ['left','right','front'])
                 if (equippedSlugs['room:$slot'] == 'warding-lantern')
                   Positioned(key: const ValueKey('hearth-warding-lantern-bounds'),
