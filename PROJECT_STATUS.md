@@ -4,6 +4,18 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Market title refinement — 2026-09-30
+
+Founder requested one pixel-style “MARKET” heading with the original tagline
+directly underneath. Removed the stacked emporium label and repeated title;
+kept the header card, coins, filters, and item layout. The page app bar keeps
+back navigation without repeating the heading.
+
+**Development build:** `f5bc79683193243c7bc9d2f87063b0b131c02d0e`.
+Flutter Check `36800340600` and Preview `36800340603` passed. Browser
+review confirmed the single heading and preserved tagline. Development only;
+no merge, external beta or launch.
+
 ## Typography review — 2026-09-30
 
 **Development build:** `04c1c0b5be19488afce9055b61cfb75df9b39d18`.
