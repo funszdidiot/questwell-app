@@ -164,12 +164,67 @@ void main() {
     tester.view.physicalSize = const Size(390, 1700); tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize); addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(page([battle('a')], busy: 'a-1')); await tester.pump();
+    await tester.ensureVisible(find.text('Later attacks · 1'));
+    await tester.tap(find.text('Later attacks · 1'));
+    await tester.pump(const Duration(milliseconds: 300));
     final attack = find.widgetWithText(FilledButton, 'Attack');
     expect(tester.widget<FilledButton>(attack).onPressed, isNull);
     expect(attacks, 0);
     await tester.pumpWidget(page([battle('a')])); await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(FilledButton, 'Attack').first); await tester.pump();
     expect(attacks, 1); expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Long plans focus the next step and keep later and completed steps reachable', (tester) async {
+    tester.view.physicalSize = const Size(320, 1700);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    String? attacked;
+    QuestwellBossBattle plan(int done) => QuestwellBossBattle(id: 'long-plan',
+      title: 'Break a large project into small steps', bossType: 'inbox_hydra',
+      status: 'open', rewardXp: 25, rewardCoins: 50,
+      steps: [for (var i = 0; i < 20; i++) QuestwellBossStep(id: 'step-$i',
+        title: 'Action $i: review the details and identify one useful change',
+        position: i, completed: i < done)]);
+    Widget focused(int done, {bool campfire = false}) => MaterialApp(home: MediaQuery(
+      data: const MediaQueryData(disableAnimations: true, textScaler: TextScaler.linear(1.5)),
+      child: Scaffold(body: QuestwellBossBoard(battles: [plan(done)], practice: true,
+        campfire: campfire, onHome: () {}, onCreate: () {}, onAttack: (_, step) => attacked = step.id))));
+    await tester.pumpWidget(focused(1));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('attack-step-1')), findsOneWidget);
+    expect(find.byKey(const ValueKey('attack-step-2')), findsNothing);
+    expect(find.byKey(const ValueKey('attack-step-0')), findsNothing);
+    final primary = find.widgetWithText(FilledButton, 'Attack');
+    expect(tester.getSize(primary).height, greaterThanOrEqualTo(48));
+    await tester.ensureVisible(primary);
+    await tester.tap(primary);
+    expect(attacked, 'step-1');
+    await tester.pumpWidget(focused(2));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('attack-step-1')), findsNothing);
+    expect(find.byKey(const ValueKey('attack-step-2')), findsOneWidget);
+    await tester.ensureVisible(find.text('Later attacks · 17'));
+    await tester.tap(find.text('Later attacks · 17'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.byKey(const ValueKey('attack-step-19')), 400);
+    final later = find.descendant(of: find.byKey(const ValueKey('attack-step-19')), matching: find.byType(FilledButton));
+    await tester.ensureVisible(later);
+    await tester.tap(later);
+    expect(attacked, 'step-19');
+    await tester.ensureVisible(find.text('Completed attacks · 2'));
+    await tester.tap(find.text('Completed attacks · 2'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('attack-step-0')), findsOneWidget);
+    expect(find.descendant(of: find.byKey(const ValueKey('attack-step-0')), matching: find.byType(FilledButton)), findsNothing);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(focused(2, campfire: true));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('later-attacks-long-plan')), findsNothing);
+    expect(find.byKey(const ValueKey('completed-attacks-long-plan')), findsNothing);
+    expect(find.byKey(const ValueKey('attack-step-2')), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   test('Boss XP is 25 per victory and does not grow with step count', () {

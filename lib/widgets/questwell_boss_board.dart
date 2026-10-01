@@ -81,8 +81,7 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
     _selected ??= featured?.id;
     final battle = featured;
     final remaining = battle?.steps.where((s) => !s.completed).toList() ?? <QuestwellBossStep>[];
-    final shownSteps = battle == null ? <QuestwellBossStep>[] : widget.campfire && !battle.completed
-      ? remaining.take(1).toList() : battle.steps;
+    final completedSteps = battle?.steps.where((s) => s.completed).toList() ?? <QuestwellBossStep>[];
     final content = ListView(controller: _scroll, physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(18, 14, 18, 32), children: [
         Row(children: [
@@ -156,9 +155,13 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
           if (widget.campfire && !battle.completed) Padding(padding: const EdgeInsets.only(top: 8),
             child: Text('Campfire mode · just your next attack.', style: QuestwellTypography.body(color: _muted))),
           const SizedBox(height: 12),
-          for (final step in shownSteps) Padding(padding: const EdgeInsets.only(bottom: 10),
-            child: _attack(battle, step, remaining.isNotEmpty && step.id == remaining.first.id)),
-          if (shownSteps.isEmpty && !battle.completed) Text('This battle has no remaining attacks.', style: QuestwellTypography.body(color: _muted)),
+          if (remaining.isNotEmpty && !battle.completed)
+            _attack(battle, remaining.first, true),
+          if (!widget.campfire && remaining.length > 1 && !battle.completed)
+            _stepGroup(battle, remaining.skip(1).toList(), 'Later attacks', 'later-attacks'),
+          if (!widget.campfire && completedSteps.isNotEmpty)
+            _stepGroup(battle, completedSteps, 'Completed attacks', 'completed-attacks'),
+          if (remaining.isEmpty && !battle.completed) Text('This battle has no remaining attacks.', style: QuestwellTypography.body(color: _muted)),
           const SizedBox(height: 20),
           if (!widget.campfire && open.any((b) => b.id != battle.id)) ...[
             Text('BATTLE QUEUE', style: QuestwellTypography.sectionHeading(size: 11)),
@@ -179,28 +182,36 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
   }
   Widget _attack(QuestwellBossBattle battle, QuestwellBossStep step, bool next) {
     final busy = widget.busyStepId == step.id;
-    return Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(
-      color: step.completed ? const Color(0xFF1C2C2B) : const Color(0xFFF1E5C6),
-      border: Border.all(color: next ? _gold : const Color(0xFF52645B), width: next ? 2 : 1)),
-      child: Row(children: [
+    final foreground = next ? const Color(0xFF30261D) : const Color(0xFFE4E6D8);
+    final action = step.completed ? null : Semantics(label: 'Complete attack: ${step.title}', child: FilledButton(
+      onPressed: widget.busyStepId != null || battle.completed ? null : () => widget.onAttack(battle, step),
+      style: FilledButton.styleFrom(backgroundColor: const Color(0xFF274B43), foregroundColor: Colors.white,
+        minimumSize: const Size(88, 48), padding: const EdgeInsets.symmetric(horizontal: 16),
+        shape: const RoundedRectangleBorder()),
+      child: busy ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Text('Attack')));
+    return Container(key: ValueKey('attack-${step.id}'), padding: const EdgeInsets.all(12), decoration: BoxDecoration(
+      color: next ? const Color(0xFFF1E5C6) : const Color(0xFF1C2C2B),
+      border: Border.all(color: next ? _gold : const Color(0xFF354B47), width: next ? 2 : 1)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [Row(children: [
         Icon(step.completed ? Icons.check_circle_outline : Icons.radio_button_unchecked,
-          color: step.completed ? const Color(0xFF95B79F) : const Color(0xFF786342), size: 22),
+          color: next ? const Color(0xFF786342) : const Color(0xFF95B79F), size: 22),
         const SizedBox(width: 10),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           if (next) Text('NEXT ATTACK', style: QuestwellTypography.body(fontSize: 10, fontWeight: FontWeight.w700, color: const Color(0xFF70582E))),
-          Text(step.title, style: QuestwellTypography.body(fontSize: 14,
-            color: step.completed ? _muted : const Color(0xFF30261D), fontWeight: FontWeight.w600)),
+          Text(step.title, style: QuestwellTypography.body(fontSize: next ? 16 : 14,
+            color: step.completed ? _muted : foreground, fontWeight: FontWeight.w600)),
         ])),
-        const SizedBox(width: 10),
-        if (step.completed) Text('Done', style: QuestwellTypography.body(fontSize: 12, color: _muted))
-        else Semantics(label: 'Complete attack: ${step.title}', child: FilledButton(
-          onPressed: widget.busyStepId != null || battle.completed ? null : () => widget.onAttack(battle, step),
-          style: FilledButton.styleFrom(backgroundColor: const Color(0xFF274B43), foregroundColor: Colors.white,
-            minimumSize: const Size(68, 44), padding: const EdgeInsets.symmetric(horizontal: 10),
-            shape: const RoundedRectangleBorder()),
-          child: busy ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Text('Attack'))),
+      ]),
+      if (action != null) ...[const SizedBox(height: 12), action],
       ]));
   }
+  Widget _stepGroup(QuestwellBossBattle battle, List<QuestwellBossStep> steps, String title, String group) =>
+    ExpansionTile(key: ValueKey('$group-${battle.id}'), tilePadding: EdgeInsets.zero,
+      childrenPadding: const EdgeInsets.only(bottom: 4), iconColor: _muted, collapsedIconColor: _muted,
+      shape: const Border(), collapsedShape: const Border(),
+      title: Text('$title · ${steps.length}', style: QuestwellTypography.body(fontSize: 14, color: _muted)),
+      children: [for (final step in steps) Padding(padding: const EdgeInsets.only(bottom: 8),
+        child: _attack(battle, step, false))]);
   Widget _compact(QuestwellBossBattle b) {
     final type = questwellBossNames.containsKey(b.bossType) ? b.bossType : 'inbox_hydra';
     return Padding(padding: const EdgeInsets.only(bottom: 10), child: Material(color: const Color(0xFF1A2730),
