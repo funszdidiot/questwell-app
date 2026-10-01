@@ -59,9 +59,14 @@ void main() {
     await tester.dragUntilVisible(create.hitTestable(), find.byType(ListView),
       const Offset(0, 180), maxIteration: 30); await tester.pumpAndSettle();
     await tester.tap(create); await tester.pumpAndSettle();
-    await tester.enterText(find.byType(TextField), 'Take one small step');
-    await tester.tap(find.text('Add quest')); await tester.pumpAndSettle();
-    await tester.pump(const Duration(milliseconds: 400));
+    await tester.ensureVisible(find.byType(TextFormField));
+    await tester.enterText(find.byType(TextFormField), 'Take one small step');
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Easy')); await tester.pumpAndSettle();
+    await tester.tap(find.text('Easy')); await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Post to Quest Board')); await tester.pumpAndSettle();
+    await tester.tap(find.text('Post to Quest Board')); await tester.pumpAndSettle();
     await tester.dragUntilVisible(find.text('Take one small step').hitTestable(), find.byType(ListView),
       const Offset(0, -180), maxIteration: 60); await tester.pumpAndSettle();
     expect(find.text('Take one small step'), findsOneWidget);

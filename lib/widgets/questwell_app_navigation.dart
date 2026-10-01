@@ -34,11 +34,12 @@ class QuestwellNavigationScope extends InheritedWidget {
 
 /// Shared, always-visible primary navigation, including loading and error states.
 class QuestwellAppNavigation extends StatelessWidget {
-  const QuestwellAppNavigation({super.key, required this.current, this.onSelect});
+  const QuestwellAppNavigation({super.key, required this.current, this.onSelect, this.allowCurrentSelection = false});
   final QuestwellDestination current;
+  final bool allowCurrentSelection;
   final ValueChanged<QuestwellDestination>? onSelect;
   void _open(BuildContext context, QuestwellDestination destination) {
-    if (destination == current) return;
+    if (destination == current && !allowCurrentSelection) return;
     if (onSelect != null) { onSelect!(destination); }
     else { QuestwellNavigationScope.open(context, destination); }
   }

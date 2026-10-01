@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:project_momentum/add_task_page/add_task_page_widget.dart';
 import '../widgets/questwell_quest_card.dart';
 import '../widgets/questwell_app_navigation.dart';
 import '../widgets/questwell_typography.dart';
 
 class QuestBoardReviewApp extends StatefulWidget {
-  const QuestBoardReviewApp({super.key});
+  const QuestBoardReviewApp({super.key, this.openNewQuest = false});
+  final bool openNewQuest;
   @override
   State<QuestBoardReviewApp> createState() => _QuestBoardReviewAppState();
 }
@@ -26,26 +28,14 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
     _ => true,
   };
 
-  Future<void> _add(BuildContext context) async {
-    final controller = TextEditingController();
-    final title = await showDialog<String>(context: context, builder: (context) => AlertDialog(
-      scrollable: true, title: const Text('New sample quest'),
-      content: TextField(controller: controller, autofocus: true, minLines: 1, maxLines: 3,
-        textCapitalization: TextCapitalization.sentences,
-        decoration: const InputDecoration(labelText: 'What needs to get done?')),
-      actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-        FilledButton(onPressed: () {
-          if (controller.text.trim().isNotEmpty) Navigator.pop(context, controller.text.trim());
-        }, child: const Text('Add quest')),
-      ],
-    ));
-    // Wait for the dialog's outgoing transition before disposing its field.
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-    controller.dispose();
-    if (!mounted || title == null) return;
+  void _add(BuildContext context) => Navigator.of(context).pushNamed('/new-quest');
+
+  Future<void> _create(String title, int friction, int xp, int coins) async {
     setState(() {
-      _quests.add((title: title, effort: 'Low Energy', xp: 10, coins: 2));
+      _quests.add((title: title, effort: switch (friction) {
+        1 => 'Low Energy', 2 => 'Annoying', 3 => 'Hard to Start',
+        _ => 'Brain Says Absolutely Not',
+      }, xp: xp, coins: coins));
       _filter = 'all';
     });
   }
@@ -54,7 +44,14 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData.dark(useMaterial3: true),
-    home: Scaffold(backgroundColor: const Color(0xFF111827),
+    initialRoute: widget.openNewQuest ? '/new-quest' : '/',
+    routes: {
+      '/new-quest': (context) => AddTaskPageWidget(
+        onCreate: _create, onClose: () => Navigator.of(context).pop()),
+    },
+    home: Scaffold(
+      bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.quests),
+      backgroundColor: const Color(0xFF111827),
       body: SafeArea(child: Center(child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 760),
         child: Builder(builder: (context) => ListView(

@@ -27,6 +27,7 @@ class _MobileReviewAppState extends State<MobileReviewApp> {
     'Hearth' => const HomeSectionsReviewApp(),
     'Boss Battles' => const BossReviewApp(),
     'Quests' => const QuestBoardReviewApp(),
+    'New quest' => const QuestBoardReviewApp(openNewQuest: true),
     'Adventurer' => const AdventurerReviewApp(),
     'Chronicle' => const ChronicleReviewApp(),
     'Expedition' => const ExpeditionReviewApp(),
@@ -42,7 +43,7 @@ class _MobileReviewAppState extends State<MobileReviewApp> {
       onSelect: (destination) => setState(() => screen = destination.label),
       child: Column(children: [
         Expanded(child: KeyedSubtree(key: ValueKey(screen), child: scene)),
-        if (!['Chronicle', 'Expedition'].contains(screen))
+        if (!['Chronicle', 'Expedition', 'Quests', 'New quest'].contains(screen))
           QuestwellAppNavigation(current: QuestwellDestination.values.firstWhere(
             (destination) => destination.label == screen)),
       ]),
@@ -55,7 +56,7 @@ class _MobileReviewAppState extends State<MobileReviewApp> {
             const Text('Questwell · Mobile preview'),
             TextButton.icon(
               onPressed: () => setState(() {
-                const screens = ['Market', 'Hearth', 'Quests', 'Boss Battles', 'Adventurer', 'Chronicle', 'Expedition'];
+                const screens = ['Market', 'Hearth', 'Quests', 'New quest', 'Boss Battles', 'Adventurer', 'Chronicle', 'Expedition'];
                 screen = screens[(screens.indexOf(screen) + 1) % screens.length];
               }),
               icon: const Icon(Icons.navigate_next, size: 18), label: Text(screen)),
