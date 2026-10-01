@@ -22,27 +22,35 @@ void main() {
       body: QuestwellBossBoard(battles: data, practice: true, failed: failed, loading: loading,
         busyStepId: busy, initialBattleId: selected, onHome: () => homes++, onCreate: () => creates++,
         onAttack: (_, __) => attacks++, onRetry: () {}))));
-  testWidgets('Slime archive loads only for Slime, with clear dialogue at phone and wide widths', (tester) async {
+  testWidgets('Illustrated arenas follow their boss at phone and wide widths', (tester) async {
     tester.view.physicalSize = const Size(600, 1700);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
+    const stages = {
+      'inbox_hydra': ['hydra-mailroom-arena', 'questwell_hydra_mailroom_v1.webp'],
+      'meeting_mimic': ['mimic-conference-arena', 'questwell_mimic_conference_v1.webp'],
+      'spreadsheet_slime': ['slime-archive-arena', 'questwell_slime_archive_v1.webp'],
+      'calendar_kraken': ['kraken-observatory-arena', 'questwell_kraken_observatory_v1.webp'],
+    };
     for (final width in [320.0, 560.0]) {
-      for (final type in ['spreadsheet_slime', 'calendar_kraken']) {
+      for (final type in [...stages.keys, 'printer_poltergeist']) {
         await tester.pumpWidget(MaterialApp(home: MediaQuery(
           data: const MediaQueryData(disableAnimations: true, textScaler: TextScaler.linear(1.5)),
           child: Center(child: SizedBox(width: width, child: QuestwellBossEncounter(
             key: ValueKey('$type-$width'), encounterId: '$type-$width',
             bossType: type, persistEntrance: false))))));
         await tester.pumpAndSettle();
-        final art = find.byKey(const ValueKey('slime-archive-arena'));
-        if (type == 'spreadsheet_slime') {
-          expect(art, findsOneWidget);
-          expect(tester.widget<Image>(art).image,
-            isA<AssetImage>().having((asset) => asset.assetName, 'asset',
-              'assets/images/questwell_slime_archive_v1.webp'));
-        } else {
-          expect(art, findsNothing);
+        for (final entry in stages.entries) {
+          final art = find.byKey(ValueKey(entry.value[0]));
+          if (entry.key == type) {
+            expect(art, findsOneWidget);
+            expect(tester.widget<Image>(art).image,
+              isA<AssetImage>().having((asset) => asset.assetName, 'asset',
+                'assets/images/${entry.value[1]}'));
+          } else {
+            expect(art, findsNothing);
+          }
         }
         expect(tester.getRect(find.byKey(const ValueKey('boss-dialogue'))).bottom,
           lessThanOrEqualTo(tester.getTopLeft(find.byKey(const ValueKey('boss-arena'))).dy));
