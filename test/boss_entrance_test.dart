@@ -55,6 +55,22 @@ void main() {
     expect(find.text('VICTORY'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+  testWidgets('Calendar Kraken rises then settles, supports skip and reduced motion', (tester) async {
+    await tester.pumpWidget(scene(id: 'kraken', type: 'calendar_kraken'));
+    expect(find.text('CALENDAR KRAKEN'), findsOneWidget);
+    expect(find.text('BOSS APPROACHING'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('skip-boss-entrance')));
+    await tester.pumpAndSettle();
+    expect(find.text('I found a gap in your calendar.'), findsOneWidget);
+    expect(find.byWidgetPredicate((w) => w is Image && w.image is AssetImage &&
+      (w.image as AssetImage).assetName.endsWith('questwell_calendar_kraken_v1.webp')), findsOneWidget);
+    expect(tester.binding.hasScheduledFrame, isFalse);
+    await tester.pumpWidget(scene(id: 'kraken', type: 'calendar_kraken', reduced: true, progress: 1, defeated: true));
+    await tester.pumpAndSettle();
+    expect(find.text('CALENDAR KRAKEN · DEFEATED'), findsOneWidget);
+    expect(find.text('VICTORY'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
   testWidgets('Skip persists and does not replay after remount', (tester) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(scene(id: 'persistent-test', persist: true));

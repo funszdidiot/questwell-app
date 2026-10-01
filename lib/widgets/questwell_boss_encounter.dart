@@ -23,10 +23,11 @@ class QuestwellBossEncounter extends StatefulWidget {
 
 class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
     with SingleTickerProviderStateMixin {
+  bool get _kraken => widget.bossType == 'calendar_kraken';
   bool get _slime => widget.bossType == 'spreadsheet_slime';
   bool get _mimic => widget.bossType == 'meeting_mimic';
-  String get _name => _slime ? 'SPREADSHEET SLIME' : _mimic ? 'MEETING MIMIC' : 'INBOX HYDRA';
-  String get taunt => _slime ? 'It worked in the other tab.' : _mimic ? 'This could have been an email.' : 'You said you’d do it tomorrow.';
+  String get _name => _kraken ? 'CALENDAR KRAKEN' : _slime ? 'SPREADSHEET SLIME' : _mimic ? 'MEETING MIMIC' : 'INBOX HYDRA';
+  String get taunt => _kraken ? 'I found a gap in your calendar.' : _slime ? 'It worked in the other tab.' : _mimic ? 'This could have been an email.' : 'You said you’d do it tomorrow.';
   static final _seen = <String>{};
   late final AnimationController _intro = AnimationController(
     vsync: this, duration: const Duration(milliseconds: 3200))
@@ -70,8 +71,8 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
   void dispose() { _intro.dispose(); super.dispose(); }
   @override
   Widget build(BuildContext context) {
-    final sprite = RepaintBoundary(child: Image.asset(_slime ? 'assets/images/questwell_spreadsheet_slime_v1.webp' : _mimic ? 'assets/images/questwell_meeting_mimic_v1.webp' : 'assets/images/questwell_inbox_hydra_v1.webp',
-      fit: BoxFit.contain, semanticLabel: _slime ? 'Spreadsheet Slime, an emerald jelly creature tangled in parchment grids' : _mimic
+    final sprite = RepaintBoundary(child: Image.asset(_kraken ? 'assets/images/questwell_calendar_kraken_v1.webp' : _slime ? 'assets/images/questwell_spreadsheet_slime_v1.webp' : _mimic ? 'assets/images/questwell_meeting_mimic_v1.webp' : 'assets/images/questwell_inbox_hydra_v1.webp',
+      fit: BoxFit.contain, semanticLabel: _kraken ? 'Calendar Kraken, a violet tentacled creature clutching appointment scrolls and a brass watch' : _slime ? 'Spreadsheet Slime, an emerald jelly creature tangled in parchment grids' : _mimic
         ? 'Meeting Mimic, an enchanted burgundy conference chair with a toothy grin'
         : 'Inbox Hydra, a three-headed serpent guarding a pile of letters'));
     final avatar = RepaintBoundary(child: QuestwellLayeredAdventurerArt(
@@ -82,7 +83,9 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
       final slide = Curves.easeOutCubic.transform(((t - .15) / .28).clamp(0.0, 1.0));
       final land = ((t - .43) / .13).clamp(0.0, 1.0);
       final lift = _reduced ? 0.0 : -math.sin(land * math.pi) * (_mimic ? 25 : 9);
-      final wobble = _reduced || !_mimic ? 0.0 : math.sin(land * math.pi * 3) * (1 - land) * .07;
+      final wobble = _reduced ? 0.0 : _kraken
+        ? (1 - slide) * .18 + math.sin(land * math.pi * 2) * (1 - land) * .09
+        : _mimic ? math.sin(land * math.pi * 3) * (1 - land) * .07 : 0.0;
       final squash = _reduced || !_slime ? 0.0 : math.sin(land * math.pi * 2) * (1 - land) * .22;
       final letters = (((t - .53) / .30).clamp(0.0, 1.0) * taunt.length).floor();
       final hp = widget.defeated ? 0.0 : (1 - widget.progress).clamp(0.0, 1.0);
@@ -110,7 +113,8 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                   Positioned.fill(child: CustomPaint(painter: _ArenaPainter(dust: land))),
                   Positioned(left: width * .03, bottom: 24, width: width * .42, height: 190, child: avatar),
                   Positioned(right: width * .01, bottom: 23, width: width * .59, height: 230,
-                    child: Transform.translate(offset: Offset((1 - slide) * (width + 40), lift),
+                    child: Transform.translate(offset: Offset((1 - slide) * (_kraken ? 65 : width + 40),
+                      lift + (_kraken ? (1 - slide) * 290 : 0)),
                       child: AnimatedOpacity(duration: Duration(milliseconds: _reduced ? 0 : 650),
                         opacity: widget.defeated ? .15 : 1, child: Transform.rotate(angle: wobble, child: Transform.scale(
                           scaleX: 1 + squash, scaleY: 1 - squash, alignment: Alignment.bottomCenter, child: sprite))))),
