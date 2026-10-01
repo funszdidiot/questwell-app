@@ -4,6 +4,24 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Founder acceptance and Chronicle work — 2026-09-30
+
+At 7:17 p.m. America/Chicago, the founder confirmed “Everything is good to go”
+after the milestone flow and mantel review. Treat the prior device/session gates
+as founder-confirmed; this is not an additional automated Safari test.
+The accepted First Journey mantel perspective is implemented at `d75930e`.
+The Orrery is active in the development catalog and the founder account has a
+`founder_testing_grant` copy, with level and coins unchanged.
+
+**Current work:** Chronicle visual overhaul. A compact leather-style summary,
+local-date journal pages, actual trophy artwork, event-specific labels and
+filters replace the old oversized decorative scene. “Show earlier pages” keeps
+history beyond 30 entries accessible. Loading and error states retain a way back
+to the Hearth. Review fixture: `?review=chronicle` (synthetic history).
+
+**Review state:** Chronicle design candidate; founder visual acceptance pending.
+**Hold:** Development preview only. No merge, external beta or launch authorized.
+
 ## Continuation checkpoint — 2026-09-30
 
 **Current task:** Level-10 Starlit Orrery milestone verification, following the
@@ -102,7 +120,7 @@ are preserved.
 See `docs/qa/GUARDIAN_FIT_REVIEW.md` and `guardian-fit-review.html`.
 Guardian is frozen; Wanderer is the current class workstream.
 
-**Active workstream:** Milestone rewards / Chronicle — level-10 review  
+**Active workstream:** Epic 7 — Chronicle / Achievement visual overhaul  
 **Development branch:** `questwell-dev`  
 **Promoted/app branch:** `flutterflow`  
 **Last promoted milestone:** Epic 1 — Modular Avatar Foundation  
@@ -118,7 +136,7 @@ Guardian is frozen; Wanderer is the current class workstream.
 | 4 | Adventurer / Inventory Overhaul | ⚪ Not Started |
 | 5 | Market Overhaul | ⚪ Not Started |
 | 6 | Boss Battles Overhaul | ⚪ Not Started |
-| 7 | Chronicle / Achievement Overhaul | ⚪ Not Started |
+| 7 | Chronicle / Achievement Overhaul | 🧪 Development review |
 | 8 | Campfire / Expedition / Secondary Modes | ⚪ Not Started |
 | 9 | Global UI / FX Polish | ⚪ Not Started |
 | 10 | Cross-Platform Validation | 🟡 Ongoing |
