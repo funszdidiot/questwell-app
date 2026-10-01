@@ -22,7 +22,7 @@ void main() {
       body: QuestwellBossBoard(battles: data, practice: true, failed: failed, loading: loading,
         busyStepId: busy, initialBattleId: selected, onHome: () => homes++, onCreate: () => creates++,
         onAttack: (_, __) => attacks++, onRetry: () {}))));
-  testWidgets('Mailroom is bundled and exclusive to Hydra at narrow width', (tester) async {
+  testWidgets('Approved arenas follow the selected boss at narrow width', (tester) async {
     tester.view.physicalSize = const Size(320, 1700);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -39,6 +39,17 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('select-b')));
     await tester.pumpAndSettle();
     expect(background, findsNothing);
+    final conference = find.byKey(const ValueKey('mimic-conference-arena'));
+    expect(conference, findsOneWidget);
+    expect(tester.widget<Image>(conference).image,
+      isA<AssetImage>().having((asset) => asset.assetName, 'asset',
+        'assets/images/questwell_mimic_conference_v1.webp'));
+    expect(tester.getRect(find.byKey(const ValueKey('boss-dialogue'))).bottom,
+      lessThanOrEqualTo(tester.getTopLeft(find.byKey(const ValueKey('boss-arena'))).dy));
+    await tester.pumpWidget(page([battle('a'), battle('b', won: true)]));
+    await tester.pumpAndSettle();
+    expect(conference, findsOneWidget);
+    expect(find.byKey(const ValueKey('boss-dialogue')), findsNothing);
     expect(tester.takeException(), isNull);
   });
   testWidgets('Only selected battle owns an arena; queue selection changes focus', (tester) async {

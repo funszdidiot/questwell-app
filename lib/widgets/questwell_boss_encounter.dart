@@ -148,8 +148,8 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
         LayoutBuilder(builder: (context, constraints) {
           final width = constraints.maxWidth;
           final arenaHeight = width < 400 ? 300.0 : 330.0;
-          // Bottom-aligned cover keeps the mailroom walkway beneath the fighters.
-          final stageBottom = _hydra ? math.max(arenaHeight, width / 1.5) * .20 : 24.0;
+          // Bottom-aligned cover keeps each illustrated stage beneath the fighters.
+          final stageBottom = (_hydra || _mimic) ? math.max(arenaHeight, width / 1.5) * .20 : 24.0;
           return Semantics(label: arriving ? 'Boss entrance. Tap to skip.' : 'Boss encounter',
             child: GestureDetector(onTap: arriving ? _skip : null,
               child: Container(key: const ValueKey('boss-arena'), height: arenaHeight, clipBehavior: Clip.hardEdge,
@@ -157,10 +157,11 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                   gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter,
                     colors: [Color(0xFF10222A), Color(0xFF242133), Color(0xFF392A28)])),
                 child: Stack(children: [
-                  if (_hydra)
+                  if (_hydra || _mimic)
                     Positioned.fill(child: RepaintBoundary(child: Image.asset(
-                      'assets/images/questwell_hydra_mailroom_v1.webp',
-                      key: const ValueKey('hydra-mailroom-arena'),
+                      _mimic ? 'assets/images/questwell_mimic_conference_v1.webp'
+                        : 'assets/images/questwell_hydra_mailroom_v1.webp',
+                      key: ValueKey(_mimic ? 'mimic-conference-arena' : 'hydra-mailroom-arena'),
                       fit: BoxFit.cover, alignment: Alignment.bottomCenter,
                       excludeFromSemantics: true, filterQuality: FilterQuality.low,
                       errorBuilder: (_, __, ___) => CustomPaint(painter: _ArenaPainter(dust: land)))))
