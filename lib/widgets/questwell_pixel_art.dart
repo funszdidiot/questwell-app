@@ -22,6 +22,8 @@ import 'questwell_hearth_decor.dart';
 import 'questwell_contact_shadow.dart';
 import 'questwell_class_emblem.dart';
 import 'questwell_item_icon.dart';
+import 'questwell_first_journey.dart';
+import 'questwell_starlit_orrery.dart';
 import 'questwell_catalog_equipment.dart';
 
 class QuestwellPixelPalette {
@@ -1650,6 +1652,14 @@ class QuestwellItemPixelArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Earned trophies keep their approved reward artwork; shop icons share
+    // the 16-bit catalog treatment.
+    if (slug == QuestwellStarlitOrrery.slug) {
+      return SizedBox.square(dimension: size, child: const QuestwellStarlitOrrery());
+    }
+    if (slug == QuestwellFirstJourney.slug) {
+      return SizedBox.square(dimension: size, child: const QuestwellFirstJourney());
+    }
     return QuestwellItemIcon(slug: slug, size: size, locked: locked);
   }
 }

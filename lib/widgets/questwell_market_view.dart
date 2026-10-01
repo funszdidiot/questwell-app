@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/questwell_cosmetic_service.dart';
+import '../services/questwell_cosmetic_models.dart';
 import '../services/questwell_equipment_policy.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_hearth_decor.dart';

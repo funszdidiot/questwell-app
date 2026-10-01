@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/preview/market_catalog.dart';
-import '../lib/services/questwell_cosmetic_service.dart';
+import '../lib/services/questwell_cosmetic_models.dart';
 import '../lib/services/questwell_equipment_policy.dart';
 import '../lib/widgets/questwell_market_view.dart';
 import '../lib/widgets/questwell_item_icon.dart';
