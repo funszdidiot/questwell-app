@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Calendar Kraken arcade entrance — 2026-10-01
+
+Founder approved Spreadsheet Slime ("Love it") and requested next boss. Calendar Kraken added in `7bb1d2ef50e2053dcae8590ccb0df1b54f56f5fa`: violet tentacled creature with appointment scrolls/brass watch, rising entrance with rolling settle, "I found a gap in your calendar." taunt. Shared equipped-avatar scene and health/defeat states integrated for real Calendar Kraken encounters. Four detailed bosses selectable in practice. No server task/reward changes.
+
+Flutter Check 36832432976 and Preview 36832432820 succeeded. Added Kraken art/taunt/skip/reduced-motion/defeat coverage alongside existing tests. Browser verified rise/settle frames, clear avatar/dialogue spacing and typography, then three practice attacks produced zero HP, VICTORY and TIME RECLAIMED. Review: https://funszdidiot.github.io/questwell-app/?review=boss&boss=calendar_kraken&rev=7bb1d2e . Founder in-app review pending; real account rewards not exercised. No merge or launch. Male Wanderer cuffs remain deferred and unapproved.
+
 ## Spreadsheet Slime arcade entrance — 2026-10-01
 
 Founder approved Meeting Mimic ("Love it") and requested the next boss. Added Spreadsheet Slime in `b9d06308daebe403cc615986d035a3b0feba2576`: emerald jelly with parchment grids and brass counting frame, damped squash/stretch landing, "It worked in the other tab." taunt, shared equipped-avatar/health/defeat scene. Real Slime encounters use new renderer; practice selector supports all three detailed bosses. No server task/reward changes or idle animation ticker.
