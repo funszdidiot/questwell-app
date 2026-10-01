@@ -20,15 +20,15 @@ void main() {
       await tester.tap(find.text('Open')); await tester.pumpAndSettle();
       expect(find.byType(RadioListTile<String>), findsNWidgets(slug == 'hearth-fern' ? 3 : 2));
       if (slug == 'walnut-bookshelf') {
-        expect(find.text('Left wall · Empty'), findsOneWidget);
+        expect(find.text('Left wall'), findsOneWidget);
         expect(find.textContaining('updated placement choices'), findsOneWidget);
         await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
         expect(result?.slot, 'left');
         expect(result?.expectedOccupant, isNull);
       } else {
         if (slug == 'burgundy-reading-chair') {
-          expect(find.text('Left floor · Empty'), findsOneWidget);
-          expect(find.text('Right floor · Other item'), findsOneWidget);
+          expect(find.text('Left floor'), findsOneWidget);
+          expect(find.text('Right floor'), findsOneWidget);
         }
         await tester.tap(find.text('Cancel')); await tester.pumpAndSettle();
         expect(result, isNull);
@@ -48,6 +48,8 @@ void main() {
           occupants: {'right': const RoomOccupant('shelf','Walnut Bookshelf')});
       })))));
     await tester.tap(find.text('Open')); await tester.pumpAndSettle();
+    expect(find.text('Replaces Walnut Bookshelf'), findsOneWidget);
+    await tester.tap(find.text('Near the window')); await tester.pumpAndSettle();
     await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
     expect(find.text('Replace Walnut Bookshelf?'), findsOneWidget);
     await tester.tap(find.text('Keep current item')); await tester.pumpAndSettle();
@@ -55,6 +57,7 @@ void main() {
     await tester.tap(find.text('Cancel')); await tester.pumpAndSettle();
     expect(result, isNull);
     await tester.tap(find.text('Open')); await tester.pumpAndSettle();
+    await tester.tap(find.text('Near the window')); await tester.pumpAndSettle();
     await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
     await tester.tap(find.text('Replace item')); await tester.pumpAndSettle();
     expect(result?.slot, 'right'); expect(result?.expectedOccupant, 'shelf');

@@ -46,7 +46,7 @@ void main() {
     await tester.tap(find.text('Open')); await tester.pumpAndSettle();
     expect(find.byType(RadioListTile<String>), findsNWidgets(2));
     expect(find.byType(QuestwellWallArt), findsNWidgets(3));
-    await tester.tap(find.text('Right wall · Celestial Study')); await tester.pumpAndSettle();
+    await tester.tap(find.text('Right wall')); await tester.pumpAndSettle();
     expect(find.byType(QuestwellWallArt), findsNWidgets(2));
     expect(find.textContaining('above the bookshelf'), findsOneWidget);
     await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();

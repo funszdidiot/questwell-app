@@ -52,8 +52,8 @@ void main() {
         })))));
       await tester.tap(find.text('Open')); await tester.pumpAndSettle();
       expect(find.byType(RadioListTile<String>), findsNWidgets(hasShelf ? 2 : 1));
-      expect(find.text('Fireplace mantel · Empty'), findsOneWidget);
-      expect(find.text('On the bookcase · Empty'), hasShelf ? findsOneWidget : findsNothing);
+      expect(find.text('Fireplace mantel'), findsOneWidget);
+      expect(find.text('On the bookcase'), hasShelf ? findsOneWidget : findsNothing);
       expect(find.byType(QuestwellStarlitOrrery), findsOneWidget);
       await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
       expect(result?.slot, hasShelf ? 'bookshelf_top' : 'mantel');
