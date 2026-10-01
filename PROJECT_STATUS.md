@@ -4,6 +4,25 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Market animation pass — 2026-09-30
+
+Founder approved the cleaned-up Market controls at 8:52 p.m. America/Chicago,
+then approved gentle lantern flicker, occasional potion glints, and purchase
+feedback. The storefront/sign remain still. Ambient paint accents stop for
+reduced-motion settings and muted routes. Confirmed ownership transitions
+trigger a short gold card glow; balance updates ease to their confirmed value
+without announcing intermediate values to assistive technology. Reduced motion
+shows final values immediately and removes decorative motion. Purchase success
+messages say the item was added to inventory.
+
+**Development build:** `959f0ace5171fd430c67b8094b7b15469d50fbe5`.
+Flutter Check `36803484709` and Preview `36803484849` passed. New tests verify
+ambient stop/resume, muted routes, intermediate/final coin values, confirmed
+ownership glow, no glow without ownership changes, and reduced-motion behavior.
+Browser frames confirmed localized lighting changes; sample purchase moved
+650 to 560 coins and two to three owned items. No founder account was changed.
+Development preview only; no merge, external beta or launch.
+
 ## Market browsing controls — 2026-09-30
 
 Founder-approved shopfront retained. Search and filters now share one compact
