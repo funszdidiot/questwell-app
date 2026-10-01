@@ -18,6 +18,19 @@ void main() {
       expect(path.contains(const Offset(90,250)),isFalse,reason:'Keep lower cloak over outfit');
     }
   });
+  test('Cloaks occlude class collar and epaulettes while keeping torso and cuffs', () {
+    for (final body in ['female','male','neutral']) {
+      final path = QuestwellCloakUnderlayerClipper(body).getClip(const Size(240,320));
+      expect(path.contains(const Offset(120,82)),isFalse,reason:'No competing class collar');
+      expect(path.contains(const Offset(80,103)),isFalse,reason:'Left shoulder trim stays tucked');
+      expect(path.contains(const Offset(160,103)),isFalse,reason:'Right shoulder trim stays tucked');
+      expect(path.contains(const Offset(120,150)),isTrue);
+      expect(path.contains(const Offset(70,180)),isTrue);
+      expect(path.contains(const Offset(170,180)),isTrue);
+      final front = QuestwellCloakForegroundClipper(body).getClip(const Size(240,320));
+      expect(front.contains(const Offset(120,81)),isFalse,reason:'No restored shirt strip over cloak');
+    }
+  });
   testWidgets('Both cloaks load on every supported class and body without hiding base layers', (tester) async {
     for (final slug in ['moss-green-cloak','hearthguard-mantle']) {
       final classes=slug=='hearthguard-mantle'?['guardian']:['scholar','scout','alchemist','guardian','wanderer'];

@@ -201,13 +201,20 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final body = ['male', 'female'].contains(avatarBodyType)
         ? avatarBodyType : 'neutral';
 
+    Widget classLayer(String asset) {
+      final image = _assetLayer(asset);
+      return QuestwellCloak.supports(equippedSlugs['chest'])
+          ? ClipPath(clipper: QuestwellCloakUnderlayerClipper(body), child: image)
+          : image;
+    }
+
     return RepaintBoundary(
       child: Stack(
         clipBehavior: Clip.none,
         fit: StackFit.expand,
         children: [
           if (classOverlay != null)
-            _assetLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
+            classLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body, rear: true),
           if (QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body, rear: true),
@@ -251,12 +258,12 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
                 ),
               ),
             ),
-          if (classOverlay != null) _assetLayer(classOverlay),
+          if (classOverlay != null) classLayer(classOverlay),
           if (QuestwellCloak.supports(equippedSlugs['chest'])) ...[
             QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body),
             QuestwellCloakForeground(body: body, children: [
               _assetLayer(_baseAsset),
-              if (classOverlay != null) _assetLayer(classOverlay),
+              if (classOverlay != null) classLayer(classOverlay),
             ]),
           ],
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body),

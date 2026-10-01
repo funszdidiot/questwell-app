@@ -62,7 +62,7 @@ class QuestwellCloakForegroundClipper extends CustomClipper<Path> {
     final scale=math.min(size.width/240,size.height/320);
     final left=(size.width-240*scale)/2, top=size.height-320*scale;
     final female=body=='female';
-    final path=Path()..addRect(Rect.fromLTRB(0,0,240,female?82:79));
+    final path=Path()..addRect(Rect.fromLTRB(0,0,240,female?76:75));
     // The sleeves emerge below the shoulder cape. Follow the angled forearms,
     // not a horizontal cut across the entire cloak.
     if (female) {
@@ -139,4 +139,29 @@ class _CloakContactShadow extends CustomPainter {
   }
   @override
   bool shouldRepaint(covariant _CloakContactShadow oldDelegate) => oldDelegate.body!=body;
+}
+
+/// The outer cloak replaces class lapels and epaulettes. Preserve the central
+/// outfit and sleeves, but tuck its shoulder silhouette beneath the capelet.
+class QuestwellCloakUnderlayerClipper extends CustomClipper<Path> {
+  const QuestwellCloakUnderlayerClipper(this.body);
+  final String body;
+  @override
+  Path getClip(Size size) {
+    final scale = math.min(size.width/240,size.height/320);
+    final dx = (size.width-240*scale)/2, dy = size.height-320*scale;
+    final female = body=='female';
+    final path = Path()
+      ..moveTo(106,94)..lineTo(136,94)
+      ..quadraticBezierTo(145,102,female ? 153 : 155,123)
+      ..lineTo(female ? 159 : 163,135)
+      ..lineTo(240,139)..lineTo(240,320)..lineTo(0,320)
+      ..lineTo(0,139)..lineTo(female ? 78 : 74,135)
+      ..lineTo(female ? 84 : 82,123)
+      ..quadraticBezierTo(96,102,106,94)..close();
+    return path.transform((Matrix4.identity()..scale(scale,scale)).storage)
+      .shift(Offset(dx,dy));
+  }
+  @override
+  bool shouldReclip(covariant QuestwellCloakUnderlayerClipper oldClipper) => oldClipper.body!=body;
 }
