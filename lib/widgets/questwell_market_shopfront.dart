@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'questwell_typography.dart';
+import 'questwell_market_motion.dart';
 
 /// Illustrated fantasy shopfront with a live, accessible title overlay.
 /// Keep the sign and supporting copy as real text for accessibility and scaling.
@@ -21,6 +22,7 @@ class QuestwellMarketShopfront extends StatelessWidget {
           Positioned.fill(child: ExcludeSemantics(child:
             Image.asset('assets/images/questwell_market_shopfront_v3.webp',
               fit: BoxFit.contain, filterQuality: FilterQuality.medium))),
+          const Positioned.fill(child:QuestwellMarketAmbience()),
           Positioned(left: constraints.maxWidth * .30,
             right: constraints.maxWidth * .30,
             top: constraints.maxHeight * .32,
@@ -43,9 +45,7 @@ class QuestwellMarketShopfront extends StatelessWidget {
               Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(color: const Color(0xFF102420),
                   border: Border.all(color: const Color(0xFF61745B))),
-                child: Text('◈  $coins coins', style: QuestwellTypography.body(
-                  color: const Color(0xFFE0BF79), fontWeight: FontWeight.w700,
-                  fontSize: 16))),
+                child: QuestwellCoinBalance(coins:coins)),
               Text('$owned / $total collected', style: QuestwellTypography.body(
                 color: const Color(0xFFBBC6B4), fontSize: 12)),
             ]),

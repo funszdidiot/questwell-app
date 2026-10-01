@@ -38,7 +38,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            '${cosmetic.name} unlocked. $remaining coins remain.',
+            '${cosmetic.name} added to inventory. $remaining coins remain.',
           ),
           behavior: SnackBarBehavior.floating,
         ),

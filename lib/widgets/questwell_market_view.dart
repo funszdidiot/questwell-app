@@ -5,6 +5,7 @@ import 'questwell_pixel_art.dart';
 import 'questwell_hearth_decor.dart';
 import 'questwell_typography.dart';
 import 'questwell_market_shopfront.dart';
+import 'questwell_market_motion.dart';
 
 class QuestwellMarketView extends StatefulWidget {
   const QuestwellMarketView({super.key,required this.data,required this.onPurchase,
@@ -111,7 +112,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
         const Icon(Icons.search_off,color:gold,size:32),const SizedBox(height:12),Text('No treasures match these filters.',style:QuestwellTypography.body(color:cream)),
         TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control()),onPressed:()=>setState((){category='All';owned=false;affordable=false;myClass=true;query='';searchController.clear();}),child:Text('Reset filters'))])),
       LayoutBuilder(builder:(context,constraints){final width=constraints.maxWidth>650?(constraints.maxWidth-14)/2:constraints.maxWidth;
-        return Wrap(spacing:14,runSpacing:12,children:[for(final i in items) SizedBox(width:width,child:card(i))]);}),
+        return Wrap(spacing:14,runSpacing:12,children:[for(final i in items) SizedBox(key:ValueKey(i.id),width:width,child:QuestwellPurchaseGlow(owned:i.owned,child:card(i)))]);}),
       const SizedBox(height:22),Text('Coins come from your quests. Every purchase stays in your inventory.',textAlign:TextAlign.center,style:QuestwellTypography.body(color:muted,fontSize:12,height:1.5)),
     ]));
   }
