@@ -55,29 +55,36 @@ class _ScholarCuffPainter extends CustomPainter {
       // A tapered sleeve flows into a cylindrical cuff. The front edge dips
       // below the side returns; the dark opening remains above the knuckles.
       final sleeve = Path()..moveTo(3, -4)..lineTo(21, -4)
-        ..lineTo(24, 10)..quadraticBezierTo(24, 12, 22, 13)
-        ..quadraticBezierTo(12, 16, 2, 13)
-        ..quadraticBezierTo(0, 12, 0, 10)..close();
+        ..lineTo(22, 10)..quadraticBezierTo(22, 12, 20.5, 13)
+        ..quadraticBezierTo(12, 15.5, 3.5, 13)
+        ..quadraticBezierTo(2, 12, 2, 10)..close();
       canvas.drawPath(sleeve, Paint()..shader = const LinearGradient(
         colors: [Color(0xFF17152D), Color(0xFF393752), Color(0xFF29243E), Color(0xFF151225)],
         stops: [0, .32, .68, 1],
       ).createShader(const Rect.fromLTWH(0, 0, 24, 15)));
+      // Low-contrast cloth folds break up the smooth cuff surface.
+      canvas.drawPath(Path()..moveTo(6, -2)..quadraticBezierTo(5.5, 3, 7, 7),
+        Paint()..style = PaintingStyle.stroke..strokeWidth = .7
+          ..color = const Color(0x304D4765));
+      canvas.drawPath(Path()..moveTo(18, -1)..quadraticBezierTo(19, 3, 17.5, 8),
+        Paint()..style = PaintingStyle.stroke..strokeWidth = .8
+          ..color = const Color(0x40201A32));
       // Recessed lining and front lip occlude the wrist instead of ending flat.
-      canvas.drawOval(const Rect.fromLTWH(1, 10, 22, 5), Paint()..color = const Color(0xFF100E1E));
+      canvas.drawOval(const Rect.fromLTWH(3, 10, 18, 4.5), Paint()..color = const Color(0xFF100E1E));
       for (final y in [6.0, 10.8]) {
-        final trim = Path()..moveTo(.8, y)..cubicTo(5, y + curve, 19, y + curve, 23.2, y);
-        canvas.drawPath(trim, Paint()..style = PaintingStyle.stroke..strokeWidth = 2.2
+        final trim = Path()..moveTo(2.8, y)..cubicTo(6, y + curve, 18, y + curve, 21.2, y);
+        canvas.drawPath(trim, Paint()..style = PaintingStyle.stroke..strokeWidth = 1.8
           ..color = const Color(0xFF694523));
-        canvas.drawPath(trim, Paint()..style = PaintingStyle.stroke..strokeWidth = 1.1
-          ..shader = const LinearGradient(colors: [Color(0xFF947039), Color(0xFFF0D287), Color(0xFFC89943), Color(0xFF75502C)],
+        canvas.drawPath(trim, Paint()..style = PaintingStyle.stroke..strokeWidth = .85
+          ..shader = const LinearGradient(colors: [Color(0xFF80653C), Color(0xFFC6AE78), Color(0xFFA48751), Color(0xFF695331)],
             stops: [0, .35, .7, 1]).createShader(const Rect.fromLTWH(0, 0, 24, 15)));
       }
       final star = Path()..moveTo(12, 5.5)..lineTo(13, 8.2)..lineTo(15, 9.2)
         ..lineTo(13, 10.2)..lineTo(12, 12.5)..lineTo(11, 10.2)
         ..lineTo(9, 9.2)..lineTo(11, 8.2)..close();
-      canvas.drawPath(star, Paint()..color = const Color(0xFFD5AD5F));
+      canvas.drawPath(star, Paint()..color = const Color(0xFFB49A66));
       canvas.drawLine(const Offset(12, 7), const Offset(12, 10.5),
-        Paint()..strokeWidth = .6..color = const Color(0xFFF6DB96));
+        Paint()..strokeWidth = .45..color = const Color(0xFFD0BA86));
       // Feather into the original sleeve texture over five source pixels.
       // This retains the cloth folds instead of leaving a straight patch seam.
       canvas.drawRect(const Rect.fromLTWH(-1, -5, 26, 22), Paint()
