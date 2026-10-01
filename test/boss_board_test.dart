@@ -34,9 +34,10 @@ void main() {
       'calendar_kraken': ['kraken-observatory-arena', 'questwell_kraken_observatory_v1.webp'],
       'printer_poltergeist': ['printer-printworks-arena', 'questwell_printer_printworks_v1.webp'],
       'notification_swarm': ['swarm-belltower-arena', 'questwell_swarm_belltower_v1.webp'],
+      'ticket_troll': ['troll-cavern-arena', 'questwell_troll_cavern_v1.webp'],
     };
     for (final width in [320.0, 560.0]) {
-      for (final type in [...stages.keys, 'ticket_troll', 'update_dragon']) {
+      for (final type in [...stages.keys, 'update_dragon']) {
         await tester.pumpWidget(MaterialApp(home: MediaQuery(
           data: const MediaQueryData(disableAnimations: true, textScaler: TextScaler.linear(1.5)),
           child: Center(child: SizedBox(width: width, child: QuestwellBossEncounter(
@@ -56,10 +57,12 @@ void main() {
         }
         expect(tester.getRect(find.byKey(const ValueKey('boss-dialogue'))).bottom,
           lessThanOrEqualTo(tester.getTopLeft(find.byKey(const ValueKey('boss-arena'))).dy));
-        if (type == 'notification_swarm') {
-          final swarm = find.byWidgetPredicate((widget) => widget is Image &&
-            widget.semanticLabel == 'Notification Swarm, mischievous winged bells and sealed messages');
-          expect(tester.getTopLeft(swarm).dy,
+        if (type == 'notification_swarm' || type == 'ticket_troll') {
+          final boss = find.byWidgetPredicate((widget) => widget is Image &&
+            widget.semanticLabel == (type == 'ticket_troll'
+              ? 'Ticket Troll, a grumpy mossy stone clerk holding a stamp and a stack of requests'
+              : 'Notification Swarm, mischievous winged bells and sealed messages'));
+          expect(tester.getTopLeft(boss).dy,
             greaterThanOrEqualTo(tester.getTopLeft(find.byKey(const ValueKey('boss-arena'))).dy));
         }
         expect(tester.takeException(), isNull);
