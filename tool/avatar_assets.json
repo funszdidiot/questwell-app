@@ -399,6 +399,20 @@
           "sha256": "9f01b8760bec36d624f46524ce133794ffac4f4c71b7978a4123bac9d1054c75"
         }
       ]
+    },
+    "wanderer_wrist_fit_v3": {
+      "visual_approval": "pending_founder_review",
+      "description": "Tapered male and neutral sleeve ends registered to wrist centers; female v2 retained.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_short_v3.webp",
+          "sha256": "c894f2fcbc89790a4fe771f243924053541875e66c93fcf99fec408df4132b86"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_neutral_short_v3.webp",
+          "sha256": "212874a70253311fb5add0a4ea4208211c6e4855d506a63601d2db1527a21af3"
+        }
+      ]
     }
   },
   "approved_layers": {

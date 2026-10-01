@@ -10,7 +10,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   for (final body in ['female', 'male', 'neutral']) {
     test('$body short coat leaves lower legs clear and retains sleeve ends', () async {
-      final data = await rootBundle.load('assets/images/questwell/avatar/classes/wanderer/wanderer_coat_${body}_short_v2.webp');
+      final data = await rootBundle.load('assets/images/questwell/avatar/classes/wanderer/wanderer_coat_${body}_short_${body == 'female' ? 'v2' : 'v3'}.webp');
       final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
       final image = (await codec.getNextFrame()).image;
       codec.dispose();
@@ -39,7 +39,7 @@ void main() {
         expect(find.byType(QuestwellWandererCuffs), findsNothing);
         final images = tester.widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName).toList();
-        expect(images.any((path) => path.contains('wanderer_coat_${body}_short_v2')), chest != 'starter-business-suit');
+        expect(images.any((path) => path.contains('wanderer_coat_${body}_short_${body == 'female' ? 'v2' : 'v3'}')), chest != 'starter-business-suit');
         expect(images.any((path) => path.contains('wanderer_rear_${body}_wrap_v2')), isFalse);
         expect(tester.takeException(), isNull);
       }
