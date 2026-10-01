@@ -4,12 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'questwell_pixel_art.dart';
 
-/// First detailed encounter. This layer never writes progress or awards rewards.
+/// Detailed boss encounters. This layer never writes progress or awards rewards.
 class QuestwellBossEncounter extends StatefulWidget {
   const QuestwellBossEncounter({super.key, required this.encounterId,
-    this.progress = 0, this.defeated = false, this.persistEntrance = true,
+    this.bossType = 'inbox_hydra', this.progress = 0, this.defeated = false, this.persistEntrance = true,
     this.archetype = 'wanderer', this.body = 'neutral', this.equipment = const {}});
   final String encounterId;
+  final String bossType;
   final double progress;
   final bool defeated;
   final bool persistEntrance;
@@ -22,7 +23,9 @@ class QuestwellBossEncounter extends StatefulWidget {
 
 class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
     with SingleTickerProviderStateMixin {
-  static const taunt = 'You said you’d do it tomorrow.';
+  bool get _mimic => widget.bossType == 'meeting_mimic';
+  String get _name => _mimic ? 'MEETING MIMIC' : 'INBOX HYDRA';
+  String get taunt => _mimic ? 'This could have been an email.' : 'You said you’d do it tomorrow.';
   static final _seen = <String>{};
   late final AnimationController _intro = AnimationController(
     vsync: this, duration: const Duration(milliseconds: 3200))
@@ -66,8 +69,10 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
   void dispose() { _intro.dispose(); super.dispose(); }
   @override
   Widget build(BuildContext context) {
-    final sprite = RepaintBoundary(child: Image.asset('assets/images/questwell_inbox_hydra_v1.webp',
-      fit: BoxFit.contain, semanticLabel: 'Inbox Hydra, a three-headed serpent guarding a pile of letters'));
+    final sprite = RepaintBoundary(child: Image.asset(_mimic ? 'assets/images/questwell_meeting_mimic_v1.webp' : 'assets/images/questwell_inbox_hydra_v1.webp',
+      fit: BoxFit.contain, semanticLabel: _mimic
+        ? 'Meeting Mimic, an enchanted burgundy conference chair with a toothy grin'
+        : 'Inbox Hydra, a three-headed serpent guarding a pile of letters'));
     final avatar = RepaintBoundary(child: QuestwellLayeredAdventurerArt(
       archetype: widget.archetype, avatarBodyType: widget.body, equippedSlugs: widget.equipment));
     return AnimatedBuilder(animation: _intro, builder: (context, _) {
@@ -75,7 +80,8 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
       final arriving = t < 1;
       final slide = Curves.easeOutCubic.transform(((t - .15) / .28).clamp(0.0, 1.0));
       final land = ((t - .43) / .13).clamp(0.0, 1.0);
-      final lift = _reduced ? 0.0 : -math.sin(land * math.pi) * 9;
+      final lift = _reduced ? 0.0 : -math.sin(land * math.pi) * (_mimic ? 25 : 9);
+      final wobble = _reduced || !_mimic ? 0.0 : math.sin(land * math.pi * 3) * (1 - land) * .07;
       final letters = (((t - .53) / .30).clamp(0.0, 1.0) * taunt.length).floor();
       final hp = widget.defeated ? 0.0 : (1 - widget.progress).clamp(0.0, 1.0);
       final fill = ((t - .82) / .16).clamp(0.0, 1.0);
@@ -83,7 +89,7 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
         Container(padding: const EdgeInsets.all(12), decoration: BoxDecoration(
           color: const Color(0xFF1E2029), border: Border.all(color: const Color(0xFFB99855), width: 2)),
           child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Text(widget.defeated ? 'INBOX HYDRA · DEFEATED' : 'INBOX HYDRA',
+            Text(widget.defeated ? '$_name · DEFEATED' : _name,
               style: GoogleFonts.pressStart2p(fontSize: 11, height: 1.5, color: const Color(0xFFF1D79B))),
             const SizedBox(height: 9),
             Semantics(label: 'Boss health ${(hp * 100).round()} percent',
@@ -104,7 +110,7 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                   Positioned(right: width * .01, bottom: 23, width: width * .59, height: 230,
                     child: Transform.translate(offset: Offset((1 - slide) * (width + 40), lift),
                       child: AnimatedOpacity(duration: Duration(milliseconds: _reduced ? 0 : 650),
-                        opacity: widget.defeated ? .15 : 1, child: sprite))),
+                        opacity: widget.defeated ? .15 : 1, child: Transform.rotate(angle: wobble, child: sprite)))),
                   if (t >= .53 && !widget.defeated)
                     Positioned(top: 19, left: 14, right: 14, child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end, children: [

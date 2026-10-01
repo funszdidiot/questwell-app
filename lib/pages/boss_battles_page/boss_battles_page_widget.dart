@@ -614,10 +614,11 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (battle.bossType == 'inbox_hydra')
+                      if (const ['inbox_hydra', 'meeting_mimic'].contains(battle.bossType))
                         QuestwellBossEncounter(
                           key: ValueKey('encounter-${battle.id}'),
                           encounterId: battle.id,
+                          bossType: battle.bossType,
                           progress: battle.progress,
                           defeated: battle.completed,
                           archetype: _appearance?.profile.adventurerArchetype ?? 'wanderer',
@@ -698,7 +699,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                         ],
                       ),
                       const SizedBox(height: 7),
-                      if (battle.bossType != 'inbox_hydra') QuestwellPixelMeter(
+                      if (!const ['inbox_hydra', 'meeting_mimic'].contains(battle.bossType)) QuestwellPixelMeter(
                         value: battle.completed ? 0 : 1 - battle.progress,
                         kind: 'hp',
                         height: 18,

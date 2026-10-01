@@ -9,9 +9,9 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
   Widget scene({String id = 'sample', bool reduced = false, bool persist = false,
-      double progress = 0, bool defeated = false}) => MaterialApp(home: MediaQuery(
+      double progress = 0, bool defeated = false, String type = 'inbox_hydra'}) => MaterialApp(home: MediaQuery(
     data: MediaQueryData(disableAnimations: reduced), child: Center(child: SizedBox(width: 360,
-      child: QuestwellBossEncounter(encounterId: id, persistEntrance: persist,
+      child: QuestwellBossEncounter(encounterId: id, persistEntrance: persist, bossType: type,
         progress: progress, defeated: defeated)))));
   testWidgets('Entrance reaches dialogue and YOUR MOVE, with health from task progress', (tester) async {
     await tester.pumpWidget(scene());
@@ -22,6 +22,22 @@ void main() {
     await tester.pumpWidget(scene(progress: 1 / 3));
     expect(tester.widget<QuestwellPixelMeter>(find.byType(QuestwellPixelMeter)).value, closeTo(2 / 3, .001));
     expect(find.text('BOSS APPROACHING'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets('Meeting Mimic uses its own art and taunt, with reduced motion and defeat', (tester) async {
+    await tester.pumpWidget(scene(id: 'mimic', type: 'meeting_mimic'));
+    expect(find.text('MEETING MIMIC'), findsOneWidget);
+    expect(find.text('BOSS APPROACHING'), findsOneWidget);
+    await tester.pumpAndSettle();
+    expect(find.text('This could have been an email.'), findsOneWidget);
+    expect(find.text('You said you’d do it tomorrow.'), findsNothing);
+    expect(find.byWidgetPredicate((w) => w is Image && w.image is AssetImage &&
+      (w.image as AssetImage).assetName.endsWith('questwell_meeting_mimic_v1.webp')), findsOneWidget);
+    await tester.pumpWidget(scene(id: 'mimic', type: 'meeting_mimic', reduced: true, progress: 1, defeated: true));
+    await tester.pumpAndSettle();
+    expect(find.text('MEETING MIMIC · DEFEATED'), findsOneWidget);
+    expect(find.text('VICTORY'), findsOneWidget);
+    expect(tester.binding.hasScheduledFrame, isFalse);
     expect(tester.takeException(), isNull);
   });
   testWidgets('Skip persists and does not replay after remount', (tester) async {
