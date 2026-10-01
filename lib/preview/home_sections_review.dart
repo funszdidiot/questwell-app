@@ -1,7 +1,6 @@
 import '../widgets/questwell_app_navigation.dart';
 import 'package:flutter/material.dart';
 import 'review_loadout.dart';
-import '../widgets/questwell_mastery_relic.dart';
 import '../widgets/questwell_home_sections.dart';
 import '../widgets/questwell_pixel_art.dart';
 import '../widgets/questwell_home_overview.dart';
@@ -21,10 +20,6 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
     final value = widget.loadout?.archetype ?? 'scout';
     return value[0].toUpperCase() + value.substring(1);
   }
-  String _roomSlug(String id) => QuestwellMasteryRelic.supports(id) ? id : switch (id) {
-    'bookshelf' => 'walnut-bookshelf', 'fern' => 'hearth-fern',
-    'chair' => 'burgundy-reading-chair', 'table' => 'walnut-reading-table', _ => id,
-  };
   @override
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false,
@@ -47,8 +42,7 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
           QuestwellHearthPixelScene(height: 342,
             archetype: widget.loadout?.archetype ?? 'scout', avatarBodyType: widget.loadout?.body ?? 'neutral',
             showRelic: widget.loadout?.mastered.contains(widget.loadout?.archetype) ?? false,
-            equippedSlugs: {for (final entry in (widget.loadout?.roomSlots ?? <String, String>{}).entries)
-              'room:${entry.value}': _roomSlug(entry.key)}),
+            equippedSlugs: widget.loadout?.equipment ?? const {}),
           const SizedBox(height: 16),
           QuestwellHomeCharacter(archetype: widget.loadout?.archetype ?? 'scout',
             className: _classLabel,

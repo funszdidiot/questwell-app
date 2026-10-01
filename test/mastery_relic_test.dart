@@ -22,7 +22,8 @@ void main() {
   testWidgets('Immediate Adventurer to Hearth uses the selected class and body', (tester) async {
     await tester.binding.setSurfaceSize(const Size(1000, 900));
     addTearDown(() => tester.binding.setSurfaceSize(null));
-    await tester.pumpWidget(const MobileReviewApp(initialScreen: 'Adventurer'));
+    await tester.pumpWidget(const MediaQuery(data: MediaQueryData(disableAnimations: true),
+      child: MobileReviewApp(initialScreen: 'Adventurer')));
     await tester.pumpAndSettle();
     await reveal(tester, 'Male');
     await tester.tap(find.widgetWithText(ChoiceChip,'Male')); await tester.pumpAndSettle();
@@ -37,7 +38,8 @@ void main() {
   testWidgets('Mastery claim, placement, and first return to Hearth share one relic', (tester) async {
     await tester.binding.setSurfaceSize(const Size(1000, 900));
     addTearDown(() => tester.binding.setSurfaceSize(null));
-    await tester.pumpWidget(const MobileReviewApp(initialScreen: 'Adventurer', masteryPreview: true));
+    await tester.pumpWidget(const MediaQuery(data: MediaQueryData(disableAnimations: true),
+      child: MobileReviewApp(initialScreen: 'Adventurer', masteryPreview: true)));
     await tester.pumpAndSettle();
     await reveal(tester, 'Guardian');
     await tester.tap(find.widgetWithText(ChoiceChip,'Guardian')); await tester.pumpAndSettle();
