@@ -86,6 +86,7 @@ void main() {
         'assets/images/questwell_hydra_mailroom_v1.webp'));
     expect(tester.takeException(), isNull);
     await tester.ensureVisible(find.byKey(const ValueKey('select-b')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('select-b')));
     await tester.pumpAndSettle();
     expect(background, findsNothing);
@@ -109,12 +110,14 @@ void main() {
     expect(find.byType(QuestwellBossEncounter), findsOneWidget);
     expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
     await tester.ensureVisible(find.byKey(const ValueKey('select-b')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('select-b'))); await tester.pumpAndSettle();
     expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
     await tester.pumpWidget(page([battle('a'), battle('b', won: true)])); await tester.pumpAndSettle();
     expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
     expect(find.byType(QuestwellBossVictoryPanel), findsOneWidget);
     await tester.ensureVisible(find.text('Choose next battle'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Choose next battle')); await tester.pumpAndSettle();
     expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
     expect(tester.takeException(), isNull);
@@ -127,6 +130,7 @@ void main() {
     await tester.pumpWidget(page([battle('a'), battle('b')]));
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(find.byKey(const ValueKey('select-b')), 200);
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('select-b')));
     await tester.pumpAndSettle();
     await tester.drag(find.byType(ListView), const Offset(0, -400));
@@ -143,6 +147,7 @@ void main() {
 
     // A later refresh must respect a manual selection, not reopen the created battle.
     await tester.scrollUntilVisible(find.byKey(const ValueKey('select-a')), 200);
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('select-a')));
     await tester.pumpAndSettle();
     await tester.pumpWidget(page([battle('a'), battle('b'), battle('c')], selected: 'c'));
@@ -165,6 +170,7 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize); addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(page([battle('a')], busy: 'a-1')); await tester.pump();
     await tester.ensureVisible(find.text('Later attacks · 1'));
+    await tester.pump();
     await tester.tap(find.text('Later attacks · 1'));
     await tester.pump(const Duration(milliseconds: 300));
     final attack = find.widgetWithText(FilledButton, 'Attack');
@@ -199,6 +205,7 @@ void main() {
     final primary = find.widgetWithText(FilledButton, 'Attack');
     expect(tester.getSize(primary).height, greaterThanOrEqualTo(48));
     await tester.ensureVisible(primary);
+    await tester.pumpAndSettle();
     await tester.tap(primary);
     expect(attacked, 'step-1');
     await tester.pumpWidget(focused(2));
@@ -206,14 +213,17 @@ void main() {
     expect(find.byKey(const ValueKey('attack-step-1')), findsNothing);
     expect(find.byKey(const ValueKey('attack-step-2')), findsOneWidget);
     await tester.ensureVisible(find.text('Later attacks · 17'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Later attacks · 17'));
     await tester.pumpAndSettle();
     await tester.scrollUntilVisible(find.byKey(const ValueKey('attack-step-19')), 400);
     final later = find.descendant(of: find.byKey(const ValueKey('attack-step-19')), matching: find.byType(FilledButton));
     await tester.ensureVisible(later);
+    await tester.pumpAndSettle();
     await tester.tap(later);
     expect(attacked, 'step-19');
     await tester.ensureVisible(find.text('Completed attacks · 2'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Completed attacks · 2'));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('attack-step-0')), findsOneWidget);

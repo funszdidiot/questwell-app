@@ -91,11 +91,13 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
           Expanded(child: Text('BOSS BATTLES', style: QuestwellTypography.sectionHeading(size: 14))),
           const QuestwellNavPixelIcon(kind: 'boss', size: 28),
         ]),
-        Row(children: [
-          Expanded(child: Text('${open.length} active · ${won.length} defeated',
-            style: QuestwellTypography.body(fontSize: 12, color: _muted))),
+        Wrap(alignment: WrapAlignment.spaceBetween, crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 12, runSpacing: 4, children: [
+          Text('${open.length} active · ${won.length} defeated',
+            style: QuestwellTypography.body(fontSize: 12, color: _muted)),
           TextButton.icon(onPressed: widget.onCreate, icon: const Icon(Icons.add, size: 18),
-            style: TextButton.styleFrom(foregroundColor: _gold, minimumSize: const Size(48, 48)),
+            style: TextButton.styleFrom(foregroundColor: _gold, minimumSize: const Size(48, 48),
+              textStyle: QuestwellTypography.body(fontSize: 14)),
             label: const Text('Start a battle')),
         ]),
         const SizedBox(height: 8),
