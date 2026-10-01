@@ -4,6 +4,21 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Market shopfront balance — 2026-09-30
+
+Founder rejected the primitive storefront, then requested a middle ground
+after seeing the ornate illustrated direction. The new v3 uses a compact
+2:1 pixel-art façade with a draped green awning, warm lanterns, a simple brass
+and walnut sign, and a few potions, books, and crystals. The real MARKET label
+is fitted to the sign; tagline, coins, filters, and equipment stay unchanged.
+The artwork is pending founder review, not assumed approved.
+
+**Development build:** `4491a21975cd16aca2aa885ea73cbd85f7383f07`.
+Flutter Check `36802061217` and Preview `36802061193` passed. Existing
+320 px enlarged-text layout coverage passed; browser review confirmed the
+illustration loaded and the live title fits the sign. No merge or launch.
+Art provenance and prompt: `docs/art/MARKET_SHOPFRONT_V3.md`.
+
 ## Fantasy Market shopfront — 2026-09-30
 
 Founder requested a shopfront header in the fantasy / retro style. Replaced the
