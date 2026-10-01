@@ -4,6 +4,19 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Market motion visibility correction — 2026-09-30
+
+Founder could not perceive the initial ambient animation. Increased the slow
+lantern glow range, added a small moving flame inside each lamp, and replaced
+the sparse glint with alternating potion bubbles every three seconds. The
+sign and storefront remain fixed. Reduced-motion and route muting still apply.
+
+**Development build:** `ff5d073ffe40cd5b215d9b46ffecd9465a2a04ed`.
+Flutter Check `36804012653` and Preview `36804012675` passed. Browser review
+confirmed stronger glow/flame changes and a visible rising potion bubble.
+A short animated browser capture accompanies the review. Reduced motion
+remains respected. No merge, external beta or launch.
+
 ## Market animation pass — 2026-09-30
 
 Founder approved the cleaned-up Market controls at 8:52 p.m. America/Chicago,
