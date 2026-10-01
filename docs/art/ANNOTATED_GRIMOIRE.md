@@ -1,0 +1,13 @@
+# Annotated Grimoire — detailed equipped artwork
+
+Created 2026-09-30 America/Chicago using built-in image generation with transparent output.
+Source: `generated_images/exec-a94a1e90-30b1-4afe-aa56-0be8ecc4727d.png` (1024 × 1536 RGBA).
+Project asset: `assets/images/questwell_annotated_grimoire_v1.webp` (356 × 500, quality 92). Cropped with transparent padding at 984 × 1380 +32+80, then resized; alpha preserved.
+
+Three body-specific placements and a slight outward tilt position the upper cover beneath the existing hand. Both base and class cuff layers restore over the book using the existing hand clip. The production renderer suppresses held items in stale cloak loadouts; existing Market/Inventory confirmation and atomic equipment rules apply unchanged. No new account writes or changes to price/class restriction. The matching 16-bit icon uses plum, gold, ivory, red/blue tabs and a ribbon bookmark.
+
+Review route: `?review=grimoire`. Scholar-only, hands slot, rare, 160 coins. The fixture uses the shared renderer and cloak confirmation dialog without account writes.
+
+## Generation prompt
+
+Use case: stylized-concept. Asset type: ONE transparent equipped spellbook sprite for Questwell, a detailed 64-bit-era retro fantasy RPG. A compact CLOSED Annotated Grimoire, upright portrait proportions approximately 2:3, front cover facing the viewer almost straight on with a narrow view of the cream page block on the right and bottom and a sturdy spine on the left. Deep midnight plum leather, rich sculpted texture, restrained worn edges, warm aged gold corner guards, thin gold rules and a small elegant central sun-and-star medallion. Several tiny red and muted blue annotation tabs protrude from the right-side pages; a short burgundy ribbon bookmark peeks below. Uneven ivory page edges suggest a well-used scholar's field guide. Detailed hand-painted storybook RPG rendering, warmly lit from upper left, crisp clean edges, dimensional leather and brass, matching sophisticated 64-bit-style fantasy avatar equipment. The book will be carried down beside an avatar, gripped at its UPPER LEFT cover edge: keep the top left simple and unobstructed so the avatar's existing fingers can overlap it. Render ONLY the book: no hand, no person, no strap, no handle, no floating effects. Complete book and tabs entirely inside the canvas with modest transparent margins. Genuinely transparent background, no floor or background shadow, no panel or border, no legible lettering, no text, no watermark. Detailed painted sprite, not flat vector, not chunky 16-bit pixels, not a photorealistic product photograph.

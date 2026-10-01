@@ -113,8 +113,10 @@ class QuestwellItemIconPainter extends CustomPainter {
       panel(13,17,6,6,gold,cream,goldShade);r(15,18,2,3,woodDark);r(7,23,3,1,goldShade);r(22,23,3,1,goldShade);
       if(way){r(5,26,22,2,wood);r(14,13,4,4,wood);r(14,23,4,3,wood);r(5,9,22,3,cream);r(6,11,20,1,goldShade);r(8,8,2,5,wood);r(22,8,2,5,wood);r(25,9,2,3,gold);r(26,10,1,1,woodDark);}
     } else if(slug.contains('grimoire')||slug.contains('seal')) {
-      panel(7,4,20,24,purple,purple,purpleDark);r(8,5,3,22,goldShade);r(11,6,13,1,cream);r(12,25,12,1,cream);
+      final book = slug == 'annotated-grimoire';
+      panel(7,4,20,24,book?const Color(0xFF49344F):purple,book?const Color(0xFF79586E):purple,purpleDark);r(8,5,3,22,goldShade);r(11,6,13,1,cream);r(12,25,12,1,cream);
       r(25,8,3,4,red);r(25,16,4,3,blue);gem(16,12,gold);r(14,20,8,1,cream);r(15,22,5,1,gold);r(5,6,2,21,purpleDark);
+      if(book){r(23,5,3,2,gold);r(23,24,3,2,gold);r(12,27,3,4,redDark);r(13,27,1,3,red);star(17,14,gold);r(17,14,1,1,cream);}
     } else if(slug.contains('tonic')||slug.contains('phial')) {
       panel(12,3,8,5,wood,woodLight,woodDark);r(13,8,6,5,blue);r(9,13,14,3,ink);r(6,16,20,11,ink);r(9,27,14,2,ink);
       r(8,17,16,9,green);r(10,14,12,4,blue);r(10,24,12,3,greenDark);r(9,18,3,5,mint);r(10,16,2,3,cream);r(15,20,3,2,mint);r(20,22,2,1,cream);star(25,9,gold);

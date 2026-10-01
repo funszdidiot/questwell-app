@@ -6,6 +6,7 @@ import 'preview/market_review.dart';
 import 'preview/familiar_review.dart';
 import 'preview/cloak_review.dart';
 import 'preview/wayfarer_review.dart';
+import 'preview/grimoire_review.dart';
 import 'preview/milestone_roadmap_review.dart';
 import 'preview/hearth_polish_review.dart';
 import 'preview/hearth_decor_review.dart';
@@ -18,7 +19,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'wayfarer') {
+  if (Uri.base.queryParameters['review'] == 'grimoire') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const GrimoireReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'wayfarer') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const WayfarerReviewApp());
   } else if (Uri.base.queryParameters['review'] == 'cloaks') {

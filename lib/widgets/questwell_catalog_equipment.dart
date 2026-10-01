@@ -23,20 +23,10 @@ class _EquipmentPainter extends CustomPainter {
     final s=math.min(size.width/240,size.height/320);
     c.save();c.translate((size.width-240*s)/2,size.height-320*s);c.scale(s);
     final female=body=='female';
-    final y=female?-5.0:body=='male'?1.0:0.0;
     final p=Paint()..isAntiAlias=true;
     void fill(Path path,Color color){p.shader=null;p.style=PaintingStyle.fill;p.color=color;c.drawPath(path,p);}
     void line(Path path,Color color,double width){p.shader=null;p.style=PaintingStyle.stroke;p.strokeWidth=width;p.color=color;c.drawPath(path,p);p.style=PaintingStyle.fill;}
     if(rear){c.restore();return;}
-    if(items['hands']=='annotated-grimoire') {
-      final x=female?145.0:150.0;
-      p.color=const Color(0xFF34233D);c.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(x,182+y,31,40),const Radius.circular(2)),p);
-      p.color=const Color(0xFFDBCCAE);c.drawRect(Rect.fromLTWH(x+3,184+y,26,35),p);
-      p.color=const Color(0xFF624C78);c.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(x-1,181+y,28,37),const Radius.circular(2)),p);
-      line(Path()..moveTo(x+4,183+y)..lineTo(x+4,216+y),const Color(0xFFCFAD6E),2);
-      p.color=const Color(0xFFC5AE72);c.drawCircle(Offset(x+16,196+y),4,p);p.color=const Color(0xFFAF806F);c.drawRect(Rect.fromLTWH(x+26,189+y,5,4),p);
-      line(Path()..moveTo(x+10,207+y)..lineTo(x+23,207+y)..moveTo(x+12,211+y)..lineTo(x+21,211+y),const Color(0xFFD8C9A9),1);
-    }
     if(items['feet']=='pathfinder-boots') {
       for(final x in [female?89.0:88.0,female?140.0:141.0]) {
         final path=Path()..moveTo(x,259)..lineTo(x+16,259)..lineTo(x+18,288)..quadraticBezierTo(x+25,294,x+23,299)..lineTo(x-3,299)..lineTo(x-2,290)..close();
