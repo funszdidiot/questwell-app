@@ -15,7 +15,6 @@ import 'preview/boots_review.dart';
 import 'preview/milestone_roadmap_review.dart';
 import 'preview/hearth_polish_review.dart';
 import 'preview/hearth_decor_review.dart';
-import 'preview/quest_board_review.dart';
 import 'preview/home_sections_review.dart';
 import 'preview/adventurer_review.dart';
 import 'preview/equipment_review.dart';
@@ -86,7 +85,7 @@ void main() {
     runApp(QuestwellPreviewNavigationHost(child: const HearthReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'quests') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const QuestBoardReviewApp()));
+    runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'Quests')));
   } else if (Uri.base.queryParameters['review'] == 'home') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const HomeSectionsReviewApp()));

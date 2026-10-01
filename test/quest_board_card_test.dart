@@ -56,11 +56,14 @@ void main() {
     await tester.ensureVisible(all); await tester.pumpAndSettle();
     await tester.tap(all); await tester.pumpAndSettle();
     final create = find.text('New quest');
-    await tester.ensureVisible(create); await tester.pumpAndSettle();
+    await tester.dragUntilVisible(create.hitTestable(), find.byType(ListView),
+      const Offset(0, 180), maxIteration: 30); await tester.pumpAndSettle();
     await tester.tap(create); await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField), 'Take one small step');
     await tester.tap(find.text('Add quest')); await tester.pumpAndSettle();
     await tester.pump(const Duration(milliseconds: 400));
+    await tester.dragUntilVisible(find.text('Take one small step').hitTestable(), find.byType(ListView),
+      const Offset(0, -180), maxIteration: 60); await tester.pumpAndSettle();
     expect(find.text('Take one small step'), findsOneWidget);
     expect(find.byType(QuestwellQuestCard), findsNWidgets(4));
     expect(tester.takeException(), isNull);
