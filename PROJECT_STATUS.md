@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Market Home arrow — 2026-09-30
+
+Added a persistent gold left arrow with a Home label above the Market. It navigates directly to HomePage through GoRouter, including direct Market entry, and remains available during scrolling, loading, and errors. Uses a 48-pixel touch target and Go home tooltip. Shared button is also shown in the sample Market, where it opens the sample Home.
+
+**Development build:** `6d3f27ce90656d25570a144322a434761a82ccda`. Flutter Check `36808124753` and Preview `36808124824` passed. Browser confirmed the visible arrow and sample Home navigation. Authenticated production-route destination verified in code; no account interaction required. No merge or launch.
+
 ## Dragon smoke and animated Rainy Window — 2026-09-30
 
 Added a small three-puff smoke exhale at the dragon's nose, with upward drift, expansion, fading, and a pause between bursts. Smoke follows the existing breathing transform. Rainy Window now animates falling streaks and slower sliding beads within the registered glass panes. Wooden mullions and room artwork stay still. Reduced motion hides smoke and retains static rainy glass; hidden routes stop both timers.
