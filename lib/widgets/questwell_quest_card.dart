@@ -164,6 +164,8 @@ class QuestwellNoticeboard extends StatelessWidget {
 class _NoticeboardWoodPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
+    canvas.save();
+    canvas.clipRect(Offset.zero & size);
     final p = Paint()..color = const Color(0xFF493326);
     canvas.drawRect(Offset.zero & size, p);
     for (double y = 0; y < size.height; y += 82) {
@@ -177,6 +179,7 @@ class _NoticeboardWoodPainter extends CustomPainter {
         canvas.drawRect(Rect.fromLTWH(x, y + 18 + i * 11, 34, 1), p);
       }
     }
+    canvas.restore();
   }
   @override
   bool shouldRepaint(covariant _NoticeboardWoodPainter oldDelegate) => false;
