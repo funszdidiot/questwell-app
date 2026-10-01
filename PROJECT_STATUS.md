@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Moss Cloak collar redraw — 2026-09-30 America/Chicago
+
+Founder reported the Moss collar still looked wrong after the closed-drape change. The original bitmap had horizontal folds across its neck opening; clipping could not resolve that art defect. Used built-in image-generation edit mode to redraw the neckline as a clean V meeting a single leaf clasp, with a short joined wool section below it. New versioned asset: `assets/images/questwell_moss_cloak_v2.webp`. Equipped hand-coverage/swap rules and Hearthguard remain unchanged. Full prompt and provenance are in `docs/art/CLOAK_ART.md`.
+
+Verified development build `3d166a2c38d032c0e28d2c912e89196bc7fbbf6f`: Flutter Check 36813840313 and Preview 36813840360 passed. Browser inspected the Moss collar on female, male, and neutral in avatar/Hearth views, plus enlarged female neckline proof. The shirt collar is visible within the V as a continuous underlayer; the old crossing green bars are gone. Review: `?review=cloaks&rev=3d166a2`. Founder visual approval pending; no merge or launch.
+
 ## Closed cloaks and handheld equipment rule — 2026-09-30 America/Chicago
 
 Founder authorized cloaks covering the hands with no simultaneous carried item. Both cloak renders now keep arms and hands beneath continuous cloth; a body mask preserves approved head/hair/neck and legs. Satchel overlap uses the same class mask, so bags cannot restore an exposed arm. Stale conflicting render maps suppress held art while a cloak is present. Artwork files and 16-bit icons remain unchanged.

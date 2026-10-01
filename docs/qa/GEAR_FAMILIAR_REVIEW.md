@@ -91,3 +91,10 @@ Idempotent database change: `tool/qa/closed_cloak_loadout.sql` (applied). Synthe
 
 Verified development build `98bceba948cc631596e7b9eb4c6a91b367538ba4`: Flutter Check 36812933068 and Preview 36812933124 passed, including closed-hand masks, stale held-art suppression with satchel, conflict policy, dialog cancel/confirm, and supported cloak/class/body render coverage. Browser inspected both garments across all three bodies in avatar/Hearth views. Preview cancel, cloak-to-lantern, and lantern-to-cloak confirmation flows passed. Review: `?review=cloaks&rev=98bceba`, with Try holding a lantern. Founder visual approval pending; no merge, external beta, or launch.
 
+
+## Moss Cloak collar redraw — 2026-09-30 America/Chicago
+
+Founder reported the Moss collar still looked wrong after the closed-drape change. The original bitmap had horizontal folds across its neck opening; clipping could not resolve that art defect. Used built-in image-generation edit mode to redraw the neckline as a clean V meeting a single leaf clasp, with a short joined wool section below it. New versioned asset: `assets/images/questwell_moss_cloak_v2.webp`. Equipped hand-coverage/swap rules and Hearthguard remain unchanged. Full prompt and provenance are in `docs/art/CLOAK_ART.md`.
+
+Verified development build `3d166a2c38d032c0e28d2c912e89196bc7fbbf6f`: Flutter Check 36813840313 and Preview 36813840360 passed. Browser inspected the Moss collar on female, male, and neutral in avatar/Hearth views, plus enlarged female neckline proof. The shirt collar is visible within the V as a continuous underlayer; the old crossing green bars are gone. Review: `?review=cloaks&rev=3d166a2`. Founder visual approval pending; no merge or launch.
+
