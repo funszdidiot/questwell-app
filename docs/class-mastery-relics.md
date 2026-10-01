@@ -35,3 +35,12 @@ The account-free review continues to use sample ownership and local placement.
 
 2026-10-01 placement follow-up: extend the class-relic RPC whitelist to `front`,
 matching the founder's marked floor plan. Existing item and surface checks remain.
+
+2026-10-01 bookcase and placement follow-through:
+- Removing or replacing the last placed bookcase returns both milestone collectibles
+  and all five class relics from its top to inventory. Ownership is retained.
+- Moving the bookcase between supported floor slots keeps its collectible displayed.
+- Applied `return_all_unsupported_hearth_collectibles`; retained SQL is
+  `tool/qa/bookcase_collectible_support.sql`. Post-apply audit found no unsupported displays.
+- Save placement and Cancel stay outside the scrolling placement content.
+- Regression coverage includes all five preview relics and a 390×600 phone with 160% text.

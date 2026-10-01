@@ -69,7 +69,10 @@ class _RoomPickerState extends State<_RoomPicker> {
       ..['$prefix:$_slot'] = widget.slug;
     return Dialog(backgroundColor: const Color(0xFF111827), insetPadding: const EdgeInsets.all(12),
       child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 430),
-        child: SingleChildScrollView(child: Padding(padding: const EdgeInsets.all(16),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Flexible(child: SingleChildScrollView(
+            key: const ValueKey('room-picker-scroll'),
+            child: Padding(padding: const EdgeInsets.all(16),
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Text('${wallArt ? 'Hang' : 'Place'} ${widget.name}', style: const TextStyle(fontSize: 21, color: Color(0xFFF0E5CC))),
             const SizedBox(height: 8),
@@ -101,10 +104,21 @@ class _RoomPickerState extends State<_RoomPicker> {
                   : widget.occupants[entry.key]!.id == widget.id ? 'Placed here'
                   : 'Replaces ${widget.occupants[entry.key]!.name}'),
                 value: entry.key, groupValue: _slot, onChanged: (value) => setState(() => _slot = value!)),
-            const SizedBox(height: 8),
-            FilledButton(onPressed: _save, child: const Text('Save placement')),
-            TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          ])))));
+          ])))),
+          DecoratedBox(
+            key: const ValueKey('room-picker-actions'),
+            decoration: const BoxDecoration(color: Color(0xFF111827),
+              border: Border(top: BorderSide(color: Color(0xFF465568)))),
+            child: SafeArea(top: false, child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+              child: Column(mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  FilledButton(onPressed: _save, child: const Text('Save placement')),
+                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+                ]))),
+          ),
+        ])));
+
   }
 }
 

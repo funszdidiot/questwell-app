@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_momentum/preview/mobile_review.dart';
+import 'package:project_momentum/preview/review_loadout.dart';
 import 'package:project_momentum/widgets/questwell_app_navigation.dart';
 import 'package:project_momentum/widgets/questwell_adventurer_view.dart';
 import 'package:project_momentum/widgets/questwell_mastery_relic.dart';
@@ -114,6 +115,58 @@ void main() {
     await tester.tap(find.text('Keep current item')); await tester.pumpAndSettle();
     expect(saved, isNull);
     expect(find.text('Place Scholar Seal'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  test('Preview removal and replacement return relics without losing mastery', () {
+    for (final entry in QuestwellMasteryRelic.slugs.entries) {
+      final loadout = QuestwellReviewLoadout()..mastered.add(entry.key);
+      loadout.placeRoom('bookshelf', 'left');
+      loadout.placeRoom(entry.value, 'bookshelf_top');
+      loadout.placeRoom('bookshelf', 'right');
+      expect(loadout.roomSlots[entry.value], 'bookshelf_top');
+      loadout.removeRoom('bookshelf');
+      expect(loadout.roomSlots.containsKey(entry.value), isFalse);
+      expect(loadout.mastered, contains(entry.key));
+      loadout.placeRoom('bookshelf', 'left');
+      loadout.placeRoom(entry.value, 'bookshelf_top');
+      loadout.placeRoom('fern', 'left');
+      expect(loadout.roomSlots.containsKey(entry.value), isFalse);
+      expect(loadout.mastered, contains(entry.key));
+      expect(loadout.roomSlots['fern'], 'left');
+    }
+  });
+
+  testWidgets('Placement actions stay visible on a short phone with large text', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(390, 600));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    RoomPlacement? result;
+    await tester.pumpWidget(MaterialApp(
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1.6)),
+        child: child!),
+      home: Scaffold(body: Builder(builder: (context) => TextButton(
+        onPressed: () async { result = await showRoomPicker(context,
+          name: 'Wanderer Star Map', id: 'relic', slug: 'wanderer-star-map',
+          archetype: 'wanderer', bodyType: 'neutral',
+          equippedSlugs: const {'room:left':'walnut-bookshelf'},
+          occupants: const {'left':RoomOccupant('shelf','Walnut Bookshelf')});
+        }, child: const Text('Open'))))));
+    await tester.tap(find.text('Open')); await tester.pumpAndSettle();
+    final save = find.text('Save placement');
+    final cancel = find.text('Cancel');
+    expect(save.hitTestable(), findsOneWidget);
+    expect(cancel.hitTestable(), findsOneWidget);
+    final before = tester.getRect(find.byKey(const ValueKey('room-picker-actions')));
+    await tester.drag(find.byKey(const ValueKey('room-picker-scroll')), const Offset(0,-450));
+    await tester.pumpAndSettle();
+    expect(tester.getRect(find.byKey(const ValueKey('room-picker-actions'))), before);
+    expect(save.hitTestable(), findsOneWidget);
+    expect(cancel.hitTestable(), findsOneWidget);
+    expect(before.bottom, lessThanOrEqualTo(600));
+    await tester.tap(cancel); await tester.pumpAndSettle();
+    expect(result, isNull);
+    expect(find.text('Open'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

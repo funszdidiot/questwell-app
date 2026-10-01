@@ -15,6 +15,21 @@ class QuestwellReviewLoadout {
     'a': ('face', 'round-scholar-glasses'), 's': ('back', 'leather-satchel'),
     'b': ('hands', 'brass-lantern'),
   };
+  void placeRoom(String id, String slot) {
+    roomSlots.removeWhere((key, value) => value == slot || key == id);
+    roomSlots[id] = slot;
+    _returnUnsupportedCollectibles();
+  }
+  void removeRoom(String id) {
+    roomSlots.remove(id);
+    _returnUnsupportedCollectibles();
+  }
+  void _returnUnsupportedCollectibles() {
+    final hasBookcase = roomSlots.entries.any((entry) =>
+      catalog[entry.key]?.$2 == 'walnut-bookshelf' &&
+      (entry.value == 'left' || entry.value == 'right'));
+    if (!hasBookcase) roomSlots.removeWhere((_, slot) => slot == 'bookshelf_top');
+  }
   Map<String, String> get equipment => {
     for (final entry in roomSlots.entries)
       '${catalog[entry.key]?.$1 ?? "room"}:${entry.value}': catalog[entry.key]?.$2 ?? entry.key,

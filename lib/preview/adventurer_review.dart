@@ -35,11 +35,10 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
             _loadout.roomSlots.removeWhere((key, _) => QuestwellMasteryRelic.supports(key) && QuestwellMasteryRelic.classFor(key) != v);
           }),
           onPlace: (id, slot, expected) async { setState(() {
-            _loadout.roomSlots.removeWhere((key, value) => value == slot || key == id);
-            _loadout.roomSlots[id] = slot;
+            _loadout.placeRoom(id, slot);
           }); },
           onEquip: (id) => setState(() { if (id == 's') { _loadout.satchel = true; } else if (id == 'a') { _loadout.glasses = true; } else { _loadout.otherEquipped.add(id); } }),
-          onUnequip: (id) => setState(() { _loadout.roomSlots.remove(id); if (id == 's') { _loadout.satchel = false; } else if (id == 'a') { _loadout.glasses = false; } else { _loadout.otherEquipped.remove(id); } }), items: [
+          onUnequip: (id) => setState(() { _loadout.removeRoom(id); if (id == 's') { _loadout.satchel = false; } else if (id == 'a') { _loadout.glasses = false; } else { _loadout.otherEquipped.remove(id); } }), items: [
             for (final entry in QuestwellMasteryRelic.slugs.entries)
               AdventurerInventoryItem(id: entry.value, name: QuestwellMasteryRelic.names[entry.key]!,
                 slug: entry.value, category: 'room', archetype: entry.key,
