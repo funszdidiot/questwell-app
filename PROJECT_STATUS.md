@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Cloak underlayer and neckline correction — 2026-09-30 America/Chicago
+
+Founder identified class shoulder trim protruding beside the cloaks and a stray band directly below the neck. Added an equipped-cloak-only class underlayer mask that suppresses original lapels/epaulettes on front and rear class layers while retaining torso and sleeves. Reduced the restored head region to stop the original shirt collar painting across the outer cloak collar. Moss retains its own folded hood; Hearthguard retains its standing collar.
+
+Verified build `9c75bd16527501f3b99e4ea700149cb87f6565af`: Flutter Check 36811239939 and Preview 36811239886 passed. New mask checks cover both shoulder tips, competing collar, visible torso/cuffs, and the removed shirt strip; existing 18 cloak/class/body combinations and removal remain covered. Browser inspected both cloaks on all three bodies in avatar and Hearth views, confirming hidden shoulder trim and clear outer collars. Review: `?review=cloaks&rev=9c75bd1`. Founder visual approval remains pending; no merge or launch.
+
 ## Cloak shoulder and hem polish — 2026-09-30 America/Chicago
 
 Founder approved a refinement pass on the corrected fit. Softened sleeve emergence with a short alpha blend and subtle contact shadows. Tapered the hem by 7% with a 1.2-pixel lateral drape, keeping neckline registration, full embroidery, and boot clearance. Artwork and icons are unchanged.
