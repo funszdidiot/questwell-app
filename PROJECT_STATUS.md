@@ -4,6 +4,12 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Victory Sparkle and Focus Tonic effects — 2026-10-01
+
+Implemented the authorized effects pass: Victory Sparkle uses two staggered golden star flourishes and drifting flecks with a quiet interval; Focus Tonic uses slow rising sage bubbles and small glints. Shared production renderer covers Adventurer and Hearth. Existing 16-bit icons/catalog rules retained; no account changes. Direct CustomPainter repaint isolates animation from avatar builds; reduced motion uses still art and inactive routes/unequip stop the clock.
+
+Verified `06ce1af7e861fbbe9b47293c4cdfee1c695e9afd`: Flutter Check36828452644 and Preview36828452634 passed, including new motion/face-clearance/rest/still-state/ticker/unequip tests. Live review verified both effects on female with Hearth, male still mode, neutral unequip, and resumed sparkle. Preview `?review=effects&rev=06ce1af`. Founder visual review pending. Male Wanderer cuffs remain deferred and unapproved. No merge or launch.
+
 ## Deferred founder follow-up — male Wanderer cuffs — 2026-10-01
 
 Tanya is not fully satisfied with the male Wanderer cuff fit in the current v3 short coat. Keep this as an open visual-polish item, not founder-approved or complete. Explicitly defer further male cuff work until the other builds are done, then revisit the wrist fit and cuff shape with an in-app close-up for founder review. The current version may remain in the development preview in the meantime. This note does not expand approval to any other pending art or authorize launch.
