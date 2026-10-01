@@ -23,6 +23,8 @@ import 'questwell_milestone_reward.dart';
 import 'questwell_hearth_decor.dart';
 import 'questwell_contact_shadow.dart';
 import 'questwell_class_emblem.dart';
+import 'questwell_item_icon.dart';
+import 'questwell_catalog_equipment.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -192,7 +194,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   // body-specific canvas. Do not apply another generic scale/offset here.
   @override
   Widget build(BuildContext context) {
-    final classOverlay = _classOverlayAsset;
+    final classOverlay = equippedSlugs['chest'] == 'starter-business-suit' ? null : _classOverlayAsset;
     final rearRevision = archetype == 'wanderer' ? 'v2' : 'v1';
     final body = ['male', 'female'].contains(avatarBodyType)
         ? avatarBodyType : 'neutral';
@@ -204,7 +206,10 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         children: [
           if (classOverlay != null)
             _assetLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
-          if (archetype == 'scholar')
+          QuestwellCatalogEquipment(equipment: equippedSlugs, body: body, rear: true),
+          if (equippedSlugs['chest'] == 'starter-business-suit')
+            _assetLayer(_baseAsset)
+          else if (archetype == 'scholar')
             ClipPath(
               clipper: ScholarUnderlayerClipper(avatarBodyType),
               child: _assetLayer(_baseAsset),
@@ -243,6 +248,9 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ),
             ),
           if (classOverlay != null) _assetLayer(classOverlay),
+          QuestwellCatalogEquipment(equipment: equippedSlugs, body: body),
+          if (equippedSlugs['hands'] == 'annotated-grimoire')
+            ClipPath(clipper: LanternHandClipper(body), child: _assetLayer(_baseAsset)),
           if (equippedSlugs['back'] == QuestwellLeatherSatchel.slug) ...[
             QuestwellLeatherSatchel(bodyType: body),
             ClipPath(clipper: SatchelForearmClipper(body), child: _assetLayer(_baseAsset)),
@@ -960,6 +968,16 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   if (QuestwellWallArt.isSide(art))
                     QuestwellHearthDecor.wallArtPositioned(
                       slug: art, side: side, scene: Size(sceneWidth, sceneHeight)),
+              if (equippedSlugs['room:window'] == 'rainy-window')
+                Positioned(key: const ValueKey('hearth-rainy-window-bounds'),
+                  left: sceneWidth*.82, top: sceneHeight*.10, width: sceneWidth*.15, height: sceneHeight*.39,
+                  child: const QuestwellCatalogRoomArt(slug:'rainy-window')),
+              for (final slot in ['left','right','front'])
+                if (equippedSlugs['room:$slot'] == 'warding-lantern')
+                  Positioned(key: const ValueKey('hearth-warding-lantern-bounds'),
+                    left: sceneWidth*(slot=='left'?.24:slot=='right'?.78:.16),
+                    top: sceneHeight*(slot=='front'?.65:.48), width: sceneWidth*.10, height: sceneHeight*.21,
+                    child: const QuestwellCatalogRoomArt(slug:'warding-lantern')),
               for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
                   if (slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
@@ -1634,26 +1652,7 @@ class QuestwellItemPixelArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (slug == QuestwellStarlitOrrery.slug) {
-      return SizedBox.square(dimension: size, child: const QuestwellStarlitOrrery());
-    }
-    if (slug == QuestwellFirstJourney.slug) {
-      return SizedBox.square(dimension: size, child: const QuestwellFirstJourney());
-    }
-    // Inventory and Market share one retro icon treatment. Equipped avatar
-    // artwork is deliberately separate and keeps its approved detail.
-    const palette = [Color(0xFF202B35), Color(0xFF81BFAE), Color(0xFFD0A665)];
-    return SizedBox.square(
-      dimension: size,
-      child: CustomPaint(
-        painter: _ItemPainter(
-          slug: slug,
-          category: category,
-          palette: palette,
-          locked: locked,
-        ),
-      ),
-    );
+    return QuestwellItemIcon(slug: slug, size: size, locked: locked);
   }
 }
 class QuestwellMarketPixelScene extends StatelessWidget {
@@ -3631,375 +3630,6 @@ class _RelicPainter extends CustomPainter {
       oldDelegate.archetype != archetype;
 }
 
-class _ItemPainter extends CustomPainter {
-  _ItemPainter({
-    required this.slug,
-    required this.category,
-    required this.palette,
-    required this.locked,
-  });
-
-  final String slug;
-  final String category;
-  final List<Color> palette;
-  final bool locked;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final p = Paint()..isAntiAlias = false;
-    void rect(double x, double y, double w, double h, Color color) {
-      p.color = color;
-      canvas.drawRect(Rect.fromLTWH(x, y, w, h), p);
-    }
-
-    rect(0, 0, size.width, size.height, const Color(0xFF17151A));
-    rect(3, 3, size.width - 6, size.height - 6, palette.first);
-
-    final gold = palette.last;
-    final accent = palette[1];
-    final paper = const Color(0xFFD8C7A3);
-    final leather = const Color(0xFF8B5A32);
-    final teal = const Color(0xFF76D7C4);
-
-    if (slug == 'starter-business-suit') {
-      final unit = size.width / 16;
-      void pixel(double x, double y, double w, double h, Color color) =>
-          rect(x * unit, y * unit, w * unit, h * unit, color);
-      const charcoal = Color(0xFF515563);
-      const shadow = Color(0xFF343743);
-      const lapel = Color(0xFF777D89);
-      // A jacket silhouette with separate sleeves, stepped lapels and a tie.
-      pixel(4, 3, 8, 2, charcoal);
-      pixel(3, 5, 10, 5, charcoal);
-      pixel(2, 6, 2, 6, charcoal);
-      pixel(12, 6, 2, 6, shadow);
-      pixel(4, 10, 8, 3, charcoal);
-      pixel(10, 5, 2, 8, shadow);
-      pixel(6, 3, 4, 4, paper);
-      pixel(7, 7, 2, 3, paper);
-      pixel(5, 3, 1, 3, lapel);
-      pixel(6, 6, 1, 2, lapel);
-      pixel(7, 8, 1, 2, lapel);
-      pixel(10, 3, 1, 3, lapel);
-      pixel(9, 6, 1, 2, lapel);
-      pixel(8, 8, 1, 2, lapel);
-      pixel(7, 4, 2, 1, gold);
-      pixel(7, 5, 1, 3, gold);
-      pixel(7, 10, 1, 1, gold);
-      pixel(9, 10, 2, 1, lapel);
-      pixel(2, 12, 2, 1, paper);
-      pixel(12, 12, 2, 1, paper);
-    } else if (slug == 'round-scholar-glasses') {
-      // Stepped round rims, a bridge, and temples on the same 16-unit grid.
-      final unit = size.width / 16;
-      void pixel(double x, double y, double w, double h, Color color) =>
-          rect(x * unit, y * unit, w * unit, h * unit, color);
-      for (final x in [2.0, 9.0]) {
-        pixel(x + 1, 5, 3, 1, gold);
-        pixel(x, 6, 1, 4, gold);
-        pixel(x + 4, 6, 1, 4, gold);
-        pixel(x + 1, 10, 3, 1, gold);
-        pixel(x + 1, 6, 3, 4, const Color(0xFF314753));
-        pixel(x + 1, 6, 1, 1, paper);
-      }
-      pixel(7, 7, 2, 1, gold);
-      pixel(1, 6, 1, 1, gold);
-      pixel(14, 6, 1, 1, gold);
-    } else if (slug == 'tiny-wizard-hat') {
-      final unit = size.width / 16;
-      void pixel(double x, double y, double w, double h, Color color) =>
-          rect(x * unit, y * unit, w * unit, h * unit, color);
-      const midnight = Color(0xFF444366);
-      const shade = Color(0xFF302F4B);
-      pixel(8, 2, 3, 1, midnight);
-      pixel(7, 3, 3, 2, midnight);
-      pixel(6, 5, 4, 2, midnight);
-      pixel(5, 7, 6, 3, midnight);
-      pixel(9, 5, 1, 2, shade);
-      pixel(9, 7, 2, 3, shade);
-      pixel(5, 9, 6, 1, gold);
-      pixel(3, 10, 10, 2, midnight);
-      pixel(2, 12, 12, 1, shade);
-      pixel(6, 10, 1, 1, paper);
-    } else if (slug == 'emerald-scholar-scarf') {
-      final unit = size.width / 16;
-      void pixel(double x, double y, double w, double h, Color color) =>
-          rect(x * unit, y * unit, w * unit, h * unit, color);
-      const emerald = Color(0xFF27836A);
-      const shade = Color(0xFF185541);
-      pixel(3, 3, 10, 3, shade);
-      pixel(3, 4, 9, 2, emerald);
-      pixel(4, 6, 4, 7, emerald);
-      pixel(9, 6, 3, 5, shade);
-      pixel(4, 11, 4, 1, gold);
-      pixel(9, 9, 3, 1, gold);
-      pixel(4, 13, 1, 1, emerald);
-      pixel(6, 13, 1, 1, emerald);
-      pixel(9, 11, 1, 1, shade);
-      pixel(11, 11, 1, 1, shade);
-    } else if (slug.contains('grimoire') || slug.contains('seal')) {
-      rect(size.width * .24, size.height * .20, size.width * .52, size.height * .58, const Color(0xFF6A337C));
-      rect(size.width * .29, size.height * .24, size.width * .06, size.height * .50, gold);
-      rect(size.width * .43, size.height * .35, size.width * .27, 5, paper);
-      rect(size.width * .43, size.height * .47, size.width * .20, 5, paper);
-      rect(size.width * .43, size.height * .59, size.width * .24, 5, paper);
-    } else if (slug.contains('owl')) {
-      p.color = const Color(0xFFB77A3A);
-      canvas.drawCircle(Offset(size.width * .50, size.height * .47), size.width * .24, p);
-      rect(size.width * .29, size.height * .20, size.width * .13, size.height * .18, const Color(0xFF7A4C2B));
-      rect(size.width * .58, size.height * .20, size.width * .13, size.height * .18, const Color(0xFF7A4C2B));
-      rect(size.width * .36, size.height * .40, 8, 8, const Color(0xFFFFE07A));
-      rect(size.width * .58, size.height * .40, 8, 8, const Color(0xFFFFE07A));
-      rect(size.width * .47, size.height * .50, 6, 9, gold);
-    } else if (slug.contains('boot')) {
-      rect(size.width * .23, size.height * .21, size.width * .20, size.height * .45, leather);
-      rect(size.width * .49, size.height * .25, size.width * .20, size.height * .41, leather);
-      rect(size.width * .17, size.height * .61, size.width * .30, size.height * .14, const Color(0xFF3B2A20));
-      rect(size.width * .43, size.height * .61, size.width * .30, size.height * .14, const Color(0xFF3B2A20));
-      rect(size.width * .27, size.height * .32, size.width * .12, 4, gold);
-      rect(size.width * .53, size.height * .36, size.width * .12, 4, gold);
-    } else if (slug.contains('fox')) {
-      p.color = const Color(0xFFD77A32);
-      canvas.drawCircle(Offset(size.width * .48, size.height * .48), size.width * .22, p);
-      final ears = Path()
-        ..moveTo(size.width * .30, size.height * .34)
-        ..lineTo(size.width * .35, size.height * .12)
-        ..lineTo(size.width * .44, size.height * .35)
-        ..moveTo(size.width * .54, size.height * .35)
-        ..lineTo(size.width * .64, size.height * .12)
-        ..lineTo(size.width * .70, size.height * .36);
-      p.style = PaintingStyle.stroke;
-      p.strokeWidth = 8;
-      p.color = const Color(0xFFD77A32);
-      canvas.drawPath(ears, p);
-      p.style = PaintingStyle.fill;
-      rect(size.width * .37, size.height * .44, 6, 6, const Color(0xFF17151A));
-      rect(size.width * .57, size.height * .44, 6, 6, const Color(0xFF17151A));
-      rect(size.width * .46, size.height * .56, 8, 6, const Color(0xFF17151A));
-    } else if (slug.contains('tonic') || slug.contains('phial')) {
-      rect(size.width * .43, size.height * .15, size.width * .15, size.height * .18, gold);
-      rect(size.width * .36, size.height * .30, size.width * .29, size.height * .10, paper);
-      p.color = teal;
-      canvas.drawCircle(Offset(size.width * .50, size.height * .58), size.width * .23, p);
-      rect(size.width * .34, size.height * .57, size.width * .32, size.height * .18, const Color(0xFF42B883));
-      rect(size.width * .42, size.height * .48, 5, 5, const Color(0xFFD9FFD0));
-      rect(size.width * .57, size.height * .56, 4, 4, const Color(0xFFD9FFD0));
-    } else if (slug.contains('slime')) {
-      p.color = const Color(0xFF55D7CB);
-      canvas.drawCircle(Offset(size.width * .50, size.height * .56), size.width * .25, p);
-      rect(size.width * .25, size.height * .58, size.width * .50, size.height * .16, const Color(0xFF55D7CB));
-      rect(size.width * .39, size.height * .51, 6, 6, const Color(0xFF173B2B));
-      rect(size.width * .58, size.height * .51, 6, 6, const Color(0xFF173B2B));
-    } else if (slug.contains('mantle')) {
-      final path = Path()
-        ..moveTo(size.width * .50, size.height * .16)
-        ..lineTo(size.width * .72, size.height * .32)
-        ..lineTo(size.width * .67, size.height * .78)
-        ..lineTo(size.width * .50, size.height * .67)
-        ..lineTo(size.width * .33, size.height * .78)
-        ..lineTo(size.width * .28, size.height * .32)
-        ..close();
-      p.color = const Color(0xFFA53A32);
-      canvas.drawPath(path, p);
-      rect(size.width * .47, size.height * .20, size.width * .06, size.height * .50, gold);
-    } else if (QuestwellWallArt.isSide(slug)) {
-      final u = size.width / 16;
-      void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);
-      px(3,1,10,14,const Color(0xFF70432D)); px(4,2,8,12,gold);
-      final botanical = slug == QuestwellWallArt.fern;
-      px(5,3,6,10,botanical ? paper : const Color(0xFF152D54));
-      if (botanical) {
-        const leaf = Color(0xFF397443);
-        px(7,4,1,8,leaf);
-        for (final y in [5.0,7.0,9.0]) { px(6,y,1,1,leaf); px(8,y-1,2,1,leaf); }
-      } else {
-        px(6,4,3,4,gold); px(7,4,3,3,const Color(0xFF152D54));
-        px(9,9,1,1,gold); px(7,10,1,1,gold); px(6,12,1,1,gold);
-      }
-    } else if (slug == QuestwellWallArt.slug) {
-      final u = size.width / 16;
-      void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);
-      px(1,2,14,12,const Color(0xFF70432D));
-      px(2,3,12,10,gold); px(3,4,10,8,const Color(0xFF233F62));
-      px(9,5,2,2,paper);
-      px(4,7,2,5,const Color(0xFF244C43)); px(3,9,4,3,const Color(0xFF244C43));
-      px(8,9,4,3,const Color(0xFF70432D)); px(9,8,2,1,gold); px(9,10,1,1,gold);
-    } else if (slug == QuestwellReadingTable.slug) {
-      final u = size.width / 16;
-      void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);
-      const wood = Color(0xFF74452C);
-      const edge = Color(0xFFB77D46);
-      px(2,8,12,2,wood); px(2,8,12,1,edge);
-      px(3,10,2,5,wood); px(11,10,2,5,wood);
-      px(4,10,1,2,edge); px(12,10,1,2,edge);
-      px(3,6,6,2,const Color(0xFF355B41));
-      px(4,4,6,2,const Color(0xFF873C3A));
-      px(4,5,5,1,paper); px(3,7,5,1,paper);
-      px(11,6,3,1,gold); px(12,3,1,3,paper);
-      px(12,1,1,2,const Color(0xFFFFC45B));
-    } else if (slug == QuestwellReadingChair.slug) {
-      final u = size.width / 16;
-      void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);
-      const dark = Color(0xFF4B2026);
-      const wine = Color(0xFF883643);
-      const light = Color(0xFFB45155);
-      const wood = Color(0xFF71482F);
-      px(4,2,8,8,dark); px(5,2,6,1,light); px(5,3,6,6,wine);
-      px(3,8,10,5,dark); px(4,9,8,3,wine); px(4,9,8,1,light);
-      px(2,7,3,5,wine); px(11,7,3,5,wine);
-      px(2,7,3,1,light); px(11,7,3,1,light);
-      px(3,12,10,1,wood); px(3,13,2,2,wood); px(11,13,2,2,wood);
-      for (final x in [6.0,9.0]) px(x,5,1,1,dark);
-      for (final x in [3.0,12.0]) { px(x,8,1,1,gold); px(x,10,1,1,gold); }
-    } else if (slug == QuestwellFern.slug) {
-      final u = size.width / 16;
-      void px(double x, double y, double w, double h, Color c) => rect(x*u,y*u,w*u,h*u,c);
-      px(5,10,6,4,const Color(0xFF95692E));
-      px(4,10,8,1,gold); px(6,14,4,1,gold);
-      for (final x in [3.0,5.0,7.0,9.0,11.0]) {
-        px(x,4+(x-7).abs()/2,2,5,const Color(0xFF315A39));
-        px(x-1,3+(x-7).abs()/2,2,2,const Color(0xFF739B43));
-      }
-      px(7,2,2,9,const Color(0xFF88A751));
-    } else if (slug == QuestwellBookshelf.slug) {
-      final unit = size.width / 16;
-      void pixel(double x, double y, double w, double h, Color color) =>
-          rect(x * unit, y * unit, w * unit, h * unit, color);
-      const walnut = Color(0xFF795032);
-      const edge = Color(0xFFB37C45);
-      pixel(2, 2, 12, 12, walnut);
-      pixel(3, 3, 10, 10, const Color(0xFF281B18));
-      for (final y in [2.0, 6.0, 10.0, 13.0]) {
-        pixel(2, y, 12, 1, edge);
-      }
-      for (final y in [3.0, 7.0, 11.0]) {
-        pixel(4, y, 2, 3, const Color(0xFF315A49));
-        pixel(7, y, 2, 3, const Color(0xFF8B3F34));
-        pixel(10, y, 2, 3, const Color(0xFF3D526D));
-        for (final x in [4.0, 7.0, 10.0]) pixel(x, y + 1, 2, .4, gold);
-      }
-      pixel(2, 2, 1, 1, gold);
-      pixel(13, 2, 1, 1, gold);
-      pixel(3, 14, 2, 1, walnut);
-      pixel(11, 14, 2, 1, walnut);
-    } else if (slug == QuestwellMoonstoneBrooch.slug) {
-      final unit = size.width / 16;
-      void pixel(double x, double y, double w, double h, Color color) =>
-          rect(x * unit, y * unit, w * unit, h * unit, color);
-      const blue = Color(0xFF89BEE6);
-      const deep = Color(0xFF456B9B);
-      const ice = Color(0xFFD9EDFA);
-      pixel(6, 2, 4, 1, gold);
-      pixel(5, 3, 6, 1, gold);
-      pixel(4, 4, 8, 7, gold);
-      pixel(5, 11, 6, 1, gold);
-      pixel(6, 12, 4, 1, gold);
-      pixel(7, 13, 2, 1, gold);
-      pixel(6, 3, 4, 9, deep);
-      pixel(5, 5, 6, 5, deep);
-      pixel(6, 4, 3, 7, blue);
-      pixel(9, 5, 1, 4, blue);
-      pixel(6, 4, 2, 2, ice);
-      pixel(7, 8, 2, 2, ice);
-      pixel(2, 5, 1, 4, gold);
-      pixel(3, 8, 1, 3, gold);
-      pixel(13, 5, 1, 4, gold);
-      pixel(12, 8, 1, 3, gold);
-    } else if (slug == 'brass-lantern') {
-      // Match the inventory's 16-unit grid; equipped art stays illustrated.
-      final unit = size.width / 16;
-      void pixel(double x, double y, double w, double h, Color color) =>
-          rect(x * unit, y * unit, w * unit, h * unit, color);
-      const brass = Color(0xFFB47A2B);
-      const shade = Color(0xFF79502A);
-      const amber = Color(0xFFE99D32);
-      const flame = Color(0xFFFFE5A1);
-      pixel(6, 1, 4, 1, gold);
-      pixel(5, 2, 1, 3, brass);
-      pixel(10, 2, 1, 3, brass);
-      pixel(6, 4, 4, 1, gold);
-      pixel(7, 4, 2, 1, teal);
-      pixel(4, 5, 8, 1, gold);
-      pixel(3, 6, 10, 1, shade);
-      pixel(4, 7, 8, 6, brass);
-      pixel(5, 7, 6, 5, amber);
-      pixel(5, 7, 1, 5, gold);
-      pixel(10, 7, 1, 5, shade);
-      pixel(7, 8, 1, 2, flame);
-      pixel(7, 10, 2, 2, paper);
-      pixel(3, 13, 10, 1, gold);
-      pixel(4, 14, 8, 1, shade);
-    } else if (slug.contains('lantern')) {
-      rect(size.width * .40, size.height * .15, size.width * .20, size.height * .10, gold);
-      rect(size.width * .31, size.height * .28, size.width * .38, size.height * .42, const Color(0xFFB47A2B));
-      rect(size.width * .38, size.height * .34, size.width * .24, size.height * .28, const Color(0xFFFFD76A));
-      rect(size.width * .39, size.height * .11, size.width * .22, 5, const Color(0xFF8E6B35));
-    } else if (slug.contains('satchel')) {
-      rect(size.width * .25, size.height * .34, size.width * .50, size.height * .40, leather);
-      rect(size.width * .31, size.height * .26, size.width * .38, size.height * .16, const Color(0xFF6A4328));
-      rect(size.width * .46, size.height * .44, size.width * .10, size.height * .10, gold);
-      p.style = PaintingStyle.stroke;
-      p.strokeWidth = 5;
-      p.color = gold;
-      canvas.drawArc(
-        Rect.fromLTWH(size.width * .29, size.height * .15, size.width * .42, size.height * .35),
-        math.pi,
-        math.pi,
-        false,
-        p,
-      );
-      p.style = PaintingStyle.fill;
-    } else if (slug.contains('moth')) {
-      p.color = const Color(0xFFA8E36D);
-      canvas.drawOval(Rect.fromCenter(center: Offset(size.width * .38, size.height * .48), width: size.width * .30, height: size.height * .38), p);
-      canvas.drawOval(Rect.fromCenter(center: Offset(size.width * .62, size.height * .48), width: size.width * .30, height: size.height * .38), p);
-      rect(size.width * .47, size.height * .31, size.width * .06, size.height * .36, const Color(0xFF6F8D3A));
-      rect(size.width * .31, size.height * .43, 5, 5, gold);
-      rect(size.width * .65, size.height * .43, 5, 5, gold);
-    } else if (slug.contains('compass') || slug.contains('map')) {
-      p.style = PaintingStyle.stroke;
-      p.strokeWidth = 5;
-      p.color = gold;
-      canvas.drawCircle(Offset(size.width * .50, size.height * .50), size.width * .25, p);
-      canvas.drawLine(Offset(size.width * .50, size.height * .27), Offset(size.width * .58, size.height * .56), p);
-      canvas.drawLine(Offset(size.width * .58, size.height * .56), Offset(size.width * .38, size.height * .49), p);
-      p.style = PaintingStyle.fill;
-    } else if (category == 'familiar') {
-      p.color = accent;
-      canvas.drawCircle(Offset(size.width * .50, size.height * .48), size.width * .23, p);
-      rect(size.width * .39, size.height * .43, 6, 6, gold);
-      rect(size.width * .58, size.height * .43, 6, 6, gold);
-    } else {
-      // Universal guild-good sigil.
-      p.color = gold;
-      canvas.drawCircle(Offset(size.width * .50, size.height * .50), size.width * .24, p);
-      rect(size.width * .46, size.height * .28, size.width * .08, size.height * .44, const Color(0xFF17151A));
-      rect(size.width * .29, size.height * .46, size.width * .42, size.height * .08, const Color(0xFF17151A));
-    }
-
-    if (locked) {
-      rect(0, 0, size.width, size.height, const Color(0x88000000));
-      rect(size.width * .40, size.height * .45, size.width * .20, size.height * .23, const Color(0xFF101114));
-      p.style = PaintingStyle.stroke;
-      p.strokeWidth = 4;
-      p.color = const Color(0xFFD8C7A3);
-      canvas.drawArc(
-        Rect.fromLTWH(size.width * .39, size.height * .25, size.width * .22, size.height * .30),
-        math.pi,
-        math.pi,
-        false,
-        p,
-      );
-      p.style = PaintingStyle.fill;
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _ItemPainter oldDelegate) =>
-      oldDelegate.slug != slug ||
-      oldDelegate.category != category ||
-      oldDelegate.locked != locked;
-}
 
 class _MarketPainter extends CustomPainter {
   _MarketPainter({required this.palette});

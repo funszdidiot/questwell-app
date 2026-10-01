@@ -136,7 +136,7 @@ void main() {
     expect(find.byType(QuestwellEmeraldScarf), findsNWidgets(2));
     expect(QuestwellEquipmentPolicy.isReady(QuestwellLeatherSatchel.slug, 'back'), isTrue);
     expect(QuestwellEquipmentPolicy.isReady(QuestwellLeatherSatchel.slug, 'neck'), isFalse);
-    for (final slug in ['wayfarer-satchel', 'preview-leather-satchel']) {
+    for (final slug in [ 'preview-leather-satchel']) {
       expect(QuestwellEquipmentPolicy.isReady(slug, 'back'), isFalse);
     }
     expect(tester.takeException(), isNull);

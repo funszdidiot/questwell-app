@@ -12,6 +12,7 @@ import 'questwell_starlit_orrery.dart';
 /// Authored furniture proportions and floor anchors shared by every Hearth view.
 class QuestwellHearthDecor {
   static Map<String, String> choices(String slug) => switch (slug) {
+    'rainy-window' => const {'window': 'Window alcove'},
     QuestwellFirstJourney.slug || QuestwellStarlitOrrery.slug => const {'bookshelf_top': 'On the bookcase', 'mantel': 'Fireplace mantel'},
     QuestwellWallArt.fern || QuestwellWallArt.celestial => const {'wall_left': 'Left wall', 'wall_right': 'Right wall'},
     QuestwellReadingTable.slug => const {'side': 'Beside the chair'},

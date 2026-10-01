@@ -1,16 +1,17 @@
-/// Only founder-approved artwork can be newly equipped in the rich renderer.
+/// Catalog entries with a connected avatar or Hearth renderer.
 abstract final class QuestwellEquipmentPolicy {
-  static bool isReady(String slug, String category) =>
-      (slug == 'round-scholar-glasses' && category == 'face') ||
-      (slug == 'tiny-wizard-hat' && category == 'head') ||
-      (slug == 'emerald-scholar-scarf' && category == 'neck') ||
-      (slug == 'leather-satchel' && category == 'back') ||
-      (slug == 'brass-lantern' && category == 'hands') ||
-      (slug == 'moonstone-brooch' && category == 'accessory') ||
-      (['first-journey-trophy', 'starlit-orrery'].contains(slug) && category == 'room') ||
-      (slug == 'walnut-bookshelf' && category == 'room') ||
-      (slug == 'hearth-fern' && category == 'room') ||
-      (slug == 'burgundy-reading-chair' && category == 'room') ||
-      (slug == 'walnut-reading-table' && category == 'room') ||
-      (['moonlit-woodland', 'fern-study', 'celestial-study'].contains(slug) && category == 'wall_art');
+  static const shopCategories = <String,String>{
+    'starter-business-suit':'chest', 'moss-green-cloak':'chest', 'hearthguard-mantle':'chest',
+    'round-scholar-glasses':'face', 'tiny-wizard-hat':'head', 'emerald-scholar-scarf':'neck',
+    'leather-satchel':'back', 'wayfarer-satchel':'back', 'brass-lantern':'hands',
+    'annotated-grimoire':'hands', 'moonstone-brooch':'accessory', 'pathfinder-boots':'feet',
+    'victory-sparkle':'effect', 'focus-tonic':'effect',
+    'mushroom-familiar':'familiar', 'tiny-owl-familiar':'familiar', 'glass-slime':'familiar',
+    'archive-owl':'familiar', 'signal-fox':'familiar', 'moss-moth':'familiar',
+    'walnut-bookshelf':'room', 'hearth-fern':'room', 'burgundy-reading-chair':'room',
+    'walnut-reading-table':'room', 'rainy-window':'room', 'warding-lantern':'room',
+    'moonlit-woodland':'wall_art', 'fern-study':'wall_art', 'celestial-study':'wall_art',
+  };
+  static bool isReady(String slug, String category) => shopCategories[slug] == category ||
+    (['first-journey-trophy','starlit-orrery'].contains(slug) && category == 'room');
 }
