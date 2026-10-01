@@ -36,7 +36,24 @@ class QuestwellItemIconPainter extends CustomPainter {
     void panel(int x,int y,int w,int h,Color c,Color light,Color dark) {
       r(x,y,w,h,ink);r(x+1,y+1,w-2,h-2,c);r(x+1,y+1,w-2,1,light);r(x+1,y+1,1,h-2,light);r(x+w-2,y+2,1,h-3,dark);r(x+2,y+h-2,w-3,1,dark);
     }
-    if (slug.contains('owl')) {
+    if (slug == 'emerald-dragon') {
+      // Stepped emerald wings, golden horns, sage belly, and curled tail.
+      r(3,12,3,11,ink);r(6,10,3,15,ink);r(9,14,3,10,ink);
+      r(4,14,2,7,greenDark);r(6,12,2,11,green);r(8,17,2,6,mint);
+      r(22,10,3,15,ink);r(25,12,3,12,ink);r(28,15,2,8,ink);
+      r(23,12,2,11,green);r(25,14,2,8,greenDark);r(27,17,1,4,mint);
+      r(11,4,3,5,ink);r(20,3,3,7,ink);
+      r(12,4,1,4,gold);r(20,4,2,4,goldShade);r(21,3,1,3,gold);
+      r(11,8,12,8,ink);r(8,11,5,5,ink);r(10,10,12,5,green);
+      r(12,8,8,4,green);r(9,12,5,3,mint);r(10,14,3,1,greenDark);
+      r(15,10,4,3,gold);r(16,10,2,3,ink);r(16,10,1,1,cream);
+      r(21,12,2,3,greenDark);r(13,15,9,12,ink);r(14,15,7,11,green);
+      r(14,17,4,8,mint);r(14,19,4,1,greenDark);r(14,22,4,1,greenDark);
+      r(20,17,2,7,greenDark);r(21,18,2,2,goldShade);
+      r(9,26,15,3,ink);r(10,26,5,2,green);r(18,26,5,2,green);
+      r(10,28,2,1,gold);r(19,28,2,1,gold);
+      r(23,24,5,2,greenDark);r(26,22,3,4,green);r(25,21,2,2,gold);
+    } else if (slug.contains('owl')) {
       final archive=slug=='archive-owl';
       final main=archive?purple:woodLight;
       r(8,6,3,7,woodDark);r(21,6,3,7,woodDark);r(9,8,14,3,ink);

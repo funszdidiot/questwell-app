@@ -3,10 +3,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_familiar.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
+import '../lib/preview/market_catalog.dart';
+import '../lib/services/questwell_equipment_policy.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
+  test('Every equipped familiar is available through the Market', () {
+    final entries = marketReviewCatalog.where((c) => c['category'] == 'familiar');
+    expect(entries.map((c) => c['slug']).toSet(), QuestwellFamiliarLayer.names.keys.toSet());
+    for (final entry in entries) {
+      expect(QuestwellEquipmentPolicy.isReady(entry['slug'] as String, 'familiar'), isTrue);
+      expect(entry['unlock_method'], 'shop');
+    }
+  });
   testWidgets('Every familiar, including dragon, fits all three avatar bodies', (tester) async {
     for (final slug in QuestwellFamiliarLayer.names.keys) {
       for (final body in ['female', 'male', 'neutral']) {

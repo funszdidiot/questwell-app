@@ -347,4 +347,16 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "required_archetype": "guardian",
     "unlock_method": "shop"
   }
+  {
+    "id": "9beb0f5f-53df-418b-8396-63643937d7d0",
+    "slug": "emerald-dragon",
+    "name": "Emerald Dragon",
+    "category": "familiar",
+    "rarity": "epic",
+    "description": "A small emerald companion with golden horns and a talent for guarding your next small win.",
+    "price": 320,
+    "premium": false,
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
 ];

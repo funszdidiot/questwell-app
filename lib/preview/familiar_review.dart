@@ -4,7 +4,7 @@ import '../widgets/questwell_familiar.dart';
 import '../widgets/questwell_pixel_art.dart';
 import '../widgets/questwell_typography.dart';
 
-/// Sample try-on only. The dragon is a candidate, not a live shop purchase.
+/// Sample try-on only. All companions are also available in the Market.
 class FamiliarReviewApp extends StatefulWidget {
   const FamiliarReviewApp({super.key});
   @override
@@ -54,8 +54,7 @@ class _FamiliarReviewAppState extends State<FamiliarReviewApp> {
               QuestwellHearthPixelScene(archetype: archetype, avatarBodyType: _body,
                 equippedSlugs: equipment, height: 342),
               const SizedBox(height: 12),
-              Text(_slug == 'emerald-dragon' ? 'Dragon design preview · not yet in the Market.'
-                : 'Sample try-on · your equipment and coins stay as they are.',
+              Text('Sample try-on · find these companions in the Market.',
                 style: const TextStyle(color: Color(0xFFB9C6BD), fontSize: 13)),
             ]),
           ))),

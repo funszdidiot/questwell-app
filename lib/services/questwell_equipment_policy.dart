@@ -7,7 +7,7 @@ abstract final class QuestwellEquipmentPolicy {
     'annotated-grimoire':'hands', 'moonstone-brooch':'accessory', 'pathfinder-boots':'feet',
     'victory-sparkle':'effect', 'focus-tonic':'effect',
     'mushroom-familiar':'familiar', 'tiny-owl-familiar':'familiar', 'glass-slime':'familiar',
-    'archive-owl':'familiar', 'signal-fox':'familiar', 'moss-moth':'familiar',
+    'emerald-dragon':'familiar', 'archive-owl':'familiar', 'signal-fox':'familiar', 'moss-moth':'familiar',
     'walnut-bookshelf':'room', 'hearth-fern':'room', 'burgundy-reading-chair':'room',
     'walnut-reading-table':'room', 'rainy-window':'room', 'warding-lantern':'room',
     'moonlit-woodland':'wall_art', 'fern-study':'wall_art', 'celestial-study':'wall_art',

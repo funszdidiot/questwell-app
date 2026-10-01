@@ -15,8 +15,8 @@ void main(){
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching=false;
   final items=marketReviewCatalog.map((r)=>QuestwellCosmetic.fromJson(r)).toList();
-  test('All 29 current shop entries have distinct, nonempty 16-bit icons and equipment routes',()async{
-    expect(items.length,29);
+  test('All 30 current shop entries have distinct, nonempty 16-bit icons and equipment routes',()async{
+    expect(items.length,30);
     final fingerprints=<String>{};
     for(final item in items){
       expect(QuestwellEquipmentPolicy.isReady(item.slug,item.category),isTrue,reason:item.slug);
