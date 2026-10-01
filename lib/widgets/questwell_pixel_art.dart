@@ -25,6 +25,7 @@ import 'questwell_item_icon.dart';
 import 'questwell_first_journey.dart';
 import 'questwell_starlit_orrery.dart';
 import 'questwell_catalog_equipment.dart';
+import 'questwell_familiar.dart';
 
 class QuestwellPixelPalette {
   const QuestwellPixelPalette._();
@@ -271,6 +272,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             QuestwellScholarGlasses(bodyType: body),
           if (equippedSlugs['head'] == 'tiny-wizard-hat')
             QuestwellWizardHat(bodyType: body),
+          if (equippedSlugs['familiar'] != null)
+            QuestwellFamiliarLayer(slug: equippedSlugs['familiar']!),
         ],
       ),
     );

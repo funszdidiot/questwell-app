@@ -1,0 +1,29 @@
+# Gear and familiar review — 2026-10-01 UTC
+
+User direction: detailed 64-bit retro fantasy equipped art; existing compact Market/Inventory icons remain 16-bit. Review small sets in the app. No external beta or flutterflow merge.
+
+## First set: companions
+
+Six existing familiars now have dedicated transparent equipped artwork, separate from inventory icons: mushroom, tiny owl, archive owl, glass slime, signal fox, moss moth. Added Emerald Dragon candidate requested by user. Dragon is available in the account-free development review (`?review=companions`), not yet a priced live catalog item. No ownership, prices, class locks, or database changes.
+
+Ground companions share the avatar boot baseline. Moss moth hovers beside the shoulder. Idle breathing, slime squash, and moth hover respect reduced motion and inactive screens. All existing equipped companions use the new renderer in the app.
+
+Visual approval still pending. The dragon is the default review selection. Body selection covers female, male, neutral. Class-specific existing companions preview with the appropriate class. The Hearth renders the same equipment layer.
+
+## Remaining gear
+
+- Moss Green Cloak (chest)
+- Hearthguard Mantle (guardian chest)
+- Wayfarer Satchel (wanderer back)
+- Annotated Grimoire (scholar hands)
+- Pathfinder Boots (scout feet)
+
+These five still need the next detailed art/fit pass. Approved robes, existing detailed accessories, room furnishings, trophies, and Market remain frozen. Victory Sparkle and Focus Tonic can receive a later effects pass.
+
+## Art provenance
+
+Built-in image generation; transparent originals converted to individual WebP sprites without painting over the artwork. Versioned files: `assets/images/questwell_familiar_*_v1.webp`.
+
+Dragon prompt: Production game familiar sprite for Questwell, cozy dark-academia fantasy RPG. Exactly one full-body small dragon familiar on a genuinely transparent background. Polished detailed 64-bit era retro fantasy sprite illustration, fine deliberate pixel clusters and rich jewel-tone shading, crisp readable silhouette, consistent with detailed fantasy RPG avatar companions. Emerald forest-green scales, warm brass-gold horns and small dorsal spines, pale sage belly, amber eyes, modest batlike wings held partly open, friendly intelligent expression. Sitting in three-quarter view facing slightly left toward its human companion, complete paws visible, tail curls neatly alongside body, compact silhouette. Entire dragon centered with generous transparent padding, no cropping. Readable as a small creature beside a human avatar. No other characters, scenery, lettering, platforms, separate props, fire, watermark or ground shadow. Square canvas.
+
+Six-familiar atlas prompt: Exact 3-column by 2-row transparent atlas; detailed retro fantasy illustration with fine pixel clusters. Top row: russet spotted mushroom with ivory body, green scarf and satchel; tawny owl with amber eyes and brass moon pendant; navy-and-cream archive owl with brass spectacles and burgundy book. Bottom row: mint-teal glass slime with gold flecks and bubbles; seated copper fox with cream chest, green bandana and brass compass; emerald/sage moss moth with gold eyespots and ivory body. Complete isolated silhouettes, consistent scale, no labels, scenery, or platforms.

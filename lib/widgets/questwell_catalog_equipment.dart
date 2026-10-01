@@ -1,9 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'questwell_item_icon.dart';
 
 /// New catalog layers use the same authored 240×320 registration as the avatar.
-/// Garments are continuous canvas shapes; miniature companions retain pixel art.
+/// Garments are continuous canvas shapes; familiars have a dedicated art layer.
 class QuestwellCatalogEquipment extends StatelessWidget {
   const QuestwellCatalogEquipment({super.key, required this.equipment, required this.body, this.rear = false});
   final Map<String,String> equipment;
@@ -28,7 +27,6 @@ class _EquipmentPainter extends CustomPainter {
     final p=Paint()..isAntiAlias=true;
     void fill(Path path,Color color){p.shader=null;p.style=PaintingStyle.fill;p.color=color;c.drawPath(path,p);}
     void line(Path path,Color color,double width){p.shader=null;p.style=PaintingStyle.stroke;p.strokeWidth=width;p.color=color;c.drawPath(path,p);p.style=PaintingStyle.fill;}
-    void icon(String slug,Rect rect) {c.save();c.translate(rect.left,rect.top);QuestwellItemIconPainter(slug).paint(c,rect.size);c.restore();}
     final cloak=items['chest']=='moss-green-cloak'||items['chest']=='hearthguard-mantle';
     final guardian=items['chest']=='hearthguard-mantle';
     final main=guardian?const Color(0xFF803646):const Color(0xFF38634D);
@@ -79,12 +77,6 @@ class _EquipmentPainter extends CustomPainter {
         for(final ly in [273.0,278.0,283.0])line(Path()..moveTo(x+4,ly)..lineTo(x+12,ly),const Color(0xFFB29564),1);
         line(Path()..moveTo(x-2,297)..lineTo(x+22,297),const Color(0xFF302B26),3);
       }
-    }
-    final familiar=items['familiar'];
-    if(familiar!=null){
-      final flying=familiar.contains('owl')||familiar.contains('moth');
-      if(!flying){p.color=const Color(0x44201F22);c.drawOval(const Rect.fromLTWH(171,294,51,7),p);}
-      icon(familiar,flying?const Rect.fromLTWH(179,97,53,53):const Rect.fromLTWH(170,245,58,58));
     }
     if(items['effect']=='victory-sparkle'||items['effect']=='focus-tonic') {
       final tonic=items['effect']=='focus-tonic';
