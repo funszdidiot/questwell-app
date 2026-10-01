@@ -19,6 +19,11 @@ filters replace the old oversized decorative scene. “Show earlier pages” kee
 history beyond 30 entries accessible. Loading and error states retain a way back
 to the Hearth. Review fixture: `?review=chronicle` (synthetic history).
 
+**Verified implementation:** `917a8329c0c556b5d40d4db41c6f037432f73f13`.
+Flutter Check `36795837785` and Preview `36795837810` succeeded. The journal tests
+cover 320 px enlarged text, filtering, and access to history after 30 entries.
+Browser review passed at 320 and 390 px with the actual Chronicle widget using
+sample history: all entries, milestone filter, and empty journal.
 **Review state:** Chronicle design candidate; founder visual acceptance pending.
 **Hold:** Development preview only. No merge, external beta or launch authorized.
 
