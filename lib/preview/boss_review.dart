@@ -54,7 +54,13 @@ class _BossReviewAppState extends State<BossReviewApp> {
         DropdownButtonFormField<String>(initialValue: type, isExpanded: true,
           items: [for (final e in questwellBossNames.entries) DropdownMenuItem(value: e.key, child: Text(e.value))],
           onChanged: (v) => type = v ?? type),
-        for (var i = 0; i < 3; i++) TextField(controller: steps[i], decoration: InputDecoration(labelText: 'Attack ${i + 1}')),
+        for (var i = 0; i < steps.length; i++) TextField(controller: steps[i], decoration: InputDecoration(labelText: 'Attack ${i + 1}')),
+        const SizedBox(height: 10),
+        OutlinedButton.icon(
+          onPressed: () => change(() => steps.add(TextEditingController())),
+          icon: const Icon(Icons.add),
+          label: const Text('Add step'),
+        ),
         if (error != null) Text(error!, style: const TextStyle(color: Colors.amber)),
         const SizedBox(height: 8), const Text('Practice only. Your account is unchanged.'),
       ])), actions: [

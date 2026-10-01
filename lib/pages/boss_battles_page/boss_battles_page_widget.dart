@@ -220,6 +220,14 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     if (i != stepControllers.length - 1)
                       const SizedBox(height: 10),
                   ],
+                  const SizedBox(height: 10),
+                  OutlinedButton.icon(
+                    onPressed: () => setSheetState(() {
+                      stepControllers.add(TextEditingController());
+                    }),
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add step'),
+                  ),
                   const SizedBox(height: 18),
                   FilledButton.icon(
                     onPressed: () async {
