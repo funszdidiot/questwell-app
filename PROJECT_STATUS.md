@@ -4,6 +4,20 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Stronger Market motion and simpler balance — 2026-09-30
+
+Founder requested less-subtle animation and removal of the #/# collected count.
+The header now shows only the centered coin balance. Lanterns have a stronger,
+slowly expanding warm glow and taller swaying pixel flames. Both potions have
+two staggered rising bubbles and a more visible shimmer. Reduced-motion support,
+steady storefront/sign, and confirmed purchase behavior remain intact.
+
+**Development build:** `eb85ef876f36db36311560f77731f377517dadda`.
+Flutter Check `36804660529` and Preview `36804660563` passed. Browser
+review confirmed stronger light/flame and potion motion, centered coins, and
+no collected count in the header. Animated browser capture saved for review.
+Development preview only; no merge, external beta or launch.
+
 ## Market motion visibility correction — 2026-09-30
 
 Founder could not perceive the initial ambient animation. Increased the slow
