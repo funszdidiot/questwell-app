@@ -185,9 +185,12 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
       ));
     } catch (_) {
       if (!mounted) return;
+      // A failed response can follow a committed completion. Reload the board
+      // instead of leaving a completed quest available for another attempt.
+      setState(_refresh);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Could not complete that quest. Please try again.'),
+          content: Text('Completion was not confirmed. Refresh when connected; retry only if the quest is still open.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
