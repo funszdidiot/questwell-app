@@ -1,5 +1,13 @@
 # Questwell Project Status
 
+## Queued after seasonal builds — clean avatar base — 2026-10-02
+
+Founder direction: finish the current seasonal builds first, then replace the baked-in business-suit base with a simple, modest undergarment/base layer for female, male and neutral avatars. The business suit currently interferes with outfit layering and requires garment-specific occlusion work. This is an authorized follow-up, deliberately deferred; do not begin the avatar rebuild during the remaining seasonal work.
+
+Proposed implementation: retain the accepted faces, hair, body proportions, poses and registration anchors; create body-specific opaque undershirt/shorts foundations; make the business suit a separate outfit; migrate existing class and seasonal garments and accessories to the clean bases. Preserve inventory, equipment choices and earned progress. Review all three bodies dressed and undressed, including cuffs, coat openings, trousers, footwear and held items, before replacing the current rendering. Keep the detailed 64-bit-style character art and matching 16-bit catalog icons. Existing artwork should be reused where it fits; this is a layering foundation change, not a wholesale character redesign.
+
+Sequence: finish the remaining Midnight Harvest seasonal items (pumpkin-and-potion display and animated autumn lantern with swirling leaves), then take up this avatar-base work. Pumpkin Sprite and Midnight Harvest Coat are already delivered; the coat's open-front correction is deployed at `e13c610`. No new launch or merge authorization.
+
 ## Male Wanderer cuff clearance revision — 2026-10-02
 
 Tanya clarified that the cuffs appeared to cut into the avatar’s hands. Male short-coat v4 raises and softens the sleeve edges above the hands instead of merely narrowing the cuffs; the original thin shirt-cuff edge remains visible. Female v2, neutral v3, all base avatars, frozen masks and visible coat pixels outside the lower sleeves are unchanged. No runtime cuff overlays. Code/art commit `98da0bb0aa1b9aa04a8c525f5a11422fa939f52a`; body-switch test expectation updated in `53898162795fdade0c02e02c6b960d1b8bba35b0` after the first CI run correctly caught its old v3 filename.
