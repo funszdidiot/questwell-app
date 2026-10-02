@@ -63,13 +63,13 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
     child: AlertDialog(
       scrollable: true,
       backgroundColor: const Color(0xFF17232E),
-      title: Text('Delete your account?', style: QuestwellTypography.body(fontSize: 22, fontWeight: FontWeight.w700)),
+      title: Text('Hang up your boots?', style: QuestwellTypography.body(fontSize: 22, fontWeight: FontWeight.w700)),
       content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
         if (widget.preview) ...[
           const Text('Preview only. No real account will be deleted.'),
           const SizedBox(height: 12),
         ],
-        const Text('This permanently deletes your account, quests, boss battles, Chronicle history, XP, coins, and collected cosmetics. You cannot undo this.'),
+        const Text('This permanently deletes your account, quests, boss battles, Chronicle history, XP, coins, and collected cosmetics. No reloads or resurrection spells here. This cannot be undone.'),
         const SizedBox(height: 16),
         TextField(controller: _confirmation, enabled: !_busy,
           autocorrect: false, enableSuggestions: false,

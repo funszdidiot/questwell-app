@@ -21,7 +21,7 @@ void main() {
     await tester.enterText(find.byType(TextField), 'delete'); await tester.pump();
     expect(tester.widget<FilledButton>(find.byType(FilledButton)).onPressed, isNull);
     await tester.tap(find.text('Keep my account')); await tester.pumpAndSettle();
-    expect(calls,0); expect(find.text('Delete your account?'),findsNothing);
+    expect(calls,0); expect(find.text('Hang up your boots?'),findsNothing);
   });
   testWidgets('only confirmed deletion succeeds once', (tester) async {
     var calls=0; var done=0; final pending=Completer<void>();
@@ -32,7 +32,7 @@ void main() {
     expect(calls,1); expect(done,0);
     expect(tester.widget<TextButton>(find.widgetWithText(TextButton,'Keep my account')).onPressed,isNull);
     pending.complete(); await tester.pumpAndSettle();
-    expect(done,1); expect(find.text('Delete your account?'),findsNothing);
+    expect(done,1); expect(find.text('Hang up your boots?'),findsNothing);
     expect(tester.takeException(),isNull);
   });
   testWidgets('server failure never shows successful deletion', (tester) async {
