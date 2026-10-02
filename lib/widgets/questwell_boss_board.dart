@@ -87,7 +87,6 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
     QuestwellBossBattle? featured;
     for (final b in widget.battles) { if (b.id == _selected) featured = b; }
     featured ??= open.isNotEmpty ? open.first : won.isNotEmpty ? won.first : null;
-    _selected ??= featured?.id;
     final battle = featured;
     final remaining = battle?.steps.where((s) => !s.completed).toList() ?? <QuestwellBossStep>[];
     final completedSteps = battle?.steps.where((s) => s.completed).toList() ?? <QuestwellBossStep>[];
@@ -197,7 +196,12 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
     final busy = widget.busyStepId == step.id;
     final foreground = next ? const Color(0xFF30261D) : const Color(0xFFE4E6D8);
     final action = step.completed ? null : Semantics(label: 'Complete attack: ${step.title}', child: FilledButton(
-      onPressed: widget.busyStepId != null || battle.completed ? null : () => widget.onAttack(battle, step),
+      onPressed: widget.busyStepId != null || battle.completed ? null : () {
+        // Keep the battle being completed in view, but do not pin an automatic
+        // history default across refreshes that contain a newer victory.
+        setState(() => _selected = battle.id);
+        widget.onAttack(battle, step);
+      },
       style: FilledButton.styleFrom(backgroundColor: const Color(0xFF274B43), foregroundColor: Colors.white,
         textStyle: QuestwellTypography.control(),
         minimumSize: const Size(88, 48), padding: const EdgeInsets.symmetric(horizontal: 16),

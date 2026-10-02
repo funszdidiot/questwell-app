@@ -33,6 +33,9 @@ void main() {
   testWidgets('Reopening completed battles features latest victory, not creation order', (tester) async {
     final older = battle('a', won: true, createdAt: DateTime.utc(2026, 9, 29), completedAt: DateTime.utc(2026, 10, 1));
     final newer = battle('b', won: true, createdAt: DateTime.utc(2026, 9, 28), completedAt: DateTime.utc(2026, 10, 2));
+    await tester.pumpWidget(page([older]));
+    await tester.pumpAndSettle();
+    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
     await tester.pumpWidget(page([older, newer]));
     await tester.pumpAndSettle();
     expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
