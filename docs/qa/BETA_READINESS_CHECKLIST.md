@@ -87,3 +87,7 @@ Leaked-password screening remains enabled; a fresh security-advisor check return
 ## Quest completion retry — 2026-10-02
 
 The controlled committed-completion/discarded-result check supersedes that specific technical gap in the earlier readiness review. Separate transactions verified one reward after five retries and rollback on abort. The board error path now reloads and uses accurate unconfirmed-completion wording. Physical HTTP response loss, overlapping quest completions and broader-device testing remain unverified by this check. See QUEST_RECOVERY.md. Code `971762e55b72664aefab3e176d77e7c3c6c92a65` passed Flutter Check 37031317611 and Preview 37031317581. No merge, invitation or launch.
+
+## Beta review package — 2026-10-02, 11:07 America/Chicago
+
+BETA_TESTER_GUIDE.md now contains a concrete proposal: 3–5 founder-selected testers, seven days, iPhone web scope, current tested candidate, daily founder feedback review, stop conditions and explicit evidence limits. Group, date, platform scope, art disposition and release approval remain founder decisions; no invitation or launch is authorized. Existing completed checks are not reopened. Next decision: iPhone web first, or include additional named platforms with acceptance checks before invitations.
