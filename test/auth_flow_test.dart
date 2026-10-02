@@ -20,7 +20,8 @@ class FakeAuth extends QuestwellAuthService {
   Future<bool> signUp(String email, String password) async {
     signups++;
     if (failure != null) throw failure!;
-    return pending != null ? pending!.future : signupSession;
+    if (pending != null) return await pending!.future;
+    return signupSession;
   }
   @override
   Future<bool> signIn(String email, String password) async => true;
