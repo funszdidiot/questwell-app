@@ -22,7 +22,7 @@ class _HearthSettingsReviewAppState extends State<HearthSettingsReviewApp> {
       child: Column(children: [
         const Text('Find your next Hearth', style: TextStyle(fontSize: 24)),
         const SizedBox(height: 8),
-        const Text('Enchanted Library · Woodland Cottage · Midnight Harvest'),
+        const Text('New Hearth settings · 120 coins · Animated settings · 300 coins'),
         Wrap(spacing: 20, crossAxisAlignment: WrapCrossAlignment.center, children: [
           DropdownButton<String>(value: body,
             items: ['female', 'male', 'neutral'].map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
@@ -37,8 +37,7 @@ class _HearthSettingsReviewAppState extends State<HearthSettingsReviewApp> {
         ]),
         const SizedBox(height: 16),
         Wrap(spacing: 20, runSpacing: 24, alignment: WrapAlignment.center,
-          children: [for (final setting in [QuestwellHearthSetting.enchantedLibrary,
-            ...QuestwellHearthSetting.values.where((s) => s != QuestwellHearthSetting.enchantedLibrary)])
+          children: [for (final setting in [QuestwellHearthSetting.midnightObservatory, QuestwellHearthSetting.alchemistsWorkshop, QuestwellHearthSetting.astralSanctuary, QuestwellHearthSetting.emberglassConservatory])
             SizedBox(width: 390, child: Column(children: [
               Text(setting.label, style: const TextStyle(fontSize: 20)),
               const SizedBox(height: 12),

@@ -88,3 +88,14 @@ Check 37061775991 and Preview 37061775825. Catalog verified active at 120 earned
 coins. Founder inventory grant verified, source founder_grant, unequipped;
 847-coin balance unchanged. Existing settings and furnishings were not changed.
 No merge or public launch.
+
+## Four additional settings
+
+Founder requested Midnight Observatory and Alchemist’s Workshop plus two more
+expensive animated designs. Static rooms cost 120 earned coins; Astral Sanctuary
+and Emberglass Conservatory cost 300 earned coins each. No real-money billing.
+Generated base art uses the original room as geometry reference, with clear wall
+and floor. Converted to WebP quality 90. Animation is code-painted in side margins,
+behind furniture, using one repaint-only clock per visible animated room. Motion
+stops under reduced motion, TickerMode off, or inactive app lifecycle.
+Catalog staged inactive until successful CI/deployment. No launch or merge.

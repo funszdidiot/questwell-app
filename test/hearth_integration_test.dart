@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../lib/widgets/questwell_setting_motion.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_momentum/widgets/questwell_pixel_art.dart';
@@ -14,6 +15,31 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
 
+  testWidgets('Ambient motion stops for accessibility, hidden views and background apps', (tester) async {
+    Future<void> scene({bool reduced = false, bool visible = true}) async {
+      await tester.pumpWidget(MaterialApp(home: MediaQuery(
+        data: MediaQueryData(disableAnimations: reduced),
+        child: TickerMode(enabled: visible, child: const SizedBox(width: 390, height: 310,
+          child: QuestwellSettingMotion(astral: true))))));
+    }
+    double phase() => (tester.widget<CustomPaint>(find.descendant(
+      of: find.byType(QuestwellSettingMotion), matching: find.byType(CustomPaint))).painter!
+      as QuestwellSettingPainter).clock.value;
+    await scene(); await tester.pump(const Duration(seconds: 1));
+    final moving = phase();
+    await tester.pump(const Duration(seconds: 1)); expect(phase(), isNot(moving));
+    await scene(reduced: true); final still = phase();
+    await tester.pump(const Duration(seconds: 1)); expect(phase(), still);
+    await scene(visible: false); final hidden = phase();
+    await tester.pump(const Duration(seconds: 1)); expect(phase(), hidden);
+    await scene();
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+    final paused = phase(); await tester.pump(const Duration(seconds: 1)); expect(phase(), paused);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pump(); await tester.pump(const Duration(seconds: 1)); expect(phase(), isNot(paused));
+    await tester.pumpWidget(const SizedBox()); expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Settings preserve avatar anchors and original-room galleries at phone widths', (tester) async {
     for (final width in [320.0, 390.0]) {
       for (final body in ['female', 'male', 'neutral']) {
@@ -28,7 +54,7 @@ void main() {
                 'wall_art': 'moonlit-woodland',
               }),
           ))));
-          await tester.pumpAndSettle();
+          await tester.pump(const Duration(milliseconds: 300));
           expect(tester.takeException(), isNull);
           final image = find.byWidgetPredicate((w) => w is Image &&
             w.image is AssetImage && (w.image as AssetImage).assetName == setting.asset);
@@ -45,13 +71,13 @@ void main() {
   });
 
   testWidgets('Equipped setting restores from inventory and removal restores default', (tester) async {
-    for (final slug in ['woodland-cottage', 'midnight-harvest', 'enchanted-library', '']) {
+    for (final slug in ['woodland-cottage', 'midnight-harvest', 'enchanted-library', 'midnight-observatory', 'alchemists-workshop', 'astral-sanctuary', 'emberglass-conservatory', '']) {
       await tester.pumpWidget(MaterialApp(home: SizedBox(width: 390,
         child: QuestwellHearthPixelScene(height: 310, equippedSlugs: {
           if (slug.isNotEmpty) 'room:setting': slug,
           'room:right': 'walnut-bookshelf',
         }))));
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 300));
       final expected = QuestwellHearthSetting.fromSlug(slug).asset;
       expect(find.byWidgetPredicate((w) => w is Image && w.image is AssetImage &&
         (w.image as AssetImage).assetName == expected), findsOneWidget);
@@ -173,11 +199,11 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(390, 1800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(const EquipmentReviewApp(headwear: true, neckwear: true, satchel: true));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
     expect(find.byType(QuestwellLeatherSatchel), findsNWidgets(2));
     expect(find.byType(QuestwellEmeraldScarf), findsNWidgets(2));
     await tester.tap(find.text('Try on satchel'));
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
     expect(find.byType(QuestwellLeatherSatchel), findsNothing);
     expect(find.byType(QuestwellEmeraldScarf), findsNWidgets(2));
     expect(QuestwellEquipmentPolicy.isReady(QuestwellLeatherSatchel.slug, 'back'), isTrue);

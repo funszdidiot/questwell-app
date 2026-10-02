@@ -23,6 +23,7 @@ import 'questwell_fern.dart';
 import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
 import 'questwell_wall_art.dart';
+import 'questwell_setting_motion.dart';
 import 'questwell_milestone_reward.dart';
 import 'questwell_hearth_decor.dart';
 import 'questwell_contact_shadow.dart';
@@ -875,7 +876,11 @@ enum QuestwellHearthSetting {
   original('Original Hearth', 'hearth_environment_v2'),
   woodlandCottage('Woodland Cottage', 'woodland_cottage_v1'),
   midnightHarvest('Midnight Harvest', 'midnight_harvest_v1'),
-  enchantedLibrary('Enchanted Library', 'enchanted_library_v1');
+  enchantedLibrary('Enchanted Library', 'enchanted_library_v1'),
+  midnightObservatory('Midnight Observatory', 'midnight_observatory_v1'),
+  alchemistsWorkshop('Alchemist’s Workshop', 'alchemists_workshop_v1'),
+  astralSanctuary('Astral Sanctuary', 'astral_sanctuary_v1'),
+  emberglassConservatory('Emberglass Conservatory', 'emberglass_conservatory_v1');
 
   const QuestwellHearthSetting(this.label, this.file);
   final String label;
@@ -884,9 +889,13 @@ enum QuestwellHearthSetting {
     'woodland-cottage' => woodlandCottage,
     'midnight-harvest' => midnightHarvest,
     'enchanted-library' => enchantedLibrary,
+    'midnight-observatory' => midnightObservatory,
+    'alchemists-workshop' => alchemistsWorkshop,
+    'astral-sanctuary' => astralSanctuary,
+    'emberglass-conservatory' => emberglassConservatory,
     _ => original,
   };
-  static bool supports(String slug) => slug == 'woodland-cottage' || slug == 'midnight-harvest' || slug == 'enchanted-library';
+  static bool supports(String slug) => slug == 'woodland-cottage' || slug == 'midnight-harvest' || slug == 'enchanted-library' || slug == 'midnight-observatory' || slug == 'alchemists-workshop' || slug == 'astral-sanctuary' || slug == 'emberglass-conservatory';
   String get asset => 'assets/images/questwell/hearth/$file.webp';
 }
 
@@ -970,6 +979,10 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   ),
                 ),
               ),
+              if (roomSetting == QuestwellHearthSetting.astralSanctuary ||
+                  roomSetting == QuestwellHearthSetting.emberglassConservatory)
+                Positioned.fill(child: QuestwellSettingMotion(
+                  astral: roomSetting == QuestwellHearthSetting.astralSanctuary)),
               Positioned.fill(
                 child: DecoratedBox(
                   decoration: BoxDecoration(

@@ -32,14 +32,14 @@ void main(){
     bool? result;
     await tester.pumpWidget(MaterialApp(home:Builder(builder:(context)=>TextButton(
       onPressed:()async{result=await confirmCloakSwap(context,cloak,held);},child:const Text('Try swap')))));
-    await tester.tap(find.text('Try swap'));await tester.pumpAndSettle();
+    await tester.tap(find.text('Try swap'));await tester.pump(const Duration(milliseconds: 300));
     expect(find.textContaining('Closed cloaks cover your hands.'),findsOneWidget);
-    await tester.tap(find.text('Keep current'));await tester.pumpAndSettle();expect(result,isFalse);
-    await tester.tap(find.text('Try swap'));await tester.pumpAndSettle();
-    await tester.tap(find.text('Swap equipment'));await tester.pumpAndSettle();expect(result,isTrue);
+    await tester.tap(find.text('Keep current'));await tester.pump(const Duration(milliseconds: 300));expect(result,isFalse);
+    await tester.tap(find.text('Try swap'));await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.text('Swap equipment'));await tester.pump(const Duration(milliseconds: 300));expect(result,isTrue);
   });
-  test('All 34 shop entries have distinct artwork and equipment routes',()async{
-    expect(items.length,34);
+  test('All 38 shop entries have distinct artwork and equipment routes',()async{
+    expect(items.length,38);
     final fingerprints=<String>{};
     for(final item in items){
       expect(QuestwellEquipmentPolicy.isReady(item.slug,item.category),isTrue,reason:item.slug);
@@ -75,22 +75,22 @@ void main(){
     var purchased=0;
     final data=QuestwellCosmeticsSnapshot(profile:const QuestwellProfile(level:4,totalXp:355,coinBalance:650,currentEnergyMode:'normal',onboardingCompleted:true,adventurerArchetype:'scholar',avatarBodyType:'male'),cosmetics:items);
     await tester.pumpWidget(MaterialApp(theme:ThemeData.dark(),home:Scaffold(body:MediaQuery(data:const MediaQueryData(disableAnimations:true,textScaler:TextScaler.linear(1.6)),child:QuestwellMarketView(data:data,onPurchase:(_)async{purchased++;},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{})))));
-    await tester.pumpAndSettle();expect(tester.takeException(),isNull);
+    await tester.pump(const Duration(milliseconds: 300));expect(tester.takeException(),isNull);
     final categories=find.byType(SingleChildScrollView);
     final effects=find.widgetWithText(TextButton,'Effects');
     await tester.dragUntilVisible(effects.hitTestable(),categories,const Offset(-160,0));
-    await tester.tap(effects);await tester.pumpAndSettle();
+    await tester.tap(effects);await tester.pump(const Duration(milliseconds: 300));
     expect(find.byKey(const ValueKey('market-starter-business-suit')),findsNothing);
     final all=find.widgetWithText(TextButton,'All');
     await tester.dragUntilVisible(all.hitTestable(),categories,const Offset(160,0));
-    await tester.tap(all);await tester.pumpAndSettle();
+    await tester.tap(all);await tester.pump(const Duration(milliseconds: 300));
     expect(find.byKey(const ValueKey('market-starter-business-suit')),findsOneWidget);
-    await tester.enterText(find.byType(TextField),'moss-green');await tester.pumpAndSettle();
-    FocusManager.instance.primaryFocus?.unfocus();await tester.pumpAndSettle();
-    final buy=find.widgetWithText(FilledButton,'Buy · 90 coins');await tester.dragUntilVisible(buy.hitTestable(),find.byType(ListView),const Offset(0,-180),maxIteration:20);await tester.pumpAndSettle();await tester.tap(buy);await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField),'moss-green');await tester.pump(const Duration(milliseconds: 300));
+    FocusManager.instance.primaryFocus?.unfocus();await tester.pump(const Duration(milliseconds: 300));
+    final buy=find.widgetWithText(FilledButton,'Buy · 90 coins');await tester.dragUntilVisible(buy.hitTestable(),find.byType(ListView),const Offset(0,-180),maxIteration:20);await tester.pump(const Duration(milliseconds: 300));await tester.tap(buy);await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('Buy Moss-Green Cloak?'),findsOneWidget);expect(purchased,0);
-    await tester.tap(find.text('Cancel'));await tester.pumpAndSettle();expect(purchased,0);
-    await tester.tap(buy);await tester.pumpAndSettle();await tester.tap(find.text('Buy item'));await tester.pumpAndSettle();expect(purchased,1);
+    await tester.tap(find.text('Cancel'));await tester.pump(const Duration(milliseconds: 300));expect(purchased,0);
+    await tester.tap(buy);await tester.pump(const Duration(milliseconds: 300));await tester.tap(find.text('Buy item'));await tester.pump(const Duration(milliseconds: 300));expect(purchased,1);
     expect(tester.takeException(),isNull);
   });
   testWidgets('Ambient motion stops for reduced motion and muted routes',(tester)async{
@@ -100,11 +100,11 @@ void main(){
         child:QuestwellMarketAmbience()))));
     await tester.pumpWidget(scene());await tester.pump(const Duration(milliseconds:100));
     expect(tester.binding.hasScheduledFrame,isTrue);
-    await tester.pumpWidget(scene(reduced:true));await tester.pumpAndSettle();
+    await tester.pumpWidget(scene(reduced:true));await tester.pump(const Duration(milliseconds: 300));
     expect(tester.binding.hasScheduledFrame,isFalse);
     await tester.pumpWidget(scene());await tester.pump(const Duration(milliseconds:100));
     expect(tester.binding.hasScheduledFrame,isTrue);
-    await tester.pumpWidget(scene(active:false));await tester.pumpAndSettle();
+    await tester.pumpWidget(scene(active:false));await tester.pump(const Duration(milliseconds: 300));
     expect(tester.binding.hasScheduledFrame,isFalse);
     await tester.pumpWidget(const SizedBox());
   });
@@ -119,18 +119,18 @@ void main(){
         .decoration is BoxDecoration ? (tester.widget<DecoratedBox>(find.descendant(
           of:find.byType(QuestwellPurchaseGlow),matching:find.byType(DecoratedBox)))
           .decoration as BoxDecoration).boxShadow!.single.color.a : -1;
-    await tester.pumpWidget(scene(650,false));await tester.pumpAndSettle();
+    await tester.pumpWidget(scene(650,false));await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('◈  650 coins'),findsOneWidget);expect(glow(),0);
     // No changed ownership means no success animation (e.g. canceled/failed buy).
-    await tester.pumpWidget(scene(650,false));await tester.pumpAndSettle();expect(glow(),0);
+    await tester.pumpWidget(scene(650,false));await tester.pump(const Duration(milliseconds: 300));expect(glow(),0);
     await tester.pumpWidget(scene(560,true));await tester.pump(const Duration(milliseconds:150));
     final label=tester.widget<Text>(find.descendant(of:find.byType(QuestwellCoinBalance),matching:find.byType(Text))).data!;
     final value=int.parse(RegExp(r'\d+').firstMatch(label)!.group(0)!);
     expect(value,greaterThan(560));expect(value,lessThan(650));expect(glow(),greaterThan(0));
-    await tester.pumpAndSettle();expect(find.text('◈  560 coins'),findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 300));expect(find.text('◈  560 coins'),findsOneWidget);
     expect(glow(),closeTo(0,.001));
-    await tester.pumpWidget(scene(560,false,reduced:true));await tester.pumpAndSettle();
-    await tester.pumpWidget(scene(470,true,reduced:true));await tester.pumpAndSettle();
+    await tester.pumpWidget(scene(560,false,reduced:true));await tester.pump(const Duration(milliseconds: 300));
+    await tester.pumpWidget(scene(470,true,reduced:true));await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('◈  470 coins'),findsOneWidget);expect(glow(),0);
     expect(tester.binding.hasScheduledFrame,isFalse);
   });
