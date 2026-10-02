@@ -160,3 +160,10 @@ Preview 37071735177. SQL QA verified purchase/retry, left/right placement, setti
 slot rejection and removal, with rolled-back fixtures. Founder grant confirmed,
 unequipped, coin balance 847 unchanged. Migration 20261002221545 stages the item;
 activation occurred only after client deployment. No merge or public launch.
+
+
+### 16-bit Market and inventory icons — 2026-10-02
+
+Replaced detailed-art thumbnails for the Copper Potion Workbench and all seven Hearth settings with distinct 32×32 sprites in the existing 16-bit icon palette. Updated the walnut bookshelf icon with a continuous level plinth. Detailed Hearth artwork is unchanged. Shared item rendering applies the sprites in Market and inventory.
+
+Code: `870048c3e0651e4a9b5500859ce1608e1b50c3ed`. Flutter Check `37072676226` and Pages preview `37072676157` passed. The catalog test now verifies nonempty, distinct icons for all 39 shop entries. Visually verified the deployed Market at 390 px content width, including the workbench and setting cards.
