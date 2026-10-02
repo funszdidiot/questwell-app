@@ -112,3 +112,16 @@ still unverified: normal signup confirmation and password-reset roundtrips with 
 dedicated test inbox remain required. No test email was sent during this setup.
 Do not mark external beta ready from configuration alone. Website domain/hosting,
 merge and release approval are unchanged; no launch is authorized.
+
+## Fresh signup verified — 2026-10-01, 22:03 America/Chicago
+
+Founder reported the test signup/email-confirmation flow worked. A read-only
+aggregate query for the dedicated Gmail test alias confirmed exactly one auth
+account, email confirmation present, sign-in recorded, one public.users profile,
+and one starter-business-suit ownership row. No duplicate starter grant was found.
+No passwords, tokens, or personal quest content were inspected or recorded.
+
+Fresh signup/confirmation is verified by founder report plus database evidence.
+Password recovery delivery, password change, rejection of the old password,
+acceptance of the new password, and consumed recovery-link handling remain open.
+Use only the separate test account for these checks. Release remains on hold.
