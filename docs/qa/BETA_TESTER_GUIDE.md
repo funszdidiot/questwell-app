@@ -13,7 +13,7 @@ anyone, merge branches, or launch.
 | --- | --- |
 | Group | 3–5 testers selected by Tanya; names and contacts not yet chosen. |
 | Duration | Seven days starting on a date Tanya selects. |
-| Platform | iPhone web preview first, matching the device family used in founder checks. Record each tester's browser and iOS version; specific browser/version coverage is not yet established. |
+| Platform | Founder selected iPhone and Android web on October 2 at 11:11 America/Chicago. Existing iPhone checks stand; Android phone acceptance is pending. Record phone model, OS and browser/version for each platform. Native app distribution and desktop are outside this selected scope. |
 | Candidate | `971762e55b72664aefab3e176d77e7c3c6c92a65`; existing development preview at https://funszdidiot.github.io/questwell-app/. |
 | Purpose | Learn whether starting/completing quests and returning to Questwell feels clear and useful. |
 | Feedback | Explore -> Send feedback. Tanya reviews once daily during the beta; this routine is proposed, not an automated schedule. |
@@ -38,11 +38,33 @@ Controlled discarded-response tests do not establish physical phone response los
 after commit. The reported need to refresh before buying has no established cause;
 a reproducible recurrence should include the screen and connection state.
 
-The first decision is platform scope: accept the iPhone-web proposal or add named
-platforms and their acceptance checks before invitations. Next, Tanya selects the
+Tanya selected iPhone and Android web. Complete Android acceptance before invitations;
+do not reopen completed iPhone checks without a new defect. Then Tanya selects the
 actual group/date and confirms the feedback-review routine and proposed art
 disposition. External beta still requires her explicit release approval. Approval
 of a plan alone does not authorize the agent to send messages.
+
+## Android phone acceptance — pending
+
+Use the existing web preview in Chrome on an actual Android phone. Record phone
+model, Android version and Chrome version; browser emulation alone does not close
+these checks. No Android result has been reported yet.
+
+1. Sign in to the existing test account and confirm the Hearth loads with the
+   expected adventurer, XP, coins and saved quests.
+2. Create a small disposable quest with the keyboard open; confirm the submit
+   control is reachable and the page has no horizontal overflow.
+3. Complete that quest once, refresh, and confirm it stays completed with one reward.
+4. Check Quests, Chronicle, Adventurer and Market navigation, then expedition
+   Stay/Leave behavior.
+5. Confirm owned-item appearance and saved Hearth placement after refresh.
+6. Test offline-before-submit quest recovery, reconnect and retry only while open;
+   confirm one reward. Do not label this as a proven mid-request disconnect.
+7. Submit one clearly labeled Android test note through Explore -> Send feedback;
+   verify receipt before closing this check.
+
+Start with step 1 and record results one at a time. If an Android device is
+unavailable, retain this as pending rather than claiming automated coverage.
 
 ## Invitation text
 
