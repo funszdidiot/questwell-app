@@ -20,9 +20,9 @@ class _HearthSettingsReviewAppState extends State<HearthSettingsReviewApp> {
     home: Scaffold(body: SafeArea(child: SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(children: [
-        const Text('Two new places to unwind', style: TextStyle(fontSize: 24)),
+        const Text('Find your next Hearth', style: TextStyle(fontSize: 24)),
         const SizedBox(height: 8),
-        const Text('Woodland Cottage & Midnight Harvest · development preview'),
+        const Text('Enchanted Library · Woodland Cottage · Midnight Harvest'),
         Wrap(spacing: 20, crossAxisAlignment: WrapCrossAlignment.center, children: [
           DropdownButton<String>(value: body,
             items: ['female', 'male', 'neutral'].map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
@@ -37,7 +37,8 @@ class _HearthSettingsReviewAppState extends State<HearthSettingsReviewApp> {
         ]),
         const SizedBox(height: 16),
         Wrap(spacing: 20, runSpacing: 24, alignment: WrapAlignment.center,
-          children: [for (final setting in QuestwellHearthSetting.values)
+          children: [for (final setting in [QuestwellHearthSetting.enchantedLibrary,
+            ...QuestwellHearthSetting.values.where((s) => s != QuestwellHearthSetting.enchantedLibrary)])
             SizedBox(width: 390, child: Column(children: [
               Text(setting.label, style: const TextStyle(fontSize: 20)),
               const SizedBox(height: 12),

@@ -44,3 +44,15 @@ coexistence, removal/re-equip and cross-account/wrong-slot rejection. Fixtures r
 back. Widget regression covers inventory-derived background and default restoration.
 
 Activation completed after code cdea5d53dfaeaa9b8e3c496c5f4a76ca5821de47 passed Flutter Check 37057394061 and Preview 37057393992. Both catalog entries are active at 120 coins. Activation SQL: `update public.cosmetics set active=true where slug in ('woodland-cottage','midnight-harvest') and category='room' and price=120 and unlock_method='shop';` Fresh query confirmed both. Security advisor: zero lints. Browser sample Market verified Midnight Harvest purchase (650 to 530), setting preview and placed state, plus Woodland Cottage listing/thumbnail. Existing real accounts were not charged or equipped by the agent. Persistence was checked through database placement state and inventory-driven widget rendering; founder phone refresh acceptance remains to be observed. Screenshot: questwell-settings-market.jpg. No merge or launch.
+
+## Enchanted Library — October 2, 2026
+
+Founder approved the concept (“Love it”). Added the image to the shared renderer
+and put it first in the account-free settings review. Existing bounds regression
+iterates every enum setting, including Library, across three bodies and two phone
+widths. Library remains preview-only, with no catalog entry or inventory grant.
+
+Built-in image-generation prompt preserved the original room perspective, left
+fireplace, right window and clear floor. New architecture uses emerald central
+paneling, walnut built-in shelves, brass lamps and restrained gold star inlays.
+Generated PNG was converted to WebP at original dimensions and quality 90.

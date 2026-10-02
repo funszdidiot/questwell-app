@@ -874,7 +874,8 @@ class _PixelCorner extends StatelessWidget {
 enum QuestwellHearthSetting {
   original('Original Hearth', 'hearth_environment_v2'),
   woodlandCottage('Woodland Cottage', 'woodland_cottage_v1'),
-  midnightHarvest('Midnight Harvest', 'midnight_harvest_v1');
+  midnightHarvest('Midnight Harvest', 'midnight_harvest_v1'),
+  enchantedLibrary('Enchanted Library', 'enchanted_library_v1');
 
   const QuestwellHearthSetting(this.label, this.file);
   final String label;
