@@ -17,3 +17,9 @@ The shared renderer suppresses class garment/rear layers and Scholar-specific cu
 Development review: `?review=harvest-coat`; all three bodies show portrait and Midnight Harvest Hearth, with class, outfit, accessories and handheld controls. `test/harvest_coat_test.dart` checks canvas registration, exposed hands and legs, class replacement/removal, and held-item/satchel rendering across all bodies and classes. The shared catalog suite includes all 41 shop items. `tool/qa/harvest_coat_market_check.sql` checks purchase, retry debit safety, exclusive chest equipment and removal in rolled-back fixtures.
 
 Catalog is staged inactive until preview checks pass. Founder copy is granted free and unequipped; no coin debit or change to existing equipment. Development branch only; no public launch or merge.
+
+## Release verification
+
+Code release `b06176e6b9a041ee3237e27f6b6ea144834192f0`: Flutter Check `37078024329` and Preview `37078024360` both passed. Live preview was visually reviewed on female, male and neutral bodies, with and without scarf, satchel, hat, glasses and lantern. Purchase/retry/equip/unequip SQL QA passed in rolled-back fixtures; Supabase security advisors reported zero findings.
+
+The 180-earned-coin catalog listing is now active. The founder copy was verified owned, free and unequipped, with the coin balance unchanged at 847. Existing equipment was preserved. Screenshot: `questwell-midnight-harvest-coat.jpg`.
