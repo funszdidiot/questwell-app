@@ -871,10 +871,22 @@ class _PixelCorner extends StatelessWidget {
   }
 }
 
+enum QuestwellHearthSetting {
+  original('Original Hearth', 'hearth_environment_v2'),
+  woodlandCottage('Woodland Cottage', 'woodland_cottage_v1'),
+  midnightHarvest('Midnight Harvest', 'midnight_harvest_v1');
+
+  const QuestwellHearthSetting(this.label, this.file);
+  final String label;
+  final String file;
+  String get asset => 'assets/images/questwell/hearth/$file.webp';
+}
+
 class QuestwellHearthPixelScene extends StatelessWidget {
   const QuestwellHearthPixelScene({
     super.key,
     this.height = 170,
+    this.setting = QuestwellHearthSetting.original,
     this.archetype = 'wanderer',
     this.avatarBodyType = 'neutral',
     this.equippedSlugs = const {},
@@ -882,8 +894,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
     this.showAvatar = true,
   });
 
-  static const _environmentAsset =
-      'assets/images/questwell/hearth/hearth_environment_v2.webp';
+  final QuestwellHearthSetting setting;
 
   final double height;
   final String archetype;
@@ -930,7 +941,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
             children: [
               Positioned.fill(
                 child: Image.asset(
-                  _environmentAsset,
+                  setting.asset,
                   fit: BoxFit.cover,
                   alignment: const Alignment(0, .04),
                   filterQuality: FilterQuality.medium,

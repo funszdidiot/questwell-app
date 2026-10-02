@@ -14,6 +14,36 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
 
+  testWidgets('Settings preserve avatar and wall-art anchors at phone widths', (tester) async {
+    for (final width in [320.0, 390.0]) {
+      for (final body in ['female', 'male', 'neutral']) {
+        Rect? avatar;
+        Rect? wall;
+        for (final setting in QuestwellHearthSetting.values) {
+          await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(width: width,
+            child: QuestwellHearthPixelScene(height: 310, setting: setting,
+              avatarBodyType: body, equippedSlugs: const {
+                'room:right': 'walnut-bookshelf', 'room:front': 'burgundy-reading-chair',
+                'room:side': 'walnut-reading-table', 'room:floor': 'emerald-wayfarer-rug',
+                'wall_art': 'moonlit-woodland',
+              }),
+          ))));
+          await tester.pumpAndSettle();
+          expect(tester.takeException(), isNull);
+          final image = find.byWidgetPredicate((w) => w is Image &&
+            w.image is AssetImage && (w.image as AssetImage).assetName == setting.asset);
+          expect(image, findsOneWidget);
+          final a = tester.getRect(find.byKey(const ValueKey('hearth-avatar-bounds')));
+          final w = tester.getRect(find.byKey(const ValueKey('hearth-wall-art-bounds')));
+          if (avatar != null) expect(a, avatar);
+          if (wall != null) expect(w, wall);
+          avatar = a;
+          wall = w;
+        }
+      }
+    }
+  });
+
   test('Brooch polish preserves corrected lapel centers', () {
     for (final fit in [
       (body: 'female', center: const Offset(99, 94)),
