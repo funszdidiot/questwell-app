@@ -46,5 +46,7 @@ connection off showed an error; after reconnecting, retrying charged her once.
 Observed phone offline/retry acceptance passed. Refresh timing and cause are not
 established. Do not infer that the first request reached the server or lost its
 response after commit. Controlled-fault checks cover that distinct technical case.
-Rug placement and persistence after refresh, and explicit visual acceptance, have
-not yet been reported. No merge, external beta or launch is authorized.
+At 08:28, founder clarified she was on the purchase confirmation screen.
+At 08:29, after being asked to place the rug and refresh, founder confirmed:
+"It stays in place." Purchase-and-placement functional acceptance is complete.
+This confirmation does not constitute separate blanket art approval. No merge, external beta or launch is authorized.
