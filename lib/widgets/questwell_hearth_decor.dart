@@ -17,7 +17,7 @@ class QuestwellHearthDecor {
       'left': 'Back left pedestal', 'right': 'Back right pedestal',
       'front': 'Front left pedestal'}
     : switch (slug) {
-    'woodland-cottage' || 'midnight-harvest' => const {'setting': 'Hearth setting'},
+    'woodland-cottage' || 'midnight-harvest' || 'enchanted-library' => const {'setting': 'Hearth setting'},
     'emerald-wayfarer-rug' => const {'floor': 'Beneath the adventurer'},
     'rainy-window' => const {'window': 'Window alcove'},
     QuestwellFirstJourney.slug || QuestwellStarlitOrrery.slug => const {'bookshelf_top': 'On the bookcase', 'mantel': 'Fireplace mantel'},

@@ -883,9 +883,10 @@ enum QuestwellHearthSetting {
   static QuestwellHearthSetting fromSlug(String? slug) => switch (slug) {
     'woodland-cottage' => woodlandCottage,
     'midnight-harvest' => midnightHarvest,
+    'enchanted-library' => enchantedLibrary,
     _ => original,
   };
-  static bool supports(String slug) => slug == 'woodland-cottage' || slug == 'midnight-harvest';
+  static bool supports(String slug) => slug == 'woodland-cottage' || slug == 'midnight-harvest' || slug == 'enchanted-library';
   String get asset => 'assets/images/questwell/hearth/$file.webp';
 }
 

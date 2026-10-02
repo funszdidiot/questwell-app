@@ -45,7 +45,7 @@ void main() {
   });
 
   testWidgets('Equipped setting restores from inventory and removal restores default', (tester) async {
-    for (final slug in ['woodland-cottage', 'midnight-harvest', '']) {
+    for (final slug in ['woodland-cottage', 'midnight-harvest', 'enchanted-library', '']) {
       await tester.pumpWidget(MaterialApp(home: SizedBox(width: 390,
         child: QuestwellHearthPixelScene(height: 310, equippedSlugs: {
           if (slug.isNotEmpty) 'room:setting': slug,

@@ -72,3 +72,13 @@ Founder reported awkward painting placement. Library now uses a smaller symmetri
 gallery centered inside its emerald arch. The anchors follow the background cover
 crop, preserving clearance from built-in shelves, brass lamps and arch trim.
 Other settings retain their existing gallery layout.
+
+## Library Market and founder inventory rollout
+
+Founder requested app availability and a free inventory copy. Library is priced
+at 120 earned coins, class-neutral, and uses the existing exclusive setting slot.
+Client slug resolution, thumbnail, placement choices and sample Market now include
+Library with the corrected gallery. Migration 20261002203554 stages it inactive;
+activation and founder grant follow successful client deployment. SQL checks passed
+purchase retry safety, replacement confirmation, furniture coexistence, wrong-slot
+rejection, removal and cross-account rejection. Security advisor returned no lints.

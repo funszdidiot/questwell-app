@@ -38,8 +38,8 @@ void main(){
     await tester.tap(find.text('Try swap'));await tester.pumpAndSettle();
     await tester.tap(find.text('Swap equipment'));await tester.pumpAndSettle();expect(result,isTrue);
   });
-  test('All 33 shop entries have distinct artwork and equipment routes',()async{
-    expect(items.length,33);
+  test('All 34 shop entries have distinct artwork and equipment routes',()async{
+    expect(items.length,34);
     final fingerprints=<String>{};
     for(final item in items){
       expect(QuestwellEquipmentPolicy.isReady(item.slug,item.category),isTrue,reason:item.slug);
