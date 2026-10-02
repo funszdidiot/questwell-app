@@ -82,3 +82,9 @@ Library with the corrected gallery. Migration 20261002203554 stages it inactive;
 activation and founder grant follow successful client deployment. SQL checks passed
 purchase retry safety, replacement confirmation, furniture coexistence, wrong-slot
 rejection, removal and cross-account rejection. Security advisor returned no lints.
+
+Activation completed after ac752faba50d0e340abb2f8c9638ca3a45559168 passed Flutter
+Check 37061775991 and Preview 37061775825. Catalog verified active at 120 earned
+coins. Founder inventory grant verified, source founder_grant, unequipped;
+847-coin balance unchanged. Existing settings and furnishings were not changed.
+No merge or public launch.
