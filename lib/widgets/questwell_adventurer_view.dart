@@ -242,6 +242,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
     final ready = QuestwellEquipmentPolicy.isReady(item.slug, item.category);
     final room = item.category == 'room';
     final wallArt = item.category == 'wall_art';
+    final outfit = item.category == 'chest';
     final movable = room || QuestwellWallArt.isSide(item.slug);
     final status = item.equipped ? (room ? 'Placed' : wallArt ? 'Hung' : 'Equipped') : item.owned ? 'Owned' : 'Locked';
     return _panel(Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -257,6 +258,11 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       ]),
       if (item.description.isNotEmpty) ...[
         const SizedBox(height: 10), Text(item.description, style: _text(14, color: _muted)),
+      ],
+      if (outfit && item.equipped) ...[
+        const SizedBox(height: 8),
+        Text('Return to your default ${_label(widget.archetype)} outfit. ${item.name} stays in your inventory.',
+          style: _text(14, color: _muted)),
       ],
       if (item.milestoneLevel != null && item.owned) Padding(padding: const EdgeInsets.only(top: 8),
         child: Text(item.unlockedAt == null ? 'Level ${item.milestoneLevel} trophy'
@@ -276,7 +282,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           : item.owned && !item.classLocked && ready ? () => widget.onEquip(item.id) : null,
         style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
               textStyle: QuestwellTypography.body(fontSize: 14, fontWeight: FontWeight.w700)),
-        child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? (room || wallArt ? 'Remove from Hearth' : 'Unequip')
+        child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? (room || wallArt ? 'Remove from Hearth' : outfit ? 'Wear ${_label(widget.archetype)} outfit' : 'Unequip')
           : !item.owned ? (item.shop ? 'View in Market' : item.milestoneLevel != null ? 'Unlocks at level ${item.milestoneLevel}' : item.slug == 'first-journey-trophy' ? 'Unlocks at level 5' : 'Earn through progression')
           : item.classLocked ? 'Class restricted' : !ready ? (room ? 'Coming soon' : 'Equip unavailable') : (room ? 'Place in Hearth' : wallArt ? 'Hang in Hearth' : 'Equip'))),
     ]));
