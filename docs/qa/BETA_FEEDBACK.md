@@ -13,7 +13,7 @@ history, and screenshots are not captured automatically.
 ## Founder review
 
 In the existing Project Momentum Supabase dashboard, open Table Editor and choose
-public.beta_feedback. Sort created_at descending; filter status = new for unread
+public.beta_feedback ([verified table view](https://supabase.com/dashboard/project/bdzcazkyypopbanbjnud/editor/18018)). Sort created_at descending; filter status = new for unread
 reports. Read goal/message first, then optional expected/steps and context fields.
 Use the existing project-owner dashboard access to set status to reviewed or
 resolved. No admin role or extra permissions are granted to app users.
@@ -55,6 +55,11 @@ returned only the previously recorded leaked-password protection warning.
 
 test/feedback_test.dart covers draft isolation/clearing, failure/reopen/retry,
 required fields and duplicate taps, and a 320px enlarged-text form.
-Build and live preview results will be recorded after CI completes.
+Commit 810c911 passed Flutter Check 36962307387 and Preview 36962307357.
+The browser sample confirmed required-field validation, close/reopen draft recovery,
+and the local-only success state. The final 390px preview form rendered cleanly.
+The existing signed-in founder dashboard can open beta_feedback in Table Editor.
+A real authenticated submission from the founder's test account remains pending;
+no sample preview submission writes a database report.
 
 No external beta invitation, production-branch merge, or launch is authorized.

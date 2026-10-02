@@ -49,10 +49,11 @@ Required:
 Screen/feature is included automatically. Expected behavior is optional.
 
 Optional:
-4. Steps to reproduce, if it happened more than once.
-5. Device or browser details. Screen, coarse platform, build, and submission time
+1. What did you expect?
+2. Steps to reproduce, if it happened more than once.
+3. Device or browser details. Screen, coarse platform, build, and submission time
    are included automatically.
-6. Contact email if you want a reply.
+4. Contact email if you want a reply.
 
 Suggested report types: Something broke / Hard to understand / Idea / Worked well.
 Do not require a contact email or screenshot to submit feedback.
