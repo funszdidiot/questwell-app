@@ -2,7 +2,7 @@
 
 Status: prepared for founder review. Feedback destination: Explore -> Send feedback inside Questwell. Invited testers
 and start date are not yet selected. Do not distribute until Tanya approves the beta.
-Current candidate: 9ec4c58 (development preview, not a launch).
+Current candidate: cb79c693e2798d9367d21a6c175cecc548d29492 (development preview, not a launch).
 
 ## Invitation text
 
@@ -72,9 +72,9 @@ blocked task completion. Use tester findings to choose UX changes.
 
 ## Before inviting testers
 
-- Verify the in-app feedback form and founder review access in Supabase Table Editor.
-- Finish outstanding device acceptance and interrupted-purchase checks in
-  BETA_READINESS_CHECKLIST.md.
+- In-app feedback submission and founder receipt are verified. Confirm the review routine before invitations.
+- Founder iPhone purchase/retry, saved placement, navigation and boss reward-persistence checks are complete. Choose the beta device/browser scope explicitly; broader device coverage remains unverified.
+- Resolve or explicitly decide the known compromised-password-screening warning after checking the project plan. No paid upgrade is approved.
 - Resolve or explicitly defer remaining visual items with the founder.
 - Confirm the specific beta audience and obtain Tanya's release approval.
 
