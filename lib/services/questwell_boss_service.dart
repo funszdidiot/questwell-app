@@ -14,7 +14,7 @@ class QuestwellBossService {
     final responses = await QuestwellNetwork.read(() => Future.wait([
       SupaFlow.client
           .from('boss_battles')
-          .select('id,title,status,reward_xp,reward_coins,boss_type,created_at')
+          .select('id,title,status,reward_xp,reward_coins,boss_type,created_at,completed_at')
           .eq('user_id', uid)
           .order('created_at', ascending: true),
       SupaFlow.client

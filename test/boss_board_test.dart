@@ -11,7 +11,8 @@ import '../lib/widgets/questwell_boss_encounter.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
-  QuestwellBossBattle battle(String id, {bool won = false}) => QuestwellBossBattle(id: id,
+  QuestwellBossBattle battle(String id, {bool won = false, DateTime? createdAt, DateTime? completedAt}) => QuestwellBossBattle(id: id,
+    createdAt: createdAt, completedAt: completedAt,
     title: 'Challenge $id', bossType: id == 'a' ? 'inbox_hydra' : 'meeting_mimic',
     status: won ? 'completed' : 'open', rewardXp: 100, rewardCoins: 50,
     steps: [QuestwellBossStep(id: '$id-1', title: 'Finish the first action', position: 0, completed: won),
@@ -22,6 +23,39 @@ void main() {
       body: QuestwellBossBoard(battles: data, practice: true, failed: failed, loading: loading,
         busyStepId: busy, initialBattleId: selected, onHome: () => homes++, onCreate: () => creates++,
         onAttack: (_, __) => attacks++, onRetry: () {}))));
+  test('Battle decoding retains completion time and tolerates missing dates', () {
+    final b = QuestwellBossBattle.fromJson({'id': 'a', 'created_at': '2026-10-01T10:00:00Z',
+      'completed_at': '2026-10-02T09:00:00-05:00'}, []);
+    expect(b.completedAt, DateTime.utc(2026, 10, 2, 14));
+    expect(b.createdAt, DateTime.utc(2026, 10, 1, 10));
+    expect(QuestwellBossBattle.fromJson({}, []).completedAt, isNull);
+  });
+  testWidgets('Reopening completed battles features latest victory, not creation order', (tester) async {
+    final older = battle('a', won: true, createdAt: DateTime.utc(2026, 9, 29), completedAt: DateTime.utc(2026, 10, 1));
+    final newer = battle('b', won: true, createdAt: DateTime.utc(2026, 9, 28), completedAt: DateTime.utc(2026, 10, 2));
+    await tester.pumpWidget(page([older, newer]));
+    await tester.pumpAndSettle();
+    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
+    await tester.pumpWidget(const SizedBox());
+    await tester.pumpWidget(page([newer, older]));
+    await tester.pumpAndSettle();
+    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
+    // Explicit history selection still takes precedence over the default.
+    await tester.pumpWidget(page([older, newer], selected: 'a'));
+    await tester.pumpAndSettle();
+    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
+  });
+  testWidgets('Undated victories fall back to creation date; active battles remain first', (tester) async {
+    final old = battle('a', won: true);
+    final recent = battle('b', won: true, createdAt: DateTime.utc(2026, 10, 2));
+    await tester.pumpWidget(page([old, recent]));
+    await tester.pumpAndSettle();
+    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
+    await tester.pumpWidget(const SizedBox());
+    await tester.pumpWidget(page([old, recent, battle('c')]));
+    await tester.pumpAndSettle();
+    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'c');
+  });
   testWidgets('Illustrated arenas follow their boss at phone and wide widths', (tester) async {
     tester.view.physicalSize = const Size(600, 1700);
     tester.view.devicePixelRatio = 1;

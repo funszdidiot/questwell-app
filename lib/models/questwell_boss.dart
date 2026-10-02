@@ -37,6 +37,8 @@ class QuestwellBossBattle {
     required this.rewardCoins,
     required this.bossType,
     required this.steps,
+    this.createdAt,
+    this.completedAt,
   });
 
   final String id;
@@ -46,6 +48,8 @@ class QuestwellBossBattle {
   final int rewardCoins;
   final String bossType;
   final List<QuestwellBossStep> steps;
+  final DateTime? createdAt;
+  final DateTime? completedAt;
 
   int get completedSteps => steps.where((step) => step.completed).length;
   int get totalSteps => steps.length;
@@ -65,6 +69,8 @@ class QuestwellBossBattle {
       rewardCoins: (json['reward_coins'] as num?)?.toInt() ?? 50,
       bossType: json['boss_type']?.toString() ?? 'inbox_hydra',
       steps: steps,
+      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? ''),
+      completedAt: DateTime.tryParse(json['completed_at']?.toString() ?? ''),
     );
   }
 }
@@ -84,4 +90,3 @@ class BossStepCompletionResult {
   final int totalXp;
   final int coinBalance;
 }
-

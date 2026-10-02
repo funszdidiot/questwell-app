@@ -74,7 +74,16 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
   @override
   Widget build(BuildContext context) {
     final open = widget.battles.where((b) => !b.completed).toList();
-    final won = widget.battles.where((b) => b.completed).toList();
+    final won = widget.battles.where((b) => b.completed).toList()
+      ..sort((a, b) {
+        // Creation order is not victory order: older battles can finish later.
+        final aTime = a.completedAt ?? a.createdAt;
+        final bTime = b.completedAt ?? b.createdAt;
+        if (aTime == null) return bTime == null ? a.id.compareTo(b.id) : 1;
+        if (bTime == null) return -1;
+        final order = bTime.compareTo(aTime);
+        return order == 0 ? a.id.compareTo(b.id) : order;
+      });
     QuestwellBossBattle? featured;
     for (final b in widget.battles) { if (b.id == _selected) featured = b; }
     featured ??= open.isNotEmpty ? open.first : won.isNotEmpty ? won.first : null;
