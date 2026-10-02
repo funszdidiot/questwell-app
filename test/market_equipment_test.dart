@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import '../lib/widgets/questwell_equipment_swap.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import '../lib/widgets/questwell_potion_workbench.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/preview/market_catalog.dart';
@@ -44,21 +43,6 @@ void main(){
     final fingerprints=<String>{};
     for(final item in items){
       expect(QuestwellEquipmentPolicy.isReady(item.slug,item.category),isTrue,reason:item.slug);
-      if (item.slug == QuestwellPotionWorkbench.slug) {
-        final bytes=await rootBundle.load(QuestwellPotionWorkbench.asset);
-        expect(bytes.lengthInBytes,greaterThan(0));
-        expect(fingerprints.add(bytes.buffer.asUint8List().join(',')),isTrue);
-        expect(QuestwellHearthDecor.choices(item.slug).keys, ['left','right']);
-        continue;
-      }
-      if (QuestwellHearthSetting.supports(item.slug)) {
-        final bytes = await rootBundle.load(QuestwellHearthSetting.fromSlug(item.slug).asset);
-        expect(bytes.lengthInBytes, greaterThan(0));
-        expect(fingerprints.add(bytes.buffer.asUint8List().join(',')), isTrue,
-          reason: 'Duplicate setting art: ${item.slug}');
-        expect(QuestwellHearthDecor.choices(item.slug), {'setting': 'Hearth setting'});
-        continue;
-      }
       final recorder=ui.PictureRecorder();
       QuestwellItemIconPainter(item.slug).paint(Canvas(recorder),const Size(32,32));
       final picture=recorder.endRecording();final image=await picture.toImage(32,32);

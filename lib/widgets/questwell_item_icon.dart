@@ -36,7 +36,58 @@ class QuestwellItemIconPainter extends CustomPainter {
     void panel(int x,int y,int w,int h,Color c,Color light,Color dark) {
       r(x,y,w,h,ink);r(x+1,y+1,w-2,h-2,c);r(x+1,y+1,w-2,1,light);r(x+1,y+1,1,h-2,light);r(x+w-2,y+2,1,h-3,dark);r(x+2,y+h-2,w-3,1,dark);
     }
-    if (slug == 'emerald-wayfarer-rug') {
+    if (slug == 'copper-potion-workbench') {
+      // Copper alembic and jewel bottles above a level apothecary cabinet.
+      panel(3,18,26,12,wood,woodLight,woodDark);
+      r(2,17,28,2,goldShade);r(3,17,26,1,gold);
+      for(final x in [5,11,17,23]) {panel(x,20,4,3,woodDark,wood,ink);r(x+1,21,2,1,gold);}
+      panel(5,24,10,4,woodDark,woodLight,ink);panel(17,24,10,4,woodDark,woodLight,ink);
+      r(13,25,1,1,gold);r(18,25,1,1,gold);r(3,29,26,2,woodDark);
+      r(6,7,7,2,goldShade);r(4,9,11,5,ink);r(5,9,9,5,goldShade);
+      r(6,9,6,3,woodLight);r(7,9,2,2,cream);r(6,14,2,3,woodDark);r(12,14,2,3,woodDark);
+      r(8,4,4,4,goldShade);r(9,3,5,2,gold);r(13,4,3,2,gold);r(15,5,3,2,goldShade);r(17,6,2,4,gold);
+      r(16,10,4,2,blue);r(15,12,6,4,ink);r(16,12,4,3,blue);r(16,14,4,2,green);r(16,12,1,1,cream);
+      for(final x in [23,27]) {r(x,10,2,2,gold);r(x-1,12,4,5,ink);r(x,12,2,4,x==23?green:red);r(x,12,1,1,cream);}
+    } else if (const ['woodland-cottage','midnight-harvest','enchanted-library',
+      'midnight-observatory','alchemists-workshop','astral-sanctuary',
+      'emberglass-conservatory'].contains(slug)) {
+      // Miniature room emblems share a 32px grid, each with its own motif.
+      final harvest=slug=='midnight-harvest';
+      final library=slug=='enchanted-library';
+      final alchemy=slug=='alchemists-workshop';
+      final astral=slug=='astral-sanctuary';
+      final observatory=slug=='midnight-observatory';
+      final conservatory=slug=='emberglass-conservatory';
+      final sky=astral||observatory;
+      final wall=harvest?const Color(0xFF704333):alchemy?redDark:sky?purpleDark:greenDark;
+      panel(2,3,28,27,wood,woodLight,woodDark);r(5,6,22,19,wall);
+      r(4,25,24,4,wood);r(5,25,22,1,woodLight);r(5,28,22,1,goldShade);
+      panel(20,7,7,13,sky?purple:blue,gold,woodDark);
+      r(23,8,1,11,goldShade);r(21,13,5,1,goldShade);
+      if(library) {
+        for(final x in [6,13]) {r(x,8,5,15,woodDark);
+          for(final y in [9,15]) {r(x,y,1,4,red);r(x+2,y,1,4,gold);r(x+4,y,1,4,blue);r(x,y+4,5,1,woodLight);}}
+        r(20,22,7,2,gold);r(21,21,5,1,cream);
+      } else if(alchemy) {
+        r(6,18,12,2,woodLight);r(7,20,2,5,wood);r(16,20,2,5,wood);
+        r(8,11,2,3,gold);r(6,14,6,4,ink);r(7,14,4,3,green);r(8,14,1,1,cream);
+        r(14,9,2,3,gold);r(13,12,4,6,purple);r(14,12,1,3,cream);
+        r(7,5,10,1,goldShade);r(16,5,1,4,gold);
+      } else if(sky) {
+        r(8,8,5,5,cream);r(10,7,4,5,wall);star(16,7,gold);
+        if(astral) {gem(7,16,purple);gem(12,20,blue);star(25,9,cream);r(21,17,2,1,mint);r(24,16,2,1,purple);}
+        else {r(9,17,9,3,goldShade);r(11,16,5,2,gold);r(8,18,3,3,blue);r(14,20,1,5,gold);r(11,24,7,1,goldShade);}
+      } else {
+        r(5,7,2,15,woodDark);r(5,21,9,3,woodDark);r(7,16,6,6,ink);
+        r(8,18,4,4,harvest?red:goldShade);r(9,18,2,3,gold);r(10,19,1,2,cream);
+        for(final pos in [const Offset(6,7),const Offset(10,5),const Offset(16,6),const Offset(26,5)]) {
+          r(pos.dx,pos.dy,3,2,harvest?red:green);r(pos.dx+1,pos.dy+2,2,2,harvest?woodLight:mint);
+        }
+        if(conservatory) {r(18,5,1,18,goldShade);gem(15,12,gold);star(25,22,gold);r(16,21,1,1,cream);}
+        else if(harvest) {r(16,21,3,3,woodLight);r(17,20,1,1,greenDark);r(24,8,2,3,cream);}
+        else {r(16,19,2,5,green);r(14,20,5,1,mint);r(15,24,4,1,woodLight);}
+      }
+    } else if (slug == 'emerald-wayfarer-rug') {
       // Flat woven textile, gold edging and an eight-point compass rose.
       panel(3, 7, 26, 18, greenDark, gold, goldShade);
       r(5,9,22,14,gold);r(6,10,20,12,greenDark);
@@ -168,7 +219,7 @@ class QuestwellItemIconPainter extends CustomPainter {
     } else if(slug.contains('bookshelf')) {
       panel(4,3,24,26,wood,woodLight,woodDark);r(7,6,18,20,woodDark);
       for(final y in [6,14,22]) {for(var j=0;j<4;j++){final c=[green,red,purple,blue][j];r(8+j*4,y,3,5,c);r(8+j*4,y+1,2,1,gold);}r(6,y+6,20,2,woodLight);}
-      r(6,29,3,2,woodDark);r(23,29,3,2,woodDark);
+      r(4,29,24,2,woodDark);r(5,29,22,1,woodLight);
     } else if(slug.contains('chair')) {
       panel(8,3,16,18,red,const Color(0xFFD28385),redDark);panel(6,18,20,9,red,red,redDark);panel(4,16,5,9,red,cream,redDark);panel(23,16,5,9,red,cream,redDark);
       r(8,27,3,4,wood);r(21,27,3,4,wood);for(final x in [12,19])for(final y in [9,14])r(x,y,1,1,gold);
