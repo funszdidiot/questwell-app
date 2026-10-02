@@ -28,6 +28,7 @@ check is not evidence that the feature is broken.
 | Male Wanderer cuff fit | Revised; improvement confirmed | October 2: male v4 sleeve ends raised and softened to avoid cutting across the hands; founder responded “Better” and moved to the next task. Shared avatar and satchel layering verified; Flutter Check 37017311712 and Preview 37017310989 passed. Retained as the development candidate; no blanket visual or release approval inferred. |
 | Signed-in boss victory and reward persistence | Verified by founder | October 2 at 09:31 America/Chicago, founder confirmed the refreshed page shows the latest defeated boss. At 09:32, founder confirmed XP and coins stayed correct after refresh, with no additional reward. This closes the observed signed-in victory/refresh check; no fault-injection or concurrent-request claim is inferred. |
 | Compromised-password screening | Enabled and verified | October 2 at 10:42 America/Chicago: founder reported completing the authorized Pro upgrade. Fresh billing view confirms Momentum Labs Pro, $25 current/projected costs, and spend cap enabled. Enabled Prevent use of leaked passwords, saved and reopened to confirm persistence. Supabase security advisor returned zero lints. Other password-policy settings unchanged; no end-to-end password rejection test claimed. |
+| Minimum password length | Verified | October 2: saved Supabase minimum of eight characters matches existing signup/recovery validation. Reopened settings confirmed 8. A synthetic seven-character signup request was rejected with HTTP 422 weak_password and “Password should be at least 8 characters.” No account created or existing password changed. |
 | Release approval | On hold | Explicit founder approval still required. |
 
 ## Recommended order
@@ -75,3 +76,9 @@ Remaining decisions: final visual disposition (male cuff improvement retained; r
 ## Pro upgrade and password screening — 2026-10-02, 10:42 America/Chicago
 
 Supersedes the earlier Free-plan restriction and pending-upgrade decision. Founder completed the upgrade herself after approving it. Fresh billing page verified Pro and spend cap enabled; no second purchase was submitted. Compromised-password screening saved and verified in the Email provider panel; security advisor returned `lints: []`. This is a configuration/advisor check, not a full security audit. Six-character minimum and password-change policies remain unchanged pending coordinated hardening. No merge, beta invitations or launch.
+
+## Password minimum aligned — 2026-10-02
+
+Supersedes the six-character minimum noted above. Existing app validation already requires at least eight characters for signup and recovery; sign-in only checks that a password is present. Raised the Supabase minimum from six to eight, saved and reopened the provider panel to verify persistence. A synthetic seven-character signup request using a reserved example.invalid address returned HTTP 422 `weak_password`: “Password should be at least 8 characters.” The rejected request did not create an account. No actual user credentials were modified.
+
+Leaked-password screening remains enabled; a fresh security-advisor check returned `lints: []`. Secure-password-change and current-password requirements remain unchanged. This verifies the minimum-length configuration and rejection path, not a new end-to-end recovery or compromised-password test. No app-code change, merge, invitation or launch.
