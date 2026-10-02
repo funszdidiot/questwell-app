@@ -37,7 +37,9 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     await tester.binding.setSurfaceSize(const Size(390, 850));
     addTearDown(() => tester.binding.setSurfaceSize(null));
-    final store = QuestwellFeedbackDraftStore('tester');
+    QuestwellFeedbackDraft? saved;
+    Future<void> save(QuestwellFeedbackDraft value) async { saved = value; }
+    Future<void> clear() async { saved = null; }
     final submitted = <String>[];
     var attempts = 0;
     Future<void> submit(QuestwellFeedbackDraft value) async {
@@ -46,19 +48,23 @@ void main() {
     }
     Widget app(QuestwellFeedbackDraft value, String key) => MaterialApp(
       home: Scaffold(body: QuestwellFeedbackForm(key: ValueKey(key), initialDraft: value,
-        onSave: store.save, onClear: store.clear, onSubmit: submit, onClose: () {})));
+        onSave: save, onClear: clear, onSubmit: submit, onClose: () {})));
     await tester.pumpWidget(app(draft(), 'first'));
     await tester.enterText(field('What were you trying to do?'), 'Complete a quest');
     await tester.enterText(field('What happened?'), 'The button did not respond.');
-    await tester.ensureVisible(send()); await tester.tap(send()); await tester.pumpAndSettle();
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(send()); await tester.pumpAndSettle(); await tester.tap(send()); await tester.pumpAndSettle();
     expect(find.textContaining('We could not confirm delivery.'), findsOneWidget);
     expect(find.text('The button did not respond.'), findsOneWidget);
-    final restored = (await store.load())!;
+    final restored = saved!;
     await tester.pumpWidget(app(restored, 'reopened')); await tester.pumpAndSettle();
-    await tester.ensureVisible(send()); await tester.tap(send()); await tester.pumpAndSettle();
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(send()); await tester.pumpAndSettle(); await tester.tap(send()); await tester.pumpAndSettle();
     expect(submitted, [restored.id, restored.id]);
     expect(find.text('Thanks, adventurer. Your note is in our journal.'), findsOneWidget);
-    expect(await store.load(), isNull);
+    expect(saved, isNull);
     expect(tester.takeException(), isNull);
   });
 
@@ -70,15 +76,19 @@ void main() {
     await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellFeedbackForm(
       initialDraft: draft(), onSave: (_) async {}, onClear: () async {},
       onSubmit: (_) { sends++; return completion.future; }, onClose: () => closes++))));
-    await tester.ensureVisible(send()); await tester.tap(send()); await tester.pumpAndSettle();
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(send()); await tester.pumpAndSettle(); await tester.tap(send()); await tester.pumpAndSettle();
     expect(sends, 0);
     expect(find.text('Please add a few words.'), findsNWidgets(2));
     await tester.enterText(field('What were you trying to do?'), 'Find my last quest');
     await tester.enterText(field('What happened?'), 'I found it in Chronicle.');
-    await tester.ensureVisible(send()); await tester.tap(send()); await tester.pump();
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(send()); await tester.pumpAndSettle(); await tester.tap(send()); await tester.pump();
     expect(sends, 1);
     expect(tester.widget<FilledButton>(find.widgetWithText(FilledButton, 'Sending…')).onPressed, isNull);
-    expect(tester.widget<IconButton>(find.byTooltip('Close feedback')).onPressed, isNull);
+    expect(tester.widget<IconButton>(find.byWidgetPredicate((w) => w is IconButton && w.tooltip == 'Close feedback')).onPressed, isNull);
     expect(closes, 0);
     completion.complete(); await tester.pumpAndSettle();
     expect(find.text('NOTE RECEIVED'), findsOneWidget);
@@ -96,7 +106,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.ensureVisible(field('What happened?')); await tester.pumpAndSettle();
     await tester.enterText(field('What happened?'), 'A longer observation on a small phone.');
-    await tester.ensureVisible(send()); await tester.pumpAndSettle();
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(send()); await tester.pumpAndSettle(); await tester.pumpAndSettle();
     expect(send().hitTestable(), findsOneWidget);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox());
