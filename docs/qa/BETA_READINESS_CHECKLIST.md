@@ -1,7 +1,7 @@
 # Questwell beta-readiness checklist
 
-Reviewed 2026-10-01 (America/Chicago). Evidence baseline: questwell-dev commit
-6d071dc697f347b06781aa746ef60280b352c3d7.
+Reviewed 2026-10-02 at 09:33 America/Chicago. Current tested code: questwell-dev
+cb79c693e2798d9367d21a6c175cecc548d29492; later documentation records founder checks.
 
 Purpose: verify the existing experience before beta. Let beta testers guide future
 UX changes. No merge to flutterflow, external beta, or launch without Tanya's
@@ -24,9 +24,10 @@ check is not evidence that the feature is broken.
 | Email delivery for external testers | Verified for test inbox | getquestwell.com verified in Resend; native integration configured custom SMTP for Project Momentum. Saved sender Questwell <team@getquestwell.com>, smtp.resend.com:465. Signup confirmation delivery verified by founder with confirmed test account in database. Founder also confirmed completing the email password-reset flow and signing in. Delivery verified for the test inbox; this does not establish delivery across every email provider. |
 | Tester feedback | Verified | Founder selected in-app feedback. Explore -> Send feedback submits to private public.beta_feedback in Project Momentum. Backend isolation/idempotency/validation/rate-limit checks, Flutter tests, and sample UI passed. October 2 at 05:47 America/Chicago, founder sent a live note; database verified one received report from Quests on web-iOS at build 810c911. See BETA_FEEDBACK.md. Tester instructions remain a draft; no invitations sent. |
 | Mobile acceptance | Partial | Existing small-screen/enlarged-text widget checks and founder iPhone reviews. October 2 at 07:26 America/Chicago, founder confirmed New Quest accepts a longer task and the submit button remains reachable by scrolling with the phone keyboard open. October 2 at 07:40 America/Chicago, founder confirmed active-expedition Home shows leave confirmation, Stay keeps the timer running, and confirmed leaving returns to the Hearth. October 2 at 07:42 America/Chicago, founder confirmed Quests, Chronicle, Adventurer and Market each return to the Hearth without dead ends, blank screens or incorrect navigation highlights. October 2 at 08:24, the founder confirmed offline rug purchase error, recovery and a single charge on retry. Mid-request response-loss timing remains unverified on the phone; controlled-fault coverage is recorded separately. |
-| Build and preview | Verified for evidence baseline | Rug code 59bcab9 passed Flutter Check 37011934083 and Preview 37011934049; prior purchase-recovery code 6be4462 also passed. Earlier failed-run emails do not supersede these results. |
+| Build and preview | Verified for current candidate | Code cb79c69 passed Flutter Check 37019103625 and Preview 37019103304; checked again October 2 during readiness review. |
 | Male Wanderer cuff fit | Revised; improvement confirmed | October 2: male v4 sleeve ends raised and softened to avoid cutting across the hands; founder responded “Better” and moved to the next task. Shared avatar and satchel layering verified; Flutter Check 37017311712 and Preview 37017310989 passed. Retained as the development candidate; no blanket visual or release approval inferred. |
 | Signed-in boss victory and reward persistence | Verified by founder | October 2 at 09:31 America/Chicago, founder confirmed the refreshed page shows the latest defeated boss. At 09:32, founder confirmed XP and coins stayed correct after refresh, with no additional reward. This closes the observed signed-in victory/refresh check; no fault-injection or concurrent-request claim is inferred. |
+| Compromised-password screening | Open security warning | October 2 security advisor returned one warning: leaked-password protection disabled. Supabase documentation restricts this feature to Pro and higher plans. Current project plan and setting availability remain unverified because dashboard sign-in is required. No plan upgrade or setting change authorized by this review. |
 | Release approval | On hold | Explicit founder approval still required. |
 
 ## Recommended order
@@ -64,3 +65,9 @@ unequipped. Backend equipment behavior and the founder account were not changed.
 During the signed-in acceptance check, Tanya reported that the page showed the first defeated boss instead of the most recent. Fixed in `80ad8b58454e6a6c75022b471eaba6eb88fd86eb` and `cb79c693e2798d9367d21a6c175cecc548d29492`: load existing completion timestamps, sort defeated battles newest-completed first, and let automatic defaults refresh without overriding explicit history selection or the battle being attacked. Active battles retain their existing priority. No database writes or reward changes.
 
 Read-only database query confirmed completed_at is populated. Regression tests cover completion order differing from creation order, reopening, list refresh, explicit selection, absent dates and active-battle priority. Flutter Check 37019103625 and Preview 37019103304 passed. Founder phone recheck passed October 2 at 09:31 America/Chicago: latest defeated boss is shown. At 09:32, founder separately confirmed correct XP/coin totals and no extra reward after refresh. No merge or launch.
+
+## Readiness review — 2026-10-02, 09:33 America/Chicago
+
+Confirmed completed: account flows, saved progress, observed phone network recovery, purchase retry/placement, feedback delivery, navigation/keyboard/expedition exit, and boss victory/reward persistence. Current automated checks are green. This is not blanket all-device or all-fault coverage: Android/native-device acceptance, broad email-provider delivery, and a controlled quest response-loss-after-commit case are not established by the existing evidence. No new duplicate-reward defect is inferred.
+
+Remaining decisions: final visual disposition (male cuff improvement retained; rug functional acceptance does not equal blanket art sign-off), device coverage/scope for any proposed beta, and the compromised-password warning. Draft tester guide updated to current code and completed checks. No invitations, merge, external beta, paid upgrade or launch approved. Next actionable blocker: obtain dashboard access to inspect password-protection availability on the current plan.
