@@ -93,3 +93,22 @@ Source: https://supabase.com/docs/guides/auth/auth-smtp
 Next needed input: Questwell sender domain and existing email-provider account,
 or authorization to set up a chosen provider. Keep email confirmation enabled.
 Real signup/confirmation and password-reset email roundtrips remain unverified.
+
+## Custom SMTP configured — 2026-10-01 (America/Chicago)
+
+Founder purchased getquestwell.com and approved the Resend DNS records and native
+Supabase integration permissions. Resend reports the domain Verified. The native
+integration targets Project Momentum (bdzcazkyypopbanbjnud); founder completed API
+key creation and SMTP setup directly in the shared browser.
+
+Verified in Supabase after reload: custom SMTP enabled, sender address
+team@getquestwell.com, sender display name Questwell, host smtp.resend.com,
+port 465. Username resend was visually verified; stored password stays hidden.
+The founder-selected team address is retained. No receiving mailbox was created.
+Resend tracking was not enabled. No email-confirmation policy was changed.
+
+This supersedes the default-SMTP configuration blocker above. Actual delivery is
+still unverified: normal signup confirmation and password-reset roundtrips with a
+dedicated test inbox remain required. No test email was sent during this setup.
+Do not mark external beta ready from configuration alone. Website domain/hosting,
+merge and release approval are unchanged; no launch is authorized.
