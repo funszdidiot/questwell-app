@@ -53,3 +53,19 @@ Automated fakes do not prove SMTP delivery, redirect configuration, or an iPhone
 email roundtrip. Do not mark those checks complete until exercised. Do not change
 the founder's password or create test users by SQL as a substitute for signup.
 No merge, external beta, or launch authorized.
+
+## Verified build and remaining access blocker
+
+Code commit: 6a07cbb9a03d0c64df8f7e4669ed90c05784b58e.
+Flutter Check 36950587563 and Preview 36950587545 succeeded. Nine auth
+regression cases and the three existing network cases run in CI. The auth cases
+include entering from the root email callback, not only from the named form route.
+Live browser check passed: invalid email landing -> Request a new reset link ->
+email-only reset form -> Back to sign in. No email or password was submitted.
+
+Dashboard access attempt: founder selected ChatGPT, then Google, then passkey.
+Google displayed a passkey failure (Something went wrong / proximity and Bluetooth
+message). Stopped automated credential entry. Supabase URL configuration has NOT
+been changed; real signup/confirmation and password-recovery delivery remain open.
+Security advisor still reports the previously known leaked-password protection
+warning; this turn made no schema, RLS, SMTP or Auth-policy changes.
