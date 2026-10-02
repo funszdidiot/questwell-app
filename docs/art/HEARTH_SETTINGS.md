@@ -136,3 +136,11 @@ Verified replacement at 5e93359a490ce31ece5dc9ffc750f7c76aa02b5d: Flutter Check
 with the Orrery, furniture and paintings in all four newest rooms. Level plinth and
 revised trophy surface visible. Screenshot: questwell-front-facing-bookcase.jpg.
 No inventory or balance changes. No merge or public launch.
+
+## Copper Potion Workbench preview
+
+Founder approved concept exec-10281b88-f992-44e4-b369-7d15598f4b61.png.
+Converted to WebP at original 1341x1173 dimensions. Preview uses an Alchemist
+in the Workshop with workbench replacing the bookcase, switchable left/right.
+Visible plinth y=1119 is anchored to the back floor, with a level contact shadow.
+No trophy on the apparatus. Preview only; no catalog or inventory mutation.

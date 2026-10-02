@@ -40,6 +40,8 @@ class QuestwellContactShadowPainter extends CustomPainter {
         oval(.470, .942, .19, .036);
         oval(.810, .813, .16, .030);
         oval(.555, .715, .12, .025, alpha: 44);
+      case 'copper-potion-workbench':
+        oval(.505, 1119 / 1173, .78, .030, alpha: 72);
       case 'walnut-bookshelf':
         // Straight-on plinth: one level contact line across the full base.
         oval(.50, 1200 / 1284, .86, .035, alpha: 72);

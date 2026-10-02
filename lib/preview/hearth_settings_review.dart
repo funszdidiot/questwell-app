@@ -10,7 +10,7 @@ class HearthSettingsReviewApp extends StatefulWidget {
 
 class _HearthSettingsReviewAppState extends State<HearthSettingsReviewApp> {
   String body = 'female';
-  String archetype = 'wanderer';
+  String archetype = 'alchemist';
   bool furnished = true;
   bool reverse = false;
   @override
@@ -22,7 +22,7 @@ class _HearthSettingsReviewAppState extends State<HearthSettingsReviewApp> {
       child: Column(children: [
         const Text('Find your next Hearth', style: TextStyle(fontSize: 24)),
         const SizedBox(height: 8),
-        const Text('New Hearth settings · 120 coins · Animated settings · 300 coins'),
+        const Text('Copper Potion Workbench · furnished design review'),
         Wrap(spacing: 20, crossAxisAlignment: WrapCrossAlignment.center, children: [
           DropdownButton<String>(value: body,
             items: ['female', 'male', 'neutral'].map((v) => DropdownMenuItem(value: v, child: Text(v))).toList(),
@@ -37,19 +37,21 @@ class _HearthSettingsReviewAppState extends State<HearthSettingsReviewApp> {
         ]),
         const SizedBox(height: 16),
         Wrap(spacing: 20, runSpacing: 24, alignment: WrapAlignment.center,
-          children: [for (final setting in [QuestwellHearthSetting.midnightObservatory, QuestwellHearthSetting.alchemistsWorkshop, QuestwellHearthSetting.astralSanctuary, QuestwellHearthSetting.emberglassConservatory])
+          children: [for (final setting in [QuestwellHearthSetting.alchemistsWorkshop, QuestwellHearthSetting.midnightObservatory, QuestwellHearthSetting.astralSanctuary, QuestwellHearthSetting.emberglassConservatory])
             SizedBox(width: 390, child: Column(children: [
               Text(setting.label, style: const TextStyle(fontSize: 20)),
               const SizedBox(height: 12),
               QuestwellHearthPixelScene(height: 310, setting: setting,
                 archetype: archetype, avatarBodyType: body,
                 equippedSlugs: furnished ? {
-                  'room:${reverse ? 'left' : 'right'}': 'walnut-bookshelf',
+                  'room:${reverse ? 'left' : 'right'}': setting == QuestwellHearthSetting.alchemistsWorkshop
+                    ? 'copper-potion-workbench' : 'walnut-bookshelf',
                   'room:${reverse ? 'right' : 'left'}': 'hearth-fern',
                   'room:front': 'burgundy-reading-chair',
                   'room:side': 'walnut-reading-table',
                   'room:floor': 'emerald-wayfarer-rug',
-                  'room:bookshelf_top': 'starlit-orrery',
+                  if (setting != QuestwellHearthSetting.alchemistsWorkshop)
+                    'room:bookshelf_top': 'starlit-orrery',
                   'wall_art': 'moonlit-woodland',
                   'wall_art:wall_left': 'fern-study',
                   'wall_art:wall_right': 'celestial-study',

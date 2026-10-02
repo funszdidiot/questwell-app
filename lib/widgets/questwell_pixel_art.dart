@@ -19,6 +19,7 @@ import 'questwell_annotated_grimoire.dart';
 import 'questwell_pathfinder_boots.dart';
 import 'questwell_moonstone_brooch.dart';
 import 'questwell_bookshelf.dart';
+import 'questwell_potion_workbench.dart';
 import 'questwell_fern.dart';
 import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
@@ -1082,7 +1083,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                     child: const QuestwellCatalogRoomArt(slug:'warding-lantern')),
               for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
-                  if (QuestwellMasteryRelic.supports(slug) || slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
+                  if (slug == QuestwellPotionWorkbench.slug || QuestwellMasteryRelic.supports(slug) || slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
                     QuestwellHearthDecor.positioned(
                       slug: slug, slot: slot, equipment: equippedSlugs,
                       scene: Size(sceneWidth, sceneHeight),
