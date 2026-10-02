@@ -59,7 +59,9 @@ Commit 810c911 passed Flutter Check 36962307387 and Preview 36962307357.
 The browser sample confirmed required-field validation, close/reopen draft recovery,
 and the local-only success state. The final 390px preview form rendered cleanly.
 The existing signed-in founder dashboard can open beta_feedback in Table Editor.
-A real authenticated submission from the founder's test account remains pending;
-no sample preview submission writes a database report.
+On October 2 at 05:47 America/Chicago, the founder sent a real report.
+Read-only database verification found one received row at 10:47:35 UTC from
+Quests on web-iOS, build 810c911, with status new. This confirms the live
+app-to-database submission path. Sample previews do not write database reports.
 
 No external beta invitation, production-branch merge, or launch is authorized.
