@@ -108,3 +108,17 @@ Browser furnished review verified wall-art clearance and side effects; automated
 motion tests verified reduced motion, hidden TickerMode, app pause and resume.
 Screenshot: questwell-four-new-settings.jpg. Physical phone acceptance pending.
 No inventory grants for these four were performed in this rollout.
+
+## Stronger ambience and bookcase concept
+
+Founder requested more noticeable effects. e381796aec73318f704a893a2367f625cdd03fa2
+adds inset moving aurora ribbons, stronger crystal glow, 24 brighter side lights,
+and wider firefly paths with short trails. Cycle is 9 seconds; existing repaint-only,
+reduced-motion, TickerMode and lifecycle behavior retained. Flutter Check
+37066114692 and Preview 37066114702 passed. Browser frames verified visible motion
+with furnished rooms. Screenshot: questwell-stronger-ambience.jpg.
+
+Front-facing walnut bookcase concept generated for founder review: straight vertical
+uprights, level shelves, continuous flat plinth, transparent background. Generated
+asset exec-cf99385d-261d-4e72-b31b-5198ba597e8b.png. Not yet substituted in app;
+floor and trophy anchors must be fitted to the approved candidate before replacement.
