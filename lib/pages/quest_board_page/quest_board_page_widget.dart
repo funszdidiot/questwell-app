@@ -124,6 +124,30 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
     }
   }
 
+  Future<void> _edit(TasksRow task) async {
+    if (_busyTaskId != null || task.id == null) return;
+    final saved = await Navigator.of(context).push<bool>(MaterialPageRoute(
+      builder: (editContext) => AddTaskPageWidget(
+        editing: true, initialTitle: task.title ?? '',
+        initialFriction: task.frictionLevel ?? 0,
+        initialXp: task.xpValue ?? 0, initialCoins: task.coinValue ?? 0,
+        onFinished: (saved) => Navigator.of(editContext).pop(saved),
+        onCreate: (title, friction, xp, coins) async {
+          final rows = await TasksTable().update(data: {
+            'title': title, 'friction_level': friction, 'xp_value': xp, 'coin_value': coins,
+          }, matchingRows: (q) => q.eqOrNull('id', task.id)
+            .eqOrNull('user_id', currentUserUid).eqOrNull('status', 'open'),
+            returnRows: true);
+          if (rows.length != 1) throw StateError('This quest is no longer open.');
+        },
+      ),
+    ));
+    if (!mounted) return;
+    setState(() { if (saved == true) _filter = 'today'; _refresh(); });
+    if (saved == true) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Quest updated.'), behavior: SnackBarBehavior.floating));
+  }
+
   Future<void> _complete(TasksRow task) async {
     if (task.id == null || _busyTaskId != null) return;
     setState(() => _busyTaskId = task.id);
@@ -364,6 +388,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                             favorite: task.id != null &&
                                 _favoriteTaskIds.contains(task.id),
                             onFavorite: () => _toggleFavorite(task),
+                            onEdit: _busyTaskId == null ? () => _edit(task) : null,
                             onComplete: _busyTaskId == null ? () => _complete(task) : null,
                           ),
                           const SizedBox(height: 18),

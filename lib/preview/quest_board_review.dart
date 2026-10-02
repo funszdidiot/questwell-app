@@ -37,6 +37,31 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
 
   void _add(BuildContext context) => Navigator.of(context).pushNamed('/new-quest');
 
+  Future<void> _edit(BuildContext context, int i) async {
+    final quest = _quests[i];
+    final friction = switch (quest.effort) {
+      'Easy' => 1, 'Low Energy' || 'Annoying' => 2, 'Hard to Start' => 3, _ => 4,
+    };
+    final saved = await Navigator.of(context).push<bool>(MaterialPageRoute(
+      builder: (editContext) => AddTaskPageWidget(
+        editing: true, initialTitle: quest.title, initialFriction: friction,
+        initialXp: quest.xp, initialCoins: quest.coins,
+        onFinished: (saved) => Navigator.of(editContext).pop(saved),
+        onCreate: (title, friction, xp, coins) async {
+          setState(() {
+            _quests[i] = (title: title, effort: switch (friction) {
+              1 => 'Easy', 2 => 'Annoying', 3 => 'Hard to Start',
+              _ => 'Brain Says Absolutely Not',
+            }, xp: xp, coins: coins);
+            _filter = 'all';
+          });
+        },
+      ),
+    ));
+    if (saved == true && context.mounted) ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Quest updated.')));
+  }
+
   Future<void> _create(String title, int friction, int xp, int coins) async {
     setState(() {
       _quests.add((title: title, effort: switch (friction) {
@@ -88,6 +113,7 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
                 child: QuestwellQuestCard(title: _quests[i].title,
                   effort: _quests[i].effort, xp: _quests[i].xp, coins: _quests[i].coins,
                   favorite: _pinned.contains(i),
+                  onEdit: () => _edit(context, i),
                   onFavorite: () => setState(() {
                     if (!_pinned.add(i)) _pinned.remove(i);
                   }),

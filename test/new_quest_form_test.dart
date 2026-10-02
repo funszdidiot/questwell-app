@@ -129,4 +129,50 @@ void main() {
     expect(find.text('Create quest'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('editing starts with saved values and updates the displayed rewards', (tester) async {
+    var calls = 0;
+    bool? saved;
+    await mount(tester, AddTaskPageWidget(editing: true,
+      initialTitle: 'Original quest', initialFriction: 2, initialXp: 20, initialCoins: 10,
+      onFinished: (result) => saved = result,
+      onCreate: (title, friction, xp, coins) async {
+        calls++;
+        expect(title, 'A smaller step');
+        expect((friction, xp, coins), (1, 10, 5));
+      }));
+    expect(find.text('EDIT QUEST'), findsOneWidget);
+    expect(tester.widget<TextFormField>(find.byType(TextFormField)).controller!.text, 'Original quest');
+    await tester.enterText(find.byType(TextFormField), 'A smaller step');
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tap(tester, 'Easy');
+    await tap(tester, 'Save changes');
+    await tester.pumpAndSettle();
+    expect(calls, 1);
+    expect(saved, isTrue);
+  });
+
+  testWidgets('discarding edited values does not save; unchanged edit closes directly', (tester) async {
+    var calls = 0;
+    bool? saved;
+    await mount(tester, AddTaskPageWidget(editing: true,
+      initialTitle: 'Keep the original', initialFriction: 1, initialXp: 10, initialCoins: 5,
+      onFinished: (result) => saved = result,
+      onCreate: (_, __, ___, ____) async { calls++; }));
+    await tap(tester, 'Back to quests');
+    await tester.pumpAndSettle();
+    expect(saved, isFalse);
+    saved = null;
+    await tester.enterText(find.byType(TextFormField), 'Unsaved change');
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tap(tester, 'Back to quests');
+    await tester.pumpAndSettle();
+    expect(find.text('Discard quest changes?'), findsOneWidget);
+    await tester.tap(find.text('Keep editing')); await tester.pumpAndSettle();
+    expect(saved, isNull);
+    await tap(tester, 'Back to quests'); await tester.pumpAndSettle();
+    await tester.tap(find.text('Discard changes')); await tester.pumpAndSettle();
+    expect(saved, isFalse);
+    expect(calls, 0);
+  });
 }

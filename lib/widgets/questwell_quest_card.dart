@@ -6,12 +6,13 @@ import 'questwell_typography.dart';
 class QuestwellQuestCard extends StatelessWidget {
   const QuestwellQuestCard({super.key, required this.title, required this.effort,
     required this.xp, required this.coins, required this.favorite,
-    required this.onFavorite, required this.onComplete, this.busy = false});
+    required this.onFavorite, required this.onComplete, this.busy = false, this.onEdit});
   final String title, effort;
   final int xp, coins;
   final bool favorite, busy;
   final VoidCallback onFavorite;
   final VoidCallback? onComplete;
+  final VoidCallback? onEdit;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -42,6 +43,11 @@ class QuestwellQuestCard extends StatelessWidget {
         _QuestTag('+$xp XP', const Color(0xFF624286)),
         _QuestTag('+$coins coins', const Color(0xFF79531C)),
       ]),
+      if (onEdit != null) Align(alignment: Alignment.centerRight,
+        child: TextButton(onPressed: busy ? null : onEdit,
+          style: TextButton.styleFrom(foregroundColor: const Color(0xFF315E4E),
+            minimumSize: const Size(48, 48), textStyle: QuestwellTypography.control()),
+          child: const Text('Edit quest'))),
       const SizedBox(height: 16),
       SizedBox(width: double.infinity, child: FilledButton.icon(
         onPressed: busy ? null : onComplete,

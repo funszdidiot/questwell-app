@@ -10,10 +10,16 @@ import 'add_task_page_model.dart';
 export 'add_task_page_model.dart';
 
 class AddTaskPageWidget extends StatefulWidget {
-  const AddTaskPageWidget({super.key, this.onCreate, this.onClose});
+  const AddTaskPageWidget({super.key, this.onCreate, this.onClose,
+    this.editing = false, this.initialTitle = '', this.initialFriction = 0,
+    this.initialXp = 0, this.initialCoins = 0, this.onFinished});
   /// Optional in-memory persistence for the development preview and tests.
   final Future<void> Function(String title, int friction, int xp, int coins)? onCreate;
   final VoidCallback? onClose;
+  final ValueChanged<bool>? onFinished;
+  final bool editing;
+  final String initialTitle;
+  final int initialFriction, initialXp, initialCoins;
 
   static String routeName = 'AddTaskPage';
   static String routePath = '/addTaskPage';
@@ -32,8 +38,11 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => AddTaskPageModel());
-    _model.taskTitleFieldTextController ??= TextEditingController();
+    _model.taskTitleFieldTextController ??= TextEditingController(text: widget.initialTitle);
     _model.taskTitleFieldFocusNode ??= FocusNode();
+    _model.selectedFriction = widget.initialFriction;
+    _model.selectedXp = widget.initialXp;
+    _model.selectedCoins = widget.initialCoins;
   }
 
   @override
@@ -70,6 +79,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
       if (widget.onCreate != null) {
         await widget.onCreate!(title, _model.selectedFriction, _model.selectedXp, _model.selectedCoins);
       } else {
+      if (widget.editing) throw StateError('An edit requires a save handler.');
       await TasksTable().insert({
         'user_id': currentUserUid,
         'title': title,
@@ -83,17 +93,24 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
       if (mounted) _close(posted: true);
     } catch (_) {
       if (!mounted) return;
-      setState(() => _feedback = 'Could not add this quest. Please try again.');
+      setState(() => _feedback = widget.editing
+        ? 'Could not save your changes. The quest may have been completed. Return to the board and try again.'
+        : 'Could not add this quest. Please try again.');
     } finally {
       if (mounted) setState(() => _saving = false);
     }
   }
 
-  bool get _hasDraft => _model.taskTitleFieldTextController.text.trim().isNotEmpty ||
-      _model.selectedFriction != 0;
+  bool get _hasDraft => widget.editing
+      ? _model.taskTitleFieldTextController.text.trim() != widget.initialTitle.trim() ||
+          _model.selectedFriction != widget.initialFriction
+      : _model.taskTitleFieldTextController.text.trim().isNotEmpty ||
+          _model.selectedFriction != 0;
 
   void _close({bool posted = false}) {
-    if (widget.onClose != null) {
+    if (widget.onFinished != null) {
+      widget.onFinished!(posted);
+    } else if (widget.onClose != null) {
       widget.onClose!();
     } else if (context.canPop()) {
       context.pop(posted);
@@ -107,11 +124,11 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
     if (!_hasDraft) return true;
     return await showDialog<bool>(context: context, builder: (dialogContext) => AlertDialog(
       scrollable: true,
-      title: const Text('Leave this quest draft?'),
-      content: const Text('Your quest has not been posted yet.'),
+      title: Text(widget.editing ? 'Discard quest changes?' : 'Leave this quest draft?'),
+      content: Text(widget.editing ? 'Your changes have not been saved.' : 'Your quest has not been posted yet.'),
       actions: [
         TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('Keep editing')),
-        TextButton(onPressed: () => Navigator.pop(dialogContext, true), child: const Text('Discard draft')),
+        TextButton(onPressed: () => Navigator.pop(dialogContext, true), child: Text(widget.editing ? 'Discard changes' : 'Discard draft')),
       ],
     )) == true;
   }
@@ -124,7 +141,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
     if (!await _canLeave() || !mounted) return;
     if (destination == QuestwellDestination.quests) {
       // A pushed form returns to its board, including local preview drafts.
-      if (widget.onClose != null) { widget.onClose!(); return; }
+      if (widget.onClose != null || widget.onFinished != null) { _close(); return; }
     }
     QuestwellNavigationScope.open(context, destination);
   }
@@ -153,9 +170,9 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                 textStyle: QuestwellTypography.control()),
             )),
             const SizedBox(height: 12),
-            Text('NEW QUEST', style: QuestwellTypography.sectionHeading(size: 14)),
+            Text(widget.editing ? 'EDIT QUEST' : 'NEW QUEST', style: QuestwellTypography.sectionHeading(size: 14)),
             const SizedBox(height: 8),
-            Text('Pin your next small win to the board.',
+            Text(widget.editing ? 'Adjust this quest to fit your energy today.' : 'Pin your next small win to the board.',
               style: QuestwellTypography.body(fontSize: 16, color: const Color(0xFFF0E5CC))),
             const SizedBox(height: 20),
             QuestwellNoticeboard(child: Container(
@@ -227,7 +244,8 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
               onPressed: _saving ? null : _saveQuest,
               icon: _saving ? const SizedBox(width: 18, height: 18,
                 child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.add_task, size: 20),
-              label: Text(_saving ? 'Posting quest…' : 'Post to Quest Board'),
+              label: Text(_saving ? (widget.editing ? 'Saving changes…' : 'Posting quest…')
+                : (widget.editing ? 'Save changes' : 'Post to Quest Board')),
               style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(52),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
