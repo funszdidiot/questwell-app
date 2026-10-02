@@ -91,3 +91,7 @@ The controlled committed-completion/discarded-result check supersedes that speci
 ## Beta review package — 2026-10-02, 11:07 America/Chicago
 
 BETA_TESTER_GUIDE.md now contains a concrete proposal: 3–5 founder-selected testers, seven days, iPhone web scope, current tested candidate, daily founder feedback review, stop conditions and explicit evidence limits. Group, date, platform scope, art disposition and release approval remain founder decisions; no invitation or launch is authorized. Existing completed checks are not reopened. Next decision: iPhone web first, or include additional named platforms with acceptance checks before invitations.
+
+## Platform scope selected — 2026-10-02, 11:11 America/Chicago
+
+Founder selected iPhone and Android for the proposed web beta. This supersedes the iPhone-only proposal. Completed iPhone evidence stands; Android phone acceptance is pending, beginning with sign-in and saved-progress loading. BETA_TESTER_GUIDE.md contains the sequential Android checks and device/browser evidence to record. This scope decision does not approve invitations, native-app distribution, merge or launch. Group/date and other proposed beta details remain unconfirmed.
