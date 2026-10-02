@@ -39,5 +39,12 @@ where slug='emerald-wayfarer-rug' and price=20
   and category='room' and unlock_method='shop';
 ```
 
-Founder phone acceptance still needs a real interrupted Market purchase. The
-synthetic tests do not establish that a request was interrupted on her phone.
+## Founder phone purchase check — 2026-10-02, 08:24 America/Chicago
+
+Founder reported: the app required a refresh to purchase; an attempt with the
+connection off showed an error; after reconnecting, retrying charged her once.
+Observed phone offline/retry acceptance passed. Refresh timing and cause are not
+established. Do not infer that the first request reached the server or lost its
+response after commit. Controlled-fault checks cover that distinct technical case.
+Rug placement and persistence after refresh, and explicit visual acceptance, have
+not yet been reported. No merge, external beta or launch is authorized.
