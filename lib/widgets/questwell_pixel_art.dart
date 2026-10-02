@@ -1,3 +1,4 @@
+import 'questwell_woven_rug.dart';
 import 'dart:math' as math;
 import 'questwell_mastery_relic.dart';
 import 'package:flutter/material.dart';
@@ -988,6 +989,15 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                 ),
               ),
               Positioned.fill(
+                key: const ValueKey('hearth-woven-rug'),
+                child: IgnorePointer(
+                  child: CustomPaint(
+                    painter: QuestwellWovenRugPainter(
+                      emerald: equippedSlugs['room:floor'] == QuestwellWovenRugPainter.slug),
+                  ),
+                ),
+              ),
+              Positioned.fill(
                 child: IgnorePointer(
                   child: CustomPaint(
                     painter: _HearthAtmospherePainter(
@@ -1125,45 +1135,6 @@ class _HearthAtmospherePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final p = Paint()..isAntiAlias = false;
-
-    // Opaque woven fabric follows the room's floor perspective.
-    Offset point(double u, double v) {
-      final halfWidth = .17 + .11 * v;
-      return Offset(size.width * (.5 + (u - .5) * 2 * halfWidth),
-          size.height * (.69 + .26 * v));
-    }
-    Path panel(double inset) => Path()
-      ..addPolygon([point(inset, inset), point(1 - inset, inset),
-        point(1 - inset, 1 - inset), point(inset, 1 - inset)], true);
-    final rug = panel(0);
-    p.color = const Color(0xFF492C30);
-    canvas.drawPath(rug, p);
-    p.color = const Color(0xFFB58E5F);
-    canvas.drawPath(panel(.045), p);
-    p.color = const Color(0xFF70434A);
-    canvas.drawPath(panel(.075), p);
-    p.color = const Color(0xFFB58E5F);
-    p.style = PaintingStyle.stroke;
-    p.strokeWidth = 1;
-    canvas.drawPath(panel(.105), p);
-    p.style = PaintingStyle.fill;
-
-    // Fine horizontal yarn rows stay clipped to the fabric.
-    canvas.save();
-    canvas.clipPath(panel(.115));
-    p.color = const Color(0xFF7B4E54);
-    p.strokeWidth = 1;
-    for (double v = .13; v < .9; v += .045) {
-      canvas.drawLine(point(.1, v), point(.9, v), p);
-    }
-    canvas.restore();
-    // Small woven border stitches widen naturally toward the foreground.
-    p.color = const Color(0xFFD2B17F);
-    for (double u = .12; u < .9; u += .065) {
-      for (final v in [.058, .94]) {
-        canvas.drawLine(point(u, v), point(u + .018, v), p);
-      }
-    }
 
     // Dark edge strips work as a pixel vignette and keep attention on the
     // Adventurer and the warm room center.

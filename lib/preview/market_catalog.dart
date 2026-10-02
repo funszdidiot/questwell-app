@@ -1,5 +1,18 @@
 const marketReviewCatalog = <Map<String,dynamic>>[
   {
+    "id": "review-emerald-wayfarer-rug",
+    "slug": "emerald-wayfarer-rug",
+    "name": "Emerald Wayfarer Rug",
+    "category": "room",
+    "rarity": "common",
+    "description": "Deep green threads, a woven gold border, and a compass rose. A soft place to begin your next adventure.",
+    "price": 20,
+    "premium": false,
+    "asset_key": "room_emerald_wayfarer_rug",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
     "id": "f968c42c-01e1-4eaa-8fc1-626f1d0d3840",
     "slug": "starter-business-suit",
     "name": "Business Suit",

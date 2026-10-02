@@ -36,7 +36,19 @@ class QuestwellItemIconPainter extends CustomPainter {
     void panel(int x,int y,int w,int h,Color c,Color light,Color dark) {
       r(x,y,w,h,ink);r(x+1,y+1,w-2,h-2,c);r(x+1,y+1,w-2,1,light);r(x+1,y+1,1,h-2,light);r(x+w-2,y+2,1,h-3,dark);r(x+2,y+h-2,w-3,1,dark);
     }
-    if (slug == 'pathfinder-boots') {
+    if (slug == 'emerald-wayfarer-rug') {
+      // Flat woven textile, gold edging and an eight-point compass rose.
+      panel(3, 7, 26, 18, greenDark, gold, goldShade);
+      r(5,9,22,14,gold);r(6,10,20,12,greenDark);
+      for(final y in [12,15,18,21]) r(7,y,18,1,const Color(0xFF30664D));
+      for(final x in [4,7,10,13,16,19,22,25,28]) {
+        r(x,5,1,2,gold);r(x,25,1,2,goldShade);
+      }
+      star(16,16,gold);r(15,12,3,9,gold);r(11,15,11,3,gold);
+      r(13,13,1,1,goldShade);r(19,13,1,1,goldShade);
+      r(13,19,1,1,goldShade);r(19,19,1,1,goldShade);
+      r(15,15,3,3,cream);r(16,16,1,1,greenDark);
+    } else if (slug == 'pathfinder-boots') {
       // Paired 32px leather boots, olive folded cuffs and brass ankle buckles.
       const leather = Color(0xFF704832), light = Color(0xFFA16B46),
         shadow = Color(0xFF3C2B27), olive = Color(0xFF66633D),

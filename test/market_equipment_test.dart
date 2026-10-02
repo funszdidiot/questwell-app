@@ -37,8 +37,8 @@ void main(){
     await tester.tap(find.text('Try swap'));await tester.pumpAndSettle();
     await tester.tap(find.text('Swap equipment'));await tester.pumpAndSettle();expect(result,isTrue);
   });
-  test('All 30 current shop entries have distinct, nonempty 16-bit icons and equipment routes',()async{
-    expect(items.length,30);
+  test('All 31 current shop entries have distinct, nonempty 16-bit icons and equipment routes',()async{
+    expect(items.length,31);
     final fingerprints=<String>{};
     for(final item in items){
       expect(QuestwellEquipmentPolicy.isReady(item.slug,item.category),isTrue,reason:item.slug);
