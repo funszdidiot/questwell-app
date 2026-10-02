@@ -150,3 +150,13 @@ Flutter Check 37070354679 and Preview 37070354675 succeeded. Browser inspection
 covered rear left/right placement, female Alchemist, furniture and wall pictures.
 Final height reduced to .62 of avatar to clear the side painting. Screenshot:
 questwell-potion-workbench-preview.jpg. Still preview-only, no catalog/grant.
+
+## Workbench Market release
+
+Founder approved release. Copper Potion Workbench active at 120 earned coins,
+class-neutral, existing left/right room placement. Code
+708d34d76d4d196c93b16a50d041293e3d1e15cb passed Flutter Check 37071735183 and
+Preview 37071735177. SQL QA verified purchase/retry, left/right placement, setting
+slot rejection and removal, with rolled-back fixtures. Founder grant confirmed,
+unequipped, coin balance 847 unchanged. Migration 20261002221545 stages the item;
+activation occurred only after client deployment. No merge or public launch.
