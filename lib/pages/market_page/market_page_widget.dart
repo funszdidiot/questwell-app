@@ -55,10 +55,11 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
         SnackBar(
           content: Text(error.toString().contains('not enough coins')
             ? 'Your coin balance changed. Refresh and try again.'
-            : 'The purchase could not be confirmed. Please refresh before trying again.'),
+            : 'We could not confirm this purchase. Reconnect and refresh the shop to check your inventory. Buying the same item again will not charge you twice.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
+      setState(_refresh);
     } finally {
       if (mounted) setState(() => _busyCosmeticId = null);
     }

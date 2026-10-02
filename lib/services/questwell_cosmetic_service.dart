@@ -3,6 +3,7 @@ import '/backend/supabase/questwell_network.dart';
 import 'questwell_equipment_policy.dart';
 import 'questwell_cosmetic_sync.dart';
 import 'questwell_cosmetic_models.dart';
+import 'questwell_purchase_recovery.dart';
 export 'questwell_cosmetic_models.dart';
 
 class QuestwellCosmeticService {
@@ -91,17 +92,45 @@ class QuestwellCosmeticService {
   }
 
   static Future<int> purchase(String cosmeticId) async {
-    final response = await _write(() => SupaFlow.client.rpc(
-      'purchase_cosmetic',
-      params: {'p_cosmetic_id': cosmeticId},
-    ));
-
-    if (response is! List || response.isEmpty) {
-      throw StateError('No purchase result returned.');
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    void checkAccount() {
+      if (uid == null || SupaFlow.client.auth.currentUser?.id != uid) {
+        throw StateError('Authentication changed.');
+      }
     }
-
-    final row = Map<String, dynamic>.from(response.first as Map);
-    return (row['remaining_coins'] as num?)?.toInt() ?? 0;
+    return changes.write(() async {
+      checkAccount();
+      final balance = await QuestwellPurchaseRecovery.run(
+        attempt: () async {
+          final response = await QuestwellNetwork.write(() => SupaFlow.client.rpc(
+            'purchase_cosmetic', params: {'p_cosmetic_id': cosmeticId}));
+          checkAccount();
+          if (response is! List || response.isEmpty) {
+            throw StateError('No purchase result returned.');
+          }
+          final row = Map<String, dynamic>.from(response.first as Map);
+          if (row['remaining_coins'] is! num) {
+            throw StateError('No coin balance returned.');
+          }
+          return (row['remaining_coins'] as num).toInt();
+        },
+        confirmOwned: () => QuestwellNetwork.read<int?>(() async {
+          checkAccount();
+          final owned = await SupaFlow.client.from('user_cosmetics')
+              .select('cosmetic_id').eq('user_id', uid!)
+              .eq('cosmetic_id', cosmeticId).maybeSingle();
+          checkAccount();
+          if (owned == null) return null;
+          // Read the balance after ownership is visible, not in parallel with it.
+          final profile = await SupaFlow.client.from('users')
+              .select('coin_balance').eq('id', uid!).single();
+          checkAccount();
+          return (profile['coin_balance'] as num).toInt();
+        }),
+      );
+      checkAccount();
+      return balance;
+    });
   }
 
   static Future<void> equip(QuestwellCosmetic cosmetic, {String? expectedConflict}) async {
@@ -211,4 +240,3 @@ class QuestwellCosmeticService {
     ));
   }
 }
-
