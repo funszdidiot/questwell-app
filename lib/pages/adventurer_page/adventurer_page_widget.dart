@@ -1,3 +1,5 @@
+import '/widgets/questwell_delete_account.dart';
+import '/services/questwell_account_service.dart';
 import '/widgets/questwell_app_navigation.dart';
 import '/widgets/questwell_equipment_swap.dart';
 import '/auth/supabase_auth/auth_util.dart';
@@ -345,6 +347,14 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
             style: GoogleFonts.roboto(fontSize: 15, fontWeight: FontWeight.w700)),
         ),
       )),
+        QuestwellDeleteAccountButton(enabled: !_signingOut,
+          onDelete: QuestwellAccountService.deleteAccount,
+          onDeleted: () async {
+            await QuestwellAccountService.clearLocalAccount();
+            if (!mounted) return;
+            GoRouter.of(context).clearRedirectLocation();
+            context.goNamed(AuthPageWidget.routeName);
+          }),
         const QuestwellAppNavigation(current: QuestwellDestination.adventurer),
       ]),
       body: SafeArea(

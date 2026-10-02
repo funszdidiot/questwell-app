@@ -1,3 +1,4 @@
+import '../widgets/questwell_delete_account.dart';
 import '../widgets/questwell_app_navigation.dart';
 import 'package:flutter/material.dart';
 import 'review_loadout.dart';
@@ -25,6 +26,10 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
   @override
   Widget build(BuildContext context) => MaterialApp(debugShowCheckedModeBanner: false,
     theme: ThemeData.dark(useMaterial3: true), home: Scaffold(backgroundColor: const Color(0xFF111827),
+      bottomNavigationBar: Builder(builder: (context) => QuestwellDeleteAccountButton(
+        preview: true, onDelete: () async {},
+        onDeleted: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Preview complete. No account was deleted.'))))),
       body: SafeArea(child: Center(child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 430),
         child: QuestwellAdventurerView(archetype: _class, bodyType: _body,
           level: 3, xp: 295, coins: 49, description: 'Choose a class and body style to preview your look. Sample data only.',
