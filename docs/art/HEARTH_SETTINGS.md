@@ -56,3 +56,12 @@ Built-in image-generation prompt preserved the original room perspective, left
 fireplace, right window and clear floor. New architecture uses emerald central
 paneling, walnut built-in shelves, brass lamps and restrained gold star inlays.
 Generated PNG was converted to WebP at original dimensions and quality 90.
+
+Verification: code b2d376b683db5c5b8f02048e2f20e349f4e55913 passed Flutter Check
+37059275941 and Preview 37059275886. Live browser inspection confirmed the Library
+with furnished female Wanderer, three wall paintings, rug, chair/table, bookshelf
+and trophy. Avatar and wall art remain readable against the emerald center; side
+shelves and lamps fit the existing crop. Screenshot: questwell-enchanted-library-preview.jpg.
+Review: https://funszdidiot.github.io/questwell-app/?review=hearth-settings&rev=b2d376b
+This is browser and automated verification, not physical-device acceptance.
+Library remains preview-only; no catalog, purchase, inventory or launch changes.
