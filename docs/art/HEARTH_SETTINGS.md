@@ -130,3 +130,9 @@ the 1225x1284 canvas, with a level continuous plinth at source y=1200. Placement
 anchors that opaque baseline to the room floor. Single horizontal contact shadow
 replaces angled foot shadows; trophy and relic surfaces move to y=.078 of canvas.
 Ownership and walnut-bookshelf item identity remain unchanged.
+
+Verified replacement at 5e93359a490ce31ece5dc9ffc750f7c76aa02b5d: Flutter Check
+37066804703 and Preview 37066804805 succeeded. Browser inspected both shelf sides
+with the Orrery, furniture and paintings in all four newest rooms. Level plinth and
+revised trophy surface visible. Screenshot: questwell-front-facing-bookcase.jpg.
+No inventory or balance changes. No merge or public launch.
