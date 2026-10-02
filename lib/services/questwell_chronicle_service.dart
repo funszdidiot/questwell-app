@@ -111,7 +111,18 @@ class QuestwellChronicleService {
           .order('occurred_at', ascending: false),
     ]));
 
-    final wins = <ChronicleWin>[];
+    final aside = await QuestwellNetwork.read(() => SupaFlow.client.from('tasks')
+      .select('id,title,xp_value,coin_value,created_at')
+      .eq('user_id', uid).eq('status', 'set_aside').order('created_at', ascending: false));
+    final wins = <ChronicleWin>[
+      for (final row in aside) ChronicleWin(
+        kind: 'set_aside', taskId: row['id']?.toString(),
+        title: row['title']?.toString() ?? 'Quest',
+        completedAt: DateTime.parse(row['created_at'].toString()),
+        xp: (row['xp_value'] as num?)?.toInt() ?? 0,
+        coins: (row['coin_value'] as num?)?.toInt() ?? 0,
+      ),
+    ];
 
     for (final raw in responses[0] as List) {
       final row = Map<String, dynamic>.from(raw as Map);

@@ -25,6 +25,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
   String _filter = 'today';
   int _completedThisVisit = 0;
   String? _busyTaskId;
+  bool _settingAside = false;
   Set<String> _favoriteTaskIds = <String>{};
   late Future<List<TasksRow>> _tasksFuture;
   late Future<List<QuestwellBossBattle>> _bossFuture;
@@ -121,6 +122,29 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
             .toList();
       default:
         return tasks;
+    }
+  }
+
+  Future<void> _setAside(TasksRow task) async {
+    if (_busyTaskId != null || task.id == null) return;
+    setState(() { _busyTaskId = task.id; _settingAside = true; });
+    try {
+      await QuestwellTaskService.setAside(task.id!);
+      if (!mounted) return;
+      setState(_refresh);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('Quest set aside. No penalty. Restore it from Chronicle whenever you’re ready.'),
+        action: SnackBarAction(label: 'Chronicle',
+          onPressed: () async {
+            await context.pushNamed(ChroniclePageWidget.routeName);
+            if (mounted) setState(_refresh);
+          }),
+      ));
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Could not set this quest aside. Refresh and try again.')));
+    } finally {
+      if (mounted) setState(() { _busyTaskId = null; _settingAside = false; });
     }
   }
 
@@ -385,10 +409,12 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                             xp: task.xpValue ?? 0,
                             coins: task.coinValue ?? 0,
                             busy: _busyTaskId == task.id,
+                            busyLabel: _settingAside ? 'Setting aside…' : 'Completing…',
                             favorite: task.id != null &&
                                 _favoriteTaskIds.contains(task.id),
                             onFavorite: () => _toggleFavorite(task),
                             onEdit: _busyTaskId == null ? () => _edit(task) : null,
+                            onSetAside: _busyTaskId == null ? () => _setAside(task) : null,
                             onComplete: _busyTaskId == null ? () => _complete(task) : null,
                           ),
                           const SizedBox(height: 18),

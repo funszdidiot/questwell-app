@@ -18,6 +18,8 @@ class _ChronicleReviewAppState extends State<ChronicleReviewApp> {
     final today = DateTime.now();
     final day = DateTime(today.year, today.month, today.day, 18);
     final entries = [
+      ChronicleWin(kind: 'set_aside', title: 'Reorganize the reference folder',
+        completedAt: day.subtract(const Duration(days: 3)), xp: 20, coins: 10),
       ChronicleWin(kind:'milestone_reward',title:'Starlit Orrery',completedAt:day,
         xp:0,coins:0,cosmeticSlug:'starlit-orrery',source:'level_milestone',level:10),
       ChronicleWin(kind:'level_up',title:'Level 10 reached',completedAt:day.subtract(const Duration(minutes:1)),xp:0,coins:0,level:10),

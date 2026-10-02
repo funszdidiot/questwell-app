@@ -1,3 +1,5 @@
+import '../pages/chronicle_page/chronicle_page_widget.dart';
+import '../services/questwell_chronicle_service.dart';
 import 'package:flutter/material.dart';
 import 'package:project_momentum/add_task_page/add_task_page_widget.dart';
 import '../widgets/questwell_quest_card.dart';
@@ -14,6 +16,7 @@ class QuestBoardReviewApp extends StatefulWidget {
 
 class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
   final _done = <int>{};
+  final _aside = <int>{};
   final _pinned = <int>{0};
   String _filter = 'all';
   final _quests = [
@@ -27,7 +30,7 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
     _quests.insertAll(0, widget.initialQuests);
   }
 
-  bool visible(int i) => !_done.contains(i) && switch (_filter) {
+  bool visible(int i) => !_done.contains(i) && !_aside.contains(i) && switch (_filter) {
     'pinned' => _pinned.contains(i),
     'low' => const ['Easy', 'Annoying', 'Low Energy'].contains(_quests[i].effort),
     'high' => !const ['Easy', 'Annoying', 'Low Energy'].contains(_quests[i].effort),
@@ -36,6 +39,16 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
   };
 
   void _add(BuildContext context) => Navigator.of(context).pushNamed('/new-quest');
+
+  void _openAside(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (historyContext) =>
+      ChroniclePageWidget(previewData: ChronicleSnapshot.fromWins([
+        for (final i in _aside) ChronicleWin(kind: 'set_aside', taskId: '$i',
+          title: _quests[i].title, completedAt: DateTime.now(), xp: _quests[i].xp, coins: _quests[i].coins),
+      ]), onRepeat: (win) async {
+        setState(() { _aside.remove(int.parse(win.taskId!)); _filter = 'all'; });
+      }, onOpenBoard: () => Navigator.of(historyContext).pop())));
+  }
 
   Future<void> _edit(BuildContext context, int i) async {
     final quest = _quests[i];
@@ -114,6 +127,7 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
                   effort: _quests[i].effort, xp: _quests[i].xp, coins: _quests[i].coins,
                   favorite: _pinned.contains(i),
                   onEdit: () => _edit(context, i),
+                  onSetAside: () => setState(() => _aside.add(i)),
                   onFavorite: () => setState(() {
                     if (!_pinned.add(i)) _pinned.remove(i);
                   }),
@@ -126,7 +140,9 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
                 style: QuestwellTypography.body(color: const Color(0xFFF0E5CC)))),
           ])),
           const SizedBox(height: 12),
-          TextButton(onPressed: () => setState(() { _done.clear(); _filter = 'all'; }),
+          if (_aside.isNotEmpty) TextButton(onPressed: () => _openAside(context),
+            child: const Text('View set aside quests')),
+          TextButton(onPressed: () => setState(() { _done.clear(); _aside.clear(); _filter = 'all'; }),
             child: const Text('Reset sample quests')),
         ])),
       ))),

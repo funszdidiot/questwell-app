@@ -6,13 +6,13 @@ import 'questwell_typography.dart';
 class QuestwellQuestCard extends StatelessWidget {
   const QuestwellQuestCard({super.key, required this.title, required this.effort,
     required this.xp, required this.coins, required this.favorite,
-    required this.onFavorite, required this.onComplete, this.busy = false, this.onEdit});
-  final String title, effort;
+    required this.onFavorite, required this.onComplete, this.busy = false, this.onEdit, this.onSetAside, this.busyLabel = 'Completing…'});
+  final String title, effort, busyLabel;
   final int xp, coins;
   final bool favorite, busy;
   final VoidCallback onFavorite;
   final VoidCallback? onComplete;
-  final VoidCallback? onEdit;
+  final VoidCallback? onEdit, onSetAside;
 
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -48,12 +48,17 @@ class QuestwellQuestCard extends StatelessWidget {
           style: TextButton.styleFrom(foregroundColor: const Color(0xFF315E4E),
             minimumSize: const Size(48, 48), textStyle: QuestwellTypography.control()),
           child: const Text('Edit quest'))),
+      if (onSetAside != null) TextButton(
+        onPressed: busy ? null : onSetAside,
+        style: TextButton.styleFrom(foregroundColor: const Color(0xFF695442),
+          minimumSize: const Size(48, 48), textStyle: QuestwellTypography.control()),
+        child: const Text('Set aside')),
       const SizedBox(height: 16),
       SizedBox(width: double.infinity, child: FilledButton.icon(
         onPressed: busy ? null : onComplete,
         icon: busy ? const SizedBox(width: 18, height: 18,
           child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.check_rounded, size: 20),
-        label: Text(busy ? 'Completing…' : 'Complete quest'),
+        label: Text(busy ? busyLabel : 'Complete quest'),
         style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
           backgroundColor: const Color(0xFF244C3E), foregroundColor: Colors.white,

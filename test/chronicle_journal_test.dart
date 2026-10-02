@@ -139,4 +139,39 @@ void main() {
     expect(find.text('Added to board'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('set aside stays out of rewards and milestones and restores once', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(390, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final date = DateTime.now();
+    final aside = ChronicleWin(kind: 'set_aside', taskId: 'aside', title: 'A quest for later',
+      completedAt: date, xp: 60, coins: 30);
+    final data = ChronicleSnapshot.fromWins([
+      aside,
+      ChronicleWin(kind: 'quest', title: 'A finished quest', completedAt: date, xp: 10, coins: 5),
+    ]);
+    expect(data.totalXpEarned, 10);
+    expect(data.totalCoinsEarned, 5);
+    expect(data.weekWins, 1);
+    var calls = 0;
+    final pending = Completer<void>();
+    await tester.pumpWidget(MaterialApp(theme: ThemeData.dark(), home: ChroniclePageWidget(
+      previewData: data, onRepeat: (win) { expect(win, same(aside)); calls++; return pending.future; })));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Milestones')); await tester.pumpAndSettle();
+    expect(find.text('A quest for later'), findsNothing);
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Set aside')); await tester.pumpAndSettle();
+    expect(find.text('A quest for later'), findsOneWidget);
+    expect(find.text('A finished quest'), findsNothing);
+    expect(find.text('+60 XP'), findsNothing);
+    await tester.ensureVisible(find.text('Restore to board'));
+    await tester.tap(find.text('Restore to board')); await tester.pump();
+    await tester.tap(find.text('Restoring…'));
+    expect(calls, 1);
+    pending.complete(); await tester.pumpAndSettle();
+    expect(find.text('Quest restored to your board.'), findsOneWidget);
+    expect(find.text('A quest for later'), findsNothing);
+    expect(data.totalXpEarned, 10);
+    expect(tester.takeException(), isNull);
+  });
 }

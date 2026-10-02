@@ -1,3 +1,4 @@
+import '/services/questwell_task_service.dart';
 import '/widgets/questwell_app_navigation.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_chronicle_entry.dart';
@@ -26,18 +27,24 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
     if (_repeating != null || _repeated.contains(win)) return;
     setState(() => _repeating = win);
     try {
-      await (widget.onRepeat ?? QuestwellChronicleService.repeatQuest)(win);
+      if (widget.onRepeat != null) {
+        await widget.onRepeat!(win);
+      } else if (win.kind == 'set_aside') {
+        await QuestwellTaskService.restore(win.taskId!);
+      } else {
+        await QuestwellChronicleService.repeatQuest(win);
+      }
       if (!mounted) return;
       setState(() => _repeated.add(win));
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Fresh quest added. Rewards come when you complete it.'),
+        content: Text(win.kind == 'set_aside' ? 'Quest restored to your board.' : 'Fresh quest added. Rewards come when you complete it.'),
         action: SnackBarAction(label: 'View board', onPressed: widget.onOpenBoard ??
           () => QuestwellNavigationScope.open(context, QuestwellDestination.quests)),
       ));
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Could not copy this quest. Please try again.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(win.kind == 'set_aside' ? 'Could not restore this quest. Please try again.' : 'Could not copy this quest. Please try again.')));
     } finally {
       if (mounted) setState(() => _repeating = null);
     }
@@ -90,7 +97,8 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
           if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(color: _gold));
           final data = snapshot.data!;
           final entries = data.wins.where((win) =>
-            (_filter == 'all' || (_filter == 'milestones' ? !win.isActivity : win.kind == _filter)) &&
+            (_filter == 'all' || (_filter == 'milestones' ? !win.isActivity && win.kind != 'set_aside' : win.kind == _filter)) &&
+            !(win.kind == 'set_aside' && _repeated.contains(win)) &&
             win.title.toLowerCase().contains(_query)).toList();
           final groups = <DateTime, List<ChronicleWin>>{};
           for (final win in entries.take(_visibleCount)) {
@@ -101,6 +109,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
           final empty = _query.isNotEmpty
               ? ('No matching entries.', 'Try another quest name or choose a different filter.')
               : switch (_filter) {
+            'set_aside' => ('A little room to breathe.', 'Quests you set aside will wait here until you’re ready.'),
             'quest' => ('Your next small win belongs here.', 'Complete a quest to add it to these pages.'),
             'boss' => ('A victory worth a page.', 'Completed boss battles will appear here.'),
             'milestones' => ('Your milestones are ahead.', 'Level-ups and trophy rewards will appear here.'),
@@ -147,7 +156,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
               ),
               const SizedBox(height: 12),
               Wrap(spacing: 7, runSpacing: 6, children: [
-                for (final filter in const {'all':'All', 'quest':'Quests', 'boss':'Bosses', 'milestones':'Milestones'}.entries)
+                for (final filter in const {'all':'All', 'quest':'Quests', 'boss':'Bosses', 'milestones':'Milestones', 'set_aside':'Set aside'}.entries)
                   ChoiceChip(label: Text(filter.value), selected: _filter == filter.key,
                     showCheckmark: false, selectedColor: _gold,
                     backgroundColor: const Color(0xFF1D282E),
@@ -180,7 +189,7 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                     QuestwellChronicleEntry(win: group.value[i], embedded: true,
                       repeating: identical(_repeating, group.value[i]),
                       repeated: _repeated.contains(group.value[i]),
-                      onRepeat: group.value[i].kind == 'quest' &&
+                      onRepeat: (group.value[i].kind == 'quest' || group.value[i].kind == 'set_aside') &&
                           (widget.onRepeat != null || (widget.previewData == null && group.value[i].taskId != null))
                         ? () => _repeat(group.value[i]) : null),
                     if (i < group.value.length - 1) const Divider(height: 1, color: Color(0xFFD5C39D)),

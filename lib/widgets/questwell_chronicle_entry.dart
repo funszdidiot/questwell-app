@@ -19,6 +19,7 @@ class QuestwellChronicleEntry extends StatelessWidget {
     final isReward = win.kind == 'milestone_reward';
     final preview = isReward && win.source != 'level_milestone';
     final label = switch(win.kind) {
+      'set_aside' => 'SET ASIDE',
       'boss' => 'BOSS DEFEATED',
       'level_up' => 'LEVEL UP',
       'milestone_reward' => preview ? 'ADDED TO COLLECTION' : 'MILESTONE REWARD',
@@ -44,7 +45,7 @@ class QuestwellChronicleEntry extends StatelessWidget {
         const SizedBox(height: 4),
         Text(win.title, style: _text(17, bold: true, color: const Color(0xFF352B23))),
         const SizedBox(height: 5),
-        Text(DateFormat(embedded ? 'h:mm a' : 'MMM d, yyyy · h:mm a').format(win.completedAt.toLocal()),
+        Text('${win.kind == 'set_aside' ? 'Created ' : ''}${DateFormat(embedded ? 'h:mm a' : 'MMM d, yyyy · h:mm a').format(win.completedAt.toLocal())}',
           style: _text(12, color: const Color(0xFF78634D))),
         const SizedBox(height: 8),
         if (win.isActivity) Wrap(spacing: 10, runSpacing: 5, children: [
@@ -53,10 +54,10 @@ class QuestwellChronicleEntry extends StatelessWidget {
               QuestwellCurrencyPixelIcon(kind: reward.$1, size: 14),
               const SizedBox(width: 4), Text(reward.$2, style: _text(12, bold: true)),
             ]),
-        ]) else Text(preview ? 'A preview copy for your Hearth.' : isReward
+        ]) else Text(win.kind == 'set_aside' ? 'No penalty. Ready when you are.' : preview ? 'A preview copy for your Hearth.' : isReward
           ? 'Level ${win.level} trophy unlocked. Yours to keep.'
           : 'Another step in your journey.', style: _text(13)),
-        if (win.kind == 'quest' && (onRepeat != null || repeating || repeated)) ...[
+        if ((win.kind == 'quest' || win.kind == 'set_aside') && (onRepeat != null || repeating || repeated)) ...[
           const SizedBox(height: 10),
           TextButton(
             onPressed: repeating || repeated ? null : onRepeat,
@@ -67,8 +68,8 @@ class QuestwellChronicleEntry extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
               textStyle: QuestwellTypography.control(),
             ),
-            child: Text(repeating ? 'Adding quest…'
-              : repeated ? 'Added to board' : 'Do this quest again'),
+            child: Text(repeating ? (win.kind == 'set_aside' ? 'Restoring…' : 'Adding quest…')
+              : repeated ? 'Added to board' : win.kind == 'set_aside' ? 'Restore to board' : 'Do this quest again'),
           ),
         ],
       ])),

@@ -30,6 +30,18 @@ class QuestwellTaskCompletionResult {
 class QuestwellTaskService {
   const QuestwellTaskService._();
 
+  static Future<void> setAside(String taskId) => _changeStatus(taskId, 'open', 'set_aside');
+  static Future<void> restore(String taskId) => _changeStatus(taskId, 'set_aside', 'open');
+
+  static Future<void> _changeStatus(String taskId, String from, String to) async {
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) throw StateError('Authentication required.');
+    final rows = await TasksTable().update(data: {'status': to},
+      matchingRows: (q) => q.eqOrNull('id', taskId)
+        .eqOrNull('user_id', uid).eqOrNull('status', from), returnRows: true);
+    if (rows.length != 1) throw StateError('This quest has changed. Refresh the board.');
+  }
+
   static Future<QuestwellTaskCompletionResult> completeTask(
     String taskId,
   ) async {
