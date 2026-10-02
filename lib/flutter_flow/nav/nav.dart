@@ -1,4 +1,5 @@
 import 'dart:async';
+import '/auth/questwell_auth_callback.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -77,13 +78,15 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? HomePageWidget() : AuthPageWidget(),
+          appStateNotifier.loggedIn && !QuestwellAuthCallback.needsAuthScreen
+              ? HomePageWidget() : AuthPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
           builder: (context, _) =>
-              appStateNotifier.loggedIn ? HomePageWidget() : AuthPageWidget(),
+              appStateNotifier.loggedIn && !QuestwellAuthCallback.needsAuthScreen
+                  ? HomePageWidget() : AuthPageWidget(),
         ),
         FFRoute(
           name: HomePageWidget.routeName,

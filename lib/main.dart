@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'auth/questwell_auth_callback.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,6 +17,7 @@ void main() async {
   GoRouter.optionURLReflectsImperativeAPIs = true;
   usePathUrlStrategy();
 
+  QuestwellAuthCallback.capture(Uri.base);
   await SupaFlow.initialize();
   await FlutterFlowTheme.initialize();
 
@@ -62,13 +64,15 @@ class _MyAppState extends State<MyApp> {
     userStream = projectMomentumSupabaseUserStream()
       ..listen((user) {
         _appStateNotifier.update(user);
-      });
-    jwtTokenStream.listen((_) {});
+      }, onError: _handleAuthStreamError);
+    jwtTokenStream.listen((_) {}, onError: _handleAuthStreamError);
     _recoverySubscription = SupaFlow.client.auth.onAuthStateChange.listen((state) {
       if (state.event == AuthChangeEvent.passwordRecovery && mounted) {
+        QuestwellAuthCallback.recovering = true;
+        QuestwellAuthCallback.linkFailed = false;
         _router.go('/authPage?recovery=true');
       }
-    });
+    }, onError: _handleAuthStreamError);
     Future.delayed(
       const Duration(milliseconds: 1000),
       () => _appStateNotifier.stopShowingSplashImage(),
@@ -79,6 +83,14 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     _recoverySubscription?.cancel();
     super.dispose();
+  }
+
+  void _handleAuthStreamError(Object error, StackTrace stack) {
+    // Consume callback errors on every auth subscription. Never log link tokens.
+    if (QuestwellAuthCallback.needsAuthScreen) {
+      QuestwellAuthCallback.linkFailed = true;
+      if (mounted) _router.go('/authPage');
+    }
   }
 
   void setThemeMode(ThemeMode mode) => safeSetState(() {

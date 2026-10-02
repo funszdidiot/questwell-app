@@ -1,4 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
+import '/auth/questwell_auth_callback.dart';
+import '/backend/supabase/questwell_network.dart';
+import '/services/questwell_auth_service.dart';
 import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
@@ -8,7 +11,8 @@ import 'package:google_fonts/google_fonts.dart';
 export 'auth_page_model.dart';
 
 class AuthPageWidget extends StatefulWidget {
-  const AuthPageWidget({super.key});
+  const AuthPageWidget({super.key, this.authService});
+  final QuestwellAuthService? authService;
   static String routeName = 'AuthPage';
   static String routePath = '/authPage';
   @override
@@ -21,8 +25,27 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
   final _password = TextEditingController();
   bool _visible = false, _busy = false, _creating = false, _reset = false;
   String? _message;
-  bool get _recovering => GoRouter.of(context).routeInformationProvider.value.uri
+  late final _auth = widget.authService ?? QuestwellAuthService();
+  bool get _recovering => QuestwellAuthCallback.recovering || GoRouter.of(context).routeInformationProvider.value.uri
       .queryParameters['recovery'] == 'true';
+  bool get _invalidRecovery => _recovering &&
+      (QuestwellAuthCallback.linkFailed || !_auth.hasSession);
+
+  @override
+  void initState() {
+    super.initState();
+    if (QuestwellAuthCallback.linkFailed) {
+      _message = 'This email link is invalid or has expired. Request a new link.';
+    }
+  }
+
+  void _requestNewLink() {
+    QuestwellAuthCallback.clear();
+    GoRouter.of(context).clearRedirectLocation();
+    context.goNamed(AuthPageWidget.routeName);
+    setState(() { _reset = true; _creating = false; _message = null;
+      _password.clear(); _form.currentState?.reset(); });
+  }
 
   @override
   void dispose() { _email.dispose(); _password.dispose(); super.dispose(); }
@@ -33,39 +56,45 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
     setState(() { _busy = true; _message = null; });
     try {
       if (recovering) {
-        if (SupaFlow.client.auth.currentSession == null) {
+        if (_invalidRecovery) {
           setState(() => _message = 'This reset link has expired. Request a new link.');
           return;
         }
-        await SupaFlow.client.auth.updateUser(UserAttributes(password: _password.text));
+        await _auth.savePassword(_password.text);
         if (!mounted) return;
         _password.clear();
+        QuestwellAuthCallback.clear();
+        GoRouter.of(context).clearRedirectLocation();
         context.goNamedAuth(HomePageWidget.routeName, mounted);
       } else if (_reset) {
-        await SupaFlow.client.auth.resetPasswordForEmail(_email.text.trim());
+        await _auth.sendReset(_email.text.trim());
         if (mounted) setState(() => _message = 'If an account matches that email, you’ll receive a password reset link.');
       } else {
         GoRouter.of(context).prepareAuthEvent();
-        final user = _creating
-          ? await authManager.createAccountWithEmail(context, _email.text.trim(), _password.text)
-          : await authManager.signInWithEmail(context, _email.text.trim(), _password.text);
+        final signedIn = _creating
+          ? await _auth.signUp(_email.text.trim(), _password.text)
+          : await _auth.signIn(_email.text.trim(), _password.text);
         if (!mounted) return;
-        if (user == null) {
+        if (!signedIn) {
+          _password.clear();
           setState(() => _message = _creating
-            ? 'Check your email for a confirmation link. If signup failed, review the message below.'
+            ? 'Check your email to confirm your account, then return to sign in.'
             : 'Sign-in did not finish. Check your details and try again.');
           return;
         }
-        if (_creating) {
-          await UsersTable().insert({'id': currentUserUid, 'email': _email.text.trim()});
-        }
+        // The database signup trigger creates the profile and starter gear.
+        QuestwellAuthCallback.clear();
+        GoRouter.of(context).clearRedirectLocation();
         if (mounted) context.goNamedAuth(HomePageWidget.routeName, mounted);
       }
     } on AuthException catch (error) {
       if (mounted) setState(() => _message = error.message);
+    } on QuestwellNetworkException catch (error) {
+      if (mounted) setState(() => _message = error.message);
     } catch (_) {
       if (mounted) setState(() => _message = 'We couldn’t finish that request. Please try again.');
     } finally {
+      AppStateNotifier.instance.updateNotifyOnAuthChange(true);
       if (mounted) setState(() => _busy = false);
     }
   }
@@ -122,7 +151,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                       onFieldSubmitted: (_) { if (_reset) _submit(); }),
                     const SizedBox(height: 18),
                   ],
-                  if (!_reset || recovering) ...[
+                  if ((!_reset || recovering) && !_invalidRecovery) ...[
                     TextFormField(controller: _password, enabled: !_busy, obscureText: !_visible,
                       autofillHints: [_creating || recovering ? AutofillHints.newPassword : AutofillHints.password],
                       autocorrect: false, enableSuggestions: false, textInputAction: TextInputAction.done,
@@ -142,17 +171,26 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                   if (_message != null) Padding(padding: const EdgeInsets.only(bottom: 16),
                     child: Semantics(liveRegion: true, child: Text(_message!,
                       style: const TextStyle(color: Color(0xFF593B28), height: 1.4)))),
+                  if (_invalidRecovery && _message == null)
+                    const Padding(padding: EdgeInsets.only(bottom: 16),
+                      child: Text('This reset link has expired. Request a new link.',
+                        style: TextStyle(color: Color(0xFF593B28), height: 1.4))),
                   const SizedBox(height: 6),
-                  FilledButton(onPressed: _busy ? null : _submit,
+                  FilledButton(onPressed: _busy ? null : _invalidRecovery ? _requestNewLink : _submit,
                     style: FilledButton.styleFrom(backgroundColor: const Color(0xFF326F69),
                       foregroundColor: Colors.white, minimumSize: const Size.fromHeight(52),
                       padding: const EdgeInsets.all(16), shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
-                    child: Text(_busy ? 'Please wait…' : recovering ? 'Save new password'
+                    child: Text(_busy ? 'Please wait…' : _invalidRecovery ? 'Request a new reset link' : recovering ? 'Save new password'
                       : _reset ? 'Send reset link' : _creating ? 'Create account' : 'Enter the Hearth',
                       textAlign: TextAlign.center, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700))),
                   const SizedBox(height: 12),
                   TextButton(onPressed: _busy ? null : () {
-                    if (recovering) { context.goNamed(AuthPageWidget.routeName); return; }
+                    if (recovering) {
+                      QuestwellAuthCallback.clear();
+                      context.goNamed(AuthPageWidget.routeName);
+                      setState(() { _message = null; _password.clear(); });
+                      return;
+                    }
                     setState(() { if (_reset) { _reset = false; } else { _creating = !_creating; }
                       _message = null; _password.clear(); _form.currentState?.reset(); });
                   }, child: Text(_reset || _creating || recovering ? 'Back to sign in' : 'New here? Create an account',
