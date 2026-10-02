@@ -144,3 +144,9 @@ Converted to WebP at original 1341x1173 dimensions. Preview uses an Alchemist
 in the Workshop with workbench replacing the bookcase, switchable left/right.
 Visible plinth y=1119 is anchored to the back floor, with a level contact shadow.
 No trophy on the apparatus. Preview only; no catalog or inventory mutation.
+
+Workbench preview verified at 46bf433f833e5fdde23d6e18d5b47cc9246111e6 after
+Flutter Check 37070354679 and Preview 37070354675 succeeded. Browser inspection
+covered rear left/right placement, female Alchemist, furniture and wall pictures.
+Final height reduced to .62 of avatar to clear the side painting. Screenshot:
+questwell-potion-workbench-preview.jpg. Still preview-only, no catalog/grant.
