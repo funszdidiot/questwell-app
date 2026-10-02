@@ -1712,6 +1712,9 @@ class QuestwellItemPixelArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (slug == QuestwellPotionWorkbench.slug) {
+      return SizedBox.square(dimension: size, child: const QuestwellPotionWorkbench());
+    }
     if (QuestwellHearthSetting.supports(slug)) {
       return Image.asset(QuestwellHearthSetting.fromSlug(slug).asset,
         width: size, height: size, fit: BoxFit.cover, filterQuality: FilterQuality.medium);
