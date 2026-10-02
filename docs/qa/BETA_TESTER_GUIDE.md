@@ -4,6 +4,46 @@ Status: prepared for founder review. Feedback destination: Explore -> Send feedb
 and start date are not yet selected. Do not distribute until Tanya approves the beta.
 Current candidate: 971762e55b72664aefab3e176d77e7c3c6c92a65 (development preview, not a launch).
 
+## Proposed first beta — founder decision pending
+
+Prepared October 2, 2026. This is a proposed scope, not authorization to invite
+anyone, merge branches, or launch.
+
+| Item | Proposal |
+| --- | --- |
+| Group | 3–5 testers selected by Tanya; names and contacts not yet chosen. |
+| Duration | Seven days starting on a date Tanya selects. |
+| Platform | iPhone web preview first, matching the device family used in founder checks. Record each tester's browser and iOS version; specific browser/version coverage is not yet established. |
+| Candidate | `971762e55b72664aefab3e176d77e7c3c6c92a65`; existing development preview at https://funszdidiot.github.io/questwell-app/. |
+| Purpose | Learn whether starting/completing quests and returning to Questwell feels clear and useful. |
+| Feedback | Explore -> Send feedback. Tanya reviews once daily during the beta; this routine is proposed, not an automated schedule. |
+| First session | Explore unaided, then use the walkthrough below across short sessions. |
+| Art | Retain the current Wanderer cuff improvement and rug for the proposed beta; collect further visual feedback. This proposed disposition is not recorded as final art approval. |
+| Stop condition | Pause invitations and investigate any reproducible account-access failure, lost progress, duplicate reward/charge, or private-data exposure. |
+
+### Evidence supporting this proposal
+
+Signup/confirmation, password recovery, account deletion, saved progress,
+phone navigation/keyboard/expedition exit, feedback receipt, rug retry/placement,
+and latest-boss/reward persistence have recorded checks. Purchase fault tests and
+the separately committed quest retry check found a single reward/charge.
+Eight-character password rules match and leaked-password screening is enabled.
+Flutter Check 37031317611 and Preview 37031317581 passed for the candidate.
+
+### Limits and decisions
+
+Android, desktop and native-app acceptance are not established by the founder
+phone checks. Email delivery is verified for the test inbox, not every provider.
+Controlled discarded-response tests do not establish physical phone response loss
+after commit. The reported need to refresh before buying has no established cause;
+a reproducible recurrence should include the screen and connection state.
+
+The first decision is platform scope: accept the iPhone-web proposal or add named
+platforms and their acceptance checks before invitations. Next, Tanya selects the
+actual group/date and confirms the feedback-review routine and proposed art
+disposition. External beta still requires her explicit release approval. Approval
+of a plan alone does not authorize the agent to send messages.
+
 ## Invitation text
 
 Questwell turns everyday tasks into quests, with an adventurer and a Hearth that
