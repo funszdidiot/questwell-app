@@ -1,0 +1,624 @@
+{
+  "canvas": [
+    240,
+    320
+  ],
+  "method": "Independent generated designs registered to fixed body landmarks; thin plate fitting reuses the established offline garment export.",
+  "bodies": {
+    "female": {
+      "source": "tool/art_assets/harvest_coat_v1/female.webp",
+      "output": "assets/images/questwell/avatar/harvest_coat_female_v1.webp",
+      "mapping": "thin_plate_spline",
+      "points": [
+        {
+          "name": "neck_l",
+          "source": [
+            112,
+            75
+          ],
+          "target": [
+            109,
+            75
+          ]
+        },
+        {
+          "name": "neck_r",
+          "source": [
+            136,
+            75
+          ],
+          "target": [
+            131,
+            75
+          ]
+        },
+        {
+          "name": "collar_notch",
+          "source": [
+            125,
+            102
+          ],
+          "target": [
+            120,
+            84
+          ]
+        },
+        {
+          "name": "shoulder_l",
+          "source": [
+            83,
+            90
+          ],
+          "target": [
+            85,
+            87
+          ]
+        },
+        {
+          "name": "shoulder_r",
+          "source": [
+            164,
+            90
+          ],
+          "target": [
+            155,
+            87
+          ]
+        },
+        {
+          "name": "elbow_l",
+          "source": [
+            75,
+            146
+          ],
+          "target": [
+            77,
+            134
+          ]
+        },
+        {
+          "name": "elbow_r",
+          "source": [
+            175,
+            146
+          ],
+          "target": [
+            162,
+            134
+          ]
+        },
+        {
+          "name": "cuff_l_outer",
+          "source": [
+            61,
+            181
+          ],
+          "target": [
+            68,
+            165
+          ]
+        },
+        {
+          "name": "cuff_l_inner",
+          "source": [
+            79,
+            188
+          ],
+          "target": [
+            82,
+            167
+          ]
+        },
+        {
+          "name": "cuff_r_inner",
+          "source": [
+            169,
+            188
+          ],
+          "target": [
+            157,
+            167
+          ]
+        },
+        {
+          "name": "cuff_r_outer",
+          "source": [
+            186,
+            181
+          ],
+          "target": [
+            171,
+            165
+          ]
+        },
+        {
+          "name": "waist_l",
+          "source": [
+            98,
+            150
+          ],
+          "target": [
+            98,
+            139
+          ]
+        },
+        {
+          "name": "waist_r",
+          "source": [
+            151,
+            150
+          ],
+          "target": [
+            143,
+            139
+          ]
+        },
+        {
+          "name": "hem_l_outer",
+          "source": [
+            72,
+            215
+          ],
+          "target": [
+            82,
+            194
+          ]
+        },
+        {
+          "name": "hem_l",
+          "source": [
+            99,
+            230
+          ],
+          "target": [
+            102,
+            209
+          ]
+        },
+        {
+          "name": "hem_center",
+          "source": [
+            125,
+            218
+          ],
+          "target": [
+            120,
+            202
+          ]
+        },
+        {
+          "name": "hem_r",
+          "source": [
+            152,
+            230
+          ],
+          "target": [
+            140,
+            209
+          ]
+        },
+        {
+          "name": "hem_r_outer",
+          "source": [
+            176,
+            215
+          ],
+          "target": [
+            155,
+            194
+          ]
+        }
+      ]
+    },
+    "male": {
+      "source": "tool/art_assets/harvest_coat_v1/male.webp",
+      "output": "assets/images/questwell/avatar/harvest_coat_male_v1.webp",
+      "mapping": "thin_plate_spline",
+      "points": [
+        {
+          "name": "neck_l",
+          "source": [
+            109,
+            54
+          ],
+          "target": [
+            108,
+            77
+          ]
+        },
+        {
+          "name": "neck_r",
+          "source": [
+            139,
+            54
+          ],
+          "target": [
+            132,
+            77
+          ]
+        },
+        {
+          "name": "collar_notch",
+          "source": [
+            124,
+            88
+          ],
+          "target": [
+            120,
+            84
+          ]
+        },
+        {
+          "name": "shoulder_l",
+          "source": [
+            68,
+            73
+          ],
+          "target": [
+            81,
+            88
+          ]
+        },
+        {
+          "name": "shoulder_r",
+          "source": [
+            182,
+            73
+          ],
+          "target": [
+            156,
+            89
+          ]
+        },
+        {
+          "name": "elbow_l",
+          "source": [
+            56,
+            143
+          ],
+          "target": [
+            72,
+            137
+          ]
+        },
+        {
+          "name": "elbow_r",
+          "source": [
+            196,
+            143
+          ],
+          "target": [
+            166,
+            137
+          ]
+        },
+        {
+          "name": "cuff_l_outer",
+          "source": [
+            35,
+            191
+          ],
+          "target": [
+            65,
+            170
+          ]
+        },
+        {
+          "name": "cuff_l_inner",
+          "source": [
+            59,
+            199
+          ],
+          "target": [
+            80,
+            172
+          ]
+        },
+        {
+          "name": "cuff_r_inner",
+          "source": [
+            190,
+            199
+          ],
+          "target": [
+            158,
+            172
+          ]
+        },
+        {
+          "name": "cuff_r_outer",
+          "source": [
+            214,
+            191
+          ],
+          "target": [
+            174,
+            170
+          ]
+        },
+        {
+          "name": "waist_l",
+          "source": [
+            88,
+            151
+          ],
+          "target": [
+            94,
+            145
+          ]
+        },
+        {
+          "name": "waist_r",
+          "source": [
+            162,
+            151
+          ],
+          "target": [
+            145,
+            145
+          ]
+        },
+        {
+          "name": "hem_l_outer",
+          "source": [
+            54,
+            239
+          ],
+          "target": [
+            80,
+            202
+          ]
+        },
+        {
+          "name": "hem_l",
+          "source": [
+            92,
+            259
+          ],
+          "target": [
+            103,
+            215
+          ]
+        },
+        {
+          "name": "hem_center",
+          "source": [
+            124,
+            244
+          ],
+          "target": [
+            120,
+            209
+          ]
+        },
+        {
+          "name": "hem_r",
+          "source": [
+            156,
+            259
+          ],
+          "target": [
+            140,
+            215
+          ]
+        },
+        {
+          "name": "hem_r_outer",
+          "source": [
+            194,
+            239
+          ],
+          "target": [
+            158,
+            202
+          ]
+        }
+      ]
+    },
+    "neutral": {
+      "source": "tool/art_assets/harvest_coat_v1/neutral.webp",
+      "output": "assets/images/questwell/avatar/harvest_coat_neutral_v1.webp",
+      "mapping": "thin_plate_spline",
+      "points": [
+        {
+          "name": "neck_l",
+          "source": [
+            112,
+            77
+          ],
+          "target": [
+            109,
+            76
+          ]
+        },
+        {
+          "name": "neck_r",
+          "source": [
+            136,
+            77
+          ],
+          "target": [
+            133,
+            76
+          ]
+        },
+        {
+          "name": "collar_notch",
+          "source": [
+            124,
+            104
+          ],
+          "target": [
+            121,
+            84
+          ]
+        },
+        {
+          "name": "shoulder_l",
+          "source": [
+            81,
+            92
+          ],
+          "target": [
+            82,
+            88
+          ]
+        },
+        {
+          "name": "shoulder_r",
+          "source": [
+            165,
+            92
+          ],
+          "target": [
+            155,
+            88
+          ]
+        },
+        {
+          "name": "elbow_l",
+          "source": [
+            74,
+            147
+          ],
+          "target": [
+            73,
+            137
+          ]
+        },
+        {
+          "name": "elbow_r",
+          "source": [
+            175,
+            147
+          ],
+          "target": [
+            165,
+            137
+          ]
+        },
+        {
+          "name": "cuff_l_outer",
+          "source": [
+            55,
+            192
+          ],
+          "target": [
+            66,
+            170
+          ]
+        },
+        {
+          "name": "cuff_l_inner",
+          "source": [
+            75,
+            198
+          ],
+          "target": [
+            82,
+            172
+          ]
+        },
+        {
+          "name": "cuff_r_inner",
+          "source": [
+            172,
+            198
+          ],
+          "target": [
+            157,
+            172
+          ]
+        },
+        {
+          "name": "cuff_r_outer",
+          "source": [
+            193,
+            191
+          ],
+          "target": [
+            174,
+            170
+          ]
+        },
+        {
+          "name": "waist_l",
+          "source": [
+            96,
+            153
+          ],
+          "target": [
+            95,
+            144
+          ]
+        },
+        {
+          "name": "waist_r",
+          "source": [
+            152,
+            153
+          ],
+          "target": [
+            145,
+            144
+          ]
+        },
+        {
+          "name": "hem_l_outer",
+          "source": [
+            67,
+            230
+          ],
+          "target": [
+            80,
+            201
+          ]
+        },
+        {
+          "name": "hem_l",
+          "source": [
+            94,
+            246
+          ],
+          "target": [
+            104,
+            215
+          ]
+        },
+        {
+          "name": "hem_center",
+          "source": [
+            125,
+            231
+          ],
+          "target": [
+            121,
+            209
+          ]
+        },
+        {
+          "name": "hem_r",
+          "source": [
+            154,
+            246
+          ],
+          "target": [
+            140,
+            215
+          ]
+        },
+        {
+          "name": "hem_r_outer",
+          "source": [
+            182,
+            230
+          ],
+          "target": [
+            159,
+            201
+          ]
+        }
+      ]
+    }
+  }
+}

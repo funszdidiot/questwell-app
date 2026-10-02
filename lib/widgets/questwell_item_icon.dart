@@ -145,6 +145,17 @@ class QuestwellItemIconPainter extends CustomPainter {
       for(final x in [10,18]) {r(x,12,5,6,cream);r(x+2,14,2,3,ink);r(x+2,14,1,1,blue);}
       r(15,17,2,2,gold);r(11,26,3,2,goldShade);r(18,26,3,2,goldShade);
       if(archive) {r(6,27,20,3,purpleDark);r(8,28,16,1,cream);r(9,12,7,1,gold);r(17,12,7,1,gold);r(15,14,2,1,gold);}
+    } else if(slug=='midnight-harvest-coat') {
+      r(10,4,12,3,ink);r(6,7,20,9,ink);r(3,14,6,12,ink);r(23,14,6,12,ink);
+      r(8,13,16,15,ink);r(7,26,18,3,ink);
+      r(7,8,18,8,redDark);r(4,16,4,8,redDark);r(24,16,4,8,redDark);
+      r(9,14,14,13,redDark);r(8,26,7,2,red);r(17,26,7,2,red);
+      r(10,7,4,9,greenDark);r(18,7,4,9,greenDark);r(12,6,8,3,cream);
+      r(14,9,4,16,woodDark);r(14,9,4,3,cream);r(15,12,2,1,cream);
+      r(9,9,1,7,goldShade);r(22,9,1,7,goldShade);
+      r(11,16,1,11,goldShade);r(20,16,1,11,goldShade);
+      for(final y in [17,22]) {r(10,y,3,1,gold);r(11,y-1,1,3,gold);r(19,y,3,1,gold);r(20,y-1,1,3,gold);r(15,y,2,1,goldShade);}
+      r(4,24,4,1,goldShade);r(24,24,4,1,goldShade);
     } else if(slug=='pumpkin-sprite') {
       // Same 32px grid, chunky outline and limited shading as the other familiars.
       const orange=Color(0xFFCE742C), light=Color(0xFFF0A448), shade=Color(0xFF95452D);

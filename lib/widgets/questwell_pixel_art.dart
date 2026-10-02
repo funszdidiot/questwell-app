@@ -206,13 +206,17 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   Widget build(BuildContext context) {
     final equippedSlugs = QuestwellCloak.supports(this.equippedSlugs['chest'])
         ? ({...this.equippedSlugs}..remove('hands')) : this.equippedSlugs;
-    final classOverlay = equippedSlugs['chest'] == 'starter-business-suit' ? null : _classOverlayAsset;
+    final harvestCoat = equippedSlugs['chest'] == 'midnight-harvest-coat';
+    final harvestBody = ['male', 'female'].contains(avatarBodyType) ? avatarBodyType : 'neutral';
+    final classOverlay = harvestCoat
+        ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v1.webp'
+        : equippedSlugs['chest'] == 'starter-business-suit' ? null : _classOverlayAsset;
     final rearRevision = archetype == 'wanderer' ? 'short_v1' : 'v1';
     final body = ['male', 'female'].contains(avatarBodyType)
         ? avatarBodyType : 'neutral';
 
     Widget classLayer(String asset) {
-      final image = archetype == 'scholar' &&
+      final image = !harvestCoat && archetype == 'scholar' &&
               !QuestwellCloak.supports(equippedSlugs['chest'])
           ? ClipPath(clipper: ScholarCuffReplacementClipper(body), child: _assetLayer(asset))
           : _assetLayer(asset);
@@ -236,12 +240,14 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         clipBehavior: Clip.none,
         fit: StackFit.expand,
         children: [
-          if (classOverlay != null)
+          if (classOverlay != null && !harvestCoat)
             classLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body, rear: true),
           if (QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body, rear: true),
-          if (equippedSlugs['chest'] == 'starter-business-suit')
+          if (harvestCoat)
+            ClipPath(clipper: WandererUnderlayerClipper(body), child: baseLayer())
+          else if (equippedSlugs['chest'] == 'starter-business-suit')
             baseLayer()
           else if (archetype == 'scholar')
             ClipPath(
@@ -317,7 +323,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             if (classOverlay != null)
               ClipPath(clipper: LanternHandClipper(body), child: classLayer(classOverlay)),
           ],
-          if (archetype == 'scholar' && classOverlay != null &&
+          if (!harvestCoat && archetype == 'scholar' && classOverlay != null &&
               !QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellScholarCuffs(body: body),
           if (equippedSlugs['accessory'] == QuestwellMoonstoneBrooch.slug)

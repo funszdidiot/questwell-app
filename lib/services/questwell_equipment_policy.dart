@@ -1,7 +1,7 @@
 /// Catalog entries with a connected avatar or Hearth renderer.
 abstract final class QuestwellEquipmentPolicy {
   static const shopCategories = <String,String>{
-    'starter-business-suit':'chest', 'moss-green-cloak':'chest', 'hearthguard-mantle':'chest',
+    'midnight-harvest-coat':'chest', 'starter-business-suit':'chest', 'moss-green-cloak':'chest', 'hearthguard-mantle':'chest',
     'round-scholar-glasses':'face', 'tiny-wizard-hat':'head', 'emerald-scholar-scarf':'neck',
     'leather-satchel':'back', 'wayfarer-satchel':'back', 'brass-lantern':'hands',
     'annotated-grimoire':'hands', 'moonstone-brooch':'accessory', 'pathfinder-boots':'feet',
