@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import '../lib/widgets/questwell_equipment_swap.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -43,16 +42,6 @@ void main(){
     final fingerprints=<String>{};
     for(final item in items){
       expect(QuestwellEquipmentPolicy.isReady(item.slug,item.category),isTrue,reason:item.slug);
-      if(item.slug == 'pumpkin-sprite') {
-        final data = await rootBundle.load('assets/images/questwell_icon_pumpkin-sprite_v1.webp');
-        final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth:32, targetHeight:32);
-        final frame = await codec.getNextFrame();
-        final pixels = (await frame.image.toByteData())!.buffer.asUint8List();
-        expect(pixels.any((b)=>b!=0),isTrue);
-        expect(fingerprints.add(pixels.join(',')),isTrue,reason:item.slug);
-        frame.image.dispose();codec.dispose();
-        continue;
-      }
       final recorder=ui.PictureRecorder();
       QuestwellItemIconPainter(item.slug).paint(Canvas(recorder),const Size(32,32));
       final picture=recorder.endRecording();final image=await picture.toImage(32,32);

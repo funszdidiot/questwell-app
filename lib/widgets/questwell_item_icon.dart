@@ -11,11 +11,7 @@ class QuestwellItemIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(label: '${slug.replaceAll('-', ' ')} icon',
     image: true, child: SizedBox.square(dimension: size,
-      child: slug == 'pumpkin-sprite'
-        ? Opacity(opacity: locked ? .35 : 1, child: Image.asset(
-            'assets/images/questwell_icon_pumpkin-sprite_v1.webp',
-            fit: BoxFit.contain, filterQuality: FilterQuality.none))
-        : CustomPaint(painter: QuestwellItemIconPainter(slug, locked: locked))));
+      child: CustomPaint(painter: QuestwellItemIconPainter(slug, locked: locked))));
 }
 
 class QuestwellItemIconPainter extends CustomPainter {
@@ -149,6 +145,22 @@ class QuestwellItemIconPainter extends CustomPainter {
       for(final x in [10,18]) {r(x,12,5,6,cream);r(x+2,14,2,3,ink);r(x+2,14,1,1,blue);}
       r(15,17,2,2,gold);r(11,26,3,2,goldShade);r(18,26,3,2,goldShade);
       if(archive) {r(6,27,20,3,purpleDark);r(8,28,16,1,cream);r(9,12,7,1,gold);r(17,12,7,1,gold);r(15,14,2,1,gold);}
+    } else if(slug=='pumpkin-sprite') {
+      // Same 32px grid, chunky outline and limited shading as the other familiars.
+      const orange=Color(0xFFCE742C), light=Color(0xFFF0A448), shade=Color(0xFF95452D);
+      r(15,4,5,7,ink);r(17,3,4,3,ink);r(16,5,3,6,wood);r(18,4,2,2,woodLight);
+      r(9,6,7,4,greenDark);r(10,5,4,4,green);r(11,6,3,1,mint);
+      r(20,7,5,2,greenDark);r(23,8,3,3,green);r(23,8,2,1,mint);
+      r(3,18,4,3,ink);r(2,20,3,4,ink);r(4,19,3,2,wood);r(3,21,1,2,woodLight);
+      r(25,18,4,3,ink);r(27,20,3,4,ink);r(25,19,3,2,wood);r(28,21,1,2,woodLight);
+      r(9,25,5,4,ink);r(19,25,5,4,ink);r(8,28,6,2,woodDark);r(19,28,6,2,woodDark);
+      r(10,27,3,2,wood);r(20,27,3,2,wood);
+      r(11,10,10,2,ink);r(8,12,16,2,ink);r(6,14,20,10,ink);r(8,24,16,2,ink);r(11,26,10,1,ink);
+      r(11,11,10,2,orange);r(8,14,16,10,shade);r(9,13,14,12,orange);
+      r(10,14,3,9,light);r(14,12,4,13,light);r(18,13,3,11,orange);r(22,15,2,8,shade);
+      r(10,16,4,4,ink);r(18,16,4,4,ink);
+      r(11,17,2,2,gold);r(19,17,2,2,gold);r(11,17,1,1,cream);r(19,17,1,1,cream);
+      r(12,21,8,2,ink);r(14,23,4,1,ink);r(14,22,4,1,gold);
     } else if(slug=='mushroom-familiar') {
       r(13,14,7,13,ink);r(14,15,5,11,cream);r(18,18,1,8,gold);
       r(5,12,23,6,ink);r(7,9,19,4,ink);r(10,6,13,4,ink);r(13,4,7,3,ink);

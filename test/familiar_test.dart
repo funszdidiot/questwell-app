@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_familiar.dart';
-import '../lib/widgets/questwell_item_icon.dart';
 import '../lib/widgets/questwell_catalog_equipment.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 import '../lib/preview/market_catalog.dart';
@@ -19,14 +18,6 @@ void main() {
       expect(QuestwellEquipmentPolicy.isReady(entry['slug'] as String, 'familiar'), isTrue);
       expect(entry['unlock_method'], 'shop');
     }
-  });
-  testWidgets('Pumpkin uses the approved pixel icon separately from Hearth art', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: QuestwellItemIcon(slug: 'pumpkin-sprite')));
-    await tester.pumpAndSettle();
-    final icon = tester.widget<Image>(find.byType(Image));
-    expect((icon.image as AssetImage).assetName, 'assets/images/questwell_icon_pumpkin-sprite_v1.webp');
-    expect((icon.image as AssetImage).assetName, isNot(QuestwellFamiliarLayer.asset('pumpkin-sprite')));
-    expect(tester.takeException(), isNull);
   });
   testWidgets('Every familiar, including dragon, fits all three avatar bodies', (tester) async {
     for (final slug in QuestwellFamiliarLayer.names.keys) {
