@@ -1,5 +1,11 @@
 # Questwell Project Status
 
+## Male Wanderer cuff clearance revision — 2026-10-02
+
+Tanya clarified that the cuffs appeared to cut into the avatar’s hands. Male short-coat v4 raises and softens the sleeve edges above the hands instead of merely narrowing the cuffs; the original thin shirt-cuff edge remains visible. Female v2, neutral v3, all base avatars, frozen masks and visible coat pixels outside the lower sleeves are unchanged. No runtime cuff overlays. Code/art commit `98da0bb0aa1b9aa04a8c525f5a11422fa939f52a`; body-switch test expectation updated in `53898162795fdade0c02e02c6b960d1b8bba35b0` after the first CI run correctly caught its old v3 filename.
+
+Flutter Check 37017311712 and Preview 37017310989 succeeded. Browser verified the shared avatar, enlarged wrist view, and satchel on/off layering. Review: https://funszdidiot.github.io/questwell-app/?review=wanderer-cuffs&rev=98da0bb . Screenshot: `questwell-male-wrist-review.jpg`. Tanya responded “Better”; record this as improvement feedback, not blanket visual sign-off or launch approval. Candidate retained on questwell-dev. No merge, launch, invitations, account changes, or purchase activity.
+
 _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
