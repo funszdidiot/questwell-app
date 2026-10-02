@@ -8,7 +8,7 @@ import '../lib/widgets/questwell_scholar_cuffs.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   for (final body in ['female','male','neutral']) {
-    final asset='assets/images/questwell/avatar/harvest_coat_${body}_v1.webp';
+    final asset='assets/images/questwell/avatar/harvest_coat_${body}_v2.webp';
     test('$body Harvest coat retains the authored canvas and clear hands/legs',()async{
       final data=await rootBundle.load(asset);
       final codec=await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes,data.lengthInBytes));
@@ -20,6 +20,11 @@ void main() {
       expect(alpha(75,185),0,reason:'Keep left hand visible');
       expect(alpha(165,185),0,reason:'Keep right hand visible');
       expect(alpha(110,250),0,reason:'Keep trousers visible');
+      for (final x in [115,120,125]) {
+        for (final y in [180,190,200]) {
+          expect(alpha(x,y),lessThan(5),reason:'Open coat front must reveal trousers');
+        }
+      }
       expect(alpha(120,130),greaterThan(128),reason:'Waistcoat covers original tie');
       image.dispose();codec.dispose();
     });

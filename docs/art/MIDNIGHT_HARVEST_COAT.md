@@ -23,3 +23,9 @@ Catalog is staged inactive until preview checks pass. Founder copy is granted fr
 Code release `b06176e6b9a041ee3237e27f6b6ea144834192f0`: Flutter Check `37078024329` and Preview `37078024360` both passed. Live preview was visually reviewed on female, male and neutral bodies, with and without scarf, satchel, hat, glasses and lantern. Purchase/retry/equip/unequip SQL QA passed in rolled-back fixtures; Supabase security advisors reported zero findings.
 
 The 180-earned-coin catalog listing is now active. The founder copy was verified owned, free and unequipped, with the coin balance unchanged at 847. Existing equipment was preserved. Screenshot: `questwell-midnight-harvest-coat.jpg`.
+
+## Open-front correction
+
+Founder-approved preview `exec-be1aa222-477e-464f-975f-0f296f6a49c4.png` removes the two rectangular inner panels that made the lower coat look skirt-like. Built-in ImageGen edited each original garment into an open-front version while retaining the outer tails, copper edging, waistcoat and sleeves. Generation sources are recorded per body in `tool/harvest_coat_fit.json`; v2 masters are in `tool/art_assets/harvest_coat_v2/` and separately registered v2 runtime assets retain the 240×320 canvas.
+
+Female and male source landmarks were remeasured for the edited artwork. All three rendered fits were checked for exposed trousers, clear hands, continuous outer-tail edging and preserved collar placement. The garment regression test now checks transparency through the center opening. Frozen base/class artwork and the existing catalog item, ownership, price and equipment state are unchanged.

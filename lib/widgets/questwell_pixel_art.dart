@@ -209,7 +209,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final harvestCoat = equippedSlugs['chest'] == 'midnight-harvest-coat';
     final harvestBody = ['male', 'female'].contains(avatarBodyType) ? avatarBodyType : 'neutral';
     final classOverlay = harvestCoat
-        ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v1.webp'
+        ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v2.webp'
         : equippedSlugs['chest'] == 'starter-business-suit' ? null : _classOverlayAsset;
     final rearRevision = archetype == 'wanderer' ? 'short_v1' : 'v1';
     final body = ['male', 'female'].contains(avatarBodyType)
