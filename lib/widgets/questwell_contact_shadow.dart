@@ -41,10 +41,8 @@ class QuestwellContactShadowPainter extends CustomPainter {
         oval(.810, .813, .16, .030);
         oval(.555, .715, .12, .025, alpha: 44);
       case 'walnut-bookshelf':
-        oval(.49, .89, .86, .072, alpha: 28);
-        oval(.140, .880, .17, .035);
-        oval(.800, .921, .18, .037);
-        oval(.860, .874, .13, .030, alpha: 44);
+        // Straight-on plinth: one level contact line across the full base.
+        oval(.50, 1200 / 1284, .86, .035, alpha: 72);
       case 'hearth-fern':
         oval(.51, .908, .41, .065, alpha: 36);
         oval(.51, .906, .32, .025, alpha: 58);

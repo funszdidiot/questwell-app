@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class QuestwellBookshelf extends StatelessWidget {
   const QuestwellBookshelf({super.key});
   static const slug = 'walnut-bookshelf';
-  static const asset = 'assets/images/questwell/hearth/walnut_bookshelf.webp';
+  static const asset = 'assets/images/questwell/hearth/walnut_bookshelf_front_v1.webp';
 
   @override
   Widget build(BuildContext context) => Semantics(

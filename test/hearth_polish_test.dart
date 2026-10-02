@@ -20,8 +20,8 @@ void main() {
         final frame = tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
         final center = tester.getRect(find.byKey(const ValueKey('hearth-wall-art-bounds')));
         final avatar = tester.getRect(find.byKey(const ValueKey('hearth-avatar-bounds')));
-        // Solid shelf artwork starts 113 px down its 1284 px transparent canvas.
-        expect(art.bottom, lessThan(shelf.top + shelf.height * 113 / 1284));
+        // Solid shelf artwork starts 87 px down its 1284 px transparent canvas.
+        expect(art.bottom, lessThan(shelf.top + shelf.height * 87 / 1284));
         expect(art.top, greaterThan(frame.top));
         expect(art.overlaps(center), false);
         final otherArt = tester.getRect(find.byKey(ValueKey('hearth-wall_${side == 'left' ? 'right' : 'left'}-art-bounds')));

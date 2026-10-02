@@ -122,3 +122,11 @@ Front-facing walnut bookcase concept generated for founder review: straight vert
 uprights, level shelves, continuous flat plinth, transparent background. Generated
 asset exec-cf99385d-261d-4e72-b31b-5198ba597e8b.png. Not yet substituted in app;
 floor and trophy anchors must be fitted to the approved candidate before replacement.
+
+## Front-facing bookcase replacement
+
+Founder approved replacement. New asset walnut_bookshelf_front_v1.webp retains
+the 1225x1284 canvas, with a level continuous plinth at source y=1200. Placement
+anchors that opaque baseline to the room floor. Single horizontal contact shadow
+replaces angled foot shadows; trophy and relic surfaces move to y=.078 of canvas.
+Ownership and walnut-bookshelf item identity remain unchanged.

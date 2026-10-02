@@ -113,7 +113,7 @@ class QuestwellHearthDecor {
     final floor = relic && !front
       ? roomSide * .68 + (scene.height - roomSide) * .52
       : scene.height * floorDepth(slug, slot);
-    return Rect.fromLTWH(center - width / 2, floor - height, width, height);
+    return Rect.fromLTWH(center - width / 2, floor - height * (shelf ? 1200 / 1284 : 1), width, height);
   }
 
   /// Compact surface collectibles use the artifact alone, without the floor stand.
@@ -127,7 +127,7 @@ class QuestwellHearthDecor {
     final roomSide = math.max(scene.width, scene.height);
     final center = onShelf ? shelf.left + shelf.width * (shelfSlot == 'right' ? .75 : .25)
       : roomSide * .084 + (scene.width - roomSide) / 2;
-    final surface = onShelf ? shelf.top + shelf.height * .12
+    final surface = onShelf ? shelf.top + shelf.height * .078
       : roomSide * .337 + (scene.height - roomSide) * .52;
     return Positioned(key: ValueKey('hearth-$slug-surface-bounds'),
       left: center - width / 2, top: surface - height, width: width, height: height,
@@ -155,7 +155,7 @@ class QuestwellHearthDecor {
     final roomSide = math.max(scene.width, scene.height);
     final center = onShelf ? shelf.left + shelf.width * (shelfSlot == 'right' ? (orrery ? .75 : .78) : (orrery ? .25 : .23))
       : roomSide * .082 + (scene.width - roomSide) / 2;
-    final surface = onShelf ? shelf.top + shelf.height * (orrery ? .145 : .12)
+    final surface = onShelf ? shelf.top + shelf.height * .078
       : roomSide * (compassOnMantel ? .340 : .345) + (scene.height - roomSide) * .52;
     // The mantel recedes toward the left. The compass artwork's plinth
     // recedes toward the right, so face it into the room on this surface.
