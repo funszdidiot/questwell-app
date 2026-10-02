@@ -1,6 +1,7 @@
 import '/backend/supabase/supabase.dart';
 import '/backend/supabase/questwell_network.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'questwell_feedback_draft.dart';
 
 class QuestwellAccountService {
   const QuestwellAccountService._();
@@ -20,6 +21,7 @@ class QuestwellAccountService {
     if (uid != null) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove('questwell_favorite_quests_$uid');
+      await QuestwellFeedbackDraftStore(uid).clear();
     }
   }
 }

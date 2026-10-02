@@ -20,7 +20,7 @@ check is not evidence that the feature is broken.
 | Saved progress after reopening | Verified by founder | October 1 at 22:14 founder confirmed the instructed close/reopen checks all worked: open/completed quests, XP/coins, selected customization, and no duplicate reward. Separately reported that removing Business Suit reveals the default Wanderer outfit; clarified in 9ec4c58: chest-item action names the selected class outfit and explains retained ownership. |
 | Weak connection and retry | Partial | All three automated network cases passed. October 1 at 22:25 founder confirmed the instructed offline quest attempt, responsive failure handling, reconnect/retry, and exactly one completion/reward worked. This verifies the offline-before-submit quest path. Connection loss during an in-flight write and interrupted cosmetic purchases/coin deductions remain unverified. |
 | Email delivery for external testers | Verified for test inbox | getquestwell.com verified in Resend; native integration configured custom SMTP for Project Momentum. Saved sender Questwell <team@getquestwell.com>, smtp.resend.com:465. Signup confirmation delivery verified by founder with confirmed test account in database. Founder also confirmed completing the email password-reset flow and signing in. Delivery verified for the test inbox; this does not establish delivery across every email provider. |
-| Tester feedback | Prepared; destination pending | BETA_TESTER_GUIDE.md contains draft tester instructions and feedback fields. Choose and verify one destination before inviting testers. No feedback collection channel has been deployed and no invitations sent. |
+| Tester feedback | Implemented; build/UI verification pending | Founder selected in-app feedback. Explore -> Send feedback submits to private public.beta_feedback in Project Momentum. Backend isolation/idempotency/validation/rate-limit checks passed; see BETA_FEEDBACK.md. Tester instructions remain a draft; no invitations sent. |
 | Mobile acceptance | Partial | Existing small-screen/enlarged-text widget checks and founder iPhone reviews. Record the final signed-in journey on the actual beta target devices; include keyboard, navigation and expedition interruption. |
 | Build and preview | Verified for evidence baseline | Latest code 9ec4c58 passed Flutter Check 36959511491 and Preview 36959511384. Earlier failed-run emails do not supersede these results. |
 | Deferred visual item | Open, deferred | Male Wanderer cuff fit remains unapproved in PROJECT_STATUS.md. Revisit with founder after other build work. |
@@ -28,7 +28,7 @@ check is not evidence that the feature is broken.
 
 ## Recommended order
 
-1. Choose and verify the feedback destination; tester guide and form fields are drafted.
+1. Finish in-app feedback build and live UI verification; founder reviews reports in Supabase Table Editor.
 2. Finish the remaining in-flight-write, purchase, and mobile acceptance checks.
 3. Present remaining defects and the deferred visual item for founder review;
    request beta approval only when the concrete beta package is ready.
@@ -55,3 +55,4 @@ explained that the suit remains owned. Selecting the action restored the default
 class outfit, changed the card to Owned / Equip, retained 14 owned items, and kept
 Wanderer selected. Preview now tracks suit toggles instead of hardcoding it as
 unequipped. Backend equipment behavior and the founder account were not changed.
+

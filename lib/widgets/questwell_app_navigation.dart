@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'questwell_typography.dart';
+import 'questwell_feedback.dart';
 
 enum QuestwellDestination {
   hearth('Hearth', 'HomePage', Icons.home_outlined),
@@ -45,7 +46,7 @@ class QuestwellAppNavigation extends StatelessWidget {
   }
 
   Future<void> _explore(BuildContext context) async {
-    final destination = await showModalBottomSheet<QuestwellDestination>(
+    final destination = await showModalBottomSheet<Object>(
       context: context, isScrollControlled: true, useSafeArea: true,
       backgroundColor: const Color(0xFF152332),
       builder: (sheetContext) => SafeArea(top: false, child: ConstrainedBox(
@@ -68,10 +69,22 @@ class QuestwellAppNavigation extends StatelessWidget {
                 trailing: current == item ? const Icon(Icons.check, color: Color(0xFFE4C586)) : null,
                 onTap: () => Navigator.pop(sheetContext, item),
               )),
+            const Divider(color: Color(0xFF65563D)),
+            ListTile(
+              leading: const Icon(Icons.chat_bubble_outline, color: Color(0xFFE4C586)),
+              title: Text('Send feedback', style: QuestwellTypography.control(color: const Color(0xFFF0E5CC))),
+              subtitle: Text('Help shape Questwell', style: QuestwellTypography.body(fontSize: 12, color: const Color(0xFFB9C7D7))),
+              onTap: () => Navigator.pop(sheetContext, 'feedback')),
           ])),
       )),
     );
-    if (context.mounted && destination != null) _open(context, destination);
+    if (!context.mounted) return;
+    if (destination is QuestwellDestination) {
+      _open(context, destination);
+    } else if (destination == 'feedback') {
+      await QuestwellFeedback.open(context, screen: current.label,
+        preview: Uri.base.queryParameters.containsKey('review'));
+    }
   }
 
   @override

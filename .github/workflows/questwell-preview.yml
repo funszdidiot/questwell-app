@@ -36,7 +36,7 @@ jobs:
 
       # Includes the CPU-only CanvasKit image fix (flutter/flutter#180706).
       - name: Build preview
-        run: flutter build web --release --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none
+        run: flutter build web --release --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA"
 
       - name: Cache-bust preview bundle
         run: |

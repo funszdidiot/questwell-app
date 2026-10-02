@@ -1,7 +1,7 @@
 # Questwell private-beta tester guide — draft
 
-Status: prepared for founder review. Feedback destination, invited testers, and
-start date are not yet selected. Do not distribute until Tanya approves the beta.
+Status: prepared for founder review. Feedback destination: Explore -> Send feedback inside Questwell. Invited testers
+and start date are not yet selected. Do not distribute until Tanya approves the beta.
 Current candidate: 9ec4c58 (development preview, not a launch).
 
 ## Invitation text
@@ -44,16 +44,15 @@ Opening copy: "Help shape Questwell. A quick observation is enough."
 
 Required:
 1. What were you trying to do? (Short text; task wording is not needed.)
-2. What happened, and how did it compare with what you expected? (Long text.)
-3. Which screen or feature were you using? (Short text; "not sure" is fine.)
+2. What happened? (Long text.)
+
+Screen/feature is included automatically. Expected behavior is optional.
 
 Optional:
 4. Steps to reproduce, if it happened more than once.
-5. Device, operating system/browser, and approximate time. Build should be
-   attached automatically if collected inside the app; otherwise ask only if
-   the tester can easily find it.
-6. Screenshot, with personal information hidden.
-7. Contact email if you want a reply.
+5. Device or browser details. Screen, coarse platform, build, and submission time
+   are included automatically.
+6. Contact email if you want a reply.
 
 Suggested report types: Something broke / Hard to understand / Idea / Worked well.
 Do not require a contact email or screenshot to submit feedback.
@@ -72,8 +71,9 @@ blocked task completion. Use tester findings to choose UX changes.
 
 ## Before inviting testers
 
-- Select and verify one feedback destination, including founder access to reports.
+- Verify the in-app feedback form and founder review access in Supabase Table Editor.
 - Finish outstanding device acceptance and interrupted-purchase checks in
   BETA_READINESS_CHECKLIST.md.
 - Resolve or explicitly defer remaining visual items with the founder.
 - Confirm the specific beta audience and obtain Tanya's release approval.
+
