@@ -42,3 +42,5 @@ Catalog rows are staged inactive until the client passes and deploys. SQL QA pas
 purchase/retry, one debit per item, mutually exclusive setting placement, furniture
 coexistence, removal/re-equip and cross-account/wrong-slot rejection. Fixtures rolled
 back. Widget regression covers inventory-derived background and default restoration.
+
+Activation completed after code cdea5d53dfaeaa9b8e3c496c5f4a76ca5821de47 passed Flutter Check 37057394061 and Preview 37057393992. Both catalog entries are active at 120 coins. Activation SQL: `update public.cosmetics set active=true where slug in ('woodland-cottage','midnight-harvest') and category='room' and price=120 and unlock_method='shop';` Fresh query confirmed both. Security advisor: zero lints. Browser sample Market verified Midnight Harvest purchase (650 to 530), setting preview and placed state, plus Woodland Cottage listing/thumbnail. Existing real accounts were not charged or equipped by the agent. Persistence was checked through database placement state and inventory-driven widget rendering; founder phone refresh acceptance remains to be observed. Screenshot: questwell-settings-market.jpg. No merge or launch.
