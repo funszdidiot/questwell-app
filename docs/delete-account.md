@@ -11,3 +11,5 @@ The client clears its local auth session and account-specific pinned-quest prefe
 Development preview uses a clearly labeled simulation with no account writes. Do not test by deleting a founder or tester account.
 
 Validation: Node handler authorization/confirmation tests; Flutter confirmation, cancellation, duplicate-click and error tests; isolated disposable-account integration test. Production branch remains unmerged.
+
+Auth deletion bypasses furniture rearrangement in private.return_unsupported_trophy only when the DELETE is executed by supabase_auth_admin. Ordinary inventory updates and removals retain the existing invoker-rights behavior. No new database grants or security-definer privileges were introduced.
