@@ -1,4 +1,7 @@
 const marketReviewCatalog = <Map<String,dynamic>>[
+  {"id": "review-woodland-cottage", "slug": "woodland-cottage", "name": "Woodland Cottage", "category": "room", "rarity": "uncommon", "description": "A moss-green cottage with climbing ivy, warm oak beams and a forest view. Changes your Hearth setting; keeps your furniture.", "price": 120, "premium": false, "asset_key": "room_woodland_cottage", "required_archetype": null, "unlock_method": "shop"},
+  {"id": "review-midnight-harvest", "slug": "midnight-harvest", "name": "Midnight Harvest", "category": "room", "rarity": "uncommon", "description": "Copper leaves, amber firelight and a moonlit autumn forest. Changes your Hearth setting; keeps your furniture.", "price": 120, "premium": false, "asset_key": "room_midnight_harvest", "required_archetype": null, "unlock_method": "shop"},
+
   {
     "id": "review-emerald-wayfarer-rug",
     "slug": "emerald-wayfarer-rug",

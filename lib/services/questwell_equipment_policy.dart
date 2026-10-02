@@ -10,6 +10,7 @@ abstract final class QuestwellEquipmentPolicy {
     'emerald-dragon':'familiar', 'archive-owl':'familiar', 'signal-fox':'familiar', 'moss-moth':'familiar',
     'walnut-bookshelf':'room', 'hearth-fern':'room', 'burgundy-reading-chair':'room',
     'emerald-wayfarer-rug':'room',
+    'woodland-cottage':'room', 'midnight-harvest':'room',
     'walnut-reading-table':'room', 'rainy-window':'room', 'warding-lantern':'room',
     'moonlit-woodland':'wall_art', 'fern-study':'wall_art', 'celestial-study':'wall_art',
   };

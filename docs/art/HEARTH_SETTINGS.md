@@ -26,3 +26,19 @@ or launch approval is inferred from art approval.
 ## Verification — October 2, 2026
 
 Code 703ba3f746c46dd46c7118e412eb0df38e84259d passed Flutter Check 37055011368 and Preview 37055011402. Live browser inspection verified both new assets with furnished female and male Wanderers, three wall paintings, rug, bookshelf, chair/table and trophy; swapped shelf/fern sides also rendered correctly. Widget checks verified asset loading and unchanged avatar/wall-art bounds across three bodies at 320/390 widths. This is browser/automated evidence, not new physical Android/iPhone acceptance. Screenshot: questwell-hearth-settings-preview.jpg. Preview URL: https://funszdidiot.github.io/questwell-app/?review=hearth-settings&rev=703ba3f
+
+## Market integration — October 2, 2026
+
+Founder requested both approved settings for purchase. Price: 120 earnable coins
+apiece, matching existing Hearth decor. Both are class-neutral room items using a
+new `setting` placement slot. Preview and actual Hearth resolve the background
+from equipped inventory, preserving furniture/window/floor/wall slots. Removing
+the setting returns to Original Hearth while retaining ownership. Generic room
+placement provides existing replacement confirmation and stale-slot protection.
+
+Migration 20261002195043_hearth_settings_market.sql was CLI-generated and applied
+through execute_sql, retaining authenticated private-RPC grants and profile locking.
+Catalog rows are staged inactive until the client passes and deploys. SQL QA passed
+purchase/retry, one debit per item, mutually exclusive setting placement, furniture
+coexistence, removal/re-equip and cross-account/wrong-slot rejection. Fixtures rolled
+back. Widget regression covers inventory-derived background and default restoration.

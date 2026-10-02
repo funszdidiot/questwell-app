@@ -76,7 +76,9 @@ class _RoomPickerState extends State<_RoomPicker> {
           child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             Text('${wallArt ? 'Hang' : 'Place'} ${widget.name}', style: const TextStyle(fontSize: 21, color: Color(0xFFF0E5CC))),
             const SizedBox(height: 8),
-            const Text('Choose a spot below. Preview first, then save.'),
+            Text(QuestwellHearthSetting.supports(widget.slug)
+              ? 'Preview your setting, then save. Your furniture stays in place.'
+              : 'Choose a spot below. Preview first, then save.'),
             if (QuestwellMasteryRelic.supports(widget.slug)) const Padding(padding: EdgeInsets.only(top: 8),
               child: Text('Display the relic on a surface, or choose one of three pedestal spots.')),
             if (QuestwellMasteryRelic.supports(widget.slug) && !labels.containsKey('bookshelf_top')) const Padding(padding: EdgeInsets.only(top: 8),

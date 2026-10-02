@@ -44,6 +44,22 @@ void main() {
     }
   });
 
+  testWidgets('Equipped setting restores from inventory and removal restores default', (tester) async {
+    for (final slug in ['woodland-cottage', 'midnight-harvest', '']) {
+      await tester.pumpWidget(MaterialApp(home: SizedBox(width: 390,
+        child: QuestwellHearthPixelScene(height: 310, equippedSlugs: {
+          if (slug.isNotEmpty) 'room:setting': slug,
+          'room:right': 'walnut-bookshelf',
+        }))));
+      await tester.pumpAndSettle();
+      final expected = QuestwellHearthSetting.fromSlug(slug).asset;
+      expect(find.byWidgetPredicate((w) => w is Image && w.image is AssetImage &&
+        (w.image as AssetImage).assetName == expected), findsOneWidget);
+      expect(find.byKey(const ValueKey('hearth-avatar-bounds')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    }
+  });
+
   test('Brooch polish preserves corrected lapel centers', () {
     for (final fit in [
       (body: 'female', center: const Offset(99, 94)),

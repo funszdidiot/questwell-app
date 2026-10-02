@@ -879,6 +879,12 @@ enum QuestwellHearthSetting {
   const QuestwellHearthSetting(this.label, this.file);
   final String label;
   final String file;
+  static QuestwellHearthSetting fromSlug(String? slug) => switch (slug) {
+    'woodland-cottage' => woodlandCottage,
+    'midnight-harvest' => midnightHarvest,
+    _ => original,
+  };
+  static bool supports(String slug) => slug == 'woodland-cottage' || slug == 'midnight-harvest';
   String get asset => 'assets/images/questwell/hearth/$file.webp';
 }
 
@@ -886,7 +892,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   const QuestwellHearthPixelScene({
     super.key,
     this.height = 170,
-    this.setting = QuestwellHearthSetting.original,
+    this.setting,
     this.archetype = 'wanderer',
     this.avatarBodyType = 'neutral',
     this.equippedSlugs = const {},
@@ -894,7 +900,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
     this.showAvatar = true,
   });
 
-  final QuestwellHearthSetting setting;
+  final QuestwellHearthSetting? setting;
 
   final double height;
   final String archetype;
@@ -941,7 +947,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
             children: [
               Positioned.fill(
                 child: Image.asset(
-                  setting.asset,
+                  (setting ?? QuestwellHearthSetting.fromSlug(equippedSlugs['room:setting'])).asset,
                   fit: BoxFit.cover,
                   alignment: const Alignment(0, .04),
                   filterQuality: FilterQuality.medium,
@@ -1686,6 +1692,10 @@ class QuestwellItemPixelArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (QuestwellHearthSetting.supports(slug)) {
+      return Image.asset(QuestwellHearthSetting.fromSlug(slug).asset,
+        width: size, height: size, fit: BoxFit.cover, filterQuality: FilterQuality.medium);
+    }
     if (QuestwellMasteryRelic.supports(slug)) {
       return QuestwellMasteryRelic(archetype: QuestwellMasteryRelic.classFor(slug), size: size);
     }
