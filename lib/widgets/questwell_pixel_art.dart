@@ -933,6 +933,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
           final sceneWidth = constraints.maxWidth;
           final sceneHeight = constraints.maxHeight;
           final compact = sceneWidth < 430;
+          final roomSetting = setting ?? QuestwellHearthSetting.fromSlug(equippedSlugs['room:setting']);
 
           // Keep the authored 3:4 canvas ratio, so BoxFit.contain cannot
           // silently shrink the character inside a narrow mobile rectangle.
@@ -948,7 +949,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
             children: [
               Positioned.fill(
                 child: Image.asset(
-                  (setting ?? QuestwellHearthSetting.fromSlug(equippedSlugs['room:setting'])).asset,
+                  roomSetting.asset,
                   fit: BoxFit.cover,
                   alignment: const Alignment(0, .04),
                   filterQuality: FilterQuality.medium,
@@ -1047,12 +1048,14 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               ),
               if (equippedSlugs['wall_art'] == QuestwellWallArt.slug)
                 QuestwellHearthDecor.wallArtPositioned(
-                  slug: QuestwellWallArt.slug, side: 'wall_center', scene: Size(sceneWidth, sceneHeight)),
+                  slug: QuestwellWallArt.slug, side: 'wall_center', scene: Size(sceneWidth, sceneHeight),
+                  library: roomSetting == QuestwellHearthSetting.enchantedLibrary),
               for (final side in ['wall_left', 'wall_right'])
                 if (equippedSlugs['wall_art:$side'] case final String art)
                   if (QuestwellWallArt.isSide(art))
                     QuestwellHearthDecor.wallArtPositioned(
-                      slug: art, side: side, scene: Size(sceneWidth, sceneHeight)),
+                      slug: art, side: side, scene: Size(sceneWidth, sceneHeight),
+                      library: roomSetting == QuestwellHearthSetting.enchantedLibrary),
               if (equippedSlugs['room:window'] == 'rainy-window')
                 const Positioned.fill(key: ValueKey('hearth-rainy-window-bounds'),
                   child: QuestwellRainyWindow()),

@@ -14,7 +14,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
 
-  testWidgets('Settings preserve avatar and wall-art anchors at phone widths', (tester) async {
+  testWidgets('Settings preserve avatar anchors and original-room galleries at phone widths', (tester) async {
     for (final width in [320.0, 390.0]) {
       for (final body in ['female', 'male', 'neutral']) {
         Rect? avatar;
@@ -36,9 +36,9 @@ void main() {
           final a = tester.getRect(find.byKey(const ValueKey('hearth-avatar-bounds')));
           final w = tester.getRect(find.byKey(const ValueKey('hearth-wall-art-bounds')));
           if (avatar != null) expect(a, avatar);
-          if (wall != null) expect(w, wall);
+          if (wall != null && setting != QuestwellHearthSetting.enchantedLibrary) expect(w, wall);
           avatar = a;
-          wall = w;
+          if (setting != QuestwellHearthSetting.enchantedLibrary) wall = w;
         }
       }
     }

@@ -44,7 +44,19 @@ class QuestwellHearthDecor {
 
   /// A single gallery composition: common centerline and equal frame-edge gaps.
   /// Furniture and the foreground avatar can overlap it without shifting the art.
-  static Rect wallArtBounds(Size scene, String slot) {
+  static Rect wallArtBounds(Size scene, String slot, {bool library = false}) {
+    if (library) {
+      // Keep the gallery inside the emerald arch, following the square room's
+      // BoxFit.cover crop instead of the generic room's wider wall anchors.
+      final roomSide = math.max(scene.width, scene.height);
+      final origin = Offset((scene.width - roomSide) / 2,
+        (scene.height - roomSide) * .52);
+      final center = slot == 'wall_center';
+      final width = roomSide * (center ? .14 : .065);
+      final x = slot == 'wall_left' ? .365 : slot == 'wall_right' ? .635 : .50;
+      return Rect.fromCenter(center: origin + Offset(roomSide * x, roomSide * .205),
+        width: width, height: width / (center ? 1.4 : .58));
+    }
     final centerWidth = math.min(scene.height * .17 * 1.4, scene.width * .21);
     final sideHeight = math.min(scene.height * .195, scene.width * .12 / .58);
     final sideWidth = sideHeight * .58;
@@ -59,8 +71,8 @@ class QuestwellHearthDecor {
   }
 
   static Positioned wallArtPositioned({required String slug, required String side,
-    required Size scene}) {
-    final rect = wallArtBounds(scene, side);
+    required Size scene, bool library = false}) {
+    final rect = wallArtBounds(scene, side, library: library);
     return Positioned(key: ValueKey(side == 'wall_center' ? 'hearth-wall-art-bounds' : 'hearth-$side-art-bounds'),
       top: rect.top, left: rect.left, width: rect.width, height: rect.height,
       child: QuestwellWallArt(artSlug: slug));

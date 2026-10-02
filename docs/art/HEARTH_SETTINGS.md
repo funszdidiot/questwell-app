@@ -65,3 +65,10 @@ shelves and lamps fit the existing crop. Screenshot: questwell-enchanted-library
 Review: https://funszdidiot.github.io/questwell-app/?review=hearth-settings&rev=b2d376b
 This is browser and automated verification, not physical-device acceptance.
 Library remains preview-only; no catalog, purchase, inventory or launch changes.
+
+## Library gallery correction
+
+Founder reported awkward painting placement. Library now uses a smaller symmetric
+gallery centered inside its emerald arch. The anchors follow the background cover
+crop, preserving clearance from built-in shelves, brass lamps and arch trim.
+Other settings retain their existing gallery layout.
