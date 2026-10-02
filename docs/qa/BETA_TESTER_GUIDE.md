@@ -74,7 +74,7 @@ blocked task completion. Use tester findings to choose UX changes.
 
 - In-app feedback submission and founder receipt are verified. Confirm the review routine before invitations.
 - Founder iPhone purchase/retry, saved placement, navigation and boss reward-persistence checks are complete. Choose the beta device/browser scope explicitly; broader device coverage remains unverified.
-- Resolve or explicitly decide the known compromised-password-screening warning after checking the project plan. No paid upgrade is approved.
+- Founder-approved Pro upgrade is complete. Compromised-password screening is enabled and the backend eight-character minimum matches signup/recovery validation; security advisor reports no lints. See BETA_READINESS_CHECKLIST.md for the precise verification scope.
 - Resolve or explicitly defer remaining visual items with the founder.
 - Confirm the specific beta audience and obtain Tanya's release approval.
 
