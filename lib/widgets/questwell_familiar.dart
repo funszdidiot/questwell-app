@@ -6,6 +6,7 @@ class QuestwellFamiliarLayer extends StatelessWidget {
   const QuestwellFamiliarLayer({super.key, required this.slug});
   final String slug;
   static const names = <String, String>{
+    'pumpkin-sprite': 'Pumpkin Sprite',
     'emerald-dragon': 'Emerald Dragon',
     'mushroom-familiar': 'Mushroom Familiar',
     'tiny-owl-familiar': 'Tiny Owl',
@@ -22,14 +23,16 @@ class QuestwellFamiliarLayer extends StatelessWidget {
     if (!names.containsKey(slug)) return const SizedBox.shrink();
     final hovering = slug == 'moss-moth';
     final dragon = slug == 'emerald-dragon';
+    final pumpkin = slug == 'pumpkin-sprite';
     return IgnorePointer(child: LayoutBuilder(builder: (context, constraints) {
       final scale = math.min(constraints.maxWidth / 240, constraints.maxHeight / 320);
       final left = (constraints.maxWidth - 240 * scale) / 2;
       final top = constraints.maxHeight - 320 * scale;
-      final width = dragon ? 72.0 : hovering ? 57.0 : 56.0;
-      final height = dragon ? 80.0 : hovering ? 54.0 : slug == 'glass-slime' ? 43.0 : 67.0;
-      final x = dragon ? 164.0 : 178.0;
-      final bottom = hovering ? 151.0 : 307.0;
+      final width = pumpkin ? 64.0 : dragon ? 72.0 : hovering ? 57.0 : 56.0;
+      final height = pumpkin ? 64.0 : dragon ? 80.0 : hovering ? 54.0 : slug == 'glass-slime' ? 43.0 : 67.0;
+      final x = pumpkin ? 170.0 : dragon ? 164.0 : 178.0;
+      // Pumpkin feet end at 1186/1254 of its transparent canvas.
+      final bottom = pumpkin ? 307.0 + 64 * (1 - 1186 / 1254) : hovering ? 151.0 : 307.0;
       return Stack(clipBehavior: Clip.none, children: [
         if (!hovering)
           Positioned(left: left + (x + 5) * scale,

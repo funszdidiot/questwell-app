@@ -6,7 +6,7 @@ abstract final class QuestwellEquipmentPolicy {
     'leather-satchel':'back', 'wayfarer-satchel':'back', 'brass-lantern':'hands',
     'annotated-grimoire':'hands', 'moonstone-brooch':'accessory', 'pathfinder-boots':'feet',
     'victory-sparkle':'effect', 'focus-tonic':'effect',
-    'mushroom-familiar':'familiar', 'tiny-owl-familiar':'familiar', 'glass-slime':'familiar',
+    'pumpkin-sprite':'familiar', 'mushroom-familiar':'familiar', 'tiny-owl-familiar':'familiar', 'glass-slime':'familiar',
     'emerald-dragon':'familiar', 'archive-owl':'familiar', 'signal-fox':'familiar', 'moss-moth':'familiar',
     'copper-potion-workbench':'room', 'walnut-bookshelf':'room', 'hearth-fern':'room', 'burgundy-reading-chair':'room',
     'emerald-wayfarer-rug':'room',

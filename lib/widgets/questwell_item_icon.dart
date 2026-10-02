@@ -11,7 +11,11 @@ class QuestwellItemIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Semantics(label: '${slug.replaceAll('-', ' ')} icon',
     image: true, child: SizedBox.square(dimension: size,
-      child: CustomPaint(painter: QuestwellItemIconPainter(slug, locked: locked))));
+      child: slug == 'pumpkin-sprite'
+        ? Opacity(opacity: locked ? .35 : 1, child: Image.asset(
+            'assets/images/questwell_icon_pumpkin-sprite_v1.webp',
+            fit: BoxFit.contain, filterQuality: FilterQuality.none))
+        : CustomPaint(painter: QuestwellItemIconPainter(slug, locked: locked))));
 }
 
 class QuestwellItemIconPainter extends CustomPainter {

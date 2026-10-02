@@ -1,0 +1,22 @@
+begin;
+update public.cosmetics set active=true where slug='pumpkin-sprite';
+select set_config('qa.pumpkin_uid',gen_random_uuid()::text,true);
+insert into auth.users(id,email) values(current_setting('qa.pumpkin_uid')::uuid,current_setting('qa.pumpkin_uid')||'@pumpkin.example.invalid');
+update public.users set coin_balance=500 where id=current_setting('qa.pumpkin_uid')::uuid;
+set local role authenticated;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('qa.pumpkin_uid'),'role','authenticated')::text,true);
+do $$ declare item uuid; result record; begin
+ select id into strict item from public.cosmetics where slug='pumpkin-sprite' and price=180 and required_archetype is null;
+ perform public.purchase_cosmetic(item);
+ select * into result from public.purchase_cosmetic(item);
+ if not result.already_owned or result.remaining_coins<>320 then raise exception 'Purchase retry debit'; end if;
+ perform public.equip_cosmetic(item);
+ if not exists(select 1 from public.user_cosmetics where user_id=auth.uid() and cosmetic_id=item and equipped) then raise exception 'Equip failed'; end if;
+ if (select count(*) from public.user_cosmetics uc join public.cosmetics c on c.id=uc.cosmetic_id where uc.user_id=auth.uid() and uc.equipped and c.category='familiar')<>1 then raise exception 'Companion slot conflict'; end if;
+ perform public.unequip_cosmetic(item);
+ if not exists(select 1 from public.user_cosmetics where user_id=auth.uid() and cosmetic_id=item and not equipped) then raise exception 'Unequip lost companion'; end if;
+ if (select coin_balance from public.users where id=auth.uid())<>320 then raise exception 'Balance mismatch'; end if;
+end $$;
+reset role;
+rollback;
+select 'PASS: 180-coin purchase, retry safety, companion equip and removal; fixtures rolled back' as result;
