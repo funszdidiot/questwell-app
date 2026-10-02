@@ -1,0 +1,79 @@
+# Questwell private-beta tester guide — draft
+
+Status: prepared for founder review. Feedback destination, invited testers, and
+start date are not yet selected. Do not distribute until Tanya approves the beta.
+Current candidate: 9ec4c58 (development preview, not a launch).
+
+## Invitation text
+
+Questwell turns everyday tasks into quests, with an adventurer and a Hearth that
+grow as you make progress. We are testing whether the experience feels useful,
+clear, and motivating. Your feedback will guide the next UX changes.
+
+Use a small, non-sensitive task. You do not need to share its wording with us.
+There is no right way to explore, and you can stop whenever you want.
+
+## First session: explore before reading the walkthrough
+
+Spend a few minutes trying to start and finish one small task. Follow whichever
+path seems natural. If you get stuck, tell us where and what you expected to do.
+
+Before continuing, note:
+- What did you think Questwell would help you do?
+- What felt clear, and where did you have to guess?
+- What, if anything, made you want to return?
+
+## Then try the existing features
+
+Across a few short sessions:
+- Find a previous completed quest.
+- Try a focus session and leave it early once.
+- Change your adventurer's appearance or a Hearth item you own.
+- Close and reopen Questwell and see whether your progress looks right.
+- Explore boss battles if one is available at your level. Tell us what you think
+  they are for before following any extra instructions.
+- Try Campfire Mode and describe when you would use it, if at all.
+
+No purchases or task grinding are required. If something is locked, report what
+you expected the lock to mean. Do not include private work, client, health, or
+account information in feedback.
+
+## Feedback form template
+
+Opening copy: "Help shape Questwell. A quick observation is enough."
+
+Required:
+1. What were you trying to do? (Short text; task wording is not needed.)
+2. What happened, and how did it compare with what you expected? (Long text.)
+3. Which screen or feature were you using? (Short text; "not sure" is fine.)
+
+Optional:
+4. Steps to reproduce, if it happened more than once.
+5. Device, operating system/browser, and approximate time. Build should be
+   attached automatically if collected inside the app; otherwise ask only if
+   the tester can easily find it.
+6. Screenshot, with personal information hidden.
+7. Contact email if you want a reply.
+
+Suggested report types: Something broke / Hard to understand / Idea / Worked well.
+Do not require a contact email or screenshot to submit feedback.
+
+After a few sessions, ask:
+- When did you choose Questwell, and when did you choose another approach?
+- Which part helped most? Which part got in the way?
+- What one change would make you more likely to use it again?
+
+## Founder triage
+
+Record the observed problem before proposing a solution. Group repeated reports,
+preserve differing preferences, and distinguish reproducible defects from UX
+suggestions. Prioritize lost progress, duplicate rewards, access problems, and
+blocked task completion. Use tester findings to choose UX changes.
+
+## Before inviting testers
+
+- Select and verify one feedback destination, including founder access to reports.
+- Finish outstanding device acceptance and interrupted-purchase checks in
+  BETA_READINESS_CHECKLIST.md.
+- Resolve or explicitly defer remaining visual items with the founder.
+- Confirm the specific beta audience and obtain Tanya's release approval.
