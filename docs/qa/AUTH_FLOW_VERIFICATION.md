@@ -137,3 +137,17 @@ Two negative-path device checks remain: the previous password must be rejected,
 and reopening the consumed reset-email link must show invalid/expired-link
 recovery without permitting another password change. Do not infer these results
 from successful new-password sign-in. No release approval was given.
+
+## Recovery acceptance completed — 2026-10-01, 22:08 America/Chicago
+
+Founder confirmed the final instructed checks worked: old-password sign-in was
+rejected, the consumed reset link showed invalid/expired-link recovery, and
+sign-in with the new password succeeded. These are founder-reported device
+results, not an additional agent-executed credential test. Together with the
+signup/database checks and recovery happy path above, this completes the listed
+signup and password-recovery acceptance checks for the test account.
+
+Earlier pending auth labels are historical and superseded by this checkpoint.
+Next acceptance work is saved progress after closing/reopening, followed by
+interrupted-write/device checks and the remaining beta checklist. Release remains
+on hold pending explicit founder approval.
