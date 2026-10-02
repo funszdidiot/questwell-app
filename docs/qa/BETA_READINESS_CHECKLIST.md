@@ -58,3 +58,9 @@ class outfit, changed the card to Owned / Equip, retained 14 owned items, and ke
 Wanderer selected. Preview now tracks suit toggles instead of hardcoding it as
 unequipped. Backend equipment behavior and the founder account were not changed.
 
+
+## Most recent defeated boss — 2026-10-02
+
+During the signed-in acceptance check, Tanya reported that the page showed the first defeated boss instead of the most recent. Fixed in `80ad8b58454e6a6c75022b471eaba6eb88fd86eb` and `cb79c693e2798d9367d21a6c175cecc548d29492`: load existing completion timestamps, sort defeated battles newest-completed first, and let automatic defaults refresh without overriding explicit history selection or the battle being attacked. Active battles retain their existing priority. No database writes or reward changes.
+
+Read-only database query confirmed completed_at is populated. Regression tests cover completion order differing from creation order, reopening, list refresh, explicit selection, absent dates and active-battle priority. Flutter Check 37019103625 and Preview 37019103304 passed. Founder phone recheck remains pending; XP/coin persistence is not marked verified from the ordering report. No merge or launch.
