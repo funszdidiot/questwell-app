@@ -2,7 +2,7 @@
 
 Status: prepared for founder review. Feedback destination: Explore -> Send feedback inside Questwell. Invited testers
 and start date are not yet selected. Do not distribute until Tanya approves the beta.
-Current candidate: cb79c693e2798d9367d21a6c175cecc548d29492 (development preview, not a launch).
+Current candidate: 971762e55b72664aefab3e176d77e7c3c6c92a65 (development preview, not a launch).
 
 ## Invitation text
 
