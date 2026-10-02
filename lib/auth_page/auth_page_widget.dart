@@ -28,6 +28,8 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
   late final _auth = widget.authService ?? QuestwellAuthService();
   bool get _recovering => QuestwellAuthCallback.recovering || GoRouter.of(context).routeInformationProvider.value.uri
       .queryParameters['recovery'] == 'true';
+  bool get _resetting => _reset || GoRouter.of(context).routeInformationProvider.value.uri
+      .queryParameters['reset'] == 'true';
   bool get _invalidRecovery => _recovering &&
       (QuestwellAuthCallback.linkFailed || !_auth.hasSession);
 
@@ -42,7 +44,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
   void _requestNewLink() {
     QuestwellAuthCallback.clear();
     GoRouter.of(context).clearRedirectLocation();
-    context.goNamed(AuthPageWidget.routeName);
+    context.goNamed(AuthPageWidget.routeName, queryParameters: {'reset': 'true'});
     setState(() { _reset = true; _creating = false; _message = null;
       _password.clear(); _form.currentState?.reset(); });
   }
@@ -66,7 +68,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
         QuestwellAuthCallback.clear();
         GoRouter.of(context).clearRedirectLocation();
         context.goNamedAuth(HomePageWidget.routeName, mounted);
-      } else if (_reset) {
+      } else if (_resetting) {
         await _auth.sendReset(_email.text.trim());
         if (mounted) setState(() => _message = 'If an account matches that email, you’ll receive a password reset link.');
       } else {
@@ -115,7 +117,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
   @override
   Widget build(BuildContext context) {
     final recovering = _recovering;
-    final title = recovering ? 'A fresh start' : _reset ? 'Find your way back'
+    final title = recovering ? 'A fresh start' : _resetting ? 'Find your way back'
       : _creating ? 'Your adventure starts here' : 'Welcome back, adventurer';
     return Scaffold(backgroundColor: const Color(0xFF101925), body: Stack(children: [
       Positioned.fill(child: Image.asset('assets/images/questwell/hearth/hearth_environment_v2.webp',
@@ -136,7 +138,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                     fontWeight: FontWeight.w800, color: const Color(0xFF34291F))),
                   const SizedBox(height: 10),
                   Text(recovering ? 'Choose a new password for your Questwell account.'
-                    : _reset ? 'Enter your email and we’ll send a recovery link.'
+                    : _resetting ? 'Enter your email and we’ll send a recovery link.'
                     : _creating ? 'Turn small wins into your next adventure.' : 'Your next small win is waiting.',
                     style: GoogleFonts.roboto(fontSize: 15, height: 1.4, color: const Color(0xFF66543D))),
                   const SizedBox(height: 24),
@@ -148,10 +150,10 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                       decoration: _decoration('Email'),
                       validator: (v) => (v != null && RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(v.trim()))
                         ? null : 'Enter a valid email address.',
-                      onFieldSubmitted: (_) { if (_reset) _submit(); }),
+                      onFieldSubmitted: (_) { if (_resetting) _submit(); }),
                     const SizedBox(height: 18),
                   ],
-                  if ((!_reset || recovering) && !_invalidRecovery) ...[
+                  if ((!_resetting || recovering) && !_invalidRecovery) ...[
                     TextFormField(controller: _password, enabled: !_busy, obscureText: !_visible,
                       autofillHints: [_creating || recovering ? AutofillHints.newPassword : AutofillHints.password],
                       autocorrect: false, enableSuggestions: false, textInputAction: TextInputAction.done,
@@ -164,7 +166,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                       onFieldSubmitted: (_) => _submit()),
                     const SizedBox(height: 12),
                   ],
-                  if (!_creating && !_reset && !recovering)
+                  if (!_creating && !_resetting && !recovering)
                     Align(alignment: Alignment.centerRight, child: TextButton(
                       onPressed: _busy ? null : () => setState(() { _reset = true; _message = null; }),
                       child: const Text('Forgot password?', style: TextStyle(color: Color(0xFF375C57))))),
@@ -181,7 +183,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                       foregroundColor: Colors.white, minimumSize: const Size.fromHeight(52),
                       padding: const EdgeInsets.all(16), shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
                     child: Text(_busy ? 'Please wait…' : _invalidRecovery ? 'Request a new reset link' : recovering ? 'Save new password'
-                      : _reset ? 'Send reset link' : _creating ? 'Create account' : 'Enter the Hearth',
+                      : _resetting ? 'Send reset link' : _creating ? 'Create account' : 'Enter the Hearth',
                       textAlign: TextAlign.center, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700))),
                   const SizedBox(height: 12),
                   TextButton(onPressed: _busy ? null : () {
@@ -191,9 +193,14 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                       setState(() { _message = null; _password.clear(); });
                       return;
                     }
-                    setState(() { if (_reset) { _reset = false; } else { _creating = !_creating; }
+                    if (_resetting) {
+                      context.goNamed(AuthPageWidget.routeName);
+                      setState(() { _reset = false; _message = null; _password.clear(); });
+                      return;
+                    }
+                    setState(() { _creating = !_creating;
                       _message = null; _password.clear(); _form.currentState?.reset(); });
-                  }, child: Text(_reset || _creating || recovering ? 'Back to sign in' : 'New here? Create an account',
+                  }, child: Text(_resetting || _creating || recovering ? 'Back to sign in' : 'New here? Create an account',
                     textAlign: TextAlign.center, style: const TextStyle(color: Color(0xFF375C57)))),
                 ])),
               )),

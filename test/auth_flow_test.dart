@@ -47,6 +47,7 @@ void main() {
       {String initial = '/authPage', double width = 390, double scale = 1}) async {
     await tester.binding.setSurfaceSize(Size(width, 1000));
     final router = GoRouter(initialLocation: initial, routes: [
+      GoRoute(path: '/', builder: (_, __) => AuthPageWidget(authService: auth)),
       GoRoute(path: '/authPage', name: 'AuthPage',
           builder: (_, __) => AuthPageWidget(authService: auth)),
       GoRoute(path: '/homePage', name: 'HomePage',
@@ -141,11 +142,13 @@ void main() {
     QuestwellAuthCallback.capture(Uri.parse(
         'https://example.invalid/?recovery=true#error_code=otp_expired'));
     final auth = FakeAuth()..session = true;
-    await mount(tester, auth, initial: '/authPage?recovery=true', width: 320, scale: 1.6);
+    await mount(tester, auth, initial: '/?recovery=true', width: 320, scale: 1.6);
     expect(find.text('New password'), findsNothing);
     await tap(tester, 'Request a new reset link');
     expect(find.text('Send reset link'), findsOneWidget);
     expect(auth.saves, 0);
+    await tap(tester, 'Back to sign in');
+    expect(find.text('Enter the Hearth'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
