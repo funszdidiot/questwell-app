@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import '../lib/widgets/questwell_equipment_swap.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -37,11 +38,19 @@ void main(){
     await tester.tap(find.text('Try swap'));await tester.pumpAndSettle();
     await tester.tap(find.text('Swap equipment'));await tester.pumpAndSettle();expect(result,isTrue);
   });
-  test('All 31 current shop entries have distinct, nonempty 16-bit icons and equipment routes',()async{
-    expect(items.length,31);
+  test('All 33 shop entries have distinct artwork and equipment routes',()async{
+    expect(items.length,33);
     final fingerprints=<String>{};
     for(final item in items){
       expect(QuestwellEquipmentPolicy.isReady(item.slug,item.category),isTrue,reason:item.slug);
+      if (QuestwellHearthSetting.supports(item.slug)) {
+        final bytes = await rootBundle.load(QuestwellHearthSetting.fromSlug(item.slug).asset);
+        expect(bytes.lengthInBytes, greaterThan(0));
+        expect(fingerprints.add(bytes.buffer.asUint8List().join(',')), isTrue,
+          reason: 'Duplicate setting art: ${item.slug}');
+        expect(QuestwellHearthDecor.choices(item.slug), {'setting': 'Hearth setting'});
+        continue;
+      }
       final recorder=ui.PictureRecorder();
       QuestwellItemIconPainter(item.slug).paint(Canvas(recorder),const Size(32,32));
       final picture=recorder.endRecording();final image=await picture.toImage(32,32);
