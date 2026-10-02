@@ -69,3 +69,27 @@ message). Stopped automated credential entry. Supabase URL configuration has NOT
 been changed; real signup/confirmation and password-recovery delivery remain open.
 Security advisor still reports the previously known leaked-password protection
 warning; this turn made no schema, RLS, SMTP or Auth-policy changes.
+
+## URL configuration resolved — 2026-10-01, after founder sign-in
+
+Founder confirmed dashboard sign-in. Saved Site URL as
+https://funszdidiot.github.io/questwell-app/ and added only these two redirect URLs:
+
+- https://funszdidiot.github.io/questwell-app/
+- https://funszdidiot.github.io/questwell-app/?recovery=true
+
+Dashboard shows the saved values and two allowed URLs. Repeated the two invalid
+recovery-link API probes: both now return HTTP 303 to the intended Questwell URL
+with otp_expired, rather than localhost. No account or password was changed and
+no email was sent by the probes. This supersedes the earlier URL-access blocker.
+
+Email settings inspection: custom SMTP is disabled; Supabase uses default email
+templates. Supabase's current SMTP guide says its default service only delivers
+to project-team addresses. External tester signup/reset delivery therefore remains
+blocked until a transactional email provider and verified sender are configured.
+Do not add testers as project administrators to work around this restriction.
+Source: https://supabase.com/docs/guides/auth/auth-smtp
+
+Next needed input: Questwell sender domain and existing email-provider account,
+or authorization to set up a chosen provider. Keep email confirmation enabled.
+Real signup/confirmation and password-reset email roundtrips remain unverified.
