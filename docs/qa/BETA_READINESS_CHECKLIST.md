@@ -15,7 +15,7 @@ check is not evidence that the feature is broken.
 | --- | --- | --- |
 | Sign-in, sign-out, sign back in | Verified by founder | September 29 confirmations recovered from conversation history. Disposable-account API sign-in also exercised during October 1 deletion test. |
 | Fresh-account signup | Verified | October 1 founder confirmed test signup/email confirmation worked. Read-only database check found one confirmed auth account with sign-in recorded, one profile, and one starter-business-suit row. Automated regression checks passed at 6a07cbb. See AUTH_FLOW_VERIFICATION.md. |
-| Password recovery | Partial | Explicit Questwell callback URL, startup recovery detection and expired-link handling added. Site URL and exact redirects corrected in dashboard; invalid-link API probes now return to Questwell. Expired-link navigation passed live browser review. Resend custom SMTP is now configured. Founder confirmed resetting the test-account password and signing in to the same account on October 1. Old-password rejection and consumed reset-link handling remain to be confirmed on device. See AUTH_FLOW_VERIFICATION.md. |
+| Password recovery | Verified by founder | Explicit Questwell callback URL, startup recovery detection and expired-link handling added. Site URL and exact redirects corrected in dashboard; invalid-link API probes now return to Questwell. Expired-link navigation passed live browser review. Resend custom SMTP is now configured. Founder confirmed resetting the test-account password and signing in to the same account on October 1. At 22:08 founder confirmed old-password rejection, invalid/expired handling of the used reset link, and sign-in with the new password. See AUTH_FLOW_VERIFICATION.md. |
 | Delete account | Verified | October 1 disposable-account integration: own identity enforced, invalid confirmation/extra target rejected, account and linked rows removed, old token and refresh rejected. Flutter confirmation/cancel/busy/error tests pass. No founder account deleted. |
 | Saved progress after reopening | Partial | Progression/equipment database and widget checks exist; September 30 milestone device/session gates were founder-confirmed. Still record one current-build cold-reopen test covering open/completed quests, XP/coins, body/class, equipment and Hearth placements together. |
 | Weak connection and retry | Partial | Added existing test/questwell_network_test.dart to Flutter Check; all three cases passed. Still exercise interrupted quest/reward/purchase writes and confirm reconciliation without duplicate rewards or charges on a device. |
@@ -28,12 +28,11 @@ check is not evidence that the feature is broken.
 
 ## Recommended order
 
-1. Confirm old-password rejection and consumed reset-link handling on the separate test account; signup and recovery happy paths are founder-verified.
-2. Complete a quest, verify one reward, equip/place an item, close and reopen,
+1. Complete a quest, verify one reward, equip/place an item, close and reopen,
    then compare saved state. Use the signed-in app, not a sample review route.
-3. Run/include network tests and finish the interrupted-write/device checks.
-4. Prepare the feedback channel and brief tester instructions.
-5. Present remaining defects and the deferred visual item for founder review;
+2. Run/include network tests and finish the interrupted-write/device checks.
+3. Prepare the feedback channel and brief tester instructions.
+4. Present remaining defects and the deferred visual item for founder review;
    request beta approval only when the concrete beta package is ready.
 
 ## Evidence notes
