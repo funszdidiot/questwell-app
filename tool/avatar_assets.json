@@ -413,6 +413,16 @@
           "sha256": "212874a70253311fb5add0a4ea4208211c6e4855d506a63601d2db1527a21af3"
         }
       ]
+    },
+    "wanderer_male_cuffs_v4": {
+      "visual_approval": "pending_founder_review",
+      "description": "ImageGen sleeve-end candidate fitted locally to male wrists; other artwork remains v3.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_short_v4.webp",
+          "sha256": "b28498f2c2fe39aac617b01683d8c99223e81f049a29b985ca56fdc6eeddaedf"
+        }
+      ]
     }
   },
   "approved_layers": {

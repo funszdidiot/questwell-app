@@ -1,3 +1,4 @@
+import 'preview/wanderer_cuff_review.dart';
 import 'preview/rug_review.dart';
 import 'package:flutter/material.dart';
 import 'preview/mobile_review.dart';
@@ -24,7 +25,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'rug') {
+  if (Uri.base.queryParameters['review'] == 'wanderer-cuffs') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(QuestwellPreviewNavigationHost(child: const WandererCuffReviewApp()));
+  } else if (Uri.base.queryParameters['review'] == 'rug') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const RugReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'mastery') {

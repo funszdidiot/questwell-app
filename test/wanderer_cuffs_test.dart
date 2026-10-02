@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,9 +9,33 @@ import '../lib/widgets/wanderer_underlayer_clip.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test('male cuff revision preserves visible artwork outside lower sleeves', () async {
+    Future<ByteData> pixels(String version) async {
+      final data = await rootBundle.load('assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_short_$version.webp');
+      final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+      final image = (await codec.getNextFrame()).image;
+      final result = (await image.toByteData(format: ui.ImageByteFormat.rawRgba))!;
+      image.dispose();
+      codec.dispose();
+      return result;
+    }
+    final before = await pixels('v3');
+    final after = await pixels('v4');
+    for (var y = 0; y < 320; y++) {
+      for (var x = 0; x < 240; x++) {
+        if (y >= 148 && y <= 180 &&
+            ((x >= 54 && x <= 89) || (x >= 151 && x <= 185))) continue;
+        final at = (y * 240 + x) * 4;
+        expect(after.getUint8(at + 3), before.getUint8(at + 3), reason: 'Alpha at $x,$y');
+        if (before.getUint8(at + 3) > 0) {
+          expect(after.getUint32(at), before.getUint32(at), reason: 'Artwork at $x,$y');
+        }
+      }
+    }
+  });
   for (final body in ['female', 'male', 'neutral']) {
     test('$body short coat leaves lower legs clear and retains sleeve ends', () async {
-      final data = await rootBundle.load('assets/images/questwell/avatar/classes/wanderer/wanderer_coat_${body}_short_${body == 'female' ? 'v2' : 'v3'}.webp');
+      final data = await rootBundle.load('assets/images/questwell/avatar/classes/wanderer/wanderer_coat_${body}_short_${body == 'female' ? 'v2' : body == 'male' ? 'v4' : 'v3'}.webp');
       final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
       final image = (await codec.getNextFrame()).image;
       codec.dispose();
@@ -39,7 +64,7 @@ void main() {
         expect(find.byType(QuestwellWandererCuffs), findsNothing);
         final images = tester.widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName).toList();
-        expect(images.any((path) => path.contains('wanderer_coat_${body}_short_${body == 'female' ? 'v2' : 'v3'}')), chest != 'starter-business-suit');
+        expect(images.any((path) => path.contains('wanderer_coat_${body}_short_${body == 'female' ? 'v2' : body == 'male' ? 'v4' : 'v3'}')), chest != 'starter-business-suit');
         expect(images.any((path) => path.contains('wanderer_rear_${body}_wrap_v2')), isFalse);
         expect(tester.takeException(), isNull);
       }

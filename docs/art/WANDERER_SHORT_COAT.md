@@ -46,3 +46,13 @@ Precise-object-edit. This male short brown coat is edit target. Change ONLY slee
 
 Neutral prompt:
 Precise-object-edit. Edit only the cuffs and final quarter of forearms on this gender-neutral short coat. Preserve exact rest of coat and placement on1086x1448 canvas. Cuffs currently flare wide like bells with pointed corners. TAPER them smoothly to narrower wrists: left cuff centered x292 y824, right x795 y824, each about65px wide instead of95. Bottom cuff edges nearly straight diagonal lines perpendicular to each forearm, no concave arch. Round off outer corner tips so nothing sticks out past the wrists. Gold trim a single thin muted stitch line, not heavy band. No black sleeve opening, no hands, no body. Same brown painted cloth, short coat silhouette, lapels, stars, pockets,64-bit retro fantasy style. Transparent background.
+
+## Male wrist fit v4 — October 2, 2026
+
+Revisited after the Emerald Wayfarer Rug purchase/placement check. Pending founder visual approval; development candidate only. Female v2 and neutral v3 remain unchanged.
+
+Built-in ImageGen edited the male v3 coat using the frozen male body as a wrist-position reference. Generation requested only the final quarter of each sleeve: snug, tapered ends centered around (71,173) and (166,173) on the 240×320 canvas, about 14 pixels wide, a single fine gold edge, no hollow oval, projecting corner, separate band, hands or body. Other garment details and transparent background were to be preserved.
+
+The initial narrow candidate was not published. Tanya clarified that the cuffs appear to cut into the hands. A second ImageGen edit raised the sleeve ends, softened the steep diagonal into a shallow curve and retained comfortable wrist clearance. The original base's thin shirt-cuff edge can now show above the hands. Final donor: `tool/art_assets/wanderer_cuffs_v4/raised_wrist_source.png`, generated as `exec-aa295ce3-0d3e-481b-bcfe-022dee7546f9.png`. `tool/fit_wanderer_cuffs_v4.cjs` registers this donor to the existing wrist coordinates and composites only rows148–180 of the two lower sleeves, preserving all visible artwork outside those regions. The source is sampled with premultiplied alpha to avoid fringe from invisible RGB. Output is lossless 240×320 RGBA WebP: `wanderer_coat_male_short_v4.webp`. No runtime cuff overlay or underlayer geometry change.
+
+Review route: `?review=wanderer-cuffs`, using the shared avatar renderer with a responsive wrist close-up, satchel toggle and Hearth scene. It uses fixture state only and does not write account equipment. Asset locks and cuff regression tests cover the new candidate, preserved artwork, lower-leg clearance and outfit/satchel layering. Founder acceptance remains pending.

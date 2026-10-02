@@ -101,7 +101,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       'assets/images/questwell/avatar/classes/guardian/guardian_coat_neutral_v2.webp';
 
   static const _wandererMale =
-      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_short_v3.webp';
+      'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_male_short_v4.webp';
   static const _wandererFemale =
       'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_female_short_v2.webp';
   static const _wandererNeutral =
