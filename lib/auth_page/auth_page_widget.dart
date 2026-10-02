@@ -145,7 +145,7 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                   if (!recovering) ...[
                     TextFormField(controller: _email, enabled: !_busy,
                       keyboardType: TextInputType.emailAddress, autofillHints: const [AutofillHints.email],
-                      autocorrect: false, textInputAction: _reset ? TextInputAction.done : TextInputAction.next,
+                      autocorrect: false, textInputAction: _resetting ? TextInputAction.done : TextInputAction.next,
                       style: const TextStyle(color: Color(0xFF34291F), fontSize: 16),
                       decoration: _decoration('Email'),
                       validator: (v) => (v != null && RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(v.trim()))

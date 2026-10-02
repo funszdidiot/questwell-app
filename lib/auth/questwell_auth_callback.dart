@@ -9,7 +9,7 @@ class QuestwellAuthCallback {
   static const appUrl = String.fromEnvironment('QUESTWELL_AUTH_RETURN_URL',
       defaultValue: 'https://funszdidiot.github.io/questwell-app/');
   static String get recoveryUrl => Uri.parse(appUrl)
-      .replace(queryParameters: {'recovery': 'true'}, fragment: '').toString();
+      .replace(queryParameters: {'recovery': 'true'}).toString();
 
   static void capture(Uri uri) {
     Map<String, String> fragment;
