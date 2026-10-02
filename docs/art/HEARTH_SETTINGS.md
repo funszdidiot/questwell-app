@@ -99,3 +99,12 @@ and floor. Converted to WebP quality 90. Animation is code-painted in side margi
 behind furniture, using one repaint-only clock per visible animated room. Motion
 stops under reduced motion, TickerMode off, or inactive app lifecycle.
 Catalog staged inactive until successful CI/deployment. No launch or merge.
+
+Activated all four entries after 8f8b55c5c5f65b7c34c93fb629ebc39e9ac07f3e passed
+Flutter Check 37063929090 and Preview 37063929048. Verified active prices 120/120/300/300.
+SQL fixtures covered each setting purchase/retry, replacement, slot rejection,
+removal and ownership isolation; rolled back. Security advisor zero lints.
+Browser furnished review verified wall-art clearance and side effects; automated
+motion tests verified reduced motion, hidden TickerMode, app pause and resume.
+Screenshot: questwell-four-new-settings.jpg. Physical phone acceptance pending.
+No inventory grants for these four were performed in this rollout.
