@@ -77,29 +77,22 @@ class QuestwellSettingPainter extends CustomPainter {
       canvas.drawRect(Rect.fromCenter(center:p,width:.0055,height:.0055),paint);
     }
     if (astral) {
-      // Inset glass segments keep aurora ribbons off the window's mullions.
-      canvas.save();
-      final glass=Path();
-      for (final y in [.13,.24,.35,.46]) {
-        glass.addRect(Rect.fromLTWH(.953,y,.045,.075));
+      // Soft atmospheric light follows the painted sky, with no hard ribbon
+      // outlines or rectangular pane cutouts.
+      for (var glow=0; glow<3; glow++) {
+        final center=Offset(.982+math.sin(phase+glow*1.8)*.009,
+          .19+glow*.12+math.sin(phase*.999+glow)*.028);
+        canvas.save();
+        canvas.translate(center.dx,center.dy);
+        canvas.scale(.028,.105);
+        paint.shader=RadialGradient(colors:[
+          (glow.isEven ? const Color(0xFFB4CFFF) : const Color(0xFFB49AE8))
+            .withValues(alpha:.12+.06*(1+math.sin(phase+glow))/2),
+          const Color(0x00000000),
+        ]).createShader(const Rect.fromLTRB(-1,-1,1,1));
+        canvas.drawCircle(Offset.zero,1,paint);
+        canvas.restore();
       }
-      canvas.clipPath(glass);
-      for (var ribbon=0; ribbon<3; ribbon++) {
-        final path=Path();
-        for (var step=0; step<=40; step++) {
-          final y=.10+step*.012;
-          final x=.971+math.sin(y*20+phase+ribbon*1.7)*.018;
-          if(step==0) {path.moveTo(x,y);} else {path.lineTo(x,y);}
-        }
-        paint.shader=null;
-        paint.style=PaintingStyle.stroke;
-        paint.strokeWidth=.010;
-        paint.color=(ribbon.isEven ? const Color(0xFFA5E5FF) : const Color(0xFFC49BFF))
-          .withValues(alpha:.30+.15*(1+math.sin(phase+ribbon))/2);
-        canvas.drawPath(path,paint);
-      }
-      canvas.restore();
-      paint.style=PaintingStyle.fill;
       for (final x in [.06,.16,.85]) {
         final p=Offset(x,x==.06 ? .27 : .52);
         paint.shader=RadialGradient(colors:[color.withValues(alpha:.24+.14*math.sin(phase)),
