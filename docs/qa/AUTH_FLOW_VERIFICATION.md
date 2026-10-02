@@ -125,3 +125,15 @@ Fresh signup/confirmation is verified by founder report plus database evidence.
 Password recovery delivery, password change, rejection of the old password,
 acceptance of the new password, and consumed recovery-link handling remain open.
 Use only the separate test account for these checks. Release remains on hold.
+
+## Recovery happy path verified — 2026-10-01, 22:06 America/Chicago
+
+Following the test-account recovery instructions, founder reported: "I reset my
+password and logged in to the same account." Record reset-email/password-change
+and subsequent sign-in as founder-verified. This supersedes their pending status
+in the earlier checkpoint. No credential was shared with or inspected by the agent.
+
+Two negative-path device checks remain: the previous password must be rejected,
+and reopening the consumed reset-email link must show invalid/expired-link
+recovery without permitting another password change. Do not infer these results
+from successful new-password sign-in. No release approval was given.
