@@ -22,3 +22,7 @@ foliage, add midnight autumn forest and crescent moon outside, amber firelight.
 This is a review surface, not a purchase/equip feature. Market availability,
 pricing and persistent selection await the separate rollout decision. No merge
 or launch approval is inferred from art approval.
+
+## Verification — October 2, 2026
+
+Code 703ba3f746c46dd46c7118e412eb0df38e84259d passed Flutter Check 37055011368 and Preview 37055011402. Live browser inspection verified both new assets with furnished female and male Wanderers, three wall paintings, rug, bookshelf, chair/table and trophy; swapped shelf/fern sides also rendered correctly. Widget checks verified asset loading and unchanged avatar/wall-art bounds across three bodies at 320/390 widths. This is browser/automated evidence, not new physical Android/iPhone acceptance. Screenshot: questwell-hearth-settings-preview.jpg. Preview URL: https://funszdidiot.github.io/questwell-app/?review=hearth-settings&rev=703ba3f
