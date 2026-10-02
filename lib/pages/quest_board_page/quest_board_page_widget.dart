@@ -97,11 +97,11 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
       case 1:
         return 'Easy';
       case 2:
-        return 'Low Energy';
+        return 'Annoying';
       case 3:
         return 'Hard to Start';
       case 4:
-        return 'High Impact';
+        return 'Brain Says Absolutely Not';
       default:
         return 'Quest';
     }

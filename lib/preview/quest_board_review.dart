@@ -29,8 +29,8 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
 
   bool visible(int i) => !_done.contains(i) && switch (_filter) {
     'pinned' => _pinned.contains(i),
-    'low' => _quests[i].effort == 'Low Energy',
-    'high' => _quests[i].effort != 'Low Energy',
+    'low' => const ['Easy', 'Annoying', 'Low Energy'].contains(_quests[i].effort),
+    'high' => !const ['Easy', 'Annoying', 'Low Energy'].contains(_quests[i].effort),
     'boss' => false,
     _ => true,
   };

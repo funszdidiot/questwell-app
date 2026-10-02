@@ -94,7 +94,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _feedback = widget.editing
-        ? 'Could not save your changes. The quest may have been completed. Return to the board and try again.'
+        ? 'Could not save changes. Try again, or return to the board to refresh this quest.'
         : 'Could not add this quest. Please try again.');
     } finally {
       if (mounted) setState(() => _saving = false);
