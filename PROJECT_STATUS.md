@@ -4,6 +4,28 @@ _Last verified: 2026-09-30 (America/Chicago)_
 
 This file is the founder-facing dashboard for the Questwell art overhaul.
 
+## Emerald Wayfarer Rug — 2026-10-02
+
+Continued the latest founder request: a new rug to buy for the remaining phone
+purchase-interruption check. Implemented at `59bcab949c0b94e92233d1517ff89b1b4ddc143a`
+on `questwell-dev`. Emerald woven fabric, gold border, compass rose; 20 earned
+coins, all classes. Dedicated floor slot beneath the adventurer preserves furniture;
+returning it to inventory restores the original burgundy rug.
+
+Flutter Check `37011934083` and Preview `37011934049` succeeded. Synthetic database
+checks passed before and after the migration: abort/retry protection, one 20-coin
+charge/event, persistent placement, furniture coexistence, invalid-slot rejection,
+removal and cross-account ownership. No founder coins or inventory changed.
+Catalog activated after green checks. Browser visual review confirmed the rug and
+burgundy restoration; sample Market purchase displayed 650 → 630 coins and ownership.
+
+Review: https://funszdidiot.github.io/questwell-app/?review=rug&rev=59bcab9
+
+Remaining: founder visual acceptance and actual phone purchase-interruption check.
+Prior mobile navigation, New Quest keyboard, expedition exit and observed quest
+interruption/retry checks remain founder-confirmed; see the beta readiness checklist.
+No merge to `flutterflow`, external beta or launch. Male Wanderer cuffs remain deferred.
+
 ## Boss page redesign — 2026-10-01
 
 Founder approved Update Dragon ("Perfect"), then requested further boss page work and authorized the redesign. Code a9b069350871bae91dedb5aeba5fdd992a90c935; model isolation fix dfbb9967ff5a74b1fdf18d4e7ed432c153fb9b34. Shared board now presents one featured animated encounter, direct Hearth arrow, Start a battle action, clear attack progress/completed rows, compact selectable battle queue, collapsed defeated battles, and shared victory rewards panel. Real victory dialog uses server-returned XP/coins. Navigation remains available during loading/empty/error; all attack buttons lock during a save. Existing service operations/reward behavior preserved; data model definitions extracted without behavior changes.

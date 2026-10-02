@@ -23,7 +23,21 @@ No founder coins or inventory were changed.
 The catalog migration stages the item inactive. Activate only after the supporting
 development build and tests pass. Flutter tests cover 320/390 px, all three bodies,
 floor footprint, original-rug restoration and a 320 px placement dialog at 160%
-text scale. Build/preview results and browser review remain pending at this commit.
+text scale. Flutter Check 37011934083 and Preview 37011934049 passed for code 59bcab9.
+Browser review confirmed the new rug and restoration, plus sample Market purchase
+(650 to 630 coins), ownership and floor placement preview. The live catalog is active.
+
+Remote migration history records 20261002131724_emerald_wayfarer_rug; the identical
+CLI-created source file is 20261002130617_emerald_wayfarer_rug.sql. Security advisor
+reported only the pre-existing leaked-password-protection warning.
+
+Activation after green checks:
+
+```sql
+update public.cosmetics set active=true
+where slug='emerald-wayfarer-rug' and price=20
+  and category='room' and unlock_method='shop';
+```
 
 Founder phone acceptance still needs a real interrupted Market purchase. The
 synthetic tests do not establish that a request was interrupted on her phone.
