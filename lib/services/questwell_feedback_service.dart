@@ -1,5 +1,5 @@
-import '/backend/supabase/supabase.dart';
-import '/backend/supabase/questwell_network.dart';
+import '../backend/supabase/supabase.dart';
+import '../backend/supabase/questwell_network.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
 import 'questwell_feedback_draft.dart';
 
