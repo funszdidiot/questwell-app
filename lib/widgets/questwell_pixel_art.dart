@@ -896,6 +896,7 @@ enum QuestwellHearthSetting {
     _ => original,
   };
   static bool supports(String slug) => slug == 'woodland-cottage' || slug == 'midnight-harvest' || slug == 'enchanted-library' || slug == 'midnight-observatory' || slug == 'alchemists-workshop' || slug == 'astral-sanctuary' || slug == 'emberglass-conservatory';
+  bool get compactGallery => this == enchantedLibrary || this == astralSanctuary || this == emberglassConservatory;
   String get asset => 'assets/images/questwell/hearth/$file.webp';
 }
 
@@ -1063,13 +1064,13 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               if (equippedSlugs['wall_art'] == QuestwellWallArt.slug)
                 QuestwellHearthDecor.wallArtPositioned(
                   slug: QuestwellWallArt.slug, side: 'wall_center', scene: Size(sceneWidth, sceneHeight),
-                  library: roomSetting == QuestwellHearthSetting.enchantedLibrary),
+                  library: roomSetting.compactGallery),
               for (final side in ['wall_left', 'wall_right'])
                 if (equippedSlugs['wall_art:$side'] case final String art)
                   if (QuestwellWallArt.isSide(art))
                     QuestwellHearthDecor.wallArtPositioned(
                       slug: art, side: side, scene: Size(sceneWidth, sceneHeight),
-                      library: roomSetting == QuestwellHearthSetting.enchantedLibrary),
+                      library: roomSetting.compactGallery),
               if (equippedSlugs['room:window'] == 'rainy-window')
                 const Positioned.fill(key: ValueKey('hearth-rainy-window-bounds'),
                   child: QuestwellRainyWindow()),

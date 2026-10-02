@@ -62,9 +62,9 @@ void main() {
           final a = tester.getRect(find.byKey(const ValueKey('hearth-avatar-bounds')));
           final w = tester.getRect(find.byKey(const ValueKey('hearth-wall-art-bounds')));
           if (avatar != null) expect(a, avatar);
-          if (wall != null && setting != QuestwellHearthSetting.enchantedLibrary) expect(w, wall);
+          if (wall != null && !setting.compactGallery) expect(w, wall);
           avatar = a;
-          if (setting != QuestwellHearthSetting.enchantedLibrary) wall = w;
+          if (!setting.compactGallery) wall = w;
         }
       }
     }
