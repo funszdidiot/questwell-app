@@ -1,0 +1,1262 @@
+{
+  "canvas": [
+    240,
+    320
+  ],
+  "assets": {
+    "top_female": {
+      "source": "tool/art_assets/scout_wardrobe_v1/top_female.webp",
+      "output": "assets/images/questwell/avatar/scout_top_female_v1.webp",
+      "points": [
+        {
+          "source": [
+            100,
+            82
+          ],
+          "target": [
+            109,
+            79
+          ]
+        },
+        {
+          "source": [
+            140,
+            82
+          ],
+          "target": [
+            133,
+            79
+          ]
+        },
+        {
+          "source": [
+            73,
+            92
+          ],
+          "target": [
+            89,
+            87
+          ]
+        },
+        {
+          "source": [
+            168,
+            92
+          ],
+          "target": [
+            152,
+            87
+          ]
+        },
+        {
+          "source": [
+            51,
+            128
+          ],
+          "target": [
+            79,
+            108
+          ]
+        },
+        {
+          "source": [
+            77,
+            145
+          ],
+          "target": [
+            96,
+            113
+          ]
+        },
+        {
+          "source": [
+            189,
+            128
+          ],
+          "target": [
+            164,
+            108
+          ]
+        },
+        {
+          "source": [
+            163,
+            145
+          ],
+          "target": [
+            145,
+            113
+          ]
+        },
+        {
+          "source": [
+            82,
+            199
+          ],
+          "target": [
+            96,
+            150
+          ]
+        },
+        {
+          "source": [
+            159,
+            199
+          ],
+          "target": [
+            145,
+            150
+          ]
+        },
+        {
+          "source": [
+            120,
+            208
+          ],
+          "target": [
+            120,
+            154
+          ]
+        }
+      ]
+    },
+    "top_male": {
+      "source": "tool/art_assets/scout_wardrobe_v1/top_male.webp",
+      "output": "assets/images/questwell/avatar/scout_top_male_v1.webp",
+      "points": [
+        {
+          "source": [
+            86,
+            56
+          ],
+          "target": [
+            108,
+            78
+          ]
+        },
+        {
+          "source": [
+            151,
+            56
+          ],
+          "target": [
+            134,
+            78
+          ]
+        },
+        {
+          "source": [
+            39,
+            82
+          ],
+          "target": [
+            84,
+            88
+          ]
+        },
+        {
+          "source": [
+            200,
+            82
+          ],
+          "target": [
+            158,
+            88
+          ]
+        },
+        {
+          "source": [
+            3,
+            143
+          ],
+          "target": [
+            69,
+            115
+          ]
+        },
+        {
+          "source": [
+            44,
+            168
+          ],
+          "target": [
+            92,
+            119
+          ]
+        },
+        {
+          "source": [
+            237,
+            143
+          ],
+          "target": [
+            174,
+            115
+          ]
+        },
+        {
+          "source": [
+            193,
+            168
+          ],
+          "target": [
+            150,
+            119
+          ]
+        },
+        {
+          "source": [
+            50,
+            257
+          ],
+          "target": [
+            95,
+            154
+          ]
+        },
+        {
+          "source": [
+            190,
+            260
+          ],
+          "target": [
+            147,
+            154
+          ]
+        },
+        {
+          "source": [
+            121,
+            274
+          ],
+          "target": [
+            121,
+            158
+          ]
+        }
+      ]
+    },
+    "top_neutral": {
+      "source": "tool/art_assets/scout_wardrobe_v1/top_neutral.webp",
+      "output": "assets/images/questwell/avatar/scout_top_neutral_v1.webp",
+      "points": [
+        {
+          "source": [
+            86,
+            72
+          ],
+          "target": [
+            109,
+            78
+          ]
+        },
+        {
+          "source": [
+            153,
+            72
+          ],
+          "target": [
+            134,
+            78
+          ]
+        },
+        {
+          "source": [
+            40,
+            92
+          ],
+          "target": [
+            86,
+            88
+          ]
+        },
+        {
+          "source": [
+            200,
+            92
+          ],
+          "target": [
+            156,
+            88
+          ]
+        },
+        {
+          "source": [
+            3,
+            146
+          ],
+          "target": [
+            72,
+            115
+          ]
+        },
+        {
+          "source": [
+            43,
+            176
+          ],
+          "target": [
+            93,
+            118
+          ]
+        },
+        {
+          "source": [
+            237,
+            146
+          ],
+          "target": [
+            173,
+            115
+          ]
+        },
+        {
+          "source": [
+            193,
+            176
+          ],
+          "target": [
+            148,
+            118
+          ]
+        },
+        {
+          "source": [
+            49,
+            257
+          ],
+          "target": [
+            96,
+            153
+          ]
+        },
+        {
+          "source": [
+            190,
+            260
+          ],
+          "target": [
+            148,
+            153
+          ]
+        },
+        {
+          "source": [
+            121,
+            274
+          ],
+          "target": [
+            122,
+            158
+          ]
+        }
+      ]
+    },
+    "trousers_female": {
+      "source": "tool/art_assets/scout_wardrobe_v1/trousers_female.webp",
+      "output": "assets/images/questwell/avatar/scout_trousers_female_v1.webp",
+      "points": [
+        {
+          "source": [
+            96,
+            23
+          ],
+          "target": [
+            96,
+            147
+          ]
+        },
+        {
+          "source": [
+            144,
+            23
+          ],
+          "target": [
+            141,
+            147
+          ]
+        },
+        {
+          "source": [
+            121,
+            75
+          ],
+          "target": [
+            119,
+            184
+          ]
+        },
+        {
+          "source": [
+            86,
+            62
+          ],
+          "target": [
+            91,
+            174
+          ]
+        },
+        {
+          "source": [
+            160,
+            62
+          ],
+          "target": [
+            146,
+            174
+          ]
+        },
+        {
+          "source": [
+            99,
+            163
+          ],
+          "target": [
+            100,
+            228
+          ]
+        },
+        {
+          "source": [
+            157,
+            163
+          ],
+          "target": [
+            148,
+            228
+          ]
+        },
+        {
+          "source": [
+            92,
+            247
+          ],
+          "target": [
+            96,
+            284
+          ]
+        },
+        {
+          "source": [
+            165,
+            247
+          ],
+          "target": [
+            156,
+            284
+          ]
+        },
+        {
+          "source": [
+            63,
+            301
+          ],
+          "target": [
+            81,
+            310
+          ]
+        },
+        {
+          "source": [
+            105,
+            299
+          ],
+          "target": [
+            109,
+            310
+          ]
+        },
+        {
+          "source": [
+            154,
+            299
+          ],
+          "target": [
+            145,
+            310
+          ]
+        },
+        {
+          "source": [
+            201,
+            301
+          ],
+          "target": [
+            187,
+            310
+          ]
+        }
+      ]
+    },
+    "trousers_male": {
+      "source": "tool/art_assets/scout_wardrobe_v1/trousers_male.webp",
+      "output": "assets/images/questwell/avatar/scout_trousers_male_v1.webp",
+      "points": [
+        {
+          "source": [
+            85,
+            21
+          ],
+          "target": [
+            94,
+            151
+          ]
+        },
+        {
+          "source": [
+            157,
+            21
+          ],
+          "target": [
+            146,
+            151
+          ]
+        },
+        {
+          "source": [
+            120,
+            74
+          ],
+          "target": [
+            120,
+            193
+          ]
+        },
+        {
+          "source": [
+            70,
+            64
+          ],
+          "target": [
+            86,
+            179
+          ]
+        },
+        {
+          "source": [
+            171,
+            64
+          ],
+          "target": [
+            154,
+            179
+          ]
+        },
+        {
+          "source": [
+            88,
+            160
+          ],
+          "target": [
+            99,
+            235
+          ]
+        },
+        {
+          "source": [
+            154,
+            160
+          ],
+          "target": [
+            146,
+            235
+          ]
+        },
+        {
+          "source": [
+            75,
+            254
+          ],
+          "target": [
+            94,
+            285
+          ]
+        },
+        {
+          "source": [
+            168,
+            254
+          ],
+          "target": [
+            153,
+            285
+          ]
+        },
+        {
+          "source": [
+            32,
+            300
+          ],
+          "target": [
+            72,
+            311
+          ]
+        },
+        {
+          "source": [
+            95,
+            302
+          ],
+          "target": [
+            109,
+            311
+          ]
+        },
+        {
+          "source": [
+            151,
+            302
+          ],
+          "target": [
+            144,
+            311
+          ]
+        },
+        {
+          "source": [
+            215,
+            300
+          ],
+          "target": [
+            185,
+            311
+          ]
+        }
+      ]
+    },
+    "trousers_neutral": {
+      "source": "tool/art_assets/scout_wardrobe_v1/trousers_neutral.webp",
+      "output": "assets/images/questwell/avatar/scout_trousers_neutral_v1.webp",
+      "points": [
+        {
+          "source": [
+            89,
+            21
+          ],
+          "target": [
+            96,
+            150
+          ]
+        },
+        {
+          "source": [
+            151,
+            21
+          ],
+          "target": [
+            146,
+            150
+          ]
+        },
+        {
+          "source": [
+            120,
+            72
+          ],
+          "target": [
+            120,
+            190
+          ]
+        },
+        {
+          "source": [
+            74,
+            64
+          ],
+          "target": [
+            87,
+            176
+          ]
+        },
+        {
+          "source": [
+            167,
+            64
+          ],
+          "target": [
+            154,
+            176
+          ]
+        },
+        {
+          "source": [
+            88,
+            162
+          ],
+          "target": [
+            99,
+            232
+          ]
+        },
+        {
+          "source": [
+            157,
+            162
+          ],
+          "target": [
+            148,
+            232
+          ]
+        },
+        {
+          "source": [
+            75,
+            254
+          ],
+          "target": [
+            94,
+            285
+          ]
+        },
+        {
+          "source": [
+            176,
+            254
+          ],
+          "target": [
+            155,
+            285
+          ]
+        },
+        {
+          "source": [
+            31,
+            301
+          ],
+          "target": [
+            73,
+            311
+          ]
+        },
+        {
+          "source": [
+            91,
+            302
+          ],
+          "target": [
+            109,
+            311
+          ]
+        },
+        {
+          "source": [
+            160,
+            302
+          ],
+          "target": [
+            145,
+            311
+          ]
+        },
+        {
+          "source": [
+            221,
+            301
+          ],
+          "target": [
+            185,
+            311
+          ]
+        }
+      ]
+    },
+    "robe_female": {
+      "source": "tool/art_assets/scout_wardrobe_v1/robe_female.webp",
+      "output": "assets/images/questwell/avatar/scout_robe_female_v1.webp",
+      "points": [
+        {
+          "source": [
+            107,
+            20
+          ],
+          "target": [
+            109,
+            76
+          ]
+        },
+        {
+          "source": [
+            138,
+            20
+          ],
+          "target": [
+            133,
+            76
+          ]
+        },
+        {
+          "source": [
+            78,
+            37
+          ],
+          "target": [
+            86,
+            89
+          ]
+        },
+        {
+          "source": [
+            170,
+            37
+          ],
+          "target": [
+            154,
+            89
+          ]
+        },
+        {
+          "source": [
+            65,
+            91
+          ],
+          "target": [
+            79,
+            134
+          ]
+        },
+        {
+          "source": [
+            178,
+            91
+          ],
+          "target": [
+            161,
+            134
+          ]
+        },
+        {
+          "source": [
+            43,
+            143
+          ],
+          "target": [
+            66,
+            171
+          ]
+        },
+        {
+          "source": [
+            64,
+            150
+          ],
+          "target": [
+            86,
+            177
+          ]
+        },
+        {
+          "source": [
+            183,
+            150
+          ],
+          "target": [
+            153,
+            177
+          ]
+        },
+        {
+          "source": [
+            203,
+            143
+          ],
+          "target": [
+            175,
+            171
+          ]
+        },
+        {
+          "source": [
+            96,
+            111
+          ],
+          "target": [
+            96,
+            149
+          ]
+        },
+        {
+          "source": [
+            149,
+            111
+          ],
+          "target": [
+            147,
+            149
+          ]
+        },
+        {
+          "source": [
+            76,
+            305
+          ],
+          "target": [
+            83,
+            277
+          ]
+        },
+        {
+          "source": [
+            175,
+            305
+          ],
+          "target": [
+            164,
+            277
+          ]
+        },
+        {
+          "source": [
+            36,
+            258
+          ],
+          "target": [
+            56,
+            260
+          ]
+        },
+        {
+          "source": [
+            209,
+            258
+          ],
+          "target": [
+            185,
+            260
+          ]
+        }
+      ]
+    },
+    "robe_male": {
+      "source": "tool/art_assets/scout_wardrobe_v1/robe_male.webp",
+      "output": "assets/images/questwell/avatar/scout_robe_male_v1.webp",
+      "points": [
+        {
+          "source": [
+            104,
+            12
+          ],
+          "target": [
+            108,
+            76
+          ]
+        },
+        {
+          "source": [
+            136,
+            12
+          ],
+          "target": [
+            135,
+            76
+          ]
+        },
+        {
+          "source": [
+            68,
+            33
+          ],
+          "target": [
+            80,
+            89
+          ]
+        },
+        {
+          "source": [
+            172,
+            33
+          ],
+          "target": [
+            161,
+            89
+          ]
+        },
+        {
+          "source": [
+            55,
+            96
+          ],
+          "target": [
+            75,
+            135
+          ]
+        },
+        {
+          "source": [
+            183,
+            96
+          ],
+          "target": [
+            166,
+            135
+          ]
+        },
+        {
+          "source": [
+            34,
+            152
+          ],
+          "target": [
+            63,
+            175
+          ]
+        },
+        {
+          "source": [
+            57,
+            160
+          ],
+          "target": [
+            83,
+            180
+          ]
+        },
+        {
+          "source": [
+            183,
+            160
+          ],
+          "target": [
+            156,
+            180
+          ]
+        },
+        {
+          "source": [
+            206,
+            152
+          ],
+          "target": [
+            179,
+            175
+          ]
+        },
+        {
+          "source": [
+            92,
+            119
+          ],
+          "target": [
+            92,
+            154
+          ]
+        },
+        {
+          "source": [
+            147,
+            119
+          ],
+          "target": [
+            151,
+            154
+          ]
+        },
+        {
+          "source": [
+            67,
+            310
+          ],
+          "target": [
+            80,
+            278
+          ]
+        },
+        {
+          "source": [
+            173,
+            310
+          ],
+          "target": [
+            166,
+            278
+          ]
+        },
+        {
+          "source": [
+            21,
+            256
+          ],
+          "target": [
+            52,
+            261
+          ]
+        },
+        {
+          "source": [
+            218,
+            256
+          ],
+          "target": [
+            192,
+            261
+          ]
+        }
+      ]
+    },
+    "robe_neutral": {
+      "source": "tool/art_assets/scout_wardrobe_v1/robe_neutral.webp",
+      "output": "assets/images/questwell/avatar/scout_robe_neutral_v1.webp",
+      "points": [
+        {
+          "source": [
+            104,
+            15
+          ],
+          "target": [
+            109,
+            76
+          ]
+        },
+        {
+          "source": [
+            136,
+            15
+          ],
+          "target": [
+            134,
+            76
+          ]
+        },
+        {
+          "source": [
+            71,
+            32
+          ],
+          "target": [
+            83,
+            89
+          ]
+        },
+        {
+          "source": [
+            171,
+            32
+          ],
+          "target": [
+            159,
+            89
+          ]
+        },
+        {
+          "source": [
+            61,
+            92
+          ],
+          "target": [
+            78,
+            135
+          ]
+        },
+        {
+          "source": [
+            182,
+            92
+          ],
+          "target": [
+            164,
+            135
+          ]
+        },
+        {
+          "source": [
+            36,
+            143
+          ],
+          "target": [
+            65,
+            174
+          ]
+        },
+        {
+          "source": [
+            59,
+            151
+          ],
+          "target": [
+            85,
+            180
+          ]
+        },
+        {
+          "source": [
+            181,
+            151
+          ],
+          "target": [
+            157,
+            180
+          ]
+        },
+        {
+          "source": [
+            203,
+            143
+          ],
+          "target": [
+            178,
+            174
+          ]
+        },
+        {
+          "source": [
+            93,
+            111
+          ],
+          "target": [
+            94,
+            153
+          ]
+        },
+        {
+          "source": [
+            147,
+            111
+          ],
+          "target": [
+            150,
+            153
+          ]
+        },
+        {
+          "source": [
+            67,
+            307
+          ],
+          "target": [
+            81,
+            279
+          ]
+        },
+        {
+          "source": [
+            173,
+            307
+          ],
+          "target": [
+            166,
+            279
+          ]
+        },
+        {
+          "source": [
+            26,
+            253
+          ],
+          "target": [
+            55,
+            262
+          ]
+        },
+        {
+          "source": [
+            212,
+            253
+          ],
+          "target": [
+            190,
+            262
+          ]
+        }
+      ]
+    }
+  }
+}
