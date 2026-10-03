@@ -19,3 +19,16 @@ Founder authorized this after the Midnight Harvest season build. The baked-in bu
 Automated gates: existing asset SHA verification; new clean-base canvas/identity/clothing checks; existing class portrait/card, Harvest, boot, cloak, grimoire and equipment tests. New stack expectations retain rear-first/front-last assertions and body-specific clip checks.
 
 Development update `00762646eea8f2139e63ae1d2c46837dd00468bf`: Flutter Check `37086976439` and Preview `37086976352` passed. Live browser review verified all three clean bases at card and portrait sizes, Harvest coat with accessories, switching to the explicit business suit, and restoring class clothing. Implementation delivery does not imply founder visual acceptance or production-launch approval. Development branch only; no merge to flutterflow.
+
+
+## Founder approval and wardrobe fit pass — 2026-10-02 (America/Chicago)
+
+Tanya approved the three clean bases (“I like it”), then authorized a full wardrobe fit pass. Approval covers the bases; it does not authorize a production merge or launch.
+
+Reviewed all nine outfit designs on female, male and neutral bodies: Scholar, Scout, Alchemist, Guardian, Wanderer, Midnight Harvest Coat, Business Suit, Moss Green Cloak and Hearthguard Mantle. Browser inspection covered portrait/card scale, neckline, wrists, waist and hem. No new garment overlap was found; approved anatomy and garment artwork remained unchanged.
+
+Full accessory views checked the wizard hat, glasses, scarf, brooch, Pathfinder boots, both satchels, book and lantern. Both closed cloaks correctly suppressed held items. New regression coverage exercises five classes × three bodies × four chest items × two hand/bag combinations (120 equipped scenarios), restoring the exact default class/body asset stack after each removal and checking that rendering does not mutate the equipment map. These are renderer checks, not new signed-in server persistence tests.
+
+The comparison page now accepts validated archetype/outfit/gear/held/bag query choices. Fixed phone overflow in its dropdowns and comparison labels; tests cover 320px and 390px viewport widths. Initial run found those two review-layout failures; final correction f9231acdd2ea91a5795414a7f53fa9ff1ed232f7 passed all 288 tests (Flutter Check 37088649997), and Preview 37088649877 deployed successfully. Actual iPhone hardware was not exercised in this pass.
+
+Final review screenshot: questwell-wardrobe-fit-checked.jpg. Development branch only; no database, inventory, reward or catalog changes.

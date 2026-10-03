@@ -1,8 +1,13 @@
 # Questwell Project Status
 
+## Wardrobe fit pass complete — 2026-10-02 (America/Chicago)
+
+Founder approved the clean bases and authorized the wardrobe pass. Reviewed all nine outfit designs across all three bodies and checked full accessories, book/lantern grips, cloak suppression, and outfit restoration. No new garment overlap found. Improved the development review controls and fixed its narrow-phone overflow. Final f9231ac passed Flutter Check 37088649997 (288 tests) and Preview 37088649877. Renderer switching checks cover 120 equipped scenarios; mobile layout checks cover 320/390px. No new signed-in persistence or physical iPhone test. See docs/art/CLEAN_AVATAR_BASES.md. Ready to return to beta-readiness review; no merge or launch.
+
+
 ## Clean avatar foundation — 2026-10-03
 
-Implemented body-specific ivory undershirts and charcoal shorts beneath the existing wardrobe. Original faces, hair and hands are restored from the frozen avatar art; existing garments retain their separate trousers, shoes and cuff contacts. The business suit renders only as its explicit outfit choice. Current class defaults, inventory, equipment and progression are unchanged. Source originals and approved garment checksums remain intact. Development review: `?review=clean-bases`. See `docs/art/CLEAN_AVATAR_BASES.md`; Flutter Check `37086976439` and Preview `37086976352` passed for `0076264`. Live comparison verified all three bases, Harvest coat, business suit and class outfit switching with accessories. Founder visual review remains open.
+Implemented body-specific ivory undershirts and charcoal shorts beneath the existing wardrobe. Original faces, hair and hands are restored from the frozen avatar art; existing garments retain their separate trousers, shoes and cuff contacts. The business suit renders only as its explicit outfit choice. Current class defaults, inventory, equipment and progression are unchanged. Source originals and approved garment checksums remain intact. Development review: `?review=clean-bases`. See `docs/art/CLEAN_AVATAR_BASES.md`; Flutter Check `37086976439` and Preview `37086976352` passed for `0076264`. Live comparison verified all three bases, Harvest coat, business suit and class outfit switching with accessories. Founder approved the three bases (“I like it”).
 
 ## Midnight Harvest collection delivered — 2026-10-02
 
