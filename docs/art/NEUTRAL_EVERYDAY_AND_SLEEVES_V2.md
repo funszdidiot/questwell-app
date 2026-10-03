@@ -27,3 +27,11 @@ The development-only `?review=neutral-scout` page now shows four equal-scale sta
 Local coverage checks found zero uncovered opaque leg/foot pixels with the full everyday set. Regression tests cover all 32 control combinations, unchanged body geometry, exact cloth order, independent footwear, untouched non-sleeve pixels, garment-only top occlusion and 320/390/1200-pixel review layouts. Flutter validation runs in CI because the local workspace has no Flutter SDK.
 
 Visual acceptance is still pending Tanya's review. This is a development fitting update, not a Market/account change, merge to `flutterflow`, class-template approval or launch.
+
+## Verified delivery
+
+Development commit `9ec2f5e971b053bb638804cee0b0f55eb517aa76` passed Flutter Check `37152844439` and Preview `37152844401`. The live four-stage review was inspected with enlarged sleeve/wrist views and with boots removed and restored independently. The robe renders over plain everyday pieces, not Woodland. No application error was observed; the browser reported CPU rendering fallback and unrelated extension metadata errors. Physical-phone testing and founder visual acceptance remain outstanding.
+
+Verified review: https://funszdidiot.github.io/questwell-app/?review=neutral-scout&rev=9ec2f5e
+
+Screenshot: `docs/qa/questwell-neutral-everyday-sleeves-v2.jpg`.
