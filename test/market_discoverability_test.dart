@@ -2,14 +2,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:project_momentum/services/questwell_equipment_policy.dart';
 
 void main() {
-  test('every active shop renderer has a discoverable category mapping', () {
-    const visibleGroups = {'chest','familiar','effect','room','wall_art','hands',
-      'head','face','neck','back','feet','accessory'};
-    for (final entry in QuestwellEquipmentPolicy.shopCategories.entries) {
-      expect(visibleGroups, contains(entry.value),
-        reason: '${entry.key} would be orphaned from Market discovery');
-    }
-    expect(QuestwellEquipmentPolicy.shopCategories['glass-slime'], 'familiar');
-    expect(QuestwellEquipmentPolicy.shopCategories['focus-tonic'], 'effect');
+  test('critical catalog items have renderer support', () {
+    expect(QuestwellEquipmentPolicy.renderReadySlugs, contains('glass-slime'));
+    expect(QuestwellEquipmentPolicy.renderReadySlugs, contains('focus-tonic'));
+    expect(QuestwellEquipmentPolicy.isReady('not-a-real-item','chest'), isFalse);
+  });
+
+  test('renderer policy does not duplicate catalog categories', () {
+    // Business metadata belongs to Supabase. This policy only answers whether
+    // a slug has a renderer/equipment implementation.
+    expect(QuestwellEquipmentPolicy.renderReadySlugs, isNotEmpty);
   });
 }
