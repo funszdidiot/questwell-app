@@ -7,3 +7,9 @@ Nine oak leaves rise in orbit, alternating behind and in front of the lantern; w
 Left/right placement uses the shared Hearth renderer, floor shadow and avatar foreground order. Existing purchase/retry/placement/removal APIs and ownership remain unchanged. QA uses rolled-back synthetic users. Catalog staged inactive pending checks; free founder grant stays unequipped. Development only; no merge or launch.
 
 Mobile-scale refinement: leaf silhouettes enlarged to roughly 11–14 px at normal room size, outlined in warm gold, with a 1.55× wider effect canvas to orbit beyond the copper frame. The sprite keeps its original scale; contact shadow width compensates for the wider canvas.
+
+## Release verification
+
+Final release `fcc41b76aeb7b98917e835aafa6d257e7d490c6f`: Flutter Check `37083941211` and Preview `37083941216` succeeded. New animation tests verify changing leaf/light painting, reduced-motion and TickerMode pause, background/resume, and ticker disposal on removal. Shared Market suite covers all 43 items on three bodies. SQL purchase/retry/placement/removal checks passed in rolled-back fixtures; security advisors returned zero findings.
+
+Live `?review=autumn-lantern` review verified larger moving leaves around both placements, floor contact, room/character clearance, and still-mode presentation. Catalog active at 240 earned coins; founder copy verified owned, free and unequipped, balance unchanged at 847. Screenshot: `questwell-autumn-ember-lantern.jpg`. The planned Midnight Harvest collection is delivered; clean avatar bases are the next queued workstream. Founder in-app visual feedback remains welcome; no merge or public launch.
