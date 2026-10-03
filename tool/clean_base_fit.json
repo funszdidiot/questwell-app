@@ -1,0 +1,717 @@
+{
+  "canvas": [
+    240,
+    320
+  ],
+  "method": "Independent clean undershirt/shorts anatomy, offline thin-plate registration to frozen avatar anchors. Faces and hair are restored from immutable originals by runtime layers.",
+  "bodies": {
+    "female": {
+      "source": "tool/art_assets/clean_bases_v1/female.webp",
+      "output": "assets/images/questwell/avatar/base/clean_female_v1.webp",
+      "points": [
+        {
+          "source": [
+            109,
+            75
+          ],
+          "target": [
+            110,
+            72
+          ]
+        },
+        {
+          "source": [
+            130,
+            75
+          ],
+          "target": [
+            130,
+            72
+          ]
+        },
+        {
+          "source": [
+            91,
+            88
+          ],
+          "target": [
+            87,
+            88
+          ]
+        },
+        {
+          "source": [
+            147,
+            88
+          ],
+          "target": [
+            152,
+            88
+          ]
+        },
+        {
+          "source": [
+            96,
+            117
+          ],
+          "target": [
+            96,
+            117
+          ]
+        },
+        {
+          "source": [
+            145,
+            117
+          ],
+          "target": [
+            145,
+            117
+          ]
+        },
+        {
+          "source": [
+            82,
+            133
+          ],
+          "target": [
+            79,
+            134
+          ]
+        },
+        {
+          "source": [
+            154,
+            133
+          ],
+          "target": [
+            160,
+            134
+          ]
+        },
+        {
+          "source": [
+            73,
+            169
+          ],
+          "target": [
+            75,
+            168
+          ]
+        },
+        {
+          "source": [
+            163,
+            169
+          ],
+          "target": [
+            162,
+            168
+          ]
+        },
+        {
+          "source": [
+            75,
+            182
+          ],
+          "target": [
+            75,
+            181
+          ]
+        },
+        {
+          "source": [
+            164,
+            182
+          ],
+          "target": [
+            163,
+            181
+          ]
+        },
+        {
+          "source": [
+            99,
+            146
+          ],
+          "target": [
+            101,
+            146
+          ]
+        },
+        {
+          "source": [
+            145,
+            146
+          ],
+          "target": [
+            140,
+            146
+          ]
+        },
+        {
+          "source": [
+            121,
+            172
+          ],
+          "target": [
+            120,
+            173
+          ]
+        },
+        {
+          "source": [
+            98,
+            222
+          ],
+          "target": [
+            100,
+            228
+          ]
+        },
+        {
+          "source": [
+            144,
+            222
+          ],
+          "target": [
+            145,
+            228
+          ]
+        },
+        {
+          "source": [
+            103,
+            281
+          ],
+          "target": [
+            101,
+            282
+          ]
+        },
+        {
+          "source": [
+            162,
+            282
+          ],
+          "target": [
+            157,
+            282
+          ]
+        },
+        {
+          "source": [
+            81,
+            303
+          ],
+          "target": [
+            85,
+            306
+          ]
+        },
+        {
+          "source": [
+            111,
+            298
+          ],
+          "target": [
+            111,
+            301
+          ]
+        },
+        {
+          "source": [
+            156,
+            298
+          ],
+          "target": [
+            149,
+            301
+          ]
+        },
+        {
+          "source": [
+            185,
+            304
+          ],
+          "target": [
+            183,
+            306
+          ]
+        }
+      ]
+    },
+    "male": {
+      "source": "tool/art_assets/clean_bases_v1/male.webp",
+      "output": "assets/images/questwell/avatar/base/clean_male_v1.webp",
+      "points": [
+        {
+          "source": [
+            109,
+            74
+          ],
+          "target": [
+            108,
+            71
+          ]
+        },
+        {
+          "source": [
+            132,
+            74
+          ],
+          "target": [
+            133,
+            71
+          ]
+        },
+        {
+          "source": [
+            85,
+            89
+          ],
+          "target": [
+            83,
+            89
+          ]
+        },
+        {
+          "source": [
+            153,
+            89
+          ],
+          "target": [
+            157,
+            89
+          ]
+        },
+        {
+          "source": [
+            94,
+            118
+          ],
+          "target": [
+            96,
+            118
+          ]
+        },
+        {
+          "source": [
+            147,
+            118
+          ],
+          "target": [
+            145,
+            118
+          ]
+        },
+        {
+          "source": [
+            76,
+            136
+          ],
+          "target": [
+            73,
+            137
+          ]
+        },
+        {
+          "source": [
+            165,
+            136
+          ],
+          "target": [
+            166,
+            137
+          ]
+        },
+        {
+          "source": [
+            71,
+            173
+          ],
+          "target": [
+            71,
+            173
+          ]
+        },
+        {
+          "source": [
+            166,
+            173
+          ],
+          "target": [
+            166,
+            173
+          ]
+        },
+        {
+          "source": [
+            73,
+            185
+          ],
+          "target": [
+            73,
+            185
+          ]
+        },
+        {
+          "source": [
+            169,
+            185
+          ],
+          "target": [
+            167,
+            185
+          ]
+        },
+        {
+          "source": [
+            97,
+            155
+          ],
+          "target": [
+            102,
+            151
+          ]
+        },
+        {
+          "source": [
+            146,
+            155
+          ],
+          "target": [
+            140,
+            151
+          ]
+        },
+        {
+          "source": [
+            122,
+            181
+          ],
+          "target": [
+            121,
+            177
+          ]
+        },
+        {
+          "source": [
+            101,
+            227
+          ],
+          "target": [
+            100,
+            230
+          ]
+        },
+        {
+          "source": [
+            146,
+            227
+          ],
+          "target": [
+            145,
+            230
+          ]
+        },
+        {
+          "source": [
+            99,
+            285
+          ],
+          "target": [
+            98,
+            285
+          ]
+        },
+        {
+          "source": [
+            153,
+            285
+          ],
+          "target": [
+            153,
+            285
+          ]
+        },
+        {
+          "source": [
+            77,
+            307
+          ],
+          "target": [
+            78,
+            307
+          ]
+        },
+        {
+          "source": [
+            107,
+            299
+          ],
+          "target": [
+            108,
+            302
+          ]
+        },
+        {
+          "source": [
+            145,
+            299
+          ],
+          "target": [
+            146,
+            302
+          ]
+        },
+        {
+          "source": [
+            175,
+            307
+          ],
+          "target": [
+            181,
+            307
+          ]
+        }
+      ]
+    },
+    "neutral": {
+      "source": "tool/art_assets/clean_bases_v1/neutral.webp",
+      "output": "assets/images/questwell/avatar/base/clean_neutral_v1.webp",
+      "points": [
+        {
+          "source": [
+            109,
+            75
+          ],
+          "target": [
+            109,
+            72
+          ]
+        },
+        {
+          "source": [
+            132,
+            75
+          ],
+          "target": [
+            133,
+            72
+          ]
+        },
+        {
+          "source": [
+            88,
+            89
+          ],
+          "target": [
+            85,
+            89
+          ]
+        },
+        {
+          "source": [
+            151,
+            89
+          ],
+          "target": [
+            157,
+            89
+          ]
+        },
+        {
+          "source": [
+            96,
+            120
+          ],
+          "target": [
+            96,
+            119
+          ]
+        },
+        {
+          "source": [
+            145,
+            120
+          ],
+          "target": [
+            144,
+            119
+          ]
+        },
+        {
+          "source": [
+            78,
+            135
+          ],
+          "target": [
+            75,
+            136
+          ]
+        },
+        {
+          "source": [
+            160,
+            135
+          ],
+          "target": [
+            165,
+            136
+          ]
+        },
+        {
+          "source": [
+            71,
+            172
+          ],
+          "target": [
+            72,
+            172
+          ]
+        },
+        {
+          "source": [
+            166,
+            172
+          ],
+          "target": [
+            166,
+            172
+          ]
+        },
+        {
+          "source": [
+            74,
+            184
+          ],
+          "target": [
+            76,
+            184
+          ]
+        },
+        {
+          "source": [
+            167,
+            184
+          ],
+          "target": [
+            166,
+            184
+          ]
+        },
+        {
+          "source": [
+            98,
+            151
+          ],
+          "target": [
+            102,
+            150
+          ]
+        },
+        {
+          "source": [
+            145,
+            151
+          ],
+          "target": [
+            142,
+            150
+          ]
+        },
+        {
+          "source": [
+            122,
+            179
+          ],
+          "target": [
+            121,
+            176
+          ]
+        },
+        {
+          "source": [
+            100,
+            222
+          ],
+          "target": [
+            102,
+            228
+          ]
+        },
+        {
+          "source": [
+            146,
+            222
+          ],
+          "target": [
+            146,
+            228
+          ]
+        },
+        {
+          "source": [
+            101,
+            283
+          ],
+          "target": [
+            99,
+            283
+          ]
+        },
+        {
+          "source": [
+            154,
+            283
+          ],
+          "target": [
+            155,
+            283
+          ]
+        },
+        {
+          "source": [
+            80,
+            304
+          ],
+          "target": [
+            81,
+            306
+          ]
+        },
+        {
+          "source": [
+            110,
+            298
+          ],
+          "target": [
+            109,
+            302
+          ]
+        },
+        {
+          "source": [
+            150,
+            298
+          ],
+          "target": [
+            148,
+            302
+          ]
+        },
+        {
+          "source": [
+            179,
+            304
+          ],
+          "target": [
+            182,
+            306
+          ]
+        }
+      ]
+    }
+  }
+}

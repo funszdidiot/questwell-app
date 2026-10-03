@@ -149,11 +149,14 @@ void main() {
           ).map((image) => (image.image as AssetImage).assetName).toList();
           expect(images, [
             'assets/images/questwell/avatar/classes/alchemist/alchemist_rear_${body}_wrap_v1.webp',
+            'assets/images/questwell/avatar/base/clean_${body}_v1.webp',
+            'assets/images/questwell/avatar/base/base_$body.webp',
             'assets/images/questwell/avatar/base/base_$body.webp',
             'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v4.webp',
           ]);
           final clip = tester.widget<ClipPath>(
-            find.descendant(of: layer, matching: find.byType(ClipPath)),
+            find.descendant(of: layer, matching: find.byWidgetPredicate(
+              (widget) => widget is ClipPath && widget.clipper is AlchemistUnderlayerClipper)),
           ).clipper;
           expect(clip, isA<AlchemistUnderlayerClipper>());
           expect((clip! as AlchemistUnderlayerClipper).bodyType, body);

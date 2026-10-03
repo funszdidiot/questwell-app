@@ -197,11 +197,14 @@ void main() {
           ).map((image) => (image.image as AssetImage).assetName).toList();
           expect(images, [
             'assets/images/questwell/avatar/classes/guardian/guardian_rear_${body}_wrap_v1.webp',
+            'assets/images/questwell/avatar/base/clean_${body}_v1.webp',
+            'assets/images/questwell/avatar/base/base_$body.webp',
             'assets/images/questwell/avatar/base/base_$body.webp',
             'assets/images/questwell/avatar/classes/guardian/guardian_coat_${body}_${body == 'female' ? 'v3' : 'v2'}.webp',
           ]);
           final clip = tester.widget<ClipPath>(
-            find.descendant(of: layer, matching: find.byType(ClipPath)),
+            find.descendant(of: layer, matching: find.byWidgetPredicate(
+              (widget) => widget is ClipPath && widget.clipper is GuardianUnderlayerClipper)),
           ).clipper;
           expect(clip, isA<GuardianUnderlayerClipper>());
           expect((clip! as GuardianUnderlayerClipper).bodyType, body);

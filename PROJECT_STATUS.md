@@ -1,10 +1,14 @@
 # Questwell Project Status
 
+## Clean avatar foundation — 2026-10-03
+
+Implemented body-specific ivory undershirts and charcoal shorts beneath the existing wardrobe. Original faces, hair and hands are restored from the frozen avatar art; existing garments retain their separate trousers, shoes and cuff contacts. The business suit renders only as its explicit outfit choice. Current class defaults, inventory, equipment and progression are unchanged. Source originals and approved garment checksums remain intact. Development review: `?review=clean-bases`. See `docs/art/CLEAN_AVATAR_BASES.md`; CI and live review pending.
+
 ## Midnight Harvest collection delivered — 2026-10-02
 
 Pumpkin Sprite, Midnight Harvest Coat (with corrected open front), Harvest Apothecary Display and animated Autumn Ember Lantern are available in the development app and Market, with free unequipped founder copies. The display is 140 earned coins; lantern is 240 earned coins. Lantern final release `fcc41b7` passed Flutter Check `37083941211` and Preview `37083941216`; live review verified both placements and visible leaf motion, and automated checks cover reduced motion/background pause/disposal. See `docs/art/AUTUMN_EMBER_LANTERN.md` and `docs/art/HARVEST_APOTHECARY_DISPLAY.md` for verification. This records implementation delivery, not blanket founder approval of every final in-app visual.
 
-Next authorized workstream: the clean avatar bases described below, now that seasonal builds are delivered. No avatar-base implementation has started yet. Development-only; no merge to `flutterflow` or public launch.
+Next authorized workstream: the clean avatar bases described below, now that seasonal builds are delivered. The clean-base implementation is now in development review. Development-only; no merge to `flutterflow` or public launch.
 
 ## Queued after seasonal builds — clean avatar base — 2026-10-02
 

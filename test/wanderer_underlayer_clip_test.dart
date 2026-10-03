@@ -196,6 +196,8 @@ void main() {
           ).map((image) => (image.image as AssetImage).assetName).toList();
           expect(images, [
             'assets/images/questwell/avatar/classes/wanderer/wanderer_rear_${body}_wrap_short_v1.webp',
+            'assets/images/questwell/avatar/base/clean_${body}_v1.webp',
+            'assets/images/questwell/avatar/base/base_$body.webp',
             'assets/images/questwell/avatar/base/base_$body.webp',
             'assets/images/questwell/avatar/classes/wanderer/wanderer_coat_${body}_short_${body == 'female' ? 'v2' : body == 'male' ? 'v4' : 'v3'}.webp',
           ]);

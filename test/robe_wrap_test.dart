@@ -46,12 +46,14 @@ void main() {
           child: QuestwellLayeredAdventurerArt(archetype:kind, avatarBodyType:body, equippedSlugs:const {}))));
         final images = tester.widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName).toList();
-        expect(images.length, 3);
+        expect(images.length, 5);
         expect(images[0], rear);
-        expect(images[1], 'assets/images/questwell/avatar/base/base_$body.webp');
-        expect(images[2], contains('/classes/$kind/'));
-        expect(images[2], contains('_${body}_'));
-        expect(images[2], isNot(contains('_rear_')));
+        expect(images[1], 'assets/images/questwell/avatar/base/clean_${body}_v1.webp');
+        expect(images[2], 'assets/images/questwell/avatar/base/base_$body.webp');
+        expect(images[3], 'assets/images/questwell/avatar/base/base_$body.webp');
+        expect(images[4], contains('/classes/$kind/'));
+        expect(images[4], contains('_${body}_'));
+        expect(images[4], isNot(contains('_rear_')));
         expect(tester.takeException(), isNull);
       });
     }

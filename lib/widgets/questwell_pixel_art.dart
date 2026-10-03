@@ -1,3 +1,4 @@
+import 'questwell_clean_base.dart';
 import 'questwell_woven_rug.dart';
 import 'dart:math' as math;
 import 'questwell_mastery_relic.dart';
@@ -227,9 +228,13 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           : image;
     }
 
+    Widget foundation() => equippedSlugs['chest'] == 'starter-business-suit'
+        ? _assetLayer(_baseAsset)
+        : QuestwellCleanBase(body: body, withTrousers: classOverlay != null);
+
     Widget baseImage() => equippedSlugs['feet'] == QuestwellPathfinderBoots.slug
-        ? ClipPath(clipper: PathfinderBaseClipper(body), child: _assetLayer(_baseAsset))
-        : _assetLayer(_baseAsset);
+        ? ClipPath(clipper: PathfinderBaseClipper(body), child: foundation())
+        : foundation();
 
     Widget baseLayer() => QuestwellCloak.supports(equippedSlugs['chest'])
         ? ClipPath(clipper: QuestwellClosedCloakBodyClipper(body), child: baseImage())
@@ -277,18 +282,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               child: baseLayer(),
             )
           else
-            _assetLayer(
-              _baseAsset,
-              fallback: CustomPaint(
-                painter: _EquippedAvatarPainter(
-                  archetype: archetype,
-                  palette: QuestwellPixelPalette.forClass(archetype),
-                  equippedSlugs: equippedSlugs,
-                  showRelic: showRelic,
-                  portrait: false,
-                ),
-              ),
-            ),
+            baseLayer(),
           if (equippedSlugs['feet'] == QuestwellPathfinderBoots.slug)
             QuestwellPathfinderBoots(bodyType: body),
           if (classOverlay != null) classLayer(classOverlay),
