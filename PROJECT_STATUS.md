@@ -4,13 +4,13 @@
 
 Tanya followed the left-wrist correction with: “Widen the cuff on the inside of the right wrist now and lock that in.” Version 7 retains the image-left cuff correction and adds the same inward allowance on the image-right cuff. Both outer wrist edges, body, identity and all other robe artwork remain fixed. The manifest records v7 as the locked female Alchemist fit. See `docs/art/ALCHEMIST_FEMALE_V7.md`.
 
-Development verification is in progress for the combined cuff update. No merge to `flutterflow` or launch.
+Combined cuff release `0c97aed` passed Flutter Check `37136373786` and Preview `37136373796`. Live development review confirmed both cuffs and the approved-fit label. Pixel comparison confirms only the two inner-wrist regions changed from v5; the left correction is retained exactly in v7, rear lining is byte-identical, and the unchanged-body arm coverage check passes. No merge to `flutterflow` or launch.
 
 ## Female Alchemist cuff correction locked — 2026-10-03
 
 After seeing the female Alchemist on the locked body, Tanya requested: “Widen the cuff on the inner left wrist and lock that in.” Version 6 widens the image-left cuff inward toward the torso. Only the generated correction inside the inner-left-wrist region is applied; outer wrist edge, other sleeve, torso, hem, embroidery, rear lining and anatomy stay unchanged. The approved asset manifest freezes this female Alchemist fit. No male/neutral fit or other class is changed.
 
-The left-cuff correction is retained in the v7 release below; it was not separately deployed. See `docs/art/ALCHEMIST_FEMALE_V6.md` for the narrow correction. No merge or launch.
+The left-cuff correction is retained in the v7 release; it was not separately deployed. See `docs/art/ALCHEMIST_FEMALE_V6.md` for the narrow correction. No merge or launch.
 
 ## Female Alchemist on the locked body — 2026-10-03
 
