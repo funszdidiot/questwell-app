@@ -45,7 +45,10 @@ void main(){
         final button=find.widgetWithText(FilledButton,'Female fit only');
         expect(tester.widget<FilledButton>(button).onPressed,isNull);
       }else{
-        expect(tester.widget<FilledButton>(find.widgetWithText(FilledButton,'Equip')).onPressed,isNotNull);
+        final button=find.widgetWithText(FilledButton,'Equip');
+        await tester.dragUntilVisible(button.hitTestable(),find.byType(ListView),const Offset(0,-180),maxIteration:20);
+        await tester.pumpAndSettle();
+        expect(tester.widget<FilledButton>(button).onPressed,isNotNull);
       }
       expect(tester.takeException(),isNull);
     }
