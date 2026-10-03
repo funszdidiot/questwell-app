@@ -12,6 +12,7 @@ class QuestwellFeedbackException implements Exception {
 abstract final class QuestwellFeedbackService {
   static const _bucket = 'beta-feedback';
   static const maxAttachmentBytes = 5 * 1024 * 1024;
+  static const maxAttachments = 5;
   static const allowedAttachmentTypes = {'image/png', 'image/jpeg', 'image/webp'};
 
   static String? get userId => SupaFlow.client.auth.currentUser?.id;
@@ -21,6 +22,7 @@ abstract final class QuestwellFeedbackService {
     required String feedbackId,
     required Uint8List bytes,
     required String mimeType,
+    int index = 0,
   }) async {
     if (userId != ownerId) {
       throw const QuestwellFeedbackException('Please sign in to the same account before uploading.');
@@ -32,21 +34,22 @@ abstract final class QuestwellFeedbackService {
       throw const QuestwellFeedbackException('Use a PNG, JPEG, or WebP screenshot.');
     }
     final extension = mimeType == 'image/png' ? 'png' : mimeType == 'image/webp' ? 'webp' : 'jpg';
-    final path = '$ownerId/$feedbackId.$extension';
+    final path = '$ownerId/$feedbackId-$index.$extension';
     await QuestwellNetwork.write(() => SupaFlow.client.storage.from(_bucket)
       .uploadBinary(path, bytes, fileOptions: FileOptions(contentType: mimeType, upsert: false)));
     return path;
   }
 
-  static Future<void> removeScreenshot(String path) async {
-    await QuestwellNetwork.write(() => SupaFlow.client.storage.from(_bucket).remove([path]));
+  static Future<void> removeScreenshots(List<String> paths) async {
+    if (paths.isEmpty) return;
+    await QuestwellNetwork.write(() => SupaFlow.client.storage.from(_bucket).remove(paths));
   }
 
-  static Future<void> submit(QuestwellFeedbackDraft draft, String ownerId, {String? attachmentPath}) async {
+  static Future<void> submit(QuestwellFeedbackDraft draft, String ownerId, {List<String> attachmentPaths = const []}) async {
     if (userId != ownerId) {
       throw const QuestwellFeedbackException('Please sign in to the same account before sending this draft.');
     }
-    final row = {...draft.toJson(), 'user_id': ownerId, 'attachment_path': attachmentPath}..remove('attempted');
+    final row = {...draft.toJson(), 'user_id': ownerId, 'attachment_path': attachmentPaths.firstOrNull, 'attachment_paths': attachmentPaths}..remove('attempted');
     for (final field in ['goal', 'message', 'expected', 'steps', 'reply_email', 'device']) {
       row[field] = (row[field] as String).trim();
     }
