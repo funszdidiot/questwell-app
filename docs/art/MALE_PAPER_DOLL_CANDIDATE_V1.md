@@ -1,5 +1,7 @@
 # Male paper-doll foundation — approval draft
 
+Superseded for review by the neck-only v2 correction in `MALE_PAPER_DOLL_NECK_V2.md`. V1 remains preserved as the original draft; neither revision is approved yet.
+
 Tanya authorized the male foundation on 2026-10-03 while explicitly holding all male outfits until the neutral everyday outfit, robes and Woodland Scout are finished. This artifact is a body-approval draft only. It does not replace the current male avatar in the app, and it is not an approved clothing template yet.
 
 The candidate is a complete barefoot male avatar in an ivory sleeveless undershirt and charcoal under-shorts. Existing male identity, overall stance and body-type reference are retained. After body approval, this entire foundation becomes immutable; future clothing belongs in separate front/rear layers. The female and neutral approved bodies were not edited.

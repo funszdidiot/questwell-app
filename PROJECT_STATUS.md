@@ -1,3 +1,7 @@
+## Male foundation neck-only correction — 2026-10-03
+
+Tanya flagged the neck join and authorized correcting it alone. Male candidate v2 removes inherited collar fragments and softens the neck transition, with 269 changed pixels confined to the neck region and no visible/alpha changes elsewhere. Face and ivory-garment checks pass; approved female and neutral assets remain unchanged. Full and close-up review renders are ready in `tool/art_assets/male_paper_doll_v2/`. This remains a body-approval draft, not a locked foundation or app-avatar replacement. Male outfits remain on hold until the neutral everyday outfit, robes and Woodland Scout are finished. See `docs/art/MALE_PAPER_DOLL_NECK_V2.md`. No merge or launch.
+
 ## Paper-doll rule confirmed; male foundation draft only — 2026-10-03
 
 Tanya reaffirmed that approved bodies are immutable paper dolls: complete undergarment avatars with separate clothing in front and behind, never altered to fix an outfit. She authorized the male foundation now, but no male outfits until neutral everyday clothes (the exact female design/style fitted to the neutral body), robes and Woodland Scout are finished. A male undergarment candidate is prepared for body approval only, retaining the existing visible male head/hair and the shared 240 × 320 canvas. No runtime avatar, approved female/neutral body, wardrobe, account or Market data changed. See `docs/art/PAPER_DOLL_STANDARD.md` and `docs/art/MALE_PAPER_DOLL_CANDIDATE_V1.md`. Ask Tanya before producing an output that needs clarification. No merge or launch.

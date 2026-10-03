@@ -1,0 +1,22 @@
+{
+  "status": "draft_pending_founder_body_approval",
+  "tool": "built-in image_gen",
+  "prompt": "Use case: precise-object-edit. Input is a magnified crop of a fixed RPG paper-doll avatar, with the mouth/chin at the top and sleeveless undershirt below. Repair ONLY the head-to-neck join.\nThere are stray white old collar fragments just beside the neck under the hair, plus an abrupt mismatched neck contour/shading below the jaw. Remove those white fragments completely. Connect the same jaw to the same neck and shoulders with continuous natural skin edges and a soft coherent warm shadow beneath the chin. Keep the existing undershirt crew-neck opening exactly in place and unchanged, along with all shirt/shoulder artwork.\nPreserve the face, chin silhouette, mouth, ears, hair, shoulder widths, existing neck length, body position, colors and painted game style. No added collar, necklace, scarf, beard, clothing, muscle or accessories. Do not widen the neck or change the head. Do not redraw or sharpen unrelated areas. Maintain this exact 4:3 crop and placement; no recenter, zoom or uncrop. Return the same crop with only the tiny neck repair on a genuinely transparent background. No text.",
+  "edit_scope": "Neck connection only; x100..142, y71..86 on the existing 240x320 male draft. Never import generated face, hair, shirt or body.",
+  "validation": {
+    "changedNeckPixels": 269,
+    "visibleOrAlphaChangesOutsideNeck": 0,
+    "faceChanges": 0,
+    "ivoryGarmentChanges": 0,
+    "approvedFemaleAndNeutralAssets": "verified_unchanged"
+  },
+  "candidate": {
+    "path": "tool/art_assets/male_paper_doll_v2/paper_doll_male_candidate_v2.webp",
+    "sha256": "aa3cc795aad29f40a92a3857e3bcf6031fe246b6ca663331128a87019a50feeb"
+  },
+  "identity": {
+    "path": "tool/art_assets/male_paper_doll_v2/paper_doll_male_identity_candidate_v2.webp",
+    "sha256": "0e285d4b6f850cebaef57aca10312c3e52213ef3fdd88ec72c862c0accfc3f63"
+  },
+  "sourceSha256": "314adffa8cd9bf95fa736f75ff29bd75dc75f9d72d4dff0bd835c4c3f4860121"
+}
