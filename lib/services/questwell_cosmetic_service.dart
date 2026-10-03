@@ -49,7 +49,7 @@ class QuestwellCosmeticService {
           .single(),
       SupaFlow.client
           .from('cosmetics')
-          .select('id,slug,name,category,rarity,description,price,premium,asset_key,required_archetype,unlock_method,milestone_level')
+          .select('id,slug,name,category,rarity,description,price,premium,asset_key,required_archetype,unlock_method,milestone_level,collection_key,edition_type,availability_start,availability_end')
           .eq('active', true)
           .order('price'),
       SupaFlow.client
