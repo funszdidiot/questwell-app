@@ -66,8 +66,8 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
   Timer? _saveTimer;
   bool _sending = false, _sent = false;
   String? _error, _storageNote;
-  Uint8List? _attachmentBytes;
-  String? _attachmentName, _attachmentMime;
+  final List<Uint8List> _attachmentBytes = [];
+  final List<String> _attachmentNames = [], _attachmentMimes = [];
   static const _gold = Color(0xFFE4C586), _muted = Color(0xFFB9C7D7);
 
   void _edit(QuestwellFeedbackDraft value) {
@@ -98,30 +98,46 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
         type: FileType.custom,
         allowedExtensions: const ['png', 'jpg', 'jpeg', 'webp'],
         withData: true,
+        allowMultiple: true,
       );
       if (result == null || result.files.isEmpty) return;
-      final file = result.files.single;
-      final bytes = file.bytes;
-      if (bytes == null) {
-        setState(() => _error = 'Could not read that screenshot. Please choose it again.');
+      final remaining = QuestwellFeedbackService.maxAttachments - _attachmentBytes.length;
+      if (remaining <= 0) {
+        setState(() => _error = 'You can attach up to 5 screenshots.');
         return;
       }
-      if (bytes.length > QuestwellFeedbackService.maxAttachmentBytes) {
-        setState(() => _error = 'Screenshots must be 5 MB or smaller.');
-        return;
-      }
-      final ext = (file.extension ?? '').toLowerCase();
-      final mime = ext == 'png' ? 'image/png' : ext == 'webp' ? 'image/webp'
-          : (ext == 'jpg' || ext == 'jpeg') ? 'image/jpeg' : null;
-      if (mime == null) {
-        setState(() => _error = 'Use a PNG, JPEG, or WebP screenshot.');
-        return;
+      final selected = result.files.take(remaining);
+      final bytesToAdd = <Uint8List>[];
+      final namesToAdd = <String>[];
+      final mimesToAdd = <String>[];
+      for (final file in selected) {
+        final bytes = file.bytes;
+        if (bytes == null) {
+          setState(() => _error = 'Could not read one of those screenshots. Please choose it again.');
+          return;
+        }
+        if (bytes.length > QuestwellFeedbackService.maxAttachmentBytes) {
+          setState(() => _error = '${file.name} is larger than 5 MB.');
+          return;
+        }
+        final ext = (file.extension ?? '').toLowerCase();
+        final mime = ext == 'png' ? 'image/png' : ext == 'webp' ? 'image/webp'
+            : (ext == 'jpg' || ext == 'jpeg') ? 'image/jpeg' : null;
+        if (mime == null) {
+          setState(() => _error = 'Use PNG, JPEG, or WebP screenshots.');
+          return;
+        }
+        bytesToAdd.add(bytes);
+        namesToAdd.add(file.name);
+        mimesToAdd.add(mime);
       }
       setState(() {
-        _attachmentBytes = bytes;
-        _attachmentName = file.name;
-        _attachmentMime = mime;
-        _error = null;
+        _attachmentBytes.addAll(bytesToAdd);
+        _attachmentNames.addAll(namesToAdd);
+        _attachmentMimes.addAll(mimesToAdd);
+        _error = result.files.length > remaining
+            ? 'Added $remaining screenshots. You can attach up to 5 per report.'
+            : null;
       });
     } catch (_) {
       if (mounted) setState(() => _error = 'Could not open your screenshots. Please try again.');
@@ -133,20 +149,23 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
     _saveTimer?.cancel();
     setState(() { _sending = true; _error = null; _draft = _draft.copyWith(attempted: true); });
     await _persist();
-    String? uploadedPath;
+    final uploadedPaths = <String>[];
     try {
-      if (!widget.preview && _attachmentBytes != null) {
+      if (!widget.preview && _attachmentBytes.isNotEmpty) {
         final ownerId = QuestwellFeedbackService.userId;
         if (ownerId == null) {
-          throw const QuestwellFeedbackException('Sign in before attaching a screenshot.');
+          throw const QuestwellFeedbackException('Sign in before attaching screenshots.');
         }
-        uploadedPath = await QuestwellFeedbackService.uploadScreenshot(
-          ownerId: ownerId,
-          feedbackId: _draft.id,
-          bytes: _attachmentBytes!,
-          mimeType: _attachmentMime!,
-        );
-        await QuestwellFeedbackService.submit(_draft, ownerId, attachmentPath: uploadedPath);
+        for (var i = 0; i < _attachmentBytes.length; i++) {
+          uploadedPaths.add(await QuestwellFeedbackService.uploadScreenshot(
+            ownerId: ownerId,
+            feedbackId: _draft.id,
+            bytes: _attachmentBytes[i],
+            mimeType: _attachmentMimes[i],
+            index: i,
+          ));
+        }
+        await QuestwellFeedbackService.submit(_draft, ownerId, attachmentPaths: uploadedPaths);
       } else {
         await widget.onSubmit(_draft);
       }
@@ -155,8 +174,8 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
       }
       if (mounted) setState(() => _sent = true);
     } catch (error) {
-      if (uploadedPath != null) {
-        try { await QuestwellFeedbackService.removeScreenshot(uploadedPath); } catch (_) {}
+      if (uploadedPaths.isNotEmpty) {
+        try { await QuestwellFeedbackService.removeScreenshots(uploadedPaths); } catch (_) {}
       }
       if (mounted) setState(() => _error = error is QuestwellFeedbackException
         ? error.message : 'We could not confirm delivery. Your note is still here. Check your connection and tap Send feedback to retry.');
@@ -253,31 +272,36 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
             ]),
           const SizedBox(height: 4),
           OutlinedButton.icon(
-            onPressed: _sending || widget.preview ? null : _pickScreenshot,
+            onPressed: _sending || widget.preview ||
+                    _attachmentBytes.length >= QuestwellFeedbackService.maxAttachments
+                ? null : _pickScreenshot,
             icon: const Icon(Icons.attach_file),
-            label: Text(_attachmentName == null ? 'Attach screenshot' : 'Replace screenshot'),
+            label: Text(_attachmentBytes.isEmpty
+                ? 'Attach screenshots'
+                : 'Add screenshots (${_attachmentBytes.length}/5)'),
           ),
-          if (_attachmentName != null) Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: Row(children: [
-              const Icon(Icons.image_outlined, size: 18, color: _gold),
-              const SizedBox(width: 8),
-              Expanded(child: Text(_attachmentName!,
-                maxLines: 1, overflow: TextOverflow.ellipsis,
-                style: QuestwellTypography.body(fontSize: 12, color: _muted))),
-              IconButton(
-                tooltip: 'Remove screenshot',
-                onPressed: _sending ? null : () => setState(() {
-                  _attachmentBytes = null;
-                  _attachmentName = null;
-                  _attachmentMime = null;
-                }),
-                icon: const Icon(Icons.close, size: 18, color: _muted),
-              ),
-            ]),
-          ),
+          for (var i = 0; i < _attachmentNames.length; i++)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Row(children: [
+                const Icon(Icons.image_outlined, size: 18, color: _gold),
+                const SizedBox(width: 8),
+                Expanded(child: Text(_attachmentNames[i],
+                  maxLines: 1, overflow: TextOverflow.ellipsis,
+                  style: QuestwellTypography.body(fontSize: 12, color: _muted))),
+                IconButton(
+                  tooltip: 'Remove screenshot',
+                  onPressed: _sending ? null : () => setState(() {
+                    _attachmentBytes.removeAt(i);
+                    _attachmentNames.removeAt(i);
+                    _attachmentMimes.removeAt(i);
+                  }),
+                  icon: const Icon(Icons.close, size: 18, color: _muted),
+                ),
+              ]),
+            ),
           Padding(padding: const EdgeInsets.only(top: 6),
-            child: Text('Optional · PNG, JPEG, or WebP · 5 MB max · stored privately',
+            child: Text('Optional · up to 5 screenshots · PNG, JPEG, or WebP · 5 MB each · stored privately',
               style: QuestwellTypography.body(fontSize: 11, color: _muted))),
           const SizedBox(height: 12),
           Text('Included: ${_draft.screen} · ${_draft.platform} · build ${_draft.build.length > 8 ? _draft.build.substring(0, 8) : _draft.build}',
