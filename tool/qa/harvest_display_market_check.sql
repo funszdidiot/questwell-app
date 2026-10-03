@@ -1,0 +1,26 @@
+begin;
+update public.cosmetics set active=true where slug='harvest-apothecary-display';
+select set_config('qa.harvest_display_uid',gen_random_uuid()::text,true);
+insert into auth.users(id,email) values(current_setting('qa.harvest_display_uid')::uuid,current_setting('qa.harvest_display_uid')||'@harvest_display.example.invalid');
+update public.users set coin_balance=500 where id=current_setting('qa.harvest_display_uid')::uuid;
+set local role authenticated;
+select set_config('request.jwt.claims',json_build_object('sub',current_setting('qa.harvest_display_uid'),'role','authenticated')::text,true);
+do $$ declare item uuid; result record; denied bool:=false; begin
+ select id into strict item from public.cosmetics where slug='harvest-apothecary-display' and price=140;
+ perform public.purchase_cosmetic(item);
+ select * into result from public.purchase_cosmetic(item);
+ if not result.already_owned or result.remaining_coins<>360 then raise exception 'Purchase retry debit'; end if;
+ perform public.place_hearth_cosmetic(item,'left',null);
+ if not exists(select 1 from public.user_cosmetics where user_id=auth.uid() and cosmetic_id=item and equipped and room_slot='left') then raise exception 'Left placement failed'; end if;
+ perform public.place_hearth_cosmetic(item,'right',null);
+ if not exists(select 1 from public.user_cosmetics where user_id=auth.uid() and cosmetic_id=item and equipped and room_slot='right') then raise exception 'Right placement failed'; end if;
+ begin perform public.place_hearth_cosmetic(item,'setting',null);
+ exception when others then if sqlerrm<>'item does not fit this room spot' then raise; end if; denied:=true; end;
+ if not denied then raise exception 'Setting slot accepted'; end if;
+ perform public.unequip_cosmetic(item);
+ if exists(select 1 from public.user_cosmetics where user_id=auth.uid() and cosmetic_id=item and equipped) then raise exception 'Removal failed'; end if;
+ if (select coin_balance from public.users where id=auth.uid())<>360 then raise exception 'Balance mismatch'; end if;
+end $$;
+reset role;
+rollback;
+select 'PASS: 140-coin purchase, retry safety, left/right placement, setting rejection and removal; fixtures rolled back' as result;

@@ -36,7 +36,26 @@ class QuestwellItemIconPainter extends CustomPainter {
     void panel(int x,int y,int w,int h,Color c,Color light,Color dark) {
       r(x,y,w,h,ink);r(x+1,y+1,w-2,h-2,c);r(x+1,y+1,w-2,1,light);r(x+1,y+1,1,h-2,light);r(x+w-2,y+2,1,h-3,dark);r(x+2,y+h-2,w-3,1,dark);
     }
-    if (slug == 'copper-potion-workbench') {
+    if (slug == 'harvest-apothecary-display') {
+      // Chunky 32px seasonal emblem: bottles, pumpkin, book and level stand.
+      panel(2,21,28,9,wood,woodLight,woodDark);
+      r(1,20,30,2,woodLight);r(2,29,28,2,woodDark);
+      panel(4,23,11,5,woodDark,wood,ink);panel(17,23,11,5,woodDark,wood,ink);
+      r(9,25,2,1,gold);r(22,25,2,1,gold);
+      r(5,12,24,2,woodDark);r(5,12,24,1,woodLight);
+      for(final x in [9,17,25]) {
+        r(x,3,2,2,goldShade);r(x-1,5,4,2,ink);
+        r(x-2,7,6,5,ink);r(x-1,7,4,4,x==9?green:x==17?red:gold);
+        r(x-1,7,1,2,cream);
+      }
+      const orange=Color(0xFFDA7831), pumpkinShade=Color(0xFF9A4927);
+      r(4,14,9,6,ink);r(3,15,11,4,ink);r(4,15,9,4,orange);
+      r(6,14,5,6,orange);r(7,15,1,4,gold);r(10,15,1,4,pumpkinShade);
+      r(7,12,2,2,woodDark);r(9,12,2,1,green);
+      r(12,17,5,3,cream);r(14,16,1,1,wood);
+      panel(19,16,10,4,redDark,red,ink);r(20,18,7,1,cream);r(25,16,1,4,gold);
+      r(21,14,5,1,greenDark);r(23,13,1,2,green);
+    } else if (slug == 'copper-potion-workbench') {
       // Copper alembic and jewel bottles above a level apothecary cabinet.
       panel(3,18,26,12,wood,woodLight,woodDark);
       r(2,17,28,2,goldShade);r(3,17,26,1,gold);
