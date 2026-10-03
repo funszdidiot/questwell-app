@@ -46,7 +46,12 @@ void main() {
         await tester.pumpAndSettle();
         final images=tester.widgetList<Image>(find.byType(Image)).map((w)=>(w.image as AssetImage).assetName).toList();
         expect(images, isNot(contains(asset)));
-        expect(images.any((s)=>s.contains('/classes/$archetype/')),isTrue);
+        if(body=='female' && archetype=='scout') {
+          expect(images,contains('assets/images/questwell/avatar/scout_robe_female_v6.webp'));
+          expect(images,contains('assets/images/questwell/avatar/base/paper_doll_female_v1.webp'));
+        }else{
+          expect(images.any((s)=>s.contains('/classes/$archetype/')),isTrue);
+        }
       }
     });
   }

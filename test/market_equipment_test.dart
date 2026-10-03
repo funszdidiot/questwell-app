@@ -29,7 +29,8 @@ void main(){
     final outfit=items.firstWhere((i)=>i.slug=='woodland-scout-outfit').copyWith(owned:true);
     for(final body in ['male','neutral','female']) {
       expect(QuestwellEquipmentPolicy.supportsBody(outfit.slug,body),body=='female');
-      await tester.pumpWidget(MaterialApp(home:Scaffold(body:QuestwellMarketView(
+      await tester.pumpWidget(MaterialApp(builder:(context,child)=>MediaQuery(
+        data:const MediaQueryData(disableAnimations:true),child:child!),home:Scaffold(body:QuestwellMarketView(
         key:ValueKey(body),data:QuestwellCosmeticsSnapshot(profile:QuestwellProfile(
           level:4,totalXp:355,coinBalance:650,currentEnergyMode:'normal',onboardingCompleted:true,
           adventurerArchetype:'scout',avatarBodyType:body),cosmetics:[outfit]),
