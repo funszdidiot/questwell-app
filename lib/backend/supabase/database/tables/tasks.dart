@@ -44,6 +44,9 @@ class TasksRow extends SupabaseDataRow {
   DateTime? get completedAt => getField<DateTime>('completed_at');
   set completedAt(DateTime? value) => setField<DateTime>('completed_at', value);
 
+  DateTime? get pinnedAt => getField<DateTime>('pinned_at');
+  set pinnedAt(DateTime? value) => setField<DateTime>('pinned_at', value);
+
   int? get frictionLevel => getField<int>('friction_level');
   set frictionLevel(int? value) => setField<int>('friction_level', value);
 }
