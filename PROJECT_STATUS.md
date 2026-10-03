@@ -4,7 +4,7 @@
 
 Tanya requested Wanderer next. Female robe v3 carries the tobacco/copper-gold compass-star design onto the exact locked Alchemist v7 front, cuff and rear masks. The muted ochre rear texture is retained; the body, identity and Everyday clothing are unchanged. The shared renderer and `?review=wanderer-wardrobe` now use the new female robe. Male/neutral short coats and legacy replacement-equipment behavior remain intact. See `docs/art/WANDERER_FEMALE_V3.md`.
 
-Wanderer deployment checks pending. Geometry is locked; the new surface is for founder review. No merge to `flutterflow` or launch.
+Tanya authorized delivery after seeing the on-body Wanderer preview. Artwork release `22890d1`, followed by the foundation-test correction `a93c6b1`, passed Flutter Check `37144883153` and Preview `37144883171`. Live development review confirmed the full-length Wanderer surface, clean front opening and both inward cuffs on the unchanged female body. All three robe alpha masks exactly match Alchemist v7; the body and identity hashes are unchanged. Automated checks cover every clothing subset, depth order, equipment restoration and phone layouts. Physical-phone and signed-in UI checks were not performed. No merge to `flutterflow` or launch.
 
 ## Latest Guardian correction authorized for delivery — 2026-10-03
 
