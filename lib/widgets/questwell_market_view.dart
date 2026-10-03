@@ -109,7 +109,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   @override
   Widget build(BuildContext context) {
     final all=widget.data.cosmetics.where((i)=>i.unlockMethod=='shop').toList();
-    final items=all.where((i)=>(category=='All'||category=='Seasonal'&&i.specialEdition||group(i)==category)&&
+    final items=all.where((i)=>(category=='All'||category=='Collections'&&i.collectionKey!=null||category=='Seasonal'&&i.specialEdition||group(i)==category)&&
       (collection=='All'||i.collectionKey==collection)&&
       (rarity=='All'||i.rarity.toLowerCase()==rarity.toLowerCase())&&
       (!myClass||!restricted(i))&&(!owned||i.owned)&&
