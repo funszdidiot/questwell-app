@@ -4,7 +4,7 @@
 
 Tanya requested Scholar next. Scholar v3 carries the existing navy/violet-and-gold styling onto the exact Alchemist v7 front, cuff and rear masks, including both inward-widened cuffs. The frozen female body, identity and Everyday clothing remain unchanged. The shared renderer and `?review=scholar-wardrobe` now use this version; male and neutral Scholar behavior is retained. Geometry is locked; the new Scholar surface remains for founder visual review. See `docs/art/SCHOLAR_FEMALE_V3.md`.
 
-Deployment checks pending. No merge to `flutterflow` or launch.
+Release `68c46d6` passed Flutter Check `37140186336` and Preview `37140186302`. Live Scholar review confirmed the new navy-and-gold robe and enlarged wrist view on the unchanged female body. Automated checks cover exact front/cuff/rear alpha equality, all clothing subsets, robe depth order, grimoire handling, outfit restoration and phone-width review layouts. The asset manifest verifies the source and export hashes. Physical-phone and signed-in UI checks were not performed. No merge to `flutterflow` or launch.
 
 ## Scout rebuilt on the exact locked Alchemist fit — 2026-10-03
 
