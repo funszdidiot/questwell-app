@@ -36,14 +36,19 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(find.byType(QuestwellAnnotatedGrimoire), findsOneWidget);
       expect(mask, findsOneWidget);
-      expect(find.byType(QuestwellScholarCuffs), findsOneWidget);
+      expect(find.byType(QuestwellScholarCuffs), body == 'female' ? findsNothing : findsOneWidget);
+      if (body == 'female') {
+        expect(tester.widgetList<Image>(find.byType(Image)).any((image) =>
+          image.image is AssetImage && (image.image as AssetImage).assetName ==
+            'assets/images/questwell/avatar/classes/scholar/scholar_robe_cuff_front_female_v3.webp'), isTrue);
+      }
       final images = tester.widgetList<Image>(find.byType(Image));
       expect(images.any((image) => image.image is AssetImage &&
         (image.image as AssetImage).assetName == QuestwellAnnotatedGrimoire.asset), isTrue);
       await tester.pumpWidget(scene({}));
       await tester.pumpAndSettle();
       expect(mask, findsNothing);
-      expect(find.byType(QuestwellScholarCuffs), findsOneWidget);
+      expect(find.byType(QuestwellScholarCuffs), body == 'female' ? findsNothing : findsOneWidget);
       expect(find.byType(QuestwellAnnotatedGrimoire), findsNothing);
       await tester.pumpWidget(scene({'hands': 'annotated-grimoire', 'chest': 'moss-green-cloak'}));
       await tester.pumpAndSettle();

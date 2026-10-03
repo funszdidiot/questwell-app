@@ -1,5 +1,11 @@
 # Questwell Project Status
 
+## Female Scholar on the locked robe geometry — 2026-10-03
+
+Tanya requested Scholar next. Scholar v3 carries the existing navy/violet-and-gold styling onto the exact Alchemist v7 front, cuff and rear masks, including both inward-widened cuffs. The frozen female body, identity and Everyday clothing remain unchanged. The shared renderer and `?review=scholar-wardrobe` now use this version; male and neutral Scholar behavior is retained. Geometry is locked; the new Scholar surface remains for founder visual review. See `docs/art/SCHOLAR_FEMALE_V3.md`.
+
+Deployment checks pending. No merge to `flutterflow` or launch.
+
 ## Scout rebuilt on the exact locked Alchemist fit — 2026-10-03
 
 Tanya accepted the existing Alchemist v7 fit (“It’s perfect”) and requested Scout use those exact specifications. The proposed additional Alchemist right-cuff edit was stopped before changing any asset. She then clarified: no breast/chest pockets for Scouts. Scout v8 now uses the exact Alchemist v7 front, cuff and rear alpha masks, with olive cloth, flax fern embroidery and brown trim. Both breast pockets/buttons were removed. Body, identity, everyday clothing and Alchemist artwork are unchanged.

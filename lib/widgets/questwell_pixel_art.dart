@@ -220,7 +220,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final woodland = harvestBody == 'female' && (previewWoodlandLayers != null ||
         equippedSlugs['chest'] == 'woodland-scout-outfit');
     final fittedDefault = harvestBody == 'female' &&
-        const {'scout', 'alchemist'}.contains(archetype) &&
+        const {'scout', 'alchemist', 'scholar'}.contains(archetype) &&
         equippedSlugs['chest'] == null && previewWoodlandLayers == null;
     final scoutLayers = previewScoutLayers ?? (harvestBody == 'female' &&
         equippedSlugs['chest'] == 'everyday-adventurer-outfit'
@@ -228,9 +228,13 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         : fittedDefault ? const {'top', 'trousers', 'boots', 'robe'} : null);
     final woodlandLayers = previewWoodlandLayers ?? const {'outfit'};
     final modular = scoutLayers != null || woodland;
-    String fittedRobeAsset(String part) => harvestBody == 'female' && archetype == 'alchemist'
-        ? 'assets/images/questwell/avatar/classes/alchemist/alchemist_${part}_female_v7.webp'
-        : QuestwellScoutWardrobeFoundation.asset(harvestBody, part);
+    String fittedRobeAsset(String part) {
+      if (harvestBody == 'female' && const {'alchemist', 'scholar'}.contains(archetype)) {
+        final version = archetype == 'alchemist' ? 'v7' : 'v3';
+        return 'assets/images/questwell/avatar/classes/$archetype/${archetype}_${part}_female_$version.webp';
+      }
+      return QuestwellScoutWardrobeFoundation.asset(harvestBody, part);
+    }
     final classOverlay = woodland ? null : modular
         ? (scoutLayers!.contains('robe') ? fittedRobeAsset('robe') : null)
         : harvestCoat

@@ -23,6 +23,12 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
   String held = 'none';
   String bodyView = 'female';
 
+  String get className => switch (widget.archetype) {
+    'alchemist' => 'Alchemist',
+    'scholar' => 'Scholar',
+    _ => 'Scout',
+  };
+
   @override
   void initState() {
     super.initState();
@@ -139,7 +145,8 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
       const SizedBox(height: 4),
       Text(
         body == 'female'
-            ? (widget.archetype == 'alchemist' ? 'Approved female Alchemist fit.' : 'Approved female fit.')
+            ? (widget.archetype == 'scholar' ? 'Locked female fit. Scholar design preview.'
+                : widget.archetype == 'alchemist' ? 'Approved female Alchemist fit.' : 'Approved female fit.')
             : 'Previous fit candidate — fixed-body rebuild pending.',
         textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white70),
@@ -201,7 +208,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                   constraints: const BoxConstraints(maxWidth: 1200),
                   child: Column(children: [
                     Text(
-                      widget.woodland ? 'Woodland Scout' : widget.archetype == 'alchemist' ? 'The Alchemist wardrobe' : 'The Scout wardrobe',
+                      widget.woodland ? 'Woodland Scout' : 'The $className wardrobe',
                       style: const TextStyle(fontSize: 28, color: Color(0xFFE0C481)),
                     ),
                     const SizedBox(height: 8),
@@ -239,7 +246,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                           bodyView == 'female' ? 'Boots' : 'Boots (female)',
                           enabled: bodyView == 'female' || bodyView == 'all',
                         ),
-                        layerToggle('robe', widget.archetype == 'alchemist' ? 'Alchemist robe' : 'Scout robe'),
+                        layerToggle('robe', '$className robe'),
                         ],
                         FilterChip(
                           label: const Text('Accessories'),

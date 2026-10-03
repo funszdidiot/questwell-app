@@ -610,6 +610,50 @@
           "sha256": "7b37cadf6f757f00eaff582c2ee8e444f74420050fe12c3094f12b134cd3dc2b"
         }
       ]
+    },
+    "scholar_female_v3": {
+      "visual_approval": "founder_approved_exact_alchemist_geometry_scholar_surface_for_review",
+      "description": "Navy/violet Scholar with gold diamond embroidery and smooth chest panels. Front, cuffs and rear alpha are pixel-identical to locked Alchemist female v7.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_female_v3.webp",
+          "sha256": "3747eb61a15702835c6bec5461e6672790e6a1bfe3e1609204f8579204be7719"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_cuff_front_female_v3.webp",
+          "sha256": "5a25a424642949219470ef8db2cbeff36c8d8ddc5a21fdbc93ae919d344187b8"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_female_v3.webp",
+          "sha256": "60ed6ed7cf04443bcc2e2eca36611684d2c15e277b2b549dac5ee0b6b8394327"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/art_assets/scholar_female_v3/robe_source.png",
+          "sha256": "5e2fa69d39e92cacfc9b2bd455a338ebc2f933af57956ec3a0b16689f3fcf15f"
+        },
+        {
+          "path": "tool/art_assets/scholar_female_v3/prompts.json",
+          "sha256": "3f9056a498d70f2dbfc033efb6cc38c8cfc31c070d9bbb2355a647a52ac324f7"
+        },
+        {
+          "path": "tool/art_assets/scholar_female_v3/texture_landmarks.txt",
+          "sha256": "b15a70f68fe588504aa809659d385cac5f4cb650a99467e1cc9cba0c05d64043"
+        },
+        {
+          "path": "tool/export_scholar_female_v3.sh",
+          "sha256": "fc1e99d51d3335890d343befeb1802c44e59fcfecb1ee7cf07e1644dbc2fae06"
+        },
+        {
+          "path": "tool/female_avatar_fit_reference.json",
+          "sha256": "7b37cadf6f757f00eaff582c2ee8e444f74420050fe12c3094f12b134cd3dc2b"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_rear_female_wrap_v1.webp",
+          "sha256": "e41001c914fb5a0e10066a82332a18c8170b0062614866f1c233c58b1cc91bbc"
+        }
+      ]
     }
   },
   "approved_layers": {

@@ -1,0 +1,9 @@
+{
+  "tool": "image_gen.imagegen",
+  "prompt": "Edit image 1, the blue female robe garment layer, into the Scholar class version. Image 1 is the STRICT construction/fit reference: keep its exact sleeve shape, shoulders, inward widened wrist cuff lips, collar shape, open front, waist, rounded hem, overall silhouette and placement. Image 2 is a COLOR AND ORNAMENT reference ONLY; do not adopt its shape or angular hem or narrow cuffs. Change image 1 royal blue cloth to rich deep midnight navy with a subtle violet cast. Change white piping/front edges/cuff bands/hem trim to warm antique gold. Replace the green alchemical chain motifs with refined scholarly gold geometric diamond embroidery and thin hanging gold diamond ornaments near the upper chest. Remove BOTH upper chest/breast pockets entirely and leave smooth fabric there. Lower waist pockets can be simple narrow gold welt pockets. Rich purple visible inside the rolled wrist openings and lining. Keep the cozy hand painted fantasy RPG illustration texture and dimensional cloth folds, same lighting and view, no text or labels, no anatomy or hands or head, no book or accessories, no background. All artwork stays on the same complete portrait 3:4 transparent canvas, with the identical empty space above shoulders and under hem as image 1. Do not crop or zoom. Only change the clothing's surface design; never broaden outward or narrow either sleeve or cuff.",
+  "references": [
+    "locked Alchemist female v7 front plus cuff on 960x1280 canvas",
+    "existing Scholar female polish_v2 colors and ornaments"
+  ],
+  "transparent_background": true
+}

@@ -37,6 +37,9 @@ void main() {
   } else if (Uri.base.queryParameters['review'] == 'alchemist-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp(archetype: 'alchemist')));
+  } else if (Uri.base.queryParameters['review'] == 'scholar-wardrobe') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp(archetype: 'scholar')));
   } else if (Uri.base.queryParameters['review'] == 'scout-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp()));
