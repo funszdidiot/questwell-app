@@ -2,6 +2,7 @@ import '../backend/supabase/supabase.dart';
 import '../backend/supabase/questwell_network.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
 import 'questwell_feedback_draft.dart';
+import 'dart:typed_data';
 
 class QuestwellFeedbackException implements Exception {
   const QuestwellFeedbackException(this.message);
@@ -9,13 +10,43 @@ class QuestwellFeedbackException implements Exception {
 }
 
 abstract final class QuestwellFeedbackService {
+  static const _bucket = 'beta-feedback';
+  static const maxAttachmentBytes = 5 * 1024 * 1024;
+  static const allowedAttachmentTypes = {'image/png', 'image/jpeg', 'image/webp'};
+
   static String? get userId => SupaFlow.client.auth.currentUser?.id;
 
-  static Future<void> submit(QuestwellFeedbackDraft draft, String ownerId) async {
+  static Future<String> uploadScreenshot({
+    required String ownerId,
+    required String feedbackId,
+    required Uint8List bytes,
+    required String mimeType,
+  }) async {
+    if (userId != ownerId) {
+      throw const QuestwellFeedbackException('Please sign in to the same account before uploading.');
+    }
+    if (bytes.isEmpty || bytes.length > maxAttachmentBytes) {
+      throw const QuestwellFeedbackException('Screenshots must be 5 MB or smaller.');
+    }
+    if (!allowedAttachmentTypes.contains(mimeType)) {
+      throw const QuestwellFeedbackException('Use a PNG, JPEG, or WebP screenshot.');
+    }
+    final extension = mimeType == 'image/png' ? 'png' : mimeType == 'image/webp' ? 'webp' : 'jpg';
+    final path = '$ownerId/$feedbackId.$extension';
+    await QuestwellNetwork.write(() => SupaFlow.client.storage.from(_bucket)
+      .uploadBinary(path, bytes, fileOptions: FileOptions(contentType: mimeType, upsert: false)));
+    return path;
+  }
+
+  static Future<void> removeScreenshot(String path) async {
+    await QuestwellNetwork.write(() => SupaFlow.client.storage.from(_bucket).remove([path]));
+  }
+
+  static Future<void> submit(QuestwellFeedbackDraft draft, String ownerId, {String? attachmentPath}) async {
     if (userId != ownerId) {
       throw const QuestwellFeedbackException('Please sign in to the same account before sending this draft.');
     }
-    final row = {...draft.toJson(), 'user_id': ownerId}..remove('attempted');
+    final row = {...draft.toJson(), 'user_id': ownerId, 'attachment_path': attachmentPath}..remove('attempted');
     for (final field in ['goal', 'message', 'expected', 'steps', 'reply_email', 'device']) {
       row[field] = (row[field] as String).trim();
     }
