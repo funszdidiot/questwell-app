@@ -25,3 +25,5 @@ Live-preview correction: the female renderer now restores only the original head
 The continuous arm/hand asset uses `base/clean_arms_female_v3.webp` so clients cannot combine the new head-only restoration pass with a cached older arm-only image. Runtime art URLs are versioned when image contents change.
 
 The book-grip review exposed a small forearm gap from the legacy hand-removal rectangle. For the repaired female foundation only, the grimoire clip retains the wrist through y=171.5, overlapping the integrated book wrist at y=170.5. The relaxed fist is still removed. Other class/body clipping is unchanged.
+
+Validation (development only): commit `381fbdd8ca322a39bb86d11f4ed3062913a37763` passed Questwell Preview run `37097136605` and Flutter Check run `37097136632`. The live female base/robe comparison was inspected with wrist closeups, empty hands, brass lantern and grimoire. The grimoire forearm gap is closed. Founder visual acceptance remains pending; male and neutral rebuilds have not started.
