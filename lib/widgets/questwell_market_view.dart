@@ -18,17 +18,27 @@ class QuestwellMarketView extends StatefulWidget {
   State<QuestwellMarketView> createState()=>_QuestwellMarketViewState();
 }
 class _QuestwellMarketViewState extends State<QuestwellMarketView> {
-  String category='All',query='';
+  String category='All',query='',collection='All',rarity='All';
   final searchController=TextEditingController();
   final categoryScrollController=ScrollController();
   @override
   void dispose(){searchController.dispose();categoryScrollController.dispose();super.dispose();}
   bool affordable=false,owned=false,myClass=true;
+  String get collectionLabel => collection=='All'?'All collections':title(collection.replaceAll('-', ' '));
   static const cream=Color(0xFFF1E4C9),muted=Color(0xFFA9BEB8),gold=Color(0xFFE0BF79),ink=Color(0xFF253E3D);
   bool room(QuestwellCosmetic item)=>['room','wall_art'].contains(item.category);
   bool bodyRestricted(QuestwellCosmetic i)=>!QuestwellEquipmentPolicy.supportsBody(i.slug,widget.data.profile.avatarBodyType);
   bool restricted(QuestwellCosmetic i)=>bodyRestricted(i)||i.requiredArchetype!=null&&i.requiredArchetype!=widget.data.profile.adventurerArchetype;
-  String group(QuestwellCosmetic i)=>room(i)?'Hearth':i.category=='familiar'?'Companions':i.category=='effect'?'Effects':'Wearables';
+  String group(QuestwellCosmetic i) {
+    if(room(i)) return 'Hearth';
+    if(i.category=='familiar') return 'Familiars';
+    if(['chest'].contains(i.category)) return 'Outfits';
+    return 'Gear';
+  }
+  bool get hasSeasonal => widget.data.cosmetics.any((i)=>i.unlockMethod=='shop'&&i.editionType!='standard');
+  String editionLabel(String value)=>switch(value){
+    'seasonal'=>'Seasonal','limited'=>'Limited Edition','event_reward'=>'Event Reward',
+    'founder_beta'=>'Founder/Beta',_=>'Standard'};
   String title(String text)=>text.isEmpty?text:'${text[0].toUpperCase()}${text.substring(1)}';
   String action(QuestwellCosmetic i) {
     if(widget.busyId==i.id)return 'Saving…';
@@ -98,9 +108,13 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   @override
   Widget build(BuildContext context) {
     final all=widget.data.cosmetics.where((i)=>i.unlockMethod=='shop').toList();
-    final items=all.where((i)=>(category=='All'||group(i)==category)&&(!myClass||!restricted(i))&&
-      (!owned||i.owned)&&(!affordable||i.owned||i.price<=widget.data.profile.coinBalance)&&
-      ('${i.name} ${i.description}'.toLowerCase().contains(query.toLowerCase().trim()))).toList()
+    final items=all.where((i)=>(category=='All'||category=='Seasonal'&&i.specialEdition||group(i)==category)&&
+      (collection=='All'||i.collectionKey==collection)&&
+      (rarity=='All'||i.rarity.toLowerCase()==rarity.toLowerCase())&&
+      (!myClass||!restricted(i))&&(!owned||i.owned)&&
+      (!affordable||i.owned||i.price<=widget.data.profile.coinBalance)&&
+      ('${i.name} ${i.description} ${i.collectionKey??''} ${editionLabel(i.editionType)}'
+        .toLowerCase().contains(query.toLowerCase().trim()))).toList()
       ..sort((a,b){final price=a.price.compareTo(b.price);return price!=0?price:a.name.compareTo(b.name);});
     return RefreshIndicator(onRefresh:widget.onRefresh,child:ListView(padding:const EdgeInsets.fromLTRB(18,8,18,30),children:[
       QuestwellMarketShopfront(coins:widget.data.profile.coinBalance),
@@ -112,7 +126,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       const SizedBox(height:10),
       if(items.isEmpty) Padding(padding:const EdgeInsets.symmetric(vertical:35),child:Column(children:[
         const Icon(Icons.search_off,color:gold,size:32),const SizedBox(height:12),Text('No treasures match these filters.',style:QuestwellTypography.body(color:cream)),
-        TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:()=>setState((){category='All';owned=false;affordable=false;myClass=true;query='';searchController.clear();}),child:Text('Reset filters'))])),
+        TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:()=>setState((){category='All';collection='All';rarity='All';owned=false;affordable=false;myClass=true;query='';searchController.clear();}),child:Text('Reset filters'))])),
       LayoutBuilder(builder:(context,constraints){final width=constraints.maxWidth>650?(constraints.maxWidth-14)/2:constraints.maxWidth;
         return Wrap(spacing:14,runSpacing:12,children:[for(final i in items) SizedBox(key:ValueKey(i.id),width:width,child:QuestwellPurchaseGlow(owned:i.owned,child:card(i)))]);}),
       const SizedBox(height:22),Text('Coins come from your quests. Every purchase stays in your inventory.',textAlign:TextAlign.center,style:QuestwellTypography.body(color:muted,fontSize:12,height:1.5)),
@@ -147,11 +161,11 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
           scrollDirection:Axis.horizontal,
           padding:const EdgeInsets.only(bottom:6),
           child:Row(children:[
-            for(final name in ['All','Wearables','Companions','Hearth','Effects'])
+            for(final name in ['All','Outfits','Gear','Familiars','Hearth',if(hasSeasonal)'Seasonal','Collections'])
               Semantics(selected:category==name,child:Container(
                 decoration:BoxDecoration(border:Border(bottom:BorderSide(
                   color:category==name?gold:Colors.transparent,width:2))),
-                child:TextButton(onPressed:()=>setState(()=>category=name),
+                child:TextButton(onPressed:()=>setState((){category=name;if(name!='Collections')collection='All';}),
                   style:TextButton.styleFrom(
                     foregroundColor:category==name?gold:muted,
                     textStyle:QuestwellTypography.body(fontSize:14,
@@ -163,10 +177,28 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                   child:Text(name)))),
           ]))),
       const SizedBox(height:8),
+      if(category=='Collections') ...[
+        DropdownButtonFormField<String>(
+          value: collection,
+          dropdownColor: const Color(0xFF14272A),
+          style: QuestwellTypography.body(color:cream),
+          decoration: InputDecoration(labelText:'Collection',
+            labelStyle:QuestwellTypography.body(color:muted),
+            border:const OutlineInputBorder()),
+          items:[
+            const DropdownMenuItem(value:'All',child:Text('All collections')),
+            for(final key in widget.data.cosmetics.map((i)=>i.collectionKey).whereType<String>().toSet().toList()..sort())
+              DropdownMenuItem(value:key,child:Text(title(key.replaceAll('-', ' ')))),
+          ],
+          onChanged:(value)=>setState(()=>collection=value??'All'),
+        ),
+        const SizedBox(height:8),
+      ],
       Wrap(spacing:6,runSpacing:4,children:[
         _filterControl('My class',myClass,(v)=>setState(()=>myClass=v)),
         _filterControl('Affordable',affordable,(v)=>setState(()=>affordable=v)),
         _filterControl('Owned',owned,(v)=>setState(()=>owned=v)),
+        PopupMenuButton<String>(tooltip:'Rarity',initialValue:rarity,onSelected:(v)=>setState(()=>rarity=v),itemBuilder:(_)=>[for(final r in ['All','common','uncommon','rare','epic','legendary'])PopupMenuItem(value:r,child:Text(r=='All'?'All rarities':title(r)))],child:Padding(padding:const EdgeInsets.symmetric(horizontal:10,vertical:13),child:Text(rarity=='All'?'Rarity':title(rarity),style:QuestwellTypography.body(fontSize:13,color:muted)))),
       ]),
     ]));
 
@@ -196,7 +228,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
         Container(width:80,height:80,decoration:BoxDecoration(color:const Color(0xFF213C3B),borderRadius:BorderRadius.circular(8),border:Border.all(color:const Color(0xFF436153),width:2)),
           alignment:Alignment.center,child:QuestwellItemPixelArt(slug:item.slug,category:item.category,size:64,locked:restricted(item))),
         const SizedBox(width:13),Expanded(child:Column(crossAxisAlignment:CrossAxisAlignment.start,children:[
-          Text('${title(item.rarity)} · ${group(item)}',style:QuestwellTypography.body(color:Color(0xFF6B6655),fontSize:12,fontWeight:FontWeight.w600)),
+          Text('${title(item.rarity)} · ${group(item)}${item.specialEdition?' · ${editionLabel(item.editionType)}':''}',style:QuestwellTypography.body(color:Color(0xFF6B6655),fontSize:12,fontWeight:FontWeight.w600)),
           const SizedBox(height:4),Text(item.name,style:QuestwellTypography.body(color:ink,fontSize:17,fontWeight:FontWeight.w700,height:1.35)),
           const SizedBox(height:7),Text(item.owned?(item.equipped?'✓ In use':'✓ Owned'):item.price==0?'Free':'◈ ${item.price} coins',style:QuestwellTypography.body(color:Color(0xFF675125),fontSize:13,fontWeight:FontWeight.w700)),
         ])),
