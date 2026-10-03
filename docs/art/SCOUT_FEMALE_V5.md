@@ -23,3 +23,5 @@ Built-in imagegen was used, with transparent alpha, under identity-preserve / pr
 Live-preview correction: the female renderer now restores only the original head/hair after its repaired foundation, so the old incomplete hand masks cannot be drawn over the new joins. The original fist pixels are extracted with tight hand-only bounds to exclude neighboring suit trousers. Only the three wrist rows y=171..174 are feathered into the repaired forearms; the original grip artwork and coordinates below that seam are retained. This also removes detached suit slivers beside the hands.
 
 The continuous arm/hand asset uses `base/clean_arms_female_v3.webp` so clients cannot combine the new head-only restoration pass with a cached older arm-only image. Runtime art URLs are versioned when image contents change.
+
+The book-grip review exposed a small forearm gap from the legacy hand-removal rectangle. For the repaired female foundation only, the grimoire clip retains the wrist through y=171.5, overlapping the integrated book wrist at y=170.5. The relaxed fist is still removed. Other class/body clipping is unchanged.

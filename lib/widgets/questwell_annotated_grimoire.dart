@@ -51,15 +51,17 @@ class QuestwellAnnotatedGrimoire extends StatelessWidget {
 
 /// Hide the relaxed hand only; the source avatar and the rest of its body stay intact.
 class GrimoireHandUnderlayerClipper extends CustomClipper<Path> {
-  const GrimoireHandUnderlayerClipper(this.body);
+  const GrimoireHandUnderlayerClipper(this.body, {this.preserveWrist = false});
   final String body;
+  final bool preserveWrist;
   @override
   Path getClip(Size size) {
     final scale = math.min(size.width / 240, size.height / 320);
     final dx = (size.width - 240 * scale) / 2;
     final dy = size.height - 320 * scale;
     final hand = switch (body) {
-      'female' => const Rect.fromLTWH(152, 168, 25, 28),
+      'female' => Rect.fromLTWH(152, preserveWrist ? 171.5 : 168, 25,
+          preserveWrist ? 24.5 : 28),
       'male' => const Rect.fromLTWH(153, 172, 29, 29),
       _ => const Rect.fromLTWH(151, 171, 31, 29),
     };
@@ -69,7 +71,8 @@ class GrimoireHandUnderlayerClipper extends CustomClipper<Path> {
         hand.width * scale, hand.height * scale));
   }
   @override
-  bool shouldReclip(covariant GrimoireHandUnderlayerClipper oldClipper) => oldClipper.body != body;
+  bool shouldReclip(covariant GrimoireHandUnderlayerClipper oldClipper) =>
+      oldClipper.body != body || oldClipper.preserveWrist != preserveWrist;
 }
 
 /// Only the sleeve cuff returns over the new wrist, never the relaxed hand.
