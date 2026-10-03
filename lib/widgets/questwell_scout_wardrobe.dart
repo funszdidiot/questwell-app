@@ -49,7 +49,7 @@ class ScoutWardrobeClipper extends CustomClipper<Path> {
         ..addRect(const Rect.fromLTRB(0, 196, 240, 320));
       // Hands and hair remain in their original registration.
       for (final poly in CleanBaseClipper.polygons['$body:identity']!) {
-        p.addPolygon(poly, true);
+        if (poly.first.dy >= 167) p.addPolygon(poly, true);
       }
     } else if (part == 'robe') {
       p = Path.combine(PathOperation.difference, p,

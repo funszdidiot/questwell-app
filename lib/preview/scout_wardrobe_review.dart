@@ -30,7 +30,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
           'accessory': 'moonstone-brooch', 'feet': 'pathfinder-boots'},
       });
   Widget cuffs(String body) => SizedBox(height: 130, child: ClipRect(
-    child: Stack(children: [Positioned(left: -48, top: -275,
+    child: Stack(children: [Positioned(left: -88, top: -275,
       width: 456, height: 608, child: art(body))])));
   @override
   Widget build(BuildContext context) => MaterialApp(debugShowCheckedModeBanner: false,
