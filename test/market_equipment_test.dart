@@ -37,7 +37,10 @@ void main(){
         onPurchase:(_)async{},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{}))));
       await tester.pumpAndSettle();
       if(body!='female') {
-        await tester.tap(find.widgetWithText(OutlinedButton,'My class'));
+        final filter=find.widgetWithText(OutlinedButton,'My class');
+        await tester.ensureVisible(filter);
+        await tester.pumpAndSettle();
+        await tester.tap(filter);
         await tester.pumpAndSettle();
         final button=find.widgetWithText(FilledButton,'Female fit only');
         expect(tester.widget<FilledButton>(button).onPressed,isNull);
