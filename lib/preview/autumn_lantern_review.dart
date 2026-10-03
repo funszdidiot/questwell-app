@@ -21,7 +21,7 @@ class _AutumnLanternReviewAppState extends State<AutumnLanternReviewApp> {
       child: Column(children: [
         const Text('Autumn Ember Lantern', style: TextStyle(fontSize: 24)),
         const SizedBox(height: 8),
-        const Text('240 earned coins · all classes · matching 16-bit icon'),
+        const Text('Compact lantern on a walnut stand · 240 earned coins'),
         const SizedBox(height: 10),
         const QuestwellItemIcon(slug: QuestwellAutumnLantern.slug, size: 64),
         Wrap(spacing: 20, crossAxisAlignment: WrapCrossAlignment.center, children: [

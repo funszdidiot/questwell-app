@@ -37,16 +37,18 @@ class QuestwellItemIconPainter extends CustomPainter {
       r(x,y,w,h,ink);r(x+1,y+1,w-2,h-2,c);r(x+1,y+1,w-2,1,light);r(x+1,y+1,1,h-2,light);r(x+w-2,y+2,1,h-3,dark);r(x+2,y+h-2,w-3,1,dark);
     }
     if (slug == 'autumn-ember-lantern') {
-      // Copper floor lantern and two autumn leaves, on the shared 32px grid.
-      r(12,2,8,2,ink);r(10,4,3,4,goldShade);r(19,4,3,4,goldShade);
-      r(13,3,6,1,gold);r(12,7,8,2,goldShade);
-      r(10,9,12,2,ink);r(8,11,16,2,goldShade);r(7,13,18,2,gold);
-      panel(8,15,16,13,goldShade,gold,woodDark);
-      r(10,16,12,10,const Color(0xFFD98028));r(12,17,8,8,gold);
-      r(15,19,2,4,cream);r(14,23,4,3,cream);r(11,16,1,10,woodDark);r(20,16,1,10,woodDark);
-      r(7,27,18,2,goldShade);r(5,29,22,2,woodDark);r(7,28,18,1,gold);
-      r(3,15,2,2,gold);r(2,17,3,3,woodLight);r(3,20,1,2,wood);
-      r(27,8,2,2,woodLight);r(26,10,3,3,goldShade);r(27,13,1,2,wood);
+      // Small copper lamp on its own walnut pedestal, on the shared 32px grid.
+      r(13,2,6,2,ink);r(12,4,2,3,goldShade);r(18,4,2,3,goldShade);
+      r(14,3,4,1,gold);r(13,6,6,2,goldShade);
+      r(11,8,10,2,ink);r(10,10,12,2,gold);
+      panel(11,12,10,6,goldShade,gold,woodDark);
+      r(13,13,6,4,const Color(0xFFD98028));r(15,13,2,3,cream);
+      r(10,17,12,2,goldShade);
+      panel(7,19,18,3,wood,woodLight,woodDark);r(8,19,16,1,goldShade);
+      r(14,22,4,6,woodDark);r(15,22,2,6,woodLight);r(13,23,6,1,goldShade);
+      r(12,27,8,2,wood);r(9,29,14,2,woodDark);r(10,29,12,1,goldShade);
+      r(5,10,2,2,gold);r(4,12,3,2,woodLight);r(5,14,1,2,wood);
+      r(25,5,2,2,woodLight);r(24,7,3,2,goldShade);r(25,9,1,2,wood);
     } else if (slug == 'harvest-apothecary-display') {
       // Chunky 32px seasonal emblem: bottles, pumpkin, book and level stand.
       panel(2,21,28,9,wood,woodLight,woodDark);

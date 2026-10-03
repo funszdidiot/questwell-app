@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 class QuestwellAutumnLantern extends StatefulWidget {
   const QuestwellAutumnLantern({super.key});
   static const slug = 'autumn-ember-lantern';
-  static const asset = 'assets/images/questwell/hearth/autumn_ember_lantern_v1.webp';
+  static const asset = 'assets/images/questwell/hearth/autumn_ember_lantern_stand_v2.webp';
   static Rect bounds(Size scene, String slot) {
     final avatarHeight = math.min(scene.height * .76, scene.width * .62 * 4 / 3);
-    final height = math.min(avatarHeight * .66, scene.width * .29 * 1681 / 935);
+    final height = math.min(avatarHeight * .52, scene.width * .29 * 1681 / 935);
+    // Compact tabletop lantern on a taller pedestal; effects orbit the upper lamp.
     // Wider paint canvas gives the leaves room outside the metal silhouette.
     final width = height * 935 / 1681 * 1.55;
     final center = scene.width * (slot == 'left' ? .22 : .80);
@@ -54,7 +55,7 @@ class _QuestwellAutumnLanternState extends State<QuestwellAutumnLantern>
   }
   @override
   Widget build(BuildContext context) => Semantics(
-    label: 'Autumn ember lantern with glowing light and swirling leaves', image: true,
+    label: 'Small autumn ember lantern on a walnut stand with glowing light and swirling leaves', image: true,
     child: IgnorePointer(child: RepaintBoundary(child: Stack(fit: StackFit.expand, children: [
       CustomPaint(painter: AutumnLanternPainter(_clock, foreground: false)),
       Image.asset(QuestwellAutumnLantern.asset, fit: BoxFit.contain,
@@ -72,9 +73,9 @@ class AutumnLanternPainter extends CustomPainter {
     final phase = clock.value * math.pi * 2;
     final flicker = .68 + .20 * math.sin(phase * 3) + .10 * math.sin(phase * 7 + .8);
     final paint = Paint();
-    final center = Offset(size.width * .5, size.height * .57);
+    final center = Offset(size.width * .5, size.height * .30);
     if (!foreground) {
-      final radius = size.width * .32;
+      final radius = size.width * .22;
       paint.shader = RadialGradient(colors: [
         Color.fromRGBO(255, 181, 54, .32 * flicker),
         const Color(0x00FFAF32),
@@ -95,8 +96,8 @@ class AutumnLanternPainter extends CustomPainter {
       final angle = t * math.pi * 3 + i * 1.8;
       // Alternate behind/in front of the sprite for a real orbit.
       if ((math.cos(angle) >= 0) != foreground) continue;
-      final x = size.width * (.5 + math.sin(angle) * .40);
-      final y = size.height * (.91 - t * .72);
+      final x = size.width * (.5 + math.sin(angle) * .34);
+      final y = size.height * (.45 - t * .39);
       final opacity = math.pow(math.sin(t * math.pi), .5).toDouble() * .92;
       final length = size.height * (.035 + (i % 3) * .004);
       canvas.save();
