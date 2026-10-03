@@ -4,7 +4,7 @@
 
 Tanya repeated the narrow inner-flap correction on the original robe image, then instructed “Send it” after the latest result. The app now uses that exact latest source (`robe_final_no_inner_flaps.png`) registered to the same immutable Alchemist v7 front and cuff masks. The rear cloth, body, identity and other classes are unchanged. See `docs/art/GUARDIAN_FEMALE_V4.md`.
 
-Latest Guardian delivery checks pending. No merge to `flutterflow` or launch.
+Latest delivery `10012ff` passed Flutter Check `37142022996` and Preview `37142022949`. Live Guardian review confirmed the latest source is rendered with a clean front opening and the locked wrist fit. All three alpha masks still match the Alchemist v7 template; body and identity hashes are unchanged. Physical-phone and signed-in UI checks were not performed. No merge to `flutterflow` or launch.
 
 ## Female Guardian on the locked robe geometry — 2026-10-03
 
