@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../widgets/questwell_clean_base.dart';
 import '../widgets/questwell_pixel_art.dart';
@@ -13,12 +14,28 @@ class _CleanBaseReviewAppState extends State<CleanBaseReviewApp> {
   String outfit = 'midnight-harvest-coat';
   String held = 'none';
   bool accessories = false;
+  String bag = 'leather-satchel';
+  static const classes = ['scholar','scout','alchemist','guardian','wanderer'];
+  static const outfits = ['class','midnight-harvest-coat','starter-business-suit','moss-green-cloak','hearthguard-mantle'];
+  static const heldItems = ['none','brass-lantern','annotated-grimoire'];
+  static const bags = ['leather-satchel','wayfarer-satchel'];
+  @override
+  void initState() {
+    super.initState();
+    final query = Uri.base.queryParameters;
+    if (classes.contains(query['archetype'])) archetype = query['archetype']!;
+    if (outfits.contains(query['outfit'])) outfit = query['outfit']!;
+    if (heldItems.contains(query['held'])) held = query['held']!;
+    if (bags.contains(query['bag'])) bag = query['bag']!;
+    accessories = query['gear'] == 'all';
+  }
   Map<String, String> get equipment => {
     if (outfit != 'class') 'chest': outfit,
     if (held != 'none') 'hands': held,
     if (accessories) ...{
       'face': 'round-scholar-glasses', 'neck': 'emerald-scholar-scarf',
-      'back': 'leather-satchel', 'feet': 'pathfinder-boots',
+      'back': bag, 'feet': 'pathfinder-boots',
+      'head': 'tiny-wizard-hat', 'accessory': 'moonstone-brooch',
     },
   };
   Widget avatar(String body, double height) => SizedBox(width: height * .75,
@@ -38,27 +55,31 @@ class _CleanBaseReviewAppState extends State<CleanBaseReviewApp> {
           const SizedBox(height: 6),
           const Text('Same faces. Simple base layers. Your existing wardrobe.'),
           Wrap(spacing: 18, crossAxisAlignment: WrapCrossAlignment.center, children: [
-            select(archetype, ['scholar','scout','alchemist','guardian','wanderer'], (v) => archetype = v),
-            select(outfit, ['class','midnight-harvest-coat','starter-business-suit','moss-green-cloak','hearthguard-mantle'], (v) => outfit = v),
-            select(held, ['none','brass-lantern','annotated-grimoire'], (v) => held = v),
+            select(archetype, classes, (v) => archetype = v),
+            select(outfit, outfits, (v) => outfit = v),
+            select(held, heldItems, (v) => held = v),
+            select(bag, bags, (v) => bag = v),
             FilterChip(label: const Text('Accessories'), selected: accessories,
               onSelected: (v) => setState(() => accessories = v)),
           ]),
           const SizedBox(height: 20),
           Wrap(spacing: 24, runSpacing: 28, alignment: WrapAlignment.center,
             children: [for (final body in ['female','male','neutral'])
-              SizedBox(width: 310, child: Column(children: [
+              SizedBox(width: 310, child: LayoutBuilder(builder: (context, constraints) {
+                final cardHeight = math.min(192.0, constraints.maxWidth / 1.5);
+                return Column(children: [
                 Text(body == 'neutral' ? 'Gender neutral' : body == 'female' ? 'Female' : 'Male',
                   style: const TextStyle(fontSize: 20, color: Color(0xFFE0C481))),
                 const SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Column(children: [const Text('Base layer'),
-                    SizedBox(width: 144, height: 192, child: QuestwellCleanBase(body: body))]),
-                  Column(children: [const Text('Selection card'), avatar(body, 192)]),
+                    SizedBox(width: cardHeight * .75, height: cardHeight, child: QuestwellCleanBase(body: body))]),
+                  Column(children: [const Text('Selection card'), avatar(body, cardHeight)]),
                 ]),
                 const SizedBox(height: 12),
                 avatar(body, 340),
-              ])),
+              ]);
+              })),
             ]),
         ]),
       )),

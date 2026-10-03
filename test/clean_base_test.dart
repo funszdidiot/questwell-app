@@ -1,4 +1,7 @@
 import 'dart:ui' as ui;
+import '../lib/preview/clean_base_review.dart';
+import '../lib/widgets/questwell_brass_lantern.dart';
+import '../lib/widgets/questwell_annotated_grimoire.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -60,4 +63,58 @@ void main() {
       expect(find.byType(QuestwellCleanBase), findsOneWidget);
     });
   }
+  for (final archetype in ['scholar','scout','alchemist','guardian','wanderer']) {
+    for (final body in ['female','male','neutral']) {
+      testWidgets('$archetype/$body restores its wardrobe after each outfit and accessory swap', (tester) async {
+        Future<List<String>> render(Map<String,String> equipment) async {
+          await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(width:240,height:320,
+            child: QuestwellLayeredAdventurerArt(archetype:archetype, avatarBodyType:body,
+              equippedSlugs:equipment)))));
+          await tester.pumpAndSettle();
+          expect(tester.takeException(), isNull);
+          return tester.widgetList<Image>(find.byType(Image))
+            .map((i) => (i.image as AssetImage).assetName).toList();
+        }
+        final baseline = await render({});
+        for (final chest in ['midnight-harvest-coat','starter-business-suit','moss-green-cloak','hearthguard-mantle']) {
+          for (final held in ['brass-lantern','annotated-grimoire']) {
+            final equipment = <String,String>{
+              'chest':chest, 'hands':held, 'head':'tiny-wizard-hat',
+              'face':'round-scholar-glasses', 'neck':'emerald-scholar-scarf',
+              'back':held == 'brass-lantern' ? 'leather-satchel' : 'wayfarer-satchel',
+              'feet':'pathfinder-boots', 'accessory':'moonstone-brooch',
+            };
+            final original = Map<String,String>.of(equipment);
+            final images = await render(equipment);
+            expect(equipment, original, reason:'Rendering cannot mutate saved equipment');
+            final closed = chest == 'moss-green-cloak' || chest == 'hearthguard-mantle';
+            expect(find.byType(QuestwellBrassLantern),
+              !closed && held == 'brass-lantern' ? findsOneWidget : findsNothing);
+            expect(find.byType(QuestwellAnnotatedGrimoire),
+              !closed && held == 'annotated-grimoire' ? findsOneWidget : findsNothing);
+            if (chest == 'starter-business-suit') {
+              expect(find.byType(QuestwellCleanBase), findsNothing);
+              expect(images.any((a) => a.contains('/classes/')), isFalse);
+            } else {
+              expect(find.byType(QuestwellCleanBase), findsWidgets);
+              expect(images, contains('assets/images/questwell/avatar/base/clean_${body}_v1.webp'));
+            }
+            expect(await render({}), baseline, reason:'Unequipping restores this class and body exactly');
+          }
+        }
+      });
+    }
+  }
+  for (final width in [320.0,390.0]) {
+    testWidgets('Wardrobe comparison fits a ${width.toInt()}px phone', (tester) async {
+      tester.view.physicalSize = Size(width,844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(const CleanBaseReviewApp());
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    });
+  }
+
 }
