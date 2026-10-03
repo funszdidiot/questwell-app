@@ -4,18 +4,26 @@ Uses the same inverse thin-plate map as the existing coat export; samples
 premultiplied color once at 4x, then exports the normal 240x320 runtime canvas.
 """
 import json
+import sys
 from pathlib import Path
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
 from scipy.interpolate import RBFInterpolator
 from scipy.ndimage import map_coordinates
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = json.loads((ROOT / 'tool/scout_wardrobe_fit.json').read_text())
+spec = json.loads((ROOT / (sys.argv[1] if len(sys.argv) > 1 else 'tool/scout_wardrobe_fit.json')).read_text())
 width, height = spec['canvas']
 scale = 4
 for body, fit in spec['assets'].items():
-    source = np.asarray(Image.open(ROOT / fit['source']).convert('RGBA'), dtype=np.float64)
+    original = Image.open(ROOT / fit['source']).convert('RGBA')
+    mask = Image.new('L', original.size, 0 if 'keep' in fit else 255)
+    draw = ImageDraw.Draw(mask)
+    for name, value in [('keep', 255), ('cutouts', 0)]:
+        for polygon in fit.get(name, []):
+            draw.polygon([(x * original.width / width, y * original.height / height) for x, y in polygon], fill=value)
+    source = np.array(original, dtype=np.float64)
+    source[:, :, 3] *= np.asarray(mask) / 255
     sh, sw = source.shape[:2]
     source[source[:,:,3] < 32] = 0
     source[:,:,:3] *= source[:,:,3:4] / 255

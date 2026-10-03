@@ -17,8 +17,18 @@ void main() {
       List<String> assets() => tester.widgetList<Image>(find.byType(Image))
         .map((im) => im.image).whereType<AssetImage>().map((im) => im.assetName).toList();
       expect(assets(), contains(QuestwellScoutWardrobeFoundation.asset(body, 'trousers')));
+      final ordered = assets();
+      final rear = ordered.indexOf(QuestwellScoutWardrobeFoundation.asset(body, 'robe_rear'));
+      final anatomy = ordered.indexOf('assets/images/questwell/avatar/base/clean_${body}_v1.webp');
+      final front = ordered.indexOf(QuestwellScoutWardrobeFoundation.asset(body, 'robe'));
+      final rim = ordered.indexOf(QuestwellScoutWardrobeFoundation.asset(body, 'robe_cuff_front'));
+      expect(rear, lessThan(anatomy));
+      expect(anatomy, lessThan(front));
+      expect(front, lessThan(rim));
       await render({'top', 'trousers'});
       expect(assets(), isNot(contains(QuestwellScoutWardrobeFoundation.asset(body, 'robe'))));
+      expect(assets(), isNot(contains(QuestwellScoutWardrobeFoundation.asset(body, 'robe_rear'))));
+      expect(assets(), isNot(contains(QuestwellScoutWardrobeFoundation.asset(body, 'robe_cuff_front'))));
       expect(assets(), contains(QuestwellScoutWardrobeFoundation.asset(body, 'top')));
       await render({});
       expect(assets().any((path) => path.contains('/scout_')), isFalse);

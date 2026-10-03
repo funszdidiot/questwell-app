@@ -9,7 +9,7 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   final String body;
   final Set<String> layers;
   static String asset(String body, String part) =>
-      'assets/images/questwell/avatar/scout_${part}_${body}_v1.webp';
+      'assets/images/questwell/avatar/scout_${part}_${body}_${part.startsWith('robe') ? 'v3' : 'v1'}.webp';
   static Widget image(String path) => Image.asset(path, fit: BoxFit.contain,
       alignment: Alignment.bottomCenter, filterQuality: FilterQuality.high,
       gaplessPlayback: true);
@@ -46,10 +46,17 @@ class ScoutWardrobeClipper extends CustomClipper<Path> {
     } else if (part == 'robeUnder') {
       p = Path()..addRect(const Rect.fromLTRB(0, 0, 240, 77))
         ..addRect(const Rect.fromLTRB(104, 73, 139, 196))
-        ..addRect(const Rect.fromLTRB(0, 196, 240, 320));
+        ..addRect(const Rect.fromLTRB(0, 196, 240, 320))
+        ..addRect(const Rect.fromLTRB(60, 169, 89, 200))
+        ..addRect(const Rect.fromLTRB(151, 169, 183, 200));
       // Hands and hair remain in their original registration.
       for (final poly in CleanBaseClipper.polygons['$body:identity']!) {
         if (poly.first.dy >= 167) p.addPolygon(poly, true);
+      }
+    } else if (part == 'identityHead') {
+      p = Path();
+      for (final poly in CleanBaseClipper.polygons['$body:identity']!) {
+        if (poly.first.dy < 167) p.addPolygon(poly, true);
       }
     } else if (part == 'robe') {
       p = Path.combine(PathOperation.difference, p,
