@@ -686,14 +686,25 @@ const SizedBox(height: 2),
                     }
 
                     final tasks = snapshot.data!;
-                    final campfireTasks = List<TasksRow>.from(tasks)
-                      ..sort(
-                        (a, b) => (a.frictionLevel ?? 99)
-                            .compareTo(b.frictionLevel ?? 99),
-                      );
+                    final orderedTasks = List<TasksRow>.from(tasks)
+                      ..sort((a, b) {
+                        final aPinned = a.pinnedAt != null;
+                        final bPinned = b.pinnedAt != null;
+                        if (aPinned != bPinned) return aPinned ? -1 : 1;
+                        return (b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+                            .compareTo(a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0));
+                      });
+                    final campfireTasks = List<TasksRow>.from(orderedTasks)
+                      ..sort((a, b) {
+                        final aPinned = a.pinnedAt != null;
+                        final bPinned = b.pinnedAt != null;
+                        if (aPinned != bPinned) return aPinned ? -1 : 1;
+                        return (a.frictionLevel ?? 99)
+                            .compareTo(b.frictionLevel ?? 99);
+                      });
                     final visibleTasks = _campfireMode
                         ? campfireTasks.take(1).toList()
-                        : tasks.take(3).toList();
+                        : orderedTasks.take(3).toList();
 
                     if (visibleTasks.isEmpty) {
                       return const QuestwellHomeEmptyBoard();
