@@ -1,3 +1,7 @@
+## Neutral everyday wardrobe and Woodland sleeve correction — 2026-10-03
+
+Tanya requested everyday clothes for the fixed neutral body beneath robes and corrected Woodland Scout sleeves. Added independent ivory top, plain brown trousers and ankle boots; the robe no longer uses the Woodland vest, knee patches or tall boots. Corrected only the rolled sleeve regions in Woodland v2, preserving the remaining outfit pixels. Body/identity, female art and neutral robe assets remain unchanged. The four-stage `?review=neutral-scout` fitting includes independent controls and sleeve/wrist details. Local lower-body coverage is complete; CI and live review are pending for this revision. Founder fit acceptance remains required before class variants. No account/Market changes, merge or launch. See `docs/art/NEUTRAL_EVERYDAY_AND_SLEEVES_V2.md`.
+
 ## Gender-neutral paper doll and Scout fit — 2026-10-03
 
 Tanya requested neutral next, rejected the initial muscular frame, and approved the revised balanced frame with “Yes.” The new fixed neutral body preserves the original face/hair. The Woodland Scout outfit and rustic Scout robe are fitted as clothing-only layers over that exact body. The robe includes continuous rear cloth and separate cuff depth; no chest pockets or extra inner flaps. Current development review: `?review=neutral-scout`.

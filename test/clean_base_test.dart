@@ -33,6 +33,11 @@ void main() {
     final identity = await pixels(QuestwellNeutralPaperDoll.identityAsset);
     final original = await pixels('assets/images/questwell/avatar/base/base_neutral.webp');
     final outfit = await pixels(QuestwellNeutralScout.outfitAsset);
+    final previousOutfit = await pixels('assets/images/questwell/avatar/woodland_scout_unified_neutral_v1.webp');
+    final top = await pixels(QuestwellNeutralScout.topAsset);
+    final underTop = await pixels(QuestwellNeutralScout.topUnderRobeAsset);
+    final trousers = await pixels(QuestwellNeutralScout.trousersAsset);
+    final boots = await pixels(QuestwellNeutralScout.bootsAsset);
     for (var y = 0; y < 320; y++) {
       for (var x = 0; x < 240; x++) {
         final offset = (y * 240 + x) * 4;
@@ -44,13 +49,29 @@ void main() {
         if (y >= 205 && body.getUint8(offset+3) > 180) {
           expect(outfit.getUint8(offset+3), greaterThanOrEqualTo(128),
               reason: 'Clothing must cover the fixed leg/foot at $x,$y');
+          expect(trousers.getUint8(offset+3) >= 128 || boots.getUint8(offset+3) >= 128, isTrue,
+              reason: 'Everyday trousers and boots must cover the fixed leg/foot at $x,$y');
+        }
+        if (y < 108 || y >= 135 || x < 75 || x >= 177 || (x >= 104 && x <= 149)) {
+          expect(outfit.getUint32(offset), previousOutfit.getUint32(offset),
+              reason: 'Sleeve correction must not change other garment pixels at $x,$y');
+        }
+        if (y < 285) expect(boots.getUint8(offset+3), 0);
+        if (y >= 287) expect(trousers.getUint8(offset+3), 0);
+        expect(underTop.getUint8(offset+3), lessThanOrEqualTo(top.getUint8(offset+3)));
+        if (underTop.getUint8(offset+3) > 0) {
+          expect(underTop.getUint32(offset), top.getUint32(offset));
         }
       }
     }
   });
   testWidgets('Neutral clothing subsets keep one fixed body and correct cloth depth', (tester) async {
     Rect? bounds;
-    for (final layers in <Set<String>>[{}, {'outfit'}, {'robe'}, {'outfit','robe'}]) {
+    const options = ['top', 'trousers', 'boots', 'robe', 'outfit'];
+    for (var bits = 0; bits < 32; bits++) {
+      final layers = <String>{
+        for (var i = 0; i < options.length; i++) if ((bits & (1 << i)) != 0) options[i],
+      };
       await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
         width: 240, height: 320, child: QuestwellNeutralScout(layers: layers)))));
       await tester.pumpAndSettle();
@@ -65,8 +86,13 @@ void main() {
       expect(images, [
         if(layers.contains('robe')) QuestwellNeutralScout.rearAsset,
         QuestwellNeutralPaperDoll.baseAsset,
-        if(layers.contains('outfit')) layers.contains('robe')
-          ? QuestwellNeutralScout.underRobeAsset : QuestwellNeutralScout.outfitAsset,
+        if(layers.contains('outfit') && !layers.contains('robe')) QuestwellNeutralScout.outfitAsset
+        else ...[
+          if(layers.contains('trousers')) QuestwellNeutralScout.trousersAsset,
+          if(layers.contains('top')) layers.contains('robe')
+            ? QuestwellNeutralScout.topUnderRobeAsset : QuestwellNeutralScout.topAsset,
+          if(layers.contains('boots')) QuestwellNeutralScout.bootsAsset,
+        ],
         if(layers.contains('robe')) QuestwellNeutralScout.robeAsset,
         QuestwellNeutralPaperDoll.identityAsset,
         if(layers.contains('robe')) QuestwellNeutralScout.cuffsAsset,
@@ -87,7 +113,12 @@ void main() {
       await tester.pumpWidget(const NeutralScoutReviewApp());
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
-      expect(find.byType(QuestwellNeutralPaperDoll), findsNWidgets(3));
+      expect(find.byType(QuestwellNeutralPaperDoll), findsNWidgets(4));
+      expect(find.text('Everyday clothes'), findsOneWidget);
+      await tester.tap(find.widgetWithText(FilterChip, 'Fit details'));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(find.byType(QuestwellNeutralPaperDoll), findsNWidgets(12));
     });
   }
   for (final body in ['female', 'male', 'neutral']) {

@@ -751,6 +751,66 @@
         }
       ]
     },
+    "neutral_everyday_and_sleeves_v2": {
+      "visual_approval": "pending_founder_review",
+      "art_revision": "neutral-everyday-v1-woodland-sleeves-v2",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Independent everyday top/trousers/boots beneath Scout robe; corrected Woodland rolled sleeves only. Approved body, identity, robe and female art unchanged.",
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_everyday.cjs",
+          "sha256": "089683bd696354357a3682ee692fc95b9ccecd13546386aa75cc89257467d9b6"
+        },
+        {
+          "path": "tool/export_neutral_sleeves.cjs",
+          "sha256": "3c9d5042701ff91f4c34f6b24f828a5d469d5c10926d6d9f9df69bc3cdab4663"
+        },
+        {
+          "path": "tool/neutral_fit_reference.cjs",
+          "sha256": "026186475add0b156c4a3344a05d2b0930cb78824a96fb1cd0a6ec2cbf763ba3"
+        },
+        {
+          "path": "tool/art_assets/neutral_scout_v2/everyday_source.png",
+          "sha256": "ad9587a9b33d469d2347f3208263d104eb170e19617d6f875729e0dc79e36fd4"
+        },
+        {
+          "path": "tool/art_assets/neutral_scout_v2/boots_fitted_source.png",
+          "sha256": "80a306ebad42be15bfed5c75dd8c707aa01c2ceea7901745086d71d318ba36bc"
+        },
+        {
+          "path": "tool/art_assets/neutral_scout_v2/sleeves_fitted_source.png",
+          "sha256": "c6f7750d5307e770f0f5fb53cad6763cb63979d08ae4ba9fca22acb89c354881"
+        },
+        {
+          "path": "tool/art_assets/neutral_scout_v2/prompts.json",
+          "sha256": "4963f19938a5b69281b1be5fbf353d8261e3f0ac8a2cb5b7376ead8d0b9ff165"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/everyday_top_neutral_v1.webp",
+          "sha256": "7c262f451eba8690d1978c748f7ce5add721f32939876a633cafda7f65925f87"
+        },
+        {
+          "path": "assets/images/questwell/avatar/everyday_top_robe_under_neutral_v1.webp",
+          "sha256": "c6a9028e3d2ab081515426324de5af838bee296fb00ec9a834f9d566c2b40d4e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/everyday_trousers_neutral_v1.webp",
+          "sha256": "b36dd8530e17e30b2fb2023c424324da475a1348d1f412de7cddc6605c0afa40"
+        },
+        {
+          "path": "assets/images/questwell/avatar/everyday_boots_neutral_v1.webp",
+          "sha256": "3f8cd8e9324cfb91905a20284929cbf0f5263525fc807b13b483d2f57d648ebe"
+        },
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_unified_neutral_v2.webp",
+          "sha256": "3b3244dc05c26ce8fc15f0cd6a0d1f60fb5ce2021064396093f3af3902b2375c"
+        }
+      ]
+    },
     "neutral_scout_v1": {
       "visual_approval": "pending_founder_fit_review",
       "art_revision": "neutral-scout-v1",
