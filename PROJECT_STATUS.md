@@ -4,7 +4,7 @@
 
 Tanya accepted the existing Alchemist v7 fit (“It’s perfect”) and requested Scout use those exact specifications. The proposed additional Alchemist right-cuff edit was stopped before changing any asset. She then clarified: no breast/chest pockets for Scouts. Scout v8 now uses the exact Alchemist v7 front, cuff and rear alpha masks, with olive cloth, flax fern embroidery and brown trim. Both breast pockets/buttons were removed. Body, identity, everyday clothing and Alchemist artwork are unchanged.
 
-Development checks are in progress. Geometry is locked; the new Scout surface remains for founder visual review. See `docs/art/SCOUT_FEMALE_V8.md`. No merge to `flutterflow` or launch.
+Release `228277f` passed Flutter Check `37138427862` and Preview `37138427878`, including the new pixel-for-pixel geometry test. Live review confirmed the Scout chest has no pockets and the shared renderer shows the exact locked fit. Geometry is locked; the new Scout surface remains for founder visual review. See `docs/art/SCOUT_FEMALE_V8.md`. No merge to `flutterflow` or launch.
 
 ## Female Alchemist — both inward cuff adjustments locked — 2026-10-03
 
