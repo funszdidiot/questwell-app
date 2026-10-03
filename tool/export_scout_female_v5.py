@@ -5,6 +5,7 @@ one uniform scale and translation per source. No thin-plate fit is used.
 """
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageChops
+import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / 'tool/art_assets/scout_female_v5'
@@ -36,10 +37,22 @@ def save(im, name):
 
 base = source('arms_top')
 arms = [
-    [(73,103),(97,103),(98,117),(91,138),(81,164),(84,172),(66,172),(64,158),(67,136),(72,117)],
-    [(140,104),(158,104),(165,137),(173,160),(172,172),(153,172),(156,165),(145,137)],
+    [(73,103),(97,103),(98,117),(91,138),(81,164),(80.5,171),(83,175),(70,175),(71,171),(64,158),(67,136),(72,117)],
+    [(140,104),(158,104),(165,137),(173,160),(167,171),(169,175),(156,175),(157,171),(156,165),(145,137)],
 ]
-save(select(base,arms), 'base/clean_arms_female_v2.webp')
+arm_image = select(base,arms)
+# Preserve the original fists and their registration. Feather only the three
+# wrist rows where the new forearm meets the original skin; never warp a hand.
+original = Image.open(OUT/'base/base_female.webp').convert('RGBA').resize((240*S,320*S),Image.Resampling.LANCZOS)
+hands = select(original, [[(60,171),(85,171),(85,196),(60,196)],[(155,171),(180,171),(180,196),(155,196)]])
+aa = np.array(arm_image)
+ha = np.array(hands)
+aa[171*S:,:,3] = (aa[171*S:,:,3].astype(float)*ha[171*S:,:,3]/255).astype('uint8')
+arm_image = Image.fromarray(aa)
+fade = np.clip((np.arange(320*S)/S-171)/3,0,1)
+ha[:,:,3] = (ha[:,:,3]*fade[:,None]).astype('uint8')
+arm_image.alpha_composite(Image.fromarray(ha))
+save(arm_image, 'base/clean_arms_female_v2.webp')
 top = [[(110,77),(128,77),(134,82),(148,85),(153,93),(156,113),(144,117),(141,130),(145,149),(142,153),(97,153),(94,146),(99,127),(97,114),(80,111),(83,92),(93,85),(105,82)]]
 save(select(base,top), 'scout_top_female_v5.webp')
 pants = [[(96,150),(149,150),(153,174),(156,194),(240,195),(240,320),(0,320),(0,195),(91,195),(91,175)]]

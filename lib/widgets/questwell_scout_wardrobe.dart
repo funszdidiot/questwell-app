@@ -32,8 +32,6 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
       if (layers.contains('top')) ClipPath(clipper: ScoutWardrobeClipper(body, 'top'),
           child: image(asset(body, 'top'))),
       if (layers.contains('trousers')) image(asset(body, 'trousers')),
-      if (body == 'female') ClipPath(clipper: const ScoutWardrobeClipper('female', 'hands'),
-        child: image('assets/images/questwell/avatar/base/base_female.webp')),
     ]);
     return layers.contains('robe')
         ? ClipPath(clipper: ScoutWardrobeClipper(body, 'robeUnder'), child: contents)
@@ -62,12 +60,6 @@ class ScoutWardrobeClipper extends CustomClipper<Path> {
         ..addRect(const Rect.fromLTRB(142, 108, 240, 202)));
     } else if (part == 'neck') {
       p = Path()..addRect(const Rect.fromLTRB(106, 70, 135, 85));
-    } else if (part == 'hands') {
-      // Include the complete original hands below the suit cuffs. The older
-      // narrow polygons cut into the skin and created triangular wrist joins.
-      p = Path()
-        ..addPolygon(const [Offset(65,171),Offset(85,171),Offset(90,195),Offset(60,195)], true)
-        ..addPolygon(const [Offset(155,171),Offset(174,171),Offset(179,195),Offset(153,195),Offset(153,182)], true);
     } else if (part == 'robeUnder') {
       final wristTop = body == 'female' ? 166.0 : 169.0;
       p = Path()..addRect(const Rect.fromLTRB(0, 0, 240, 77))

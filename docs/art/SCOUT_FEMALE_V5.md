@@ -19,3 +19,5 @@ Review the actual in-app image for arm taper, wrist continuity, right hip/thigh 
 ## Generation provenance
 
 Built-in imagegen was used, with transparent alpha, under identity-preserve / precise-object-edit / compositing requests. Core direction: preserve the original identity and stance; correct only distorted arms/wrist joins and the right trouser contour; draw the rustic olive Scout robe on the body with straight hip seams, small wrist openings, natural cloth folds, narrow brown edging, flax fern embroidery and a continuous back panel. Intermediate generated avatars are not replacements for the approved base identity.
+
+Live-preview correction: the female renderer now restores only the original head/hair after its repaired foundation, so the old incomplete hand masks cannot be drawn over the new joins. The original fist pixels are extracted with tight hand-only bounds to exclude neighboring suit trousers. Only the three wrist rows y=171..174 are feathered into the repaired forearms; the original grip artwork and coordinates below that seam are retained. This also removes detached suit slivers beside the hands.

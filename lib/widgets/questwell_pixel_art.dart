@@ -300,7 +300,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           if (equippedSlugs['feet'] == QuestwellPathfinderBoots.slug)
             QuestwellPathfinderBoots(bodyType: body),
           if (classOverlay != null) classLayer(classOverlay),
-          if (modular) ClipPath(clipper: classOverlay != null
+          if (modular) ClipPath(clipper: classOverlay != null || body == 'female'
               ? ScoutWardrobeClipper(body, 'identityHead')
               : CleanBaseClipper(body, 'identity'),
             child: equippedSlugs['hands'] == QuestwellAnnotatedGrimoire.slug
