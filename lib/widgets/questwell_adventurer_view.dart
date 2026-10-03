@@ -127,90 +127,69 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         ])),
         const SizedBox(height: 16),
         Wrap(spacing: 8, runSpacing: 8, children: [
-          ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14), label: const Text('Appearance'), selected: !_inventory,
-            onSelected: (_) => setState(() => _inventory = false)),
-          ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14), label: Text('Inventory · $owned'), selected: _inventory,
-            onSelected: (_) => setState(() => _inventory = true)),
+          for (final value in const ['Equipped','Inventory','Collections'])
+            ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14),
+              label: Text(value == 'Inventory' ? 'Inventory · $owned' : value),
+              selected: _section == value,
+              onSelected: (_) => setState(() {
+                _section = value;
+                _ownership = value == 'Equipped' ? 'Equipped' : 'Owned';
+                _collection = 'All collections';
+                _category = 'All categories';
+              })),
+          OutlinedButton.icon(onPressed: () => _editAppearance(context),
+            icon: const Icon(Icons.edit_outlined, size: 18),
+            label: const Text('Edit Adventurer')),
         ]),
         const SizedBox(height: 18),
-        if (!_inventory) ...[
-          _heading('BODY STYLE'),
+        if (_section == 'Equipped') ...[
+          _heading('EQUIPPED NOW'),
           const SizedBox(height: 8),
-          Text('Choose the look that feels like you.', style: _text(14, color: _muted)),
-          const SizedBox(height: 8),
-          Wrap(spacing: 8, runSpacing: 8, children: [
-            for (final value in const ['male', 'female', 'neutral'])
-              ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14), label: Text(value == 'neutral' ? 'Gender neutral' : _label(value)),
-                selected: widget.bodyType == value,
-                onSelected: widget.savingAppearance ? null : (_) => widget.onBody(value)),
-          ]),
-          const SizedBox(height: 22),
-          _heading('YOUR CLASS'),
-          const SizedBox(height: 8),
-          Text('A style choice. Every class earns the same rewards.', style: _text(14, color: _muted)),
-          const SizedBox(height: 10),
-          Wrap(spacing: 8, runSpacing: 8, children: [
-            for (final value in const ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer'])
-              ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14,
-                  color: widget.archetype == value ? _gold : const Color(0xFFF0E5CC)),
-                label: ConstrainedBox(constraints: const BoxConstraints(minHeight: 24),
-                  child: Text(_label(value))),
-                backgroundColor: const Color(0xFF14202F),
-                selectedColor: const Color(0xFF243448),
-                disabledColor: const Color(0xFF14202F),
-                surfaceTintColor: Colors.transparent,
-                showCheckmark: false,
-                side: BorderSide(color: widget.archetype == value ? _gold : const Color(0xFF465568),
-                  width: widget.archetype == value ? 2 : 1),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                avatar: QuestwellClassEmblem(archetype: value),
-                avatarBoxConstraints: const BoxConstraints.tightFor(width: 24, height: 24),
-                selected: widget.archetype == value,
-                onSelected: widget.savingAppearance ? null : (_) => widget.onClass(value)),
-          ]),
-          const SizedBox(height: 12),
-          Text(widget.savingAppearance ? 'Saving your appearance…' : widget.description,
+          Text('Your active loadout. Open Inventory to swap gear or place Hearth items.',
             style: _text(14, color: _muted)),
+          const SizedBox(height: 12),
+          if (equipped.isEmpty) _panel(Text('Nothing equipped yet.', style: _text(14, color: _muted))),
+          for (final item in equipped)
+            Padding(key: ValueKey('equipped-${item.id}'), padding: const EdgeInsets.only(bottom: 12), child: _item(item)),
         ] else ...[
-          _heading('YOUR COLLECTION'),
+          _heading(_section == 'Collections' ? 'COLLECTIONS' : 'INVENTORY'),
           const SizedBox(height: 8),
-          Text('${equipped.length} equipped · $owned owned', style: _text(14, color: _muted)),
+          Text(_section == 'Collections'
+            ? 'Complete sets and keep seasonal finds in your collection.'
+            : '$owned owned · ${equipped.length} equipped',
+            style: _text(14, color: _muted)),
           const SizedBox(height: 10),
-          Wrap(spacing: 8, runSpacing: 6, children: [
-            for (final value in const ['All collections', 'Class items', 'Trophies'])
-              ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14), label: Text(value), selected: _collection == value,
-                onSelected: (_) => setState(() {
-                  _collection = value;
-                  _category = 'All categories';
-                  _ownership = value == 'All collections' ? 'Owned' : 'All items';
-                })),
-          ]),
-          if (widget.items.any((item) => !QuestwellEquipmentPolicy.isReady(item.slug, item.category))) ...[
-            const SizedBox(height: 8),
-            Text('Equip outfits and accessories, or place décor in your Hearth. More items are on the way.', style: _text(14, color: _gold)),
+          TextField(controller: _searchController, onChanged: (v) => setState(() => _query = v),
+            style: _text(14), decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.search), hintText: 'Search your items',
+              border: OutlineInputBorder())),
+          const SizedBox(height: 10),
+          SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: [
+            for (final value in categories) Padding(padding: const EdgeInsets.only(right: 6),
+              child: ChoiceChip(label: Text(value), selected: category == value,
+                onSelected: (_) => setState(() => _category = value))),
+          ])),
+          if (_section == 'Collections') ...[
+            const SizedBox(height: 10),
+            DropdownButtonFormField<String>(value: _collection,
+              decoration: const InputDecoration(labelText: 'Collection', border: OutlineInputBorder()),
+              items: [
+                const DropdownMenuItem(value: 'All collections', child: Text('All collections')),
+                for (final key in (widget.items.map((i) => i.collectionKey).whereType<String>().toSet().toList()..sort()))
+                  DropdownMenuItem(value: key, child: Text(_label(key.replaceAll('-', ' ')))),
+              ],
+              onChanged: (v) => setState(() => _collection = v ?? 'All collections')),
           ],
           const SizedBox(height: 10),
           Wrap(spacing: 8, runSpacing: 6, children: [
-            for (final value in const ['Owned', 'Equipped', 'All items'])
-              ChoiceChip(labelStyle: QuestwellTypography.body(fontSize: 14), label: Text(value), selected: _ownership == value,
+            for (final value in const ['Owned','Equipped','All items'])
+              ChoiceChip(label: Text(value), selected: _ownership == value,
                 onSelected: (_) => setState(() => _ownership = value)),
           ]),
-          const SizedBox(height: 10),
-          DropdownButtonFormField<String>(initialValue: category, key: ValueKey(category),
-            isExpanded: true, decoration: InputDecoration(labelText: 'Category', labelStyle: QuestwellTypography.body(fontSize: 14),
-              border: OutlineInputBorder()),
-            items: [DropdownMenuItem(value: 'All categories', child: Text('All categories', style: _text(14))),
-              for (final value in categories) DropdownMenuItem(value: value, child: Text(_label(value), style: _text(14)))],
-            onChanged: (value) => setState(() => _category = value ?? 'All categories')),
           const SizedBox(height: 14),
-          if (visible.isEmpty) _panel(Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(_ownership == 'Equipped' ? 'Nothing equipped here yet.' : 'No items in this view.',
-              style: QuestwellTypography.sectionHeading(size: 11)),
-            const SizedBox(height: 6),
-            Text('Try another filter, or visit the Market to explore cosmetics.', style: _text(14, color: _muted)),
-          ])),
-          for (final item in visible) Padding(key: ValueKey('inventory-${item.id}'), padding: const EdgeInsets.only(bottom: 12), child: _item(item)),
+          if (visible.isEmpty) _panel(Text('No items match this view.', style: _text(14, color: _muted))),
+          for (final item in visible)
+            Padding(key: ValueKey('inventory-${item.id}'), padding: const EdgeInsets.only(bottom: 12), child: _item(item)),
           OutlinedButton(onPressed: widget.onMarket,
             style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
               textStyle: QuestwellTypography.body(fontSize: 14, fontWeight: FontWeight.w700)),
