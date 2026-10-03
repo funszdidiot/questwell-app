@@ -131,6 +131,10 @@ void main() {
       final row = find.byWidgetPredicate((widget) =>
         widget is SingleChildScrollView && widget.scrollDirection == Axis.horizontal);
       expect(row, findsOneWidget);
+      // The controls wrap above the portraits on a phone. Scroll the outer
+      // page down before sending a horizontal gesture to the comparison row.
+      await tester.ensureVisible(row);
+      await tester.pumpAndSettle();
       await tester.drag(row, const Offset(-500, 0));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
