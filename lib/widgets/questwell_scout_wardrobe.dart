@@ -8,11 +8,13 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   const QuestwellScoutWardrobeFoundation({super.key, required this.body, required this.layers});
   final String body;
   final Set<String> layers;
+  static const femaleBaseAsset =
+      'assets/images/questwell/avatar/base/paper_doll_female_v1.webp';
+  static const femaleIdentityAsset =
+      'assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp';
+
   static String asset(String body, String part) {
-    if (body == 'female' && part == 'arms') {
-      return 'assets/images/questwell/avatar/base/clean_arms_female_v3.webp';
-    }
-    final version = body == 'female' ? 'v5' : part.startsWith('robe') ? 'v4' : 'v1';
+    final version = body == 'female' ? 'v6' : part.startsWith('robe') ? 'v4' : 'v1';
     return 'assets/images/questwell/avatar/scout_${part}_${body}_$version.webp';
   }
   static Widget image(String path) => Image.asset(path, fit: BoxFit.contain,
@@ -20,15 +22,22 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
       gaplessPlayback: true);
   @override
   Widget build(BuildContext context) {
+    if (body == 'female') {
+      // Every garment shares this body's complete canvas. Clothing only adds
+      // pixels: it never replaces, clips, translates, or rescales body parts.
+      return Stack(fit: StackFit.expand, children: [
+        image(femaleBaseAsset),
+        if (layers.contains('trousers')) image(asset(body, 'trousers')),
+        if (layers.contains('top')) image(asset(body, 'top')),
+        if (layers.contains('boots')) image(asset(body, 'boots')),
+      ]);
+    }
+
+    // Existing male and neutral candidates remain separate until each has
+    // its own accepted paper-doll base and fitted clothing assets.
     final contents = Stack(fit: StackFit.expand, children: [
       ClipPath(clipper: ScoutWardrobeClipper(body, layers.contains('trousers') ? 'lowerReplacement' : 'all'),
-          child: ClipPath(clipper: ScoutWardrobeClipper(body, body == 'female' ? 'replacedArms' : 'all'),
-            child: QuestwellCleanBase(body: body))),
-      if (body == 'female') ...[
-        ClipPath(clipper: const ScoutWardrobeClipper('female', 'neck'),
-          child: image('assets/images/questwell/avatar/base/clean_female_v1.webp')),
-        image(asset(body, 'arms')),
-      ],
+          child: QuestwellCleanBase(body: body)),
       if (layers.contains('top')) ClipPath(clipper: ScoutWardrobeClipper(body, 'top'),
           child: image(asset(body, 'top'))),
       if (layers.contains('trousers')) image(asset(body, 'trousers')),
@@ -39,8 +48,8 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   }
 }
 
-/// Registered to the shared 240x320 canvas. Clips hidden anatomy and rear
-/// collar fabric; never redraws or rescales the approved face or grip.
+/// Legacy male and neutral fitting clips, registered to the 240x320 canvas.
+/// The female paper-doll renderer does not use these anatomy masks.
 class ScoutWardrobeClipper extends CustomClipper<Path> {
   const ScoutWardrobeClipper(this.body, this.part);
   final String body;
@@ -54,12 +63,6 @@ class ScoutWardrobeClipper extends CustomClipper<Path> {
         const Offset(155, 202), const Offset(240, 202), const Offset(240, 320),
         const Offset(0, 320), const Offset(0, 202), const Offset(85, 202)], true);
       p = Path.combine(PathOperation.difference, p, removed);
-    } else if (part == 'replacedArms') {
-      p = Path.combine(PathOperation.difference, p, Path()
-        ..addRect(const Rect.fromLTRB(0, 108, 99, 202))
-        ..addRect(const Rect.fromLTRB(142, 108, 240, 202)));
-    } else if (part == 'neck') {
-      p = Path()..addRect(const Rect.fromLTRB(106, 70, 135, 85));
     } else if (part == 'robeUnder') {
       final wristTop = body == 'female' ? 166.0 : 169.0;
       p = Path()..addRect(const Rect.fromLTRB(0, 0, 240, 77))

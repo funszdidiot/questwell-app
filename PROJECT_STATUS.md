@@ -1,5 +1,11 @@
 # Questwell Project Status
 
+## Female paper-doll repair — 2026-10-03 (America/Chicago)
+
+Continued the founder-authorized fix after the v5 avatar and robe fitting was rejected. The development fitting now uses one complete female underwear body for every clothing combination; top, trousers and boots are independent layers. The robe has a rear panel and rear wrist edges behind the body, with separate front cloth and curved cuff hems above it. No female lower-body replacement or broad robe-under cutout remains. The three-stage review shows Underwear → Everyday clothes → Robe at equal scale, with sideways scrolling on phones.
+
+Review: `?review=scout-wardrobe&body=female`. Female anatomy, right hip/leg, cuffs and robe silhouette remain pending founder visual acceptance; this is not yet a template approval. Male and neutral remain the prior candidates and need their own fitted templates after this female review. Source artwork and reproducible exports are preserved; all existing approved assets remain unchanged. See `docs/art/SCOUT_FEMALE_V6.md`. No merge to `flutterflow`, Market integration, or launch.
+
 ## Wardrobe fit pass complete — 2026-10-02 (America/Chicago)
 
 Founder approved the clean bases and authorized the wardrobe pass. Reviewed all nine outfit designs across all three bodies and checked full accessories, book/lantern grips, cloak suppression, and outfit restoration. No new garment overlap found. Improved the development review controls and fixed its narrow-phone overflow. Final f9231ac passed Flutter Check 37088649997 (288 tests) and Preview 37088649877. Renderer switching checks cover 120 equipped scenarios; mobile layout checks cover 320/390px. No new signed-in persistence or physical iPhone test. See docs/art/CLEAN_AVATAR_BASES.md. Ready to return to beta-readiness review; no merge or launch.

@@ -423,6 +423,82 @@
           "sha256": "b28498f2c2fe39aac617b01683d8c99223e81f049a29b985ca56fdc6eeddaedf"
         }
       ]
+    },
+    "female_paper_doll_v6": {
+      "visual_approval": "pending_founder_review",
+      "description": "Fixed female underwear body with independently fitted top, trousers, boots and four robe depth passes. Development review only. Male and neutral rebuilds pending.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp",
+          "sha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_female_v1.webp",
+          "sha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_boots_female_v6.webp",
+          "sha256": "7b2fb6260c25d162582a672d8c0427da3a4ea0634d5423abc1b3fa959fd54ce3"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_cuff_front_female_v6.webp",
+          "sha256": "b2cfad16c87bb523c38c0085a1c7d208ccf17be1cebdb4a5949766fbf5556d36"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_cuff_rear_female_v6.webp",
+          "sha256": "1212d47962887c61ca07a42b4dc83f80be591067b153265bbfdb363ab49ed7ff"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_female_v6.webp",
+          "sha256": "6c475e6a48836e8f644dbf374e872e0da43bf159eeb4ee57941df619fd7d8067"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_rear_female_v6.webp",
+          "sha256": "8e16da778ad1dbc1505e0000de742eaf4d88dbbbefa1f8cf3da365d4a8275e1e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_top_female_v6.webp",
+          "sha256": "07bbd9864164f7944750fc2f0beffb30d643407e0d72f0f3328802a2baee5a5a"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_trousers_female_v6.webp",
+          "sha256": "14d57926eeeea3b56451a4b6af1fc86022c74b673bd1be8870c8e388afe1fd8f"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/art_assets/scout_female_v6/base_source.webp",
+          "sha256": "81aa7f115b274c355cb7efee6a79b719b1159ed17f0756db0179d370a3db8c1c"
+        },
+        {
+          "path": "tool/art_assets/scout_female_v6/clothes_coverage_source.webp",
+          "sha256": "849fbe2d8db3a044cd3f2ccc918530379d16eedc84d1c221f46435b3e9b7c119"
+        },
+        {
+          "path": "tool/art_assets/scout_female_v6/clothes_source.webp",
+          "sha256": "9090d6612da5d8c774b9a5462cc3a767cc0fb79d2a232eb21d3118a92c19408f"
+        },
+        {
+          "path": "tool/art_assets/scout_female_v6/robe_on_body_source.webp",
+          "sha256": "625ba34d2fa205ba6cb68bfa137180f0a8804be34a7bd241aa9124bba3d44ad3"
+        },
+        {
+          "path": "tool/art_assets/scout_female_v6/robe_source.webp",
+          "sha256": "d8d47144fcce8dd4f4bc659d20c1e65a3e1936146868d45b9b3adacb5fd22ee8"
+        },
+        {
+          "path": "tool/export_scout_female_v6.py",
+          "sha256": "2d62720ba89254b29934f6100b4c7394f094013717d167035a3e1c95c69d9de1"
+        },
+        {
+          "path": "tool/export_scout_female_v6_clothes.py",
+          "sha256": "b8eed90fc9bd45ecc3e6246b741a04bfa7ec3307840dc7d58c9707a6eaacc617"
+        },
+        {
+          "path": "tool/export_scout_female_v6_robe.py",
+          "sha256": "5a319f8280e0ab12873fe593451c8b09b209e46979a222c2fd698a960047ae89"
+        }
+      ]
     }
   },
   "approved_layers": {
