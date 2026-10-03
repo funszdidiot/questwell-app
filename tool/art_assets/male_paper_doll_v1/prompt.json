@@ -1,0 +1,24 @@
+{
+  "status": "draft_pending_founder_body_approval",
+  "tool": "built-in image_gen",
+  "prompt": "Use case: identity-preserve. Asset type: male RPG paper-doll FOUNDATION, not an outfit.\nEdit the supplied reference into a clean complete undergarment body approval draft. Retain the same male character, exact head position, hairstyle and face, body proportions, moderately defined male frame, shoulder width, waist, hips, arm angles, relaxed hand positions, leg spacing and outward-pointing feet. Preserve the exact 3:4 full-canvas registration with generous existing empty margins. Do not make him taller, broader, more muscular, more slender or more heroic.\nHe wears only the reference's plain ivory sleeveless crew-neck undershirt and modest loose charcoal mid-thigh under-shorts, and is barefoot. This complete body will be frozen after approval and clothes will be layered over and behind it later. Resolve clean continuous anatomy from shoulders to wrists to hands and from thighs through knees/ankles to complete toes and heels; each hand and foot is complete and unobscured. No cuffs, wrist bands, remnants of sleeves, footwear, belt, equipment, clothing overlays or accessories. No outlines or seams on bare skin that resemble clothing.\nSame warm softly painted 2D fantasy game illustration and linework. Keep the entire character visible. Genuine transparent background; no ground, cast shadow, scene, text, labels or border. One full-body avatar only, not a sheet.",
+  "canvas": [
+    240,
+    320
+  ],
+  "candidate": {
+    "path": "tool/art_assets/male_paper_doll_v1/paper_doll_male_candidate_v1.webp",
+    "sha256": "2c90a72d3b3c08cfb91638bb87efaf893e16894d766d3ad7ea0e1fe3e050d544"
+  },
+  "identity": {
+    "path": "tool/art_assets/male_paper_doll_v1/paper_doll_male_identity_candidate_v1.webp",
+    "sha256": "226055ef915b9f3250a0007ddf464afd5f99a781dfb5b23f4bd4fbcd817a34ef"
+  },
+  "sourceSha256": "ef5971b579665b0ad4db2bc02f4a2830d9b43f579bbbd2165c798ce7fb3c0f1c",
+  "validation": {
+    "changedVisibleHeadHairRgb": 0,
+    "changedHeadHairAlpha": 0,
+    "existingApprovedAssets": "verified_unchanged"
+  },
+  "wardrobe_gate": "No new male outfits until neutral everyday outfit, robes and Woodland Scout are completed."
+}
