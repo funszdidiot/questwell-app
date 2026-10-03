@@ -563,7 +563,51 @@
         },
         {
           "path": "tool/female_avatar_fit_reference.json",
-          "sha256": "c790012099d8fb081600a7df9591e95064c8305b10a3dda5958592eeb998b0fa"
+          "sha256": "7b37cadf6f757f00eaff582c2ee8e444f74420050fe12c3094f12b134cd3dc2b"
+        }
+      ]
+    },
+    "scout_female_v8": {
+      "visual_approval": "founder_approved_exact_alchemist_geometry_scout_surface_for_review",
+      "description": "Rustic olive Scout surface with fern embroidery and brown trim, no breast pockets. Front, cuffs and rear alpha are pixel-identical to locked Alchemist female v7.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_female_v8.webp",
+          "sha256": "909bd5c9c536ea8406cf8a9053e8e5ab4bb5eaeaad581e416b4b0473ef7e308b"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_cuff_front_female_v8.webp",
+          "sha256": "60fa18b0178b459fd222a54864ea7979368bcf7afcfc215322b9258b5fd01ff7"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_rear_female_v8.webp",
+          "sha256": "98aecce0ec0593cb6f81645052aed704ee12c5a9c32bd822ad8e91dbb5b5e8ba"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/art_assets/scout_female_v8/robe_source.png",
+          "sha256": "a1019365344fb38ab1aa71d8d5238a96f9619f5791ed5cec8c7ed7cb5a7fbf84"
+        },
+        {
+          "path": "tool/art_assets/scout_female_v8/chest_without_pockets.png",
+          "sha256": "c7bb73f348b1b11c71d8e03cf76c1b04e92c81e16a0a66bba3d9091f0d89e93b"
+        },
+        {
+          "path": "tool/art_assets/scout_female_v8/texture_landmarks.txt",
+          "sha256": "3e4b1c2b516ee12171c203f4aff96a07243ff7c11dfd8a0cb7fb0c4cbfe555f9"
+        },
+        {
+          "path": "tool/art_assets/scout_female_v8/prompts.json",
+          "sha256": "f141b12870c8ada45bc1edf1829ed1e37dac3e04bbbf0b2214b38660754f9b74"
+        },
+        {
+          "path": "tool/export_scout_female_v8.sh",
+          "sha256": "157de8eaabc1d9b54946ecdb5707d05f8ebc2c105ba9b8b7846cb47a8f71e46c"
+        },
+        {
+          "path": "tool/female_avatar_fit_reference.json",
+          "sha256": "7b37cadf6f757f00eaff582c2ee8e444f74420050fe12c3094f12b134cd3dc2b"
         }
       ]
     }
@@ -720,7 +764,7 @@
         },
         {
           "path": "tool/female_avatar_fit_reference.json",
-          "sha256": "c790012099d8fb081600a7df9591e95064c8305b10a3dda5958592eeb998b0fa"
+          "sha256": "7b37cadf6f757f00eaff582c2ee8e444f74420050fe12c3094f12b134cd3dc2b"
         }
       ]
     },

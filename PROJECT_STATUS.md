@@ -1,5 +1,11 @@
 # Questwell Project Status
 
+## Scout rebuilt on the exact locked Alchemist fit — 2026-10-03
+
+Tanya accepted the existing Alchemist v7 fit (“It’s perfect”) and requested Scout use those exact specifications. The proposed additional Alchemist right-cuff edit was stopped before changing any asset. She then clarified: no breast/chest pockets for Scouts. Scout v8 now uses the exact Alchemist v7 front, cuff and rear alpha masks, with olive cloth, flax fern embroidery and brown trim. Both breast pockets/buttons were removed. Body, identity, everyday clothing and Alchemist artwork are unchanged.
+
+Development checks are in progress. Geometry is locked; the new Scout surface remains for founder visual review. See `docs/art/SCOUT_FEMALE_V8.md`. No merge to `flutterflow` or launch.
+
 ## Female Alchemist — both inward cuff adjustments locked — 2026-10-03
 
 Tanya followed the left-wrist correction with: “Widen the cuff on the inside of the right wrist now and lock that in.” Version 7 retains the image-left cuff correction and adds the same inward allowance on the image-right cuff. Both outer wrist edges, body, identity and all other robe artwork remain fixed. The manifest records v7 as the locked female Alchemist fit. See `docs/art/ALCHEMIST_FEMALE_V7.md`.

@@ -181,6 +181,26 @@
     "Male and neutral bases need their own accepted paper dolls before fitting garments."
   ],
   "robe_template": {
+    "version": "alchemist_female_v7_exact_geometry",
+    "visual_status": "founder_approved_2026_10_03",
+    "scout_surface_variant": "female_v8_no_breast_pockets",
+    "rule": "All three Scout v8 alpha masks must be pixel-identical to the corresponding locked Alchemist v7 alpha masks. Body and 240x320 canvas remain immutable.",
+    "geometry_assets": [
+      {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v7.webp",
+        "sha256": "96c0268d966468cb460ba824307dc84fc3917266c18faa1e052e844f0f676f56"
+      },
+      {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_female_v7.webp",
+        "sha256": "32a98e9f7130d667271296be451f4461c0ce052771fa269ae7715b6460d4273e"
+      },
+      {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v7.webp",
+        "sha256": "b13c9198b82f79c81e2d79a2cf53c0a0df95c5f28e3c0f09754eaeb51d03c49f"
+      }
+    ]
+  },
+  "previous_scout_robe_template": {
     "version": "female_v7",
     "source": {
       "path": "tool/art_assets/scout_female_v7/robe_fitted_source.png",

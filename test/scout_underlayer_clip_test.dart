@@ -95,9 +95,9 @@ void main() {
             find.descendant(of: layer, matching: find.byType(Image)),
           ).map((image) => (image.image as AssetImage).assetName).toList();
           if (body == 'female') {
-            expect(images.first,'assets/images/questwell/avatar/scout_robe_rear_female_v7.webp');
+            expect(images.first,'assets/images/questwell/avatar/scout_robe_rear_female_v8.webp');
             expect(images,contains('assets/images/questwell/avatar/base/paper_doll_female_v1.webp'));
-            expect(images.last,'assets/images/questwell/avatar/scout_robe_cuff_front_female_v7.webp');
+            expect(images.last,'assets/images/questwell/avatar/scout_robe_cuff_front_female_v8.webp');
             expect(find.descendant(of:layer,matching:find.byWidgetPredicate(
               (widget)=>widget is ClipPath && widget.clipper is ScoutUnderlayerClipper)),findsNothing);
             continue;

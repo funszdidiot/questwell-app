@@ -15,7 +15,7 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
 
   static String asset(String body, String part) {
     final version = body == 'female'
-        ? (part.startsWith('robe') ? 'v7' : 'v6')
+        ? (part.startsWith('robe') ? 'v8' : 'v6')
         : part.startsWith('robe') ? 'v4' : 'v1';
     return 'assets/images/questwell/avatar/scout_${part}_${body}_$version.webp';
   }

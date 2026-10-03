@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
@@ -7,6 +9,28 @@ import '../lib/preview/scout_wardrobe_review.dart';
 import '../lib/widgets/questwell_woodland_scout.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  test('Scout front, cuffs and rear exactly reuse the locked Alchemist geometry', () async {
+    Future<List<int>> alpha(String asset) async {
+      final data = await rootBundle.load(asset);
+      final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+      final image = (await codec.getNextFrame()).image;
+      codec.dispose();
+      try {
+        expect([image.width, image.height], [240, 320]);
+        final pixels = (await image.toByteData(format: ui.ImageByteFormat.rawRgba))!;
+        return [for (var index = 3; index < pixels.lengthInBytes; index += 4) pixels.getUint8(index)];
+      } finally {
+        image.dispose();
+      }
+    }
+    for (final part in ['robe', 'robe_cuff_front', 'robe_rear']) {
+      expect(await alpha(QuestwellScoutWardrobeFoundation.asset('female', part)),
+          await alpha('assets/images/questwell/avatar/classes/alchemist/alchemist_${part}_female_v7.webp'),
+          reason: '$part must preserve the approved outline pixel for pixel');
+    }
+  });
+
   List<String> assets(WidgetTester tester) => tester
       .widgetList<Image>(find.byType(Image))
       .map((image) => image.image)
