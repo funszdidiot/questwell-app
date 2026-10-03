@@ -47,8 +47,10 @@ class QuestwellAdventurerView extends StatefulWidget {
 }
 
 class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
-  bool _inventory = false;
+  String _section = 'Equipped';
   String _ownership = 'Owned';
+  String _query = '';
+  final _searchController = TextEditingController();
   String _category = 'All categories';
   String _collection = 'All collections';
   static const _gold = Color(0xFFE4C586);
@@ -64,18 +66,32 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
     child: Padding(padding: const EdgeInsets.all(16), child: child));
 
   @override
+  void dispose() { _searchController.dispose(); super.dispose(); }
+
+  String _group(AdventurerInventoryItem item) {
+    if (item.category == 'room' || item.category == 'wall_art') return 'Hearth';
+    if (item.category == 'familiar') return 'Familiars';
+    if (item.category == 'effect') return 'Effects';
+    if (item.category == 'chest') return 'Outfits';
+    return 'Gear';
+  }
+
+  @override
   Widget build(BuildContext context) {
     final masteryItem = widget.items.where((item) => item.owned &&
       item.slug == QuestwellMasteryRelic.slugs[widget.archetype]).firstOrNull;
     final owned = widget.items.where((item) => item.owned).length;
     final equipped = widget.items.where((item) => item.equipped).toList();
-    final categories = widget.items.map((item) => item.category).toSet().toList()..sort();
+    const categories = ['All categories','Outfits','Gear','Familiars','Effects','Hearth'];
     final category = categories.contains(_category) ? _category : 'All categories';
     final visible = widget.items.where((item) =>
-      (_collection == 'All collections' || (_collection == 'Trophies'
-        ? item.milestoneLevel != null || QuestwellMasteryRelic.supports(item.slug) : item.shop && item.archetype == widget.archetype)) &&
+      (_section != 'Collections' || item.collectionKey != null) &&
+      (_collection == 'All collections' || item.collectionKey == _collection ||
+        (_collection == 'Trophies' && (item.milestoneLevel != null || QuestwellMasteryRelic.supports(item.slug)))) &&
       (_ownership == 'All items' || (_ownership == 'Equipped' ? item.equipped : item.owned)) &&
-      (category == 'All categories' || item.category == category)).toList();
+      (category == 'All categories' || _group(item) == category) &&
+      ('${item.name} ${item.description} ${item.collectionKey ?? ''}'.toLowerCase()
+        .contains(_query.toLowerCase().trim()))).toList();
     return ListView(physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(18, 12, 18, 28), children: [
         Row(children: [
@@ -92,7 +108,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           QuestwellEquippedAvatar(archetype: widget.archetype, avatarBodyType: widget.bodyType,
             height: 250, artHeightFactor: .96, showRelic: widget.mastered,
             equippedSlugs: {for (final item in equipped) item.renderKey: item.slug}),
-          if (_inventory && (category == 'room' || category == 'wall_art') && widget.items.any((item) => item.category == category && item.owned)) ...[
+          if (_section == 'Inventory' && category == 'Hearth' && widget.items.any((item) => (item.category == 'room' || item.category == 'wall_art') && item.owned)) ...[
             const SizedBox(height: 16),
             _heading('YOUR HEARTH'),
             const SizedBox(height: 8),
