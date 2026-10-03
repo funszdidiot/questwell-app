@@ -52,8 +52,22 @@ void main() {
         expect(tester.takeException(), isNull);
       }
       await render({});
-      expect(find.byType(QuestwellCleanBase), findsOneWidget);
-      expect(tester.widget<QuestwellCleanBase>(find.byType(QuestwellCleanBase)).withTrousers, isTrue);
+      if (body == 'female') {
+        expect(find.byType(QuestwellCleanBase), findsNothing);
+        final defaultImages = tester.widgetList<Image>(find.byType(Image))
+          .map((i) => (i.image as AssetImage).assetName).toList();
+        expect(defaultImages, containsAll([
+          'assets/images/questwell/avatar/base/paper_doll_female_v1.webp',
+          'assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp',
+          'assets/images/questwell/avatar/scout_top_female_v6.webp',
+          'assets/images/questwell/avatar/scout_trousers_female_v6.webp',
+          'assets/images/questwell/avatar/scout_boots_female_v6.webp',
+          'assets/images/questwell/avatar/classes/wanderer/wanderer_robe_female_v3.webp',
+        ]));
+      } else {
+        expect(find.byType(QuestwellCleanBase), findsOneWidget);
+        expect(tester.widget<QuestwellCleanBase>(find.byType(QuestwellCleanBase)).withTrousers, isTrue);
+      }
       await render({'chest':'starter-business-suit'});
       expect(find.byType(QuestwellCleanBase), findsNothing);
       final images = tester.widgetList<Image>(find.byType(Image))
