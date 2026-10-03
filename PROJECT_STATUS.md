@@ -1,5 +1,11 @@
 # Questwell Project Status
 
+## Latest Guardian correction authorized for delivery — 2026-10-03
+
+Tanya repeated the narrow inner-flap correction on the original robe image, then instructed “Send it” after the latest result. The app now uses that exact latest source (`robe_final_no_inner_flaps.png`) registered to the same immutable Alchemist v7 front and cuff masks. The rear cloth, body, identity and other classes are unchanged. See `docs/art/GUARDIAN_FEMALE_V4.md`.
+
+Latest Guardian delivery checks pending. No merge to `flutterflow` or launch.
+
 ## Female Guardian on the locked robe geometry — 2026-10-03
 
 Tanya requested Guardian next and then directed removal of the extra inner flap while retaining the original design. The corrected v4 source has a clean opening directly beside the gold borders. All three exported cloth masks exactly match locked Alchemist v7, including both widened inner cuffs. Burgundy cloth, gold trim, the sleeve crest, brass fasteners and simple hem chevrons retain the Guardian styling. The fixed body and identity are unchanged; male and neutral behavior is retained. See `docs/art/GUARDIAN_FEMALE_V4.md`.

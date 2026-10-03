@@ -656,16 +656,16 @@
       ]
     },
     "guardian_female_v4": {
-      "visual_approval": "founder_approved_exact_alchemist_geometry_guardian_surface_for_review",
-      "description": "Burgundy/gold Guardian, corrected to remove the unwanted inner flaps. Front, cuffs and rear alpha are pixel-identical to locked Alchemist female v7.",
+      "visual_approval": "founder_authorized_latest_corrected_guardian_delivery_2026_10_03",
+      "description": "Latest original-framing Guardian retouch removes inner flaps. Front and cuffs retain pixel-identical locked Alchemist v7 alpha; rear and female anatomy are unchanged.",
       "assets": [
         {
           "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_female_v4.webp",
-          "sha256": "268593494c5ae7d445661c3c3ec4a566886c6933879aa768dc0128a07e26321f"
+          "sha256": "9a8c8a046720837e74a809a9c92125ab06d2d36fcb558a8db5b949fb10f1bd5b"
         },
         {
           "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_cuff_front_female_v4.webp",
-          "sha256": "f8203716a3975d64c601063bb983701551c6dfeba95be8fa4e1c61051c53f6f3"
+          "sha256": "a662aeae6da86a5e7d871d39ec17e3cfdf60aa53b63cc5357dddf908eb8af31c"
         },
         {
           "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_female_v4.webp",
@@ -683,15 +683,15 @@
         },
         {
           "path": "tool/art_assets/guardian_female_v4/prompts.json",
-          "sha256": "9ef21c7b2164461ad67bb472d7ecc642807bfe6076bd69aeb26ad1324c0a9a0d"
+          "sha256": "0b5c5e81e62d2d38ae131f3cd506e91d759283ecb6465f80f732f2b77d5a0a96"
         },
         {
           "path": "tool/art_assets/guardian_female_v4/texture_landmarks.txt",
-          "sha256": "99da622cc1694ee3a0456bf980c0b524fe1375f38bfdd4b756ad2ff943f51c31"
+          "sha256": "aa0d2d35602487c786541a8500cac258abdff21a76bceea2436673e2a560c626"
         },
         {
           "path": "tool/export_guardian_female_v4.sh",
-          "sha256": "d79d901f5fdac93ee54e37d6f0254224d9b7bae452aabecd8d0f3bef4a8bd2fb"
+          "sha256": "2980f24afd8ccf9159b4e1c2c0e43e3c06d5778a9721ab7025af4e08c3a69908"
         },
         {
           "path": "tool/female_avatar_fit_reference.json",
@@ -700,6 +700,10 @@
         {
           "path": "assets/images/questwell/avatar/classes/guardian/guardian_rear_female_wrap_v1.webp",
           "sha256": "aaa1bbb93a87c0fb08734cb2e07d12c9083c394cd15f27b1ea66317d8f7d967c"
+        },
+        {
+          "path": "tool/art_assets/guardian_female_v4/robe_final_no_inner_flaps.png",
+          "sha256": "eb286d4d333c4ec109d9c59b666e5faf77e0d0363efde1d04f1deb0882332ffa"
         }
       ]
     }

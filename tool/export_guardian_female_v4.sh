@@ -6,8 +6,8 @@ trap 'rm -rf "$questwell_temp"' EXIT
 questwell_assets="$questwell_root/assets/images/questwell/avatar/classes"
 questwell_source="$questwell_root/tool/art_assets/guardian_female_v4"
 # Register only the generated surface. Locked silhouettes are copied below.
-convert "$questwell_source/robe_without_inner_flaps.png" -resize 190x273! \
-  -background none -gravity northwest -splice 22x42 -extent 240x320 "$questwell_temp/texture.png"
+convert "$questwell_source/robe_final_no_inner_flaps.png" -resize 230x320! \
+  -background none -gravity northwest -splice 1x3 -extent 240x320 "$questwell_temp/texture.png"
 questwell_landmarks="$(cat "$questwell_source/texture_landmarks.txt")"
 convert "$questwell_temp/texture.png" -virtual-pixel transparent \
   -distort Shepards "$questwell_landmarks" "$questwell_temp/registered.png"
