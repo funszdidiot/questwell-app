@@ -4,7 +4,7 @@
 
 Tanya requested Guardian next and then directed removal of the extra inner flap while retaining the original design. The corrected v4 source has a clean opening directly beside the gold borders. All three exported cloth masks exactly match locked Alchemist v7, including both widened inner cuffs. Burgundy cloth, gold trim, the sleeve crest, brass fasteners and simple hem chevrons retain the Guardian styling. The fixed body and identity are unchanged; male and neutral behavior is retained. See `docs/art/GUARDIAN_FEMALE_V4.md`.
 
-Deployment checks pending. Geometry is locked; the corrected Guardian surface is for founder visual review. No merge to `flutterflow` or launch.
+Release `32ee6d1` passed Flutter Check `37141237612` and Preview `37141237663`. The live Guardian review shows the corrected front opening and locked cuffs on the unchanged body. Automated checks cover exact alpha equality, all clothing subsets, depth order, body-specific rendering, equipment, outfit restoration and phone layouts. Physical-phone and signed-in UI review were not performed. Geometry is locked; the corrected Guardian surface is for founder visual review. No merge to `flutterflow` or launch.
 
 ## Female Scholar on the locked robe geometry — 2026-10-03
 
