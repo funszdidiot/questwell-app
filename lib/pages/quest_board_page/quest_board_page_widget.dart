@@ -9,7 +9,6 @@ import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_quest_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class QuestBoardPageWidget extends StatefulWidget {
   const QuestBoardPageWidget({super.key});
@@ -26,7 +25,6 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
   int _completedThisVisit = 0;
   String? _busyTaskId;
   bool _settingAside = false;
-  Set<String> _favoriteTaskIds = <String>{};
   late Future<List<TasksRow>> _tasksFuture;
   late Future<List<QuestwellBossBattle>> _bossFuture;
 
@@ -34,31 +32,22 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
   void initState() {
     super.initState();
     _refresh();
-    _loadFavorites();
-  }
-
-  String get _favoritesStorageKey =>
-      'questwell_favorite_quests_${currentUserUid.isEmpty ? 'guest' : currentUserUid}';
-
-  Future<void> _loadFavorites() async {
-    final prefs = await SharedPreferences.getInstance();
-    final saved = prefs.getStringList(_favoritesStorageKey) ?? const <String>[];
-    if (!mounted) return;
-    setState(() => _favoriteTaskIds = saved.toSet());
   }
 
   Future<void> _toggleFavorite(TasksRow task) async {
     final taskId = task.id;
-    if (taskId == null) return;
-
-    final updated = Set<String>.from(_favoriteTaskIds);
-    if (!updated.add(taskId)) {
-      updated.remove(taskId);
+    if (taskId == null || _busyTaskId != null) return;
+    setState(() => _busyTaskId = taskId);
+    try {
+      await SupaFlow.client.rpc('set_pinned_quest', params: {'p_task_id': taskId});
+      if (!mounted) return;
+      setState(_refresh);
+    } catch (_) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Could not update the pinned quest. Please try again.')));
+    } finally {
+      if (mounted) setState(() => _busyTaskId = null);
     }
-
-    setState(() => _favoriteTaskIds = updated);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(_favoritesStorageKey, updated.toList()..sort());
   }
 
   void _refresh() {
@@ -117,9 +106,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
       case 'boss':
         return const <TasksRow>[];
       case 'favorites':
-        return tasks
-            .where((task) => task.id != null && _favoriteTaskIds.contains(task.id))
-            .toList();
+        return tasks.where((task) => task.pinnedAt != null).toList();
       default:
         return tasks;
     }
@@ -414,7 +401,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                             busy: _busyTaskId == task.id,
                             busyLabel: _settingAside ? 'Setting aside…' : 'Completing…',
                             favorite: task.id != null &&
-                                _favoriteTaskIds.contains(task.id),
+                                task.pinnedAt != null,
                             onFavorite: () => _toggleFavorite(task),
                             onEdit: _busyTaskId == null ? () => _edit(task) : null,
                             onSetAside: _busyTaskId == null ? () => _setAside(task) : null,
