@@ -195,6 +195,21 @@ void main() {
           final images = tester.widgetList<Image>(
             find.descendant(of: layer, matching: find.byType(Image)),
           ).map((image) => (image.image as AssetImage).assetName).toList();
+          if (body == 'female') {
+            expect(images, [
+              'assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_female_v4.webp',
+              'assets/images/questwell/avatar/base/paper_doll_female_v1.webp',
+              'assets/images/questwell/avatar/scout_trousers_female_v6.webp',
+              'assets/images/questwell/avatar/scout_top_female_v6.webp',
+              'assets/images/questwell/avatar/scout_boots_female_v6.webp',
+              'assets/images/questwell/avatar/classes/guardian/guardian_robe_female_v4.webp',
+              'assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp',
+              'assets/images/questwell/avatar/classes/guardian/guardian_robe_cuff_front_female_v4.webp',
+            ]);
+            expect(find.descendant(of: layer, matching: find.byWidgetPredicate(
+              (widget) => widget is ClipPath && widget.clipper is GuardianUnderlayerClipper)), findsNothing);
+            continue;
+          }
           expect(images, [
             'assets/images/questwell/avatar/classes/guardian/guardian_rear_${body}_wrap_v1.webp',
             'assets/images/questwell/avatar/base/clean_${body}_v1.webp',

@@ -40,6 +40,9 @@ void main() {
   } else if (Uri.base.queryParameters['review'] == 'scholar-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp(archetype: 'scholar')));
+  } else if (Uri.base.queryParameters['review'] == 'guardian-wardrobe') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp(archetype: 'guardian')));
   } else if (Uri.base.queryParameters['review'] == 'scout-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp()));

@@ -46,10 +46,12 @@ void main() {
           child: QuestwellLayeredAdventurerArt(archetype:kind, avatarBodyType:body, equippedSlugs:const {}))));
         final images = tester.widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName).toList();
-        if (const {'scout', 'alchemist', 'scholar'}.contains(kind) && body == 'female') {
+        if (const {'scout', 'alchemist', 'scholar', 'guardian'}.contains(kind) && body == 'female') {
           final prefix = kind == 'scout' ? 'assets/images/questwell/avatar/scout_'
               : 'assets/images/questwell/avatar/classes/$kind/${kind}_';
-          final version = kind == 'scout' ? 'v8' : kind == 'alchemist' ? 'v7' : 'v3';
+          final version = switch (kind) {
+            'scout' => 'v8', 'alchemist' => 'v7', 'guardian' => 'v4', _ => 'v3',
+          };
           expect(images.first, '${prefix}robe_rear_female_$version.webp');
           final base=images.indexOf('assets/images/questwell/avatar/base/paper_doll_female_v1.webp');
           final front=images.indexOf('${prefix}robe_female_$version.webp');

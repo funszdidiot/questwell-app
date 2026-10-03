@@ -10,7 +10,7 @@ import '../lib/widgets/questwell_woodland_scout.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  test('Scout and Scholar front, cuffs and rear exactly reuse the locked Alchemist geometry', () async {
+  test('Female class front, cuffs and rear exactly reuse the locked Alchemist geometry', () async {
     Future<List<int>> alpha(String asset) async {
       final data = await rootBundle.load(asset);
       final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
@@ -31,6 +31,8 @@ void main() {
           reason: '$part must preserve the approved outline pixel for pixel');
       expect(await alpha('assets/images/questwell/avatar/classes/scholar/scholar_${part}_female_v3.webp'),
           locked, reason: 'Scholar $part must preserve the same locked outline');
+      expect(await alpha('assets/images/questwell/avatar/classes/guardian/guardian_${part}_female_v4.webp'),
+          locked, reason: 'Guardian $part must preserve the same locked outline');
     }
   });
 
@@ -52,7 +54,7 @@ void main() {
           archetype: archetype, avatarBodyType: 'female', equippedSlugs: const {},
           previewScoutLayers: layers)))));
 
-  for (final archetype in ['scout', 'alchemist', 'scholar']) {
+  for (final archetype in ['scout', 'alchemist', 'scholar', 'guardian']) {
   testWidgets('$archetype female body and registration stay fixed for every clothing subset', (tester) async {
     const choices = ['top', 'trousers', 'boots', 'robe'];
     const basePath = QuestwellScoutWardrobeFoundation.femaleBaseAsset;
@@ -76,8 +78,10 @@ void main() {
           .where((clip) => clip.clipper is ScoutWardrobeClipper), isEmpty);
       final paths = assets(tester);
       String layerAsset(String part) {
-        if (const {'alchemist', 'scholar'}.contains(archetype) && part.startsWith('robe')) {
-          final version = archetype == 'alchemist' ? 'v7' : 'v3';
+        if (const {'alchemist', 'scholar', 'guardian'}.contains(archetype) && part.startsWith('robe')) {
+          final version = switch (archetype) {
+            'alchemist' => 'v7', 'guardian' => 'v4', _ => 'v3',
+          };
           return 'assets/images/questwell/avatar/classes/$archetype/${archetype}_${part}_female_$version.webp';
         }
         return QuestwellScoutWardrobeFoundation.asset('female', part);
@@ -219,7 +223,7 @@ void main() {
   });
 
   for (final width in [320.0, 390.0]) {
-    for (final mode in ['scout', 'woodland', 'alchemist', 'scholar']) {
+    for (final mode in ['scout', 'woodland', 'alchemist', 'scholar', 'guardian']) {
     final woodland = mode == 'woodland';
     testWidgets('three-stage fitting scrolls without overflow at $width (mode: $mode)', (tester) async {
       tester.view.devicePixelRatio = 1;

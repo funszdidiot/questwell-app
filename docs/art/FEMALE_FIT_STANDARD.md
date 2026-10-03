@@ -22,6 +22,8 @@ For robes, retain a continuous back panel behind the body and a front garment ah
 
 ## Development integration
 
+Guardian female v4 follows the same three exact Alchemist v7 masks. Its burgundy-and-gold surface removes the rejected extra inner flaps and keeps the approved front opening. See `GUARDIAN_FEMALE_V4.md`.
+
 Scholar female v3 also copies all three locked Alchemist v7 alpha masks exactly. Its navy-and-gold diamond surface is a design preview; the frozen body and accepted geometry are retained. See `SCHOLAR_FEMALE_V3.md`.
 
 The approved Woodland Scout now uses one complete static image in the shared avatar renderer. Equip/unequip, Market, Hearth and Adventurer portraits share that renderer. The fitting page compares the frozen body, existing Everyday outfit, and approved Woodland outfit; its single outfit toggle reflects the actual construction. Existing optional footwear replaces the lower image region through the established footwear occlusion, without rescaling the body or outfit.

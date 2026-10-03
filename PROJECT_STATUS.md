@@ -1,5 +1,11 @@
 # Questwell Project Status
 
+## Female Guardian on the locked robe geometry — 2026-10-03
+
+Tanya requested Guardian next and then directed removal of the extra inner flap while retaining the original design. The corrected v4 source has a clean opening directly beside the gold borders. All three exported cloth masks exactly match locked Alchemist v7, including both widened inner cuffs. Burgundy cloth, gold trim, the sleeve crest, brass fasteners and simple hem chevrons retain the Guardian styling. The fixed body and identity are unchanged; male and neutral behavior is retained. See `docs/art/GUARDIAN_FEMALE_V4.md`.
+
+Deployment checks pending. Geometry is locked; the corrected Guardian surface is for founder visual review. No merge to `flutterflow` or launch.
+
 ## Female Scholar on the locked robe geometry — 2026-10-03
 
 Tanya requested Scholar next. Scholar v3 carries the existing navy/violet-and-gold styling onto the exact Alchemist v7 front, cuff and rear masks, including both inward-widened cuffs. The frozen female body, identity and Everyday clothing remain unchanged. The shared renderer and `?review=scholar-wardrobe` now use this version; male and neutral Scholar behavior is retained. Geometry is locked; the new Scholar surface remains for founder visual review. See `docs/art/SCHOLAR_FEMALE_V3.md`.

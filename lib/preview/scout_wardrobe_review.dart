@@ -26,6 +26,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
   String get className => switch (widget.archetype) {
     'alchemist' => 'Alchemist',
     'scholar' => 'Scholar',
+    'guardian' => 'Guardian',
     _ => 'Scout',
   };
 
@@ -145,7 +146,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
       const SizedBox(height: 4),
       Text(
         body == 'female'
-            ? (widget.archetype == 'scholar' ? 'Locked female fit. Scholar design preview.'
+            ? (const {'scholar', 'guardian'}.contains(widget.archetype) ? 'Locked female fit. $className design preview.'
                 : widget.archetype == 'alchemist' ? 'Approved female Alchemist fit.' : 'Approved female fit.')
             : 'Previous fit candidate — fixed-body rebuild pending.',
         textAlign: TextAlign.center,
