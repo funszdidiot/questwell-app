@@ -17,3 +17,5 @@ Each body's fit must be reviewed and accepted individually. Only then does that 
 The development review provides All three fits / Female fit / Male fit / Gender-neutral fit, with larger portraits and centered wrist closeups for the individual views. Use `?review=scout-wardrobe&body=female&detail=cuffs` (or `male` / `neutral`). This remains development-only and does not replace other class robes or alter inventory.
 
 Local review: all nine fitted passes passed the non-folding check. Side-by-side composites show the bowed hip panels and separate wrist bands removed. Founder visual acceptance remains pending.
+
+Validation: development commit `4b5a6aed24f31c033c44c1b9ce2073c34c762d85`; Questwell Preview run `37094606910` and Flutter Check run `37094606896` both succeeded. The live preview was inspected with all three bodies, enlarged female fitting, and grimoire and lantern grips. These checks establish rendering and interaction behavior, not founder acceptance of the silhouettes.
