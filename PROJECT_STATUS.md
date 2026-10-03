@@ -1,4 +1,10 @@
+## Male foundation wider neck and fragment cleanup — 2026-10-03
+
+Tanya rejected the v2 neck and explicitly requested widening it to match the muscular body, removing fragments and cleaning local pixels. V3 replaces the complete neck contour, with a registered, antialiased join into the existing ivory collar. The final draft changes 937 visible/alpha pixels within x96–146, y67–91 and preserves all pixels outside the repair. Approved female/neutral assets remain unchanged. Independent full-figure and light/dark close-up review found the neck visibly wider and no local detached fragments or doubled shoulder strokes. See `docs/art/MALE_PAPER_DOLL_NECK_V3.md`. Still unapproved; no runtime replacement, male clothing, merge or launch. The neutral-first wardrobe gate remains in force.
+
 ## Male foundation neck-only correction — 2026-10-03
+
+This v2 attempt was subsequently rejected; see the v3 entry above.
 
 Tanya flagged the neck join and authorized correcting it alone. Male candidate v2 removes inherited collar fragments and softens the neck transition, with 269 changed pixels confined to the neck region and no visible/alpha changes elsewhere. Face and ivory-garment checks pass; approved female and neutral assets remain unchanged. Full and close-up review renders are ready in `tool/art_assets/male_paper_doll_v2/`. This remains a body-approval draft, not a locked foundation or app-avatar replacement. Male outfits remain on hold until the neutral everyday outfit, robes and Woodland Scout are finished. See `docs/art/MALE_PAPER_DOLL_NECK_V2.md`. No merge or launch.
 

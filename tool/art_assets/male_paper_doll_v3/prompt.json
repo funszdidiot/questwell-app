@@ -1,0 +1,23 @@
+{
+  "use_case": "precise-object-edit",
+  "mode": "built-in image_gen",
+  "status": "unapproved male foundation revision; v2 rejected",
+  "prompt": "Use case: precise-object-edit\nAsset type: Questwell male paper-doll avatar neck repair, transparent game sprite.\nInput images: Image 1 is the EDIT TARGET, an enlarged registered crop of the current neck. Image 2 is full-body proportion CONTEXT ONLY.\nPrimary request: Fix the visibly broken neck. WIDEN the neck noticeably, about 25–30 percent, to suit the broad muscular shoulders and arms. Make a strong, anatomically coherent neck joining the existing jaw to the existing upper torso. Remove the dangling gray/white remnants and broken dark collar-like shards on BOTH sides under the jaw; remove stray colored pixel fragments around the neck. Make both neck silhouette edges continuous, clean, and smoothly antialiased. A natural gentle trapezius slope into the shoulder/crew-neck junction, not a thin pinched stalk. Match the warm tan skin and existing illustrated shading.\nComposition: Output the SAME cropped composition, size/aspect ratio, alignment and scale as IMAGE 1. Do not output the full-body view. Preserve the exact face/jaw position, mouth, ears, and hair above the jaw. Preserve the shoulders, sleeveless ivory undershirt and arm placement. Alter only the neck, its immediate silhouette/edge debris, and the tiny neckline junction needed for the wider neck.\nStyle: same warm hand-painted anime fantasy game art, polished smooth contours, not pixel art.\nBackground: genuine transparent background, no black or white matte, no checkerboard drawing, no shadow, no border.\nConstraints: no head resizing or repositioning, no face change, no new haircut, no body or clothing redesign. No detached scraps, noisy halo, broken contour, collar shards, letters, text, watermark. This is a local neck repair, not a new character.",
+  "edit_target": "../male_paper_doll_v2/neck_detail_v2.png",
+  "proportion_reference": "../male_paper_doll_v2/male_paper_doll_review_v2.png",
+  "transparent_background": true,
+  "registration": "One coherent RGBA neck patch with tapered vertical source alignment of at most two native pixels. The original body is not warped.",
+  "verification": {
+    "changedPixels": 937,
+    "changedBounds": {
+      "minX": 96,
+      "minY": 67,
+      "maxX": 146,
+      "maxY": 91
+    },
+    "outsideRepairChanges": 0,
+    "approvedAssetsVerification": "passed",
+    "visualReview": "Full figure, light and dark backgrounds, independent review: wider neck and no local detached fragments or doubled shoulder strokes."
+  },
+  "scope": "Neck and immediate neckline only. No male clothing, runtime replacement, approved female/neutral changes, merge or launch."
+}

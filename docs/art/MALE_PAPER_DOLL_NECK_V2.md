@@ -1,5 +1,7 @@
 # Male paper doll — neck-only correction
 
+**Rejected by Tanya:** the narrow contour and fragmented neck edges remained. Superseded by the wider-neck v3 draft in `MALE_PAPER_DOLL_NECK_V3.md`. The following records the attempted v2 repair, not an accepted result.
+
 Tanya identified the head-to-neck join in the first male draft and explicitly authorized correcting only that connection. The original head restoration had carried small old collar fragments into the new neck and left an uneven transition. V2 removes those fragments and softens the neck shading below the unchanged jaw.
 
 This is still an unapproved male foundation. No male outfits, app-avatar replacement, Market/account changes, merge or launch are included. The neutral-first wardrobe gate in `PAPER_DOLL_STANDARD.md` remains in force.
