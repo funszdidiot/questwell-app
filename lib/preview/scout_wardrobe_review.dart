@@ -10,8 +10,9 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
   final Set<String> layers = {'top', 'trousers', 'robe'};
   bool accessories = false;
   bool detail = false;
+  bool compareBase = true;
   String held = 'none';
-  String bodyView = 'all';
+  String bodyView = 'female';
   @override
   void initState() {
     super.initState();
@@ -19,25 +20,38 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
     if (q.containsKey('layers')) {
       layers.retainAll(q['layers']!.split(','));
     }
-    if (['female', 'male', 'neutral'].contains(q['body'])) bodyView = q['body']!;
+    if (['all', 'female', 'male', 'neutral'].contains(q['body'])) bodyView = q['body']!;
+    compareBase = q['compare'] != 'none';
     accessories = q['gear'] == 'all';
     detail = q['detail'] == 'cuffs';
     if (['brass-lantern', 'annotated-grimoire'].contains(q['held'])) held = q['held']!;
   }
-  Widget art(String body) => QuestwellLayeredAdventurerArt(archetype: 'scout',
-      avatarBodyType: body, previewScoutLayers: Set.of(layers), equippedSlugs: {
+  Widget art(String body, {bool withoutRobe = false}) => QuestwellLayeredAdventurerArt(archetype: 'scout',
+      avatarBodyType: body, previewScoutLayers: layers.where((l) => !withoutRobe || l != 'robe').toSet(), equippedSlugs: {
         if (held != 'none') 'hands': held,
         if (accessories) ...{'head': 'tiny-wizard-hat', 'face': 'round-scholar-glasses',
           'neck': 'emerald-scholar-scarf', 'back': 'leather-satchel',
           'accessory': 'moonstone-brooch', 'feet': 'pathfinder-boots'},
       });
-  Widget cuffs(String body) => SizedBox(height: 144, child: ClipRect(
+  Widget cuffs(String body, {bool withoutRobe = false}) => SizedBox(height: 144, child: ClipRect(
     child: LayoutBuilder(builder: (context, constraints) {
       final scale = constraints.maxWidth / 148;
       return Stack(children: [Positioned(
         left: (constraints.maxWidth - 240 * scale) / 2, top: -153 * scale,
-        width: 240 * scale, height: 320 * scale, child: art(body))]);
+        width: 240 * scale, height: 320 * scale, child: art(body, withoutRobe: withoutRobe))]);
     })));
+  Widget fitCard(String body, {bool withoutRobe = false}) {
+    final label = body == 'neutral' ? 'Gender neutral' : body == 'female' ? 'Female' : 'Male';
+    final comparing = compareBase && bodyView != 'all';
+    return SizedBox(width: bodyView == 'all' ? 280 : comparing ? 360 : 420,
+      child: Column(children: [
+        Text(comparing ? '$label · ${withoutRobe ? 'Base fit' : 'Robe fit'}' : label,
+          style: const TextStyle(fontSize: 20, color: Color(0xFFE0C481))),
+        if (detail) cuffs(body, withoutRobe: withoutRobe),
+        SizedBox(width: double.infinity, height: bodyView == 'all' ? 400 : comparing ? 480 : 560,
+          child: art(body, withoutRobe: withoutRobe)),
+      ]));
+  }
   @override
   Widget build(BuildContext context) => MaterialApp(debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(), home: Scaffold(backgroundColor: const Color(0xFF1F3937),
@@ -61,6 +75,8 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                 onSelected: (v) => setState(() => accessories = v)),
               FilterChip(label: const Text('Cuff detail'), selected: detail,
                 onSelected: (v) => setState(() => detail = v)),
+              if (bodyView != 'all') FilterChip(label: const Text('Base beside robe'), selected: compareBase,
+                onSelected: (v) => setState(() => compareBase = v)),
               SizedBox(width: 190, child: DropdownButton<String>(isExpanded: true, value: held,
                 items: const [DropdownMenuItem(value: 'none', child: Text('Empty hands')),
                   DropdownMenuItem(value: 'brass-lantern', child: Text('Brass lantern')),
@@ -69,13 +85,10 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
             ]),
             const SizedBox(height: 24),
             Wrap(spacing: 18, runSpacing: 24, alignment: WrapAlignment.center, children: [
-              for (final body in bodyView == 'all' ? ['female', 'male', 'neutral'] : [bodyView])
-                SizedBox(width: bodyView == 'all' ? 280 : 420, child: Column(children: [
-                  Text(body == 'neutral' ? 'Gender neutral' : body == 'female' ? 'Female' : 'Male',
-                    style: const TextStyle(fontSize: 20, color: Color(0xFFE0C481))),
-                  if (detail) cuffs(body),
-                  SizedBox(width: double.infinity, height: bodyView == 'all' ? 400 : 560, child: art(body)),
-                ])),
+              for (final body in bodyView == 'all' ? ['female', 'male', 'neutral'] : [bodyView]) ...[
+                if (compareBase && bodyView != 'all') fitCard(body, withoutRobe: true),
+                fitCard(body),
+              ],
             ]),
             const SizedBox(height: 16),
             const Text('Wardrobe fitting preview', style: TextStyle(color: Colors.white60)),

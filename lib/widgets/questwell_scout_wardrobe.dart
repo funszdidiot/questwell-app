@@ -8,8 +8,13 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   const QuestwellScoutWardrobeFoundation({super.key, required this.body, required this.layers});
   final String body;
   final Set<String> layers;
-  static String asset(String body, String part) =>
-      'assets/images/questwell/avatar/scout_${part}_${body}_${part.startsWith('robe') ? 'v4' : 'v1'}.webp';
+  static String asset(String body, String part) {
+    if (body == 'female' && part == 'arms') {
+      return 'assets/images/questwell/avatar/base/clean_arms_female_v2.webp';
+    }
+    final version = body == 'female' ? 'v5' : part.startsWith('robe') ? 'v4' : 'v1';
+    return 'assets/images/questwell/avatar/scout_${part}_${body}_$version.webp';
+  }
   static Widget image(String path) => Image.asset(path, fit: BoxFit.contain,
       alignment: Alignment.bottomCenter, filterQuality: FilterQuality.high,
       gaplessPlayback: true);
@@ -17,10 +22,18 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   Widget build(BuildContext context) {
     final contents = Stack(fit: StackFit.expand, children: [
       ClipPath(clipper: ScoutWardrobeClipper(body, layers.contains('trousers') ? 'lowerReplacement' : 'all'),
-          child: QuestwellCleanBase(body: body)),
+          child: ClipPath(clipper: ScoutWardrobeClipper(body, body == 'female' ? 'replacedArms' : 'all'),
+            child: QuestwellCleanBase(body: body))),
+      if (body == 'female') ...[
+        ClipPath(clipper: const ScoutWardrobeClipper('female', 'neck'),
+          child: image('assets/images/questwell/avatar/base/clean_female_v1.webp')),
+        image(asset(body, 'arms')),
+      ],
       if (layers.contains('top')) ClipPath(clipper: ScoutWardrobeClipper(body, 'top'),
           child: image(asset(body, 'top'))),
       if (layers.contains('trousers')) image(asset(body, 'trousers')),
+      if (body == 'female') ClipPath(clipper: const ScoutWardrobeClipper('female', 'hands'),
+        child: image('assets/images/questwell/avatar/base/base_female.webp')),
     ]);
     return layers.contains('robe')
         ? ClipPath(clipper: ScoutWardrobeClipper(body, 'robeUnder'), child: contents)
@@ -43,12 +56,25 @@ class ScoutWardrobeClipper extends CustomClipper<Path> {
         const Offset(155, 202), const Offset(240, 202), const Offset(240, 320),
         const Offset(0, 320), const Offset(0, 202), const Offset(85, 202)], true);
       p = Path.combine(PathOperation.difference, p, removed);
+    } else if (part == 'replacedArms') {
+      p = Path.combine(PathOperation.difference, p, Path()
+        ..addRect(const Rect.fromLTRB(0, 108, 99, 202))
+        ..addRect(const Rect.fromLTRB(142, 108, 240, 202)));
+    } else if (part == 'neck') {
+      p = Path()..addRect(const Rect.fromLTRB(106, 70, 135, 85));
+    } else if (part == 'hands') {
+      // Include the complete original hands below the suit cuffs. The older
+      // narrow polygons cut into the skin and created triangular wrist joins.
+      p = Path()
+        ..addPolygon(const [Offset(65,171),Offset(85,171),Offset(90,195),Offset(60,195)], true)
+        ..addPolygon(const [Offset(155,171),Offset(174,171),Offset(179,195),Offset(153,195),Offset(153,182)], true);
     } else if (part == 'robeUnder') {
+      final wristTop = body == 'female' ? 166.0 : 169.0;
       p = Path()..addRect(const Rect.fromLTRB(0, 0, 240, 77))
         ..addRect(const Rect.fromLTRB(104, 73, 139, 196))
         ..addRect(const Rect.fromLTRB(0, 196, 240, 320))
-        ..addRect(const Rect.fromLTRB(60, 169, 89, 200))
-        ..addRect(const Rect.fromLTRB(151, 169, 183, 200));
+        ..addRect(Rect.fromLTRB(60, wristTop, 89, 200))
+        ..addRect(Rect.fromLTRB(151, wristTop, 183, 200));
       // Hands and hair remain in their original registration.
       for (final poly in CleanBaseClipper.polygons['$body:identity']!) {
         if (poly.first.dy >= 167) p.addPolygon(poly, true);
@@ -58,7 +84,7 @@ class ScoutWardrobeClipper extends CustomClipper<Path> {
       for (final poly in CleanBaseClipper.polygons['$body:identity']!) {
         if (poly.first.dy < 167) p.addPolygon(poly, true);
       }
-    } else if (part == 'robe') {
+    } else if (part == 'robe' && body != 'female') {
       p = Path.combine(PathOperation.difference, p,
           Path()..addRect(const Rect.fromLTRB(109, 0, 134, 84)));
     } else if (part == 'top' && body != 'female') {
