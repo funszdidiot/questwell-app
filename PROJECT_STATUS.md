@@ -6,6 +6,8 @@ Continued the founder-authorized fix after the v5 avatar and robe fitting was re
 
 Review: `?review=scout-wardrobe&body=female`. Female anatomy, right hip/leg, cuffs and robe silhouette remain pending founder visual acceptance; this is not yet a template approval. Male and neutral remain the prior candidates and need their own fitted templates after this female review. Source artwork and reproducible exports are preserved; all existing approved assets remain unchanged. See `docs/art/SCOUT_FEMALE_V6.md`. No merge to `flutterflow`, Market integration, or launch.
 
+Final code/test revision `e4618e5` passed Flutter Check `37100103057` and Preview `37100102961`. Live three-stage, enlarged cuff, grimoire and lantern/accessory reviews completed. Fixed-body checks cover all 16 female clothing combinations; phone comparison scrolling passes at 320/390 pixels. Founder visual acceptance is the next gate, with physical-phone visual review still outstanding.
+
 ## Wardrobe fit pass complete — 2026-10-02 (America/Chicago)
 
 Founder approved the clean bases and authorized the wardrobe pass. Reviewed all nine outfit designs across all three bodies and checked full accessories, book/lantern grips, cloak suppression, and outfit restoration. No new garment overlap found. Improved the development review controls and fixed its narrow-phone overflow. Final f9231ac passed Flutter Check 37088649997 (288 tests) and Preview 37088649877. Renderer switching checks cover 120 equipped scenarios; mobile layout checks cover 320/390px. No new signed-in persistence or physical iPhone test. See docs/art/CLEAN_AVATAR_BASES.md. Ready to return to beta-readiness review; no merge or launch.
