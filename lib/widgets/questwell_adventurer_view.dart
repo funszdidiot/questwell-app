@@ -224,6 +224,39 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       ]);
   }
 
+  Future<void> _editAppearance(BuildContext context) async {
+    await showModalBottomSheet<void>(context: context, isScrollControlled: true,
+      backgroundColor: const Color(0xFF19232D),
+      builder: (ctx) => SafeArea(child: SingleChildScrollView(padding: const EdgeInsets.all(20),
+        child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          _heading('EDIT ADVENTURER'),
+          const SizedBox(height: 14),
+          Text('Body style', style: _text(14, color: _muted)),
+          const SizedBox(height: 8),
+          Wrap(spacing: 8, runSpacing: 8, children: [
+            for (final value in const ['male','female','neutral'])
+              ChoiceChip(label: Text(value == 'neutral' ? 'Gender neutral' : _label(value)),
+                selected: widget.bodyType == value,
+                onSelected: widget.savingAppearance ? null : (_) => widget.onBody(value)),
+          ]),
+          const SizedBox(height: 18),
+          Text('Class', style: _text(14, color: _muted)),
+          const SizedBox(height: 8),
+          Wrap(spacing: 8, runSpacing: 8, children: [
+            for (final value in const ['scholar','scout','alchemist','guardian','wanderer'])
+              ChoiceChip(label: Text(_label(value)), selected: widget.archetype == value,
+                avatar: QuestwellClassEmblem(archetype: value),
+                onSelected: widget.savingAppearance ? null : (_) => widget.onClass(value)),
+          ]),
+          const SizedBox(height: 14),
+          Text(widget.savingAppearance ? 'Saving your adventurer…' : widget.description,
+            style: _text(13, color: _muted)),
+          const SizedBox(height: 16),
+          FilledButton(onPressed: widget.savingAppearance ? null : () => Navigator.pop(ctx),
+            child: const Text('Done')),
+        ]))));
+  }
+
   Future<void> _place(AdventurerInventoryItem item) async {
     final pick = await showRoomPicker(context, name: item.name, id: item.id,
       slug: item.slug, currentSlot: item.equipped ? item.roomSlot ?? 'right' : null,
