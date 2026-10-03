@@ -33,6 +33,8 @@ void main() {
           locked, reason: 'Scholar $part must preserve the same locked outline');
       expect(await alpha('assets/images/questwell/avatar/classes/guardian/guardian_${part}_female_v4.webp'),
           locked, reason: 'Guardian $part must preserve the same locked outline');
+      expect(await alpha('assets/images/questwell/avatar/classes/wanderer/wanderer_${part}_female_v3.webp'),
+          locked, reason: 'Wanderer $part must preserve the same locked outline');
     }
   });
 
@@ -54,7 +56,7 @@ void main() {
           archetype: archetype, avatarBodyType: 'female', equippedSlugs: const {},
           previewScoutLayers: layers)))));
 
-  for (final archetype in ['scout', 'alchemist', 'scholar', 'guardian']) {
+  for (final archetype in ['scout', 'alchemist', 'scholar', 'guardian', 'wanderer']) {
   testWidgets('$archetype female body and registration stay fixed for every clothing subset', (tester) async {
     const choices = ['top', 'trousers', 'boots', 'robe'];
     const basePath = QuestwellScoutWardrobeFoundation.femaleBaseAsset;
@@ -78,7 +80,7 @@ void main() {
           .where((clip) => clip.clipper is ScoutWardrobeClipper), isEmpty);
       final paths = assets(tester);
       String layerAsset(String part) {
-        if (const {'alchemist', 'scholar', 'guardian'}.contains(archetype) && part.startsWith('robe')) {
+        if (const {'alchemist', 'scholar', 'guardian', 'wanderer'}.contains(archetype) && part.startsWith('robe')) {
           final version = switch (archetype) {
             'alchemist' => 'v7', 'guardian' => 'v4', _ => 'v3',
           };
@@ -223,7 +225,7 @@ void main() {
   });
 
   for (final width in [320.0, 390.0]) {
-    for (final mode in ['scout', 'woodland', 'alchemist', 'scholar', 'guardian']) {
+    for (final mode in ['scout', 'woodland', 'alchemist', 'scholar', 'guardian', 'wanderer']) {
     final woodland = mode == 'woodland';
     testWidgets('three-stage fitting scrolls without overflow at $width (mode: $mode)', (tester) async {
       tester.view.devicePixelRatio = 1;

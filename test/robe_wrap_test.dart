@@ -46,7 +46,7 @@ void main() {
           child: QuestwellLayeredAdventurerArt(archetype:kind, avatarBodyType:body, equippedSlugs:const {}))));
         final images = tester.widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName).toList();
-        if (const {'scout', 'alchemist', 'scholar', 'guardian'}.contains(kind) && body == 'female') {
+        if (const {'scout', 'alchemist', 'scholar', 'guardian', 'wanderer'}.contains(kind) && body == 'female') {
           final prefix = kind == 'scout' ? 'assets/images/questwell/avatar/scout_'
               : 'assets/images/questwell/avatar/classes/$kind/${kind}_';
           final version = switch (kind) {

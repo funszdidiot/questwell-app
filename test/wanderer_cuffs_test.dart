@@ -64,7 +64,13 @@ void main() {
         expect(find.byType(QuestwellWandererCuffs), findsNothing);
         final images = tester.widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName).toList();
-        expect(images.any((path) => path.contains('wanderer_coat_${body}_short_${body == 'female' ? 'v2' : body == 'male' ? 'v4' : 'v3'}')), chest != 'starter-business-suit');
+        if (body == 'female' && chest == null) {
+          expect(images, contains('assets/images/questwell/avatar/classes/wanderer/wanderer_robe_female_v3.webp'));
+          expect(images, contains('assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuff_front_female_v3.webp'));
+          expect(images.any((path) => path.contains('wanderer_coat_female_short_')), isFalse);
+        } else {
+          expect(images.any((path) => path.contains('wanderer_coat_${body}_short_${body == 'female' ? 'v2' : body == 'male' ? 'v4' : 'v3'}')), chest != 'starter-business-suit');
+        }
         expect(images.any((path) => path.contains('wanderer_rear_${body}_wrap_v2')), isFalse);
         expect(tester.takeException(), isNull);
       }

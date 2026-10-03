@@ -1,5 +1,11 @@
 # Questwell Project Status
 
+## Female Wanderer on the shared locked robe geometry — 2026-10-03
+
+Tanya requested Wanderer next. Female robe v3 carries the tobacco/copper-gold compass-star design onto the exact locked Alchemist v7 front, cuff and rear masks. The muted ochre rear texture is retained; the body, identity and Everyday clothing are unchanged. The shared renderer and `?review=wanderer-wardrobe` now use the new female robe. Male/neutral short coats and legacy replacement-equipment behavior remain intact. See `docs/art/WANDERER_FEMALE_V3.md`.
+
+Wanderer deployment checks pending. Geometry is locked; the new surface is for founder review. No merge to `flutterflow` or launch.
+
 ## Latest Guardian correction authorized for delivery — 2026-10-03
 
 Tanya repeated the narrow inner-flap correction on the original robe image, then instructed “Send it” after the latest result. The app now uses that exact latest source (`robe_final_no_inner_flaps.png`) registered to the same immutable Alchemist v7 front and cuff masks. The rear cloth, body, identity and other classes are unchanged. See `docs/art/GUARDIAN_FEMALE_V4.md`.

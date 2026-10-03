@@ -706,6 +706,50 @@
           "sha256": "eb286d4d333c4ec109d9c59b666e5faf77e0d0363efde1d04f1deb0882332ffa"
         }
       ]
+    },
+    "wanderer_female_v3": {
+      "visual_approval": "founder_approved_exact_alchemist_geometry_wanderer_surface_for_review",
+      "description": "Tobacco/copper-gold Wanderer with compass stars, clean open front and muted ochre lining. All three alpha masks are pixel-identical to locked Alchemist female v7.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_female_v3.webp",
+          "sha256": "9769ed84aa941f91ebc1ea92dca55509bbfde1593f51ea0f5e53038bc7c17387"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuff_front_female_v3.webp",
+          "sha256": "5d9c782d061dd952442619931e557e1e9dd51ecdde12c0e00be072653fa5e607"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_female_v3.webp",
+          "sha256": "8129e868df10722d8f0d94364c19c72b09582c01c4693df05e8a7924510e6ca7"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/art_assets/wanderer_female_v3/robe_source.png",
+          "sha256": "1d669612e447fc10063346c75448b8df79514551e3b68747e30229683200ec28"
+        },
+        {
+          "path": "tool/art_assets/wanderer_female_v3/prompts.json",
+          "sha256": "e7379ecef232402d5e81a23d1a1b26b7700b15de055c9a3892b82324924ba25f"
+        },
+        {
+          "path": "tool/art_assets/wanderer_female_v3/texture_landmarks.txt",
+          "sha256": "a8ac82feeb31f9f82e17ae943dc872287df77735ce88500529a90a7e3cf3157e"
+        },
+        {
+          "path": "tool/export_wanderer_female_v3.sh",
+          "sha256": "6dbd44de9aeb6d3fce82605a4981ca0e35c134d1782595ac4498ac2b59b40394"
+        },
+        {
+          "path": "tool/female_avatar_fit_reference.json",
+          "sha256": "7b37cadf6f757f00eaff582c2ee8e444f74420050fe12c3094f12b134cd3dc2b"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_rear_female_wrap_v2.webp",
+          "sha256": "62f2e7f919de9deee44de5b34e450f19c412941bac79fc7f035fc25c0bf1b8b1"
+        }
+      ]
     }
   },
   "approved_layers": {

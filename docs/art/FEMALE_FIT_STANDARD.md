@@ -22,6 +22,8 @@ For robes, retain a continuous back panel behind the body and a front garment ah
 
 ## Development integration
 
+Wanderer female v3 completes the five-class female robe pass on these same three exact masks, with tobacco cloth, copper-gold compass stars and muted ochre lining. Its source and preview are documented in `WANDERER_FEMALE_V3.md`.
+
 Guardian female v4 follows the same three exact Alchemist v7 masks. Its burgundy-and-gold surface removes the rejected extra inner flaps and keeps the approved front opening. See `GUARDIAN_FEMALE_V4.md`.
 
 Scholar female v3 also copies all three locked Alchemist v7 alpha masks exactly. Its navy-and-gold diamond surface is a design preview; the frozen body and accepted geometry are retained. See `SCHOLAR_FEMALE_V3.md`.
