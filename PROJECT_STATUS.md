@@ -2,7 +2,7 @@
 
 ## Clean avatar foundation — 2026-10-03
 
-Implemented body-specific ivory undershirts and charcoal shorts beneath the existing wardrobe. Original faces, hair and hands are restored from the frozen avatar art; existing garments retain their separate trousers, shoes and cuff contacts. The business suit renders only as its explicit outfit choice. Current class defaults, inventory, equipment and progression are unchanged. Source originals and approved garment checksums remain intact. Development review: `?review=clean-bases`. See `docs/art/CLEAN_AVATAR_BASES.md`; CI and live review pending.
+Implemented body-specific ivory undershirts and charcoal shorts beneath the existing wardrobe. Original faces, hair and hands are restored from the frozen avatar art; existing garments retain their separate trousers, shoes and cuff contacts. The business suit renders only as its explicit outfit choice. Current class defaults, inventory, equipment and progression are unchanged. Source originals and approved garment checksums remain intact. Development review: `?review=clean-bases`. See `docs/art/CLEAN_AVATAR_BASES.md`; Flutter Check `37086976439` and Preview `37086976352` passed for `0076264`. Live comparison verified all three bases, Harvest coat, business suit and class outfit switching with accessories. Founder visual review remains open.
 
 ## Midnight Harvest collection delivered — 2026-10-02
 
