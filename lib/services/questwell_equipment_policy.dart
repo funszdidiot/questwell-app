@@ -8,7 +8,7 @@ abstract final class QuestwellEquipmentPolicy {
     'victory-sparkle':'effect', 'focus-tonic':'effect',
     'pumpkin-sprite':'familiar', 'mushroom-familiar':'familiar', 'tiny-owl-familiar':'familiar', 'glass-slime':'familiar',
     'emerald-dragon':'familiar', 'archive-owl':'familiar', 'signal-fox':'familiar', 'moss-moth':'familiar',
-    'harvest-apothecary-display':'room', 'copper-potion-workbench':'room', 'walnut-bookshelf':'room', 'hearth-fern':'room', 'burgundy-reading-chair':'room',
+    'autumn-ember-lantern':'room', 'harvest-apothecary-display':'room', 'copper-potion-workbench':'room', 'walnut-bookshelf':'room', 'hearth-fern':'room', 'burgundy-reading-chair':'room',
     'emerald-wayfarer-rug':'room',
     'woodland-cottage':'room', 'midnight-harvest':'room', 'enchanted-library':'room', 'midnight-observatory':'room', 'alchemists-workshop':'room', 'astral-sanctuary':'room', 'emberglass-conservatory':'room',
     'walnut-reading-table':'room', 'rainy-window':'room', 'warding-lantern':'room',

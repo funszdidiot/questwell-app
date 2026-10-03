@@ -1,3 +1,4 @@
+import 'preview/autumn_lantern_review.dart';
 import 'preview/harvest_display_review.dart';
 import 'preview/harvest_coat_review.dart';
 import 'preview/hearth_settings_review.dart';
@@ -28,7 +29,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'harvest-display') {
+  if (Uri.base.queryParameters['review'] == 'autumn-lantern') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(QuestwellPreviewNavigationHost(child: const AutumnLanternReviewApp()));
+  } else if (Uri.base.queryParameters['review'] == 'harvest-display') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const HarvestDisplayReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'harvest-coat') {

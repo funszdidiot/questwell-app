@@ -40,6 +40,8 @@ class QuestwellContactShadowPainter extends CustomPainter {
         oval(.470, .942, .19, .036);
         oval(.810, .813, .16, .030);
         oval(.555, .715, .12, .025, alpha: 44);
+      case 'autumn-ember-lantern':
+        oval(.50, 1605 / 1681, .67, .026, alpha: 72);
       case 'harvest-apothecary-display':
         oval(.50, 1095 / 1199, .88, .035, alpha: 72);
       case 'copper-potion-workbench':

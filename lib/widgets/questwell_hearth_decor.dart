@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'questwell_bookshelf.dart';
 import 'questwell_potion_workbench.dart';
 import 'questwell_harvest_display.dart';
+import 'questwell_autumn_lantern.dart';
 import 'questwell_fern.dart';
 import 'questwell_reading_chair.dart';
 import 'questwell_reading_table.dart';
@@ -25,12 +26,13 @@ class QuestwellHearthDecor {
     QuestwellFirstJourney.slug || QuestwellStarlitOrrery.slug => const {'bookshelf_top': 'On the bookcase', 'mantel': 'Fireplace mantel'},
     QuestwellWallArt.fern || QuestwellWallArt.celestial => const {'wall_left': 'Left wall', 'wall_right': 'Right wall'},
     QuestwellReadingTable.slug => const {'side': 'Beside the chair'},
-    QuestwellBookshelf.slug || QuestwellPotionWorkbench.slug || QuestwellHarvestDisplay.slug => const {'left': 'Left wall', 'right': 'Right wall'},
+    QuestwellBookshelf.slug || QuestwellPotionWorkbench.slug || QuestwellHarvestDisplay.slug || QuestwellAutumnLantern.slug => const {'left': 'Left wall', 'right': 'Right wall'},
     QuestwellReadingChair.slug => const {'front': 'Left floor', 'right': 'Right floor'},
     _ => const {'left': 'Beside the fireplace', 'right': 'Near the window', 'front': 'Foreground'},
   };
   static double floorDepth(String slug, String slot) =>
     QuestwellMasteryRelic.supports(slug) ? (slot == 'front' ? .89 : .68) : slug == QuestwellReadingTable.slug ? .89
+      : slug == QuestwellAutumnLantern.slug ? .72
       : slug == QuestwellPotionWorkbench.slug || slug == QuestwellHarvestDisplay.slug ? .70
       : slug == QuestwellBookshelf.slug ? .68
       : slug == QuestwellFern.slug && slot != 'front' ? .70 : .86;
@@ -85,6 +87,7 @@ class QuestwellHearthDecor {
     required String slug, required String slot, required Size scene,
     Map<String, String> equipment = const {},
   }) {
+    if (slug == QuestwellAutumnLantern.slug) return QuestwellAutumnLantern.bounds(scene, slot);
     if (slug == QuestwellHarvestDisplay.slug) return QuestwellHarvestDisplay.bounds(scene, slot);
     if (slug == QuestwellPotionWorkbench.slug) return QuestwellPotionWorkbench.bounds(scene, slot);
     final relic = QuestwellMasteryRelic.supports(slug);
@@ -191,10 +194,10 @@ class QuestwellHearthDecor {
     final table = slug == QuestwellReadingTable.slug;
     final chair = slug == QuestwellReadingChair.slug;
     final rect = bounds(slug: slug, slot: slot, scene: scene, equipment: equipment);
-    final art = slug == QuestwellHarvestDisplay.slug ? const QuestwellHarvestDisplay() : slug == QuestwellPotionWorkbench.slug ? const QuestwellPotionWorkbench() : relic ? QuestwellMasteryDisplay(archetype: QuestwellMasteryRelic.classFor(slug)) : shelf ? const QuestwellBookshelf()
+    final art = slug == QuestwellAutumnLantern.slug ? const QuestwellAutumnLantern() : slug == QuestwellHarvestDisplay.slug ? const QuestwellHarvestDisplay() : slug == QuestwellPotionWorkbench.slug ? const QuestwellPotionWorkbench() : relic ? QuestwellMasteryDisplay(archetype: QuestwellMasteryRelic.classFor(slug)) : shelf ? const QuestwellBookshelf()
       : fern ? const QuestwellFern() : table ? const QuestwellReadingTable() : const QuestwellReadingChair();
     return Positioned(
-      key: ValueKey(slug == QuestwellHarvestDisplay.slug ? 'hearth-harvest-display-bounds' : slug == QuestwellPotionWorkbench.slug ? 'hearth-workbench-bounds' : relic ? 'hearth-$slug-bounds' : shelf ? 'hearth-bookshelf-bounds'
+      key: ValueKey(slug == QuestwellAutumnLantern.slug ? 'hearth-autumn-lantern-bounds' : slug == QuestwellHarvestDisplay.slug ? 'hearth-harvest-display-bounds' : slug == QuestwellPotionWorkbench.slug ? 'hearth-workbench-bounds' : relic ? 'hearth-$slug-bounds' : shelf ? 'hearth-bookshelf-bounds'
         : fern ? 'hearth-fern-bounds' : table ? 'hearth-table-bounds' : 'hearth-chair-bounds'),
       left: rect.left, top: rect.top,
       width: rect.width, height: rect.height,
