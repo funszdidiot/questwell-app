@@ -51,7 +51,7 @@ void main() {
         expect(paths.contains(QuestwellScoutWardrobeFoundation.asset('female', part)),
             layers.contains(part), reason: '$part with clothing $layers');
       }
-      for (final part in ['robe_rear', 'robe_cuff_rear', 'robe_cuff_front']) {
+      for (final part in ['robe_rear', 'robe_cuff_front']) {
         expect(paths.contains(QuestwellScoutWardrobeFoundation.asset('female', part)),
             layers.contains('robe'));
       }
@@ -68,9 +68,7 @@ void main() {
     final base = ordered.indexOf(QuestwellScoutWardrobeFoundation.femaleBaseAsset);
     final identity = ordered.indexOf(QuestwellScoutWardrobeFoundation.femaleIdentityAsset);
     expect(layer('robe_rear'), greaterThanOrEqualTo(0));
-    expect(layer('robe_cuff_rear'), greaterThanOrEqualTo(0));
     expect(layer('robe_rear'), lessThan(base));
-    expect(layer('robe_cuff_rear'), lessThan(base));
     expect(base, lessThan(layer('trousers')));
     expect(layer('trousers'), lessThan(layer('boots')));
     expect(layer('boots'), lessThan(layer('robe')));
@@ -78,12 +76,10 @@ void main() {
     expect(identity, lessThan(layer('robe_cuff_front')));
   });
 
-  testWidgets('Woodland Scout pieces toggle without replacing or masking the female base', (tester) async {
-    const choices = ['shirt', 'vest', 'trousers', 'boots'];
+  testWidgets('unified Woodland outfit keeps the fixed body and full canvas alignment', (tester) async {
     final baseFinder = asset(QuestwellScoutWardrobeFoundation.femaleBaseAsset);
     Rect? bounds;
-    for (var mask = 0; mask < 16; mask++) {
-      final layers = <String>{for (var n = 0; n < 4; n++) if ((mask & (1 << n)) != 0) choices[n]};
+    for (final layers in [<String>{}, {'outfit'}]) {
       await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
         width: 240, height: 320, child: QuestwellLayeredAdventurerArt(
           archetype: 'scout', avatarBodyType: 'female', equippedSlugs: const {},
@@ -94,16 +90,21 @@ void main() {
       bounds ??= tester.getRect(baseFinder);
       expect(tester.getRect(baseFinder), bounds);
       expect(find.byType(QuestwellCleanBase), findsNothing);
-      expect(tester.widgetList<QuestwellWoodlandGarment>(find.byType(QuestwellWoodlandGarment))
-        .map((garment) => garment.part).toSet(), layers);
+      final outfit = asset(QuestwellWoodlandScoutFoundation.outfitAsset);
+      expect(outfit, layers.isEmpty ? findsNothing : findsOneWidget);
+      if (layers.isNotEmpty) {
+        expect(tester.getRect(outfit), bounds);
+        final image = tester.widget<Image>(outfit);
+        expect(image.fit, BoxFit.contain);
+        expect(image.alignment, Alignment.bottomCenter);
+      }
       expect(tester.widgetList<ClipPath>(find.byType(ClipPath))
         .where((clip) => clip.clipper is ScoutWardrobeClipper), isEmpty);
     }
-    // Switching back to a normal outfit cannot retain a candidate garment.
     await tester.pumpWidget(const MaterialApp(home: SizedBox(width: 240, height: 320,
       child: QuestwellLayeredAdventurerArt(archetype: 'scout', avatarBodyType: 'female', equippedSlugs: {}))));
     await tester.pumpAndSettle();
-    expect(find.byType(QuestwellWoodlandGarment), findsNothing);
+    expect(asset(QuestwellWoodlandScoutFoundation.outfitAsset), findsNothing);
     expect(find.byType(QuestwellWoodlandScoutFoundation), findsNothing);
   });
 
@@ -123,21 +124,22 @@ void main() {
       expect(asset(QuestwellScoutWardrobeFoundation.femaleBaseAsset),findsOneWidget);
       expect(assets(tester).any((p)=>p.contains('robe_')),isFalse);
       if(slug=='woodland-scout-outfit') {
-        expect(tester.widgetList<QuestwellWoodlandGarment>(find.byType(QuestwellWoodlandGarment))
-          .map((g)=>g.part).toSet(),{'shirt','vest','trousers','boots'});
+        expect(asset(QuestwellWoodlandScoutFoundation.outfitAsset), findsOneWidget);
       }else{
         expect(assets(tester),contains(QuestwellScoutWardrobeFoundation.asset('female','top')));
       }
       await render(slug,boots:true);
       expect(assets(tester).any((p)=>p.contains('scout_boots_female')),isFalse);
-      expect(tester.widgetList<QuestwellWoodlandGarment>(find.byType(QuestwellWoodlandGarment))
-        .any((g)=>g.part=='boots'),isFalse);
+      // Equipped Pathfinder boots use the existing footwear clip.
+      if (slug == 'woodland-scout-outfit') {
+        expect(asset(QuestwellWoodlandScoutFoundation.outfitAsset), findsOneWidget);
+      }
       await render(null);
       expect(assets(tester),baseline);
       for(final body in ['male','neutral']) {
         await render(slug,body:body);
         expect(asset(QuestwellScoutWardrobeFoundation.femaleBaseAsset),findsNothing);
-        expect(find.byType(QuestwellWoodlandGarment),findsNothing);
+        expect(asset(QuestwellWoodlandScoutFoundation.outfitAsset),findsNothing);
       }
     }
   });

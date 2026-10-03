@@ -530,6 +530,38 @@
           "sha256": "e167219e6424518b9b9d4756d2fff4f184224802b90c8036f53f58d89ce3a2a5"
         }
       ]
+    },
+    "scout_robe_female_v7": {
+      "visual_approval": "development_refit_pending_founder_review",
+      "description": "Long sleeves widened inward to the fixed female anatomy, narrow wrist hems, continuous separate back.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_female_v7.webp",
+          "sha256": "a95ea738605af8d4a79a26c9090b7402b73f2d43b2de9de562dd376a5762e2e1"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_rear_female_v7.webp",
+          "sha256": "137de6af84472863ff66ed6c9321ba42c151fb4f0543e8b7a79e8ad367af8fb6"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_cuff_front_female_v7.webp",
+          "sha256": "6e818814d9d80575c6c92ebbcfd8c4b3ff25a57843998b7a701168c480d74467"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/art_assets/scout_female_v7/robe_fitted_source.png",
+          "sha256": "3d03a2bf54cbb6b42daca58915b7e278fbb6a3158f188b198748ff83d0524669"
+        },
+        {
+          "path": "tool/export_scout_female_v7.sh",
+          "sha256": "4711647915343b2596c8c90a7babeeac8e2f51e5549cf65c93a6fd383988dae9"
+        },
+        {
+          "path": "tool/female_avatar_fit_reference.json",
+          "sha256": "f659b0f6be314f110f7c46cb6a375846f166ba08c0d42e3b69dc54e99f14f861"
+        }
+      ]
     }
   },
   "approved_layers": {
@@ -625,6 +657,34 @@
         {
           "path": "tool/art_assets/robe_wrap_v1/alchemist.webp",
           "sha256": "0e52325eb301c6ddfc93a9013c3ec27cfad4b54fce433f16abd5c1e881c1f4a2"
+        }
+      ]
+    },
+    "female_fit_20261003": {
+      "visual_approval": "founder_approved_body_and_woodland_fit_2026_10_03",
+      "description": "Frozen female paper doll and approved unified Woodland Scout outfit. See female_avatar_fit_reference.json for future clothes.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_female_v1.webp",
+          "sha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp",
+          "sha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_unified_female_v11.webp",
+          "sha256": "10c7c9604acdc777a7130bf249b4b6ba7fc7e9960e77eace243d8be3be65b923"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/art_assets/woodland_scout_unified/female_inward_sleeves_source.png",
+          "sha256": "4afe4e29822ffdc3be8118d08ae5a853478063c2d77fa7f10a46bdc35369e4a0"
+        },
+        {
+          "path": "tool/export_woodland_scout_unified.sh",
+          "sha256": "c15a631134d2b69cdb9af59839cb7632a61f739eaa55acd6fe2bbcd1b6a6e920"
         }
       ]
     }

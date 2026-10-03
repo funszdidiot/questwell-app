@@ -225,7 +225,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         equippedSlugs['chest'] == 'everyday-adventurer-outfit'
         ? const {'top', 'trousers', 'boots'}
         : fittedDefault ? const {'top', 'trousers', 'boots', 'robe'} : null);
-    final woodlandLayers = previewWoodlandLayers ?? const {'shirt', 'trousers', 'boots', 'vest'};
+    final woodlandLayers = previewWoodlandLayers ?? const {'outfit'};
     final modular = scoutLayers != null || woodland;
     final classOverlay = woodland ? null : modular
         ? (scoutLayers!.contains('robe') ? QuestwellScoutWardrobeFoundation.asset(harvestBody, 'robe') : null)
@@ -279,8 +279,6 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         children: [
           if (modular && classOverlay != null)
             _assetLayer(QuestwellScoutWardrobeFoundation.asset(body, 'robe_rear')),
-          if (paperDollFemale && classOverlay != null)
-            _assetLayer(QuestwellScoutWardrobeFoundation.asset(body, 'robe_cuff_rear')),
           if (classOverlay != null && !harvestCoat && !modular)
             classLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body, rear: true),

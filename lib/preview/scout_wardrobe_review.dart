@@ -26,7 +26,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
   void initState() {
     super.initState();
     if (widget.woodland) {
-      layers..clear()..addAll({'shirt', 'trousers', 'boots', 'vest'});
+      layers..clear()..add('outfit');
     }
     final q = Uri.base.queryParameters;
     if (q.containsKey('layers')) {
@@ -46,6 +46,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
 
   Set<String> stageLayers(String body, _WardrobeStage stage) {
     if (stage == _WardrobeStage.underwear) return <String>{};
+    if (widget.woodland) return layers.contains('outfit') ? {'outfit'} : <String>{};
     return layers.where((layer) {
       if (layer == 'boots' && body != 'female') return false;
       return stage == _WardrobeStage.robe || layer != (widget.woodland ? 'vest' : 'robe');
@@ -57,8 +58,11 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
     return QuestwellLayeredAdventurerArt(
       archetype: 'scout',
       avatarBodyType: body,
-      previewScoutLayers: widget.woodland ? null : stageLayers(body, stage),
-      previewWoodlandLayers: widget.woodland ? stageLayers(body, stage) : null,
+      previewScoutLayers: widget.woodland
+          ? (stage == _WardrobeStage.everyday ? const {'top', 'trousers', 'boots'} : null)
+          : stageLayers(body, stage),
+      previewWoodlandLayers: widget.woodland && stage != _WardrobeStage.everyday
+          ? stageLayers(body, stage) : null,
       equippedSlugs: {
         if (dressed && held != 'none') 'hands': held,
         if (dressed && accessories) ...{
@@ -93,7 +97,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
   Widget fitCard(String body, _WardrobeStage stage, double width) {
     final title = switch (stage) {
       _WardrobeStage.underwear => 'Underwear',
-      _WardrobeStage.everyday => widget.woodland ? 'Shirt and trousers' : 'Everyday clothes',
+      _WardrobeStage.everyday => 'Everyday clothes',
       _WardrobeStage.robe => widget.woodland ? 'Woodland Scout' : 'Robe',
     };
     return SizedBox(
@@ -224,14 +228,18 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                             onChanged: (value) => setState(() => bodyView = value!),
                           ),
                         ),
-                        layerToggle(widget.woodland ? 'shirt' : 'top', widget.woodland ? 'Linen shirt' : 'Linen top'),
+                        if (widget.woodland)
+                          layerToggle('outfit', 'Complete outfit')
+                        else ...[
+                        layerToggle('top', 'Linen top'),
                         layerToggle('trousers', 'Travel trousers'),
                         layerToggle(
                           'boots',
                           bodyView == 'female' ? 'Boots' : 'Boots (female)',
                           enabled: bodyView == 'female' || bodyView == 'all',
                         ),
-                        layerToggle(widget.woodland ? 'vest' : 'robe', widget.woodland ? 'Vest and belt' : 'Scout robe'),
+                        layerToggle('robe', 'Scout robe'),
+                        ],
                         FilterChip(
                           label: const Text('Accessories'),
                           selected: accessories,

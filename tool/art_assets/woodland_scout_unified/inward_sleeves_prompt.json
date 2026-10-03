@@ -1,0 +1,6 @@
+{
+  "mode": "built-in image_gen",
+  "use_case": "precise-object-edit",
+  "prompt": "Edit ONLY the inner sides of the two rolled sleeves. Grow the image-left cuff inward to the RIGHT by about 20 pixels, and the image-right cuff inward to the LEFT by about 20 pixels. Keep the outside of each sleeve and cuff in precisely the same location. Extend the existing curved cuff folds inward, overlapping a small amount of the vest side on each side, so the visible green vest returns to a narrow tailored shape. NO separate vertical white strips: only broaden the actual rolled cuffs inward. Keep the entire rest of this exact image unchanged, especially all pants and boots. Same original canvas framing and registration. Do not zoom, enlarge, crop, recenter or change pose. Full transparent outfit, no body, no text.",
+  "source": "female_inward_sleeves_source.png"
+}

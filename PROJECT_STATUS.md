@@ -1,5 +1,11 @@
 # Questwell Project Status
 
+## Approved female dimensions and unified outfit release — 2026-10-03
+
+Tanya approved Woodland Scout v11 and explicitly requested its dimensions be recorded for every future female outfit and robe, the outfit sent to the development app, and the Scout robe refitted accordingly. `docs/art/FEMALE_FIT_STANDARD.md` and `tool/female_avatar_fit_reference.json` are the canonical fitting references. Preserve the exact female base and head/hair. Add sleeve width inward only; no white side inserts or broadened vest wedges.
+
+The shared renderer now uses the approved single Woodland image instead of independently stretched pieces. The female Scout default uses the v7 robe refit with a continuous rear panel and attached foreground wrist hems. New robe visual acceptance remains pending. Male/neutral paper dolls come before their garments and other class robes. Development deployment validation is in progress. No merge to `flutterflow` or launch.
+
 ## Female outfits in the app — 2026-10-03 (America/Chicago)
 
 Tanya authorized pushing the finished female Woodland Scout and everyday outfits into the app. The v6 rustic robe replaces the female Scout default, and its shape/back-panel/cuff construction is the class-robe template. Her explicit sequencing correction: male and neutral paper-doll foundations must happen before fitting those bodies or adapting the remaining class robes. Do not resize the female anatomy or fit to stand in for either body.

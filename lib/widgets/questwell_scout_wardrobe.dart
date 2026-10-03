@@ -14,7 +14,9 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
       'assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp';
 
   static String asset(String body, String part) {
-    final version = body == 'female' ? 'v6' : part.startsWith('robe') ? 'v4' : 'v1';
+    final version = body == 'female'
+        ? (part.startsWith('robe') ? 'v7' : 'v6')
+        : part.startsWith('robe') ? 'v4' : 'v1';
     return 'assets/images/questwell/avatar/scout_${part}_${body}_$version.webp';
   }
   static Widget image(String path) => Image.asset(path, fit: BoxFit.contain,

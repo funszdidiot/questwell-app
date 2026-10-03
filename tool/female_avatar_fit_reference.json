@@ -1,0 +1,212 @@
+{
+  "status": "founder_approved_female_fit_reference_2026_10_03",
+  "scope": "All future female outfits and robes; no launch or other-body approval.",
+  "canvas": {
+    "width": 240,
+    "height": 320,
+    "origin": "top_left",
+    "units": "pixels",
+    "runtime_fit": "contain",
+    "runtime_alignment": "bottom_center"
+  },
+  "frozen_body": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_female_v1.webp",
+    "sha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a"
+  },
+  "frozen_head_hair": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp",
+    "sha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e"
+  },
+  "approved_outfit": {
+    "path": "assets/images/questwell/avatar/woodland_scout_unified_female_v11.webp",
+    "sha256": "10c7c9604acdc777a7130bf249b4b6ba7fc7e9960e77eace243d8be3be65b923"
+  },
+  "body_opaque_bounds_xyxy": [
+    68,
+    13,
+    185,
+    310
+  ],
+  "outfit_opaque_bounds_xyxy": [
+    70,
+    69,
+    191,
+    316
+  ],
+  "outfit_source": {
+    "path": "tool/art_assets/woodland_scout_unified/female_inward_sleeves_source.png",
+    "sha256": "4afe4e29822ffdc3be8118d08ae5a853478063c2d77fa7f10a46bdc35369e4a0"
+  },
+  "outfit_registration": {
+    "uniform_resize": [
+      210,
+      280
+    ],
+    "offset": [
+      7,
+      36
+    ]
+  },
+  "body_skin_cross_sections": {
+    "84": [
+      [
+        83,
+        100
+      ],
+      [
+        140,
+        150
+      ]
+    ],
+    "90": [
+      [
+        87,
+        99
+      ],
+      [
+        140,
+        151
+      ]
+    ],
+    "105": [
+      [
+        84,
+        95
+      ],
+      [
+        143,
+        153
+      ]
+    ],
+    "120": [
+      [
+        82,
+        94
+      ],
+      [
+        141,
+        154
+      ]
+    ],
+    "132": [
+      [
+        78,
+        91
+      ],
+      [
+        145,
+        158
+      ]
+    ],
+    "145": [
+      [
+        75,
+        88
+      ],
+      [
+        147,
+        161
+      ]
+    ],
+    "158": [
+      [
+        74,
+        81
+      ],
+      [
+        155,
+        163
+      ]
+    ],
+    "165": [
+      [
+        72,
+        79
+      ],
+      [
+        158,
+        165
+      ]
+    ],
+    "170": [
+      [
+        71,
+        80
+      ],
+      [
+        157,
+        166
+      ]
+    ],
+    "175": [
+      [
+        71,
+        82
+      ],
+      [
+        157,
+        167
+      ]
+    ]
+  },
+  "cross_section_note": "Inclusive image-left/image-right skin x-ranges at stated y; RGB/alpha threshold inspection, not anatomical measurements.",
+  "short_sleeve_outer_extremes": {
+    "row_range": [
+      105,
+      139
+    ],
+    "left_x": 70,
+    "right_x": 169,
+    "alpha_gt": 128
+  },
+  "long_sleeve_wrist_targets": {
+    "left_center": [
+      76,
+      170
+    ],
+    "right_center": [
+      164,
+      170
+    ],
+    "note": "Full-length robe cuffs follow wrist targets, not the short-sleeve hem."
+  },
+  "fitting_rules": [
+    "Body, identity, stance and full canvas are immutable. Fit clothes to the body, never the reverse.",
+    "One coherent outfit illustration per body; no independently stretched shirt, vest, trousers and boots.",
+    "Any needed sleeve fullness grows inward toward torso; preserve approved outer contours.",
+    "No added white side strips, expanded vest wedges or hip bulges.",
+    "Keep shoulders, inner arms, legs, heels and soles covered where clothing requires it.",
+    "Retain head/hair and required grip layers in front; robe back panel stays behind body.",
+    "Other class robe colors and surface patterns reuse the female robe geometry only after its visual acceptance.",
+    "Male and neutral bases need their own accepted paper dolls before fitting garments."
+  ],
+  "robe_candidate": {
+    "version": "female_v7",
+    "source": {
+      "path": "tool/art_assets/scout_female_v7/robe_fitted_source.png",
+      "sha256": "3d03a2bf54cbb6b42daca58915b7e278fbb6a3158f188b198748ff83d0524669"
+    },
+    "registration": {
+      "uniform_resize": [
+        195,
+        260
+      ],
+      "offset": [
+        19,
+        44
+      ]
+    },
+    "rear_registration": {
+      "source": "scout_robe_rear_female_v6.webp",
+      "resize": [
+        240,
+        344
+      ],
+      "crop_origin": [
+        0,
+        8
+      ]
+    },
+    "visual_status": "development_fit_pending_founder_review"
+  }
+}
