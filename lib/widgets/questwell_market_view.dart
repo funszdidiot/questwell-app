@@ -23,7 +23,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   final categoryScrollController=ScrollController();
   @override
   void dispose(){searchController.dispose();categoryScrollController.dispose();super.dispose();}
-  bool affordable=false,owned=false,myClass=true;
+  bool affordable=false,owned=false,myClass=false;
   String get collectionLabel => collection=='All'?'All collections':title(collection.replaceAll('-', ' '));
   static const cream=Color(0xFFF1E4C9),muted=Color(0xFFA9BEB8),gold=Color(0xFFE0BF79),ink=Color(0xFF253E3D);
   bool room(QuestwellCosmetic item)=>['room','wall_art'].contains(item.category);
@@ -32,6 +32,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   String group(QuestwellCosmetic i) {
     if(room(i)) return 'Hearth';
     if(i.category=='familiar') return 'Familiars';
+    if(i.category=='effect') return 'Effects';
     if(['chest'].contains(i.category)) return 'Outfits';
     return 'Gear';
   }
@@ -126,7 +127,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       const SizedBox(height:10),
       if(items.isEmpty) Padding(padding:const EdgeInsets.symmetric(vertical:35),child:Column(children:[
         const Icon(Icons.search_off,color:gold,size:32),const SizedBox(height:12),Text('No treasures match these filters.',style:QuestwellTypography.body(color:cream)),
-        TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:()=>setState((){category='All';collection='All';rarity='All';owned=false;affordable=false;myClass=true;query='';searchController.clear();}),child:Text('Reset filters'))])),
+        TextButton(style:TextButton.styleFrom(textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),onPressed:()=>setState((){category='All';collection='All';rarity='All';owned=false;affordable=false;myClass=false;query='';searchController.clear();}),child:Text('Reset filters'))])),
       LayoutBuilder(builder:(context,constraints){final width=constraints.maxWidth>650?(constraints.maxWidth-14)/2:constraints.maxWidth;
         return Wrap(spacing:14,runSpacing:12,children:[for(final i in items) SizedBox(key:ValueKey(i.id),width:width,child:QuestwellPurchaseGlow(owned:i.owned,child:card(i)))]);}),
       const SizedBox(height:22),Text('Coins come from your quests. Every purchase stays in your inventory.',textAlign:TextAlign.center,style:QuestwellTypography.body(color:muted,fontSize:12,height:1.5)),
@@ -161,7 +162,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
           scrollDirection:Axis.horizontal,
           padding:const EdgeInsets.only(bottom:6),
           child:Row(children:[
-            for(final name in ['All','Outfits','Gear','Familiars','Hearth',if(hasSeasonal)'Seasonal','Collections'])
+            for(final name in ['All','Outfits','Gear','Familiars','Effects','Hearth',if(hasSeasonal)'Seasonal','Collections'])
               Semantics(selected:category==name,child:Container(
                 decoration:BoxDecoration(border:Border(bottom:BorderSide(
                   color:category==name?gold:Colors.transparent,width:2))),
