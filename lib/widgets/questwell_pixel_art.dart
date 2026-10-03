@@ -229,7 +229,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final woodlandLayers = previewWoodlandLayers ?? const {'outfit'};
     final modular = scoutLayers != null || woodland;
     String fittedRobeAsset(String part) => harvestBody == 'female' && archetype == 'alchemist'
-        ? 'assets/images/questwell/avatar/classes/alchemist/alchemist_${part}_female_v5.webp'
+        ? 'assets/images/questwell/avatar/classes/alchemist/alchemist_${part}_female_v7.webp'
         : QuestwellScoutWardrobeFoundation.asset(harvestBody, part);
     final classOverlay = woodland ? null : modular
         ? (scoutLayers!.contains('robe') ? fittedRobeAsset('robe') : null)

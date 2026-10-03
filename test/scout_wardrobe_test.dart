@@ -49,7 +49,7 @@ void main() {
           .where((clip) => clip.clipper is ScoutWardrobeClipper), isEmpty);
       final paths = assets(tester);
       String layerAsset(String part) => archetype == 'alchemist' && part.startsWith('robe')
-          ? 'assets/images/questwell/avatar/classes/alchemist/alchemist_${part}_female_v5.webp'
+          ? 'assets/images/questwell/avatar/classes/alchemist/alchemist_${part}_female_v7.webp'
           : QuestwellScoutWardrobeFoundation.asset('female', part);
       for (final part in choices) {
         expect(paths.contains(layerAsset(part)),

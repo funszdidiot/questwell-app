@@ -139,7 +139,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
       const SizedBox(height: 4),
       Text(
         body == 'female'
-            ? (widget.archetype == 'alchemist' ? 'Locked female body · Alchemist fit for review.' : 'Approved female fit.')
+            ? (widget.archetype == 'alchemist' ? 'Approved female Alchemist fit.' : 'Approved female fit.')
             : 'Previous fit candidate — fixed-body rebuild pending.',
         textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white70),

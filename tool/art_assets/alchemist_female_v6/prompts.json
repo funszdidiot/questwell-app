@@ -1,0 +1,6 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Precise-object-edit: ONE tiny local correction on this exact transparent Alchemist robe layer. At the cuff on the LEFT SIDE OF THE IMAGE only, widen the INNER edge toward the torso (toward image right) by about 18 pixels on this 1086x1448 canvas. The left cuff is around x280–369, y659–705. Move only its inner/right lip to approximately x387 and smoothly blend this extra inward width into the last 40 pixels of the sleeve above the cuff. Keep the outer/left cuff edge and its wrist height fixed. Extend the existing green band and silver hem as the same continuous curved attached cuff, with the same thickness and shading. This is a small inward widening, not a loose flare. Keep the other cuff, all sleeve contours above the immediate left wrist area, torso, waist, open front, pockets, embroidery, hem, blue cloth, canvas size, positioning, and transparent background exactly unchanged. No body, hand, extra cuff, patch, detached strip, recentering or rescaling. Keep genuinely transparent background. Output the same whole garment at exactly the same registration.",
+  "target": "tool/art_assets/alchemist_female_v5/robe_refined_source.png",
+  "export_note": "Only generated pixels inside the inner-left-wrist edit polygon are admitted; all other v5 pixels are frozen."
+}

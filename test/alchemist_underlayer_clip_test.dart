@@ -25,7 +25,7 @@ void main() {
         'assets/images/questwell/avatar/base/base_$body.webp',
       );
       final coat = await loadImage(
-        body == 'female' ? 'assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v5.webp' :
+        body == 'female' ? 'assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v7.webp' :
         'assets/images/questwell/avatar/classes/alchemist/alchemist_coat_${body}_lab_v4.webp',
       );
       try {
@@ -152,14 +152,14 @@ void main() {
           ).map((image) => (image.image as AssetImage).assetName).toList();
           if (body == 'female') {
             expect(images, [
-              'assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v5.webp',
+              'assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v7.webp',
               QuestwellScoutWardrobeFoundation.femaleBaseAsset,
               QuestwellScoutWardrobeFoundation.asset('female', 'trousers'),
               QuestwellScoutWardrobeFoundation.asset('female', 'top'),
               QuestwellScoutWardrobeFoundation.asset('female', 'boots'),
-              'assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v5.webp',
+              'assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v7.webp',
               QuestwellScoutWardrobeFoundation.femaleIdentityAsset,
-              'assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_female_v5.webp',
+              'assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_female_v7.webp',
             ]);
             expect(find.descendant(of: layer, matching: find.byWidgetPredicate(
               (widget) => widget is ClipPath && (widget.clipper is AlchemistUnderlayerClipper ||

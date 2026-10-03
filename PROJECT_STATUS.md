@@ -1,5 +1,17 @@
 # Questwell Project Status
 
+## Female Alchemist — both inward cuff adjustments locked — 2026-10-03
+
+Tanya followed the left-wrist correction with: “Widen the cuff on the inside of the right wrist now and lock that in.” Version 7 retains the image-left cuff correction and adds the same inward allowance on the image-right cuff. Both outer wrist edges, body, identity and all other robe artwork remain fixed. The manifest records v7 as the locked female Alchemist fit. See `docs/art/ALCHEMIST_FEMALE_V7.md`.
+
+Development verification is in progress for the combined cuff update. No merge to `flutterflow` or launch.
+
+## Female Alchemist cuff correction locked — 2026-10-03
+
+After seeing the female Alchemist on the locked body, Tanya requested: “Widen the cuff on the inner left wrist and lock that in.” Version 6 widens the image-left cuff inward toward the torso. Only the generated correction inside the inner-left-wrist region is applied; outer wrist edge, other sleeve, torso, hem, embroidery, rear lining and anatomy stay unchanged. The approved asset manifest freezes this female Alchemist fit. No male/neutral fit or other class is changed.
+
+The left-cuff correction is retained in the v7 release below; it was not separately deployed. See `docs/art/ALCHEMIST_FEMALE_V6.md` for the narrow correction. No merge or launch.
+
 ## Female Alchemist on the locked body — 2026-10-03
 
 Tanya requested Alchemist next after approving the female dimensions. The sapphire-blue v5 robe retains the class’s green molecular embroidery, silver trim and plain pockets, and is fitted over the exact accepted paper doll and everyday underclothes. Sleeve volume stays inward; full-length cuffs terminate at the wrists. The single front artwork, attached cuff depth pass and narrow continuous blue lining use the shared 240×320 canvas. No female anatomy is rebuilt or clipped to fit this robe. Other bodies retain their existing class garments.

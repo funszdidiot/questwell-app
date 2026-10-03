@@ -723,6 +723,70 @@
           "sha256": "c790012099d8fb081600a7df9591e95064c8305b10a3dda5958592eeb998b0fa"
         }
       ]
+    },
+    "alchemist_female_v6": {
+      "visual_approval": "founder_requested_inner_left_cuff_widening_and_lock_2026_10_03",
+      "description": "Locked female Alchemist fit after the requested inward widening of the image-left cuff. Outside the localized inner-left-wrist polygon, the v5 front is pixel-identical; rear, body, identity and underclothes are unchanged.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v6.webp",
+          "sha256": "68d87ae6c60f423f5e645f268ce3e9d2ee39d2369cf08003f2bc54d81dd564eb"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v6.webp",
+          "sha256": "b13c9198b82f79c81e2d79a2cf53c0a0df95c5f28e3c0f09754eaeb51d03c49f"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_female_v6.webp",
+          "sha256": "b5e0c5bad9de6926493a93be09847a9336598761ce5b087e1fa760de1a9dbd6f"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/export_alchemist_female_v6.sh",
+          "sha256": "7d32d4035282afc83e671d6bd6a232bd31fbef2ac1d6de4ea6d4f393bef82636"
+        },
+        {
+          "path": "tool/art_assets/alchemist_female_v6/left_cuff_source.png",
+          "sha256": "4a0142a595450523f78f511752cc770676448a94b3e80c77d747c319312bbae5"
+        },
+        {
+          "path": "tool/art_assets/alchemist_female_v6/prompts.json",
+          "sha256": "4fa62cb4acac1f7d9a7821827b316d7020fe14e3311009ec8d893af3ecd0286c"
+        }
+      ]
+    },
+    "alchemist_female_v7": {
+      "visual_approval": "founder_requested_inner_right_cuff_widening_and_lock_2026_10_03",
+      "description": "Locked female Alchemist fit with both cuffs widened inward. Retains the v6 left cuff; only the inner image-right wrist edit is added. Both outer wrist contours, frozen anatomy and other artwork are unchanged.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v7.webp",
+          "sha256": "96c0268d966468cb460ba824307dc84fc3917266c18faa1e052e844f0f676f56"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v7.webp",
+          "sha256": "b13c9198b82f79c81e2d79a2cf53c0a0df95c5f28e3c0f09754eaeb51d03c49f"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_female_v7.webp",
+          "sha256": "32a98e9f7130d667271296be451f4461c0ce052771fa269ae7715b6460d4273e"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/export_alchemist_female_v7.sh",
+          "sha256": "87f8471fd6a5546f13f0a515031338fa43a16ecef83b97088cff6e496252bdb5"
+        },
+        {
+          "path": "tool/art_assets/alchemist_female_v7/right_cuff_source.png",
+          "sha256": "9a5b1a8a748cec6f2abf667d1c561d96df62c9ce7c655d937b85fed2f4143e95"
+        },
+        {
+          "path": "tool/art_assets/alchemist_female_v7/prompts.json",
+          "sha256": "456a9880f13935322691e18a321b1576478fd521ca81c6e3b45e0258bdcb8ced"
+        }
+      ]
     }
   }
 }
