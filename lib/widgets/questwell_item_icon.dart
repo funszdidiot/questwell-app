@@ -177,6 +177,18 @@ class QuestwellItemIconPainter extends CustomPainter {
       for(final x in [10,18]) {r(x,12,5,6,cream);r(x+2,14,2,3,ink);r(x+2,14,1,1,blue);}
       r(15,17,2,2,gold);r(11,26,3,2,goldShade);r(18,26,3,2,goldShade);
       if(archive) {r(6,27,20,3,purpleDark);r(8,28,16,1,cream);r(9,12,7,1,gold);r(17,12,7,1,gold);r(15,14,2,1,gold);}
+    } else if(slug=='woodland-scout-outfit'||slug=='everyday-adventurer-outfit') {
+      final scout=slug=='woodland-scout-outfit';
+      r(10,3,12,3,ink);r(6,6,20,10,ink);r(4,13,5,7,ink);r(23,13,5,7,ink);
+      r(7,7,18,10,cream);r(5,14,3,5,cream);r(24,14,3,5,cream);
+      r(10,16,12,7,ink);r(10,22,5,7,ink);r(17,22,5,7,ink);
+      r(11,18,10,5,wood);r(11,22,3,5,wood);r(18,22,3,5,wood);
+      r(8,27,7,3,woodDark);r(17,27,7,3,woodDark);
+      if(scout){r(10,6,4,12,greenDark);r(18,6,4,12,greenDark);
+        r(11,7,2,10,green);r(19,7,2,10,green);
+        for(final y in [9,12,15]){r(14,y,4,1,gold);}
+        r(10,17,12,2,woodDark);r(18,17,5,5,wood);r(19,18,2,1,gold);
+      }else{r(15,7,1,10,goldShade);r(10,17,12,1,woodDark);}
     } else if(slug=='midnight-harvest-coat') {
       r(10,4,12,3,ink);r(6,7,20,9,ink);r(3,14,6,12,ink);r(23,14,6,12,ink);
       r(8,13,16,15,ink);r(7,26,18,3,ink);

@@ -107,6 +107,41 @@ void main() {
     expect(find.byType(QuestwellWoodlandScoutFoundation), findsNothing);
   });
 
+  testWidgets('app outfits equip complete female layers and return to the new Scout robe', (tester) async {
+    Future<void> render(String? chest, {String body='female', bool boots=false}) async {
+      await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(width:240,height:320,
+        child:QuestwellLayeredAdventurerArt(archetype:'scout',avatarBodyType:body,
+          equippedSlugs:{if(chest!=null)'chest':chest,if(boots)'feet':'pathfinder-boots'})))));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(),isNull);
+    }
+    await render(null);
+    final baseline=assets(tester);
+    expect(baseline,contains(QuestwellScoutWardrobeFoundation.asset('female','robe')));
+    for(final slug in ['woodland-scout-outfit','everyday-adventurer-outfit']) {
+      await render(slug);
+      expect(asset(QuestwellScoutWardrobeFoundation.femaleBaseAsset),findsOneWidget);
+      expect(assets(tester).any((p)=>p.contains('robe_')),isFalse);
+      if(slug=='woodland-scout-outfit') {
+        expect(tester.widgetList<QuestwellWoodlandGarment>(find.byType(QuestwellWoodlandGarment))
+          .map((g)=>g.part).toSet(),{'shirt','vest','trousers','boots'});
+      }else{
+        expect(assets(tester),contains(QuestwellScoutWardrobeFoundation.asset('female','top')));
+      }
+      await render(slug,boots:true);
+      expect(assets(tester).any((p)=>p.contains('scout_boots_female')),isFalse);
+      expect(tester.widgetList<QuestwellWoodlandGarment>(find.byType(QuestwellWoodlandGarment))
+        .any((g)=>g.part=='boots'),isFalse);
+      await render(null);
+      expect(assets(tester),baseline);
+      for(final body in ['male','neutral']) {
+        await render(slug,body:body);
+        expect(asset(QuestwellScoutWardrobeFoundation.femaleBaseAsset),findsNothing);
+        expect(find.byType(QuestwellWoodlandGarment),findsNothing);
+      }
+    }
+  });
+
   for (final body in ['male', 'neutral']) {
     testWidgets('$body modular clothing never restores suit trousers', (tester) async {
       Future<void> render(Set<String> layers) => tester.pumpWidget(MaterialApp(home:

@@ -1,6 +1,7 @@
 /// Catalog entries with a connected avatar or Hearth renderer.
 abstract final class QuestwellEquipmentPolicy {
   static const shopCategories = <String,String>{
+    'woodland-scout-outfit':'chest', 'everyday-adventurer-outfit':'chest',
     'midnight-harvest-coat':'chest', 'starter-business-suit':'chest', 'moss-green-cloak':'chest', 'hearthguard-mantle':'chest',
     'round-scholar-glasses':'face', 'tiny-wizard-hat':'head', 'emerald-scholar-scarf':'neck',
     'leather-satchel':'back', 'wayfarer-satchel':'back', 'brass-lantern':'hands',
@@ -14,6 +15,9 @@ abstract final class QuestwellEquipmentPolicy {
     'walnut-reading-table':'room', 'rainy-window':'room', 'warding-lantern':'room',
     'moonlit-woodland':'wall_art', 'fern-study':'wall_art', 'celestial-study':'wall_art',
   };
+  // Body-specific fits remain unavailable until their own fit is ready.
+  static bool supportsBody(String slug, String body) =>
+      !const {'woodland-scout-outfit', 'everyday-adventurer-outfit'}.contains(slug) || body == 'female';
   static bool isClosedCloak(String slug) =>
       slug == 'moss-green-cloak' || slug == 'hearthguard-mantle';
   static bool conflicts(String nextSlug, String nextCategory, String currentSlug, String currentCategory) =>

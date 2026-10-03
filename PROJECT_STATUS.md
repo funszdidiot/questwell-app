@@ -1,5 +1,11 @@
 # Questwell Project Status
 
+## Female outfits in the app — 2026-10-03 (America/Chicago)
+
+Tanya authorized pushing the finished female Woodland Scout and everyday outfits into the app. The v6 rustic robe replaces the female Scout default, and its shape/back-panel/cuff construction is the class-robe template. Her explicit sequencing correction: male and neutral paper-doll foundations must happen before fitting those bodies or adapting the remaining class robes. Do not resize the female anatomy or fit to stand in for either body.
+
+Current implementation connects two chest outfits to the shared avatar renderer and restores the new Scout robe on unequip. Catalog activation awaits green development checks. See `docs/art/FEMALE_WARDROBE_RELEASE.md`. Keep `questwell-dev` unmerged; no launch.
+
 ## Woodland Scout outfit — 2026-10-03 (America/Chicago)
 
 Founder approved the new Woodland Scout concept and authorized fitting it as separate garments. Added an ivory rolled-sleeve shirt, moss leather vest with belt/pouch, reinforced brown trousers and folded leather boots over the unchanged female paper-doll body. The dedicated development review shows Underwear → Shirt and trousers → Woodland Scout with independent layer controls and enlarged sleeve detail. Existing robe and normal wardrobe remain intact.

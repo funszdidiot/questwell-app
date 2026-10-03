@@ -240,6 +240,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
   Widget _item(AdventurerInventoryItem item) {
     final busy = widget.busyItem != null || widget.savingAppearance;
     final ready = QuestwellEquipmentPolicy.isReady(item.slug, item.category);
+    final bodyLocked = !QuestwellEquipmentPolicy.supportsBody(item.slug, widget.bodyType);
     final room = item.category == 'room';
     final wallArt = item.category == 'wall_art';
     final outfit = item.category == 'chest';
@@ -268,6 +269,8 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         child: Text(item.unlockedAt == null ? 'Level ${item.milestoneLevel} trophy'
           : '${item.source == 'level_milestone' ? 'Earned' : 'Added'} ${DateFormat('MMM d, yyyy').format(item.unlockedAt!.toLocal())}',
           style: _text(13, color: _muted))),
+      if (bodyLocked) Padding(padding: const EdgeInsets.only(top: 8),
+        child: Text('Available for the female body.', style: _text(13, color: _gold))),
       if (item.classLocked) Padding(padding: const EdgeInsets.only(top: 8),
         child: Text('Requires ${_label(item.archetype ?? '')} class.', style: _text(13, color: _gold))),
       const SizedBox(height: 12),
@@ -279,12 +282,12 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       OutlinedButton(
         onPressed: busy ? null : item.equipped ? () => widget.onUnequip(item.id)
           : !item.owned && item.shop ? widget.onMarket
-          : item.owned && !item.classLocked && ready ? () => widget.onEquip(item.id) : null,
+          : item.owned && !item.classLocked && !bodyLocked && ready ? () => widget.onEquip(item.id) : null,
         style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48), foregroundColor: _gold,
               textStyle: QuestwellTypography.body(fontSize: 14, fontWeight: FontWeight.w700)),
         child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? (room || wallArt ? 'Remove from Hearth' : outfit ? 'Wear ${_label(widget.archetype)} outfit' : 'Unequip')
           : !item.owned ? (item.shop ? 'View in Market' : item.milestoneLevel != null ? 'Unlocks at level ${item.milestoneLevel}' : item.slug == 'first-journey-trophy' ? 'Unlocks at level 5' : 'Earn through progression')
-          : item.classLocked ? 'Class restricted' : !ready ? (room ? 'Coming soon' : 'Equip unavailable') : (room ? 'Place in Hearth' : wallArt ? 'Hang in Hearth' : 'Equip'))),
+          : bodyLocked ? 'Female fit only' : item.classLocked ? 'Class restricted' : !ready ? (room ? 'Coming soon' : 'Equip unavailable') : (room ? 'Place in Hearth' : wallArt ? 'Hang in Hearth' : 'Equip'))),
     ]));
   }
 }

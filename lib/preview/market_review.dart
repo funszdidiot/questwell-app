@@ -23,6 +23,13 @@ class _MarketReviewAppState extends State<MarketReviewApp> {
   final slots=<String,String>{};
   List<QuestwellCosmetic> get items=>marketReviewCatalog.map((row)=>QuestwellCosmetic.fromJson(row,
     owned:owned.contains(row['slug']),equipped:equipped.containsValue(row['slug']),roomSlot:slots[row['slug']])).toList();
+  @override
+  void initState() {
+    super.initState();
+    final query=Uri.base.queryParameters;
+    if(['female','male','neutral'].contains(query['body'])) body=query['body']!;
+    if(['scholar','scout','alchemist','guardian','wanderer'].contains(query['class'])) archetype=query['class']!;
+  }
   Future<void> equip(BuildContext context,QuestwellCosmetic i) async {
     if(i.category=='room'||QuestwellWallArt.isSide(i.slug)) {
       final pick=await showRoomPicker(context,name:i.name,id:i.id,slug:i.slug,

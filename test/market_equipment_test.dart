@@ -25,6 +25,27 @@ void main(){
     }
     expect(QuestwellEquipmentPolicy.conflicts('starter-business-suit','chest','brass-lantern','hands'),isFalse);
   });
+  testWidgets('female outfit restrictions show the correct fit and block unsupported equip', (tester) async {
+    final outfit=items.firstWhere((i)=>i.slug=='woodland-scout-outfit').copyWith(owned:true);
+    for(final body in ['male','neutral','female']) {
+      expect(QuestwellEquipmentPolicy.supportsBody(outfit.slug,body),body=='female');
+      await tester.pumpWidget(MaterialApp(home:Scaffold(body:QuestwellMarketView(
+        key:ValueKey(body),data:QuestwellCosmeticsSnapshot(profile:QuestwellProfile(
+          level:4,totalXp:355,coinBalance:650,currentEnergyMode:'normal',onboardingCompleted:true,
+          adventurerArchetype:'scout',avatarBodyType:body),cosmetics:[outfit]),
+        onPurchase:(_)async{},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{}))));
+      await tester.pumpAndSettle();
+      if(body!='female') {
+        await tester.tap(find.widgetWithText(OutlinedButton,'My class'));
+        await tester.pumpAndSettle();
+        final button=find.widgetWithText(FilledButton,'Female fit only');
+        expect(tester.widget<FilledButton>(button).onPressed,isNull);
+      }else{
+        expect(tester.widget<FilledButton>(find.widgetWithText(FilledButton,'Equip')).onPressed,isNotNull);
+      }
+      expect(tester.takeException(),isNull);
+    }
+  });
   testWidgets('Equipment swap clearly offers cancel and confirm',(tester)async{
     final cloak=items.firstWhere((i)=>i.slug=='moss-green-cloak');
     final held=items.firstWhere((i)=>i.slug=='brass-lantern');
@@ -37,8 +58,8 @@ void main(){
     await tester.tap(find.text('Try swap'));await tester.pumpAndSettle();
     await tester.tap(find.text('Swap equipment'));await tester.pumpAndSettle();expect(result,isTrue);
   });
-  test('All 43 shop entries have distinct artwork and equipment routes',()async{
-    expect(items.length,43);
+  test('All 45 shop entries have distinct artwork and equipment routes',()async{
+    expect(items.length,45);
     final fingerprints=<String>{};
     for(final item in items){
       expect(QuestwellEquipmentPolicy.isReady(item.slug,item.category),isTrue,reason:item.slug);

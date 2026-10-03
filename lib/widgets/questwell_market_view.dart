@@ -26,11 +26,13 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   bool affordable=false,owned=false,myClass=true;
   static const cream=Color(0xFFF1E4C9),muted=Color(0xFFA9BEB8),gold=Color(0xFFE0BF79),ink=Color(0xFF253E3D);
   bool room(QuestwellCosmetic item)=>['room','wall_art'].contains(item.category);
-  bool restricted(QuestwellCosmetic i)=>i.requiredArchetype!=null&&i.requiredArchetype!=widget.data.profile.adventurerArchetype;
+  bool bodyRestricted(QuestwellCosmetic i)=>!QuestwellEquipmentPolicy.supportsBody(i.slug,widget.data.profile.avatarBodyType);
+  bool restricted(QuestwellCosmetic i)=>bodyRestricted(i)||i.requiredArchetype!=null&&i.requiredArchetype!=widget.data.profile.adventurerArchetype;
   String group(QuestwellCosmetic i)=>room(i)?'Hearth':i.category=='familiar'?'Companions':i.category=='effect'?'Effects':'Wearables';
   String title(String text)=>text.isEmpty?text:'${text[0].toUpperCase()}${text.substring(1)}';
   String action(QuestwellCosmetic i) {
     if(widget.busyId==i.id)return 'Saving…';
+    if(bodyRestricted(i))return 'Female fit only';
     if(restricted(i))return '${title(i.requiredArchetype!)} only';
     if(!QuestwellEquipmentPolicy.isReady(i.slug,i.category))return 'Coming soon';
     if(i.equipped)return room(i)?'Placed in Hearth':'Equipped';
@@ -76,8 +78,8 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
             avatarBodyType:widget.data.profile.avatarBodyType,equippedSlugs:preview(item))
           else SizedBox(height:265,child:QuestwellLayeredAdventurerArt(
             archetype:item.requiredArchetype??widget.data.profile.adventurerArchetype,
-            avatarBodyType:widget.data.profile.avatarBodyType,equippedSlugs:preview(item))),
-          const SizedBox(height:10),Text('Try-on preview',textAlign:TextAlign.center,style:QuestwellTypography.body(color:muted,fontSize:12)),
+            avatarBodyType:bodyRestricted(item)?'female':widget.data.profile.avatarBodyType,equippedSlugs:preview(item))),
+          const SizedBox(height:10),Text(bodyRestricted(item)?'Female fit preview':'Try-on preview',textAlign:TextAlign.center,style:QuestwellTypography.body(color:muted,fontSize:12)),
           const SizedBox(height:16),Text(item.description,style:QuestwellTypography.body(color:cream,height:1.5)),
           const SizedBox(height:12),
           Text(item.requiredArchetype==null?'Available to every class':'For ${title(item.requiredArchetype!)} adventurers',style:QuestwellTypography.body(color:muted)),
@@ -200,7 +202,8 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
         ])),
       ])),
       const SizedBox(height:10),Text(item.description,maxLines:2,overflow:TextOverflow.ellipsis,style:QuestwellTypography.body(color:Color(0xFF5E6559),height:1.4,fontSize:14)),
-      if(restricted(item))Padding(padding:const EdgeInsets.only(top:8),child:Text('Requires ${title(item.requiredArchetype!)} class',style:QuestwellTypography.body(color:Color(0xFF88534C),fontSize:13))),
+      if(bodyRestricted(item))Padding(padding:const EdgeInsets.only(top:8),child:Text('Available for the female body.',style:QuestwellTypography.body(color:Color(0xFF88534C),fontSize:13))),
+      if(item.requiredArchetype!=null && item.requiredArchetype!=widget.data.profile.adventurerArchetype)Padding(padding:const EdgeInsets.only(top:8),child:Text('Requires ${title(item.requiredArchetype!)} class',style:QuestwellTypography.body(color:Color(0xFF88534C),fontSize:13))),
       const SizedBox(height:10),Wrap(alignment:WrapAlignment.spaceBetween,spacing:8,runSpacing:5,children:[
         TextButton(onPressed:()=>details(item),style:TextButton.styleFrom(foregroundColor:ink,textStyle:QuestwellTypography.control(),minimumSize:const Size(48,48)),child:Text('Preview')),
         FilledButton(onPressed:canAct(item)?()=>_activateItem(item):null,

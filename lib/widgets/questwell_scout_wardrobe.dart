@@ -2,8 +2,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'questwell_clean_base.dart';
 
-/// Candidate clothing, explicitly enabled only by the development review.
-/// Null in the shared renderer preserves the existing equipped wardrobe.
+/// Separate garments on a fixed body. The accepted female fit is used by
+/// the Scout default robe and Everyday Adventurer outfit in the shared renderer.
 class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   const QuestwellScoutWardrobeFoundation({super.key, required this.body, required this.layers});
   final String body;

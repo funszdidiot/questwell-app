@@ -217,10 +217,18 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         ? ({...this.equippedSlugs}..remove('hands')) : this.equippedSlugs;
     final harvestCoat = equippedSlugs['chest'] == 'midnight-harvest-coat';
     final harvestBody = ['male', 'female'].contains(avatarBodyType) ? avatarBodyType : 'neutral';
-    final woodland = previewWoodlandLayers != null && harvestBody == 'female';
-    final modular = previewScoutLayers != null || woodland;
+    final woodland = harvestBody == 'female' && (previewWoodlandLayers != null ||
+        equippedSlugs['chest'] == 'woodland-scout-outfit');
+    final fittedDefault = harvestBody == 'female' && archetype == 'scout' &&
+        equippedSlugs['chest'] == null && previewWoodlandLayers == null;
+    final scoutLayers = previewScoutLayers ?? (harvestBody == 'female' &&
+        equippedSlugs['chest'] == 'everyday-adventurer-outfit'
+        ? const {'top', 'trousers', 'boots'}
+        : fittedDefault ? const {'top', 'trousers', 'boots', 'robe'} : null);
+    final woodlandLayers = previewWoodlandLayers ?? const {'shirt', 'trousers', 'boots', 'vest'};
+    final modular = scoutLayers != null || woodland;
     final classOverlay = woodland ? null : modular
-        ? (previewScoutLayers!.contains('robe') ? QuestwellScoutWardrobeFoundation.asset(harvestBody, 'robe') : null)
+        ? (scoutLayers!.contains('robe') ? QuestwellScoutWardrobeFoundation.asset(harvestBody, 'robe') : null)
         : harvestCoat
         ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v2.webp'
         : equippedSlugs['chest'] == 'starter-business-suit' ? null : _classOverlayAsset;
@@ -241,16 +249,18 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           : image;
     }
 
+    final fittedFeet = equippedSlugs['feet'] == QuestwellPathfinderBoots.slug;
+    Set<String> fittedLayers(Set<String> layers) => fittedFeet
+        ? (Set<String>.of(layers)..remove('boots')) : layers;
     Widget foundation() => woodland
-        ? QuestwellWoodlandScoutFoundation(layers: previewWoodlandLayers!)
+        ? QuestwellWoodlandScoutFoundation(layers: fittedLayers(woodlandLayers))
         : modular
-        ? QuestwellScoutWardrobeFoundation(body: body, layers: previewScoutLayers!)
+        ? QuestwellScoutWardrobeFoundation(body: body, layers: fittedLayers(scoutLayers!))
         : equippedSlugs['chest'] == 'starter-business-suit'
         ? _assetLayer(_baseAsset)
         : QuestwellCleanBase(body: body, withTrousers: classOverlay != null);
 
-    Widget baseImage() => !paperDollFemale &&
-        equippedSlugs['feet'] == QuestwellPathfinderBoots.slug
+    Widget baseImage() => fittedFeet
         ? ClipPath(clipper: PathfinderBaseClipper(body), child: foundation())
         : foundation();
 
