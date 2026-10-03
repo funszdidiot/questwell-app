@@ -4,6 +4,7 @@ import '../lib/widgets/questwell_pixel_art.dart';
 import '../lib/widgets/questwell_clean_base.dart';
 import '../lib/widgets/questwell_scout_wardrobe.dart';
 import '../lib/preview/scout_wardrobe_review.dart';
+import '../lib/widgets/questwell_woodland_scout.dart';
 
 void main() {
   List<String> assets(WidgetTester tester) => tester
@@ -77,6 +78,35 @@ void main() {
     expect(identity, lessThan(layer('robe_cuff_front')));
   });
 
+  testWidgets('Woodland Scout pieces toggle without replacing or masking the female base', (tester) async {
+    const choices = ['shirt', 'vest', 'trousers', 'boots'];
+    final baseFinder = asset(QuestwellScoutWardrobeFoundation.femaleBaseAsset);
+    Rect? bounds;
+    for (var mask = 0; mask < 16; mask++) {
+      final layers = <String>{for (var n = 0; n < 4; n++) if ((mask & (1 << n)) != 0) choices[n]};
+      await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
+        width: 240, height: 320, child: QuestwellLayeredAdventurerArt(
+          archetype: 'scout', avatarBodyType: 'female', equippedSlugs: const {},
+          previewWoodlandLayers: layers)))));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(baseFinder, findsOneWidget);
+      bounds ??= tester.getRect(baseFinder);
+      expect(tester.getRect(baseFinder), bounds);
+      expect(find.byType(QuestwellCleanBase), findsNothing);
+      expect(tester.widgetList<QuestwellWoodlandGarment>(find.byType(QuestwellWoodlandGarment))
+        .map((garment) => garment.part).toSet(), layers);
+      expect(tester.widgetList<ClipPath>(find.byType(ClipPath))
+        .where((clip) => clip.clipper is ScoutWardrobeClipper), isEmpty);
+    }
+    // Switching back to a normal outfit cannot retain a candidate garment.
+    await tester.pumpWidget(const MaterialApp(home: SizedBox(width: 240, height: 320,
+      child: QuestwellLayeredAdventurerArt(archetype: 'scout', avatarBodyType: 'female', equippedSlugs: {}))));
+    await tester.pumpAndSettle();
+    expect(find.byType(QuestwellWoodlandGarment), findsNothing);
+    expect(find.byType(QuestwellWoodlandScoutFoundation), findsNothing);
+  });
+
   for (final body in ['male', 'neutral']) {
     testWidgets('$body modular clothing never restores suit trousers', (tester) async {
       Future<void> render(Set<String> layers) => tester.pumpWidget(MaterialApp(home:
@@ -115,18 +145,19 @@ void main() {
   });
 
   for (final width in [320.0, 390.0]) {
-    testWidgets('three-stage fitting scrolls without overflow at $width', (tester) async {
+    for (final woodland in [false, true]) {
+    testWidgets('three-stage fitting scrolls without overflow at $width (woodland: $woodland)', (tester) async {
       tester.view.devicePixelRatio = 1;
       tester.view.physicalSize = Size(width, 844);
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
-      await tester.pumpWidget(const ScoutWardrobeReviewApp());
+      await tester.pumpWidget(ScoutWardrobeReviewApp(woodland: woodland));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
       final stages = tester.widgetList<QuestwellLayeredAdventurerArt>(
         find.byType(QuestwellLayeredAdventurerArt)).toList();
       expect(stages, hasLength(3));
-      expect(stages.first.previewScoutLayers, isEmpty);
+      expect(woodland ? stages.first.previewWoodlandLayers : stages.first.previewScoutLayers, isEmpty);
       expect(stages.first.equippedSlugs, isEmpty);
       final row = find.byWidgetPredicate((widget) =>
         widget is SingleChildScrollView && widget.scrollDirection == Axis.horizontal);
@@ -138,7 +169,8 @@ void main() {
       await tester.drag(row, const Offset(-500, 0));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
-      expect(find.text('Robe').hitTestable(), findsOneWidget);
+      expect(find.text(woodland ? 'Woodland Scout' : 'Robe').last.hitTestable(), findsOneWidget);
     });
+    }
   }
 }

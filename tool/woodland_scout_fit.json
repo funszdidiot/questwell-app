@@ -1,0 +1,99 @@
+{
+  "canvas": [
+    240,
+    320
+  ],
+  "source_canvas": [
+    1086,
+    1448
+  ],
+  "body": "female",
+  "visual_approval": "pending_in_app_review",
+  "source_approval": "Woodland Scout concept approved by founder: Do it",
+  "layers": {
+    "shirt": {
+      "asset": "assets/images/questwell/avatar/woodland_scout_shirt_female_v1.png",
+      "sha256": "479a6e59b70a48386e25f4e00236b38178a3d55cc97af84a8e075d7e0e2ad319",
+      "scale_x": 0.52,
+      "offset_x": 57.6,
+      "rows": [
+        [
+          0,
+          46.7
+        ],
+        [
+          320,
+          184.3
+        ]
+      ]
+    },
+    "vest": {
+      "asset": "assets/images/questwell/avatar/woodland_scout_vest_female_v1.png",
+      "sha256": "69624e765dadf9d67ca8142a594a2ba10ea073c5ae4920fd45dca1620489737e",
+      "scale_x": 0.47,
+      "offset_x": 65,
+      "rows": [
+        [
+          0,
+          49
+        ],
+        [
+          320,
+          199.4
+        ]
+      ]
+    },
+    "trousers": {
+      "asset": "assets/images/questwell/avatar/woodland_scout_trousers_female_v1.png",
+      "sha256": "c30efeeae97e6ea2bcb0c18588d00f0c02c9812f80700fdf1e296b30cfe5fd27",
+      "scale_x": 0.88,
+      "offset_x": 13,
+      "rows": [
+        [
+          0,
+          39.6
+        ],
+        [
+          112,
+          140
+        ],
+        [
+          153,
+          178
+        ],
+        [
+          202,
+          229
+        ],
+        [
+          245,
+          266
+        ],
+        [
+          288,
+          283
+        ],
+        [
+          320,
+          297
+        ]
+      ]
+    },
+    "boots": {
+      "asset": "assets/images/questwell/avatar/woodland_scout_boots_female_v1.png",
+      "sha256": "5bb43264168a0263fd679e0881e337b32d08c9bb8b6958b99be6170d33265876",
+      "scale_x": 0.8,
+      "offset_x": 27,
+      "rows": [
+        [
+          0,
+          57
+        ],
+        [
+          320,
+          313
+        ]
+      ]
+    }
+  }
+}

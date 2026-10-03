@@ -1,4 +1,5 @@
 import 'questwell_scout_wardrobe.dart';
+import 'questwell_woodland_scout.dart';
 import 'questwell_clean_base.dart';
 import 'questwell_woven_rug.dart';
 import 'dart:math' as math;
@@ -70,6 +71,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     this.avatarBodyType = 'neutral',
     this.showRelic = false,
     this.previewScoutLayers,
+    this.previewWoodlandLayers,
   });
 
   static const _maleBase =
@@ -119,6 +121,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   final String avatarBodyType;
   final bool showRelic;
   final Set<String>? previewScoutLayers;
+  final Set<String>? previewWoodlandLayers;
 
   String get _baseAsset {
     switch (avatarBodyType) {
@@ -214,8 +217,9 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         ? ({...this.equippedSlugs}..remove('hands')) : this.equippedSlugs;
     final harvestCoat = equippedSlugs['chest'] == 'midnight-harvest-coat';
     final harvestBody = ['male', 'female'].contains(avatarBodyType) ? avatarBodyType : 'neutral';
-    final modular = previewScoutLayers != null;
-    final classOverlay = modular
+    final woodland = previewWoodlandLayers != null && harvestBody == 'female';
+    final modular = previewScoutLayers != null || woodland;
+    final classOverlay = woodland ? null : modular
         ? (previewScoutLayers!.contains('robe') ? QuestwellScoutWardrobeFoundation.asset(harvestBody, 'robe') : null)
         : harvestCoat
         ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v2.webp'
@@ -237,7 +241,9 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           : image;
     }
 
-    Widget foundation() => modular
+    Widget foundation() => woodland
+        ? QuestwellWoodlandScoutFoundation(layers: previewWoodlandLayers!)
+        : modular
         ? QuestwellScoutWardrobeFoundation(body: body, layers: previewScoutLayers!)
         : equippedSlugs['chest'] == 'starter-business-suit'
         ? _assetLayer(_baseAsset)

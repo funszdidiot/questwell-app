@@ -499,6 +499,37 @@
           "sha256": "5a319f8280e0ab12873fe593451c8b09b209e46979a222c2fd698a960047ae89"
         }
       ]
+    },
+    "woodland_scout_v1": {
+      "visual_approval": "pending_in_app_review",
+      "description": "Accepted Woodland Scout concept fitted as four independently toggleable garments over the fixed female paper-doll base. No normal wardrobe or catalog changes.",
+      "assets": [],
+      "fit_inputs": [
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_boots_female_v1.png",
+          "sha256": "5bb43264168a0263fd679e0881e337b32d08c9bb8b6958b99be6170d33265876"
+        },
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_shirt_female_v1.png",
+          "sha256": "479a6e59b70a48386e25f4e00236b38178a3d55cc97af84a8e075d7e0e2ad319"
+        },
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_trousers_female_v1.png",
+          "sha256": "c30efeeae97e6ea2bcb0c18588d00f0c02c9812f80700fdf1e296b30cfe5fd27"
+        },
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_vest_female_v1.png",
+          "sha256": "69624e765dadf9d67ca8142a594a2ba10ea073c5ae4920fd45dca1620489737e"
+        },
+        {
+          "path": "tool/art_assets/woodland_scout_v1/approved_concept.png",
+          "sha256": "d9bf075adfc7198acc383b2b7594819f31f6a2e870af38b0fac1c550a8879e38"
+        },
+        {
+          "path": "tool/woodland_scout_fit.json",
+          "sha256": "e167219e6424518b9b9d4756d2fff4f184224802b90c8036f53f58d89ce3a2a5"
+        }
+      ]
     }
   },
   "approved_layers": {

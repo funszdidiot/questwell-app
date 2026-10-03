@@ -7,7 +7,8 @@ import '../widgets/questwell_pixel_art.dart';
 enum _WardrobeStage { underwear, everyday, robe }
 
 class ScoutWardrobeReviewApp extends StatefulWidget {
-  const ScoutWardrobeReviewApp({super.key});
+  const ScoutWardrobeReviewApp({super.key, this.woodland = false});
+  final bool woodland;
 
   @override
   State<ScoutWardrobeReviewApp> createState() => _ScoutWardrobeReviewAppState();
@@ -24,11 +25,14 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
   @override
   void initState() {
     super.initState();
+    if (widget.woodland) {
+      layers..clear()..addAll({'shirt', 'trousers', 'boots', 'vest'});
+    }
     final q = Uri.base.queryParameters;
     if (q.containsKey('layers')) {
       layers.retainAll(q['layers']!.split(','));
     }
-    if (['all', 'female', 'male', 'neutral'].contains(q['body'])) {
+    if (!widget.woodland && ['all', 'female', 'male', 'neutral'].contains(q['body'])) {
       bodyView = q['body']!;
     }
     // Older compare=base links also open the complete layer comparison.
@@ -44,7 +48,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
     if (stage == _WardrobeStage.underwear) return <String>{};
     return layers.where((layer) {
       if (layer == 'boots' && body != 'female') return false;
-      return stage == _WardrobeStage.robe || layer != 'robe';
+      return stage == _WardrobeStage.robe || layer != (widget.woodland ? 'vest' : 'robe');
     }).toSet();
   }
 
@@ -53,7 +57,8 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
     return QuestwellLayeredAdventurerArt(
       archetype: 'scout',
       avatarBodyType: body,
-      previewScoutLayers: stageLayers(body, stage),
+      previewScoutLayers: widget.woodland ? null : stageLayers(body, stage),
+      previewWoodlandLayers: widget.woodland ? stageLayers(body, stage) : null,
       equippedSlugs: {
         if (dressed && held != 'none') 'hands': held,
         if (dressed && accessories) ...{
@@ -68,14 +73,14 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
   }
 
   Widget cuffs(String body, _WardrobeStage stage) => SizedBox(
-        height: 120,
+        height: widget.woodland ? 164 : 120,
         child: ClipRect(
           child: LayoutBuilder(builder: (context, constraints) {
             final scale = constraints.maxWidth / 148;
             return Stack(children: [
               Positioned(
                 left: (constraints.maxWidth - 240 * scale) / 2,
-                top: -153 * scale,
+                top: -(widget.woodland ? 118 : 153) * scale,
                 width: 240 * scale,
                 height: 320 * scale,
                 child: art(body, stage),
@@ -88,8 +93,8 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
   Widget fitCard(String body, _WardrobeStage stage, double width) {
     final title = switch (stage) {
       _WardrobeStage.underwear => 'Underwear',
-      _WardrobeStage.everyday => 'Everyday clothes',
-      _WardrobeStage.robe => 'Robe',
+      _WardrobeStage.everyday => widget.woodland ? 'Shirt and trousers' : 'Everyday clothes',
+      _WardrobeStage.robe => widget.woodland ? 'Woodland Scout' : 'Robe',
     };
     return SizedBox(
       width: width,
@@ -103,7 +108,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
         AspectRatio(aspectRatio: 240 / 320, child: art(body, stage)),
         if (detail) ...[
           const SizedBox(height: 12),
-          const Text('Wrists', style: TextStyle(color: Colors.white60)),
+          Text(widget.woodland ? 'Sleeves and hands' : 'Wrists', style: const TextStyle(color: Colors.white60)),
           cuffs(body, stage),
         ],
       ]),
@@ -190,9 +195,9 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 1200),
                   child: Column(children: [
-                    const Text(
-                      'The Scout wardrobe',
-                      style: TextStyle(fontSize: 28, color: Color(0xFFE0C481)),
+                    Text(
+                      widget.woodland ? 'Woodland Scout' : 'The Scout wardrobe',
+                      style: const TextStyle(fontSize: 28, color: Color(0xFFE0C481)),
                     ),
                     const SizedBox(height: 8),
                     const Text(
@@ -205,7 +210,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                       runSpacing: 8,
                       alignment: WrapAlignment.center,
                       children: [
-                        SizedBox(
+                        if (!widget.woodland) SizedBox(
                           width: 180,
                           child: DropdownButton<String>(
                             isExpanded: true,
@@ -219,21 +224,21 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                             onChanged: (value) => setState(() => bodyView = value!),
                           ),
                         ),
-                        layerToggle('top', 'Linen top'),
+                        layerToggle(widget.woodland ? 'shirt' : 'top', widget.woodland ? 'Linen shirt' : 'Linen top'),
                         layerToggle('trousers', 'Travel trousers'),
                         layerToggle(
                           'boots',
                           bodyView == 'female' ? 'Boots' : 'Boots (female)',
                           enabled: bodyView == 'female' || bodyView == 'all',
                         ),
-                        layerToggle('robe', 'Scout robe'),
+                        layerToggle(widget.woodland ? 'vest' : 'robe', widget.woodland ? 'Vest and belt' : 'Scout robe'),
                         FilterChip(
                           label: const Text('Accessories'),
                           selected: accessories,
                           onSelected: (value) => setState(() => accessories = value),
                         ),
                         FilterChip(
-                          label: const Text('Cuff detail'),
+                          label: Text(widget.woodland ? 'Sleeve detail' : 'Cuff detail'),
                           selected: detail,
                           onSelected: (value) => setState(() => detail = value),
                         ),
