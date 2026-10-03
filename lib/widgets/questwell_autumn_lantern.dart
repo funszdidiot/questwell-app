@@ -9,8 +9,9 @@ class QuestwellAutumnLantern extends StatefulWidget {
   static Rect bounds(Size scene, String slot) {
     final avatarHeight = math.min(scene.height * .76, scene.width * .62 * 4 / 3);
     final height = math.min(avatarHeight * .66, scene.width * .29 * 1681 / 935);
-    final width = height * 935 / 1681;
-    final center = scene.width * (slot == 'left' ? .23 : .83);
+    // Wider paint canvas gives the leaves room outside the metal silhouette.
+    final width = height * 935 / 1681 * 1.55;
+    final center = scene.width * (slot == 'left' ? .22 : .80);
     return Rect.fromLTWH(center - width / 2, scene.height * .72 - height * 1605 / 1681, width, height);
   }
   @override
@@ -73,7 +74,7 @@ class AutumnLanternPainter extends CustomPainter {
     final paint = Paint();
     final center = Offset(size.width * .5, size.height * .57);
     if (!foreground) {
-      final radius = size.width * .49;
+      final radius = size.width * .32;
       paint.shader = RadialGradient(colors: [
         Color.fromRGBO(255, 181, 54, .32 * flicker),
         const Color(0x00FFAF32),
@@ -97,7 +98,7 @@ class AutumnLanternPainter extends CustomPainter {
       final x = size.width * (.5 + math.sin(angle) * .40);
       final y = size.height * (.91 - t * .72);
       final opacity = math.pow(math.sin(t * math.pi), .5).toDouble() * .92;
-      final length = size.height * (.021 + (i % 3) * .003);
+      final length = size.height * (.035 + (i % 3) * .004);
       canvas.save();
       canvas.translate(x, y);
       canvas.rotate(angle + math.sin(phase + i) * .4);
@@ -119,6 +120,11 @@ class AutumnLanternPainter extends CustomPainter {
       paint.style = PaintingStyle.fill;
       paint.color = [const Color(0xFFF0B74E),const Color(0xFFD16B30),const Color(0xFFC99045)][i % 3].withValues(alpha: opacity);
       canvas.drawPath(leaf, paint);
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = .65;
+      paint.color = const Color(0xFFFFD986).withValues(alpha: opacity * .8);
+      canvas.drawPath(leaf, paint);
+      paint.style = PaintingStyle.fill;
       paint.color = const Color(0xFF714323).withValues(alpha: opacity);
       paint.strokeWidth = math.max(.6, size.height * .004);
       canvas.drawLine(Offset(0, -length * .55), Offset(0, length), paint);
