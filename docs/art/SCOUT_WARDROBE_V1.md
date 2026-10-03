@@ -14,3 +14,7 @@ The shared renderer accepts an explicit optional preview layer set. Omitting it 
 Review controls: linen top, travel trousers, Scout robe, accessories, empty hands/lantern/grimoire and cuff detail. Query options: `layers=top,trousers,robe`, `gear=all`, `held=brass-lantern` or `annotated-grimoire`, `detail=cuffs`. An empty `layers=` shows the clean base.
 
 Validation before publishing: all nine exports passed the non-folding fit check; existing frozen avatar asset hashes passed. Local six-view compositing exposed sleeve protrusion and collar overlap, corrected in the runtime clipping. CI and live preview inspection follow the development commit. Fitting approval and market-slot integration remain separate follow-up work.
+
+## Verified development candidate
+
+Code/art commit `ba3eaafde1ea292addb035d5f0bf714358e9a69f` passed Questwell Flutter Check (run 37091574402) and Questwell Preview deployment (run 37091574432). The nine runtime images and nine source masters matched their uploaded Git blob hashes. Live browser inspection covered all three bodies with the complete outfit, robe removed, all three pieces removed, accessories plus brass lantern, and grimoire wrist closeups. Cuff closeups were centered and undershirt sleeve edges hidden beneath the robe. The fitting remains a development-only candidate awaiting founder review.
