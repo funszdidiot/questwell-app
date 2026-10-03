@@ -15,3 +15,7 @@ The selected artwork was already generated with the built-in image generation to
 Once this fit is accepted, every class robe must use the **same exact shape for each body type**, including the same silhouette, back panel, opening, sleeve shape, cuff geometry, fold layout and hem. Only colors and surface patterns differ. Do not generate independent class silhouettes. Preserve these masks and registration across classes. Other classes remain unchanged while this fitted candidate is reviewed.
 
 The development-only `?review=scout-wardrobe` route uses this candidate; no inventory, economy, class default, authentication or production-branch changes are part of this work. Tops and trousers retain their approved v1 assets. The intermediate green v2 candidate was never deployed and is superseded.
+
+## Verification
+
+Development code/art commit `6fc73b1210e96e1de0cca3464b6055a88339b45a` passed Questwell Flutter Check run 37093348189 and preview deployment run 37093348190. Tests verify the rear panel precedes anatomy, the front robe follows anatomy, the cuff rim follows the front robe, and all robe passes disappear when the robe is removed. Live browser inspection covered all three avatars with both wrist closeups, accessories and brass lantern, and the grimoire grip. All nine fitted passes are transparent 240x320 WebP files; each body's three passes share exactly the same registration. The figure's trousers and legs remain in front of the continuous rear panel. No production merge or class-wide rollout was performed.
