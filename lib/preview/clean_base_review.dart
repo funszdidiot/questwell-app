@@ -42,9 +42,9 @@ class _CleanBaseReviewAppState extends State<CleanBaseReviewApp> {
     height: height, child: QuestwellLayeredAdventurerArt(archetype: archetype,
       avatarBodyType: body, equippedSlugs: equipment));
   Widget select(String value, List<String> values, ValueChanged<String> change) =>
-    DropdownButton<String>(value: value, items: values.map((v) =>
+    SizedBox(width: 220, child: DropdownButton<String>(isExpanded: true, value: value, items: values.map((v) =>
       DropdownMenuItem(value: v, child: Text(v))).toList(),
-      onChanged: (v) => setState(() => change(v!)));
+      onChanged: (v) => setState(() => change(v!))));
   @override
   Widget build(BuildContext context) => MaterialApp(
     debugShowCheckedModeBanner: false, theme: ThemeData.dark(),
@@ -72,9 +72,9 @@ class _CleanBaseReviewAppState extends State<CleanBaseReviewApp> {
                   style: const TextStyle(fontSize: 20, color: Color(0xFFE0C481))),
                 const SizedBox(height: 10),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Column(children: [const Text('Base layer'),
-                    SizedBox(width: cardHeight * .75, height: cardHeight, child: QuestwellCleanBase(body: body))]),
-                  Column(children: [const Text('Selection card'), avatar(body, cardHeight)]),
+                  Expanded(child: Column(children: [const Text('Base layer', textAlign: TextAlign.center),
+                    SizedBox(width: cardHeight * .75, height: cardHeight, child: QuestwellCleanBase(body: body))])),
+                  Expanded(child: Column(children: [const Text('Selection card', textAlign: TextAlign.center), avatar(body, cardHeight)])),
                 ]),
                 const SizedBox(height: 12),
                 avatar(body, 340),
