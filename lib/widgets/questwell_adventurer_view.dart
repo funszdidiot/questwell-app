@@ -12,12 +12,14 @@ class AdventurerInventoryItem {
   const AdventurerInventoryItem({required this.id, required this.name, required this.slug,
     required this.category, required this.description, required this.owned,
     required this.equipped, required this.classLocked, required this.shop,
-    this.archetype, this.roomSlot, this.milestoneLevel, this.unlockedAt, this.source});
+    this.archetype, this.roomSlot, this.milestoneLevel, this.unlockedAt, this.source,
+    this.collectionKey, this.editionType = 'standard'});
   final String id, name, slug, category, description;
   final String? archetype, roomSlot;
   final int? milestoneLevel;
   final DateTime? unlockedAt;
-  final String? source;
+  final String? source, collectionKey;
+  final String editionType;
   String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}'
     : category == 'wall_art' && roomSlot != null && roomSlot != 'wall_center' ? 'wall_art:$roomSlot' : category;
   final bool owned, equipped, classLocked, shop;
