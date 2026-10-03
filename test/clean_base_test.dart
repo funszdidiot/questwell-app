@@ -1,5 +1,10 @@
 import 'dart:ui' as ui;
+import 'dart:typed_data';
 import '../lib/preview/clean_base_review.dart';
+import '../lib/preview/neutral_paper_doll_review.dart';
+import '../lib/preview/neutral_scout_review.dart';
+import '../lib/widgets/questwell_neutral_scout.dart';
+import '../lib/widgets/questwell_neutral_paper_doll.dart';
 import '../lib/widgets/questwell_brass_lantern.dart';
 import '../lib/widgets/questwell_annotated_grimoire.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +15,81 @@ import '../lib/widgets/questwell_pixel_art.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test('Neutral paper doll preserves original identity and clothing covers its legs', () async {
+    Future<ByteData> pixels(String path) async {
+      final bytes = await rootBundle.load(path);
+      final codec = await ui.instantiateImageCodec(bytes.buffer.asUint8List(
+          bytes.offsetInBytes, bytes.lengthInBytes));
+      final image = (await codec.getNextFrame()).image;
+      codec.dispose();
+      try {
+        expect([image.width, image.height], [240, 320]);
+        return (await image.toByteData(format: ui.ImageByteFormat.rawRgba))!;
+      } finally {
+        image.dispose();
+      }
+    }
+    final body = await pixels(QuestwellNeutralPaperDoll.baseAsset);
+    final identity = await pixels(QuestwellNeutralPaperDoll.identityAsset);
+    final original = await pixels('assets/images/questwell/avatar/base/base_neutral.webp');
+    final outfit = await pixels(QuestwellNeutralScout.outfitAsset);
+    for (var y = 0; y < 320; y++) {
+      for (var x = 0; x < 240; x++) {
+        final offset = (y * 240 + x) * 4;
+        if (y < 68) {
+          expect(body.getUint32(offset), original.getUint32(offset),
+              reason: 'Face and hair must remain unchanged at $x,$y');
+          expect(identity.getUint32(offset), original.getUint32(offset));
+        }
+        if (y >= 205 && body.getUint8(offset+3) > 180) {
+          expect(outfit.getUint8(offset+3), greaterThanOrEqualTo(128),
+              reason: 'Clothing must cover the fixed leg/foot at $x,$y');
+        }
+      }
+    }
+  });
+  testWidgets('Neutral clothing subsets keep one fixed body and correct cloth depth', (tester) async {
+    Rect? bounds;
+    for (final layers in <Set<String>>[{}, {'outfit'}, {'robe'}, {'outfit','robe'}]) {
+      await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
+        width: 240, height: 320, child: QuestwellNeutralScout(layers: layers)))));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      final body = find.byType(QuestwellNeutralPaperDoll);
+      expect(body, findsOneWidget);
+      bounds ??= tester.getRect(body);
+      expect(tester.getRect(body), bounds);
+      expect(find.byType(ClipPath), findsNothing);
+      final images = tester.widgetList<Image>(find.byType(Image))
+        .map((image) => (image.image as AssetImage).assetName).toList();
+      expect(images, [
+        if(layers.contains('robe')) QuestwellNeutralScout.rearAsset,
+        QuestwellNeutralPaperDoll.baseAsset,
+        if(layers.contains('outfit')) layers.contains('robe')
+          ? QuestwellNeutralScout.underRobeAsset : QuestwellNeutralScout.outfitAsset,
+        if(layers.contains('robe')) QuestwellNeutralScout.robeAsset,
+        QuestwellNeutralPaperDoll.identityAsset,
+        if(layers.contains('robe')) QuestwellNeutralScout.cuffsAsset,
+      ]);
+    }
+  });
+  for (final width in [320.0, 390.0, 1200.0]) {
+    testWidgets('Neutral foundation review fits a ${width.toInt()}px screen', (tester) async {
+      tester.view.physicalSize = Size(width, 844);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(const NeutralPaperDollReviewApp());
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(find.byType(QuestwellNeutralPaperDoll), findsNWidgets(3));
+      expect(find.byType(QuestwellCleanBase), findsNothing);
+      await tester.pumpWidget(const NeutralScoutReviewApp());
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(find.byType(QuestwellNeutralPaperDoll), findsNWidgets(3));
+    });
+  }
   for (final body in ['female', 'male', 'neutral']) {
     test('$body separates identity, underwear and outfit without restoring the tie', () {
       const canvas = Size(240, 320);

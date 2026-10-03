@@ -1,0 +1,7 @@
+{
+  "tool": "built-in imagegen",
+  "use_case": "identity-preserve",
+  "prompt": "Revise the muscular V-shaped frame into balanced, softly angular androgynous proportions: narrower shoulders, less deltoid/biceps bulk, straight-sided torso, subtle waist, balanced hips and softened thigh/calf contours. Preserve face, copper-brown hair, skin tone, height, hand size/grip, pose, leg positions, feet and stance. Ivory opaque sleeveless undershirt and charcoal shorts. Transparent background. No hourglass or broad-chest taper.",
+  "source": "frame_refined_source.png",
+  "export": "Normalize the source onto 240x320 and restore the original head/hair above y74. Freeze this complete body before clothing."
+}

@@ -1,3 +1,9 @@
+## Gender-neutral paper doll and Scout fit — 2026-10-03
+
+Tanya requested neutral next, rejected the initial muscular frame, and approved the revised balanced frame with “Yes.” The new fixed neutral body preserves the original face/hair. The Woodland Scout outfit and rustic Scout robe are fitted as clothing-only layers over that exact body. The robe includes continuous rear cloth and separate cuff depth; no chest pockets or extra inner flaps. Current development review: `?review=neutral-scout`.
+
+The body is approved; the clothing/robe fit remains a visual candidate. Lower-body coverage and frozen-asset checks pass locally. Flutter CI and live review are pending. Existing equipped avatars and account/Market data remain unchanged. After neutral fit acceptance, create the class surface variants using this body's own geometry. See `docs/art/NEUTRAL_PAPER_DOLL_V1.md`. No merge to flutterflow or launch.
+
 # Questwell Project Status
 
 ## Female Wanderer on the shared locked robe geometry — 2026-10-03

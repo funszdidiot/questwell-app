@@ -1,3 +1,5 @@
+import 'preview/neutral_scout_review.dart';
+import 'preview/neutral_paper_doll_review.dart';
 import 'preview/scout_wardrobe_review.dart';
 import 'preview/clean_base_review.dart';
 import 'preview/autumn_lantern_review.dart';
@@ -31,7 +33,13 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'woodland-scout') {
+  if (Uri.base.queryParameters['review'] == 'neutral-scout') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(QuestwellPreviewNavigationHost(child: const NeutralScoutReviewApp()));
+  } else if (Uri.base.queryParameters['review'] == 'neutral-paper-doll') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(QuestwellPreviewNavigationHost(child: const NeutralPaperDollReviewApp()));
+  } else if (Uri.base.queryParameters['review'] == 'woodland-scout') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp(woodland: true)));
   } else if (Uri.base.queryParameters['review'] == 'alchemist-wardrobe') {

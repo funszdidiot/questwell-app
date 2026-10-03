@@ -750,6 +750,53 @@
           "sha256": "62f2e7f919de9deee44de5b34e450f19c412941bac79fc7f035fc25c0bf1b8b1"
         }
       ]
+    },
+    "neutral_scout_v1": {
+      "visual_approval": "pending_founder_fit_review",
+      "art_revision": "neutral-scout-v1",
+      "bodies": [
+        "neutral"
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_scout.cjs",
+          "sha256": "bdf8854742039040a4697af68874611be9a6253c27daa3bd811abe23606906c3"
+        },
+        {
+          "path": "tool/art_assets/neutral_scout_v1/woodland_source.png",
+          "sha256": "5892b38e25db35fa556adff0bf5ad0d3fc1076ee08664c449db5ff4463bf1aa9"
+        },
+        {
+          "path": "tool/art_assets/neutral_scout_v1/robe_source.png",
+          "sha256": "7ac966778e92e957259af264d28ae926caec87ae5e5cae6b1a5a7ed8f8ac15c3"
+        },
+        {
+          "path": "tool/art_assets/neutral_scout_v1/prompts.json",
+          "sha256": "717a93275fcacae4f12c4699daab0479cf86cf5044cc32fcef2d5a99319d4633"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_unified_neutral_v1.webp",
+          "sha256": "35fae02cfafb573a916f43232ee2b8ad1f63373eef035ae14ea34f267ef2486a"
+        },
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_robe_under_neutral_v1.webp",
+          "sha256": "3d27c1f4d43232f4e2be925c048f24232646ab6d7fe8a3228d72e6729025a557"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_neutral_v5.webp",
+          "sha256": "e575824facb6d60d18942b4c05c58f317cde768e6c586793f7880bdfc19a0a87"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_rear_neutral_v5.webp",
+          "sha256": "4eb9312ea1091181d8593284b8c7d9523429a30b66a61a9658f4d95b4449a092"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_cuff_front_neutral_v5.webp",
+          "sha256": "417febfb63cc11a40ad56c75ff7bff7304ab9c6b54e2dd3655dd3038fc9fe73e"
+        }
+      ]
     }
   },
   "approved_layers": {
@@ -969,6 +1016,41 @@
         {
           "path": "tool/art_assets/alchemist_female_v7/prompts.json",
           "sha256": "456a9880f13935322691e18a321b1576478fd521ca81c6e3b45e0258bdcb8ced"
+        }
+      ]
+    },
+    "neutral_paper_doll_v1": {
+      "visual_approval": "founder_approved_frame",
+      "art_revision": "neutral-paper-doll-v1",
+      "bodies": [
+        "neutral"
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_paper_doll.cjs",
+          "sha256": "afcdf4cff0ff0d0d15b5c3c63faf302651be642230c6dd34bfc9d7a32d0eecaf"
+        },
+        {
+          "path": "tool/neutral_avatar_fit_reference.json",
+          "sha256": "2569f7ed72736c452cea58960207e81bea38da3108d4bbf5c2d0cce98f8abc53"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v1/frame_refined_source.png",
+          "sha256": "087d4d2250783cb909bcdf325400caa12c6771cae520ac997e20b8db74a77af3"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v1/prompt.json",
+          "sha256": "9a96eb7d4b22a01c53e509c3af0c88c50f390d8702962605606b17f8e4972ed5"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v1.webp",
+          "sha256": "0c76468325e2ac1916ffc5578911c789dbb950be2b0d1344901d248d3582e078"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v1.webp",
+          "sha256": "78069f75eba2e92e35fa28e0de1d226eff26cc168dfc997153d774bab453fb66"
         }
       ]
     }
