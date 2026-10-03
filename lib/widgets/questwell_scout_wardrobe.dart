@@ -9,7 +9,7 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   final String body;
   final Set<String> layers;
   static String asset(String body, String part) =>
-      'assets/images/questwell/avatar/scout_${part}_${body}_${part.startsWith('robe') ? 'v3' : 'v1'}.webp';
+      'assets/images/questwell/avatar/scout_${part}_${body}_${part.startsWith('robe') ? 'v4' : 'v1'}.webp';
   static Widget image(String path) => Image.asset(path, fit: BoxFit.contain,
       alignment: Alignment.bottomCenter, filterQuality: FilterQuality.high,
       gaplessPlayback: true);
