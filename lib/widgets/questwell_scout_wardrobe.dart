@@ -10,7 +10,7 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   final Set<String> layers;
   static String asset(String body, String part) {
     if (body == 'female' && part == 'arms') {
-      return 'assets/images/questwell/avatar/base/clean_arms_female_v2.webp';
+      return 'assets/images/questwell/avatar/base/clean_arms_female_v3.webp';
     }
     final version = body == 'female' ? 'v5' : part.startsWith('robe') ? 'v4' : 'v1';
     return 'assets/images/questwell/avatar/scout_${part}_${body}_$version.webp';

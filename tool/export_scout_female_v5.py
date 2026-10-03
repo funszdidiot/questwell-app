@@ -52,7 +52,7 @@ arm_image = Image.fromarray(aa)
 fade = np.clip((np.arange(320*S)/S-171)/3,0,1)
 ha[:,:,3] = (ha[:,:,3]*fade[:,None]).astype('uint8')
 arm_image.alpha_composite(Image.fromarray(ha))
-save(arm_image, 'base/clean_arms_female_v2.webp')
+save(arm_image, 'base/clean_arms_female_v3.webp')
 top = [[(110,77),(128,77),(134,82),(148,85),(153,93),(156,113),(144,117),(141,130),(145,149),(142,153),(97,153),(94,146),(99,127),(97,114),(80,111),(83,92),(93,85),(105,82)]]
 save(select(base,top), 'scout_top_female_v5.webp')
 pants = [[(96,150),(149,150),(153,174),(156,194),(240,195),(240,320),(0,320),(0,195),(91,195),(91,175)]]
