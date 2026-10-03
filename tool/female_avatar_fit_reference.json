@@ -180,7 +180,7 @@
     "Other class robe colors and surface patterns reuse the female robe geometry only after its visual acceptance.",
     "Male and neutral bases need their own accepted paper dolls before fitting garments."
   ],
-  "robe_candidate": {
+  "robe_template": {
     "version": "female_v7",
     "source": {
       "path": "tool/art_assets/scout_female_v7/robe_fitted_source.png",
@@ -207,6 +207,6 @@
         8
       ]
     },
-    "visual_status": "development_fit_pending_founder_review"
+    "visual_status": "founder_approved_2026_10_03"
   }
 }

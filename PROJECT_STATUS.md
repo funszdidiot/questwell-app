@@ -1,10 +1,16 @@
 # Questwell Project Status
 
+## Female Alchemist on the locked body — 2026-10-03
+
+Tanya requested Alchemist next after approving the female dimensions. The sapphire-blue v5 robe retains the class’s green molecular embroidery, silver trim and plain pockets, and is fitted over the exact accepted paper doll and everyday underclothes. Sleeve volume stays inward; full-length cuffs terminate at the wrists. The single front artwork, attached cuff depth pass and narrow continuous blue lining use the shared 240×320 canvas. No female anatomy is rebuilt or clipped to fit this robe. Other bodies retain their existing class garments.
+
+The shared app renderer now selects this female Alchemist default and restores it after outfit removal. Development review: `?review=alchemist-wardrobe`. Automated and live deployment verification in progress; Alchemist visual acceptance remains pending. See `docs/art/ALCHEMIST_FEMALE_V5.md`. No merge to `flutterflow` or launch.
+
 ## Approved female dimensions and unified outfit release — 2026-10-03
 
 Tanya approved Woodland Scout v11 and explicitly requested its dimensions be recorded for every future female outfit and robe, the outfit sent to the development app, and the Scout robe refitted accordingly. `docs/art/FEMALE_FIT_STANDARD.md` and `tool/female_avatar_fit_reference.json` are the canonical fitting references. Preserve the exact female base and head/hair. Add sleeve width inward only; no white side inserts or broadened vest wedges.
 
-The shared renderer now uses the approved single Woodland image instead of independently stretched pieces. The female Scout default uses the v7 robe refit with a continuous rear panel and attached foreground wrist hems. New robe visual acceptance remains pending. Male/neutral paper dolls come before their garments and other class robes. Development deployment validation is in progress. No merge to `flutterflow` or launch.
+The shared renderer now uses the approved single Woodland image instead of independently stretched pieces. The female Scout default uses the v7 robe refit with a continuous rear panel and attached foreground wrist hems. Founder accepted this female fit (“It’s perfect”) and requested Alchemist next using the locked dimensions. Male/neutral paper dolls come before their garments and other class robes. Development release `f83929c` passed Flutter Check `37134425340` and Preview `37134425248`; live Woodland and Scout three-stage comparisons were inspected. No merge to `flutterflow` or launch.
 
 ## Female outfits in the app — 2026-10-03 (America/Chicago)
 

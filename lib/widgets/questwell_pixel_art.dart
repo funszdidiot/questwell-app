@@ -219,7 +219,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final harvestBody = ['male', 'female'].contains(avatarBodyType) ? avatarBodyType : 'neutral';
     final woodland = harvestBody == 'female' && (previewWoodlandLayers != null ||
         equippedSlugs['chest'] == 'woodland-scout-outfit');
-    final fittedDefault = harvestBody == 'female' && archetype == 'scout' &&
+    final fittedDefault = harvestBody == 'female' &&
+        const {'scout', 'alchemist'}.contains(archetype) &&
         equippedSlugs['chest'] == null && previewWoodlandLayers == null;
     final scoutLayers = previewScoutLayers ?? (harvestBody == 'female' &&
         equippedSlugs['chest'] == 'everyday-adventurer-outfit'
@@ -227,8 +228,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         : fittedDefault ? const {'top', 'trousers', 'boots', 'robe'} : null);
     final woodlandLayers = previewWoodlandLayers ?? const {'outfit'};
     final modular = scoutLayers != null || woodland;
+    String fittedRobeAsset(String part) => harvestBody == 'female' && archetype == 'alchemist'
+        ? 'assets/images/questwell/avatar/classes/alchemist/alchemist_${part}_female_v5.webp'
+        : QuestwellScoutWardrobeFoundation.asset(harvestBody, part);
     final classOverlay = woodland ? null : modular
-        ? (scoutLayers!.contains('robe') ? QuestwellScoutWardrobeFoundation.asset(harvestBody, 'robe') : null)
+        ? (scoutLayers!.contains('robe') ? fittedRobeAsset('robe') : null)
         : harvestCoat
         ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v2.webp'
         : equippedSlugs['chest'] == 'starter-business-suit' ? null : _classOverlayAsset;
@@ -278,7 +282,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           if (modular && classOverlay != null)
-            _assetLayer(QuestwellScoutWardrobeFoundation.asset(body, 'robe_rear')),
+            _assetLayer(fittedRobeAsset('robe_rear')),
           if (classOverlay != null && !harvestCoat && !modular)
             classLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body, rear: true),
@@ -364,7 +368,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ClipPath(clipper: LanternHandClipper(body), child: classLayer(classOverlay)),
           ],
           if (modular && classOverlay != null)
-            _assetLayer(QuestwellScoutWardrobeFoundation.asset(body, 'robe_cuff_front')),
+            _assetLayer(fittedRobeAsset('robe_cuff_front')),
           if (!modular && !harvestCoat && archetype == 'scholar' && classOverlay != null &&
               !QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellScholarCuffs(body: body),

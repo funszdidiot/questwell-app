@@ -19,13 +19,14 @@ void main() {
       widget.image is AssetImage &&
       (widget.image as AssetImage).assetName == name);
 
-  Future<void> renderFemale(WidgetTester tester, Set<String> layers) =>
+  Future<void> renderFemale(WidgetTester tester, Set<String> layers, {String archetype = 'scout'}) =>
       tester.pumpWidget(MaterialApp(home: Center(child:
         SizedBox(width: 240, height: 320, child: QuestwellLayeredAdventurerArt(
-          archetype: 'scout', avatarBodyType: 'female', equippedSlugs: const {},
+          archetype: archetype, avatarBodyType: 'female', equippedSlugs: const {},
           previewScoutLayers: layers)))));
 
-  testWidgets('female body and registration stay fixed for every clothing subset', (tester) async {
+  for (final archetype in ['scout', 'alchemist']) {
+  testWidgets('$archetype female body and registration stay fixed for every clothing subset', (tester) async {
     const choices = ['top', 'trousers', 'boots', 'robe'];
     const basePath = QuestwellScoutWardrobeFoundation.femaleBaseAsset;
     final baseFinder = asset(basePath);
@@ -35,7 +36,7 @@ void main() {
         for (var i = 0; i < choices.length; i++)
           if ((mask & (1 << i)) != 0) choices[i],
       };
-      await renderFemale(tester, layers);
+      await renderFemale(tester, layers, archetype: archetype);
       expect(baseFinder, findsOneWidget, reason: 'Clothing: $layers');
       final base = tester.widget<Image>(baseFinder);
       expect(base.fit, BoxFit.contain);
@@ -47,18 +48,23 @@ void main() {
       expect(tester.widgetList<ClipPath>(find.byType(ClipPath))
           .where((clip) => clip.clipper is ScoutWardrobeClipper), isEmpty);
       final paths = assets(tester);
+      String layerAsset(String part) => archetype == 'alchemist' && part.startsWith('robe')
+          ? 'assets/images/questwell/avatar/classes/alchemist/alchemist_${part}_female_v5.webp'
+          : QuestwellScoutWardrobeFoundation.asset('female', part);
       for (final part in choices) {
-        expect(paths.contains(QuestwellScoutWardrobeFoundation.asset('female', part)),
+        expect(paths.contains(layerAsset(part)),
             layers.contains(part), reason: '$part with clothing $layers');
       }
       for (final part in ['robe_rear', 'robe_cuff_front']) {
-        expect(paths.contains(QuestwellScoutWardrobeFoundation.asset('female', part)),
+        expect(paths.contains(layerAsset(part)),
             layers.contains('robe'));
       }
       expect(paths.any((path) => path.contains('clean_arms_')), isFalse);
       expect(paths, isNot(contains('assets/images/questwell/avatar/base/base_female.webp')));
     }
   });
+
+  }
 
   testWidgets('female rear cloth stays behind fixed body and front cuff stays ahead', (tester) async {
     await renderFemale(tester, {'top', 'trousers', 'boots', 'robe'});
@@ -182,13 +188,14 @@ void main() {
   });
 
   for (final width in [320.0, 390.0]) {
-    for (final woodland in [false, true]) {
-    testWidgets('three-stage fitting scrolls without overflow at $width (woodland: $woodland)', (tester) async {
+    for (final mode in ['scout', 'woodland', 'alchemist']) {
+    final woodland = mode == 'woodland';
+    testWidgets('three-stage fitting scrolls without overflow at $width (mode: $mode)', (tester) async {
       tester.view.devicePixelRatio = 1;
       tester.view.physicalSize = Size(width, 844);
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
-      await tester.pumpWidget(ScoutWardrobeReviewApp(woodland: woodland));
+      await tester.pumpWidget(ScoutWardrobeReviewApp(woodland: woodland, archetype: mode == 'alchemist' ? 'alchemist' : 'scout'));
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
       final stages = tester.widgetList<QuestwellLayeredAdventurerArt>(

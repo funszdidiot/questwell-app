@@ -18,7 +18,7 @@ Fit clothing to the frozen anatomy. Do not regenerate or mask away shoulders, ar
 
 Maintain a narrow natural waist and smooth hips. No protruding white underarm inserts, enlarged vest side wedges, detached cuffs, duplicated shoulder seams, or skin showing through clothing. Cover heels and soles fully. Preserve matching sleeve tabs on Woodland Scout.
 
-For robes, retain a continuous back panel behind the body and a front garment ahead of it. Wrist hems must stay attached to sleeves and curve naturally around the wrist. Other female class robes may reuse the accepted robe geometry with color/pattern changes after that robe fit is visually accepted. Male and neutral bodies require their own completed, accepted paper dolls before clothing or class-robe work.
+For robes, retain a continuous back panel behind the body and a front garment ahead of it. Wrist hems must stay attached to sleeves and curve naturally around the wrist. The female Scout v7 robe is now accepted. Other female class robes use its geometry as the fitting reference, with their own colors and surface patterns. Male and neutral bodies require their own completed, accepted paper dolls before clothing or class-robe work.
 
 ## Development integration
 

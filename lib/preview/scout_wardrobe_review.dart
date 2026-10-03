@@ -7,8 +7,9 @@ import '../widgets/questwell_pixel_art.dart';
 enum _WardrobeStage { underwear, everyday, robe }
 
 class ScoutWardrobeReviewApp extends StatefulWidget {
-  const ScoutWardrobeReviewApp({super.key, this.woodland = false});
+  const ScoutWardrobeReviewApp({super.key, this.woodland = false, this.archetype = 'scout'});
   final bool woodland;
+  final String archetype;
 
   @override
   State<ScoutWardrobeReviewApp> createState() => _ScoutWardrobeReviewAppState();
@@ -32,7 +33,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
     if (q.containsKey('layers')) {
       layers.retainAll(q['layers']!.split(','));
     }
-    if (!widget.woodland && ['all', 'female', 'male', 'neutral'].contains(q['body'])) {
+    if (!widget.woodland && widget.archetype == 'scout' && ['all', 'female', 'male', 'neutral'].contains(q['body'])) {
       bodyView = q['body']!;
     }
     // Older compare=base links also open the complete layer comparison.
@@ -56,7 +57,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
   Widget art(String body, _WardrobeStage stage) {
     final dressed = stage != _WardrobeStage.underwear;
     return QuestwellLayeredAdventurerArt(
-      archetype: 'scout',
+      archetype: widget.archetype,
       avatarBodyType: body,
       previewScoutLayers: widget.woodland
           ? (stage == _WardrobeStage.everyday ? const {'top', 'trousers', 'boots'} : null)
@@ -138,7 +139,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
       const SizedBox(height: 4),
       Text(
         body == 'female'
-            ? 'Fit candidate — awaiting review.'
+            ? (widget.archetype == 'alchemist' ? 'Locked female body · Alchemist fit for review.' : 'Approved female fit.')
             : 'Previous fit candidate — fixed-body rebuild pending.',
         textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white70),
@@ -200,7 +201,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                   constraints: const BoxConstraints(maxWidth: 1200),
                   child: Column(children: [
                     Text(
-                      widget.woodland ? 'Woodland Scout' : 'The Scout wardrobe',
+                      widget.woodland ? 'Woodland Scout' : widget.archetype == 'alchemist' ? 'The Alchemist wardrobe' : 'The Scout wardrobe',
                       style: const TextStyle(fontSize: 28, color: Color(0xFFE0C481)),
                     ),
                     const SizedBox(height: 8),
@@ -214,7 +215,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                       runSpacing: 8,
                       alignment: WrapAlignment.center,
                       children: [
-                        if (!widget.woodland) SizedBox(
+                        if (!widget.woodland && widget.archetype == 'scout') SizedBox(
                           width: 180,
                           child: DropdownButton<String>(
                             isExpanded: true,
@@ -238,7 +239,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                           bodyView == 'female' ? 'Boots' : 'Boots (female)',
                           enabled: bodyView == 'female' || bodyView == 'all',
                         ),
-                        layerToggle('robe', 'Scout robe'),
+                        layerToggle('robe', widget.archetype == 'alchemist' ? 'Alchemist robe' : 'Scout robe'),
                         ],
                         FilterChip(
                           label: const Text('Accessories'),

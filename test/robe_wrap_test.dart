@@ -46,13 +46,16 @@ void main() {
           child: QuestwellLayeredAdventurerArt(archetype:kind, avatarBodyType:body, equippedSlugs:const {}))));
         final images = tester.widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName).toList();
-        if (kind == 'scout' && body == 'female') {
-          expect(images.first, 'assets/images/questwell/avatar/scout_robe_rear_female_v7.webp');
+        if ((kind == 'scout' || kind == 'alchemist') && body == 'female') {
+          final prefix = kind == 'scout' ? 'assets/images/questwell/avatar/scout_'
+              : 'assets/images/questwell/avatar/classes/alchemist/alchemist_';
+          final version = kind == 'scout' ? 'v7' : 'v5';
+          expect(images.first, '${prefix}robe_rear_female_$version.webp');
           final base=images.indexOf('assets/images/questwell/avatar/base/paper_doll_female_v1.webp');
-          final front=images.indexOf('assets/images/questwell/avatar/scout_robe_female_v7.webp');
+          final front=images.indexOf('${prefix}robe_female_$version.webp');
           expect(base, greaterThan(0));
           expect(front, greaterThan(base));
-          expect(images.last, 'assets/images/questwell/avatar/scout_robe_cuff_front_female_v7.webp');
+          expect(images.last, '${prefix}robe_cuff_front_female_$version.webp');
           expect(images.any((p)=>p.contains('/classes/scout/')), isFalse);
           expect(tester.takeException(), isNull);
           return;

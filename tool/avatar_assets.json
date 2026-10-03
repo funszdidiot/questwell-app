@@ -531,35 +531,39 @@
         }
       ]
     },
-    "scout_robe_female_v7": {
-      "visual_approval": "development_refit_pending_founder_review",
-      "description": "Long sleeves widened inward to the fixed female anatomy, narrow wrist hems, continuous separate back.",
+    "alchemist_female_v5": {
+      "visual_approval": "development_fit_pending_founder_review",
+      "description": "Sapphire, green molecular embroidery and silver trim on the locked female paper-doll body; front, attached cuffs and narrow rear lining. Existing male/neutral Alchemist assets remain unchanged.",
       "assets": [
         {
-          "path": "assets/images/questwell/avatar/scout_robe_female_v7.webp",
-          "sha256": "a95ea738605af8d4a79a26c9090b7402b73f2d43b2de9de562dd376a5762e2e1"
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v5.webp",
+          "sha256": "2b416b085c2c3365fb508f1338ab173194306d2ab05be54779b188a7ba3e50c5"
         },
         {
-          "path": "assets/images/questwell/avatar/scout_robe_rear_female_v7.webp",
-          "sha256": "137de6af84472863ff66ed6c9321ba42c151fb4f0543e8b7a79e8ad367af8fb6"
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v5.webp",
+          "sha256": "b13c9198b82f79c81e2d79a2cf53c0a0df95c5f28e3c0f09754eaeb51d03c49f"
         },
         {
-          "path": "assets/images/questwell/avatar/scout_robe_cuff_front_female_v7.webp",
-          "sha256": "6e818814d9d80575c6c92ebbcfd8c4b3ff25a57843998b7a701168c480d74467"
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_female_v5.webp",
+          "sha256": "9ad633da3e3cd5b2f56bb9b8517b26ed6b8c96874945bc1bf101557f5f09eabf"
         }
       ],
       "fit_inputs": [
         {
-          "path": "tool/art_assets/scout_female_v7/robe_fitted_source.png",
-          "sha256": "3d03a2bf54cbb6b42daca58915b7e278fbb6a3158f188b198748ff83d0524669"
+          "path": "tool/art_assets/alchemist_female_v5/robe_refined_source.png",
+          "sha256": "ffbeee18e605ce8a0aa544a187ed6440601c247d57e5236f1f7271fcb8c2fbce"
         },
         {
-          "path": "tool/export_scout_female_v7.sh",
-          "sha256": "4711647915343b2596c8c90a7babeeac8e2f51e5549cf65c93a6fd383988dae9"
+          "path": "tool/art_assets/alchemist_female_v5/prompts.json",
+          "sha256": "c7115da49661c05783dac12ce3468aa6e583e05da3da14edcd6f49c389e2d2e2"
+        },
+        {
+          "path": "tool/export_alchemist_female_v5.sh",
+          "sha256": "2265af6de01046f40073efe77a18bd51dc50adfd937181cbed4a2003b49d6711"
         },
         {
           "path": "tool/female_avatar_fit_reference.json",
-          "sha256": "f659b0f6be314f110f7c46cb6a375846f166ba08c0d42e3b69dc54e99f14f861"
+          "sha256": "c790012099d8fb081600a7df9591e95064c8305b10a3dda5958592eeb998b0fa"
         }
       ]
     }
@@ -685,6 +689,38 @@
         {
           "path": "tool/export_woodland_scout_unified.sh",
           "sha256": "c15a631134d2b69cdb9af59839cb7632a61f739eaa55acd6fe2bbcd1b6a6e920"
+        }
+      ]
+    },
+    "scout_robe_female_v7": {
+      "visual_approval": "founder_approved_2026_10_03",
+      "description": "Long sleeves widened inward to the fixed female anatomy, narrow wrist hems, continuous separate back.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_female_v7.webp",
+          "sha256": "a95ea738605af8d4a79a26c9090b7402b73f2d43b2de9de562dd376a5762e2e1"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_rear_female_v7.webp",
+          "sha256": "137de6af84472863ff66ed6c9321ba42c151fb4f0543e8b7a79e8ad367af8fb6"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_robe_cuff_front_female_v7.webp",
+          "sha256": "6e818814d9d80575c6c92ebbcfd8c4b3ff25a57843998b7a701168c480d74467"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/art_assets/scout_female_v7/robe_fitted_source.png",
+          "sha256": "3d03a2bf54cbb6b42daca58915b7e278fbb6a3158f188b198748ff83d0524669"
+        },
+        {
+          "path": "tool/export_scout_female_v7.sh",
+          "sha256": "4711647915343b2596c8c90a7babeeac8e2f51e5549cf65c93a6fd383988dae9"
+        },
+        {
+          "path": "tool/female_avatar_fit_reference.json",
+          "sha256": "c790012099d8fb081600a7df9591e95064c8305b10a3dda5958592eeb998b0fa"
         }
       ]
     }

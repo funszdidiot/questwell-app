@@ -8,4 +8,4 @@ Built-in image generation retained the rustic olive open-front robe, flax fern e
 
 The original body, head/hair, everyday underclothes and boots remain unchanged. The robe's front and cuff passes recombine into the original normalized front drawing. A read-only arm-coverage check found no clear skin gaps; one left-shoulder boundary pixel is antialiased (cloth alpha 226/255). The composite was inspected for shoulder, inner-arm, wrist, waist and back-panel placement.
 
-This is a new development robe fit, not yet founder-approved as the final class-robe template. No other bodies or class robes are refitted by this change. No merge or launch is authorized.
+Founder accepted the completed female fit on 3 October 2026 (“It’s perfect”) and requested Alchemist next using the locked dimensions. This robe is the accepted female class-robe fitting reference. Scout deployment f83929c passed Flutter Check 37134425340 and Preview 37134425248; the live three-stage comparison was inspected. No merge or launch is authorized.
