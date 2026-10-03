@@ -59,6 +59,10 @@ class QuestwellCosmetic {
     this.milestoneLevel,
     this.unlockedAt,
     this.source,
+    this.collectionKey,
+    this.editionType = 'standard',
+    this.availabilityStart,
+    this.availabilityEnd,
   });
 
   final String id;
@@ -78,6 +82,10 @@ class QuestwellCosmetic {
   final int? milestoneLevel;
   final DateTime? unlockedAt;
   final String? source;
+  final String? collectionKey;
+  final String editionType;
+  final DateTime? availabilityStart, availabilityEnd;
+  bool get specialEdition => editionType != 'standard';
   String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}'
     : category == 'wall_art' && roomSlot != null && roomSlot != 'wall_center' ? 'wall_art:$roomSlot' : category;
 
@@ -103,6 +111,10 @@ class QuestwellCosmetic {
       milestoneLevel: milestoneLevel,
       unlockedAt: unlockedAt,
       source: source,
+      collectionKey: collectionKey,
+      editionType: editionType,
+      availabilityStart: availabilityStart,
+      availabilityEnd: availabilityEnd,
     );
   }
 
@@ -132,6 +144,10 @@ class QuestwellCosmetic {
       milestoneLevel: (json['milestone_level'] as num?)?.toInt(),
       unlockedAt: unlockedAt,
       source: source,
+      collectionKey: json['collection_key']?.toString(),
+      editionType: json['edition_type']?.toString() ?? 'standard',
+      availabilityStart: DateTime.tryParse(json['availability_start']?.toString() ?? ''),
+      availabilityEnd: DateTime.tryParse(json['availability_end']?.toString() ?? ''),
     );
   }
 }
