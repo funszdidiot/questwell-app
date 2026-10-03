@@ -471,6 +471,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 milestoneLevel: item.milestoneLevel, unlockedAt: item.unlockedAt, source: item.source,
                 description: item.description, owned: item.owned, equipped: item.equipped,
                 archetype: item.requiredArchetype, shop: item.unlockMethod == 'shop',
+                collectionKey: item.collectionKey, editionType: item.editionType,
                 classLocked: _classLocked(item, data.profile.adventurerArchetype),
               )).toList(),
             ),
