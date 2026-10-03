@@ -1,5 +1,7 @@
 # Female paper-doll fitting — revision 6 candidate
 
+Update 2026-10-03: Tanya authorized the finished female outfits in the development app, including the v6 robe as the female Scout default. The robe is the class-family design template, but male/neutral paper dolls must come before fitting those bodies or other class robes. See `FEMALE_WARDROBE_RELEASE.md` for the current integration and validation status. Earlier review notes below record the fitting history.
+
 The v5 review replaced arms and the lower body when rendering clothing, bundled boots into trousers, and used a broad robe-under cutout. Those shortcuts made clothing repairs change the apparent avatar. V6 restores a fixed paper-doll foundation in the development fitting preview.
 
 ## Fixed foundation

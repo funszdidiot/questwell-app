@@ -1,5 +1,7 @@
 # Woodland Scout outfit — female fitting candidate
 
+Update 2026-10-03: Tanya authorized the finished female outfits in the development app, including the v6 robe as the female Scout default. The robe is the class-family design template, but male/neutral paper dolls must come before fitting those bodies or other class robes. See `FEMALE_WARDROBE_RELEASE.md` for the current integration and validation status. Earlier review notes below record the fitting history.
+
 The founder accepted the Woodland Scout concept and requested separate avatar layers. This adds a new outfit alongside the rustic robe, starting with the fixed female body. It does not replace the previously fitted robe or any equipped wardrobe.
 
 ## Artwork and fitting

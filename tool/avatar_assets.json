@@ -425,8 +425,8 @@
       ]
     },
     "female_paper_doll_v6": {
-      "visual_approval": "pending_founder_review",
-      "description": "Fixed female underwear body with independently fitted top, trousers, boots and four robe depth passes. Development review only. Male and neutral rebuilds pending.",
+      "visual_approval": "founder_authorized_female_app_use_2026_10_03",
+      "description": "Fixed female paper doll and separate garments in the development app. V6 rustic robe replaces the female Scout default and establishes the class-robe design template. Male and neutral paper-doll foundations must precede their clothing and robe fits.",
       "assets": [
         {
           "path": "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp",
@@ -501,8 +501,8 @@
       ]
     },
     "woodland_scout_v1": {
-      "visual_approval": "pending_in_app_review",
-      "description": "Accepted Woodland Scout concept fitted as four independently toggleable garments over the fixed female paper-doll base. No normal wardrobe or catalog changes.",
+      "visual_approval": "founder_authorized_female_app_use_2026_10_03",
+      "description": "Four independent garment layers connected to the Woodland Scout Outfit chest selection. Female body only until male and neutral paper-doll foundations and their own fits are completed.",
       "assets": [],
       "fit_inputs": [
         {

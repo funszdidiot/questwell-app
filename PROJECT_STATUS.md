@@ -4,7 +4,7 @@
 
 Tanya authorized pushing the finished female Woodland Scout and everyday outfits into the app. The v6 rustic robe replaces the female Scout default, and its shape/back-panel/cuff construction is the class-robe template. Her explicit sequencing correction: male and neutral paper-doll foundations must happen before fitting those bodies or adapting the remaining class robes. Do not resize the female anatomy or fit to stand in for either body.
 
-Current implementation connects two chest outfits to the shared avatar renderer and restores the new Scout robe on unequip. Catalog activation awaits green development checks. See `docs/art/FEMALE_WARDROBE_RELEASE.md`. Keep `questwell-dev` unmerged; no launch.
+Delivered on `questwell-dev` at `0c3a99e`: Woodland Scout and Everyday Adventurer outfits are active in Market and owned as unequipped founder copies; coins and existing equipment are unchanged. The new robe is the female Scout default and returns on unequip. Flutter Check `37109279108` and Preview `37109279866` passed. Database purchase/retry/equip/body-switch checks and live shared-renderer Market/Hearth/portrait review completed. Signed-in UI and physical-phone visuals were not exercised. See `docs/art/FEMALE_WARDROBE_RELEASE.md`. Next: male and neutral paper-doll foundations, then body-specific garments and class robes. Keep `questwell-dev` unmerged; no launch.
 
 ## Woodland Scout outfit — 2026-10-03 (America/Chicago)
 
