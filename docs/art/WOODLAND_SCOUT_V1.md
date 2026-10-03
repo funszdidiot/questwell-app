@@ -18,4 +18,6 @@ The fitting is female-only. Male and gender-neutral versions require their own b
 
 ## Verification
 
-Pending final build, automated subset/phone checks, and live visual inspection. The fixed base, earlier robe and all previously locked assets must remain unchanged.
+Code/art revision `b70abf66ca651c787d0ba32260fad653be4637ea` passed Flutter Check `37101241975` and Preview `37101242029`. The fixed-body test covers all 16 clothing subsets and restoration of the normal avatar after leaving the candidate. The comparison remains scrollable at 320/390 pixels for both fitting modes. The asset verifier passed with the fixed base, earlier robe and all previously locked assets unchanged; generated PNG identities and monotonic fitting transforms were also checked.
+
+Live browser review verified the three equal-scale stages, rolled-sleeve detail, trouser/boot coverage, brass lantern, grimoire grip and accessories. No application errors appeared; the cloud browser reported its expected CPU rendering fallback. Final review URL: https://funszdidiot.github.io/questwell-app/?review=woodland-scout&rev=b70abf6 . This technical and browser review is not founder visual acceptance. Final female fit approval and physical-phone review remain outstanding, as do any male/neutral variants.

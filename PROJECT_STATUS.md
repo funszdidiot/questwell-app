@@ -1,5 +1,13 @@
 # Questwell Project Status
 
+## Woodland Scout outfit — 2026-10-03 (America/Chicago)
+
+Founder approved the new Woodland Scout concept and authorized fitting it as separate garments. Added an ivory rolled-sleeve shirt, moss leather vest with belt/pouch, reinforced brown trousers and folded leather boots over the unchanged female paper-doll body. The dedicated development review shows Underwear → Shirt and trousers → Woodland Scout with independent layer controls and enlarged sleeve detail. Existing robe and normal wardrobe remain intact.
+
+Revision `b70abf6` passed Flutter Check `37101241975` and Preview `37101242029`. All 16 clothing subsets retain the same base and registration; phone comparison checks pass at 320/390px. Live review verified garment fit, lantern/grimoire handling, accessories and clean restoration. Review: https://funszdidiot.github.io/questwell-app/?review=woodland-scout&rev=b70abf6 . See `docs/art/WOODLAND_SCOUT_V1.md` for source and fitting provenance.
+
+Female fit remains pending founder visual acceptance and physical-phone review. This does not approve the earlier robe as a template; male/neutral fittings remain outstanding. Development fitting only; no Market entry, inventory grant, merge to `flutterflow`, or launch.
+
 ## Female paper-doll repair — 2026-10-03 (America/Chicago)
 
 Continued the founder-authorized fix after the v5 avatar and robe fitting was rejected. The development fitting now uses one complete female underwear body for every clothing combination; top, trousers and boots are independent layers. The robe has a rear panel and rear wrist edges behind the body, with separate front cloth and curved cuff hems above it. No female lower-body replacement or broad robe-under cutout remains. The three-stage review shows Underwear → Everyday clothes → Robe at equal scale, with sideways scrolling on phones.
