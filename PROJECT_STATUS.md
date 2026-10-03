@@ -4,7 +4,7 @@
 
 Tanya requested Alchemist next after approving the female dimensions. The sapphire-blue v5 robe retains the class’s green molecular embroidery, silver trim and plain pockets, and is fitted over the exact accepted paper doll and everyday underclothes. Sleeve volume stays inward; full-length cuffs terminate at the wrists. The single front artwork, attached cuff depth pass and narrow continuous blue lining use the shared 240×320 canvas. No female anatomy is rebuilt or clipped to fit this robe. Other bodies retain their existing class garments.
 
-The shared app renderer now selects this female Alchemist default and restores it after outfit removal. Development review: `?review=alchemist-wardrobe`. Automated and live deployment verification in progress; Alchemist visual acceptance remains pending. See `docs/art/ALCHEMIST_FEMALE_V5.md`. No merge to `flutterflow` or launch.
+The shared app renderer now selects this female Alchemist default and restores it after outfit removal. Development review: `?review=alchemist-wardrobe`. Release `cf454e8` passed Flutter Check `37135478327` and Preview `37135478330`. The live three-stage Alchemist fitting shows the unchanged body and correctly registered robe. Alchemist founder visual acceptance remains pending; physical-phone review was not performed. See `docs/art/ALCHEMIST_FEMALE_V5.md`. No merge to `flutterflow` or launch.
 
 ## Approved female dimensions and unified outfit release — 2026-10-03
 
