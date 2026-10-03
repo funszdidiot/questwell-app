@@ -28,7 +28,8 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   static const cream=Color(0xFFF1E4C9),muted=Color(0xFFA9BEB8),gold=Color(0xFFE0BF79),ink=Color(0xFF253E3D);
   bool room(QuestwellCosmetic item)=>['room','wall_art'].contains(item.category);
   bool bodyRestricted(QuestwellCosmetic i)=>!QuestwellEquipmentPolicy.supportsBody(i.slug,widget.data.profile.avatarBodyType);
-  bool restricted(QuestwellCosmetic i)=>bodyRestricted(i)||i.requiredArchetype!=null&&i.requiredArchetype!=widget.data.profile.adventurerArchetype;
+  bool classRestricted(QuestwellCosmetic i)=>i.requiredArchetype!=null&&i.requiredArchetype!=widget.data.profile.adventurerArchetype;
+  bool restricted(QuestwellCosmetic i)=>bodyRestricted(i)||classRestricted(i);
   String group(QuestwellCosmetic i) {
     if(room(i)) return 'Hearth';
     if(i.category=='familiar') return 'Familiars';
@@ -112,7 +113,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     final items=all.where((i)=>(category=='All'||category=='Collections'&&i.collectionKey!=null||category=='Seasonal'&&i.specialEdition||group(i)==category)&&
       (collection=='All'||i.collectionKey==collection)&&
       (rarity=='All'||i.rarity.toLowerCase()==rarity.toLowerCase())&&
-      (!myClass||!restricted(i))&&(!owned||i.owned)&&
+      (!myClass||!classRestricted(i))&&(!owned||i.owned)&&
       (!affordable||i.owned||i.price<=widget.data.profile.coinBalance)&&
       ('${i.name} ${i.description} ${i.collectionKey??''} ${editionLabel(i.editionType)}'
         .toLowerCase().contains(query.toLowerCase().trim()))).toList()
