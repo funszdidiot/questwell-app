@@ -24,10 +24,14 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install image dependency
-        run: npm install --no-save --ignore-scripts=false sharp
+      - name: Install image dependency outside repository
+        run: |
+          mkdir -p "$RUNNER_TEMP/neutral-repair"
+          npm install --prefix "$RUNNER_TEMP/neutral-repair" --no-save --ignore-scripts=false sharp
 
       - name: Generate repaired neutral Woodland candidate
+        env:
+          NODE_PATH: ${{ runner.temp }}/neutral-repair/node_modules
         run: node tool/repair_neutral_woodland_v3.cjs
 
       - name: Verify only expected candidate changed
