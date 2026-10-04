@@ -27,7 +27,8 @@ class QuestwellHearthDecor {
     QuestwellFirstJourney.slug || QuestwellStarlitOrrery.slug => const {'bookshelf_top': 'On the bookcase', 'mantel': 'Fireplace mantel'},
     QuestwellWallArt.fern || QuestwellWallArt.celestial => const {'wall_left': 'Left wall', 'wall_right': 'Right wall'},
     QuestwellReadingTable.slug => const {'side': 'Beside the chair'},
-    QuestwellBookshelf.slug || QuestwellPotionWorkbench.slug || QuestwellHarvestDisplay.slug || QuestwellAutumnLantern.slug || QuestwellWardingLantern.slug => const {'left': 'Left wall', 'right': 'Right wall', 'front': 'Foreground'},
+    QuestwellWardingLantern.slug => const {'left': 'Left wall', 'right': 'Right wall', 'front': 'Foreground'},
+    QuestwellBookshelf.slug || QuestwellPotionWorkbench.slug || QuestwellHarvestDisplay.slug || QuestwellAutumnLantern.slug => const {'left': 'Left wall', 'right': 'Right wall'},
     QuestwellReadingChair.slug => const {'front': 'Left floor', 'right': 'Right floor'},
     _ => const {'left': 'Beside the fireplace', 'right': 'Near the window', 'front': 'Foreground'},
   };
