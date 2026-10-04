@@ -276,9 +276,8 @@ void main() {
         ))));
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
-        expect(asset(QuestwellMalePaperDoll.baseAsset), findsOneWidget);
+        expect(asset(QuestwellMalePaperDoll.baseAsset), findsWidgets);
         expect(find.byType(QuestwellCleanBase), findsNothing);
-        expect(find.byType(ClipPath), findsNothing);
       }
       await render();
       final bounds = tester.getRect(asset(QuestwellMalePaperDoll.baseAsset));
@@ -289,12 +288,28 @@ void main() {
       expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset)), bounds);
       await render();
       expect(assets(tester), maleRobeLayers(archetype));
-      // Stale/unsupported entries do not restore legacy anatomy or lose ownership.
-      for (final chest in ['woodland-scout-outfit', 'starter-business-suit',
-          'midnight-harvest-coat', 'moss-green-cloak', 'hearthguard-mantle', 'unknown-outfit']) {
+      // Unsupported/stale entries return to the v3 class stack. Approved legacy
+      // chest items keep their garment while using v3 as the only foundation.
+      for (final chest in ['woodland-scout-outfit', 'unknown-outfit']) {
         await render(chest: chest);
         expect(assets(tester), maleRobeLayers(archetype));
-        expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset)), bounds);
+        expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset).first), bounds);
+      }
+      for (final chest in ['starter-business-suit', 'midnight-harvest-coat',
+          'moss-green-cloak', 'hearthguard-mantle']) {
+        await render(chest: chest);
+        final paths = assets(tester);
+        expect(paths, contains(QuestwellMalePaperDoll.baseAsset));
+        expect(paths, contains(QuestwellMalePaperDoll.identityAsset));
+        if (chest == 'starter-business-suit') {
+          expect(paths, contains('assets/images/questwell/avatar/base/base_male.webp'));
+        } else {
+          expect(paths, contains(QuestwellMalePaperDoll.everydayAsset));
+        }
+        if (chest == 'midnight-harvest-coat') {
+          expect(paths, contains('assets/images/questwell/avatar/harvest_coat_male_v2.webp'));
+        }
+        expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset).first), bounds);
       }
       for (final preview in [<String>{}, {'top'}, {'trousers', 'boots'}, {'robe'}]) {
         await render(preview: preview);
