@@ -1,7 +1,7 @@
 {
   "status": "PASS",
-  "candidate": true,
-  "founderLock": false,
+  "candidate": false,
+  "founderLock": true,
   "composition": [
     {
       "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
@@ -20,5 +20,5 @@
   "changedGarmentPixels": 17,
   "handPixelsCleared": 12,
   "heelPixelsOpaque": 5,
-  "accountEligibility": "female only; neutral explicit development review only"
+  "accountEligibility": "female and neutral Scouts; founder approved 2026-10-04"
 }

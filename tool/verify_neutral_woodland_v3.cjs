@@ -25,6 +25,12 @@ async function main() {
   const identity = await read(reference.head_hair.path);
   assert.equal(body.sha256, reference.base.sha256);
   assert.equal(identity.sha256, reference.head_hair.sha256);
+  const locked = JSON.parse(fs.readFileSync(path.join(root, 'tool/neutral_woodland_fit_reference.json')));
+  assert.equal(locked.status, 'LOCKED');
+  const approved = await read(locked.outfit.path);
+  assert.equal(approved.sha256, locked.outfit.sha256);
+  const alpha = Buffer.from(approved.data.filter((_, index) => index % 4 === 3));
+  assert.equal(sha(alpha), locked.outfit.alphaSha256);
   const old = await read(base+'woodland_scout_unified_neutral_v2.webp');
   const outfit = await read(base+'woodland_scout_unified_neutral_v3.webp');
   const allowed = new Set([...hand, ...heels].map(offset));

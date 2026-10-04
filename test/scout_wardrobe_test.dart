@@ -240,7 +240,8 @@ void main() {
     expect(classLayers, neutralRobeLayers('scout'));
     await render(equipped: true);
     expect(assets(tester), [QuestwellNeutralPaperDoll.baseAsset,
-      QuestwellNeutralScout.outfitAsset, QuestwellNeutralPaperDoll.identityAsset]);
+      QuestwellNeutralScout.outfitAsset, QuestwellNeutralPaperDoll.identityAsset,
+      QuestwellNeutralPaperDoll.identityAsset]);
     {
       await render(reviewLayers: {'outfit'});
       final paths = assets(tester);

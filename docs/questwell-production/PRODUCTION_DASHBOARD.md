@@ -22,7 +22,7 @@ Use **BLOCKED** only when the affected work cannot proceed. Active visual develo
 | 2 | Issue #6: Warding Lantern and Emerald Wayfarer Rug | QUEUED | Replacement visuals not approved | Immediately after avatar/template work. Rebuild within the approved briefs and review at game scale. Keep both catalog entries inactive and preserve existing ownership until Tanya approves replacements. |
 | 3 | Issue #7: architecture/scalability and replaceable presentation | QUEUED | Existing architecture decisions preserved | Follow #6 before launch. First bounded item: extract inventory/loadout data and duplicated slot mapping from presentation into a shared model, preserving behavior. Architecture protections continue throughout avatar work. |
 
-## Latest completed check: neutral Woodland v3
+## Historical neutral Woodland v3 review check (superseded by approval below)
 
 The existing hand/heel repair is **DEV DEPLOYED in explicit review only** at `9934335`. Native/enlarged light/dark composite checks, delivered hashes and actual on/off/reload behavior passed. The production dashboard no longer treats old run `37221656554` as still running. No asset was edited during this verification and no account capability was promoted. Detailed legacy garment fit QA remains the next approved avatar task; no Tanya action is required now.
 
@@ -32,7 +32,7 @@ The existing hand/heel repair is **DEV DEPLOYED in explicit review only** at `99
 
 ## Tanya needed now
 
-**None for this rollout.** Tanya directed “Push the male robes and every day outfit to the app” on 2026-10-04, then selected the non-restrictive legacy migration: replace the legacy male foundation with locked v3 and preserve existing outfit availability. All five male class defaults and Everyday equip/unequip/restoration must use the same full v3 body and identity. Business Suit, Midnight Harvest Coat, Moss Green Cloak and Hearthguard Mantle remain available and owned; fit garments to v3 without clipping or substituting the primary body. Everyday account support is female + neutral + male; Woodland remains female-only. Migration `20261004164110` supersedes the temporary restriction applied before the concurrent decision was reconciled. No new art lock or production promotion is inferred.
+**None for this rollout.** Tanya directed “Push the male robes and every day outfit to the app” on 2026-10-04, then selected the non-restrictive legacy migration: replace the legacy male foundation with locked v3 and preserve existing outfit availability. All five male class defaults and Everyday equip/unequip/restoration must use the same full v3 body and identity. Business Suit, Midnight Harvest Coat, Moss Green Cloak and Hearthguard Mantle remain available and owned; fit garments to v3 without clipping or substituting the primary body. Everyday account support is female + neutral + male. Newer neutral approval below expands Woodland to female + neutral Scouts. Migration `20261004164110` supersedes the temporary restriction applied before the concurrent decision was reconciled. No new art lock or production promotion is inferred.
 
 Request Tanya only for the genuine decisions and unavoidable actions in `AGENT_OPERATING_RULES.md`; do not reopen resolved decisions or block approved delivery for active visual development.
 
@@ -62,7 +62,7 @@ DEV DEPLOYED requires verification of the delivered development revision and act
 
 ## Durable handoff
 
-Male Woodland is DEV DEPLOYED in explicit review; account rollout remains separately queued. Male robes and Everyday are integrated into the shared app renderer; the newer sleeve/thumb correction is delivered and verified at `958aaaf`. Historical male robe files remain immutable; new front RGB surfaces preserve exact alpha and robe-only Everyday occlusion fixes depth without touching the primary body. Continue neutral Woodland candidate review and male Woodland Scout on their immutable bodies. Preserve female Woodland's lock and female-only account eligibility. Complete detailed legacy garment fit review before claiming wardrobe-wide visual acceptance. After avatars, continue #6 then #7. No new founder action is needed for this handoff.
+Male Woodland is DEV DEPLOYED in explicit review; account rollout remains separately queued. Male robes and Everyday are integrated into the shared app renderer; the newer sleeve/thumb correction is delivered and verified at `958aaaf`. Historical male robe files remain immutable; new front RGB surfaces preserve exact alpha and robe-only Everyday occlusion fixes depth without touching the primary body. Neutral Woodland is now approved for female and neutral Scouts; finish its authorized rollout. Continue male Woodland on its immutable body without promoting its account eligibility. Complete detailed legacy garment fit review before claiming wardrobe-wide visual acceptance. After avatars, continue #6 then #7. No new founder action is needed for this handoff.
 
 ## Current male robe integration
 
