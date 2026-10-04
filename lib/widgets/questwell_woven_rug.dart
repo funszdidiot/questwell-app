@@ -5,17 +5,34 @@ class QuestwellWovenRug extends StatelessWidget {
   const QuestwellWovenRug({super.key, required this.emerald});
   final bool emerald;
   static const emeraldAsset =
-      'assets/images/questwell/hearth/emerald_wayfarer_rug_v2.webp';
+      'assets/images/questwell/hearth/emerald_wayfarer_rug_v3_64bit.webp';
 
   @override
   Widget build(BuildContext context) => emerald
       ? IgnorePointer(
-          child: Image.asset(
-            emeraldAsset,
-            fit: BoxFit.fill,
-            filterQuality: FilterQuality.high,
-            gaplessPlayback: true,
-            excludeFromSemantics: true,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
+              final height = constraints.maxHeight;
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  Positioned(
+                    left: width * .16,
+                    top: height * .675,
+                    width: width * .68,
+                    height: height * .285,
+                    child: Image.asset(
+                      emeraldAsset,
+                      fit: BoxFit.fill,
+                      filterQuality: FilterQuality.none,
+                      gaplessPlayback: true,
+                      excludeFromSemantics: true,
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         )
       : IgnorePointer(
