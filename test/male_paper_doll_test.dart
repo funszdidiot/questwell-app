@@ -73,6 +73,7 @@ void main() {
   for (final size in const [Size(240, 320), Size(120, 160), Size(360, 320)]) {
     testWidgets('male clothing keeps authored registration in $size',
         (tester) async {
+      Rect? lockedBodyBounds;
       for (final showEveryday in [true, false, true]) {
         await tester.pumpWidget(MaterialApp(
           home: Center(
@@ -88,6 +89,12 @@ void main() {
         final doll = find.byType(QuestwellMalePaperDoll);
         final imageFinder = find.descendant(of: doll, matching: find.byType(Image));
         final images = tester.widgetList<Image>(imageFinder).toList();
+        lockedBodyBounds ??= tester.getRect(imageFinder.first);
+        expect((images.first.image as AssetImage).assetName,
+            QuestwellMalePaperDoll.baseAsset,
+            reason: 'Garment visibility must never select another body');
+        expect(tester.getRect(imageFinder.first), lockedBodyBounds,
+            reason: 'The same locked anatomy and registration survives toggling');
         expect(images.map((image) => (image.image as AssetImage).assetName), [
           QuestwellMalePaperDoll.baseAsset,
           if (showEveryday) QuestwellMalePaperDoll.everydayAsset,

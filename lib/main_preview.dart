@@ -1,4 +1,5 @@
 import 'preview/neutral_scout_review.dart';
+import 'preview/male_everyday_review.dart';
 import 'preview/neutral_robes_review.dart';
 import 'preview/neutral_paper_doll_review.dart';
 import 'preview/scout_wardrobe_review.dart';
@@ -35,8 +36,7 @@ import 'preview/scarf_fit_review.dart';
 void main() {
   if (Uri.base.queryParameters['review'] == 'male-everyday') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(
-      initialScreen: 'Adventurer', wardrobePreview: true)));
+    runApp(const MaleEverydayReviewApp());
   } else if (Uri.base.queryParameters['review'] == 'neutral-robes') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const NeutralRobesReviewApp()));

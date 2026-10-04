@@ -26,10 +26,11 @@ abstract final class QuestwellEquipmentPolicy {
   };
 
   // Body-specific renderer fits; the catalog still owns class/collection rules.
-  // Male Everyday v2 is approved. Male Woodland awaits its own locked fit.
+  // Male art is isolated in development review until its production foundation
+  // migrates coherently; equipment must never switch the underlying body.
   static const bodyFits = <String, Set<String>>{
-    'everyday-adventurer-outfit': {'female', 'neutral', 'male'},
-    'woodland-scout-outfit': {'female', 'neutral'},
+    'everyday-adventurer-outfit': {'female', 'neutral'},
+    'woodland-scout-outfit': {'female'},
   };
   static bool supportsBody(String slug, String body) =>
       bodyFits[slug]?.contains(body) ?? true;

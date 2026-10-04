@@ -39,7 +39,10 @@ A candidate is not founder-ready until all applicable checks pass.
 - body eligibility matches approved fits
 - class restrictions are correct
 - equip/unequip works
-- default class outfit restores correctly
+- default class outfit restores correctly on the same locked body/identity
+- equip, unequip, class change and reload do not swap to a different foundation
+- compare body assets/layers semantically across transitions as well as checking hashes
+- explicit candidate/review availability does not silently broaden account eligibility
 - saved loadout survives reload/session restoration without body/class policy drift
 - inventory ownership remains intact when an item is hidden or retired
 - shared avatar appearance is consistent across Hearth/Adventurer/Market where applicable

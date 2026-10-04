@@ -16,3 +16,7 @@ These are process controls derived from failures encountered during avatar produ
 12. **Keep provenance.** Source, prompt/edit method, version, fit reference, verification and approval state should travel with the asset.
 13. **Separate technical and aesthetic gates.** CI/Preview can pass while the visual still needs work; conversely active visual work is not automatically a founder blocker.
 14. **Design for replaceability.** Layouts and visuals should be modular so future redesigns do not implode core systems.
+
+15. **Verify the same body across states, not just immutable files.** Male Everyday v2 was briefly wired to male v3 while unequip restored legacy anatomy. Both files could pass hash checks while the interaction violated the paper-doll contract. Keep a dedicated fixed-body review until every supported account transition uses the coherent approved foundation.
+16. **Review capability is not account capability.** Neutral Woodland is an unaccepted candidate. Its explicit development renderer does not authorize expansion of female-only account eligibility. Approved Everyday support is tracked separately.
+17. **Preserve real test view dimensions.** A test-only `MediaQueryData(disableAnimations: true)` override reset the viewport to zero and made a Market modal untappable. Copy the real media data and alter only the intended property; exercise actual visible taps rather than suppressing missed-hit warnings.

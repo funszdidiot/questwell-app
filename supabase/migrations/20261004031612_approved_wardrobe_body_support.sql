@@ -9,7 +9,8 @@ security invoker
 set search_path = ''
 as $function$
   select case p_slug
-    when 'woodland-scout-outfit' then coalesce(p_body_type in ('female','neutral'),false)
+    when 'everyday-adventurer-outfit' then coalesce(p_body_type in ('female','neutral'),false)
+    when 'woodland-scout-outfit' then coalesce(p_body_type='female',false)
     else true
   end;
 $function$;
@@ -121,8 +122,8 @@ end;
 $function$;
 
 update public.cosmetics
-set description='A simple ivory shirt, brown trousers and sturdy boots. Available for all body types and every class.'
+set description='A simple ivory shirt, brown trousers and sturdy boots. Available for female and neutral avatars of every class.'
 where slug='everyday-adventurer-outfit';
 update public.cosmetics
-set description='Moss leather, an ivory rolled-sleeve shirt, reinforced trousers and travel boots. Available for female and neutral Scout avatars.'
+set description='Moss leather, an ivory rolled-sleeve shirt, reinforced trousers and travel boots. Available for female Scout avatars.'
 where slug='woodland-scout-outfit';

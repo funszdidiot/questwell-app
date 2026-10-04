@@ -15,7 +15,7 @@ A historical asset, review page, or older candidate never overrides a locked tem
 
 ## Core method
 
-Questwell uses a paper-doll system. Approve the body first, lock anatomy, then fit garments to that body. Never alter anatomy to solve a garment problem. Each body type is fitted independently; do not scale one body's clothing onto another.
+Questwell uses a paper-doll system. Approve the body first, lock anatomy, then fit garments to that body. Never alter anatomy to solve a garment problem. Each body type is fitted independently; do not scale one body's clothing onto another. The same locked foundation must persist across equip/unequip/class/reload transitions. Exact file hashes alone cannot detect a renderer that swaps between different bodies. Explicit development review availability and account wardrobe eligibility are separate capabilities.
 
 Production state is:
 
@@ -41,6 +41,6 @@ The repository, not chat memory, is the durable source of truth. When a new foun
 
 ## Delivery priorities
 
-Complete the current avatar-production pipeline first. Continue with established high-priority structural/scalability work, then the queued UX issues. Preserve architecture boundaries throughout visual work. Do not defer core architecture protections merely to move artwork faster.
+Complete the current avatar-production pipeline first. The established issue order is then #6 Warding Lantern/Emerald Wayfarer Rug replacements, followed by #7 architecture/scalability before launch. Keep both #6 catalog entries inactive and preserve ownership until Tanya approves replacement visuals. Preserve architecture boundaries and mandatory QA throughout all phases; this order never defers core architecture protections merely to move artwork faster.
 
 The development preview must pass the reusable Flutter Check workflow before the build/deploy jobs can run. The gate covers asset integrity, Node checks, analyzer and discovered substantive Flutter tests. The generated `test/widget_test.dart` counter placeholder is explicitly excluded because it contains no behavioral assertion. Adding a real regression test under `test/` must automatically include it in CI. Runtime verification remains a separate required step after deployment.

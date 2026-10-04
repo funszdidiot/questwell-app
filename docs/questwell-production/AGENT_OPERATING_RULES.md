@@ -51,7 +51,8 @@ When a genuine stop is necessary, identify exactly what Tanya must decide or sup
 - Do not stretch a female/neutral/male garment to another body and call it fitted.
 - Do not treat generated concept art as production-ready.
 - Do not overwrite a locked asset with an unapproved candidate.
-- Do not let stale equipment policy block an approved body fit.
+- Correct stale policy only within the approved, semantically valid account-fit scope. An isolated approved asset or candidate renderer does not authorize account capability promotion.
+- Do not switch between different foundations when clothing is equipped/removed. The same-body invariant applies across class changes and reload too.
 - Do not declare something pushed because a file exists in GitHub; verify runtime routing.
 - Do not merge/launch based only on Flutter Check or Preview.
 - Do not reintroduce retired Pathfinder boots.
@@ -84,4 +85,6 @@ Keep immutable art/template lock separate from production integration status. An
 
 Record the revision, checks, deployed URL and runtime evidence before claiming completion. Distinguish passed checks from checks still pending. CI or a deployed dashboard is never evidence that an autonomous worker remains active after the session ends.
 
-Prioritize avatar production, then the established architecture/scalability issue, then queued UX work. Preserve modular renderer, catalog/eligibility, equipment and persistence boundaries; visual acceleration never overrides the core architecture.
+Prioritize avatar production, then Issue #6 Warding Lantern/Emerald Wayfarer Rug, then Issue #7 architecture/scalability before launch. Keep the two #6 catalog entries inactive and retain ownership until founder approval of the replacement visuals. Preserve modular renderer, catalog/eligibility, equipment and persistence boundaries; visual acceleration never overrides the core architecture.
+
+Male v3/everyday v2 art remains locked while its dedicated fixed-body review is in QA and account rollout is queued. Do not promote it to account capability when unequip restores different legacy anatomy. Neutral Woodland remains candidate-review-only; existing female-only account support stays in force. Approved Everyday account support is female + neutral. No new founder request is required to correct these implementation violations.

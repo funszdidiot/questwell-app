@@ -14,19 +14,16 @@ import '../widgets/questwell_market_view.dart';
 
 /// Dev-only fixtures. All purchases and equipment changes stay in memory.
 class MobileReviewApp extends StatefulWidget {
-  const MobileReviewApp({super.key, this.initialScreen = 'Market', this.masteryPreview = false, this.wardrobePreview = false});
+  const MobileReviewApp({super.key, this.initialScreen = 'Market', this.masteryPreview = false});
   final String initialScreen;
   final bool masteryPreview;
-  final bool wardrobePreview;
   @override
   State<MobileReviewApp> createState() => _MobileReviewAppState();
 }
 
 class _MobileReviewAppState extends State<MobileReviewApp> {
   late String screen = widget.initialScreen;
-  late final _loadout = QuestwellReviewLoadout()
-    ..body = (widget.wardrobePreview ? 'male' : 'female')
-    ..otherEquipped.addAll(widget.wardrobePreview ? {'everyday'} : {});
+  final _loadout = QuestwellReviewLoadout();
   double width = 390;
   double scale = 1;
   Widget get scene => switch (screen) {
@@ -137,4 +134,3 @@ class _QuestwellPreviewNavigationHostState extends State<QuestwellPreviewNavigat
       key: ValueKey(destination), initialScreen: destination!.label),
   );
 }
-

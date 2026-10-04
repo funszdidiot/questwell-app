@@ -29,7 +29,7 @@
     .meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
     .priority { color: var(--gold); font-size: 13px; font-weight: 700; }
     .badge { display: inline-block; border-radius: 100px; border: 1px solid #6f7c91; padding: 3px 11px; font-size: 12px; font-weight: 800; letter-spacing: .04em; white-space: nowrap; }
-    .qa { color: #f7ddb0; border-color: #b38d55; background: #3d3429; }
+    .qa, .building { color: #f7ddb0; border-color: #b38d55; background: #3d3429; }
     .queued { color: #d0d9e9; background: #30394b; }
     .lock { font-size: 14px; color: #bfd6c8; }
     article p:last-child { margin-bottom: 0; }
@@ -47,8 +47,8 @@
   <header>
     <p class="priority">QUESTWELL · FOUNDER WORKSPACE</p>
     <h1>Production dashboard</h1>
-    <p class="muted">Avatar production first, followed by the established architecture and UX priorities.</p>
-    <p class="detail">Work session: October 3, 2026 · America/New_York. This page shows the last recorded work snapshot.</p>
+    <p class="muted">Avatar production first, then the Lantern and Rug replacements, then the architecture program. Core architecture stays protected throughout.</p>
+    <p class="detail">Session started October 3, 2026 · America/New_York. Updated October 4 UTC. This page shows the last recorded work snapshot.</p>
   </header>
 
   <section class="notice" aria-labelledby="decision-title">
@@ -65,51 +65,64 @@
   <section class="work" aria-label="Prioritized production work">
     <article data-stage="QA">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
-      <h2>Repair the current build defect</h2>
-      <p class="lock">Template protection: no artwork change required.</p>
-      <p>The repair is implemented and asset verification passed. Analysis, substantive Flutter regression tests and the development web build await CI.</p>
-      <p class="detail">A successful new deployment has not yet been recorded.</p>
+      <h2>Repair and verify the development build</h2>
+      <p>The initial build repair is in place. Full regression checks exposed test-harness import and viewport problems; their fixes preserve actual taps and assertions.</p>
+      <p class="detail">The latest same-body and eligibility corrections need a fresh full gate and runtime checks. Failed gates have prevented deployment.</p>
     </article>
     <article data-stage="QA">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
-      <h2>Bring the approved male body and everyday outfit into the app</h2>
+      <h2>Review the approved male outfit on its fixed body</h2>
       <p class="lock">Art lock: male v3 body and everyday v2 outfit are founder-approved.</p>
-      <p>The exact approved files have been ingested and renderer integration is prepared. Asset manifest, file/alpha/RGBA preservation, source correspondence, composite pixels and independent visual QA passed.</p>
-      <p class="detail">Flutter CI and delivered-runtime verification are pending. Server eligibility and saved-loadout corrections are undergoing rollback QA.</p>
+      <p>The exact files passed preservation and composite checks. The dedicated review is being corrected so showing or hiding the outfit keeps the same body and identity.</p>
+      <p class="detail">This is a development review. Account wardrobe rollout is incomplete; CI and the delivered review route still need verification.</p>
     </article>
     <article data-stage="QUEUED">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge queued">QUEUED</span></div>
-      <h2>Verify the neutral wardrobe in the running app</h2>
-      <p class="lock">Art lock: existing approved body and garment references remain authoritative.</p>
-      <p>Check the everyday outfit, class robes and Woodland Scout through rendering, inventory, eligibility, equip/unequip and saved loadouts.</p>
-      <p class="detail">The deployed runtime audit is pending. Existing fitted artwork is retained.</p>
+      <h2>Complete the male account wardrobe transition</h2>
+      <p class="lock">Art lock: body and everyday outfit remain locked; remaining fits are incomplete.</p>
+      <p>The proposed account path changed anatomy when the outfit was removed. That approach is being removed. The male wardrobe needs the remaining accepted fits before it can move coherently to the fixed foundation.</p>
+      <p class="detail">Existing account male paths remain unchanged. No new founder decision is requested now.</p>
     </article>
-    <article data-stage="QUEUED">
-      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge queued">QUEUED</span></div>
-      <h2>Prepare the remaining male garment templates</h2>
-      <p class="lock">Art lock: the new garment templates have not been established.</p>
-      <p>Follow exact-file ingestion and existing-fit verification. Technical preparation can continue; a concrete new foundational fit will need Tanya's template decision.</p>
+    <article data-stage="QA">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
+      <h2>Verify the approved neutral Everyday outfit and class robes</h2>
+      <p class="lock">Art lock: neutral body v4, everyday v3 and robe v11 remain authoritative.</p>
+      <p>Audit rendering, supported-body rules, equipment changes and saved loadouts. Approved Everyday account support is female and neutral.</p>
+      <p class="detail">Scoped server rollback checks passed with no retained fixture or durable migration. CI and actual delivered-runtime verification remain pending.</p>
+    </article>
+    <article data-stage="QA">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
+      <h2>Continue the neutral Woodland Scout candidate review</h2>
+      <p class="lock">Art status: candidate; not founder-locked.</p>
+      <p>The neutral fit stays in explicit development review. Woodland Scout account support remains female-only until the neutral fit is accepted and its integration is verified.</p>
+      <p class="detail">Active visual development continues without a premature approval request.</p>
+    </article>
+    <article data-stage="BUILDING">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge building">BUILDING</span></div>
+      <h2>Develop the remaining male garment templates</h2>
+      <p class="lock">Art lock: the male robe template has not been established.</p>
+      <p>Existing unapproved robe candidates, including unfinished cuff work, remain in development over the unchanged male body and everyday outfit. A concrete foundational fit needs independent QA and Tanya's template decision before class surfaces.</p>
       <p class="detail">No template decision is being requested now.</p>
     </article>
     <article data-stage="QUEUED">
-      <div class="meta"><span class="priority">PRIORITY 2 · ISSUE #7</span><span class="badge queued">QUEUED</span></div>
-      <h2>Protect growth and future redesigns</h2>
-      <p>Continue the established architecture and scalability work after avatar integration. Preserve clear boundaries between appearance, the catalog, equipment rules and saved state.</p>
-      <p class="detail">Confirm the current issue scope before implementation. Core architecture remains protected during visual work.</p>
+      <div class="meta"><span class="priority">PRIORITY 2 · ISSUE #6</span><span class="badge queued">QUEUED</span></div>
+      <h2>Rebuild the Warding Lantern and Emerald Wayfarer Rug</h2>
+      <p>Follow avatar and template completion with the approved replacement briefs. Review both items at actual game scale.</p>
+      <p class="detail">Both catalog entries stay inactive and existing ownership is preserved until Tanya approves replacement visuals.</p>
     </article>
     <article data-stage="QUEUED">
-      <div class="meta"><span class="priority">PRIORITY 3 · ISSUE #6</span><span class="badge queued">QUEUED</span></div>
-      <h2>Revisit the Warding Lantern and Wayfarer Rug</h2>
-      <p>Follow the avatar and structural priorities with the established visual and UX follow-up. Keep corrections within existing standards and integrate reviewable results.</p>
-      <p class="detail">Ask Tanya only when an unresolved aesthetic choice or template decision is genuinely required.</p>
+      <div class="meta"><span class="priority">PRIORITY 3 · ISSUE #7</span><span class="badge queued">QUEUED</span></div>
+      <h2>Protect growth and future redesigns</h2>
+      <p>Follow the Lantern and Rug work with the pre-launch architecture program. The next bounded step is to move inventory/loadout data and duplicated slot mapping into a shared model without changing behavior.</p>
+      <p class="detail">Renderer, catalog, equipment and persistence boundaries stay protected throughout avatar development.</p>
     </article>
   </section>
 
   <section class="evidence" aria-labelledby="evidence-title">
     <h2 id="evidence-title">What counts as finished</h2>
     <ul>
-      <li>The exact asset and template are verified; locked bodies and garment geometry remain unchanged.</li>
-      <li>Rendering, inventory/catalog, body and class eligibility, equipment policy and persistence work together.</li>
+      <li>The exact asset and template are verified. The same locked body and identity remain across equip, unequip, class change and reload; matching file hashes alone cannot prove this.</li>
+      <li>Rendering, inventory/catalog, approved body and class eligibility, equipment policy and persistence work together. A development review does not establish account rollout.</li>
       <li>Relevant tests, analysis, a development build and visual inspection pass.</li>
       <li>The delivered development revision and actual runtime behavior are checked. A file, commit or successful build alone does not complete the task.</li>
     </ul>

@@ -19,6 +19,8 @@ Rules:
 - Preserve bottom-center alignment and authored registration.
 - Prefer coherent garment overlays rather than independently stretching garment fragments.
 - Preserve the original hands unless an approved equipment methodology explicitly requires otherwise.
+- Preserve the same locked body/identity across equip, unequip, class change and reload. Switching between differently shaped bodies is a violation even if each file hash is unchanged.
+- Keep fixed-body development reviews distinct from account wardrobe capability. A candidate renderer or isolated approved garment is not proof that every account transition preserves anatomy.
 - Equipment must respect the paper-doll method. The grimoire is belt-mounted; Pathfinder boots are retired.
 
 ## Garment depth

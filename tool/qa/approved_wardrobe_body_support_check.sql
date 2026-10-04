@@ -35,7 +35,7 @@ end $$;
 set local role authenticated;
 do $$
 declare
-  initial_body text; next_body text; v_uid uuid;
+  initial_body text; next_body text; v_uid uuid; item uuid;
   everyday uuid; woodland uuid; everyday_price integer; woodland_price integer;
   original_xp integer; original_level integer; result record; denied boolean;
 begin
@@ -70,13 +70,13 @@ begin
   end;
   if not denied then raise exception 'Identity-free body change accepted'; end if;
 
-  foreach initial_body in array array['female','neutral','male'] loop
+  foreach initial_body in array array['female','neutral'] loop
     v_uid := (current_setting('qa.wardrobe_ids')::jsonb->>initial_body)::uuid;
     perform set_config('request.jwt.claims',jsonb_build_object(
       'sub',v_uid,'role','authenticated')::text,true);
     select total_xp,level into original_xp,original_level from public.users where id=v_uid;
 
-    -- A first purchase (not just a retry) succeeds on every integrated body.
+    -- A first purchase (not just a retry) succeeds on each integrated body.
     select * into result from public.purchase_cosmetic(everyday);
     if result.already_owned or result.remaining_coins<>500-everyday_price then
       raise exception 'Everyday first purchase failed for %',initial_body;
@@ -86,7 +86,7 @@ begin
       raise exception 'Everyday retry charged twice for %',initial_body;
     end if;
     perform public.equip_cosmetic(everyday);
-    foreach next_body in array array['female','neutral','male'] loop
+    foreach next_body in array array['female','neutral'] loop
       perform public.set_avatar_body_type(next_body);
       if not exists(select 1 from public.users where id=v_uid and avatar_body_type=next_body)
         or not exists(select 1 from public.user_cosmetics
@@ -94,13 +94,35 @@ begin
         raise exception 'Everyday persistence failed during % -> %',initial_body,next_body;
       end if;
     end loop;
+    perform public.set_avatar_body_type('male');
+    if not exists(select 1 from public.user_cosmetics
+        where user_id=v_uid and cosmetic_id=everyday and not equipped) then
+      raise exception 'Male Everyday body switch lost ownership or retained equipment';
+    end if;
+    denied := false;
+    begin perform public.equip_cosmetic(everyday);
+    exception when raise_exception then
+      if sqlerrm<>'outfit unavailable for selected body' then raise; end if;
+      denied := true;
+    end;
+    if not denied then raise exception 'Male Everyday equip accepted'; end if;
+    denied := false;
+    begin perform public.purchase_cosmetic(everyday);
+    exception when raise_exception then
+      if sqlerrm<>'outfit unavailable for selected body' then raise; end if;
+      denied := true;
+    end;
+    if not denied then raise exception 'Male owned Everyday purchase retry accepted'; end if;
+    perform public.set_avatar_body_type(initial_body);
+    perform public.equip_cosmetic(everyday);
     perform public.unequip_cosmetic(everyday);
     if not exists(select 1 from public.user_cosmetics
         where user_id=v_uid and cosmetic_id=everyday and not equipped) then
       raise exception 'Everyday removal lost ownership';
     end if;
 
-    -- Every fixture is male here. Unsupported purchases leave no item or debit.
+    -- Unsupported purchases leave no item or debit.
+    perform public.set_avatar_body_type('neutral');
     denied := false;
     begin perform public.purchase_cosmetic(woodland);
     exception when raise_exception then
@@ -113,8 +135,8 @@ begin
       raise exception 'Unsupported Woodland purchase changed state';
     end if;
 
-    -- Verify both supported initial purchase paths.
-    perform public.set_avatar_body_type(case when initial_body='female' then 'female' else 'neutral' end);
+    -- Woodland remains female-only until a new body fit is accepted.
+    perform public.set_avatar_body_type('female');
     select * into result from public.purchase_cosmetic(woodland);
     if result.already_owned or result.remaining_coins<>500-everyday_price-woodland_price then
       raise exception 'Woodland initial purchase failed';
@@ -130,28 +152,39 @@ begin
         where uc.user_id=v_uid and uc.equipped and c.category='chest')<>1 then
       raise exception 'Chest equipment exclusivity failed';
     end if;
-    foreach next_body in array array['female','neutral'] loop
+    foreach next_body in array array['female'] loop
       perform public.set_avatar_body_type(next_body);
       if not exists(select 1 from public.user_cosmetics
           where user_id=v_uid and cosmetic_id=woodland and equipped) then
         raise exception 'Supported Woodland body switch lost equipment';
       end if;
     end loop;
-    perform public.set_avatar_body_type('male');
-    if not exists(select 1 from public.user_cosmetics
-        where user_id=v_uid and cosmetic_id=woodland and not equipped) then
-      raise exception 'Unsupported body switch lost ownership or retained equipment';
-    end if;
-    denied := false;
-    begin perform public.equip_cosmetic(woodland);
-    exception when raise_exception then
-      if sqlerrm<>'outfit unavailable for selected body' then raise; end if;
-      denied := true;
-    end;
-    if not denied then raise exception 'Male Woodland equip accepted'; end if;
+    foreach next_body in array array['neutral','male'] loop
+      perform public.set_avatar_body_type('female');
+      perform public.equip_cosmetic(woodland);
+      perform public.set_avatar_body_type(next_body);
+      if not exists(select 1 from public.user_cosmetics
+          where user_id=v_uid and cosmetic_id=woodland and not equipped) then
+        raise exception 'Unsupported body switch lost ownership or retained equipment';
+      end if;
+      denied := false;
+      begin perform public.equip_cosmetic(woodland);
+      exception when raise_exception then
+        if sqlerrm<>'outfit unavailable for selected body' then raise; end if;
+        denied := true;
+      end;
+      if not denied then raise exception 'Unsupported Woodland equip accepted: %',next_body; end if;
+      denied := false;
+      begin perform public.purchase_cosmetic(woodland);
+      exception when raise_exception then
+        if sqlerrm<>'outfit unavailable for selected body' then raise; end if;
+        denied := true;
+      end;
+      if not denied then raise exception 'Unsupported owned Woodland purchase accepted: %',next_body; end if;
+    end loop;
 
     -- Class changes still enforce the catalog's Scout requirement.
-    perform public.set_avatar_body_type('neutral');
+    perform public.set_avatar_body_type('female');
     perform public.equip_cosmetic(woodland);
     perform public.set_adventurer_archetype('scholar');
     if not exists(select 1 from public.user_cosmetics
@@ -182,7 +215,7 @@ begin
         denied := true;
       end;
       if not denied or not exists(select 1 from public.users
-          where id=v_uid and avatar_body_type='neutral')
+          where id=v_uid and avatar_body_type='female')
         or not exists(select 1 from public.user_cosmetics
           where user_id=v_uid and cosmetic_id=woodland and equipped) then
         raise exception 'Invalid body input changed state';
@@ -200,10 +233,39 @@ begin
     end if;
   end loop;
 
+  -- The existing male wardrobe remains unchanged: neither full outfit is buyable.
+  v_uid := (current_setting('qa.wardrobe_ids')::jsonb->>'male')::uuid;
+  perform set_config('request.jwt.claims',jsonb_build_object(
+    'sub',v_uid,'role','authenticated')::text,true);
+  foreach item in array array[everyday,woodland] loop
+    denied := false;
+    begin perform public.purchase_cosmetic(item);
+    exception when raise_exception then
+      if sqlerrm<>'outfit unavailable for selected body' then raise; end if;
+      denied := true;
+    end;
+    if not denied then raise exception 'Unowned male outfit purchase accepted'; end if;
+    denied := false;
+    begin perform public.equip_cosmetic(item);
+    exception when raise_exception then
+      if sqlerrm<>'cosmetic not owned' then raise; end if;
+      denied := true;
+    end;
+    if not denied then raise exception 'Unowned male outfit equip accepted'; end if;
+  end loop;
+  if exists(select 1 from public.user_cosmetics
+      where user_id=v_uid and cosmetic_id in (everyday,woodland))
+    or (select coin_balance from public.users where id=v_uid)<>500
+    or exists(select 1 from public.reward_events
+      where user_id=v_uid and event_type='cosmetic_purchase') then
+    raise exception 'Male denied operation changed inventory or economy';
+  end if;
+
   -- A separate unowned, non-Scout identity cannot borrow another user's item.
   v_uid := (current_setting('qa.wardrobe_ids')::jsonb->>'outsider')::uuid;
   perform set_config('request.jwt.claims',jsonb_build_object(
     'sub',v_uid,'role','authenticated')::text,true);
+  perform public.set_avatar_body_type('female');
   denied := false;
   begin perform public.equip_cosmetic(everyday);
   exception when raise_exception then
@@ -230,4 +292,4 @@ begin
 end $$;
 reset role;
 rollback;
-select 'PASS: all-body Everyday; female/neutral Scout-only Woodland; body/class persistence; one-charge retries; ownership and RLS; private helper; fixtures rolled back' as result;
+select 'PASS: female/neutral Everyday and female Scout-only Woodland; unsupported fits denied; body/class persistence; one-charge retries; ownership and RLS; private helper; fixtures rolled back' as result;

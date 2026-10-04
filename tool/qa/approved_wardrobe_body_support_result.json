@@ -1,6 +1,6 @@
 {
   "verification": "rollback_preview",
-  "verifiedAt": "2026-10-04T03:21:48.540Z",
+  "verifiedAt": "2026-10-04T03:37:54.400040+00:00",
   "project": "bdzcazkyypopbanbjnud",
   "migration": "supabase/migrations/20261004031612_approved_wardrobe_body_support.sql",
   "qa": "tool/qa/approved_wardrobe_body_support_check.sql",
@@ -8,9 +8,11 @@
   "durableMigrationApplied": false,
   "requiresPostDeploymentApplyAndRerun": true,
   "exercised": [
-    "Everyday first purchase on female/neutral/male",
-    "Woodland first purchase on female/neutral",
-    "Male Woodland denied without debit",
+    "Everyday first purchase on female/neutral",
+    "Woodland first purchase on female Scout",
+    "Neutral Woodland and male full outfits denied without debit",
+    "Owned unsupported full outfits return to inventory on body change",
+    "Unowned male purchase/equip denial preserves inventory and economy",
     "Retry safety: one ownership row/debit/reward event",
     "One equipped chest item",
     "Supported body changes keep equipment",
@@ -63,5 +65,6 @@
   },
   "securityAdvisorsBefore": {
     "lints": []
-  }
+  },
+  "scope": "Approved fit parity only: Everyday female/neutral; Woodland female Scout only. Male Everyday and neutral Woodland remain isolated development previews."
 }

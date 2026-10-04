@@ -220,7 +220,7 @@ void main() {
     }
   });
 
-  testWidgets('neutral Woodland equipment retains its locked body and restores the class robe', (tester) async {
+  testWidgets('neutral Woodland remains review-only on its locked body', (tester) async {
     Future<void> render({bool equipped = false, Set<String>? reviewLayers}) async {
       await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
         width: 240, height: 320,
@@ -237,8 +237,11 @@ void main() {
     await render();
     final classLayers = assets(tester);
     expect(classLayers, neutralRobeLayers('scout'));
-    for (final review in [false, true]) {
-      await render(equipped: !review, reviewLayers: review ? {'outfit'} : null);
+    await render(equipped: true);
+    expect(assets(tester), classLayers,
+        reason: 'An unapproved candidate cannot become account equipment');
+    {
+      await render(reviewLayers: {'outfit'});
       final paths = assets(tester);
       expect(paths.toSet(), {
         QuestwellNeutralPaperDoll.baseAsset,
@@ -255,12 +258,12 @@ void main() {
           tester.getRect(asset(QuestwellNeutralPaperDoll.baseAsset)));
       await render();
       expect(assets(tester), classLayers,
-          reason: 'Unequip returns to the same locked class stack');
+          reason: 'Leaving candidate review returns to the locked class stack');
     }
   });
 
   for (final archetype in ['scout', 'scholar', 'alchemist', 'guardian', 'wanderer']) {
-    testWidgets('$archetype male Everyday uses the locked fit and restores its existing class outfit', (tester) async {
+    testWidgets('$archetype unsupported male Everyday cannot switch the production body', (tester) async {
       Future<void> render({bool everyday = false}) async {
         await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
           width: 240, height: 320,
@@ -276,19 +279,13 @@ void main() {
       await render();
       final classLayers = assets(tester);
       await render(everyday: true);
-      expect(assets(tester), [
-        QuestwellMalePaperDoll.baseAsset,
-        QuestwellMalePaperDoll.everydayAsset,
-        QuestwellMalePaperDoll.identityAsset,
-      ]);
-      expect(find.byType(QuestwellCleanBase), findsNothing);
-      expect(find.byType(ClipPath), findsNothing,
-          reason: 'Legacy clothing must never clip the locked male body');
-      expect(tester.getRect(asset(QuestwellMalePaperDoll.everydayAsset)),
-          tester.getRect(asset(QuestwellMalePaperDoll.baseAsset)));
+      expect(assets(tester), classLayers,
+          reason: 'An unsupported equipment entry cannot migrate body anatomy');
+      expect(find.byType(QuestwellMalePaperDoll), findsNothing,
+          reason: 'The locked male foundation remains in its dedicated review');
       await render();
       expect(assets(tester), classLayers,
-          reason: 'Male robe migration awaits its own approved garment fit');
+          reason: 'Equip and unequip retain the same production foundation');
     });
   }
 
