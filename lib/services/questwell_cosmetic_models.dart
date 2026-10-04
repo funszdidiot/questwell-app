@@ -1,4 +1,5 @@
 import 'questwell_progression.dart';
+import 'questwell_loadout_model.dart';
 
 class QuestwellProfile {
   const QuestwellProfile({
@@ -86,8 +87,10 @@ class QuestwellCosmetic {
   final String editionType;
   final DateTime? availabilityStart, availabilityEnd;
   bool get specialEdition => editionType != 'standard';
-  String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}'
-    : category == 'wall_art' && roomSlot != null && roomSlot != 'wall_center' ? 'wall_art:$roomSlot' : category;
+  String get renderKey => QuestwellLoadoutModel.renderKey(
+    category: category,
+    roomSlot: roomSlot,
+  );
 
   QuestwellCosmetic copyWith({
     bool? owned,
