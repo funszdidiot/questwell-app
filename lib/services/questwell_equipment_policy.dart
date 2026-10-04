@@ -25,9 +25,11 @@ abstract final class QuestwellEquipmentPolicy {
     'alchemist-phial','guardian-crest','wanderer-star-map',
   };
 
-  // Body-specific fits remain unavailable until their own fit is ready.
+  // Female and neutral fits are ready for the everyday and Woodland Scout outfits.
+  // Male remains gated until its body-specific fit is approved.
   static bool supportsBody(String slug, String body) =>
-      !const {'woodland-scout-outfit', 'everyday-adventurer-outfit'}.contains(slug) || body == 'female';
+      !const {'woodland-scout-outfit', 'everyday-adventurer-outfit'}.contains(slug) ||
+      body == 'female' || body == 'neutral';
 
   static bool isClosedCloak(String slug) =>
       slug == 'moss-green-cloak' || slug == 'hearthguard-mantle';
