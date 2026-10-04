@@ -1,3 +1,4 @@
+import 'support/male_robe_layers.dart';
 import '../lib/widgets/questwell_scholar_glasses.dart';
 import '../lib/widgets/questwell_wizard_hat.dart';
 import 'support/neutral_robe_layers.dart';
@@ -263,60 +264,47 @@ void main() {
   });
 
   for (final archetype in ['scout', 'scholar', 'alchemist', 'guardian', 'wanderer']) {
-    testWidgets('$archetype unsupported male Everyday cannot switch the production body', (tester) async {
-      Future<void> render({bool everyday = false}) async {
+    testWidgets('$archetype male shared renderer keeps locked body through equip and reload', (tester) async {
+      Future<void> render({String? chest, Set<String>? preview}) async {
         await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
           width: 240, height: 320,
           child: QuestwellLayeredAdventurerArt(
             archetype: archetype, avatarBodyType: 'male',
-            equippedSlugs: {if (everyday) 'chest': 'everyday-adventurer-outfit'},
+            equippedSlugs: {if (chest != null) 'chest': chest},
+            previewScoutLayers: preview,
           ),
         ))));
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
+        expect(asset(QuestwellMalePaperDoll.baseAsset), findsOneWidget);
+        expect(find.byType(QuestwellCleanBase), findsNothing);
+        expect(find.byType(ClipPath), findsNothing);
       }
-
       await render();
-      final classLayers = assets(tester);
-      await render(everyday: true);
-      expect(assets(tester), classLayers,
-          reason: 'An unsupported equipment entry cannot migrate body anatomy');
-      expect(find.byType(QuestwellMalePaperDoll), findsNothing,
-          reason: 'The locked male foundation remains in its dedicated review');
+      final bounds = tester.getRect(asset(QuestwellMalePaperDoll.baseAsset));
+      expect(assets(tester), maleRobeLayers(archetype));
+      await render(chest: 'everyday-adventurer-outfit');
+      expect(assets(tester), [QuestwellMalePaperDoll.baseAsset,
+        QuestwellMalePaperDoll.everydayAsset, QuestwellMalePaperDoll.identityAsset]);
+      expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset)), bounds);
       await render();
-      expect(assets(tester), classLayers,
-          reason: 'Equip and unequip retain the same production foundation');
-    });
-  }
-
-  for (final body in ['male']) {
-    testWidgets('$body modular clothing never restores suit trousers', (tester) async {
-      Future<void> render(Set<String> layers) => tester.pumpWidget(MaterialApp(home:
-        SizedBox(width: 240, height: 320, child: QuestwellLayeredAdventurerArt(
-          archetype: 'scout', avatarBodyType: body, equippedSlugs: const {},
-          previewScoutLayers: layers))));
-      await render({'top', 'trousers', 'robe'});
-      expect(tester.widgetList<QuestwellCleanBase>(find.byType(QuestwellCleanBase))
-        .every((base) => !base.withTrousers), isTrue);
-      List<String> assets() => tester.widgetList<Image>(find.byType(Image))
-        .map((im) => im.image).whereType<AssetImage>().map((im) => im.assetName).toList();
-      expect(assets(), contains(QuestwellScoutWardrobeFoundation.asset(body, 'trousers')));
-      final ordered = assets();
-      final rear = ordered.indexOf(QuestwellScoutWardrobeFoundation.asset(body, 'robe_rear'));
-      final anatomy = ordered.indexOf('assets/images/questwell/avatar/base/clean_${body}_v1.webp');
-      final front = ordered.indexOf(QuestwellScoutWardrobeFoundation.asset(body, 'robe'));
-      final rim = ordered.indexOf(QuestwellScoutWardrobeFoundation.asset(body, 'robe_cuff_front'));
-      expect(rear, lessThan(anatomy));
-      expect(anatomy, lessThan(front));
-      expect(front, lessThan(rim));
-      await render({'top', 'trousers'});
-      expect(assets(), isNot(contains(QuestwellScoutWardrobeFoundation.asset(body, 'robe'))));
-      expect(assets(), isNot(contains(QuestwellScoutWardrobeFoundation.asset(body, 'robe_rear'))));
-      expect(assets(), isNot(contains(QuestwellScoutWardrobeFoundation.asset(body, 'robe_cuff_front'))));
-      expect(assets(), contains(QuestwellScoutWardrobeFoundation.asset(body, 'top')));
-      await render({});
-      expect(assets().any((path) => path.contains('/scout_')), isFalse);
-      expect(find.byType(QuestwellCleanBase), findsWidgets);
+      expect(assets(tester), maleRobeLayers(archetype));
+      // Stale/unsupported entries do not restore legacy anatomy or lose ownership.
+      for (final chest in ['woodland-scout-outfit', 'starter-business-suit',
+          'midnight-harvest-coat', 'moss-green-cloak', 'hearthguard-mantle', 'unknown-outfit']) {
+        await render(chest: chest);
+        expect(assets(tester), maleRobeLayers(archetype));
+        expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset)), bounds);
+      }
+      for (final preview in [<String>{}, {'top'}, {'trousers', 'boots'}, {'robe'}]) {
+        await render(preview: preview);
+        expect(asset(QuestwellMalePaperDoll.everydayAsset),
+            preview.isEmpty ? findsNothing : findsOneWidget,
+            reason: 'Male Everyday must remain a single coherent overlay');
+      }
+      await tester.pumpWidget(const SizedBox());
+      await render();
+      expect(assets(tester), maleRobeLayers(archetype));
     });
   }
   for (final archetype in ['scout', 'scholar', 'alchemist', 'guardian', 'wanderer']) {
