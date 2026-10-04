@@ -15,7 +15,7 @@ class QuestwellMalePaperDoll extends StatelessWidget {
   /// False exposes the intact foundation for development fit inspection.
   final bool showEveryday;
 
-  /// Approved Scout robe template; implies its unchanged everyday underlayer.
+  /// Scout-derived robe with the requested rear repair; includes Everyday.
   final bool showRobe;
 
   final String robeArchetype;
