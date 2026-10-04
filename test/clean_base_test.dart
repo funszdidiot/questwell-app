@@ -36,7 +36,7 @@ void main() {
     final identity = await pixels(QuestwellNeutralPaperDoll.identityAsset);
     final original = await pixels('assets/images/questwell/avatar/base/paper_doll_neutral_v3.webp');
     final outfit = await pixels(QuestwellNeutralScout.outfitAsset);
-    final previousOutfit = await pixels('assets/images/questwell/avatar/woodland_scout_unified_neutral_v1.webp');
+    final previousOutfit = await pixels('assets/images/questwell/avatar/woodland_scout_unified_neutral_v2.webp');
     final trousers = await pixels(QuestwellNeutralScout.trousersAsset);
     final boots = await pixels(QuestwellNeutralScout.bootsAsset);
     for (var y = 0; y < 320; y++) {
@@ -56,13 +56,30 @@ void main() {
           expect(trousers.getUint8(offset+3) >= 128 || boots.getUint8(offset+3) >= 128, isTrue,
               reason: 'Everyday trousers and boots must cover the fixed leg/foot at $x,$y');
         }
-        if (y < 108 || y >= 135 || x < 75 || x >= 177 || (x >= 104 && x <= 149)) {
+        final handRepair = (x == 159 && y >= 187 && y <= 195) ||
+            (x == 160 && y >= 194 && y <= 196);
+        final heelRepair = (x == 111 && y >= 298 && y <= 300) ||
+            (x == 147 && y >= 300 && y <= 301);
+        if (!handRepair && !heelRepair) {
           expect(outfit.getUint32(offset), previousOutfit.getUint32(offset),
-              reason: 'Sleeve correction must not change other garment pixels at $x,$y');
+              reason: 'V3 must differ from v2 only inside audited repair pixels at $x,$y');
         }
         if (y < 282) expect(boots.getUint8(offset+3), 0);
         if (y >= 288) expect(trousers.getUint8(offset+3), 0);
       }
+    }
+    for (final point in const [
+      (159,187),(159,188),(159,189),(159,190),(159,191),(159,192),
+      (159,193),(159,194),(160,194),(159,195),(160,195),(160,196),
+    ]) {
+      final offset = (point.$2 * 240 + point.$1) * 4;
+      expect(outfit.getUint8(offset + 3), 0,
+          reason: 'Neutral Woodland garment must not overlap the preserved right hand at $point');
+    }
+    for (final point in const [(111,298),(111,299),(111,300),(147,300),(147,301)]) {
+      final offset = (point.$2 * 240 + point.$1) * 4;
+      expect(outfit.getUint8(offset + 3), 255,
+          reason: 'Neutral Woodland boot heel must fully contain the locked foot at $point');
     }
   });
   testWidgets('Neutral clothing subsets keep one fixed body and correct cloth depth', (tester) async {
