@@ -10,8 +10,8 @@ Use **BLOCKED** only when the affected work cannot proceed. Active visual develo
 
 | Priority | Work item | Production status | Art/template lock | Current evidence and next step |
 |---|---|---|---|---|
-| 1 | Repair current build defect | BUILDING | No template change | Repair under way. Run the asset checks, analyzer, substantive regression suite and development web build before deployment. No successful new deployment claimed. |
-| 1 | Ingest exact male v3 body and everyday v2 outfit | BUILDING | Both founder-locked | Exact approved artifacts ingested; local file/alpha hashes, source correspondence, composite pixels and independent visual QA passed. Renderer integration, CI and delivered-runtime verification remain pending. No substitute or regeneration authorized. |
+| 1 | Repair current build defect | QA | No template change | Repair implemented. Asset verification passed; analyzer, substantive Flutter regressions and development web build await CI. No successful new deployment claimed. |
+| 1 | Ingest exact male v3 body and everyday v2 outfit | QA | Both founder-locked | Exact approved artifacts ingested and renderer integration prepared; asset manifest, file/alpha/RGBA preservation, source correspondence, composite pixels and independent visual QA passed. Flutter CI and delivered-runtime verification remain pending. No substitute or regeneration authorized. |
 | 1 | Audit neutral everyday, class robes and Woodland Scout in runtime | QUEUED | Existing approved references remain authoritative | Verify actual renderer composition, catalog/inventory eligibility, equipment policy, persistence, relevant tests and the development runtime. Existing art is retained during the audit. |
 | 1 | Establish remaining male garment templates | QUEUED | New garment template not yet locked | Follow exact-artifact ingestion and existing-fit verification. Continue technical preparation. A genuinely new foundational garment fit needs Tanya's template decision when a concrete candidate is ready. |
 | 2 | Issue #7: architecture, scalability and replaceable UI/visual systems | QUEUED | Existing architecture decisions preserved | Follow avatar integration. Protect clear boundaries among rendering, catalog, eligibility, equipment and persistence; verify current issue scope before implementation. |
@@ -38,5 +38,5 @@ DEV DEPLOYED requires verification of the delivered development revision and act
 
 ## Evidence log
 
-- Exact male source files, canonical references and runtime copies were recovered from the approved `c1382db` worktree. Local file/alpha preservation, source correspondence, composite pixels and independent visual QA passed. Build repair/integration remain in progress; Flutter CI, delivered-runtime verification and deployment of this work are not yet recorded.
-- The development pipeline is being changed to require the asset verifier, Node checks, analyzer and all substantive Flutter test files before preview build/deploy. Successful execution is still required.
+- Exact male source files, canonical references and runtime copies were recovered from the approved `c1382db` worktree. Local file/alpha preservation, source correspondence, composite pixels and independent visual QA passed. Build repair and renderer integration are ready for QA; manifest and RGBA verification passed. Flutter CI, delivered-runtime verification and deployment of this work are not yet recorded. Server eligibility/persistence correction rollback QA is ongoing.
+- The development pipeline now requires the asset verifier, Node checks, analyzer and all substantive Flutter test files before preview build/deploy. Workflow dependency validation passed; successful Flutter CI execution is still required because no local Flutter SDK is available.

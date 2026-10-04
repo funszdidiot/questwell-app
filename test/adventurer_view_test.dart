@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../lib/widgets/questwell_adventurer_view.dart';
+import 'package:project_momentum/widgets/questwell_adventurer_view.dart';
 import 'inventory_icon_test.dart' show inventoryIconTests;
-import '../lib/widgets/questwell_class_emblem.dart';
+import 'package:project_momentum/widgets/questwell_class_emblem.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_momentum/flutter_flow/nav/nav.dart' show NavigationExtensions;
-import '../lib/preview/adventurer_review.dart';
-import '../lib/preview/mobile_review.dart';
-import '../lib/widgets/questwell_app_navigation.dart';
-import '../lib/widgets/questwell_male_paper_doll.dart';
-import '../lib/widgets/questwell_pixel_art.dart';
-import '../lib/widgets/questwell_brass_lantern.dart';
-import '../lib/widgets/questwell_bookshelf.dart';
-import '../lib/widgets/questwell_wall_art.dart';
-import '../lib/widgets/questwell_moonstone_brooch.dart';
+import 'package:project_momentum/preview/adventurer_review.dart';
+import 'package:project_momentum/preview/mobile_review.dart';
+import 'package:project_momentum/widgets/questwell_app_navigation.dart';
+import 'package:project_momentum/widgets/questwell_male_paper_doll.dart';
+import 'package:project_momentum/widgets/questwell_pixel_art.dart';
+import 'package:project_momentum/widgets/questwell_brass_lantern.dart';
+import 'package:project_momentum/widgets/questwell_bookshelf.dart';
+import 'package:project_momentum/widgets/questwell_wall_art.dart';
+import 'package:project_momentum/widgets/questwell_moonstone_brooch.dart';
 
 void main() {
   inventoryIconTests();
@@ -59,7 +59,8 @@ void main() {
     final everyday = find.byKey(const ValueKey('inventory-everyday'));
     final remove = find.descendant(of: everyday,
         matching: find.widgetWithText(OutlinedButton, 'Wear Alchemist outfit'));
-    await tester.ensureVisible(remove);
+    await tester.dragUntilVisible(remove.hitTestable(), find.byType(ListView),
+        const Offset(0, -200), maxIteration: 40);
     await tester.tap(remove);
     await tester.pumpAndSettle();
     await open(QuestwellDestination.hearth);
@@ -71,7 +72,8 @@ void main() {
     await inventory();
     final equip = find.descendant(of: everyday,
         matching: find.widgetWithText(OutlinedButton, 'Equip'));
-    await tester.ensureVisible(equip);
+    await tester.dragUntilVisible(equip.hitTestable(), find.byType(ListView),
+        const Offset(0, -200), maxIteration: 40);
     await tester.tap(equip);
     await tester.pumpAndSettle();
     await open(QuestwellDestination.hearth);

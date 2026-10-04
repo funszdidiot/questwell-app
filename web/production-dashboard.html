@@ -29,7 +29,7 @@
     .meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
     .priority { color: var(--gold); font-size: 13px; font-weight: 700; }
     .badge { display: inline-block; border-radius: 100px; border: 1px solid #6f7c91; padding: 3px 11px; font-size: 12px; font-weight: 800; letter-spacing: .04em; white-space: nowrap; }
-    .building { color: #f7ddb0; border-color: #b38d55; background: #3d3429; }
+    .qa { color: #f7ddb0; border-color: #b38d55; background: #3d3429; }
     .queued { color: #d0d9e9; background: #30394b; }
     .lock { font-size: 14px; color: #bfd6c8; }
     article p:last-child { margin-bottom: 0; }
@@ -63,19 +63,19 @@
   </section>
 
   <section class="work" aria-label="Prioritized production work">
-    <article data-stage="BUILDING">
-      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge building">BUILDING</span></div>
+    <article data-stage="QA">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
       <h2>Repair the current build defect</h2>
       <p class="lock">Template protection: no artwork change required.</p>
-      <p>Repair is under way. Next: pass asset checks, analysis, substantive regression tests and the development web build.</p>
+      <p>The repair is implemented and asset verification passed. Analysis, substantive Flutter regression tests and the development web build await CI.</p>
       <p class="detail">A successful new deployment has not yet been recorded.</p>
     </article>
-    <article data-stage="BUILDING">
-      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge building">BUILDING</span></div>
+    <article data-stage="QA">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
       <h2>Bring the approved male body and everyday outfit into the app</h2>
       <p class="lock">Art lock: male v3 body and everyday v2 outfit are founder-approved.</p>
-      <p>The exact approved files have been ingested. Local file/alpha preservation, source correspondence, composite pixels and independent visual QA passed. Check the renderer integration, CI and delivered runtime next.</p>
-      <p class="detail">Integration remains in progress. Development tests and runtime verification have not yet been recorded.</p>
+      <p>The exact approved files have been ingested and renderer integration is prepared. Asset manifest, file/alpha/RGBA preservation, source correspondence, composite pixels and independent visual QA passed.</p>
+      <p class="detail">Flutter CI and delivered-runtime verification are pending. Server eligibility and saved-loadout corrections are undergoing rollback QA.</p>
     </article>
     <article data-stage="QUEUED">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge queued">QUEUED</span></div>

@@ -1,0 +1,67 @@
+{
+  "verification": "rollback_preview",
+  "verifiedAt": "2026-10-04T03:21:48.540Z",
+  "project": "bdzcazkyypopbanbjnud",
+  "migration": "supabase/migrations/20261004031612_approved_wardrobe_body_support.sql",
+  "qa": "tool/qa/approved_wardrobe_body_support_check.sql",
+  "status": "PASS",
+  "durableMigrationApplied": false,
+  "requiresPostDeploymentApplyAndRerun": true,
+  "exercised": [
+    "Everyday first purchase on female/neutral/male",
+    "Woodland first purchase on female/neutral",
+    "Male Woodland denied without debit",
+    "Retry safety: one ownership row/debit/reward event",
+    "One equipped chest item",
+    "Supported body changes keep equipment",
+    "Unsupported body/class change keeps ownership and unequips",
+    "Scout-only Woodland purchase/equip",
+    "Null/invalid body rejected atomically",
+    "Missing auth identity denied",
+    "Unowned item denied",
+    "Cross-account inventory RLS",
+    "Internal helper execute permission withheld",
+    "XP and level unchanged"
+  ],
+  "rollback": {
+    "privateHelperAbsent": true,
+    "remainingSyntheticAccounts": 0,
+    "functions": [
+      {
+        "name": "equip_cosmetic",
+        "exactDefinitionRestored": true
+      },
+      {
+        "name": "purchase_cosmetic",
+        "exactDefinitionRestored": true
+      },
+      {
+        "name": "set_avatar_body_type",
+        "exactDefinitionRestored": true
+      }
+    ],
+    "catalog": [
+      {
+        "slug": "everyday-adventurer-outfit",
+        "price": 40,
+        "active": true,
+        "description": "A simple ivory shirt, brown trousers and sturdy boots. Available for the female body; every class.",
+        "unlock_method": "shop",
+        "collection_key": null,
+        "required_archetype": null
+      },
+      {
+        "slug": "woodland-scout-outfit",
+        "price": 120,
+        "active": true,
+        "description": "Moss leather, an ivory rolled-sleeve shirt, reinforced trousers and travel boots. Available for the female body; every class.",
+        "unlock_method": "shop",
+        "collection_key": "woodland-scout",
+        "required_archetype": "scout"
+      }
+    ]
+  },
+  "securityAdvisorsBefore": {
+    "lints": []
+  }
+}

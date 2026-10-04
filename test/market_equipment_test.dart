@@ -49,6 +49,8 @@ void main(){
       await tester.pumpAndSettle();
       if(body=='male') {
         final button=find.widgetWithText(FilledButton,'Fit unavailable');
+        await tester.dragUntilVisible(button,find.byType(ListView),const Offset(0,-180),maxIteration:20);
+        await tester.pumpAndSettle();
         expect(tester.widget<FilledButton>(button).onPressed,isNull);
         expect(find.text('Available for female and gender-neutral bodies.'),findsOneWidget);
       }else{
@@ -77,7 +79,8 @@ void main(){
     ));
     await tester.pumpAndSettle();
     final preview = find.widgetWithText(TextButton, 'Preview');
-    await tester.ensureVisible(preview);
+    await tester.dragUntilVisible(preview.hitTestable(),find.byType(ListView),const Offset(0,-180),maxIteration:20);
+    await tester.pumpAndSettle();
     await tester.tap(preview);
     await tester.pumpAndSettle();
     expect(find.byType(QuestwellMalePaperDoll), findsOneWidget);

@@ -1,3 +1,7 @@
+-- Historical female-only release check, superseded by
+-- tool/qa/approved_wardrobe_body_support_check.sql after the approved wardrobe
+-- body-support migration. Retained as release provenance; do not use as the
+-- current regression gate.
 begin;
 update public.cosmetics set active=true where slug in ('woodland-scout-outfit','everyday-adventurer-outfit');
 select set_config('qa.wardrobe_uid',gen_random_uuid()::text,true);
