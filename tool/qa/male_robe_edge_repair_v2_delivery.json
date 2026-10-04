@@ -1,0 +1,21 @@
+{
+  "status": "DEV_DEPLOYED",
+  "revision": "958aaaf1ee6053dada337961da1723e3d13f847a",
+  "workflowRun": 37229645601,
+  "reference": "tool/male_robe_edge_repair_reference.json",
+  "exportVerification": "PASS",
+  "sameBodyAndHands": "Full male v3 body and original identity; no body clipping or replacement hands",
+  "scope": "All five male robe sleeve RGB surfaces plus robe-only occlusion of hidden Everyday trousers",
+  "historicalLocksPreserved": true,
+  "newFounderLock": false,
+  "catalogEquipmentEconomyChanges": false,
+  "previousGateResults": [
+    {"revision": "f3447dd", "run": 37226309874, "result": "Analyzer rejected missing concurrent legacy-test import"},
+    {"revision": "d0a975c", "run": 37229113328, "passed": 351, "failed": 22, "result": "Body-clipping and stale clip/legacy assertions corrected"},
+    {"revision": "ff2efae", "run": 37229436223, "passed": 363, "failed": 10, "result": "Canonical test import identity and neutral head anchor assertions corrected"}
+  ],
+  "quality": {"flutterTestsPassed": 373, "nodeTestsPassed": 8, "analyzer": "PASS", "assetIntegrity": "PASS", "build": "PASS", "deployment": "PASS"},
+  "deliveredAssets": {"result": "PASS", "matched": 23, "verifiedAtUTC": "2026-10-04T19:53:21.683803+00:00", "command": "python3 tool/qa/verify_male_robe_delivery.py 958aaaf1ee6053dada337961da1723e3d13f847a"},
+  "runtime": {"result": "PASS", "classesInspected": ["guardian", "scout", "alchemist", "wanderer", "scholar"], "viewport": "390px app", "inventory": "15 owned; Everyday equip 0 to 1; Hearth 1 worn; unequip restores Scholar robe and Hearth 0 worn", "market": "male Scout Everyday purchase 650 to 610 sample coins; owned then equipped / In use", "body": "Same full v3 body, identity and hands through class/equipment transitions", "console": "Sampled errors were browser-extension metadata messages only"},
+  "limits": "Browser fixtures use the shared app widgets with in-memory inventory. No real-user sign-in or private account reload claim. Deployed public RPC persistence was checked separately in the preceding integration using rolled-back synthetic identities."
+}

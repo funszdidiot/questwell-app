@@ -1,0 +1,217 @@
+{
+  "status": "DEV_DEPLOYED_BASELINE_SUPERSEDED_BY_EDGE_REPAIR",
+  "revision": "20489adf7d4d9f4fe75be1ecc7d8cbd07941a604",
+  "workflowRun": 37218307696,
+  "verifiedAtUTC": "2026-10-04T16:56:25.671223+00:00",
+  "artChanged": false,
+  "backend": {
+    "finalMigration": "20261004164110",
+    "supersededMigration": "20261004163513",
+    "publicRpcRollbackCheck": "PASS",
+    "everydayBodies": [
+      "female",
+      "neutral",
+      "male"
+    ],
+    "legacyMaleAvailabilityPreserved": true,
+    "woodlandBodies": [
+      "female"
+    ],
+    "ownershipRows": 57,
+    "aggregateCoins": 798,
+    "remainingFixtures": 0,
+    "securityFindings": 0,
+    "verifiedAtUTC": "2026-10-04T16:52:55Z"
+  },
+  "runtime": {
+    "normalAppSignIn": "signed out; no real-user login or refresh assertion",
+    "browserSharedWidgetFixture": "Baseline checked; latest all-five visual and Everyday equip/Hearth/unequip checks recorded in male_robe_edge_repair_v2_delivery.json at revision 958aaaf",
+    "bodyAnatomy": "locked male v3; primary layer unclipped",
+    "grimoire": "unchanged belt-mounted book, original hands"
+  },
+  "assets": [
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "bytes": 38704,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "bytes": 8828,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "bytes": 27924,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v4.webp",
+      "sha256": "2147de65e671da707df1e3c210e8851f6330878e8d974a9b1f377e3536b7e845",
+      "bytes": 10598,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v3.webp",
+      "sha256": "b5407144c8935687e01c8372d4873b5b9ac2bd79eeb39658f9138ed4ea420dcf",
+      "bytes": 29824,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_collar_male_v3.webp",
+      "sha256": "180e7987b3bcc88e0b394aa081de0475761429bab164a986fb55c90a0d8cf850",
+      "bytes": 1198,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_cuffs_male_v3.webp",
+      "sha256": "273c2bdc8ba2b71cc83621b65dd8f85fa2ef95693a6c88048cf795624fe15539",
+      "bytes": 1970,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v3.webp",
+      "sha256": "9f81903c78b8a4912ca31e553e0bbb990221152cba22417a0b79e006ade459a4",
+      "bytes": 10382,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_male_v2.webp",
+      "sha256": "b29dd5be28e3ca094a900bfdae8416b6d7b865caa91b15fdcb13ac0dc7ba523e",
+      "bytes": 8178,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_front_male_v1.webp",
+      "sha256": "632fcf8a64cdc6ecf0085a52d07e5cb9734e23a9229e0c3dc22e7c93561e5200",
+      "bytes": 31086,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_collar_male_v1.webp",
+      "sha256": "33af471b25aa5cc37e7c9ff42d975f655302db7103332039c895c187e9bd10f2",
+      "bytes": 1252,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_cuffs_male_v1.webp",
+      "sha256": "83093bd7ceaf523127bdc0eca07ae38090260bc3213b5909539dc438bd676492",
+      "bytes": 2070,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_male_v1.webp",
+      "sha256": "c947226571561f2cdf3a2a39738e4ec344ab2c7f693ef82569d60d59c0af5e16",
+      "bytes": 7988,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_male_v2.webp",
+      "sha256": "e285f3347a51f27be48d844d6835f548c00fad384a5b928e21be6e92028a9f3f",
+      "bytes": 8784,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_front_male_v1.webp",
+      "sha256": "425f15eab2fed4f57dff1376465c561ac853a36b31deb16a32c01943894f6b73",
+      "bytes": 41616,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_collar_male_v1.webp",
+      "sha256": "95b092578800139d11b0002a3dae9c26d84dbe0c3659af8dd8ef1cccdc3c8327",
+      "bytes": 1216,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuffs_male_v1.webp",
+      "sha256": "f052a834bf3ad68f1ddf227fe92a2dc2e96a8ee81192fe7cbff01cbf539e8c28",
+      "bytes": 1844,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_male_v1.webp",
+      "sha256": "cca59e1b10ea483f0a6358e9846fcb8d2e886f2a40739b59058ff4ae350e37aa",
+      "bytes": 8586,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_male_v2.webp",
+      "sha256": "8414f283c04cc8e6b20d4cba013ebf42b5d99b718ea4b98745874bcc45894aad",
+      "bytes": 9360,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_front_male_v1.webp",
+      "sha256": "b7da5b312ecc853f8a9ed46ffaa0169449f14211088e59f176aae5cc1e265e42",
+      "bytes": 29820,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_collar_male_v1.webp",
+      "sha256": "bbb8d21564ffa7392da73a7e00e9c8b15e104b914dc24f5fd6cce24c8fc67be6",
+      "bytes": 1244,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_cuffs_male_v1.webp",
+      "sha256": "a8457ca830dc602337c0331a4e643bcd3b67d53ad6c00344f7d463b77126e2fe",
+      "bytes": 2090,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_male_v1.webp",
+      "sha256": "cc13f76eaf6961679eace9e7a7c08b6fbe1a63d6f5a7aeeec89fdaf0ed64e61c",
+      "bytes": 9150,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_male_v2.webp",
+      "sha256": "fd98dad2eb9e9608e0e14693bb768113fb051df5d5930a842fba7c4a669e06ff",
+      "bytes": 8246,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_front_male_v1.webp",
+      "sha256": "8b89ee1020ff74fc5182d39c3fafaa7bf62d60c16ac908b4a46c8d955f94b913",
+      "bytes": 26910,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_collar_male_v1.webp",
+      "sha256": "1de9e9ccb28e80a7861cb5db38fc8e25a60833dd2648fef4024f9c681a2eb2b3",
+      "bytes": 1214,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuffs_male_v1.webp",
+      "sha256": "76f4714c6500158b8fe1bed5571675dce60c99976d2a75f24c4ab5910bdc9fe6",
+      "bytes": 2056,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_male_v1.webp",
+      "sha256": "5b8cec180a3691574d0f4dc526ab0fb19923b04cb5e611b85b8ee3b07cc09b4d",
+      "bytes": 8046,
+      "matches": true
+    }
+  ],
+  "earlierFailedRun": {
+    "run": 37218058628,
+    "passed": 364,
+    "failed": 3,
+    "cause": "Two stale restriction assertions and offscreen Market tap; corrected by concurrent commits 9b38a8e, 68629db, 20489ad."
+  },
+  "normalAppWiring": {
+    "page": "lib/pages/adventurer_page/adventurer_page_widget.dart",
+    "view": "QuestwellAdventurerView",
+    "data": "QuestwellCosmeticService.load; profile body/class and owned/equipped inventory",
+    "writePath": "existing purchase/equip/unequip/set_avatar_body_type/set_adventurer_archetype public RPCs",
+    "sharedRenderer": "QuestwellLayeredAdventurerArt"
+  },
+  "deliveredRevision": "20489adf7d4d9f4fe75be1ecc7d8cbd07941a604",
+  "assetVerification": "PASS"
+}
