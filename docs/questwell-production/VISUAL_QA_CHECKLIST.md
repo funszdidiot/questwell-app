@@ -47,6 +47,15 @@ A candidate is not founder-ready until all applicable checks pass.
 - inventory ownership remains intact when an item is hidden or retired
 - shared avatar appearance is consistent across Hearth/Adventurer/Market where applicable
 
+## 64-bit art-direction fidelity
+- clearly reads as high-detail 64-bit-era cozy fantasy game art at runtime scale
+- pixel-authored / sprite-like edges and material treatment remain coherent with approved Questwell décor
+- richer polish does not drift into photorealism, painterly concept art, smooth vector illustration or modern 3D rendering
+- lighting/glow supports the sprite instead of masking weak geometry
+- textures and ornament remain legible at actual Hearth/Market scale
+- compare directly against approved benchmark décor such as the Autumn Ember Lantern, walnut bookshelf, burgundy reading chair and First Journey trophy
+- seasonal/limited assets must pass the same style gate; novelty cannot override visual-system consistency
+
 ## Presentation
 - native/full-size review
 - enlarged detail review
