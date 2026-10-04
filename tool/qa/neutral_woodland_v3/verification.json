@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "candidate": true,
+  "founderLock": false,
+  "composition": [
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+      "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24"
+    },
+    {
+      "path": "assets/images/questwell/avatar/woodland_scout_unified_neutral_v3.webp",
+      "sha256": "57adcddeb64047799e536ec221dd826beb2036ef3a7611e1b45d5a3e915f69f9"
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+      "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78"
+    }
+  ],
+  "unchangedBodyAndIdentity": true,
+  "changedGarmentPixels": 17,
+  "handPixelsCleared": 12,
+  "heelPixelsOpaque": 5,
+  "accountEligibility": "female only; neutral explicit development review only"
+}

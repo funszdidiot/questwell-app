@@ -1,0 +1,17 @@
+{
+  "status": "DEV_DEPLOYED_REVIEW_ONLY",
+  "artStatus": "CANDIDATE_NOT_LOCKED",
+  "revision": "993433552a012d7497d08da36a2a32dce4b470ae",
+  "workflowRun": 37231008707,
+  "flutterTestsPassed": 373,
+  "nodeTestsPassed": 8,
+  "deliveredAssetsMatched": 10,
+  "exportVerification": "verification.json",
+  "runtimeChecks": ["four-stage same-body renderer", "sleeve and wrist details", "Woodland off/on", "reload", "390px neutral Market Fit unavailable"],
+  "bodyAndIdentityChanged": false,
+  "newAssetEditsThisContinuation": false,
+  "accountEligibilityChanged": false,
+  "newFounderLock": false,
+  "newIndependentVisualSignoff": false,
+  "limits": "Explicit review only. No neutral account equip/persistence, private-user session, Safari or device test claim."
+}
