@@ -1,4 +1,4 @@
-# Male paper doll — wider neck and fragment cleanup
+# Male paper doll — wider neck and fragment cleanup — LOCKED
 
 Tanya rejected v2 because the neck remained narrow and fragmented. She explicitly requested a wider neck proportional to the muscular body, fragment removal, and pixel cleanup. V3 replaces the complete local neck connection, including its alpha contour, rather than retaining v2's defective silhouette.
 
@@ -18,4 +18,8 @@ Reproduce with `node tool/export_male_neck_v3.cjs`. The generated patch is regis
 
 The final export changes 937 visible/alpha pixels within x96–146, y67–91. No visible RGB or alpha changes occur outside the repair rectangle. Fully transparent hidden RGB is not an appearance invariant. The approved female and neutral asset verification passes without modifications. The neck is visibly broader under the jaw and the transition to the ivory collar is continuous. Independent visual review of the full figure and opaque light/dark close-ups found no detached local fragments, doubled shoulder strokes, or obvious neck seam. Enlarged crops remain limited by the native 240 × 320 sprite resolution; this is not a whole-avatar upscale or cleanup.
 
-This remains an **unapproved male foundation**, not a locked body or a runtime-avatar replacement. No male outfits, app code, equipped avatars, account/Market data, merge, or launch changed. Complete neutral everyday clothing, robes and Woodland Scout before any male outfits, as specified in `PAPER_DOLL_STANDARD.md`. Retain v1 and rejected v2 for history.
+## Founder lock — 2026-10-03
+
+Tanya explicitly approved and locked male v3. This exact foundation is now the canonical immutable male paper doll for all future male garment fitting. Do not alter anatomy, proportions, pose, face, hair, neck, shoulders, hands, hips, legs or feet to accommodate clothing.
+
+The earlier neutral-first wardrobe dependency is satisfied. Male wardrobe production may now proceed using the Questwell Production System: everyday outfit, Woodland Scout outfit, Scout robe geometry/template, then derivative class robe surfaces. Retain v1 and rejected v2 for provenance.
