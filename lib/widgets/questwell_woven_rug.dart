@@ -38,47 +38,100 @@ class QuestwellWovenRugPainter extends CustomPainter {
       canvas.drawLine(point(.1, v), point(.9, v), p);
     }
     if (emerald) {
-      p.color = const Color(0xFF285B44);
-      for (double u = .14; u < .9; u += .035) {
-        canvas.drawLine(point(u, .1), point(u, .9), p);
+      // Layered weave: keep the approved footprint and perspective, but make
+      // the surface read as a textile rather than a flat geometric panel.
+      p.style = PaintingStyle.stroke;
+      p.strokeWidth = 1;
+      for (double v = .13; v < .90; v += .032) {
+        final odd = ((v * 1000).round() ~/ 32).isOdd;
+        p.color = odd ? const Color(0xFF2E654D) : const Color(0xFF244F3E);
+        canvas.drawLine(point(.105, v), point(.895, v), p);
       }
-      // A stitched compass rose projects through the same floor coordinates.
+      for (double u = .13; u < .90; u += .028) {
+        final odd = ((u * 1000).round() ~/ 28).isOdd;
+        p.color = odd ? const Color(0x442F7255) : const Color(0x333A7B5F);
+        canvas.drawLine(point(u, .12), point(u, .89), p);
+      }
+
+      // Inner double border creates a woven band rather than a single vector line.
+      p.color = const Color(0xFFC4A45F);
+      p.strokeWidth = 1.6;
+      canvas.drawPath(panel(.105), p);
+      p.color = const Color(0xFF7B663D);
+      p.strokeWidth = .9;
+      canvas.drawPath(panel(.125), p);
+
+      // Compass ring.
       final ring = Path();
-      for (var i = 0; i <= 32; i++) {
-        final a = i * math.pi / 16;
-        final q = point(.5 + .245 * math.cos(a), .5 + .30 * math.sin(a));
-        if (i == 0) { ring.moveTo(q.dx, q.dy); }
-        else { ring.lineTo(q.dx, q.dy); }
+      for (var i = 0; i <= 40; i++) {
+        final a = i * math.pi / 20;
+        final q = point(.5 + .242 * math.cos(a), .5 + .292 * math.sin(a));
+        if (i == 0) {
+          ring.moveTo(q.dx, q.dy);
+        } else {
+          ring.lineTo(q.dx, q.dy);
+        }
       }
-      p..color = const Color(0xFF8F8952)..style = PaintingStyle.stroke;
+      p
+        ..color = const Color(0xFFB99B5B)
+        ..strokeWidth = 1.35;
       canvas.drawPath(ring, p);
+
+      // Eight stitched compass points. Alternating thread values give the motif
+      // a hand-woven feel while preserving the existing compass language.
+      final center = point(.5, .5);
       p.style = PaintingStyle.fill;
       for (var i = 0; i < 8; i++) {
         final a = i * math.pi / 4 - math.pi / 2;
-        final radius = i.isEven ? .275 : .19;
+        final radius = i.isEven ? .27 : .185;
         final tip = point(.5 + radius * math.cos(a), .5 + radius * math.sin(a));
-        final center = point(.5, .5);
-        for (final side in [-1, 1]) {
-          final flank = point(.5 + .048 * math.cos(a + side * math.pi / 2),
-            .5 + .048 * math.sin(a + side * math.pi / 2));
-          p.color = side < 0 ? const Color(0xFFD5B577) : const Color(0xFF9E804C);
-          canvas.drawPath(Path()..addPolygon([center, tip, flank], true), p);
-        }
+        final left = point(.5 + .055 * math.cos(a - math.pi / 2),
+            .5 + .060 * math.sin(a - math.pi / 2));
+        final right = point(.5 + .055 * math.cos(a + math.pi / 2),
+            .5 + .060 * math.sin(a + math.pi / 2));
+        p.color = i.isEven ? const Color(0xFFD6B875) : const Color(0xFF9A7B47);
+        canvas.drawPath(Path()..addPolygon([center, tip, left], true), p);
+        p.color = i.isEven ? const Color(0xFF9F824C) : const Color(0xFFC2A364);
+        canvas.drawPath(Path()..addPolygon([center, tip, right], true), p);
       }
-      // Small corner diamonds keep the design visible around the adventurer.
-      p.color = const Color(0xFFB59A61);
+
+      // Central woven medallion.
+      p.color = const Color(0xFF183B30);
+      canvas.drawOval(Rect.fromCenter(center: center, width: size.width * .027,
+          height: size.height * .020), p);
+      p.color = const Color(0xFFE0C884);
+      canvas.drawOval(Rect.fromCenter(center: center, width: size.width * .014,
+          height: size.height * .010), p);
+
+      // Corner diamonds sit outside the avatar silhouette and balance the field.
       for (final u in [.19, .81]) {
         for (final v in [.22, .78]) {
-          canvas.drawPath(Path()..addPolygon([point(u, v - .04),
-            point(u + .025, v), point(u, v + .04), point(u - .025, v)], true), p);
+          final q = point(u, v);
+          p.color = const Color(0xFF7D6A42);
+          canvas.drawPath(Path()..addPolygon([
+            Offset(q.dx, point(u, v - .048).dy),
+            Offset(point(u + .030, v).dx, q.dy),
+            Offset(q.dx, point(u, v + .048).dy),
+            Offset(point(u - .030, v).dx, q.dy),
+          ], true), p);
+          final qi = point(u, v);
+          p.color = const Color(0xFFC7AA68);
+          canvas.drawOval(Rect.fromCenter(center: qi, width: size.width * .008,
+              height: size.height * .006), p);
         }
       }
+      p.style = PaintingStyle.fill;
     }
     canvas.restore();
-    p.color = const Color(0xFFD2B17F);
+    p.color = emerald ? const Color(0xFFC9A96B) : const Color(0xFFD2B17F);
     for (double u = .12; u < .9; u += .065) {
       for (final v in [.058, .94]) {
         canvas.drawLine(point(u, v), point(u + .018, v), p);
+        if (emerald) {
+          p.color = const Color(0xFF80653E);
+          canvas.drawLine(point(u + .006, v), point(u + .020, v), p);
+          p.color = const Color(0xFFC9A96B);
+        }
       }
     }
   }
