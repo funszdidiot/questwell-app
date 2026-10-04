@@ -6,7 +6,7 @@ class QuestwellNeutralScout extends StatelessWidget {
   const QuestwellNeutralScout({super.key, required this.layers});
   final Set<String> layers;
 
-  static const outfitAsset = 'assets/images/questwell/avatar/woodland_scout_unified_neutral_v2.webp';
+  static const outfitAsset = 'assets/images/questwell/avatar/woodland_scout_unified_neutral_v3.webp';
   static const topAsset = 'assets/images/questwell/avatar/everyday_top_neutral_v3.webp';
   static const trousersAsset = 'assets/images/questwell/avatar/everyday_trousers_neutral_v3.webp';
   static const bootsAsset = 'assets/images/questwell/avatar/everyday_boots_neutral_v3.webp';
