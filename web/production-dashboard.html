@@ -53,8 +53,10 @@
   </header>
 
   <section class="notice" aria-labelledby="decision-title">
-    <h2 id="decision-title">No decision needed from Tanya right now</h2>
-    <p>The male Woodland Scout candidate is deployed and verified in its dedicated development review. All 367 Flutter tests, 8 Node tests, five delivered hashes, live wardrobe controls, grimoire and reload checks passed. Its geometry is still a candidate, not a new founder lock. Neutral Woodland has small hand-edge and heel repairs in active QA. The male robe thumb fixes remain deployed and verified. No new founder lock is claimed.</p>
+    <h2 id="decision-title">Tanya needed: temporary male outfit availability</h2>
+    <p><strong>The male robes are not yet integrated into the normal app.</strong> They are visible only on art-review routes. The previous delivery wording was too broad.</p>
+    <p>The prepared correction connects all five robes to the shared avatar renderer. To keep locked v3 unchanged through outfit changes, approve temporarily making the male Business Suit, Midnight Harvest Coat, Moss Green Cloak and Hearthguard Mantle unavailable for purchase/equip while their fits are rebuilt. Ownership remains intact; prices and other bodies stay unchanged.</p>
+    <p>These items are active and owned, so this restriction needs your product decision. None is currently equipped on a male profile. <a href="https://github.com/funszdidiot/questwell-app/pull/9">Draft PR #9</a> contains the correction, transition tests and unapplied SQL proposal. The alternative is to finish those four refits before rollout. No final artwork approval is requested.</p>
   </section>
 
   <section class="flow" aria-labelledby="flow-title">
@@ -77,12 +79,12 @@
       <p>All three delivered files match their locked hashes. Body Only ↔ Outfit and enlarged browser review passed on the same v3 foundation, followed by independent screenshot inspection.</p>
       <p class="detail">This is the dedicated development review. Male account wardrobe rollout remains queued.</p>
     </article>
-    <article data-stage="QUEUED">
-      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge queued">QUEUED</span></div>
-      <h2>Complete the male account wardrobe transition</h2>
-      <p class="lock">Art lock: body and everyday outfit remain locked; remaining fits are incomplete.</p>
-      <p>The proposed account path changed anatomy when the outfit was removed. That approach was removed before delivery. The male wardrobe needs the remaining accepted fits before it can move coherently to the fixed foundation.</p>
-      <p class="detail">Existing account male paths remain unchanged. No new founder decision is requested now.</p>
+    <article data-stage="BLOCKED">
+      <div class="meta"><span class="priority">PRIORITY 1 · APP INTEGRATION</span><span class="badge">BLOCKED</span></div>
+      <h2>Push the five male robes into the app</h2>
+      <p class="lock">Body v3, Everyday v2 and historical robe v3 remain locked.</p>
+      <p>The normal app still selects legacy male robes. The shared-renderer correction is prepared in draft PR #9 with same-body equip, unequip, class-change and reconstruction checks.</p>
+      <p class="detail">Rollout awaits the temporary male-only legacy-fit restriction above. Database and app behavior remain unchanged. This work is not DEV DEPLOYED.</p>
     </article>
     <article data-stage="DEV DEPLOYED">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
@@ -113,14 +115,14 @@
     </article>
     <article data-stage="DEV DEPLOYED">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
-      <h2>Accepted male Scout robe integrated</h2>
+      <h2>Accepted male Scout robe: art review only</h2>
       <p class="lock">Art lock: male robe v3; your requested sharper cuff finish is complete.</p>
       <p>The exact four robe layers render over the unchanged male body and everyday outfit. All seven delivered files match their locked hashes. Body only, Outfit, Scout robe, enlargement and reload passed actual browser checks and independent delivered-image QA.</p>
-      <p class="detail">Verified runtime 31dfebe · 355 Flutter tests · 8 Node tests. Dedicated development review only; male account wardrobe rollout remains queued.</p>
+      <p class="detail">Verified runtime 31dfebe · 355 Flutter tests · 8 Node tests. Dedicated development review only; normal app integration is blocked on the product decision above.</p>
     </article>
     <article data-stage="DEV DEPLOYED">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
-      <h2>Male class robes: close the thumb gaps</h2>
+      <h2>Male class robe thumb repairs: art review only</h2>
       <p class="lock">Historical v3 and foreground designs remain locked. The requested rear repair is not a new template lock.</p>
       <p>All five connected rear-lining repairs passed independent export and actual runtime visual QA. The body, hands, Everyday outfit, collars, cuff fronts and class designs remain unchanged.</p>
       <p class="detail">Verified 7cc9030 · 363 Flutter tests · 8 Node tests · 28 delivered hashes · class/clothing/enlargement/reload checks passed. Dedicated development review only. Woodland Scout remains its own outfit task.</p>

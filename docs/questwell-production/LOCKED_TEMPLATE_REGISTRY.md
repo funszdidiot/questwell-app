@@ -41,3 +41,8 @@ When documentation conflicts, stop and reconcile the registry against the most r
 Male v3 and everyday v2 remain locked art. Their dedicated review must toggle the outfit over the same body; it must not restore legacy anatomy on removal. Account male Everyday rollout is queued until the remaining accepted fits permit a coherent same-body transition. Approved Everyday account support is female + neutral. Woodland Scout account support remains female-only; neutral Woodland is an unaccepted explicit-review candidate. These boundaries do not alter art locks or authorize catalog/economy changes.
 
 Runtime evidence is recorded in `docs/qa/APPROVED_WARDROBE_INTEGRATION.md`: 351 Flutter tests, 8 Node tests, deployed development browser checks and scoped synthetic public-RPC verification after migration `20261004035017`. Neutral verification covers Everyday and the five class robes; legacy suits, Harvest Coats and closed cloaks remain separately queued. Browser evidence uses in-memory fixtures and does not claim real-user login/refresh persistence. No new art/template lock is established by this delivery.
+
+
+## 2026-10-04 app-integration correction
+
+Tanya reported “The robes weren’t pushed to the app.” Confirmed: male robe delivery records above cover dedicated art-review routes only. The normal shared avatar renderer still uses legacy male class art. **Male robe app rollout is BLOCKED, not complete**, pending the explicit temporary legacy-fit product decision described in `PRODUCTION_DASHBOARD.md` and draft PR #9. All body, Everyday and historical robe locks remain unchanged. The proposed shared-renderer correction and account eligibility changes are not yet deployed or applied.
