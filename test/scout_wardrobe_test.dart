@@ -291,7 +291,7 @@ void main() {
       expect(assets(tester), maleRobeLayers(archetype));
       // Stale/unsupported entries do not restore legacy anatomy or lose ownership.
       for (final chest in ['woodland-scout-outfit', 'starter-business-suit',
-          'midnight-harvest-coat', 'moss-green-cloak', 'hearthguard-mantle']) {
+          'midnight-harvest-coat', 'moss-green-cloak', 'hearthguard-mantle', 'unknown-outfit']) {
         await render(chest: chest);
         expect(assets(tester), maleRobeLayers(archetype));
         expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset)), bounds);
