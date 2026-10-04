@@ -63,6 +63,8 @@ void main(){
     }
   });
   testWidgets('owned legacy male chest items preserve availability and equip actions', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(800, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     var actions = 0;
     for (final slug in QuestwellEquipmentPolicy.legacyMaleChestFits) {
       final outfit = QuestwellCosmetic.fromJson({
@@ -84,11 +86,14 @@ void main(){
       ))));
       await tester.pumpAndSettle();
       final action = find.widgetWithText(FilledButton, 'Equip');
-      await tester.dragUntilVisible(action, find.byType(ListView), const Offset(0, -180), maxIteration: 20);
+      await tester.dragUntilVisible(action.hitTestable(), find.byType(ListView),
+          const Offset(0, -180), maxIteration: 20);
+      await tester.pumpAndSettle();
+      expect(action.hitTestable(), findsOneWidget);
       expect(tester.widget<FilledButton>(action).onPressed, isNotNull);
       expect(outfit.owned, isTrue);
       final before = actions;
-      await tester.tap(action);
+      await tester.tap(action.hitTestable());
       await tester.pumpAndSettle();
       expect(actions, before + 1);
       expect(tester.takeException(), isNull);
