@@ -61,7 +61,7 @@
 
   <section class="flow" aria-labelledby="flow-title">
     <h2 id="flow-title">Production stages</h2>
-    <ol aria-label="Production lifecycle"><li>QUEUED</li><li>BUILDING</li><li>QA</li><li>DEV DEPLOYING</li><li>DEV DEPLOYED</li><li>TANYA REVIEW</li><li>LOCKED</li></ol>
+    <ol aria-label="Production lifecycle"><li>QUEUED</li><li>BUILDING</li><li>QA</li><li>DEV DEPLOYED</li><li>DEV DEPLOYED</li><li>TANYA REVIEW</li><li>LOCKED</li></ol>
     <p><strong>BLOCKED</strong> identifies a real impediment with a precise next action. An artwork's existing approval stays locked while its app integration moves through these stages.</p>
   </section>
 
@@ -90,15 +90,15 @@
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
       <h2>Approved neutral Everyday outfit and class robes verified</h2>
       <p class="lock">Art lock: neutral body v4, everyday v3 and robe v11 remain authoritative.</p>
-      <p>All five robes rendered. At phone width, Adventurer/Hearth equip and unequip restored the same neutral class robe; Market sample purchase, preview and equip worked. The earlier audit kept male Everyday disabled; the new authorized rollout enables it. Neutral Woodland is now approved; account rollout is in progress.</p>
+      <p>All five robes rendered. At phone width, Adventurer/Hearth equip and unequip restored the same neutral class robe; Market sample purchase, preview and equip worked. The earlier audit kept male Everyday disabled; the new authorized rollout enables it. Neutral Woodland is now approved and live for neutral Scouts.</p>
       <p class="detail">The scoped database migration is applied and public-RPC checks passed with zero retained fixtures or security findings. Browser checks used in-memory examples; real-user login and refresh persistence were not tested. Legacy chest migration is separate.</p>
     </article>
     <article data-stage="DEV DEPLOYED">
-      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYING</span></div>
-      <h2>Neutral outfits: approved, deploying</h2>
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
+      <h2>Neutral outfits: approved and live</h2>
       <p class="lock">Art status: LOCKED — founder approved 2026-10-04.</p>
-      <p>The scoped hand/heel repair is delivered at 9934335. Exactly 17 garment pixels differ from v2; the locked neutral v4 body and identity remain unchanged. Ten delivered hashes, four-stage details, outfit off/on and reload passed.</p>
-      <p class="detail">The full gate passed 373 Flutter and 8 Node tests. Tanya approved the neutral outfits and requested push on 2026-10-04. Neutral Woodland v3 is LOCKED; female and neutral Scout account rollout is deploying. Existing Everyday and all five robes remain locked. No Tanya action is needed.</p>
+      <p>Approved rollout verified at 9ce9b92: neutral Scout Market purchase (650 → 530 sample coins), equip/In use and unequip with retained ownership passed. Ten delivered asset hashes match. Locked neutral v4 body, identity and all approved outfit bytes are unchanged.</p>
+      <p class="detail">The full gate passed 373 Flutter and 8 Node tests. Tanya approved the neutral outfits and requested push on 2026-10-04. Neutral Woodland v3 is LOCKED; female and neutral Scout account rollout is DEV DEPLOYED. Existing Everyday and all five robes remain locked. No Tanya action is needed.</p>
     </article>
     <article data-stage="DEV DEPLOYED">
       <div class="meta"><span class="priority">PRIORITY 1 · WOODLAND SCOUT</span><span class="badge deployed">DEV DEPLOYED</span></div>
@@ -153,7 +153,7 @@
   </section>
   <footer>
     <p>Governed by <code>docs/questwell-production/</code>. Artwork approval and technical integration are tracked separately.</p>
-    <p>Current male robe/Everyday shared-app delivery and sleeve/thumb correction: 958aaaf (373 Flutter tests, 8 Node tests, 23 delivered asset hashes and actual all-five visual/equipment checks). Historical Woodland runtime: 0330c3b; rear-only repair: 7cc9030; earlier neutral/Market verification: 4cfef7f and a4d3b794. The authorized male account migration is applied. Dashboard publishing build: <code>__QUESTWELL_BUILD__</code>. This snapshot does not indicate a background worker.</p>
+    <p>Current approved neutral outfit rollout: 9ce9b92, workflow 37236299144, 373 Flutter + 8 Node tests, ten delivered hashes, live equipment and account RPC checks. Current male robe/Everyday shared-app delivery and sleeve/thumb correction: 958aaaf (373 Flutter tests, 8 Node tests, 23 delivered asset hashes and actual all-five visual/equipment checks). Historical Woodland runtime: 0330c3b; rear-only repair: 7cc9030; earlier neutral/Market verification: 4cfef7f and a4d3b794. The authorized male account migration is applied. Dashboard publishing build: <code>__QUESTWELL_BUILD__</code>. This snapshot does not indicate a background worker.</p>
   </footer>
 </main>
 </body>

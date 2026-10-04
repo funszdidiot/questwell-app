@@ -141,6 +141,12 @@ begin
         where uc.user_id=v_uid and uc.equipped and c.category='chest')<>1 then
       raise exception 'Chest equipment exclusivity failed';
     end if;
+    perform public.unequip_cosmetic(woodland);
+    if not exists(select 1 from public.user_cosmetics where user_id=v_uid
+      and cosmetic_id=woodland and not equipped) then
+      raise exception 'Neutral Woodland unequip lost ownership';
+    end if;
+    perform public.equip_cosmetic(woodland);
     foreach next_body in array array['female','neutral'] loop
       perform public.set_avatar_body_type(next_body);
       if not exists(select 1 from public.user_cosmetics

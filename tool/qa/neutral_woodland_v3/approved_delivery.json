@@ -1,0 +1,57 @@
+{
+  "revision": "9ce9b92fce7221d3687c2c72248bc6546dfaae7b",
+  "result": "PASS",
+  "assetsMatched": 10,
+  "assets": [
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+      "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "bytes": 35220
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+      "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "bytes": 9506
+    },
+    {
+      "path": "assets/images/questwell/avatar/woodland_scout_unified_neutral_v3.webp",
+      "sha256": "57adcddeb64047799e536ec221dd826beb2036ef3a7611e1b45d5a3e915f69f9",
+      "bytes": 32284
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_top_neutral_v3.webp",
+      "sha256": "4c5a4c4e36bffa1c43948a4d3b2805510e7f13abe16415d5ae49e0be4283d25c",
+      "bytes": 7166
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_trousers_neutral_v3.webp",
+      "sha256": "c08a045e586befc45cb0dbfcf6cec72121b47195e4f06ee8fb525aff27caa865",
+      "bytes": 12314
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_boots_neutral_v3.webp",
+      "sha256": "12ed127e63ba1548f39ebc65ed1cb9385d99cbe9bb0f16ce056295c72cb68130",
+      "bytes": 4096
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_neutral_v1.webp",
+      "sha256": "dea2d75e45975f56049c91d0d17b82e361235ecd17efeda227c9b6f8a85c6e09",
+      "bytes": 27314
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_neutral_v1.webp",
+      "sha256": "3b87885ad45e811617d6c35388d4358da6e203694ff7046254115cb12769cd40",
+      "bytes": 10762
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_cuff_front_neutral_v1.webp",
+      "sha256": "9a7b7b7b23f79c4079a0186f9630f13313a4e62bdbb0bd258381bd970d97b8d0",
+      "bytes": 3026
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_collar_neutral_v1.webp",
+      "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e",
+      "bytes": 2240
+    }
+  ]
+}
