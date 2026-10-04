@@ -13,6 +13,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../lib/widgets/questwell_clean_base.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
+import '../lib/widgets/questwell_male_paper_doll.dart';
+import '../lib/widgets/questwell_male_legacy_chest.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -184,16 +186,44 @@ void main() {
         expect(find.byType(QuestwellNeutralPaperDoll), findsOneWidget);
         expect(find.byType(ClipPath), findsNothing);
       } else {
-        expect(find.byType(QuestwellCleanBase), findsOneWidget);
-        expect(tester.widget<QuestwellCleanBase>(find.byType(QuestwellCleanBase)).withTrousers, isTrue);
+        expect(find.byType(QuestwellCleanBase), findsNothing);
+        final defaultImages = tester.widgetList<Image>(find.byType(Image))
+          .map((i) => (i.image as AssetImage).assetName).toList();
+        expect(defaultImages, containsAll([
+          QuestwellMalePaperDoll.baseAsset,
+          QuestwellMalePaperDoll.everydayAsset,
+          QuestwellMalePaperDoll.identityAsset,
+        ]));
       }
       await render({'chest':'starter-business-suit'});
       expect(find.byType(QuestwellCleanBase), findsNothing);
       final images = tester.widgetList<Image>(find.byType(Image))
         .map((i) => (i.image as AssetImage).assetName).toList();
-      expect(images, ['assets/images/questwell/avatar/base/base_$body.webp']);
+      if (body == 'male') {
+        expect(find.byType(QuestwellMaleLegacyChestFoundation), findsOneWidget);
+        expect(images, containsAll([
+          QuestwellMalePaperDoll.baseAsset,
+          QuestwellMalePaperDoll.identityAsset,
+          'assets/images/questwell/avatar/base/base_male.webp',
+        ]));
+      } else {
+        expect(images, ['assets/images/questwell/avatar/base/base_$body.webp']);
+      }
       await render({'chest':'midnight-harvest-coat'});
-      expect(find.byType(QuestwellCleanBase), findsOneWidget);
+      if (body == 'male') {
+        expect(find.byType(QuestwellCleanBase), findsNothing);
+        expect(find.byType(QuestwellMaleLegacyChestFoundation), findsOneWidget);
+        final harvestImages = tester.widgetList<Image>(find.byType(Image))
+          .map((i) => (i.image as AssetImage).assetName).toList();
+        expect(harvestImages, containsAll([
+          QuestwellMalePaperDoll.baseAsset,
+          QuestwellMalePaperDoll.everydayAsset,
+          QuestwellMalePaperDoll.identityAsset,
+          'assets/images/questwell/avatar/harvest_coat_male_v2.webp',
+        ]));
+      } else {
+        expect(find.byType(QuestwellCleanBase), findsOneWidget);
+      }
     });
   }
   for (final archetype in ['scholar','scout','alchemist','guardian','wanderer']) {
@@ -225,7 +255,17 @@ void main() {
               !closed && held == 'brass-lantern' ? findsOneWidget : findsNothing);
             expect(find.byType(QuestwellAnnotatedGrimoire),
               !closed && held == 'annotated-grimoire' ? findsOneWidget : findsNothing);
-            if (chest == 'starter-business-suit') {
+            if (body == 'male') {
+              expect(find.byType(QuestwellCleanBase), findsNothing);
+              expect(find.byType(QuestwellMaleLegacyChestFoundation), findsOneWidget);
+              expect(images, contains(QuestwellMalePaperDoll.baseAsset));
+              expect(images, contains(QuestwellMalePaperDoll.identityAsset));
+              if (chest == 'starter-business-suit') {
+                expect(images, contains('assets/images/questwell/avatar/base/base_male.webp'));
+              } else {
+                expect(images, contains(QuestwellMalePaperDoll.everydayAsset));
+              }
+            } else if (chest == 'starter-business-suit') {
               expect(find.byType(QuestwellCleanBase), findsNothing);
               expect(images.any((a) => a.contains('/classes/')), isFalse);
             } else {
