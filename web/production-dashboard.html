@@ -30,6 +30,7 @@
     .priority { color: var(--gold); font-size: 13px; font-weight: 700; }
     .badge { display: inline-block; border-radius: 100px; border: 1px solid #6f7c91; padding: 3px 11px; font-size: 12px; font-weight: 800; letter-spacing: .04em; white-space: nowrap; }
     .qa, .building { color: #f7ddb0; border-color: #b38d55; background: #3d3429; }
+    .deployed { color: #d2f0df; border-color: #82b29a; background: #263e34; }
     .queued { color: #d0d9e9; background: #30394b; }
     .lock { font-size: 14px; color: #bfd6c8; }
     article p:last-child { margin-bottom: 0; }
@@ -43,7 +44,7 @@
 </head>
 <body>
 <main>
-  <nav aria-label="Production navigation"><a href="./">Open development app</a><a href="./?review=male-everyday">Male everyday review</a><a href="robe-wrap-review.html">Robe review tools</a></nav>
+  <nav aria-label="Production navigation"><a href="./">Open development app</a><a href="./?review=male-everyday">Male everyday review</a><a href="./?review=neutral-robes">Neutral class robes</a><a href="./?review=neutral-scout">Neutral Woodland Scout</a></nav>
   <header>
     <p class="priority">QUESTWELL · FOUNDER WORKSPACE</p>
     <h1>Production dashboard</h1>
@@ -53,7 +54,7 @@
 
   <section class="notice" aria-labelledby="decision-title">
     <h2 id="decision-title">No decision needed from Tanya right now</h2>
-    <p>Approved development and technical repairs continue. A future male garment template review does not block the current work. Active visual development stays in progress until a genuine decision is needed.</p>
+    <p>The fixed-body male review and scoped neutral wardrobe audit are deployed and verified. Woodland Scout remains an explicit avatar priority: the neutral candidate is in QA and the male fit is queued. Woodland Scout account support remains female-only. No founder lock or independent delivered Woodland screenshot audit is claimed; no approval request is needed now.</p>
   </section>
 
   <section class="flow" aria-labelledby="flow-title">
@@ -63,39 +64,52 @@
   </section>
 
   <section class="work" aria-label="Prioritized production work">
-    <article data-stage="QA">
-      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
-      <h2>Repair and verify the development build</h2>
-      <p>The initial build repair is in place. Full regression checks exposed test-harness import and viewport problems; their fixes preserve actual taps and assertions.</p>
-      <p class="detail">The latest same-body and eligibility corrections need a fresh full gate and runtime checks. Failed gates have prevented deployment.</p>
+    <article data-stage="DEV DEPLOYED">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
+      <h2>Development build verified</h2>
+      <p>Runtime revision <code>4cfef7f</code> passed 351 Flutter tests, 8 Node tests, analysis, asset verification, build and development deployment.</p>
+      <p class="detail">The delivered version and actual browser behavior were checked. The mandatory gate remains in place.</p>
     </article>
-    <article data-stage="QA">
-      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
-      <h2>Review the approved male outfit on its fixed body</h2>
-      <p class="lock">Art lock: male v3 body and everyday v2 outfit are founder-approved.</p>
-      <p>The exact files passed preservation and composite checks. The dedicated review is being corrected so showing or hiding the outfit keeps the same body and identity.</p>
-      <p class="detail">This is a development review. Account wardrobe rollout is incomplete; CI and the delivered review route still need verification.</p>
+    <article data-stage="DEV DEPLOYED">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
+      <h2>Approved male outfit on its fixed body</h2>
+      <p class="lock">Art lock: male v3 body and everyday v2 outfit remain founder-approved.</p>
+      <p>All three delivered files match their locked hashes. Body Only ↔ Outfit and enlarged browser review passed on the same v3 foundation, followed by independent screenshot inspection.</p>
+      <p class="detail">This is the dedicated development review. Male account wardrobe rollout remains queued.</p>
     </article>
     <article data-stage="QUEUED">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge queued">QUEUED</span></div>
       <h2>Complete the male account wardrobe transition</h2>
       <p class="lock">Art lock: body and everyday outfit remain locked; remaining fits are incomplete.</p>
-      <p>The proposed account path changed anatomy when the outfit was removed. That approach is being removed. The male wardrobe needs the remaining accepted fits before it can move coherently to the fixed foundation.</p>
+      <p>The proposed account path changed anatomy when the outfit was removed. That approach was removed before delivery. The male wardrobe needs the remaining accepted fits before it can move coherently to the fixed foundation.</p>
       <p class="detail">Existing account male paths remain unchanged. No new founder decision is requested now.</p>
     </article>
-    <article data-stage="QA">
-      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
-      <h2>Verify the approved neutral Everyday outfit and class robes</h2>
+    <article data-stage="DEV DEPLOYED">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
+      <h2>Approved neutral Everyday outfit and class robes verified</h2>
       <p class="lock">Art lock: neutral body v4, everyday v3 and robe v11 remain authoritative.</p>
-      <p>Audit rendering, supported-body rules, equipment changes and saved loadouts. Approved Everyday account support is female and neutral.</p>
-      <p class="detail">Scoped server rollback checks passed with no retained fixture or durable migration. CI and actual delivered-runtime verification remain pending.</p>
+      <p>All five robes rendered. At phone width, Adventurer/Hearth equip and unequip restored the same neutral class robe; Market sample purchase, preview and equip worked. Unsupported male Everyday and neutral Woodland actions stayed disabled.</p>
+      <p class="detail">The scoped database migration is applied and public-RPC checks passed with zero retained fixtures or security findings. Browser checks used in-memory examples; real-user login and refresh persistence were not tested. Legacy chest migration is separate.</p>
     </article>
     <article data-stage="QA">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
       <h2>Continue the neutral Woodland Scout candidate review</h2>
       <p class="lock">Art status: candidate; not founder-locked.</p>
-      <p>The neutral fit stays in explicit development review. Woodland Scout account support remains female-only until the neutral fit is accepted and its integration is verified.</p>
-      <p class="detail">Active visual development continues without a premature approval request.</p>
+      <p>The delivered four-stage review and outfit off/on checks preserve neutral v4; sleeve and wrist detail controls were inspected. The fit remains an unaccepted candidate with active visual QA.</p>
+      <p class="detail">Woodland Scout account support remains female-only. No founder lock or independent delivered Woodland screenshot audit is claimed; no approval request is needed now.</p>
+    </article>
+    <article data-stage="QUEUED">
+      <div class="meta"><span class="priority">PRIORITY 1 · WOODLAND SCOUT</span><span class="badge queued">QUEUED</span></div>
+      <h2>Build the male Woodland Scout outfit</h2>
+      <p class="lock">Art status: no male Woodland fit or template lock is established.</p>
+      <p>Create one coherent outfit fitted specifically to the immutable male v3 body. Preserve the Woodland design language and paper-doll construction; do not scale another body's outfit onto him.</p>
+      <p class="detail">This remains an explicit avatar-production priority alongside the active neutral Woodland review. No account capability or new template is approved by this queue entry, and no decision is needed now.</p>
+    </article>
+    <article data-stage="QUEUED">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge queued">QUEUED</span></div>
+      <h2>Migrate the remaining legacy chest foundations</h2>
+      <p>Female and neutral Business Suits still use older body images. Harvest Coats and closed cloaks use older body/identity assemblies. These outfits need their own fit and transition checks on the approved paper dolls.</p>
+      <p class="detail">Current catalog behavior and ownership stay unchanged. This work is queued; no new blocker or founder decision is requested. The current neutral audit covers Everyday and the five class robes.</p>
     </article>
     <article data-stage="BUILDING">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge building">BUILDING</span></div>
@@ -130,7 +144,7 @@
   </section>
   <footer>
     <p>Governed by <code>docs/questwell-production/</code>. Artwork approval and technical integration are tracked separately.</p>
-    <p>Dashboard build: <code>__QUESTWELL_BUILD__</code>. Page availability does not establish that its queued work is deployed or that a background worker is active.</p>
+    <p>Verified runtime code: <code>4cfef7f</code>. Dashboard publishing build: <code>__QUESTWELL_BUILD__</code>. A final Market fixture body-switch consistency check is pending for the publishing follow-up; the detailed verified runtime evidence above is from <code>4cfef7f</code>. This snapshot does not indicate a background worker.</p>
   </footer>
 </main>
 </body>

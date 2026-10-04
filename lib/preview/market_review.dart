@@ -1,6 +1,7 @@
 import '../widgets/questwell_equipment_swap.dart';
 import 'package:flutter/material.dart';
 import '../services/questwell_cosmetic_models.dart';
+import '../services/questwell_equipment_policy.dart';
 import '../widgets/questwell_market_view.dart';
 import '../widgets/questwell_room_picker.dart';
 import '../widgets/questwell_wall_art.dart';
@@ -51,7 +52,10 @@ class _MarketReviewAppState extends State<MarketReviewApp> {
       Padding(padding:const EdgeInsets.all(6),child:Wrap(spacing:14,crossAxisAlignment:WrapCrossAlignment.center,children:[
         const Text('Market · sample coins & inventory'),
         DropdownButton<String>(value:archetype,items:['scholar','scout','alchemist','guardian','wanderer'].map((s)=>DropdownMenuItem(value:s,child:Text(s))).toList(),onChanged:(s)=>setState((){archetype=s!;equipped.clear();})),
-        DropdownButton<String>(value:body,items:['male','female','neutral'].map((s)=>DropdownMenuItem(value:s,child:Text(s))).toList(),onChanged:(s)=>setState(()=>body=s!)),
+        DropdownButton<String>(value:body,items:['male','female','neutral'].map((s)=>DropdownMenuItem(value:s,child:Text(s))).toList(),onChanged:(s)=>setState(() {
+          body=s!;
+          equipped.removeWhere((_,slug)=>!QuestwellEquipmentPolicy.supportsBody(slug,body));
+        })),
         TextButton(onPressed:()=>setState(()=>width=width==390?320:390),child:Text('${width.toInt()} px')),
         TextButton(onPressed:()=>setState(()=>coins=coins==0?650:0),child:const Text('Toggle coin balance')),
       ])),

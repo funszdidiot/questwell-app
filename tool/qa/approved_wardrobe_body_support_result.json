@@ -1,12 +1,12 @@
 {
-  "verification": "rollback_preview",
-  "verifiedAt": "2026-10-04T03:37:54.400040+00:00",
+  "verification": "deployed_public_rpc_rollback",
+  "verifiedAt": "2026-10-04T03:52:03.743Z",
   "project": "bdzcazkyypopbanbjnud",
-  "migration": "supabase/migrations/20261004031612_approved_wardrobe_body_support.sql",
+  "migration": "supabase/migrations/20261004035017_approved_wardrobe_body_support.sql",
   "qa": "tool/qa/approved_wardrobe_body_support_check.sql",
   "status": "PASS",
-  "durableMigrationApplied": false,
-  "requiresPostDeploymentApplyAndRerun": true,
+  "durableMigrationApplied": true,
+  "requiresPostDeploymentApplyAndRerun": false,
   "exercised": [
     "Everyday first purchase on female/neutral",
     "Woodland first purchase on female Scout",
@@ -25,7 +25,14 @@
     "Internal helper execute permission withheld",
     "XP and level unchanged"
   ],
-  "rollback": {
+  "securityAdvisorsBefore": {
+    "lints": []
+  },
+  "scope": "Approved fit parity only: Everyday female/neutral; Woodland female Scout only. Male Everyday and neutral Woodland remain isolated development previews.",
+  "remoteMigrationVersion": "20261004035017",
+  "migrationSha256": "fb89a32d849d1cd1b6a24dad18c7392a2094f729a9845123037628cfda6cb6a4",
+  "deployedAppCommit": "4cfef7f277eba89ac65a1ea965cdea7dfb169d1f",
+  "previewRollbackProof": {
     "privateHelperAbsent": true,
     "remainingSyntheticAccounts": 0,
     "functions": [
@@ -63,8 +70,120 @@
       }
     ]
   },
-  "securityAdvisorsBefore": {
-    "lints": []
-  },
-  "scope": "Approved fit parity only: Everyday female/neutral; Woodland female Scout only. Male Everyday and neutral Woodland remain isolated development previews."
+  "postDeployment": {
+    "acl": [
+      {
+        "schema": "public",
+        "name": "equip_cosmetic",
+        "unchanged": true
+      },
+      {
+        "schema": "private",
+        "name": "equip_cosmetic",
+        "unchanged": true
+      },
+      {
+        "schema": "public",
+        "name": "purchase_cosmetic",
+        "unchanged": true
+      },
+      {
+        "schema": "private",
+        "name": "purchase_cosmetic",
+        "unchanged": true
+      },
+      {
+        "schema": "public",
+        "name": "set_avatar_body_type",
+        "unchanged": true
+      },
+      {
+        "schema": "private",
+        "name": "set_avatar_body_type",
+        "unchanged": true
+      }
+    ],
+    "publicDefs": [
+      {
+        "name": "equip_cosmetic",
+        "unchanged": true
+      },
+      {
+        "name": "purchase_cosmetic",
+        "unchanged": true
+      },
+      {
+        "name": "set_avatar_body_type",
+        "unchanged": true
+      }
+    ],
+    "bodyMatches": [
+      {
+        "name": "cosmetic_supports_body",
+        "bodyMatchesReviewedSQL": true
+      },
+      {
+        "name": "equip_cosmetic",
+        "bodyMatchesReviewedSQL": true
+      },
+      {
+        "name": "purchase_cosmetic",
+        "bodyMatchesReviewedSQL": true
+      },
+      {
+        "name": "set_avatar_body_type",
+        "bodyMatchesReviewedSQL": true
+      }
+    ],
+    "catalog": [
+      {
+        "slug": "everyday-adventurer-outfit",
+        "changedColumns": [
+          "description"
+        ]
+      },
+      {
+        "slug": "woodland-scout-outfit",
+        "changedColumns": [
+          "description"
+        ]
+      }
+    ],
+    "supportMatrix": [
+      {
+        "body": "female",
+        "slug": "everyday-adventurer-outfit",
+        "supported": true
+      },
+      {
+        "body": "female",
+        "slug": "woodland-scout-outfit",
+        "supported": true
+      },
+      {
+        "body": "neutral",
+        "slug": "everyday-adventurer-outfit",
+        "supported": true
+      },
+      {
+        "body": "neutral",
+        "slug": "woodland-scout-outfit",
+        "supported": false
+      },
+      {
+        "body": "male",
+        "slug": "everyday-adventurer-outfit",
+        "supported": false
+      },
+      {
+        "body": "male",
+        "slug": "woodland-scout-outfit",
+        "supported": false
+      }
+    ],
+    "remainingSyntheticAccounts": 0,
+    "securityAdvisors": {
+      "lints": []
+    }
+  }
 }
