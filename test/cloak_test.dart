@@ -1,3 +1,4 @@
+import 'support/male_robe_layers.dart';
 import '../lib/widgets/questwell_brass_lantern.dart';
 import '../lib/widgets/questwell_emerald_scarf.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +66,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
       expect(find.byType(QuestwellEmeraldScarf), findsOneWidget);
+      if (body == 'male') {
+        expect(find.byType(QuestwellCloak), findsNothing);
+        continue;
+      }
       final layers = tester.widgetList<Stack>(find.byType(Stack)).firstWhere(
         (stack) => stack.children.any((child) => child is QuestwellEmeraldScarf)).children;
       final scarf = layers.indexWhere((child) => child is QuestwellEmeraldScarf);
@@ -80,6 +85,13 @@ void main() {
           child:QuestwellLayeredAdventurerArt(archetype:archetype,avatarBodyType:body,equippedSlugs:{'chest':slug})))));
         await tester.pumpAndSettle();
         expect(tester.takeException(),isNull,reason:'$slug/$archetype/$body');
+        if (body == 'male') {
+          expect(find.byType(QuestwellCloak), findsNothing);
+          final images = tester.widgetList<Image>(find.byType(Image))
+              .map((i) => (i.image as AssetImage).assetName).toList();
+          expect(images, maleRobeLayers(archetype));
+          continue;
+        }
         expect(find.byType(QuestwellCloak),findsNWidgets(2));
         final assets=tester.widgetList<Image>(find.byType(Image)).map((i)=>i.image).whereType<AssetImage>().map((i)=>i.assetName).toList();
         expect(assets,contains('assets/images/questwell/avatar/base/base_$body.webp'));

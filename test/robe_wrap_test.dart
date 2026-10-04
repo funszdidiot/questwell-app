@@ -1,3 +1,4 @@
+import 'support/male_robe_layers.dart';
 import 'support/neutral_robe_layers.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -47,6 +48,12 @@ void main() {
           child: QuestwellLayeredAdventurerArt(archetype:kind, avatarBodyType:body, equippedSlugs:const {}))));
         final images = tester.widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName).toList();
+        if (body == 'male') {
+          expect(images, maleRobeLayers(kind));
+          expect(find.byType(ClipPath), findsNothing);
+          expect(tester.takeException(), isNull);
+          return;
+        }
         if (body == 'neutral') {
           expect(images, neutralRobeLayers(kind));
           expect(find.byType(ClipPath), findsNothing);

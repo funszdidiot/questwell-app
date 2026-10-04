@@ -1,3 +1,4 @@
+import 'support/male_robe_layers.dart';
 import 'support/neutral_robe_layers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -95,6 +96,11 @@ void main() {
           final images = tester.widgetList<Image>(
             find.descendant(of: layer, matching: find.byType(Image)),
           ).map((image) => (image.image as AssetImage).assetName).toList();
+          if (body == 'male') {
+            expect(images, maleRobeLayers('scout'));
+            expect(find.descendant(of: layer, matching: find.byType(ClipPath)), findsNothing);
+            continue;
+          }
           if (body == 'neutral') {
             expect(images, neutralRobeLayers('scout'));
             expect(find.descendant(of: layer, matching: find.byType(ClipPath)), findsNothing);

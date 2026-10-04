@@ -1,3 +1,5 @@
+import 'support/male_robe_layers.dart';
+import '../lib/widgets/questwell_male_paper_doll.dart';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 import '../lib/preview/clean_base_review.dart';
@@ -167,6 +169,16 @@ void main() {
         expect(tester.takeException(), isNull);
       }
       await render({});
+      if (body == 'male') {
+        for (final chest in ['starter-business-suit', 'midnight-harvest-coat']) {
+          await render({'chest': chest});
+          expect(find.byType(QuestwellCleanBase), findsNothing);
+          final images = tester.widgetList<Image>(find.byType(Image))
+              .map((i) => (i.image as AssetImage).assetName).toList();
+          expect(images, maleRobeLayers('wanderer'));
+        }
+        return;
+      }
       if (body == 'female') {
         expect(find.byType(QuestwellCleanBase), findsNothing);
         final defaultImages = tester.widgetList<Image>(find.byType(Image))
@@ -220,12 +232,15 @@ void main() {
             final original = Map<String,String>.of(equipment);
             final images = await render(equipment);
             expect(equipment, original, reason:'Rendering cannot mutate saved equipment');
-            final closed = chest == 'moss-green-cloak' || chest == 'hearthguard-mantle';
+            final closed = body != 'male' && (chest == 'moss-green-cloak' || chest == 'hearthguard-mantle');
             expect(find.byType(QuestwellBrassLantern),
               !closed && held == 'brass-lantern' ? findsOneWidget : findsNothing);
             expect(find.byType(QuestwellAnnotatedGrimoire),
               !closed && held == 'annotated-grimoire' ? findsOneWidget : findsNothing);
-            if (chest == 'starter-business-suit') {
+            if (body == 'male') {
+              expect(images, contains(QuestwellMalePaperDoll.baseAsset));
+              expect(find.byType(QuestwellCleanBase), findsNothing);
+            } else if (chest == 'starter-business-suit') {
               expect(find.byType(QuestwellCleanBase), findsNothing);
               expect(images.any((a) => a.contains('/classes/')), isFalse);
             } else {

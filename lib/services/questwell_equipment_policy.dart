@@ -26,11 +26,19 @@ abstract final class QuestwellEquipmentPolicy {
   };
 
   // Body-specific renderer fits; the catalog still owns class/collection rules.
-  // Male art is isolated in development review until its production foundation
-  // migrates coherently; equipment must never switch the underlying body.
+  // Proposed coherent male rollout: legacy chest fits remain owned, but cannot
+  // replace the locked foundation. Deployment requires Tanya's product decision.
+  static const legacyMaleChestFits = {
+    'starter-business-suit', 'midnight-harvest-coat',
+    'moss-green-cloak', 'hearthguard-mantle',
+  };
   static const bodyFits = <String, Set<String>>{
-    'everyday-adventurer-outfit': {'female', 'neutral'},
+    'everyday-adventurer-outfit': {'female', 'neutral', 'male'},
     'woodland-scout-outfit': {'female'},
+    'starter-business-suit': {'female', 'neutral'},
+    'midnight-harvest-coat': {'female', 'neutral'},
+    'moss-green-cloak': {'female', 'neutral'},
+    'hearthguard-mantle': {'female', 'neutral'},
   };
   static bool supportsBody(String slug, String body) =>
       bodyFits[slug]?.contains(body) ?? true;

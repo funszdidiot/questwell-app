@@ -1,3 +1,4 @@
+import 'support/male_robe_layers.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,6 +37,12 @@ void main() {
               equippedSlugs:{'chest':'midnight-harvest-coat','hands':held,'back':'leather-satchel','neck':'emerald-scholar-scarf'}))));
           await tester.pumpAndSettle();
           final images=tester.widgetList<Image>(find.byType(Image)).map((w)=>(w.image as AssetImage).assetName).toList();
+          if (body == 'male') {
+            expect(images, isNot(contains(asset)));
+            expect(images, containsAll(maleRobeLayers(archetype)));
+            expect(tester.takeException(), isNull);
+            continue;
+          }
           expect(images,contains(asset));
           expect(images.any((s)=>s.contains('/classes/')),isFalse,reason:'No original class garment should leak through');
           expect(find.byType(QuestwellScholarCuffs),findsNothing);
