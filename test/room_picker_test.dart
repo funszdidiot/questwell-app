@@ -36,6 +36,30 @@ void main() {
       expect(tester.takeException(), isNull);
     }
   });
+  testWidgets('Warding Lantern offers left, right, and foreground placements', (tester) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
+    await tester.binding.setSurfaceSize(const Size(390, 1100));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    RoomPlacement? result;
+    await tester.pumpWidget(MaterialApp(home: Builder(builder: (context) => Scaffold(
+      body: TextButton(child: const Text('Open warding'), onPressed: () async {
+        result = await showRoomPicker(context, name: 'Warding Lantern',
+          id: 'warding', slug: 'warding-lantern',
+          archetype: 'guardian', bodyType: 'neutral',
+          equippedSlugs: const {}, occupants: const {});
+      })))));
+    await tester.tap(find.text('Open warding')); await tester.pumpAndSettle();
+    expect(find.byType(RadioListTile<String>), findsNWidgets(3));
+    expect(find.text('Left wall'), findsOneWidget);
+    expect(find.text('Right wall'), findsOneWidget);
+    expect(find.text('Foreground'), findsOneWidget);
+    await tester.tap(find.text('Foreground')); await tester.pumpAndSettle();
+    await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
+    expect(result?.slot, 'front');
+    expect(result?.expectedOccupant, isNull);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('occupied spot requires confirmation and cancel never saves', (tester) async {
     GoogleFonts.config.allowRuntimeFetching = false;
     await tester.binding.setSurfaceSize(const Size(390, 1100));
