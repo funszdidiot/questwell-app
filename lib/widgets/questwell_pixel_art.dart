@@ -266,8 +266,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final rearRevision = archetype == 'wanderer' ? 'short_v1' : 'v1';
     final body = ['male', 'female'].contains(avatarBodyType)
         ? avatarBodyType : 'neutral';
-    final paperDollFemale = modular && body == 'female';
-    final paperDollNeutral = modular && body == 'neutral';
+    final paperDollFemale = (modular || legacyChest) && body == 'female';
+    final paperDollNeutral = (modular || legacyChest) && body == 'neutral';
     final paperDollMale = (modular || legacyChest) && body == 'male';
     final paperDoll = paperDollFemale || paperDollNeutral || paperDollMale;
 

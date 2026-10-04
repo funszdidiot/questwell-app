@@ -16,6 +16,8 @@ Native full figures, enlarged shoulders/sleeves/thumbs and light/dark background
 
 Local asset manifest verification and 8 Node tests pass. The Flutter regressions additionally cover all class masks, robe-only occlusion at multiple canvas sizes, shared-renderer equip/unequip, unchanged body ancestry and one unified Everyday overlay. Full CI and deployed revision/asset/runtime checks are pending.
 
+The mandatory gate correctly prevented deployment of `f3447dd` (missing import in the concurrent legacy tests) and `d0a975c` (351 passed / 22 failed). Nine older tests incorrectly prohibited the new garment-only clip; their replacements explicitly allow only that garment image and assert zero body-clipping ancestors. Concurrent legacy migration exposed ten female/neutral body-clipping failures, corrected by recognizing their locked foundations in legacy states. Three legacy-art expectations were updated to assert the new locked foundations and absence of old class coats. No test was skipped or gate bypassed. The six new male repair regressions already passed in the failed full run.
+
 ## Scope and limits
 
 No database, eligibility, prices, ownership, economy or equipment policy changes. Male Everyday remains enabled, Woodland female-only; legacy male availability and belt-only grimoire remain intact. Persistence was verified through deployed public RPCs in the preceding integration using rolled-back synthetic identities. Browser checks use in-memory app fixtures; no real-user sign-in or private account refresh is claimed. No production promotion or merge to flutterflow.

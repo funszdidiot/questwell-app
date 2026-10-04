@@ -1,4 +1,7 @@
 import '../lib/widgets/questwell_male_paper_doll.dart';
+import '../lib/widgets/questwell_neutral_paper_doll.dart';
+import '../lib/widgets/questwell_scout_wardrobe.dart';
+import '../lib/widgets/questwell_legacy_chest.dart';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -83,7 +86,11 @@ void main() {
           expect(images, contains('assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuff_front_neutral_v1.webp'));
           expect(images.any((path) => path.contains('wanderer_coat_neutral_short_')), isFalse);
         } else {
-          expect(images.any((path) => path.contains('wanderer_coat_${body}_short_${body == 'female' ? 'v2' : body == 'male' ? 'v4' : 'v3'}')), chest != 'starter-business-suit');
+          expect(find.byType(QuestwellLegacyChestFoundation), findsWidgets);
+          expect(images, contains(body == 'female'
+              ? QuestwellScoutWardrobeFoundation.femaleBaseAsset
+              : QuestwellNeutralPaperDoll.baseAsset));
+          expect(images.any((path) => path.contains('wanderer_coat_${body}_short_')), isFalse);
         }
         expect(images.any((path) => path.contains('wanderer_rear_${body}_wrap_v2')), isFalse);
         expect(tester.takeException(), isNull);

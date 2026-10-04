@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_cloak.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 import '../lib/widgets/questwell_male_paper_doll.dart';
+import '../lib/widgets/questwell_neutral_paper_doll.dart';
+import '../lib/widgets/questwell_scout_wardrobe.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -91,14 +93,19 @@ void main() {
           ]));
           expect(assets.any((a)=>a.contains('/classes/$archetype/')), isFalse);
         } else {
-          expect(assets,contains('assets/images/questwell/avatar/base/base_$body.webp'));
-          expect(assets.any((a)=>a.contains('/classes/$archetype/')),isTrue);
+          expect(assets, contains(body == 'female'
+              ? QuestwellScoutWardrobeFoundation.femaleBaseAsset
+              : QuestwellNeutralPaperDoll.baseAsset));
+          expect(assets.any((a)=>a.contains('/classes/$archetype/')),isFalse);
         }
         expect(assets.where((a)=>a==QuestwellCloak.asset(slug)).length,2);
-        if (body == 'male') {
+        {
+          final base = body == 'male' ? QuestwellMalePaperDoll.baseAsset
+              : body == 'female' ? QuestwellScoutWardrobeFoundation.femaleBaseAsset
+              : QuestwellNeutralPaperDoll.baseAsset;
           final primaryBody = find.byWidgetPredicate((widget) => widget is Image &&
               widget.image is AssetImage &&
-              (widget.image as AssetImage).assetName == QuestwellMalePaperDoll.baseAsset).first;
+              (widget.image as AssetImage).assetName == base).first;
           expect(find.ancestor(of: primaryBody, matching: find.byType(ClipPath)), findsNothing,
               reason: 'The primary locked body cannot be clipped to fit clothing');
         }

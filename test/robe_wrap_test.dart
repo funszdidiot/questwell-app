@@ -50,7 +50,7 @@ void main() {
             .map((image) => (image.image as AssetImage).assetName).toList();
         if (body == 'male') {
           expect(images, maleRobeLayers(kind));
-          expect(find.byType(ClipPath), findsNothing);
+          expectMaleRobeGarmentOnlyClip(tester, find.byType(QuestwellLayeredAdventurerArt));
           expect(tester.takeException(), isNull);
           return;
         }

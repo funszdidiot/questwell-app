@@ -98,7 +98,7 @@ void main() {
           ).map((image) => (image.image as AssetImage).assetName).toList();
           if (body == 'male') {
             expect(images, maleRobeLayers('scout'));
-            expect(find.descendant(of: layer, matching: find.byType(ClipPath)), findsNothing);
+            expectMaleRobeGarmentOnlyClip(tester, layer);
             continue;
           }
           if (body == 'neutral') {
