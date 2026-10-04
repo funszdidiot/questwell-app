@@ -2,6 +2,8 @@ import '../lib/widgets/questwell_scholar_glasses.dart';
 import '../lib/widgets/questwell_wizard_hat.dart';
 import 'support/neutral_robe_layers.dart';
 import '../lib/widgets/questwell_neutral_paper_doll.dart';
+import '../lib/widgets/questwell_neutral_scout.dart';
+import '../lib/widgets/questwell_male_paper_doll.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -217,6 +219,78 @@ void main() {
       }
     }
   });
+
+  testWidgets('neutral Woodland equipment retains its locked body and restores the class robe', (tester) async {
+    Future<void> render({bool equipped = false, Set<String>? reviewLayers}) async {
+      await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
+        width: 240, height: 320,
+        child: QuestwellLayeredAdventurerArt(
+          archetype: 'scout', avatarBodyType: 'neutral',
+          equippedSlugs: {if (equipped) 'chest': 'woodland-scout-outfit'},
+          previewWoodlandLayers: reviewLayers,
+        ),
+      ))));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    }
+
+    await render();
+    final classLayers = assets(tester);
+    expect(classLayers, neutralRobeLayers('scout'));
+    for (final review in [false, true]) {
+      await render(equipped: !review, reviewLayers: review ? {'outfit'} : null);
+      final paths = assets(tester);
+      expect(paths.toSet(), {
+        QuestwellNeutralPaperDoll.baseAsset,
+        QuestwellNeutralScout.outfitAsset,
+        QuestwellNeutralPaperDoll.identityAsset,
+      });
+      expect(paths.indexOf(QuestwellNeutralPaperDoll.baseAsset),
+          lessThan(paths.indexOf(QuestwellNeutralScout.outfitAsset)));
+      expect(paths.indexOf(QuestwellNeutralScout.outfitAsset),
+          lessThan(paths.lastIndexOf(QuestwellNeutralPaperDoll.identityAsset)));
+      expect(find.byType(QuestwellCleanBase), findsNothing);
+      expect(find.byType(ClipPath), findsNothing);
+      expect(tester.getRect(asset(QuestwellNeutralScout.outfitAsset)),
+          tester.getRect(asset(QuestwellNeutralPaperDoll.baseAsset)));
+      await render();
+      expect(assets(tester), classLayers,
+          reason: 'Unequip returns to the same locked class stack');
+    }
+  });
+
+  for (final archetype in ['scout', 'scholar', 'alchemist', 'guardian', 'wanderer']) {
+    testWidgets('$archetype male Everyday uses the locked fit and restores its existing class outfit', (tester) async {
+      Future<void> render({bool everyday = false}) async {
+        await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
+          width: 240, height: 320,
+          child: QuestwellLayeredAdventurerArt(
+            archetype: archetype, avatarBodyType: 'male',
+            equippedSlugs: {if (everyday) 'chest': 'everyday-adventurer-outfit'},
+          ),
+        ))));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      }
+
+      await render();
+      final classLayers = assets(tester);
+      await render(everyday: true);
+      expect(assets(tester), [
+        QuestwellMalePaperDoll.baseAsset,
+        QuestwellMalePaperDoll.everydayAsset,
+        QuestwellMalePaperDoll.identityAsset,
+      ]);
+      expect(find.byType(QuestwellCleanBase), findsNothing);
+      expect(find.byType(ClipPath), findsNothing,
+          reason: 'Legacy clothing must never clip the locked male body');
+      expect(tester.getRect(asset(QuestwellMalePaperDoll.everydayAsset)),
+          tester.getRect(asset(QuestwellMalePaperDoll.baseAsset)));
+      await render();
+      expect(assets(tester), classLayers,
+          reason: 'Male robe migration awaits its own approved garment fit');
+    });
+  }
 
   for (final body in ['male']) {
     testWidgets('$body modular clothing never restores suit trousers', (tester) async {

@@ -1,0 +1,92 @@
+{
+  "status": "founder_approved_male_foundation_locked_2026_10_03",
+  "revision": "male-paper-doll-v3",
+  "bodyType": "male",
+  "canvas": [
+    240,
+    320
+  ],
+  "registration": {
+    "origin": "top_left",
+    "units": "pixels",
+    "offset": [
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1
+    ],
+    "rotationDegrees": 0,
+    "runtimeFit": "contain",
+    "runtimeAlignment": "bottom_center"
+  },
+  "base": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+    "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+    "alphaSha256": "bd602a2de9f4716ca732459b8e5459e3508667cdde12be133fae6aabe6ff9475",
+    "rgbaSha256": "dd273fb212b50b586f9f7c3b3394d9efd0cc868cb333237e3f14c1480d335122",
+    "source": "tool/art_assets/male_paper_doll_v3/paper_doll_male_candidate_v3.webp",
+    "sourceSha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda"
+  },
+  "head_hair": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+    "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+    "alphaSha256": "429bda841e97d6c48b32e3ab0e81690032e0d4679d06beaea29cf1e5fba1bea8",
+    "rgbaSha256": "711cd359347f976792581ecfa5a14892eb899266371215f9ecccc08be19e3244",
+    "source": "tool/art_assets/male_paper_doll_v3/paper_doll_male_identity_candidate_v3.webp",
+    "sourceSha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a"
+  },
+  "approval": {
+    "approvedBy": "Tanya",
+    "localDate": "2026-10-03",
+    "timezone": "America/New_York",
+    "quote": "male foundation is approved",
+    "scope": "The complete male v3 body, original identity layer and 240 × 320 registration are approved and locked. This foundation approval does not approve any male garment, runtime integration or publication."
+  },
+  "visualQA": {
+    "status": "passed_before_founder_approval",
+    "scope": "Independent review of the actual v3 exported full figure and opaque light/dark enlarged neck views found a continuous broad neck, centered head and no detached local fragments or obvious repair seam. Native sprite resolution remains unchanged.",
+    "record": "docs/art/MALE_PAPER_DOLL_NECK_V3.md",
+    "approvalSeparate": true
+  },
+  "fullBodyInvariant": {
+    "byteForByte": true,
+    "completeBodyRetained": true,
+    "identityByteForByte": true,
+    "registrationImmutable": true,
+    "rule": "Keep every body and identity pixel, silhouette, alpha value, anatomy, pose, head/hair position, hands and feet unchanged. Add one coherent registered outfit overlay, with separate depth layers only where a robe requires occlusion; never regenerate, replace, stretch, shift, clip or mask the body to fit clothing. Normal garment occlusion over the intact body is allowed. A body revision requires a separate explicit request and new founder approval."
+  },
+  "identityConstruction": {
+    "source": "Exact original v3 identity candidate; not a new face or neck overlay.",
+    "preservedBodyRows": [
+      0,
+      73
+    ],
+    "transparentFromRow": 74
+  },
+  "requestedWorkOrder": [
+    "Fit and review one coherent male everyday outfit overlay on this immutable foundation.",
+    "Fit and review one male robe geometry template over the accepted everyday outfit.",
+    "After template acceptance, create all male class robe surface variants with unchanged template geometry.",
+    "Fit and review one coherent male Woodland Scout outfit overlay."
+  ],
+  "backlog": "Neutral Woodland Scout remains unfinished backlog; the latest founder request prioritizes the male sequence.",
+  "garmentRules": [
+    "Clothes fit the locked body; the body never changes to fit clothes.",
+    "Every new everyday, casual or Woodland Scout outfit is one coherent full-outfit illustration and one registered overlay. Do not split shirt, trousers and boots into component exports, warp them independently or assemble independently fitted pieces.",
+    "Each male garment family requires its own accepted geometry and registration. Female and neutral assets provide design references, not substitute body fits.",
+    "Keep rear cloth behind the complete body and foreground cloth in front. Preserve natural neck joins, complete cuff rims and clear hand silhouettes.",
+    "Robe front/rear/cuff layers preserve necessary occlusion within one coherent garment; they do not permit modular outfit mixing. Existing approved assets and historical records remain fixed; no retroactive regeneration is authorized.",
+    "Once a garment template is accepted, reuse its exact geometry, registration and layer masks for colors, patterns and flourishes.",
+    "Inspect actual exported composites at native and enlarged sizes on light and dark backgrounds; independently review foundational fits before founder acceptance."
+  ],
+  "runtimeStatus": "Versioned foundation files are preserved in the runtime asset directory only. Existing runtime body selection and application code are unchanged.",
+  "methodology": "docs/art/PAPER_DOLL_STANDARD.md",
+  "sourceRecord": "docs/art/MALE_PAPER_DOLL_NECK_V3.md",
+  "outfitConstructionCorrection": {
+    "quote": "We discussed this already- we are not separating this outfit into separate components because it does not work and it didn't blend well for the female avatar. keep it as a singular outfit that lays atop of the avatar like a paper doll",
+    "scope": "New everyday, casual and Woodland Scout builds use one coherent complete outfit overlay over the immutable body.",
+    "maleEverydayStatus": "Component-export approach superseded before founder garment approval. Corrected full-outfit export requires independent visual QA and founder fit acceptance."
+  }
+}

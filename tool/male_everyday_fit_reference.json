@@ -1,0 +1,120 @@
+{
+  "status": "founder_approved_everyday_template_locked_2026_10_04",
+  "construction": "one coherent full outfit overlay; no separately exported or equipped shirt, trousers or boots",
+  "body": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+    "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+    "alphaSha256": "bd602a2de9f4716ca732459b8e5459e3508667cdde12be133fae6aabe6ff9475",
+    "rgbaSha256": "dd273fb212b50b586f9f7c3b3394d9efd0cc868cb333237e3f14c1480d335122",
+    "source": "tool/art_assets/male_paper_doll_v3/paper_doll_male_candidate_v3.webp",
+    "sourceSha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda"
+  },
+  "identity": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+    "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+    "alphaSha256": "429bda841e97d6c48b32e3ab0e81690032e0d4679d06beaea29cf1e5fba1bea8",
+    "rgbaSha256": "711cd359347f976792581ecfa5a14892eb899266371215f9ecccc08be19e3244",
+    "source": "tool/art_assets/male_paper_doll_v3/paper_doll_male_identity_candidate_v3.webp",
+    "sourceSha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a"
+  },
+  "canvas": [
+    240,
+    320
+  ],
+  "outfit": {
+    "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+    "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+    "alphaSha256": "97b18acceae5a7c66698f18f7ca927069c9a478ec4c78800786bd80b7d60c282"
+  },
+  "source": {
+    "path": "tool/art_assets/male_everyday_v2/outfit_source.png",
+    "sha256": "6c9ff6bf995ff2253c3aea6cbb0e58ab049662bb0190d607814680d5996df51c"
+  },
+  "registration": {
+    "uniformResize": [
+      240,
+      320
+    ],
+    "offset": [
+      -3,
+      -1
+    ],
+    "drawingRepairs": [
+      {
+        "path": "pelvis_repair/source.png",
+        "crop": [
+          90,
+          154,
+          65,
+          74
+        ],
+        "registration": "Continuous 4x inner-contour registration joins the entire redrawn pelvis/upper thighs to the existing lower-leg fall. Whole alpha edge imported; color blends only in opaque cloth interiors.",
+        "sha256": "547917d06af865d3cb5fa6c07fabe28c9a7072a665ec6e0e9c3e30dff273cff3"
+      },
+      {
+        "path": "boot_repair/boot_redraw_source_v3.png",
+        "crop": [
+          58,
+          248,
+          144,
+          72
+        ],
+        "registration": "Uniform local crop registration; complete boot drawing joins inside opaque upper shafts.",
+        "sha256": "e2448bc02d2f3ddc871c29159acd08b064f93d2c3d7ecfe5136abff711fc911d"
+      }
+    ]
+  },
+  "layerOrder": [
+    "body",
+    "outfit",
+    "identity"
+  ],
+  "compositeSha256": "40acdf0a9b67be787f47a41fa51d12446d3e44392375fd15dfd7f53710c1eeef",
+  "approval": {
+    "approvedBy": "Tanya",
+    "dateUTC": "2026-10-04",
+    "timezone": "UTC",
+    "conversationTurn": "Current turn after presentation of the final male everyday v2 composite.",
+    "quote": "It's good. Next",
+    "scope": "Exact final unified male everyday v2 outfit and its registration are approved and locked. Proceed to male robe fitting on the unchanged body and everyday outfit. This does not approve a robe or change runtime body/outfit selection."
+  },
+  "runtimeRegistration": {
+    "canvas": [
+      240,
+      320
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "scale": [
+      1,
+      1
+    ],
+    "rotationDegrees": 0
+  },
+  "immutableFit": {
+    "bodyAndIdentityByteForByte": true,
+    "fullOutfitByteForByte": true,
+    "alphaValues": true,
+    "registration": true,
+    "layerOrder": true,
+    "rule": "Preserve the whole single outfit, body and identity unchanged while fitting robes. Do not split, independently warp, reassemble or redraw the approved outfit. Structural revisions require explicit new founder review."
+  },
+  "visualReview": "tool/art_assets/male_everyday_v2/visual_review.json",
+  "revision": "male-everyday-v2-unified",
+  "bodyType": "male",
+  "family": "everyday",
+  "sourceOutfit": {
+    "path": "tool/art_assets/male_everyday_v2/everyday_outfit_male_candidate_v2.webp",
+    "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+    "alphaSha256": "97b18acceae5a7c66698f18f7ca927069c9a478ec4c78800786bd80b7d60c282"
+  },
+  "templateReference": "tool/art_assets/male_everyday_v2/fit_reference.json",
+  "composite": {
+    "path": "tool/art_assets/male_everyday_v2/native_composite.png",
+    "sha256": "40acdf0a9b67be787f47a41fa51d12446d3e44392375fd15dfd7f53710c1eeef"
+  },
+  "methodology": "docs/art/PAPER_DOLL_STANDARD.md",
+  "runtimeStatus": "Exact approved outfit is preserved in the runtime asset directory. Runtime selection/application code has not been integrated by this lock."
+}

@@ -16,16 +16,17 @@ If an output needs a material design choice or clarification, ask Tanya before p
 
 - Female: approved foundation and existing fit standards remain locked. See `FEMALE_FIT_STANDARD.md` and `tool/female_avatar_fit_reference.json`.
 - Neutral: **Tanya approved and locked body v4, everyday v3 and robe v11 on 2026-10-03 (America/New_York).** The exact body, identity and everyday garment assets are immutable. The four robe alpha masks, registration and depth order are the template for every neutral class robe. Independent visual QA preceded founder approval. See `tool/neutral_avatar_fit_reference.json`, `tool/neutral_everyday_fit_reference.json`, `tool/neutral_robe_fit_reference.json` and their art records. Alchemist, Scholar, Guardian and Wanderer surface variants are authorized; neutral Woodland Scout remains in the fitting sequence.
-- Male: foundation draft only, pending Tanya's approval. No new male outfit fitting is authorized yet.
+- Male: **body v3 and the unified everyday v2 outfit are founder-approved and locked.** `tool/male_avatar_fit_reference.json` and `tool/male_everyday_fit_reference.json` are canonical. Preserve their exact bytes, registration and body → outfit → original identity order. Historical `candidate` filenames do not reopen these approvals. The male robe is a separate fit with no locked template yet; class variants wait for that template acceptance.
 
 ## Current work order
 
 1. Neutral foundation v4 is approved and locked. Keep it fixed in all subsequent wardrobe work; v3 remains rejected.
 2. Neutral everyday v3 is approved in the **same exact design and illustrated style as the female everyday outfit**. Keep the shirt, trousers and boots fixed while fitting robes; retain body → boots → trousers → top → identity order.
-3. Build all remaining neutral class robes (Alchemist, Scholar, Guardian and Wanderer) on the approved v11 Scout robe template. Change surface color, pattern and flourishes only. Then finish the neutral Woodland Scout outfit on the locked paper doll, with Tanya's review and any needed clarification.
-4. Only after the neutral wardrobe work is finished, begin male outfits on the approved male foundation.
+3. Verify the neutral class robes (Alchemist, Scholar, Guardian and Wanderer) against the approved v11 Scout robe geometry and the actual development renderer. Change surface color, pattern and flourishes only. Neutral Woodland Scout remains an unaccepted candidate in active development; it must not be treated as locked or automatically promoted by passing tests.
+4. The newer male approval supersedes the earlier male-pending/neutral-first sequence. Integrate the exact male v3 foundation and everyday v2 outfit, then fit the male robe over those unchanged layers. Obtain independent review and Tanya's template decision before producing male class surfaces; male Woodland Scout follows. Continue authorized technical work while a genuinely new template decision is pending.
+5. Follow `docs/questwell-production/` and its production dashboard for current implementation status. Art locks and runtime integration status are separate. Foundation approval does not authorize replacing every legacy male class renderer with an unfitted combination.
 
-No merge to `flutterflow`, launch, Market change or account write is authorized by this art workflow.
+The current autonomous-development instruction authorizes approved development integration, technical verification and push. No merge to `flutterflow`, production launch, Market change or account write is implied by this art workflow; preserve any separately established permission boundary.
 
 ## Consistent outfit families
 

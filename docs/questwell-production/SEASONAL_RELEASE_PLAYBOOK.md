@@ -26,7 +26,9 @@ For every wearable:
 
 ## Limited-release states
 
-`CONCEPT -> BRIEF APPROVED -> ASSET BUILD -> AUTOMATED QA -> DEV TRY-ON -> FOUNDER VISUAL REVIEW -> LOCKED RELEASE ASSETS -> CATALOG INTEGRATION -> RELEASE QA -> SCHEDULED/AVAILABLE -> ARCHIVED`
+Use the shared production lifecycle: **QUEUED → BUILDING → QA → DEV DEPLOYING → DEV DEPLOYED → TANYA REVIEW → LOCKED**, plus **BLOCKED** when appropriate.
+
+Track release availability separately as planned, scheduled, available or archived. Brief approval and immutable art/template approval are recorded separately from integration status; neither implies deployment or launch.
 
 Availability dates do not authorize launch by themselves.
 

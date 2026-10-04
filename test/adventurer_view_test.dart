@@ -7,6 +7,10 @@ import '../lib/widgets/questwell_class_emblem.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_momentum/flutter_flow/nav/nav.dart' show NavigationExtensions;
 import '../lib/preview/adventurer_review.dart';
+import '../lib/preview/mobile_review.dart';
+import '../lib/widgets/questwell_app_navigation.dart';
+import '../lib/widgets/questwell_male_paper_doll.dart';
+import '../lib/widgets/questwell_pixel_art.dart';
 import '../lib/widgets/questwell_brass_lantern.dart';
 import '../lib/widgets/questwell_bookshelf.dart';
 import '../lib/widgets/questwell_wall_art.dart';
@@ -14,6 +18,114 @@ import '../lib/widgets/questwell_moonstone_brooch.dart';
 
 void main() {
   inventoryIconTests();
+  testWidgets('male Everyday preview carries in-memory equipment to Hearth and view re-entry', (tester) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
+    await tester.binding.setSurfaceSize(const Size(1000, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(const MediaQuery(
+      data: MediaQueryData(size: Size(1000, 1000), disableAnimations: true),
+      child: MobileReviewApp(initialScreen: 'Adventurer', wardrobePreview: true),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('Sample content · Changes stay in this preview'), findsOneWidget);
+    expect(find.byType(QuestwellMalePaperDoll), findsOneWidget);
+
+    Future<void> inventory() async {
+      final view = tester.widget<QuestwellAdventurerView>(find.byType(QuestwellAdventurerView));
+      final owned = view.items.where((item) => item.owned).length;
+      final tab = find.text('Inventory · $owned');
+      await tester.ensureVisible(tab);
+      await tester.tap(tab);
+      await tester.pumpAndSettle();
+    }
+
+    Future<void> open(QuestwellDestination destination) async {
+      Finder tab(String label) => find.descendant(of: find.byType(QuestwellAppNavigation),
+          matching: find.widgetWithText(TextButton, label));
+      if (destination == QuestwellDestination.hearth) {
+        await tester.tap(tab('Hearth'));
+      } else {
+        await tester.tap(tab('Explore'));
+        await tester.pumpAndSettle();
+        final target = find.widgetWithText(ListTile, destination.label);
+        await tester.ensureVisible(target);
+        await tester.tap(target);
+      }
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    }
+
+    await inventory();
+    final everyday = find.byKey(const ValueKey('inventory-everyday'));
+    final remove = find.descendant(of: everyday,
+        matching: find.widgetWithText(OutlinedButton, 'Wear Alchemist outfit'));
+    await tester.ensureVisible(remove);
+    await tester.tap(remove);
+    await tester.pumpAndSettle();
+    await open(QuestwellDestination.hearth);
+    expect(tester.widget<QuestwellHearthPixelScene>(find.byType(QuestwellHearthPixelScene))
+        .equippedSlugs['chest'], isNull);
+    expect(find.byType(QuestwellMalePaperDoll), findsNothing);
+
+    await open(QuestwellDestination.adventurer);
+    await inventory();
+    final equip = find.descendant(of: everyday,
+        matching: find.widgetWithText(OutlinedButton, 'Equip'));
+    await tester.ensureVisible(equip);
+    await tester.tap(equip);
+    await tester.pumpAndSettle();
+    await open(QuestwellDestination.hearth);
+    expect(tester.widget<QuestwellHearthPixelScene>(find.byType(QuestwellHearthPixelScene))
+        .equippedSlugs['chest'], 'everyday-adventurer-outfit');
+    expect(find.byType(QuestwellMalePaperDoll), findsOneWidget);
+    await open(QuestwellDestination.adventurer);
+    final restored = tester.widget<QuestwellAdventurerView>(find.byType(QuestwellAdventurerView));
+    expect(restored.bodyType, 'male');
+    expect(restored.items.singleWhere((item) => item.id == 'everyday').equipped, isTrue);
+    // This verifies one preview session only. It does not establish server or
+    // browser-refresh persistence, which require the authenticated RPC path.
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+  testWidgets('inventory exposes approved outfit fits and preserves body and class gates', (tester) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
+    await tester.binding.setSurfaceSize(const Size(390, 1800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    for (final scenario in [
+      (body: 'male', slug: 'everyday-adventurer-outfit', classLocked: false, label: 'Equip'),
+      (body: 'neutral', slug: 'woodland-scout-outfit', classLocked: false, label: 'Equip'),
+      (body: 'male', slug: 'woodland-scout-outfit', classLocked: false, label: 'Fit unavailable'),
+      (body: 'female', slug: 'woodland-scout-outfit', classLocked: true, label: 'Class restricted'),
+    ]) {
+      await tester.pumpWidget(const SizedBox.shrink());
+      String? equipped;
+      await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellAdventurerView(
+        archetype: scenario.classLocked ? 'scholar' : 'scout', bodyType: scenario.body,
+        level: 3, xp: 295, coins: 49, description: 'Outfit eligibility', mastered: false,
+        collectionOwned: 0, collectionTotal: 1, relicName: 'Relic', canClaim: false,
+        onClaim: () {}, onBack: () {}, onBody: (_) {}, onClass: (_) {}, onMarket: () {},
+        onEquip: (id) => equipped = id, onUnequip: (_) {},
+        items: [AdventurerInventoryItem(id: 'outfit', name: 'Outfit', slug: scenario.slug,
+          category: 'chest', description: '', owned: true, equipped: false,
+          classLocked: scenario.classLocked, archetype: 'scout', shop: true)],
+      ))));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Inventory · 1'));
+      await tester.pumpAndSettle();
+      final action = find.widgetWithText(OutlinedButton, scenario.label);
+      await tester.ensureVisible(action);
+      expect(tester.widget<OutlinedButton>(action).onPressed != null, scenario.label == 'Equip');
+      if (scenario.label == 'Equip') {
+        await tester.tap(action);
+        expect(equipped, 'outfit');
+      } else {
+        expect(equipped, isNull);
+        if (scenario.label == 'Fit unavailable') {
+          expect(find.text('Available for female and gender-neutral bodies.'), findsOneWidget);
+        }
+      }
+      expect(tester.takeException(), isNull);
+    }
+  });
   for (final gear in [
     (id: 'painting', name: 'Moonlit Woodland', category: 'Wall art', group: 'Hearth', type: QuestwellWallArt),
     (id: 'b', name: 'Brass Lantern', category: 'Hands', group: 'Gear', type: QuestwellBrassLantern),
@@ -26,7 +138,7 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(const AdventurerReviewApp());
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Inventory · 14'));
+    await tester.tap(find.text('Inventory · 15'));
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.widgetWithText(ChoiceChip, gear.group));
     await tester.tap(find.widgetWithText(ChoiceChip, gear.group));
@@ -52,7 +164,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(gear.type), findsNothing);
     expect(find.descendant(of: itemRow, matching: find.text('Owned · ${gear.category}')), findsOneWidget);
-    expect(find.text('Inventory · 14'), findsOneWidget);
+    expect(find.text('Inventory · 15'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
   }

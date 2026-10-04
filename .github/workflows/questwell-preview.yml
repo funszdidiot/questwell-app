@@ -16,14 +16,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  quality:
+    uses: ./.github/workflows/questwell-flutter-check.yml
+
   build:
+    needs: quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Verify approved and candidate class assets
-        run: python3 tool/verify_avatar_assets.py
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -42,9 +43,9 @@ jobs:
         run: |
           sed -i "s#main.dart.js#main.dart.js?rev=${GITHUB_SHA}#g" build/web/index.html
           sed -i "s#manifest.json#manifest.json?rev=${GITHUB_SHA}#g" build/web/index.html
-          sed -i "s#__QUESTWELL_BUILD__#${GITHUB_SHA}#g" build/web/index.html
+          sed -i "s#__QUESTWELL_BUILD__#${GITHUB_SHA}#g" build/web/index.html build/web/production-dashboard.html
           python3 -c 'import json, os, pathlib; pathlib.Path("build/web/questwell-version.json").write_text(json.dumps({"revision": os.environ["GITHUB_SHA"]}))'
-          ! grep -q '__QUESTWELL_BUILD__' build/web/index.html
+          ! grep -q '__QUESTWELL_BUILD__' build/web/index.html build/web/production-dashboard.html
 
       - name: Add SPA fallback
         run: cp build/web/index.html build/web/404.html

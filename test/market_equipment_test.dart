@@ -10,6 +10,7 @@ import '../lib/widgets/questwell_market_view.dart';
 import '../lib/widgets/questwell_market_motion.dart';
 import '../lib/widgets/questwell_item_icon.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
+import '../lib/widgets/questwell_male_paper_doll.dart';
 import '../lib/widgets/questwell_hearth_decor.dart';
 
 void main(){
@@ -25,10 +26,20 @@ void main(){
     }
     expect(QuestwellEquipmentPolicy.conflicts('starter-business-suit','chest','brass-lantern','hands'),isFalse);
   });
-  testWidgets('female outfit restrictions show the correct fit and block unsupported equip', (tester) async {
+  test('body eligibility enables approved Everyday fits and keeps male Woodland gated', () {
+    for (final body in ['female', 'neutral', 'male']) {
+      expect(QuestwellEquipmentPolicy.supportsBody('everyday-adventurer-outfit', body), isTrue);
+      expect(QuestwellEquipmentPolicy.supportsBody('woodland-scout-outfit', body), body != 'male');
+    }
+    final woodland = items.firstWhere((item) => item.slug == 'woodland-scout-outfit');
+    expect(woodland.requiredArchetype, 'scout');
+    expect(woodland.collectionKey, 'woodland-scout');
+    expect(items.firstWhere((item) => item.slug == 'everyday-adventurer-outfit').requiredArchetype, isNull);
+  });
+  testWidgets('Woodland body restrictions show available fits and block unsupported equip', (tester) async {
     final outfit=items.firstWhere((i)=>i.slug=='woodland-scout-outfit').copyWith(owned:true);
     for(final body in ['male','neutral','female']) {
-      expect(QuestwellEquipmentPolicy.supportsBody(outfit.slug,body),body=='female');
+      expect(QuestwellEquipmentPolicy.supportsBody(outfit.slug,body),body!='male');
       await tester.pumpWidget(MaterialApp(builder:(context,child)=>MediaQuery(
         data:const MediaQueryData(disableAnimations:true),child:child!),home:Scaffold(body:QuestwellMarketView(
         key:ValueKey(body),data:QuestwellCosmeticsSnapshot(profile:QuestwellProfile(
@@ -36,14 +47,10 @@ void main(){
           adventurerArchetype:'scout',avatarBodyType:body),cosmetics:[outfit]),
         onPurchase:(_)async{},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{}))));
       await tester.pumpAndSettle();
-      if(body!='female') {
-        final filter=find.widgetWithText(OutlinedButton,'My class');
-        await tester.ensureVisible(filter);
-        await tester.pumpAndSettle();
-        await tester.tap(filter);
-        await tester.pumpAndSettle();
-        final button=find.widgetWithText(FilledButton,'Female fit only');
+      if(body=='male') {
+        final button=find.widgetWithText(FilledButton,'Fit unavailable');
         expect(tester.widget<FilledButton>(button).onPressed,isNull);
+        expect(find.text('Available for female and gender-neutral bodies.'),findsOneWidget);
       }else{
         final button=find.widgetWithText(FilledButton,'Equip');
         await tester.dragUntilVisible(button.hitTestable(),find.byType(ListView),const Offset(0,-180),maxIteration:20);
@@ -52,6 +59,35 @@ void main(){
       }
       expect(tester.takeException(),isNull);
     }
+  });
+  testWidgets('male Everyday Market preview uses the approved fit and allows equip', (tester) async {
+    final outfit = items.firstWhere((item) => item.slug == 'everyday-adventurer-outfit')
+        .copyWith(owned: true);
+    String? equipped;
+    await tester.pumpWidget(MaterialApp(builder: (context, child) => MediaQuery(
+      data: const MediaQueryData(disableAnimations: true), child: child!),
+      home: Scaffold(body: QuestwellMarketView(
+        data: QuestwellCosmeticsSnapshot(profile: const QuestwellProfile(
+          level: 4, totalXp: 355, coinBalance: 650, currentEnergyMode: 'normal',
+          onboardingCompleted: true, adventurerArchetype: 'scholar', avatarBodyType: 'male'),
+          cosmetics: [outfit]),
+        onPurchase: (_) async {}, onEquip: (item) async { equipped = item.slug; },
+        onUnequip: (_) async {}, onRefresh: () async {},
+      )),
+    ));
+    await tester.pumpAndSettle();
+    final preview = find.widgetWithText(TextButton, 'Preview');
+    await tester.ensureVisible(preview);
+    await tester.tap(preview);
+    await tester.pumpAndSettle();
+    expect(find.byType(QuestwellMalePaperDoll), findsOneWidget);
+    expect(find.text('Try-on preview'), findsOneWidget);
+    final equip = find.widgetWithText(FilledButton, 'Equip').last;
+    await tester.ensureVisible(equip);
+    await tester.tap(equip);
+    await tester.pumpAndSettle();
+    expect(equipped, outfit.slug);
+    expect(tester.takeException(), isNull);
   });
   testWidgets('Equipment swap clearly offers cancel and confirm',(tester)async{
     final cloak=items.firstWhere((i)=>i.slug=='moss-green-cloak');

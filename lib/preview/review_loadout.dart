@@ -14,6 +14,8 @@ class QuestwellReviewLoadout {
     'h': ('head', 'tiny-wizard-hat'), 'n': ('neck', 'emerald-scholar-scarf'),
     'a': ('face', 'round-scholar-glasses'), 's': ('back', 'leather-satchel'),
     'b': ('hands', 'brass-lantern'),
+    'everyday': ('chest', 'everyday-adventurer-outfit'),
+    'suit': ('chest', 'starter-business-suit'),
   };
   void placeRoom(String id, String slot) {
     roomSlots.removeWhere((key, value) => value == slot || key == id);

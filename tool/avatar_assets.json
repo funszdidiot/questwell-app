@@ -1934,6 +1934,44 @@
           "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
         }
       ]
+    },
+    "male_paper_doll_everyday": {
+      "art_revision": "male-paper-doll-v3-everyday-v2",
+      "visual_approval": "founder_approved",
+      "description": "Immutable male v3 body, original identity, and single everyday v2 outfit. No male robe template included.",
+      "approved_source_commit": "c1382db",
+      "bodies": [
+        "male"
+      ],
+      "layer_order": [
+        "body",
+        "outfit",
+        "identity"
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/male_avatar_fit_reference.json",
+          "sha256": "3c891f7e62370959bad1d21a0318de81b5c790f7edb7ee3eefef45fe7762d2eb"
+        },
+        {
+          "path": "tool/male_everyday_fit_reference.json",
+          "sha256": "e226831ae766c46555a9ae00e130541b61688ae51cfaaafb0e70348292d12f00"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+          "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda"
+        },
+        {
+          "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+          "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+          "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a"
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,63 @@
+{
+  "status": "independent_visual_qa_passed_founder_approved",
+  "reviewer": "guardian_neutral_surface",
+  "reviewDate": "2026-10-04",
+  "founderApproval": true,
+  "runtimeTested": false,
+  "scope": "Independent visual critique of the actual unified male everyday v2 outfit on the locked male v3 body. Final focused recheck of full light and enlarged crotch on light and dark backgrounds after the inner-contour transition repair; sleeve and boot findings carried forward from the prior visual review of those unchanged areas.",
+  "construction": "One complete outfit overlay, composited body → outfit → identity.",
+  "nativeComposite": {
+    "path": "tool/art_assets/male_everyday_v2/native_composite.png",
+    "sha256": "40acdf0a9b67be787f47a41fa51d12446d3e44392375fd15dfd7f53710c1eeef"
+  },
+  "outfit": {
+    "path": "tool/art_assets/male_everyday_v2/everyday_outfit_male_candidate_v2.webp",
+    "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+    "alphaSha256": "97b18acceae5a7c66698f18f7ca927069c9a478ec4c78800786bd80b7d60c282"
+  },
+  "body": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+    "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+    "fixedHashVerified": true
+  },
+  "identity": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+    "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+    "fixedHashVerified": true
+  },
+  "finalFocusedImages": [
+    {
+      "path": "tool/art_assets/male_everyday_v2/male_everyday_light.png",
+      "sha256": "9ef05486ff499b640801f538a801b8714a6fd68c56da2f1ba485f6f6d5a4f934"
+    },
+    {
+      "path": "tool/art_assets/male_everyday_v2/crotch_light.png",
+      "sha256": "5c53bfa17608926c4b6e4274dd190e3b92e9a14b83d8f6d515657792937abe1f"
+    },
+    {
+      "path": "tool/art_assets/male_everyday_v2/crotch_dark.png",
+      "sha256": "7e7dab39a21e77fef820d3d250565162783f94dfbf8fd062f04bb649babfcc1f"
+    }
+  ],
+  "findings": {
+    "sleeves": "Thin integrated hems follow the upper-arm cylinders. The projecting, separate-looking cuff rims from v1 are no longer apparent; hands and forearms remain complete.",
+    "crotchAndInnerLegs": "The fly ends at a normal rise and the trousers separate into two distinct thighs without the elongated hanging wedge seen in v1. In the final light and dark close-ups, the inner contours open continuously into the lower-leg fall. The previously flagged ledge and reverse tooth are no longer apparent, and no exposed shorts flap or visible blend seam remains.",
+    "boots": "The unchanged redrawn boots read as a corresponding outward-turned pair with coherent ankle shafts, heels and soles. No obvious swapped-foot reading remains in the reviewed views."
+  },
+  "concreteBlockingDefects": [],
+  "limitations": "Independent visual QA and the subsequent founder acceptance are recorded separately. Runtime validation was not performed for this lock.",
+  "artworkOrExporterModifiedByReviewer": false,
+  "priorFounderReviewState": {
+    "status": "ready_for_founder_review",
+    "founderApproval": false,
+    "limitations": "This is readiness for founder review, not founder acceptance or runtime validation. Natural fitting was judged visually, separately from fixed-body hash verification."
+  },
+  "founderApprovalRecord": {
+    "approvedBy": "Tanya",
+    "dateUTC": "2026-10-04",
+    "timezone": "UTC",
+    "conversationTurn": "Current turn after presentation of the final male everyday v2 composite.",
+    "quote": "It's good. Next",
+    "scope": "Exact final unified male everyday v2 outfit and its registration are approved and locked. Proceed to male robe fitting on the unchanged body and everyday outfit. This does not approve a robe or change runtime body/outfit selection."
+  }
+}

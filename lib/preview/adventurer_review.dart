@@ -42,7 +42,14 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
           onPlace: (id, slot, expected) async { setState(() {
             _loadout.placeRoom(id, slot);
           }); },
-          onEquip: (id) => setState(() { if (id == 's') { _loadout.satchel = true; } else if (id == 'a') { _loadout.glasses = true; } else { _loadout.otherEquipped.add(id); } }),
+          onEquip: (id) => setState(() { if (id == 's') { _loadout.satchel = true; } else if (id == 'a') { _loadout.glasses = true; } else {
+            final category = QuestwellReviewLoadout.catalog[id]?.$1;
+            if (category != null) {
+              _loadout.otherEquipped.removeWhere((existing) =>
+                QuestwellReviewLoadout.catalog[existing]?.$1 == category);
+            }
+            _loadout.otherEquipped.add(id);
+          } }),
           onUnequip: (id) => setState(() { _loadout.removeRoom(id); if (id == 's') { _loadout.satchel = false; } else if (id == 'a') { _loadout.glasses = false; } else { _loadout.otherEquipped.remove(id); } }), items: [
             for (final entry in QuestwellMasteryRelic.slugs.entries)
               AdventurerInventoryItem(id: entry.value, name: QuestwellMasteryRelic.names[entry.key]!,
@@ -80,6 +87,11 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
               description: 'Sample ownership. Try Equip and Unequip here.', owned: true, equipped: _loadout.glasses, classLocked: false, shop: true),
             AdventurerInventoryItem(id: 's', name: 'Leather Satchel', slug: 'leather-satchel', category: 'back',
               description: 'Sample ownership. Try Equip and Unequip here.', owned: true, equipped: _loadout.satchel, classLocked: false, shop: true),
+            AdventurerInventoryItem(id: 'everyday', name: 'Everyday Adventurer Outfit',
+              slug: 'everyday-adventurer-outfit', category: 'chest',
+              description: 'Sample ownership. The approved outfit fitted to each body.',
+              owned: true, equipped: _loadout.otherEquipped.contains('everyday'),
+              classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'suit', name: 'Business Suit', slug: 'starter-business-suit', category: 'chest',
               description: 'A polished starter look for getting things done.', owned: true,
               equipped: _loadout.otherEquipped.contains('suit'), classLocked: false, shop: false),

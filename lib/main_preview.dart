@@ -33,7 +33,11 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'neutral-robes') {
+  if (Uri.base.queryParameters['review'] == 'male-everyday') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(
+      initialScreen: 'Adventurer', wardrobePreview: true)));
+  } else if (Uri.base.queryParameters['review'] == 'neutral-robes') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const NeutralRobesReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'neutral-scout') {

@@ -1,0 +1,32 @@
+{
+  "tool": "built-in imagegen",
+  "selectedOutfitSourcePrompt": "Use case: precise-object-edit.\nImage1 is the unified full outfit cutout EDIT TARGET, already aligned to the exact 3:4 canvas. Image2 shows its actual composite over the immutable male body, exposing the specific fitting problems. Image3 is the immutable body reference.\nPreserve this ONE full outfit and its exact canvas placement, scale, colors and design. Correct only the following garment construction areas as coherent drawing:\nA) Trousers: image2 visibly shows two CHARCOAL UNDERWEAR FLAPS protruding from the INNER upper thighs. Enlarge ONLY the inner trouser contour enough to cover those original shorts. Do not widen the entire crotch or merge the legs into a hanging pouch. Draw each inner thigh with a gentle nearly vertical contour first, then angle apart below native y207. The clear space between legs must begin near y186, very narrow (about1–2 native pixels at y190), about3–4 pixels at y206, widening below. The fly/seam junction should remain near native y175–180, with soft flat front folds. No long dark wedge continuing downward. Repaint the full connected upper-trouser/inner-thigh region cleanly; no obvious patch boundary, flat color filler or added strips. Every charcoal shorts pixel seen in image2 must be hidden by the trouser fabric in the final overlay, without editing the body.\nB) Both boots: image2 exposes little orange bare-foot wedges below the boot arches. Redraw each complete boot and sole so all original feet in image3 fit inside the leather. Keep natural correctly handed left/right shapes with inward medial edges, properly aligned toe boxes and ankle shafts. LOWER and gently flatten the undersole beneath the inner arch enough to contain the bare foot, especially the viewer-left shoe's inward arch. Both boot bottoms around native y313–315, with low heel and shallow arch; no deep arched cutout, platform, mismatched soles or swapped-foot appearance. Keep the original modest outward stance. Cover every toe and heel.\nC) Shirt: retain the improved gently curved sleeves; finish the shoulder contour so no underlying shoulder outline peeks above the shirt near image-right shoulder. Add modest sleeve ease inward at the underarm, keep a single thin curved hem and no pointed outward lip. Keep neck round and clean.\nDo not alter the shirt torso or belt design, hips, knees, colors, or remaining folds. No anatomical edits. Output ONLY the complete corrected outfit on genuine transparency, with no body, face, skin, hair or background. Do NOT recenter, enlarge, crop tightly, or remove the blank headroom. Keep exact input canvas proportions and original clothing registration. No component split. This is a garment drawing repair, not a silhouette stretch or cut-and-paste patch.",
+  "focusedFullOutfitAttempt": "Edit image1, the SINGLE full outfit on transparency. Preserve its exact full canvas, placement, scale and all shirt, belt and knee design.\nImage2 is a magnified composite detail: dark charcoal UNDERWEAR FLAPS are sticking out below the brown INNER THIGHS. Fix the pants drawing so BROWN TROUSER FABRIC extends over all of those dark flaps. Follow their contours closely and retain the narrow natural opening between the thighs. These charcoal triangles are not shadows of the pants and must not remain visible. Do NOT lengthen the crotch or add a pouch; paint natural continuous brown inner thighs that fully enclose the underlying shorts. Short fly, soft normal folds.\nImage3 is a magnified composite detail showing bare orange FOOT protruding UNDER the viewer-left BOOT ARCH. Redraw both brown leather boots with shallow nearly flat undersoles that fully enclose the entire feet, correct paired left/right toe boxes and heels, no deep arch notch. Fill out the leather and sole where the orange wedge sticks out. Do not copy that orange wedge into the output. Boots should have natural low heels and rounded toe boxes pointing in the same directions, correctly handed rather than swapped.\nThese are drawing changes in the clothing only. Output ONE FULL CORRECTED OUTFIT on genuine transparency. All headroom and original pixel registration must be retained. No body parts, no skin, no charcoal underwear, no beige background, no crops, no separate pieces. Do not move or enlarge the shirt, belt or outfit. Do not recreate the character. Correct the brown cloth and boot outlines as one coherent outfit illustration.",
+  "sourceDrawing": "outfit_source.png",
+  "construction": "One unified outfit; local drawings repair complete connected cloth regions. Body and identity remain original files.",
+  "founderMarkup": "founder_markup.png",
+  "approvedExport": {
+    "status": "founder_approved_everyday_template_locked_2026_10_04",
+    "outfit": {
+      "path": "tool/art_assets/male_everyday_v2/everyday_outfit_male_candidate_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "alphaSha256": "97b18acceae5a7c66698f18f7ca927069c9a478ec4c78800786bd80b7d60c282"
+    },
+    "runtimeOutfit": {
+      "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "alphaSha256": "97b18acceae5a7c66698f18f7ca927069c9a478ec4c78800786bd80b7d60c282"
+    },
+    "compositeSha256": "40acdf0a9b67be787f47a41fa51d12446d3e44392375fd15dfd7f53710c1eeef",
+    "approval": {
+      "approvedBy": "Tanya",
+      "dateUTC": "2026-10-04",
+      "timezone": "UTC",
+      "conversationTurn": "Current turn after presentation of the final male everyday v2 composite.",
+      "quote": "It's good. Next",
+      "scope": "Exact final unified male everyday v2 outfit and its registration are approved and locked. Proceed to male robe fitting on the unchanged body and everyday outfit. This does not approve a robe or change runtime body/outfit selection."
+    },
+    "canonicalReference": "tool/male_everyday_fit_reference.json",
+    "rule": "Sources and historical candidates are retained for provenance. Do not regenerate or overwrite this approved export during later garment fitting."
+  }
+}

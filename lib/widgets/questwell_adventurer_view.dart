@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import '../services/questwell_equipment_policy.dart';
+import 'questwell_body_fit_labels.dart';
 
 class AdventurerInventoryItem {
   const AdventurerInventoryItem({required this.id, required this.name, required this.slug,
@@ -302,7 +303,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           : '${item.source == 'level_milestone' ? 'Earned' : 'Added'} ${DateFormat('MMM d, yyyy').format(item.unlockedAt!.toLocal())}',
           style: _text(13, color: _muted))),
       if (bodyLocked) Padding(padding: const EdgeInsets.only(top: 8),
-        child: Text('Available for the female body.', style: _text(13, color: _gold))),
+        child: Text(QuestwellBodyFitLabels.availability(item.slug), style: _text(13, color: _gold))),
       if (item.classLocked) Padding(padding: const EdgeInsets.only(top: 8),
         child: Text('Requires ${_label(item.archetype ?? '')} class.', style: _text(13, color: _gold))),
       const SizedBox(height: 12),
@@ -319,8 +320,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
               textStyle: QuestwellTypography.body(fontSize: 14, fontWeight: FontWeight.w700)),
         child: Text(widget.busyItem == item.id ? 'Saving…' : item.equipped ? (room || wallArt ? 'Remove from Hearth' : outfit ? 'Wear ${_label(widget.archetype)} outfit' : 'Unequip')
           : !item.owned ? (item.shop ? 'View in Market' : item.milestoneLevel != null ? 'Unlocks at level ${item.milestoneLevel}' : item.slug == 'first-journey-trophy' ? 'Unlocks at level 5' : 'Earn through progression')
-          : bodyLocked ? 'Female fit only' : item.classLocked ? 'Class restricted' : !ready ? (room ? 'Coming soon' : 'Equip unavailable') : (room ? 'Place in Hearth' : wallArt ? 'Hang in Hearth' : 'Equip'))),
+          : bodyLocked ? 'Fit unavailable' : item.classLocked ? 'Class restricted' : !ready ? (room ? 'Coming soon' : 'Equip unavailable') : (room ? 'Place in Hearth' : wallArt ? 'Hang in Hearth' : 'Equip'))),
     ]));
   }
 }
-

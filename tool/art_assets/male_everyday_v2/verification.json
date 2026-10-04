@@ -1,0 +1,16 @@
+{
+  "bodyAndIdentityUnchanged": true,
+  "fullOutfitLayerCount": 1,
+  "canvas": [
+    240,
+    320
+  ],
+  "outfit": {
+    "path": "tool/art_assets/male_everyday_v2/everyday_outfit_male_candidate_v2.webp",
+    "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+    "alphaSha256": "97b18acceae5a7c66698f18f7ca927069c9a478ec4c78800786bd80b7d60c282"
+  },
+  "compositeSha256": "40acdf0a9b67be787f47a41fa51d12446d3e44392375fd15dfd7f53710c1eeef",
+  "noRuntimeOrAccountChanges": true,
+  "visualReview": "visual_review.json"
+}

@@ -40,6 +40,8 @@ A candidate is not founder-ready until all applicable checks pass.
 - class restrictions are correct
 - equip/unequip works
 - default class outfit restores correctly
+- saved loadout survives reload/session restoration without body/class policy drift
+- inventory ownership remains intact when an item is hidden or retired
 - shared avatar appearance is consistent across Hearth/Adventurer/Market where applicable
 
 ## Presentation
@@ -54,6 +56,9 @@ A candidate is not founder-ready until all applicable checks pass.
 - deterministic export verification
 - regression tests
 - Flutter Check
-- Preview/development deployment
+- required predeployment CI gate passed for the exact revision
+- Preview/development deployment verified at its delivered revision
+- actual deployed runtime inspected; a commit/build/upload does not prove delivery
+- evidence and separate production/art-lock status recorded in the dashboard
 
 Technical success is not founder visual approval.

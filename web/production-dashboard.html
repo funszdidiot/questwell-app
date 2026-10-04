@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#171b26">
+  <title>Questwell · Production dashboard</title>
+  <style>
+    :root { color-scheme: dark; --bg: #171b26; --panel: #222936; --line: #465168; --ink: #f1ecdf; --muted: #c4c9d3; --gold: #f1d28a; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 system-ui, sans-serif; }
+    main { max-width: 1100px; margin: auto; padding: 32px 24px 56px; }
+    a { color: var(--gold); text-underline-offset: 3px; }
+    a:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+    nav { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 26px; }
+    h1 { margin: 0 0 8px; font-size: clamp(28px, 5vw, 40px); line-height: 1.15; }
+    h2 { margin: 0 0 8px; font-size: 21px; line-height: 1.3; }
+    p { margin: 0 0 14px; }
+    .muted, .detail { color: var(--muted); }
+    .notice, .flow, article { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+    .notice { border-left: 4px solid #95bca9; margin: 24px 0; }
+    .flow { margin: 0 0 28px; }
+    .flow ol { list-style: none; display: flex; flex-wrap: wrap; gap: 7px 10px; padding: 0; margin: 12px 0; }
+    .flow li { font-size: 12px; font-weight: 750; }
+    .flow li:not(:last-child)::after { content: ' →'; color: var(--gold); margin-left: 10px; }
+    .flow p { margin: 0; font-size: 14px; }
+    .work { display: grid; gap: 16px; }
+    .meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+    .priority { color: var(--gold); font-size: 13px; font-weight: 700; }
+    .badge { display: inline-block; border-radius: 100px; border: 1px solid #6f7c91; padding: 3px 11px; font-size: 12px; font-weight: 800; letter-spacing: .04em; white-space: nowrap; }
+    .building { color: #f7ddb0; border-color: #b38d55; background: #3d3429; }
+    .queued { color: #d0d9e9; background: #30394b; }
+    .lock { font-size: 14px; color: #bfd6c8; }
+    article p:last-child { margin-bottom: 0; }
+    .evidence { margin-top: 30px; }
+    .evidence ul { margin-top: 8px; padding-left: 22px; color: var(--muted); }
+    .evidence li { margin: 8px 0; }
+    footer { margin-top: 32px; border-top: 1px solid var(--line); padding-top: 18px; color: var(--muted); font-size: 13px; }
+    code { overflow-wrap: anywhere; }
+    @media (max-width: 520px) { main { padding: 20px 14px 36px; } .notice, .flow, article { padding: 16px; } }
+  </style>
+</head>
+<body>
+<main>
+  <nav aria-label="Production navigation"><a href="./">Open development app</a><a href="./?review=male-everyday">Male everyday review</a><a href="robe-wrap-review.html">Robe review tools</a></nav>
+  <header>
+    <p class="priority">QUESTWELL · FOUNDER WORKSPACE</p>
+    <h1>Production dashboard</h1>
+    <p class="muted">Avatar production first, followed by the established architecture and UX priorities.</p>
+    <p class="detail">Work session: October 3, 2026 · America/New_York. This page shows the last recorded work snapshot.</p>
+  </header>
+
+  <section class="notice" aria-labelledby="decision-title">
+    <h2 id="decision-title">No decision needed from Tanya right now</h2>
+    <p>Approved development and technical repairs continue. A future male garment template review does not block the current work. Active visual development stays in progress until a genuine decision is needed.</p>
+  </section>
+
+  <section class="flow" aria-labelledby="flow-title">
+    <h2 id="flow-title">Production stages</h2>
+    <ol aria-label="Production lifecycle"><li>QUEUED</li><li>BUILDING</li><li>QA</li><li>DEV DEPLOYING</li><li>DEV DEPLOYED</li><li>TANYA REVIEW</li><li>LOCKED</li></ol>
+    <p><strong>BLOCKED</strong> identifies a real impediment with a precise next action. An artwork's existing approval stays locked while its app integration moves through these stages.</p>
+  </section>
+
+  <section class="work" aria-label="Prioritized production work">
+    <article data-stage="BUILDING">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge building">BUILDING</span></div>
+      <h2>Repair the current build defect</h2>
+      <p class="lock">Template protection: no artwork change required.</p>
+      <p>Repair is under way. Next: pass asset checks, analysis, substantive regression tests and the development web build.</p>
+      <p class="detail">A successful new deployment has not yet been recorded.</p>
+    </article>
+    <article data-stage="BUILDING">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge building">BUILDING</span></div>
+      <h2>Bring the approved male body and everyday outfit into the app</h2>
+      <p class="lock">Art lock: male v3 body and everyday v2 outfit are founder-approved.</p>
+      <p>The exact approved files have been ingested. Local file/alpha preservation, source correspondence, composite pixels and independent visual QA passed. Check the renderer integration, CI and delivered runtime next.</p>
+      <p class="detail">Integration remains in progress. Development tests and runtime verification have not yet been recorded.</p>
+    </article>
+    <article data-stage="QUEUED">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge queued">QUEUED</span></div>
+      <h2>Verify the neutral wardrobe in the running app</h2>
+      <p class="lock">Art lock: existing approved body and garment references remain authoritative.</p>
+      <p>Check the everyday outfit, class robes and Woodland Scout through rendering, inventory, eligibility, equip/unequip and saved loadouts.</p>
+      <p class="detail">The deployed runtime audit is pending. Existing fitted artwork is retained.</p>
+    </article>
+    <article data-stage="QUEUED">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge queued">QUEUED</span></div>
+      <h2>Prepare the remaining male garment templates</h2>
+      <p class="lock">Art lock: the new garment templates have not been established.</p>
+      <p>Follow exact-file ingestion and existing-fit verification. Technical preparation can continue; a concrete new foundational fit will need Tanya's template decision.</p>
+      <p class="detail">No template decision is being requested now.</p>
+    </article>
+    <article data-stage="QUEUED">
+      <div class="meta"><span class="priority">PRIORITY 2 · ISSUE #7</span><span class="badge queued">QUEUED</span></div>
+      <h2>Protect growth and future redesigns</h2>
+      <p>Continue the established architecture and scalability work after avatar integration. Preserve clear boundaries between appearance, the catalog, equipment rules and saved state.</p>
+      <p class="detail">Confirm the current issue scope before implementation. Core architecture remains protected during visual work.</p>
+    </article>
+    <article data-stage="QUEUED">
+      <div class="meta"><span class="priority">PRIORITY 3 · ISSUE #6</span><span class="badge queued">QUEUED</span></div>
+      <h2>Revisit the Warding Lantern and Wayfarer Rug</h2>
+      <p>Follow the avatar and structural priorities with the established visual and UX follow-up. Keep corrections within existing standards and integrate reviewable results.</p>
+      <p class="detail">Ask Tanya only when an unresolved aesthetic choice or template decision is genuinely required.</p>
+    </article>
+  </section>
+
+  <section class="evidence" aria-labelledby="evidence-title">
+    <h2 id="evidence-title">What counts as finished</h2>
+    <ul>
+      <li>The exact asset and template are verified; locked bodies and garment geometry remain unchanged.</li>
+      <li>Rendering, inventory/catalog, body and class eligibility, equipment policy and persistence work together.</li>
+      <li>Relevant tests, analysis, a development build and visual inspection pass.</li>
+      <li>The delivered development revision and actual runtime behavior are checked. A file, commit or successful build alone does not complete the task.</li>
+    </ul>
+    <p class="muted">If Tanya is needed, the affected item will explain exactly what she must decide, why it cannot proceed and the smallest action she can take.</p>
+  </section>
+  <footer>
+    <p>Governed by <code>docs/questwell-production/</code>. Artwork approval and technical integration are tracked separately.</p>
+    <p>Dashboard build: <code>__QUESTWELL_BUILD__</code>. Page availability does not establish that its queued work is deployed or that a background worker is active.</p>
+  </footer>
+</main>
+</body>
+</html>
