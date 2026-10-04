@@ -1,5 +1,6 @@
 import 'questwell_scout_wardrobe.dart';
 import 'questwell_neutral_paper_doll.dart';
+import 'questwell_neutral_scout.dart';
 import 'questwell_woodland_scout.dart';
 import 'questwell_clean_base.dart';
 import 'questwell_woven_rug.dart';
@@ -221,7 +222,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     }
     final harvestCoat = equippedSlugs['chest'] == 'midnight-harvest-coat';
     final harvestBody = ['male', 'female'].contains(avatarBodyType) ? avatarBodyType : 'neutral';
-    final woodland = harvestBody == 'female' && (previewWoodlandLayers != null ||
+    final woodland = fittedBody && (previewWoodlandLayers != null ||
         equippedSlugs['chest'] == 'woodland-scout-outfit');
     final fittedBody = harvestBody == 'female' || harvestBody == 'neutral';
     final fittedDefault = fittedBody &&
@@ -274,7 +275,9 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     }
 
     Widget foundation() => woodland
-        ? QuestwellWoodlandScoutFoundation(layers: woodlandLayers)
+        ? (harvestBody == 'neutral'
+            ? QuestwellNeutralScout(layers: woodlandLayers)
+            : QuestwellWoodlandScoutFoundation(layers: woodlandLayers))
         : modular
         ? QuestwellScoutWardrobeFoundation(body: body, layers: scoutLayers!)
         : equippedSlugs['chest'] == 'starter-business-suit'
