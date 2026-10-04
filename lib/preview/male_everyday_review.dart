@@ -2,29 +2,43 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../widgets/questwell_annotated_grimoire.dart';
 import '../widgets/questwell_male_paper_doll.dart';
+import '../widgets/questwell_male_woodland.dart';
+
+enum _WardrobeStage { body, everyday, robe, woodland }
 
 /// Isolated fit review: no account, catalog, class defaults or equipment writes.
 class MaleEverydayReviewApp extends StatefulWidget {
   const MaleEverydayReviewApp({
     super.key, this.initialRobe = false, this.initialArchetype = 'scout',
+    this.initialWoodland = false,
   });
 
   final bool initialRobe;
   final String initialArchetype;
+  final bool initialWoodland;
 
   @override
   State<MaleEverydayReviewApp> createState() => _MaleEverydayReviewAppState();
 }
 
 class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
-  bool _showEveryday = true;
   bool _enlarged = false;
-  late bool _showRobe = widget.initialRobe;
+  bool _showGrimoire = false;
+  late _WardrobeStage _stage = widget.initialWoodland
+      ? _WardrobeStage.woodland
+      : widget.initialRobe ? _WardrobeStage.robe : _WardrobeStage.everyday;
   late String _robeClass = QuestwellMalePaperDoll.classLabels
           .containsKey(widget.initialArchetype)
       ? widget.initialArchetype : 'scout';
   String get _robeLabel => '${QuestwellMalePaperDoll.classLabels[_robeClass]} robe';
+  String get _stageLabel => switch (_stage) {
+    _WardrobeStage.body => 'Locked body',
+    _WardrobeStage.everyday => 'Everyday outfit',
+    _WardrobeStage.robe => _robeLabel,
+    _WardrobeStage.woodland => 'Woodland Scout candidate',
+  };
 
   Widget _preview(String label, Color background, double availableWidth) {
     final canvasWidth = _enlarged ? 480.0 : 240.0;
@@ -49,11 +63,22 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                   width: canvasWidth,
                   height: canvasWidth * 320 / 240,
                   child: Semantics(
-                    label: '$label: ${_showRobe ? _robeLabel : _showEveryday ? 'Everyday outfit' : 'Locked body'}',
+                    label: '$label: $_stageLabel',
                     image: true,
-                    child: QuestwellMalePaperDoll(
-                      showEveryday: _showEveryday, showRobe: _showRobe,
-                      robeArchetype: _robeClass,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        if (_stage == _WardrobeStage.woodland)
+                          const QuestwellMaleWoodland()
+                        else
+                          QuestwellMalePaperDoll(
+                            showEveryday: _stage != _WardrobeStage.body,
+                            showRobe: _stage == _WardrobeStage.robe,
+                            robeArchetype: _robeClass,
+                          ),
+                        if (_showGrimoire && _stage != _WardrobeStage.body)
+                          const QuestwellAnnotatedGrimoire(bodyType: 'male'),
+                      ],
                     ),
                   ),
                 ),
@@ -87,7 +112,7 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                       ),
                       const SizedBox(height: 10),
                       const Text(
-                        'Class robes on the same locked body and everyday outfit.',
+                        'Everyday, Woodland Scout and class robes on the same locked body.',
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
@@ -104,27 +129,29 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                         children: [
                           ChoiceChip(
                             label: const Text('Outfit'),
-                            selected: _showEveryday && !_showRobe,
-                            onSelected: (_) => setState(() {
-                              _showEveryday = true;
-                              _showRobe = false;
-                            }),
+                            selected: _stage == _WardrobeStage.everyday,
+                            onSelected: (_) => setState(() => _stage = _WardrobeStage.everyday),
                           ),
                           ChoiceChip(
                             label: const Text('Body only'),
-                            selected: !_showEveryday,
-                            onSelected: (_) => setState(() {
-                              _showEveryday = false;
-                              _showRobe = false;
-                            }),
+                            selected: _stage == _WardrobeStage.body,
+                            onSelected: (_) => setState(() => _stage = _WardrobeStage.body),
                           ),
                           ChoiceChip(
                             label: const Text('Robe'),
-                            selected: _showRobe,
-                            onSelected: (_) => setState(() {
-                              _showEveryday = true;
-                              _showRobe = true;
-                            }),
+                            selected: _stage == _WardrobeStage.robe,
+                            onSelected: (_) => setState(() => _stage = _WardrobeStage.robe),
+                          ),
+                          ChoiceChip(
+                            label: const Text('Woodland'),
+                            selected: _stage == _WardrobeStage.woodland,
+                            onSelected: (_) => setState(() => _stage = _WardrobeStage.woodland),
+                          ),
+                          FilterChip(
+                            label: const Text('Belt grimoire'),
+                            selected: _showGrimoire && _stage != _WardrobeStage.body,
+                            onSelected: _stage == _WardrobeStage.body ? null
+                                : (value) => setState(() => _showGrimoire = value),
                           ),
                           FilterChip(
                             label: const Text('Enlarged view'),

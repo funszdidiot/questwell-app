@@ -1,0 +1,52 @@
+{
+  "status": "NEEDS_REPAIR",
+  "reviewer": "independent /root/woodland_visual_qa",
+  "date": "2026-10-04",
+  "input_hashes": "input_hashes.json",
+  "scope": "First-pass male Woodland v1 on exact locked male v3. Export/composite audit only. No asset edits or founder approval.",
+  "findings": [
+    {
+      "id": "lower-body-containment",
+      "severity": "blocking_visual_fit",
+      "description": "Visible shorts beyond both trouser outer edges and at the right inner thigh. Garment remains too narrow along right inner thigh, knee/calf and boot inner edge, leaving strips of intact skin exposed below the shorts. Small left boot outer-edge exposure also occurs. The defect requires coherent pants/boot fit correction, not a body edit or masking.",
+      "regions_native": [
+        [
+          84,
+          189,
+          95,
+          212
+        ],
+        [
+          120,
+          180,
+          137,
+          230
+        ],
+        [
+          130,
+          232,
+          145,
+          280
+        ],
+        [
+          86,
+          257,
+          91,
+          277
+        ]
+      ],
+      "evidence": "leg_containment_comparison.png",
+      "numeric_samples": "coverage_samples.json"
+    }
+  ],
+  "passed": [
+    "Locked body and identity remain intact in composition.",
+    "No >2-alpha garment intrusion into opaque hand rectangles x55..85/y170..199 and x161..182/y170..199.",
+    "Shoulders, rolled sleeves, cuffs, neck, torso, vest and pouch connect coherently in the first pass.",
+    "Footwear design follows outward stance and has complete soles; side containment still needs correction."
+  ],
+  "limitations": [
+    "Current preliminary failure superseded only by reviewing a new exported composite.",
+    "Native, light/dark enlarged and detailed export images reviewed. Delivered runtime not reviewed."
+  ]
+}

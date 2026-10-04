@@ -1,0 +1,90 @@
+{
+  "status": "PASS",
+  "reviewer": "independent /root/woodland_visual_qa",
+  "date": "2026-10-04",
+  "scope": "Independent exported native and enlarged light/dark composite QA of complete male Woodland candidate. This PASS is not founder template approval, account eligibility or delivered runtime verification.",
+  "inputs": {
+    "source": {
+      "path": "tool/art_assets/male_woodland_v1/outfit_source.png",
+      "sha256": "f32d68c21078b4943f4fd595cd7990ab4809789d1c5e1906bf6013df037218ec"
+    },
+    "outfit": {
+      "path": "assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v1.webp",
+      "sha256": "1c67cb83fec509a822adbdbfd61de9aac478466cadb87429e421c3ac40756728"
+    },
+    "body": {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda"
+    },
+    "identity": {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a"
+    }
+  },
+  "body_identity_match_canonical": true,
+  "runtime_equals_registered_copy": true,
+  "canvas": [
+    240,
+    320
+  ],
+  "inspected": [
+    "native composite",
+    "4x full light/dark",
+    "6x upper and legs light/dark",
+    "registered whole-outfit source",
+    "body/garment/composite hand and crotch comparisons",
+    "continuous registration code"
+  ],
+  "visual_findings": [
+    "Neck, shoulders and rolled sleeves connect naturally over fixed anatomy; no displaced identity fragment.",
+    "Both complete hands remain clear; moved left buckle now has clearance from the original thumb edge.",
+    "The lowered central trouser join reads as a normal relaxed crotch seam. Folds meet coherently without a protruding bulge, duplicated seam or unrelated patch.",
+    "Former exposed underwear at outer thighs and fly is covered. Former skin strips at inner legs and boot edges are covered.",
+    "Thigh, knee, calf and boot contours remain continuous; no obvious horizontal repair seams at native or enlarged scale.",
+    "Knee reinforcements remain coherent; boots follow the fixed outward foot directions and enclose heels, toes and soles.",
+    "No blocking exported visual defect observed on either background."
+  ],
+  "pixel_checks": {
+    "hands": {
+      "left": {
+        "opaque_body_pixels": 499,
+        "garment_alpha_max": 0,
+        "changed_rgba_pixels": 0
+      },
+      "right": {
+        "opaque_body_pixels": 466,
+        "garment_alpha_max": 0,
+        "changed_rgba_pixels": 0
+      }
+    },
+    "coverage_region": "Opaque body alpha>=250 in central shorts x86..155/y>=165 plus all pixels y>=200",
+    "covered_opaque_body_pixels": 6383,
+    "garment_alpha_below_250_count": 0,
+    "minimum_garment_alpha_on_coverage": 251,
+    "prior_left_hand_point_83_185_garment_alpha": 0,
+    "prior_fly_point_122_183_garment_alpha": 253
+  },
+  "resolved_findings": [
+    "First-pass outer-short and full-leg containment failure",
+    "Buckle intrusion onto left hand edge",
+    "Translucent fly over old shorts"
+  ],
+  "unresolved_findings": [],
+  "method_observation": "One connected inverse mapping of the retained complete male-specific source, with smooth central crotch displacement and premultiplied sampling. No body masks or component assembly were found.",
+  "evidence": {
+    "native": "tool/art_assets/male_woodland_v1/native_composite.png",
+    "full_light": "tool/art_assets/male_woodland_v1/full_light.png",
+    "full_dark": "tool/art_assets/male_woodland_v1/full_dark.png",
+    "hand_comparison": "tool/qa/male_woodland_v1_left_hand_detail.png",
+    "crotch_comparison": "tool/qa/male_woodland_v1_crotch_detail.png"
+  },
+  "prior_evidence": [
+    "tool/qa/male_woodland_preliminary_20261004/review.json",
+    "tool/qa/male_woodland_preliminary_20261004/registration_ec1b2e9_review.json"
+  ],
+  "limits": [
+    "Delivered runtime must still be inspected.",
+    "Tanya has not established a male Woodland template lock.",
+    "Candidate remains explicit development review only; no account capability expansion implied."
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "reviewer": "independent visual reviewer /root/woodland_visual_qa",
+  "date": "2026-10-04",
+  "status": "NEEDS_REPAIR",
+  "scope": "Read-only audit of current neutral Woodland Scout v2 export on exact locked neutral v4 body and identity. No assets, renderers, governance or account capabilities changed. This is export/composite QA, not founder approval or delivered runtime QA.",
+  "input_audit": "input_audit.json",
+  "composition": [
+    "paper_doll_neutral_v4.webp",
+    "woodland_scout_unified_neutral_v2.webp",
+    "paper_doll_neutral_identity_v4.webp"
+  ],
+  "inspected": [
+    "native light and dark",
+    "4x nearest full figure on light/dark",
+    "3x smooth enlargement",
+    "6x sleeve, hand, crotch and foot details",
+    "retained full source and sleeve-edit source"
+  ],
+  "passed_visual_observations": [
+    "Locked v4 body and identity SHA256 equal canonical reference; canvas is240x320 at zero offset.",
+    "Shoulders and rolled sleeves remain attached, with paired tabs and a coherent inward opening. No large sleeve transparency hole or obvious row-splice seam observed.",
+    "Neck, torso, belt, hips and crotch remain coherent. Trousers cover underwear without a large inner-leg gap.",
+    "Both boots follow the splayed feet and retain complete sole silhouettes. Narrow inner-heel opacity defects noted separately.",
+    "Left hand remains fully exposed. Right hand has a narrow inner-edge occlusion defect noted separately."
+  ],
+  "findings": [
+    {
+      "id": "neutral-woodland-right-hand-edge",
+      "severity": "fit_defect",
+      "region_native": [
+        159,
+        187,
+        161,
+        196
+      ],
+      "description": "Trouser/garment edge overlaps the inner right hand/thumb edge; opacity is real rather than hidden RGB. A narrow dark strip suppresses part of the original hand shading.",
+      "samples": [
+        {
+          "xy": [
+            159,
+            192
+          ],
+          "garment_alpha": 75,
+          "body_rgba": [
+            226,
+            135,
+            94,
+            255
+          ],
+          "composite_rgba": [
+            163,
+            97,
+            68,
+            255
+          ]
+        },
+        {
+          "xy": [
+            159,
+            194
+          ],
+          "garment_alpha": 139,
+          "body_rgba": [
+            225,
+            148,
+            101,
+            255
+          ],
+          "composite_rgba": [
+            119,
+            78,
+            52,
+            255
+          ]
+        },
+        {
+          "xy": [
+            160,
+            195
+          ],
+          "garment_alpha": 41,
+          "body_rgba": [
+            111,
+            48,
+            30,
+            252
+          ],
+          "composite_rgba": [
+            94,
+            41,
+            26,
+            252
+          ]
+        }
+      ],
+      "required_correction": "Refine the coherent garment side contour next to the right hand in a new candidate version; preserve the complete original hand and body. Do not mask or repaint anatomy.",
+      "evidence": "right_hand_comparison.png"
+    },
+    {
+      "id": "neutral-woodland-inner-heels",
+      "severity": "minor_fit_defect",
+      "regions_native": [
+        [
+          111,
+          298,
+          112,
+          301
+        ],
+        [
+          147,
+          300,
+          148,
+          302
+        ]
+      ],
+      "description": "The boot edge is partially transparent while the underlying foot remains opaque. No obvious pale leak at native scale, but the skin contributes through the inner heel contour, violating full heel containment. This is subtle and should not be described as a large visible hole.",
+      "samples": [
+        {
+          "xy": [
+            111,
+            298
+          ],
+          "garment_alpha": 175,
+          "body_alpha": 255
+        },
+        {
+          "xy": [
+            111,
+            299
+          ],
+          "garment_alpha": 180,
+          "body_alpha": 255
+        },
+        {
+          "xy": [
+            147,
+            300
+          ],
+          "garment_alpha": 215,
+          "body_alpha": 255
+        },
+        {
+          "xy": [
+            147,
+            301
+          ],
+          "garment_alpha": 232,
+          "body_alpha": 255
+        }
+      ],
+      "required_correction": "Complete each affected boot heel as a connected garment contour in the new candidate while preserving boot design and fixed feet.",
+      "evidence": "feet_detail.png"
+    }
+  ],
+  "alpha_zero_rgb": {
+    "count": 13743,
+    "interpretation": "Harmless invisible RGB in the outfit. A viewer that discards alpha can show a rectangle or stale color, but normal source-over compositing does not. Do not mistake this for the positive-alpha hand overlap or heel defect."
+  },
+  "provenance": {
+    "original_source": "tool/art_assets/neutral_scout_v1/woodland_source.png",
+    "original_export": "tool/export_neutral_scout.cjs",
+    "sleeve_source": "tool/art_assets/neutral_scout_v2/sleeves_fitted_source.png",
+    "sleeve_export": "tool/export_neutral_sleeves.cjs",
+    "notes": "Retained prompt/source exist. Historical reference/export scripts render against neutral v1, not current locked v4; this independent audit explicitly recomposed the actual v2 outfit over v4. The old sleeve exporter uses a short row blend; no visible major sleeve seam was found, but that historical method should not be generalized to future connected-region repairs."
+  },
+  "limits": [
+    "No browser or delivered-runtime inspection in this audit.",
+    "No founder aesthetic decision or template lock implied.",
+    "No account eligibility expansion implied; neutral Woodland remains explicit review only."
+  ]
+}

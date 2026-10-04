@@ -1,0 +1,19 @@
+{
+  "generator": "built-in image_gen",
+  "generationPrompt": "prompt.txt",
+  "source": {
+    "path": "tool/art_assets/male_woodland_v1/outfit_source.png",
+    "sha256": "f32d68c21078b4943f4fd595cd7990ab4809789d1c5e1906bf6013df037218ec"
+  },
+  "references": [
+    "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+    "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+    "assets/images/questwell/avatar/woodland_scout_unified_female_v11.webp"
+  ],
+  "exportMethod": "tool/export_male_woodland_v1.cjs",
+  "registration": "registration.json",
+  "iterations": "Initial source required complete lower-outfit registration. A second generated redraw did not retain adequate placement and was rejected. Final uses the first coherent source with continuous registration; no independent garment fragments.",
+  "status": "CANDIDATE_NOT_LOCKED",
+  "date": "2026-10-04",
+  "timezone": "America/Chicago"
+}

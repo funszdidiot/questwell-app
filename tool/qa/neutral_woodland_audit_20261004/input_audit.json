@@ -1,0 +1,26 @@
+{
+  "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp": {
+    "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+    "size": [
+      240,
+      320
+    ],
+    "nonzero_rgb_at_alpha_zero": 1724
+  },
+  "assets/images/questwell/avatar/woodland_scout_unified_neutral_v2.webp": {
+    "sha256": "3b3244dc05c26ce8fc15f0cd6a0d1f60fb5ce2021064396093f3af3902b2375c",
+    "size": [
+      240,
+      320
+    ],
+    "nonzero_rgb_at_alpha_zero": 13743
+  },
+  "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp": {
+    "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+    "size": [
+      240,
+      320
+    ],
+    "nonzero_rgb_at_alpha_zero": 200
+  }
+}

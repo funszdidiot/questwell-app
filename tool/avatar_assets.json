@@ -1548,6 +1548,59 @@
           "sha256": "fd98dad2eb9e9608e0e14693bb768113fb051df5d5930a842fba7c4a669e06ff"
         }
       ]
+    },
+    "male_woodland_v1": {
+      "art_revision": "male-woodland-v1",
+      "visual_approval": "independent_export_qa_passed_not_founder_locked",
+      "template": "tool/male_woodland_fit_reference.json",
+      "bodies": [
+        "male"
+      ],
+      "layer_order": [
+        "body",
+        "outfit",
+        "identity"
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/male_woodland_fit_reference.json",
+          "sha256": "aec7f987d1d8db8e2da6037a5673b23ab2df6756da01a755d72bc2120afcc10d"
+        },
+        {
+          "path": "tool/export_male_woodland_v1.cjs",
+          "sha256": "3ab15ade06c1ba6d0807c2dd1691d5a339c5113a53b4055c7bae69fc831a4bd2"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v1/outfit_source.png",
+          "sha256": "f32d68c21078b4943f4fd595cd7990ab4809789d1c5e1906bf6013df037218ec"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v1/registration.json",
+          "sha256": "ad34e65464bf2800748a4f2580f3ba30ba4ee664e3b5287dab09e740b9a3bee1"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v1/provenance.json",
+          "sha256": "a6bed4f56467808a01656e7993cf87e7dfa1c3b43649e41ba5d13f2337a8ffbe"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v1/prompt.txt",
+          "sha256": "6ded41a975e66af88c34a9dc591f43d77777bb4e6a666be40447b7d6abfbdae1"
+        },
+        {
+          "path": "tool/qa/male_woodland_v1_export_review.json",
+          "sha256": "cfb68ce75b45f3b7e29ff9abebea9eea3cb325b0867a7cf90dfe03bea05d3075"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v1.webp",
+          "sha256": "1c67cb83fec509a822adbdbfd61de9aac478466cadb87429e421c3ac40756728"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v1/outfit_registered.webp",
+          "sha256": "1c67cb83fec509a822adbdbfd61de9aac478466cadb87429e421c3ac40756728"
+        }
+      ]
     }
   },
   "approved_layers": {

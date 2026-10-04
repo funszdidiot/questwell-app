@@ -1,0 +1,132 @@
+{
+  "status": "NEEDS_SCOPED_REPAIR",
+  "reviewer": "independent /root/woodland_visual_qa",
+  "date": "2026-10-04",
+  "scope": "Revised complete-outfit registration. Independent export/composite review only. No assets changed. Founder approval and delivered runtime QA are separate.",
+  "inputs": {
+    "source": {
+      "path": "tool/art_assets/male_woodland_v1/outfit_source.png",
+      "sha256": "f32d68c21078b4943f4fd595cd7990ab4809789d1c5e1906bf6013df037218ec"
+    },
+    "outfit": {
+      "path": "assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v1.webp",
+      "sha256": "ec1b2e98890831b8c572fdbc0f1b6bd1b32ad5a2306d28f7dfbf96301cfdbe66"
+    },
+    "body": {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda"
+    },
+    "identity": {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a"
+    }
+  },
+  "body_identity_match_canonical": true,
+  "runtime_equals_registered_copy": true,
+  "canvas": [
+    240,
+    320
+  ],
+  "inspected": [
+    "actual native export",
+    "4x light/dark full composites",
+    "6x light/dark upper and leg composites",
+    "body/outfit/composite hand and crotch comparisons",
+    "source and continuous registration logic"
+  ],
+  "passed": [
+    "Large exposed shorts and leg skin strips from first-pass audit are resolved.",
+    "Continuous thigh, knee, calf and boot contours; no obvious horizontal splice or duplicate seam.",
+    "Knee reinforcement and boots remain coherent at native scale; outward foot directions and complete soles preserved.",
+    "All opaque-body pixels from y200 down have garment alpha >=250.",
+    "Neck, shoulders, rolled cuffs, vest, belt and pouch remain coherent; right hand clear.",
+    "Complete body/identity hashes equal locked canonical references. Runtime outfit equals registered copy."
+  ],
+  "pixel_coverage": {
+    "opaque_body_pixel_count_y200_onward": 4323,
+    "garment_alpha_below_250_count": 0
+  },
+  "findings": [
+    {
+      "id": "left-hand-buckle-edge",
+      "severity": "minor_fit_defect",
+      "region_native": [
+        82,
+        184,
+        84,
+        192
+      ],
+      "description": "The broadened trouser buckle reaches the original inner left hand edge. A small positive-alpha overlap darkens the hand; it is subtle at native scale but fails exposed-hand preservation.",
+      "sample": {
+        "xy": [
+          83,
+          185
+        ],
+        "body_rgba": [
+          116,
+          56,
+          29,
+          250
+        ],
+        "garment_rgba": [
+          31,
+          10,
+          2,
+          113
+        ],
+        "composite_rgba": [
+          78,
+          35,
+          17,
+          252
+        ]
+      },
+      "evidence": "tool/qa/male_woodland_v1_left_hand_detail.png",
+      "required_correction": "Give the buckle/garment a small coherent clearance from the unchanged hand; do not mask anatomy."
+    },
+    {
+      "id": "translucent-trouser-fly",
+      "severity": "minor_fit_defect",
+      "region_native": [
+        122,
+        179,
+        124,
+        188
+      ],
+      "description": "A one-pixel-wide vertical portion of the trouser fly/inseam remains translucent over opaque underwear. At native scale it reads as a dark seam, not an obvious light hole, but the prior shorts visibly contribute to its color.",
+      "sample": {
+        "xy": [
+          122,
+          183
+        ],
+        "body_rgba": [
+          40,
+          30,
+          31,
+          255
+        ],
+        "garment_rgba": [
+          32,
+          12,
+          7,
+          100
+        ],
+        "composite_rgba": [
+          37,
+          23,
+          22,
+          255
+        ]
+      },
+      "evidence": "tool/qa/male_woodland_v1_crotch_detail.png",
+      "required_correction": "Close the connected trouser-fly region with the intended garment seam and shading; leave the body unchanged."
+    }
+  ],
+  "method_observation": "Exporter performs one connected inverse mapping with smoothly interpolated row anchors and premultiplied sampling of the original complete generated source. It does not modify the body or assemble component exports.",
+  "limits": [
+    "No delivered runtime review performed.",
+    "Passing these technical/visual checks does not establish founder template approval.",
+    "Candidate remains explicit development review only."
+  ],
+  "prior_evidence": "tool/qa/male_woodland_preliminary_20261004/review.json retains the first-pass failure and its original hashes."
+}

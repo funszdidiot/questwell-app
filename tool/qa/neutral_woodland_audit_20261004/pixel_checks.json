@@ -1,0 +1,50 @@
+{
+  "left_hand": {
+    "max_garment_alpha_on_opaque_body": 0,
+    "garment_alpha_below_250_on_opaque_body": 423,
+    "body_pixel_count": 423
+  },
+  "right_hand": {
+    "region": [
+      159,
+      166,
+      181,
+      205
+    ],
+    "max_garment_alpha_on_opaque_body": 139,
+    "body_pixel_count": 409,
+    "note": "Earlier wider rectangular sample included trouser-covered body; this region isolates exposed hand. Exact changed points are recorded in review findings."
+  },
+  "legs_foot": {
+    "max_garment_alpha_on_opaque_body": 255,
+    "garment_alpha_below_250_on_opaque_body": 17,
+    "body_pixel_count": 4030,
+    "uncovered_coords": [
+      [
+        111,
+        298,
+        175
+      ],
+      [
+        111,
+        299,
+        180
+      ],
+      [
+        111,
+        300,
+        235
+      ],
+      [
+        147,
+        300,
+        215
+      ],
+      [
+        147,
+        301,
+        232
+      ]
+    ]
+  }
+}
