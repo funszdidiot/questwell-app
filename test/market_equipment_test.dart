@@ -86,7 +86,12 @@ void main(){
     expect(find.byType(QuestwellMalePaperDoll), findsOneWidget);
     expect(find.text('Try-on preview'), findsOneWidget);
     final equip = find.widgetWithText(FilledButton, 'Equip').last;
-    await tester.ensureVisible(equip);
+    final sheetScroll = find.descendant(of: find.byType(BottomSheet),
+        matching: find.byType(SingleChildScrollView));
+    await tester.dragUntilVisible(equip.hitTestable(), sheetScroll,
+        const Offset(0, -150), maxIteration: 20);
+    await tester.pumpAndSettle();
+    expect(equip.hitTestable(), findsOneWidget);
     await tester.tap(equip);
     await tester.pumpAndSettle();
     expect(equipped, outfit.slug);
