@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..');
 const outDir = path.join(root, 'assets/images/questwell/hearth');
 fs.mkdirSync(outDir, {recursive:true});
 
-const lantern = \`
+const lantern = `
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="1500" viewBox="0 0 900 1500">
   <defs>
     <linearGradient id="brass" x1="0" x2="1">
@@ -111,9 +111,9 @@ const lantern = \`
   <!-- tiny highlights -->
   <path d="M389 445v130M388 672v106M492 440v72" stroke="#d8f1bd" stroke-width="5" opacity=".28"/>
   <path d="M336 347h130" stroke="#fff0b1" stroke-width="5" opacity=".55"/>
-</svg>\`;
+</svg>`;
 
-const rug = \`
+const rug = `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
   <defs>
     <linearGradient id="field" x1="0" y1="0" x2="0" y2="1">
@@ -175,7 +175,7 @@ const rug = \`
   <g stroke="#6b5332" stroke-width="4" opacity=".8">
     <path d="M143 716l-15 36M213 716l-8 43M987 716l9 43M1057 716l15 36"/>
   </g>
-</svg>\`;
+</svg>`;
 
 async function render(svg, out, width, height) {
   await sharp(Buffer.from(svg)).resize(width, height, {fit:'fill'})
