@@ -11,7 +11,8 @@ void main() {
   GoogleFonts.config.allowRuntimeFetching = false;
   testWidgets('Table shares the room with all decor and follows the chair', (tester) async {
     expect(QuestwellEquipmentPolicy.isReady(QuestwellReadingTable.slug, 'room'), true);
-    expect(QuestwellEquipmentPolicy.isReady(QuestwellReadingTable.slug, 'hands'), false);
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellReadingTable.slug, 'hands'), true,
+      reason: 'Renderer readiness does not duplicate catalog category rules.');
     expect(QuestwellHearthDecor.choices(QuestwellReadingTable.slug).keys, ['side']);
     for (final width in [320.0,390.0]) {
       for (final chairSlot in ['front','right']) {

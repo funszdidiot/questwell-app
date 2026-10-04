@@ -15,7 +15,8 @@ class GrimoireReviewApp extends StatefulWidget {
 }
 
 class _GrimoireReviewAppState extends State<GrimoireReviewApp> {
-  String _body = 'female';
+  String _body = const {'female', 'male', 'neutral'}.contains(Uri.base.queryParameters['body'])
+      ? Uri.base.queryParameters['body']! : 'neutral';
   bool _held = true;
   bool _cloak = false;
   QuestwellCosmetic _item(String slug) => QuestwellCosmetic.fromJson(
@@ -65,7 +66,7 @@ class _GrimoireReviewAppState extends State<GrimoireReviewApp> {
                 selected: body == _body,
                 onSelected: (_) => setState(() => _body = body))).toList()),
             Builder(builder: (context) => SwitchListTile(contentPadding: EdgeInsets.zero,
-              title: const Text('Hold grimoire'), value: _held,
+              title: const Text('Equip grimoire on belt'), value: _held,
               onChanged: (value) => _hold(context, value))),
             Builder(builder: (context) => Align(alignment: Alignment.centerLeft,
               child: TextButton.icon(onPressed: () => _tryCloak(context),

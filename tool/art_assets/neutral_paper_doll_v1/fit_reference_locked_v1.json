@@ -1,0 +1,22 @@
+{
+  "status": "founder_approved_neutral_frame_2026_10_03",
+  "canvas": [
+    240,
+    320
+  ],
+  "base": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v1.webp",
+    "sha256": "0c76468325e2ac1916ffc5578911c789dbb950be2b0d1344901d248d3582e078"
+  },
+  "head_hair": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v1.webp",
+    "sha256": "78069f75eba2e92e35fa28e0de1d226eff26cc168dfc997153d774bab453fb66"
+  },
+  "approval": "Tanya requested a more gender-neutral frame and approved the revised balanced shoulders/hips and softened musculature with Yes.",
+  "rules": [
+    "Keep this complete base and original head/hair fixed.",
+    "Clothing adds registered full-canvas layers; no anatomy masks or replacement legs.",
+    "Fit a neutral robe template before class color/pattern variants."
+  ],
+  "review": "?review=neutral-scout"
+}

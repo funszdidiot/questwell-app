@@ -1,0 +1,30 @@
+{
+  "class": "wanderer",
+  "createdAt": "2026-10-04",
+  "method": "built_in_image_gen",
+  "usecase": "precise-object-edit",
+  "sourceOriginal": "/workspace/scratch/037df595da3c/generated_images/exec-3969c782-c396-4ebe-890d-b82f7b02c65f.png",
+  "selectedSource": "tool/art_assets/neutral_class_robes_v1/wanderer/robe_source.png",
+  "prompt": "tool/art_assets/neutral_class_robes_v1/wanderer/prompt.json",
+  "references": [
+    {
+      "path": "tool/art_assets/neutral_class_robes_v1/references/neutral_locked_cloth.png",
+      "role": "edit_target_immutable_geometry"
+    },
+    {
+      "path": "tool/art_assets/neutral_class_robes_v1/references/wanderer_female_surface.png",
+      "role": "style_only"
+    }
+  ],
+  "review": {
+    "status": "independent_visual_review_pass_pending_founder_surface_review",
+    "visual": "Tobacco-brown cloth; copper-gold trim; four-point stars on upper sleeves and lower hems; four brass waist fasteners; paired pockets; warm ochre-brown rear lining; no Scout foliage or person. Complete source cuffs retained.",
+    "registrationDrift": "Generated source is 1254 square rather than reference 1280 square. At alpha >127, reference bounds [409,301,899,1147]; generated native bounds [391,290,889,1130], equivalent approximately [399,296,907,1153] on 1280 square. Whole-silhouette width is about18px broader and height12px larger on normalized1280 canvas. Root must register surface to locked v11 masks; do not consume generated alpha as new geometry.",
+    "authorVisualInspection": "Actual exported full avatar inspected on light and dark backgrounds, enlarged cuff/collar/hem views inspected. No Scout foliage remains; complete gold cuff rims frame exposed fixed hands; rear gold band sits behind trousers. Independent review remains required.",
+    "independentReview": "tool/art_assets/neutral_class_robes_v1/wanderer/independent_visual_review.json",
+    "resolvedDefect": "Corrected image-right shoulder RGB registration landmark so dark source fringe does not create a thick crescent; silhouette alpha unchanged."
+  },
+  "exporter": "tool/export_wanderer_neutral_v1.cjs",
+  "exportMetadata": "tool/art_assets/neutral_class_robes_v1/wanderer/export_metadata.json",
+  "composite": "tool/art_assets/neutral_class_robes_v1/wanderer/neutral_wanderer_v1.png"
+}

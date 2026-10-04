@@ -1,0 +1,66 @@
+{
+  "status": "independent_offline_visual_qa_passed",
+  "reviewer": "lock_neutral_robe_template",
+  "reviewedAt": "2026-10-04",
+  "scope": "Actual exported offline composites: female and neutral fitted Scholar robe stacks; male existing complete business-suit base. Reviewed native full avatars, combined enlarged full figures and enlarged belt/hand regions on light and dark backgrounds.",
+  "reviewedViews": [
+    {
+      "path": "tool/art_assets/grimoire_belt_v1/grimoire_belt_review.png",
+      "sha256": "cf3e65382691bec77b0150e17a44bfefc43233455de17402de2a254d4299b1ee"
+    },
+    {
+      "path": "tool/art_assets/grimoire_belt_v1/female_native.png",
+      "sha256": "3fb4bb7b780ddbc3fa716f9e4de7cd621888cafa50b168acabdd8a571969d9a8"
+    },
+    {
+      "path": "tool/art_assets/grimoire_belt_v1/female_belt_light.png",
+      "sha256": "aaac761c3f4c9094a91fcf0211865cc31e928a31784ebec72a79fb81735b082c"
+    },
+    {
+      "path": "tool/art_assets/grimoire_belt_v1/female_belt_dark.png",
+      "sha256": "5ed4e256363552365faa06f6ad858901d4fffdf93c8269c6800da1ce2ac45877"
+    },
+    {
+      "path": "tool/art_assets/grimoire_belt_v1/neutral_native.png",
+      "sha256": "73e5c35e5467c38e665bb57db08a3b6de54be7645dc3d8cb1ddb321c152ab512"
+    },
+    {
+      "path": "tool/art_assets/grimoire_belt_v1/neutral_belt_light.png",
+      "sha256": "e64576eb6b8aa9e74a40861fabb0b392ac72d9ba91a2123370f77d29dbd8bf45"
+    },
+    {
+      "path": "tool/art_assets/grimoire_belt_v1/neutral_belt_dark.png",
+      "sha256": "4f8d55bc466f84c24929c541bf81468a2fc6839c917371aa00c2973b23030abe"
+    },
+    {
+      "path": "tool/art_assets/grimoire_belt_v1/male_native.png",
+      "sha256": "6b0d3d748dc29e59b93a06daea789f99a8e4e455f67d9498514c90dcbf16dfbb"
+    },
+    {
+      "path": "tool/art_assets/grimoire_belt_v1/male_belt_light.png",
+      "sha256": "da14c1e3ff9a877a998295e185c8243e3503d944593269f090e6f26364454fcc"
+    },
+    {
+      "path": "tool/art_assets/grimoire_belt_v1/male_belt_dark.png",
+      "sha256": "483fa0f32046686258a4fce3eca2c081c2c2c8f7ceed8e9ad7d46f7b0f77ee4c"
+    }
+  ],
+  "book": {
+    "path": "assets/images/questwell_annotated_grimoire_v1.webp",
+    "sha256": "c7d933a8adb7456b332409d76f05ff17bfaa6c70944179a54ddd20ed7c2fecc3",
+    "noGeneratedOrReplacementHands": true
+  },
+  "sourceAssetsVerifiedUnchanged": true,
+  "findings": {
+    "attachment": "PASS: a continuous short leather loop with rivet descends from the waist/belt line into the top of the book on all three reviewed figures. No floating gap or detached trim is visible.",
+    "handPreservation": "PASS: both original relaxed hands remain complete. The book and loop sit inward of the hand silhouettes, with visible clearance from palms, thumbs and fingers. No hand splices, masking or replacement grip appear in these exports.",
+    "scale": "PASS: the 24–26 native pixel book widths read as a small belt-worn volume; the book hangs at the upper thigh and clears the cuff and hand.",
+    "surface": "PASS: the existing purple/gold book art and brown/brass loop are visually consistent with the illustrated wardrobe. The mild clockwise hang is coherent at native and enlarged scales."
+  },
+  "limitations": [
+    "These are offline composites using the widget placement coordinates, not screenshots from a running Flutter build.",
+    "Male review uses the existing business-suit base only; it is not approval of the pending male paper-doll foundation or robe fitting.",
+    "Founder acceptance of the belt accessory presentation is separate from independent visual QA."
+  ],
+  "founderApproval": false
+}

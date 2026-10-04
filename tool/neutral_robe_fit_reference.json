@@ -1,0 +1,201 @@
+{
+  "status": "founder_approved_robe_template_locked_2026_10_03",
+  "revision": "neutral-robe-v11",
+  "bodyType": "neutral",
+  "family": "class_robe",
+  "surface": "rustic_scout_olive_flax_brown",
+  "canvas": {
+    "width": 240,
+    "height": 320,
+    "offset": [
+      0,
+      0
+    ],
+    "runtimeFit": "contain",
+    "runtimeAlignment": "bottom_center"
+  },
+  "body": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+    "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24"
+  },
+  "identity": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+    "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78"
+  },
+  "everydayReference": "tool/neutral_everyday_fit_reference.json",
+  "everyday": {
+    "boots": {
+      "path": "tool/art_assets/neutral_everyday_v2/everyday_boots_neutral_candidate_v2.webp",
+      "sha256": "12ed127e63ba1548f39ebc65ed1cb9385d99cbe9bb0f16ce056295c72cb68130",
+      "alphaSha256": "df38534b11d0a058d359dbd7f28abd782317c013107de50bc000298679831e28",
+      "visibleBounds": {
+        "left": 73,
+        "top": 282,
+        "right": 190,
+        "bottom": 314
+      }
+    },
+    "trousers": {
+      "path": "tool/art_assets/neutral_everyday_v3/everyday_trousers_neutral_candidate_v3.webp",
+      "sha256": "c08a045e586befc45cb0dbfcf6cec72121b47195e4f06ee8fb525aff27caa865",
+      "alphaSha256": "f4888d5c54a2608ba01f14adc6826c71c5eb013d5469a03c33ada1772d934314",
+      "visibleBounds": {
+        "left": 89,
+        "top": 153,
+        "right": 169,
+        "bottom": 287
+      }
+    },
+    "top": {
+      "path": "tool/art_assets/neutral_everyday_v2/everyday_top_neutral_candidate_v2.webp",
+      "sha256": "4c5a4c4e36bffa1c43948a4d3b2805510e7f13abe16415d5ae49e0be4283d25c",
+      "alphaSha256": "67635b6e6a6e07a0d65256f4cc7ac08b5d6de6471a37f0b187859d2f2d579ca0",
+      "visibleBounds": {
+        "left": 83,
+        "top": 79,
+        "right": 164,
+        "bottom": 156
+      }
+    }
+  },
+  "layers": {
+    "front": {
+      "path": "tool/art_assets/neutral_robe_v11/scout_robe_front_neutral_candidate_v11.webp",
+      "sha256": "dea2d75e45975f56049c91d0d17b82e361235ecd17efeda227c9b6f8a85c6e09",
+      "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb"
+    },
+    "rear": {
+      "path": "tool/art_assets/neutral_robe_v11/scout_robe_rear_neutral_candidate_v11.webp",
+      "sha256": "3b87885ad45e811617d6c35388d4358da6e203694ff7046254115cb12769cd40",
+      "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae"
+    },
+    "cuffs": {
+      "path": "tool/art_assets/neutral_robe_v11/scout_robe_cuffs_neutral_candidate_v11.webp",
+      "sha256": "9a7b7b7b23f79c4079a0186f9630f13313a4e62bdbb0bd258381bd970d97b8d0",
+      "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f"
+    },
+    "collar": {
+      "path": "tool/art_assets/neutral_robe_v11/scout_robe_collar_neutral_candidate_v11.webp",
+      "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e",
+      "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e"
+    }
+  },
+  "layerOrder": [
+    "rear",
+    "body",
+    "boots",
+    "trousers",
+    "top",
+    "front",
+    "identity",
+    "collar",
+    "cuffs"
+  ],
+  "registration": {
+    "sourceCanvas": [
+      320,
+      320
+    ],
+    "targetCanvas": [
+      240,
+      320
+    ],
+    "sourceCenterX": 159.5,
+    "targetCenterX": 123,
+    "horizontalScale": 0.875,
+    "verticalKnots": [
+      [
+        0,
+        -40
+      ],
+      [
+        75,
+        44
+      ],
+      [
+        87,
+        61
+      ],
+      [
+        178,
+        163
+      ],
+      [
+        286,
+        287
+      ],
+      [
+        320,
+        326
+      ]
+    ],
+    "sourceInwardCuffWidthScale": 1.2,
+    "outerCuffAnchorCorrection": {
+      "left": 4,
+      "right": -5,
+      "innerAnchors": [
+        93,
+        153
+      ],
+      "blendSourceY": [
+        110,
+        160
+      ]
+    }
+  },
+  "construction": {
+    "drape": "Reduced lower skirt spread with downward folds.",
+    "cuffs": "Inward fullness with original outer wrist anchors. Complete hollow undersides behind wrists; attached facing and edge remain in foreground.",
+    "rear": "Complete central lining, dark inside edges and bottom band behind full body and trousers.",
+    "collar": "Continuous bands tucked under existing hair; collar garment overlays identity shirt pixels. Fixed anatomy is never clipped.",
+    "sampling": "Semantic depth and cloth use identical source coordinates at 4x before layer downsampling; same-plane boundary overlaps prevent seams.",
+    "sidePanels": "Existing side cloth beside the hands moves behind the full body; embroidered facings remain in front of trousers. No body cutout or hand overlay.",
+    "innerCuffJoins": "Image-generated local olive fold/shadow repair restricted to the founder-marked inner junctions. Matching rear cloth closes tiny interior alpha holes under the cuff tips. Foreground layer alpha, hand occlusion and cuff width preserved.",
+    "cuffRims": "Existing complete dark bevel retained in foreground by lowering source cavity curve 1.6 pixels. V10 local joins and backing preserved. No new art or body change."
+  },
+  "variantRule": "The founder-approved v11 template is locked. Reuse all four alpha masks exactly, including every alpha value, and retain registration, drape/fold layout, openings, complete cuff rims, hand clearance, rear-panel depth and layer order. Only colors, patterns and flourishes may vary. Never adjust the locked body, identity or everyday fit. Structural changes require separate founder review.",
+  "verification": "tool/art_assets/neutral_robe_v11/verification.json",
+  "visualReview": "tool/art_assets/neutral_robe_v11/visual_review.json",
+  "sourceRevision": "neutral-robe-v10",
+  "sourceCavityPaths": {
+    "left": "M90 167.6 Q96 159.4 103 163.9 Q111 168.1 119 172.9 L126 190 H85 Z",
+    "right": "M230 167.6 Q224 159.4 217 163.9 Q209 168.1 201 172.9 L194 190 H235 Z"
+  },
+  "approval": {
+    "approvedBy": "Tanya",
+    "localDate": "2026-10-03",
+    "timezone": "America/New_York",
+    "quote": "Better. So, now lock this as the robe template for all robes for neutral avatar. You will build all the other class robes now",
+    "scope": "Neutral robe v11 is the approved geometry and depth template for every neutral class robe. Creation of the remaining class color, pattern and flourish variants is authorized. Each variant retains these exact alpha masks, registration and layer order."
+  },
+  "templateReference": "tool/art_assets/neutral_robe_v11/fit_reference.json",
+  "methodology": "docs/art/PAPER_DOLL_STANDARD.md",
+  "authorizedClassSurfaces": [
+    "scout",
+    "alchemist",
+    "scholar",
+    "guardian",
+    "wanderer"
+  ],
+  "immutableGeometry": {
+    "canvas": true,
+    "registration": true,
+    "alphaValuesOfAllFourLayers": true,
+    "silhouetteAndDrape": true,
+    "neckOpeningAndCollar": true,
+    "shouldersAndSleeves": true,
+    "cuffWidthOpeningRimsAndJoins": true,
+    "waistHipAllowanceAndHem": true,
+    "handClearanceAndDepth": true,
+    "rearPanelAndBandDepth": true,
+    "layerOrder": true
+  },
+  "surfaceVariantReview": "Render each class variant on the exact locked neutral body and everyday clothes. Compare exact alpha equality and asset hashes, then inspect final native and enlarged light/dark composites. Independent visual QA is required before presenting new variants; successful export checks do not confer founder surface approval.",
+  "developmentIntegrationAuthorization": {
+    "authorizedBy": "Tanya",
+    "localDate": "2026-10-03",
+    "timezone": "America/New_York",
+    "quote": "and start pushing to the app",
+    "scope": "Integrate the approved neutral template and new neutral class robe variants into the development app and push the development changes. No merge to flutterflow, production launch or Market/account mutation is authorized by this instruction."
+  }
+}

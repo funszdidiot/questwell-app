@@ -1,0 +1,50 @@
+{
+  "mode": "built-in-imagegen",
+  "usecase": "precise-object-edit",
+  "generatedOriginal": "/workspace/scratch/037df595da3c/generated_images/exec-e9ce9ac6-8037-4ae4-943f-4a2e193aa121.png",
+  "selectedSource": "tool/art_assets/neutral_class_robes_v1/guardian/robe_source.png",
+  "sourceSha256": "afaca1b1a083607d311e0478d4f2ba751572885efa0bf295691c42fcbd248e24",
+  "sourceDimensions": [
+    1254,
+    1254
+  ],
+  "references": [
+    {
+      "path": "tool/art_assets/neutral_class_robes_v1/references/neutral_locked_cloth.png",
+      "role": "immutable geometry edit target",
+      "sha256": "08f56f813894fe1fc39c165287cfb72a8b6fbc4ad5aa6b0c7e2888f78b5fc09a"
+    },
+    {
+      "path": "tool/art_assets/neutral_class_robes_v1/references/guardian_female_surface.png",
+      "role": "Guardian palette and restrained decorations only"
+    }
+  ],
+  "prompt": "prompt.json",
+  "geometryAuthority": "tool/neutral_robe_fit_reference.json",
+  "status": "surface_source_only_not_registered_or_runtime_ready",
+  "observedDrift": {
+    "normalizedCanvas": [
+      320,
+      320
+    ],
+    "targetAlphaBounds": [
+      102,
+      75,
+      225,
+      287
+    ],
+    "sourceAlphaBounds": [
+      100,
+      74,
+      227,
+      289
+    ],
+    "description": "Small scale/contour expansion in generated source: lower skirt approximately 2–3 px wider each side, hem ~2 px lower and collar top ~1 px higher at 320 square. Waist and sleeves mostly within 1–2 px; image-right cuff inward/outer width ~1px different. Gold collar is broader near top. Must use immutable target alpha/depth masks and root's registration, never adopt this generated silhouette."
+  },
+  "visualNotes": [
+    "One image-left upper sleeve shield, four brass fasteners, small image-right chest welt, two lower hip welts and one chevron per lower front panel present.",
+    "No Scout leaf embroidery, body, mannequin, hands, text, watermark or extra front flaps.",
+    "Full coherent gold curved cuff bands with deep burgundy hollow interiors.",
+    "Rich burgundy-red cloth with antique gold trim and deeper burgundy rear lining."
+  ]
+}

@@ -1,0 +1,262 @@
+{
+  "status": "exported_pending_independent_visual_review",
+  "template": "tool/neutral_robe_fit_reference.json",
+  "layers": {
+    "front": {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_neutral_v1.webp",
+      "sha256": "a1ad1beda55d19faa20660a6a7fcda42be4734180ba5fff7f434ae64f05dec43",
+      "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb",
+      "alphaPixelsDifferent": 0
+    },
+    "rear": {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_neutral_v1.webp",
+      "sha256": "daa533f56eaad9a16ca25b24e5db7f1a6521b7b9a304515c6923a7d63bba2ea2",
+      "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae",
+      "alphaPixelsDifferent": 0
+    },
+    "cuffs": {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_neutral_v1.webp",
+      "sha256": "1c3ad1c7865d370ac5bade441311209865ea21c25efc6b5b4f4b30cac4f61e13",
+      "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f",
+      "alphaPixelsDifferent": 0
+    },
+    "collar": {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_collar_neutral_v1.webp",
+      "sha256": "3aff0b861f22de09b4ed0160930abc5bb37fe517af79cdaa950443e534fd7713",
+      "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e",
+      "alphaPixelsDifferent": 0
+    }
+  },
+  "fixedAssetHashChecks": 5,
+  "allFixedAssetsUnchanged": true,
+  "registration": {
+    "method": "inverse_distance_landmark_rgb_warp",
+    "pins": [
+      [
+        109,
+        80,
+        108,
+        80
+      ],
+      [
+        136,
+        80,
+        138,
+        80
+      ],
+      [
+        85,
+        87,
+        83,
+        87
+      ],
+      [
+        160,
+        87,
+        162,
+        87
+      ],
+      [
+        77,
+        105,
+        77,
+        105
+      ],
+      [
+        169,
+        105,
+        169,
+        105
+      ],
+      [
+        98,
+        125,
+        98,
+        125
+      ],
+      [
+        147,
+        125,
+        147,
+        125
+      ],
+      [
+        74,
+        136,
+        74,
+        135
+      ],
+      [
+        172,
+        136,
+        172,
+        135
+      ],
+      [
+        67,
+        178,
+        67,
+        178
+      ],
+      [
+        93,
+        182,
+        93,
+        182
+      ],
+      [
+        153,
+        182,
+        153,
+        182
+      ],
+      [
+        179,
+        178,
+        179,
+        178
+      ],
+      [
+        113,
+        92,
+        113,
+        92
+      ],
+      [
+        115,
+        112,
+        115,
+        112
+      ],
+      [
+        114,
+        137,
+        114,
+        137
+      ],
+      [
+        111,
+        167,
+        111,
+        168
+      ],
+      [
+        108,
+        195,
+        109,
+        195
+      ],
+      [
+        105,
+        220,
+        105,
+        220
+      ],
+      [
+        102,
+        250,
+        102,
+        250
+      ],
+      [
+        101,
+        272,
+        101,
+        272
+      ],
+      [
+        134,
+        92,
+        134,
+        92
+      ],
+      [
+        132,
+        112,
+        132,
+        112
+      ],
+      [
+        133,
+        137,
+        133,
+        137
+      ],
+      [
+        136,
+        167,
+        136,
+        168
+      ],
+      [
+        139,
+        195,
+        138,
+        195
+      ],
+      [
+        141,
+        220,
+        141,
+        220
+      ],
+      [
+        144,
+        250,
+        144,
+        250
+      ],
+      [
+        146,
+        272,
+        146,
+        272
+      ],
+      [
+        63,
+        270,
+        61,
+        271
+      ],
+      [
+        184,
+        270,
+        186,
+        271
+      ],
+      [
+        75,
+        281,
+        73,
+        283
+      ],
+      [
+        102,
+        285,
+        104,
+        287
+      ],
+      [
+        144,
+        285,
+        143,
+        287
+      ],
+      [
+        171,
+        281,
+        173,
+        283
+      ],
+      [
+        123,
+        275,
+        123,
+        277
+      ]
+    ],
+    "immutableAlpha": true,
+    "cuffsNeckTrimAndSleeves": "Exact locked pixels palette mapped for royal blue cloth and silver edging; original geometry and shading structure retained"
+  },
+  "preview": "alchemist_neutral_v1.png"
+}

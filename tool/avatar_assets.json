@@ -857,6 +857,506 @@
           "sha256": "417febfb63cc11a40ad56c75ff7bff7304ab9c6b54e2dd3655dd3038fc9fe73e"
         }
       ]
+    },
+    "neutral_robe_v7": {
+      "art_revision": "neutral-robe-v7",
+      "visual_approval": "founder_rejected_superseded_by_v8",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Whole cuff depth correction on existing registered robe; exact cloth RGBA, central rear panel, approved body/identity/everyday preserved.",
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_robe_v7.cjs",
+          "sha256": "eca0155040e40868539e89e6aac4efe6ab43199cc5ec62fd96f6ed04afc37776"
+        },
+        {
+          "path": "tool/neutral_avatar_fit_reference.json",
+          "sha256": "7c5867788d15fec3ac38ecf7d3bb0f0241720013810679094ad9c10ba8ab2364"
+        },
+        {
+          "path": "tool/neutral_everyday_fit_reference.json",
+          "sha256": "3e7e37a42b055d326ce959113748653ceff067f986c0f069dbecf8b3ffc22ed8"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v7/fit_reference.json",
+          "sha256": "315e2324e740b4d3bb22a90d9feffd20a1295b11e2f9ba00525d8b617d336994"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v7/verification.json",
+          "sha256": "14d5fe20f4806df72bb7d93dea0efdc6e7b57d177d0a81fc536e104499d9db07"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v7/visual_review.json",
+          "sha256": "dff20eacb0510d1cdcc34df6b3af11019d73356c603333a45ccd474c8ae64b58"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v6/robe_source.png",
+          "sha256": "58db4506b7a6a2bae8b799e580a01de6552417eee0307310b532e7046c6b05ff"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v6/prompt.json",
+          "sha256": "dfe866d054c5f2cf9972d88b480edff43329c7fd30e8c2ae6da1864272f59ada"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v6/scout_robe_neutral_candidate_v6.webp",
+          "sha256": "dd63423683d3a8cbe654eee770c78a69222654f248b02910bb38549d04a1df2d"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v6/scout_robe_rear_neutral_candidate_v6.webp",
+          "sha256": "92b41b975c1231b804274e0546ec8e0a7b2fdf8c84b7b70d63c8184064532a0b"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v6/scout_robe_cuff_front_neutral_candidate_v6.webp",
+          "sha256": "a44cff2267b0388f6b3adc9a946e301572abb70f8791b4ca37bd7f522a832c7f"
+        }
+      ],
+      "assets": [
+        {
+          "path": "tool/art_assets/neutral_robe_v7/scout_robe_neutral_candidate_v7.webp",
+          "sha256": "dd63423683d3a8cbe654eee770c78a69222654f248b02910bb38549d04a1df2d"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v7/scout_robe_rear_neutral_candidate_v7.webp",
+          "sha256": "df76e05968f733ba72dbf6f7642c308b375676dcd2d38279b90e45d8ed55a82e"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v7/scout_robe_cuff_front_neutral_candidate_v7.webp",
+          "sha256": "45841210dc3c9102653398278aa0fa60039802499206f2ddedebfbc32aacd141"
+        }
+      ]
+    },
+    "neutral_robe_v8": {
+      "art_revision": "neutral-robe-v8",
+      "visual_approval": "founder_rejected_hand_depth_superseded_by_v9",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Reduced skirt flare, full rear hem behind legs, inward cuff widening with preserved outer anchors, and continuous upper trim on immutable approved body/everyday clothes.",
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_robe_v8.cjs",
+          "sha256": "2d67995412f287bd95e519a0221d3bab62dfe422672d4e64f0fcd3dc99a2fec6"
+        },
+        {
+          "path": "tool/neutral_avatar_fit_reference.json",
+          "sha256": "7c5867788d15fec3ac38ecf7d3bb0f0241720013810679094ad9c10ba8ab2364"
+        },
+        {
+          "path": "tool/neutral_everyday_fit_reference.json",
+          "sha256": "3e7e37a42b055d326ce959113748653ceff067f986c0f069dbecf8b3ffc22ed8"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/robe_repair_source.png",
+          "sha256": "277d7e82af6b005d65e7879a3633e458b2779149dbf07b50ae3a6bb093edfa33"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/prompt.json",
+          "sha256": "734cd58d65e67f16ca8533336ffbd081171ee86e4014cd9d016f65492844ef71"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/robe_edit_reference.png",
+          "sha256": "aa29a8b086ebaebc2ec5074cc8b45b35c9a4504f35148da1341bce26224e0cea"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/fixed_everyday_reference.png",
+          "sha256": "1803e2bcd55279bae77fe49e2a817d53825972c23b36386516cc669d6eadd013"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/female_inward_cuff_reference.png",
+          "sha256": "afe75589f109c79e1f288bfceed3917f611cb5e86b63bb9368e252064125576b"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/fit_reference.json",
+          "sha256": "24076ff062bc3714f33cd0af4d94c04a2d41b74b6c0d13c23815afd0a5879309"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/verification.json",
+          "sha256": "32184f2eb806d8df0b433affd62318e9a699bc25c3fd064ca7762ec177345555"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/visual_review.json",
+          "sha256": "31fdc8cff14fc0b8644ddb192dff6dc86ba91bfb1a0385cb83c7084dca1817c0"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/provenance.json",
+          "sha256": "ee77af551d8252f33d611b67d985803cbf53e2e06701e2176010dc13e9b9e6f2"
+        }
+      ],
+      "assets": [
+        {
+          "path": "tool/art_assets/neutral_robe_v8/scout_robe_front_neutral_candidate_v8.webp",
+          "sha256": "cce3af391c8175d32cc1b226d6db0b6d81bd02ebdd7880eb1cecbd9841a6ed9c"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/scout_robe_rear_neutral_candidate_v8.webp",
+          "sha256": "bcaa1487d16fe3d03c59bcc1c44fb1a1e0af312e5c636f6a888b708fdd33285c"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/scout_robe_cuffs_neutral_candidate_v8.webp",
+          "sha256": "63abe9f756e73117763bda23c43c501fb049265464912bb61d90068797f02266"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/scout_robe_collar_neutral_candidate_v8.webp",
+          "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+        }
+      ]
+    },
+    "neutral_robe_v9": {
+      "art_revision": "neutral-robe-v9",
+      "visual_approval": "superseded_by_local_inner_join_revision_v10",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Main side-cloth depth correction restores complete fixed hands; widened cuffs and remaining v8 geometry retained.",
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_robe_v9.cjs",
+          "sha256": "3788adb91b374707c1cf6759c3c31b40d401495f99eb13ad070dcce59a97a290"
+        },
+        {
+          "path": "tool/neutral_avatar_fit_reference.json",
+          "sha256": "7c5867788d15fec3ac38ecf7d3bb0f0241720013810679094ad9c10ba8ab2364"
+        },
+        {
+          "path": "tool/neutral_everyday_fit_reference.json",
+          "sha256": "3e7e37a42b055d326ce959113748653ceff067f986c0f069dbecf8b3ffc22ed8"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v9/fit_reference.json",
+          "sha256": "9531bddf65ae86ba9bd7f1e0020ed73fa2f231e4da91a7601a4e63a7dae313c4"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v9/verification.json",
+          "sha256": "19a57281ab319353cac237d486c70331da6e913e5c4ded93092158d9fbcb09b0"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v9/visual_review.json",
+          "sha256": "c43ce49fa0daee3699dc18602b109d67ae44a99d674e9e9e6ba8b11b76a61acf"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/scout_robe_front_neutral_candidate_v8.webp",
+          "sha256": "cce3af391c8175d32cc1b226d6db0b6d81bd02ebdd7880eb1cecbd9841a6ed9c"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/scout_robe_rear_neutral_candidate_v8.webp",
+          "sha256": "bcaa1487d16fe3d03c59bcc1c44fb1a1e0af312e5c636f6a888b708fdd33285c"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/scout_robe_cuffs_neutral_candidate_v8.webp",
+          "sha256": "63abe9f756e73117763bda23c43c501fb049265464912bb61d90068797f02266"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/scout_robe_collar_neutral_candidate_v8.webp",
+          "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+        }
+      ],
+      "assets": [
+        {
+          "path": "tool/art_assets/neutral_robe_v9/scout_robe_front_neutral_candidate_v9.webp",
+          "sha256": "187d4ee2e05d44f83effd3ab9b4d120ebb8efc90dcf18ed56a836e9c6d13339a"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v9/scout_robe_rear_neutral_candidate_v9.webp",
+          "sha256": "480ddf4897351ac7610740882628749f511009626b15df8211d7692c27663265"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v9/scout_robe_cuffs_neutral_candidate_v9.webp",
+          "sha256": "63abe9f756e73117763bda23c43c501fb049265464912bb61d90068797f02266"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v9/scout_robe_collar_neutral_candidate_v9.webp",
+          "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+        }
+      ]
+    },
+    "neutral_robe_v10": {
+      "art_revision": "neutral-robe-v10",
+      "visual_approval": "superseded_by_complete_cuff_rims_v11",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Two marked inner cuff joins repaired; fixed avatar and all other visible fit retained.",
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_robe_v10.cjs",
+          "sha256": "1576b2b3cb388db6a935ccd771b6362801d86ccfc59f230574d1e9fb8e714278"
+        },
+        {
+          "path": "tool/neutral_avatar_fit_reference.json",
+          "sha256": "7c5867788d15fec3ac38ecf7d3bb0f0241720013810679094ad9c10ba8ab2364"
+        },
+        {
+          "path": "tool/neutral_everyday_fit_reference.json",
+          "sha256": "3e7e37a42b055d326ce959113748653ceff067f986c0f069dbecf8b3ffc22ed8"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/join_repair_source.png",
+          "sha256": "233ebb3f9332f6604144501e0f0bd38a99bd820be326225eb2057a9e26d71b27"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/prompt.json",
+          "sha256": "cdee875fd1e3fd7e1bdb7fe9e2240495e2963206c93b1edeced1a2bd10028128"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/founder_markup.png",
+          "sha256": "84e50efc25e901d9af0ee8f60764db6fed3e74b99f849327b7205aacd94c5c72"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/cloth_join_edit_target.png",
+          "sha256": "1d006e84bc729d25bab66cf95ba701ff1dacc638e203d54a897f3f0be13df60c"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/fixed_body_fit_reference.png",
+          "sha256": "3b08159f8d337e78a63e201a2cfe0c7855e86e9d1e2514a7932872a06df66e48"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/fit_reference.json",
+          "sha256": "ff6b1b04aa41873eeb15ad13dab85f4d06861b5bc06008f96b949631fac4672e"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/verification.json",
+          "sha256": "cd45d10a88e0d5ddd415080f68343b22c26322d3a04ef9b8ae36f55049b8970c"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/visual_review.json",
+          "sha256": "18fa9d43867b5223ec093db2c6c09c6091f775ba1482d5251565e86d1fadb0ab"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/provenance.json",
+          "sha256": "7c5072c83af9092e3c6dcbc4f4b830e541ab2dbda1e225679798bd63afe38006"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v9/scout_robe_front_neutral_candidate_v9.webp",
+          "sha256": "187d4ee2e05d44f83effd3ab9b4d120ebb8efc90dcf18ed56a836e9c6d13339a"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v9/scout_robe_rear_neutral_candidate_v9.webp",
+          "sha256": "480ddf4897351ac7610740882628749f511009626b15df8211d7692c27663265"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v9/scout_robe_cuffs_neutral_candidate_v9.webp",
+          "sha256": "63abe9f756e73117763bda23c43c501fb049265464912bb61d90068797f02266"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v9/scout_robe_collar_neutral_candidate_v9.webp",
+          "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+        }
+      ],
+      "assets": [
+        {
+          "path": "tool/art_assets/neutral_robe_v10/scout_robe_front_neutral_candidate_v10.webp",
+          "sha256": "dea2d75e45975f56049c91d0d17b82e361235ecd17efeda227c9b6f8a85c6e09"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/scout_robe_rear_neutral_candidate_v10.webp",
+          "sha256": "262b8d395925e26871d67d8e0afe60d74154247c808b84c56a577dbd9967a6dd"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/scout_robe_cuffs_neutral_candidate_v10.webp",
+          "sha256": "110aa6fc4e0a319b28e574d7f7cd8a2c19eaa4a5f00c85a24abbfe9de944a442"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/scout_robe_collar_neutral_candidate_v10.webp",
+          "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+        }
+      ]
+    },
+    "scholar_neutral_v1": {
+      "art_revision": "scholar-neutral-v1",
+      "visual_approval": "independent_visual_qa_passed_founder_surface_review_pending",
+      "geometry_approval": "founder_approved_neutral_robe_v11",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Class color/pattern surface on the exact four approved neutral robe alpha masks; development integration authorized.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_v1.webp",
+          "sha256": "daf59ac8cf66885d6b15eeeae29a6e75ef89be9796691399977e3e8e8b277adf"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_neutral_v1.webp",
+          "sha256": "d4f783dbf2519e651c1d67ce63f3fcec14692f177e22ded99e544202678f4f7f"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_cuff_front_neutral_v1.webp",
+          "sha256": "4e095c56351ebc3edacdd3360fc661e728e1a64f6df34e10ffb9147e30116c95"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_collar_neutral_v1.webp",
+          "sha256": "f2b9cf1c6b1b6665eea149124c680a03362ac7e4b0c2b2e29f500691e0a24742"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/neutral_robe_fit_reference.json",
+          "sha256": "ec1d09544d684ef20ee566bc4a2fda577562fefa8e58780f3f772dcd5ab5cc9d"
+        },
+        {
+          "path": "tool/export_scholar_neutral_v1.cjs",
+          "sha256": "a56c4b0e8c923a4ce789b819fa814cd07fa2423fcdac53ca037213f9ac2e6a64"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/scholar/robe_source.png",
+          "sha256": "c9c26d8f31e0fc7ea5525a244cbfc7f488745c815da4d40603f39e96f1c55e98"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/scholar/prompt.json",
+          "sha256": "e82e8b59c92dac3b63aaf22fabd558a091c583bdb6fd9f10f480f6f9af1200c0"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/scholar/independent_visual_review.json",
+          "sha256": "f280ecb764cc55c2dc5f9ab6b0f92cd990e1a7c181638e9cc480dbd7e0bfa5da"
+        }
+      ]
+    },
+    "alchemist_neutral_v1": {
+      "art_revision": "alchemist-neutral-v1",
+      "visual_approval": "independent_visual_qa_passed_founder_surface_review_pending",
+      "geometry_approval": "founder_approved_neutral_robe_v11",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Class color/pattern surface on the exact four approved neutral robe alpha masks; development integration authorized.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_neutral_v1.webp",
+          "sha256": "a1ad1beda55d19faa20660a6a7fcda42be4734180ba5fff7f434ae64f05dec43"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_neutral_v1.webp",
+          "sha256": "daa533f56eaad9a16ca25b24e5db7f1a6521b7b9a304515c6923a7d63bba2ea2"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_neutral_v1.webp",
+          "sha256": "1c3ad1c7865d370ac5bade441311209865ea21c25efc6b5b4f4b30cac4f61e13"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_collar_neutral_v1.webp",
+          "sha256": "3aff0b861f22de09b4ed0160930abc5bb37fe517af79cdaa950443e534fd7713"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/neutral_robe_fit_reference.json",
+          "sha256": "ec1d09544d684ef20ee566bc4a2fda577562fefa8e58780f3f772dcd5ab5cc9d"
+        },
+        {
+          "path": "tool/export_alchemist_neutral_v1.cjs",
+          "sha256": "aed443c4b7c48a0016e22a43ce26f021ff8df0a53217b4a71abcbc0bd338f765"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/alchemist/robe_source.png",
+          "sha256": "7393b2d4433d39a713fb138fccc2d2acb9f682a053dec3aae0a6647186d8f527"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/alchemist/prompt.json",
+          "sha256": "de527f284d00b5053cc78ca28393fc361e1002e3f6c146db7f26f5409bf0969e"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/alchemist/independent_visual_review.json",
+          "sha256": "96e7ba9e184306741e15cd826ba0a056defb55c4951c93f723aba496e1a4342e"
+        }
+      ]
+    },
+    "guardian_neutral_v1": {
+      "art_revision": "guardian-neutral-v1",
+      "visual_approval": "independent_visual_qa_passed_founder_surface_review_pending",
+      "geometry_approval": "founder_approved_neutral_robe_v11",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Class color/pattern surface on the exact four approved neutral robe alpha masks; development integration authorized.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_neutral_v1.webp",
+          "sha256": "7ed1ef7cb9bd1dfece8b4c5ce1d78384217b5da75737468f79eb9cb7b29e0afd"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_neutral_v1.webp",
+          "sha256": "264a5864c59fe62121c27c652d4798e3cd7da26ad6901b5498ddbe12f2239009"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_cuff_front_neutral_v1.webp",
+          "sha256": "8235cfbedeb2240d7b5f084d03a8806570c28408aad59be9388788fa14c94bca"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_collar_neutral_v1.webp",
+          "sha256": "84e03d1938dbe9097c08b22d3a1dcdd355ba5dba43173978911336a013538bcc"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/neutral_robe_fit_reference.json",
+          "sha256": "ec1d09544d684ef20ee566bc4a2fda577562fefa8e58780f3f772dcd5ab5cc9d"
+        },
+        {
+          "path": "tool/export_guardian_neutral_v1.cjs",
+          "sha256": "5c2b5c3f64ec268a7ee41cce3b5a3fd5845fd996d75c67fb695a3ee8443d23cc"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/guardian/robe_source.png",
+          "sha256": "afaca1b1a083607d311e0478d4f2ba751572885efa0bf295691c42fcbd248e24"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/guardian/prompt.json",
+          "sha256": "b1539b56576a0421de60a5f7e4b621e6298b4d6f4b71f46121cc530a4e9330be"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/guardian/independent_visual_review.json",
+          "sha256": "4258e71bbc4b7a3ba7faff510daaadd55926a8b87690e4aa01bd0f4b13e463a2"
+        }
+      ]
+    },
+    "wanderer_neutral_v1": {
+      "art_revision": "wanderer-neutral-v1",
+      "visual_approval": "independent_visual_qa_passed_founder_surface_review_pending",
+      "geometry_approval": "founder_approved_neutral_robe_v11",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Class color/pattern surface on the exact four approved neutral robe alpha masks; development integration authorized.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_neutral_v1.webp",
+          "sha256": "24c77196a27da4977a8b66e92ec4c6e1d1a4ac3e7bf25fa0bb0cff53845ea516"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_neutral_v1.webp",
+          "sha256": "9ac51aed8c301c3842382826487d703134e863377c3ced099393c11278b14f24"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuff_front_neutral_v1.webp",
+          "sha256": "1a48dc2466614926f2445f03a653c947e0cece92729e64c947511de812a70fff"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_collar_neutral_v1.webp",
+          "sha256": "97bdf9aeaa26bb9839bc50aa7eed3a9bf5c74acef179810fc21129cee763eb31"
+        }
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/neutral_robe_fit_reference.json",
+          "sha256": "ec1d09544d684ef20ee566bc4a2fda577562fefa8e58780f3f772dcd5ab5cc9d"
+        },
+        {
+          "path": "tool/export_wanderer_neutral_v1.cjs",
+          "sha256": "dcd54d4db4d1ffd109931c18b067024eab95d92802bfd5cb7a084636ee5e7633"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/wanderer/robe_source.png",
+          "sha256": "1482b73b9aa009c22c2ec1f7fd9bb5d0144bc07bcfd9d871934a46fa7db899bc"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/wanderer/prompt.json",
+          "sha256": "a0c77a995f809db27790995fe22e5a3f49ccfd8546ceb3a3f8e007b0e90b1a5b"
+        },
+        {
+          "path": "tool/art_assets/neutral_class_robes_v1/wanderer/independent_visual_review.json",
+          "sha256": "7df3b643ba99ecd429936551ec4b933a2d9ba3f0113c143d8f02612df6ea0c7a"
+        }
+      ]
     }
   },
   "approved_layers": {
@@ -1091,7 +1591,7 @@
           "sha256": "afcdf4cff0ff0d0d15b5c3c63faf302651be642230c6dd34bfc9d7a32d0eecaf"
         },
         {
-          "path": "tool/neutral_avatar_fit_reference.json",
+          "path": "tool/art_assets/neutral_paper_doll_v1/fit_reference_locked_v1.json",
           "sha256": "2569f7ed72736c452cea58960207e81bea38da3108d4bbf5c2d0cce98f8abc53"
         },
         {
@@ -1111,6 +1611,327 @@
         {
           "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v1.webp",
           "sha256": "78069f75eba2e92e35fa28e0de1d226eff26cc168dfc997153d774bab453fb66"
+        }
+      ],
+      "superseded_by": "neutral_paper_doll_v2"
+    },
+    "neutral_paper_doll_v2": {
+      "visual_approval": "founder_authorized_repair_and_lock",
+      "art_revision": "neutral-paper-doll-v2",
+      "bodies": [
+        "neutral"
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_neck_v2.cjs",
+          "sha256": "3b777c656d39f3369f3eadb748024628085d07608f09d9a17a7051961eabb5f7"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v2/fit_reference_locked_v2.json",
+          "sha256": "0eb34b073dd5916ec964048a1380f4dc3b0ba0af7f9509e92bfd8f45b73fb73e"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v2/neck_repair_source.png",
+          "sha256": "8d5ec4c314334a110fa90a30706417b2c76b0db07955c080b15b5f25e473050a"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v2/prompt.json",
+          "sha256": "773248aebe93e5572d5d55e722673955b5c304c9af87e301301d8b6ede114a69"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v2/verification.json",
+          "sha256": "d06ddc60181a9cfbc9f7a827f4ad835e2f52693e7ebc685d2050aed29d6bff9b"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v2.webp",
+          "sha256": "4c816fcb5e57ad0041bb1c032212d7a8a4070d8f2ab85e4032f77b28f9a1c636"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v2.webp",
+          "sha256": "af280025da32ee4d33691bdcda544cb0125a63e41ec5774db0681e2ef324ae60"
+        }
+      ],
+      "superseded_by": "neutral_paper_doll_v3"
+    },
+    "neutral_paper_doll_v3": {
+      "visual_approval": "rejected_by_founder_for_join_fragments_and_blending",
+      "art_revision": "neutral-paper-doll-v3",
+      "bodies": [
+        "neutral"
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_alignment_v3.cjs",
+          "sha256": "2ee75704c4f5c4d27e955de57aa98a4fab800aab4ef01d04d8c1e2c6263573d1"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v3/fit_reference_locked_v3.json",
+          "sha256": "d61d04f1889238a301fb395593593db6274065ca6a54d7425126d10517b9d3f9"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v3/selected_edit_source.png",
+          "sha256": "8d5ec4c314334a110fa90a30706417b2c76b0db07955c080b15b5f25e473050a"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v3/alignment_repair_source.png",
+          "sha256": "9b97ec23c29d35d620dcfc54d3962aa42c1ba2738149b0ff5e8548ed980c5cd5"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v3/prompt.json",
+          "sha256": "15ab7ff0a463e5833726cc95ed78bb50377ec6db67336d5d2367895d5b362b81"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v3/verification.json",
+          "sha256": "042f31bac884c7d64711bf524589eb7781f98aeb5d632eef9451369a6e93c32a"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v3.webp",
+          "sha256": "0601c52466c328765c0520e82a6b01fd8712164d8e7d6baa58a26c06b1f49146"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v3.webp",
+          "sha256": "4d931d137020813c4c66ee2d6930589ea40ba8f6df60c3692c809d249468ab26"
+        }
+      ],
+      "superseded_by": "neutral_paper_doll_v4"
+    },
+    "neutral_paper_doll_v4": {
+      "visual_approval": "founder_approved_and_locked_2026-10-03",
+      "art_revision": "neutral-paper-doll-v4",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Approved continuous-join neutral foundation. Body and matching identity immutable for all future garments.",
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_join_v4.cjs",
+          "sha256": "47e805b36b7318496bb3f63cdf749c85b39625fdb35edb5281495749641203a0"
+        },
+        {
+          "path": "tool/neutral_avatar_fit_reference.json",
+          "sha256": "7c5867788d15fec3ac38ecf7d3bb0f0241720013810679094ad9c10ba8ab2364"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v4/join_edit_reference.png",
+          "sha256": "2eda199429a6e0ee70fe8f8a03d3ecc2f86273eb0ac27735e75dbf9039d62249"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v4/join_repair_source.png",
+          "sha256": "a8eaade256a24dacead1f58419bf8a09a4bfa4293d07c84aad6e4f07acdb13ec"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v4/prompt.json",
+          "sha256": "34105ae0ca782df49765709ec8d23c5a8b472f307578ff70e9f4a412bb09fda9"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v4/repair_mask.png",
+          "sha256": "d83d733c11eaf51a9ca97f42bcf47a7de2b0d0752eac5a9d71f27fa82ed3496d"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v4/verification.json",
+          "sha256": "9c176030dcf130a150c1357481ad8b8c36056a05dffe857d0b9a479598653d03"
+        },
+        {
+          "path": "tool/art_assets/neutral_paper_doll_v4/visual_review.json",
+          "sha256": "e2a44903d439115456b4c916df4ff4f1b9404cb2aa7810b68d7f01d2ce1ad7b2"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+          "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+          "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78"
+        }
+      ]
+    },
+    "neutral_everyday_v3": {
+      "art_revision": "neutral-everyday-v3",
+      "visual_approval": "founder_approved_and_locked_2026-10-03",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Approved neutral everyday fit on immutable neutral v4 body; garment silhouettes, openings, registration and depth order are locked.",
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_everyday_v3.cjs",
+          "sha256": "968fa132e183622cbe5832cf0cb5ec20a45949209ba5c8c8f693ee81d9b84ac7"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v3/fit_reference.json",
+          "sha256": "3e7e37a42b055d326ce959113748653ceff067f986c0f069dbecf8b3ffc22ed8"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v3/waistband_edit_reference.png",
+          "sha256": "40e880824ffe7d6e90509b7dafbfe262beaf24c24be3f32f4f52ae5b64b1b64b"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v3/female_waistband_style_reference.png",
+          "sha256": "4e83b8c094817b0286ad16a4bdda4d02e8a5859f6bf3f767abaec3921f43f3a3"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v3/waistband_repair_source.png",
+          "sha256": "65e5f0982c5279502543965e9a8ea1325e5d04e3090e56311788719fd94cf5ce"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v3/prompt.json",
+          "sha256": "3881dbcba55f9dfdb58098d6e520ed9ad3745d03e9f33b354c2df554f1eba071"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v3/waistband_repair_mask.png",
+          "sha256": "58ed5c3a352809b01bdd3abebe5ea827df26373707d7f095fddcb23d7c352a57"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v3/verification.json",
+          "sha256": "513a09d515788805907c8799038195de72255080b219fc9bd8d6ae23fa73317b"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v3/visual_review.json",
+          "sha256": "25bd0a18c61ce8aa2fba3aabcdb183cff4d15352e8ec6fe58eaba9386cd63daa"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v2/everyday_trousers_neutral_candidate_v2.webp",
+          "sha256": "4364cf3369674baa3b342b61ff9ae8fce31a94b7caa0f2de06d74c011009f950"
+        },
+        {
+          "path": "tool/neutral_everyday_fit_reference.json",
+          "sha256": "3e7e37a42b055d326ce959113748653ceff067f986c0f069dbecf8b3ffc22ed8"
+        }
+      ],
+      "assets": [
+        {
+          "path": "tool/art_assets/neutral_everyday_v2/everyday_boots_neutral_candidate_v2.webp",
+          "sha256": "12ed127e63ba1548f39ebc65ed1cb9385d99cbe9bb0f16ce056295c72cb68130"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v3/everyday_trousers_neutral_candidate_v3.webp",
+          "sha256": "c08a045e586befc45cb0dbfcf6cec72121b47195e4f06ee8fb525aff27caa865"
+        },
+        {
+          "path": "tool/art_assets/neutral_everyday_v2/everyday_top_neutral_candidate_v2.webp",
+          "sha256": "4c5a4c4e36bffa1c43948a4d3b2805510e7f13abe16415d5ae49e0be4283d25c"
+        },
+        {
+          "path": "assets/images/questwell/avatar/everyday_boots_neutral_v3.webp",
+          "sha256": "12ed127e63ba1548f39ebc65ed1cb9385d99cbe9bb0f16ce056295c72cb68130"
+        },
+        {
+          "path": "assets/images/questwell/avatar/everyday_trousers_neutral_v3.webp",
+          "sha256": "c08a045e586befc45cb0dbfcf6cec72121b47195e4f06ee8fb525aff27caa865"
+        },
+        {
+          "path": "assets/images/questwell/avatar/everyday_top_neutral_v3.webp",
+          "sha256": "4c5a4c4e36bffa1c43948a4d3b2805510e7f13abe16415d5ae49e0be4283d25c"
+        }
+      ]
+    },
+    "neutral_robe_v11": {
+      "art_revision": "neutral-robe-v11",
+      "visual_approval": "founder_approved_and_locked_2026-10-03",
+      "bodies": [
+        "neutral"
+      ],
+      "description": "Canonical neutral robe geometry; all class surfaces preserve the exact four alpha masks and fixed body.",
+      "fit_inputs": [
+        {
+          "path": "tool/export_neutral_robe_v11.cjs",
+          "sha256": "4c3e5442049f9f79dcb2e576915f4ce40083314950953e5bb9f23443dae39140"
+        },
+        {
+          "path": "tool/neutral_avatar_fit_reference.json",
+          "sha256": "7c5867788d15fec3ac38ecf7d3bb0f0241720013810679094ad9c10ba8ab2364"
+        },
+        {
+          "path": "tool/neutral_everyday_fit_reference.json",
+          "sha256": "3e7e37a42b055d326ce959113748653ceff067f986c0f069dbecf8b3ffc22ed8"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/robe_repair_source.png",
+          "sha256": "277d7e82af6b005d65e7879a3633e458b2779149dbf07b50ae3a6bb093edfa33"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/scout_robe_cuffs_neutral_candidate_v8.webp",
+          "sha256": "63abe9f756e73117763bda23c43c501fb049265464912bb61d90068797f02266"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v8/scout_robe_rear_neutral_candidate_v8.webp",
+          "sha256": "bcaa1487d16fe3d03c59bcc1c44fb1a1e0af312e5c636f6a888b708fdd33285c"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v11/founder_markup.png",
+          "sha256": "12e93b409bc63ec084f599feb4079c4f2aa7d2813111f236dbc09dd7709d7f35"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v11/fit_reference.json",
+          "sha256": "81b6b82b66c1f1c0fe3c3ba7c0d81211ff5dd4109cded9b90a291807aff88b7f"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v11/verification.json",
+          "sha256": "9a14e447596d0e1d24b782bdb505247b404f6c097ab4a92913a1579ac3bbde39"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v11/visual_review.json",
+          "sha256": "403c092c37336a1e09070a24ad2dcce0c6a3831ddd661ee9ef5a1a48996ac1b5"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/scout_robe_front_neutral_candidate_v10.webp",
+          "sha256": "dea2d75e45975f56049c91d0d17b82e361235ecd17efeda227c9b6f8a85c6e09"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/scout_robe_rear_neutral_candidate_v10.webp",
+          "sha256": "262b8d395925e26871d67d8e0afe60d74154247c808b84c56a577dbd9967a6dd"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/scout_robe_cuffs_neutral_candidate_v10.webp",
+          "sha256": "110aa6fc4e0a319b28e574d7f7cd8a2c19eaa4a5f00c85a24abbfe9de944a442"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v10/scout_robe_collar_neutral_candidate_v10.webp",
+          "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+        },
+        {
+          "path": "tool/neutral_robe_fit_reference.json",
+          "sha256": "ec1d09544d684ef20ee566bc4a2fda577562fefa8e58780f3f772dcd5ab5cc9d"
+        }
+      ],
+      "assets": [
+        {
+          "path": "tool/art_assets/neutral_robe_v11/scout_robe_front_neutral_candidate_v11.webp",
+          "sha256": "dea2d75e45975f56049c91d0d17b82e361235ecd17efeda227c9b6f8a85c6e09"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v11/scout_robe_rear_neutral_candidate_v11.webp",
+          "sha256": "3b87885ad45e811617d6c35388d4358da6e203694ff7046254115cb12769cd40"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v11/scout_robe_cuffs_neutral_candidate_v11.webp",
+          "sha256": "9a7b7b7b23f79c4079a0186f9630f13313a4e62bdbb0bd258381bd970d97b8d0"
+        },
+        {
+          "path": "tool/art_assets/neutral_robe_v11/scout_robe_collar_neutral_candidate_v11.webp",
+          "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_robe_neutral_v1.webp",
+          "sha256": "dea2d75e45975f56049c91d0d17b82e361235ecd17efeda227c9b6f8a85c6e09"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_neutral_v1.webp",
+          "sha256": "3b87885ad45e811617d6c35388d4358da6e203694ff7046254115cb12769cd40"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_robe_cuff_front_neutral_v1.webp",
+          "sha256": "9a7b7b7b23f79c4079a0186f9630f13313a4e62bdbb0bd258381bd970d97b8d0"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_robe_collar_neutral_v1.webp",
+          "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
         }
       ]
     }

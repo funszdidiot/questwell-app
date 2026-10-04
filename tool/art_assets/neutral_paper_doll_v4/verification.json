@@ -1,0 +1,31 @@
+{
+  "repair": "continuous_contour_join",
+  "canvas": [
+    240,
+    320
+  ],
+  "changedVisibleOrAlphaPixels": 865,
+  "changedBounds": {
+    "left": 92,
+    "top": 62,
+    "right": 152,
+    "bottom": 83
+  },
+  "unchangedBodyFromY": 84,
+  "bodyVisibleOrAlphaChanges": 0,
+  "outsideRepairMaskChanges": 0,
+  "centralFaceChanges": 0,
+  "chinCenterNativeX": 122.5,
+  "neckBaseCenterNativeX": 123,
+  "baseSha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+  "identitySha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+  "source": "join_repair_source.png",
+  "reference": "join_edit_reference.png",
+  "referenceCrop": {
+    "left": 86,
+    "top": 35,
+    "width": 80,
+    "height": 80
+  },
+  "visualAcceptance": "recorded_separately_in_visual_review.json"
+}

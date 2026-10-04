@@ -1,0 +1,16 @@
+{
+  "usecase": "precise-object-edit",
+  "mode": "built_in",
+  "transparent_background": true,
+  "reference_roles": [
+    {
+      "path": "/workspace/scratch/037df595da3c/questwell-review/tool/art_assets/neutral_class_robes_v1/references/neutral_locked_cloth.png",
+      "role": "edit_target_immutable_geometry"
+    },
+    {
+      "path": "/workspace/scratch/037df595da3c/questwell-review/tool/art_assets/neutral_class_robes_v1/references/wanderer_female_surface.png",
+      "role": "surface_style_only"
+    }
+  ],
+  "prompt": "Use case: precise-object-edit.\nAsset type: Questwell game paper-doll robe, transparent garment-only surface variant.\nInput image 1 is the EDIT TARGET: the approved neutral robe. Its entire geometry, exact position, scale, frame margins, neck loop and opening, shoulders, sleeves, inward-wide cuff openings and complete curved rims, natural skirt drape, pockets, central rear lining panel and hem are LOCKED. Input image 2 is STYLE REFERENCE ONLY: existing Wanderer female robe, for palette and small decorative motifs, never for geometry or proportions.\nPrimary request: repaint ONLY the surface of image 1 into the Wanderer class design. Rich tobacco-brown travel cloth; aged copper-gold trim following EXACTLY the target trim paths; muted warm ochre-brown lining. Remove ALL Scout leaf and floral embroidery and replace with clean brown cloth. Add one restrained four-point compass-star embroidered in warm aged gold on each upper sleeve and one at the bottom of each front panel, matching image 2 motifs. Add exactly four small brass fasteners, two on either side of the upper waist opening. Keep the two practical lower pockets at the target's existing positions, subtly brass trimmed.\nStyle: same softly shaded, crisp outlined illustrated fantasy garment style as the references, visibly woven travel cloth, coherent existing fold shading, polished complete cuff rims.\nSTRICT invariants: Preserve image 1 silhouette and every garment boundary and fold registration. Do not make the female reference silhouette. Do not shift, expand, shrink, crop, rotate, rescale or reframe the robe. Preserve the inward cuff width, same hollow openings, curved edges and sleeve length. Preserve full central rear panel and lower border. Preserve target neck loop. Preserve exactly the same transparent canvas and placement, with empty upper margin. This is paint on the existing garment, not a redesign.\nAvoid: no blue lining, no leaves, no flowers, no extra inner flaps, no extra panels, no new geometry, no belt, cape, scarf, hood, weapons, text, logo, watermark, mannequins, person, body, head, arms or hands. Output only one full robe on real transparent background."
+}

@@ -27,10 +27,18 @@ void main() {
     await tester.pumpWidget(const MediaQuery(data: MediaQueryData(disableAnimations: true),
       child: MobileReviewApp(initialScreen: 'Adventurer')));
     await tester.pumpAndSettle();
-    await reveal(tester, 'Male');
-    await tester.tap(find.widgetWithText(ChoiceChip,'Male')); await tester.pumpAndSettle();
-    await reveal(tester, 'Guardian');
-    await tester.tap(find.widgetWithText(ChoiceChip,'Guardian')); await tester.pumpAndSettle();
+    await reveal(tester, 'Edit Adventurer');
+    await tester.tap(find.widgetWithText(OutlinedButton, 'Edit Adventurer'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Male'));
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Male'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Guardian'));
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Guardian'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.widgetWithText(FilledButton, 'Done'));
+    await tester.tap(find.widgetWithText(FilledButton, 'Done'));
+    await tester.pumpAndSettle();
     await tester.tap(nav('Hearth')); await tester.pumpAndSettle();
     final scene = tester.widget<QuestwellHearthPixelScene>(find.byType(QuestwellHearthPixelScene));
     expect(scene.archetype, 'guardian'); expect(scene.avatarBodyType, 'male');
@@ -43,8 +51,15 @@ void main() {
     await tester.pumpWidget(const MediaQuery(data: MediaQueryData(disableAnimations: true),
       child: MobileReviewApp(initialScreen: 'Adventurer', masteryPreview: true)));
     await tester.pumpAndSettle();
-    await reveal(tester, 'Guardian');
-    await tester.tap(find.widgetWithText(ChoiceChip,'Guardian')); await tester.pumpAndSettle();
+    await reveal(tester, 'Edit Adventurer');
+    await tester.tap(find.widgetWithText(OutlinedButton, 'Edit Adventurer'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Guardian'));
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Guardian'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.widgetWithText(FilledButton, 'Done'));
+    await tester.tap(find.widgetWithText(FilledButton, 'Done'));
+    await tester.pumpAndSettle();
     await reveal(tester, 'Claim mastery relic');
     await tester.tap(find.text('Claim mastery relic')); await tester.pumpAndSettle();
     await reveal(tester, 'Place relic in Hearth');
@@ -70,7 +85,8 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     for (final entry in QuestwellMasteryRelic.slugs.entries) {
       expect(QuestwellEquipmentPolicy.isReady(entry.value,'room'), isTrue);
-      expect(QuestwellEquipmentPolicy.isReady(entry.value,'hands'), isFalse);
+      expect(QuestwellEquipmentPolicy.isReady(entry.value,'hands'), isTrue,
+        reason: 'Relic placement categories come from the catalog, not renderer readiness.');
       for (final slot in ['left','right','front','mantel','bookshelf_top']) {
         await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellHearthPixelScene(
           archetype: entry.key, height: 342, equippedSlugs: {'room:$slot':entry.value, if (slot == 'bookshelf_top') 'room:left':'walnut-bookshelf'}))));

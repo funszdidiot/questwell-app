@@ -1,0 +1,258 @@
+{
+  "status": "exported_pending_independent_visual_review",
+  "template": "neutral-robe-v11",
+  "landmarks": [
+    [
+      163,
+      75,
+      163,
+      74
+    ],
+    [
+      151,
+      81,
+      150,
+      81
+    ],
+    [
+      175,
+      81,
+      176,
+      81
+    ],
+    [
+      125,
+      87,
+      124,
+      87
+    ],
+    [
+      199,
+      87,
+      199,
+      87
+    ],
+    [
+      203,
+      94,
+      203,
+      94
+    ],
+    [
+      205,
+      105,
+      205,
+      105
+    ],
+    [
+      155,
+      109,
+      155,
+      109
+    ],
+    [
+      172,
+      109,
+      172,
+      109
+    ],
+    [
+      118,
+      132,
+      119,
+      133
+    ],
+    [
+      208,
+      132,
+      208,
+      133
+    ],
+    [
+      155,
+      141,
+      155,
+      142
+    ],
+    [
+      172,
+      141,
+      172,
+      142
+    ],
+    [
+      135,
+      159,
+      136,
+      158
+    ],
+    [
+      191,
+      159,
+      191,
+      158
+    ],
+    [
+      109,
+      174,
+      108,
+      173
+    ],
+    [
+      129,
+      181,
+      129,
+      183
+    ],
+    [
+      199,
+      181,
+      198,
+      183
+    ],
+    [
+      217,
+      174,
+      218,
+      174
+    ],
+    [
+      149,
+      181,
+      149,
+      182
+    ],
+    [
+      177,
+      181,
+      177,
+      182
+    ],
+    [
+      145,
+      218,
+      144,
+      220
+    ],
+    [
+      181,
+      218,
+      181,
+      220
+    ],
+    [
+      139,
+      260,
+      139,
+      262
+    ],
+    [
+      186,
+      260,
+      186,
+      262
+    ],
+    [
+      104,
+      270,
+      102,
+      270
+    ],
+    [
+      115,
+      277,
+      114,
+      279
+    ],
+    [
+      140,
+      284,
+      140,
+      286
+    ],
+    [
+      185,
+      284,
+      185,
+      286
+    ],
+    [
+      212,
+      277,
+      213,
+      279
+    ],
+    [
+      222,
+      270,
+      225,
+      270
+    ],
+    [
+      163,
+      276,
+      163,
+      276
+    ]
+  ],
+  "outputs": {
+    "front": {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_neutral_v1.webp",
+      "sha256": "24c77196a27da4977a8b66e92ec4c6e1d1a4ac3e7bf25fa0bb0cff53845ea516",
+      "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb",
+      "alphaDifferences": 0
+    },
+    "rear": {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_neutral_v1.webp",
+      "sha256": "9ac51aed8c301c3842382826487d703134e863377c3ced099393c11278b14f24",
+      "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae",
+      "alphaDifferences": 0
+    },
+    "cuffs": {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuff_front_neutral_v1.webp",
+      "sha256": "1a48dc2466614926f2445f03a653c947e0cece92729e64c947511de812a70fff",
+      "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f",
+      "alphaDifferences": 0
+    },
+    "collar": {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_collar_neutral_v1.webp",
+      "sha256": "97bdf9aeaa26bb9839bc50aa7eed3a9bf5c74acef179810fc21129cee763eb31",
+      "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e",
+      "alphaDifferences": 0
+    }
+  },
+  "fixedAssets": {
+    "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp": {
+      "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "preserved": true
+    },
+    "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp": {
+      "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "preserved": true
+    },
+    "tool/art_assets/neutral_everyday_v2/everyday_boots_neutral_candidate_v2.webp": {
+      "sha256": "12ed127e63ba1548f39ebc65ed1cb9385d99cbe9bb0f16ce056295c72cb68130",
+      "preserved": true
+    },
+    "tool/art_assets/neutral_everyday_v3/everyday_trousers_neutral_candidate_v3.webp": {
+      "sha256": "c08a045e586befc45cb0dbfcf6cec72121b47195e4f06ee8fb525aff27caa865",
+      "preserved": true
+    },
+    "tool/art_assets/neutral_everyday_v2/everyday_top_neutral_candidate_v2.webp": {
+      "sha256": "4c5a4c4e36bffa1c43948a4d3b2805510e7f13abe16415d5ae49e0be4283d25c",
+      "preserved": true
+    }
+  },
+  "layerOrder": [
+    "rear",
+    "body",
+    "boots",
+    "trousers",
+    "top",
+    "front",
+    "identity",
+    "collar",
+    "cuffs"
+  ],
+  "surfaceMethod": "Generated RGB registered by inverse-distance landmark displacement. Original v11 complete cuff RGB palette mapped, with a smooth RGB-only transition across upper cuff cloth y169–173, preserving continuous curved rim and inner join shading. Collar uses the registered surface. Each alpha plane copied exactly."
+}

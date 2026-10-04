@@ -41,7 +41,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
     if (q.containsKey('layers')) {
       layers.retainAll(q['layers']!.split(','));
     }
-    if (!widget.woodland && widget.archetype == 'scout' && ['all', 'female', 'male', 'neutral'].contains(q['body'])) {
+    if (!widget.woodland && ['all', 'female', 'male', 'neutral'].contains(q['body'])) {
       bodyView = q['body']!;
     }
     // Older compare=base links also open the complete layer comparison.
@@ -57,7 +57,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
     if (stage == _WardrobeStage.underwear) return <String>{};
     if (widget.woodland) return layers.contains('outfit') ? {'outfit'} : <String>{};
     return layers.where((layer) {
-      if (layer == 'boots' && body != 'female') return false;
+      if (layer == 'boots' && body == 'male') return false;
       return stage == _WardrobeStage.robe || layer != (widget.woodland ? 'vest' : 'robe');
     }).toSet();
   }
@@ -149,7 +149,9 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
         body == 'female'
             ? (const {'scholar', 'guardian', 'wanderer'}.contains(widget.archetype) ? 'Locked female fit. $className design preview.'
                 : widget.archetype == 'alchemist' ? 'Approved female Alchemist fit.' : 'Approved female fit.')
-            : 'Previous fit candidate — fixed-body rebuild pending.',
+            : body == 'neutral'
+                ? 'Approved neutral body, everyday clothes and robe fit.'
+                : 'Previous fit candidate — fixed-body rebuild pending.',
         textAlign: TextAlign.center,
         style: const TextStyle(color: Colors.white70),
       ),
@@ -224,7 +226,7 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                       runSpacing: 8,
                       alignment: WrapAlignment.center,
                       children: [
-                        if (!widget.woodland && widget.archetype == 'scout') SizedBox(
+                        if (!widget.woodland) SizedBox(
                           width: 180,
                           child: DropdownButton<String>(
                             isExpanded: true,
@@ -245,8 +247,8 @@ class _ScoutWardrobeReviewAppState extends State<ScoutWardrobeReviewApp> {
                         layerToggle('trousers', 'Travel trousers'),
                         layerToggle(
                           'boots',
-                          bodyView == 'female' ? 'Boots' : 'Boots (female)',
-                          enabled: bodyView == 'female' || bodyView == 'all',
+                          'Boots',
+                          enabled: bodyView != 'male',
                         ),
                         layerToggle('robe', '$className robe'),
                         ],

@@ -1,0 +1,23 @@
+{
+  "repair": "rigid_head_centering_and_neck_transition",
+  "headTranslationNativePixels": [
+    4,
+    0
+  ],
+  "headScaling": 1,
+  "headRotationDegrees": 0,
+  "canvas": [
+    240,
+    320
+  ],
+  "chinCenterNativeX": 122.5,
+  "neckBaseCenterNativeX": 123,
+  "centerDifferenceNativePixels": -0.5,
+  "headTranslationPixelErrors": 0,
+  "unchangedBodyFromY": 84,
+  "bodyVisibleOrAlphaChanges": 0,
+  "baseSha256": "0601c52466c328765c0520e82a6b01fd8712164d8e7d6baa58a26c06b1f49146",
+  "identitySha256": "4d931d137020813c4c66ee2d6930589ea40ba8f6df60c3692c809d249468ab26",
+  "editSource": "selected_edit_source.png",
+  "sourceNote": "The exact user-selected crop was supplied to built-in imagegen. Only its corrected under-jaw transition is used; the original full avatar head is translated intact."
+}

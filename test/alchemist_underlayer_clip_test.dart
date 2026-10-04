@@ -1,3 +1,4 @@
+import 'support/neutral_robe_layers.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -150,6 +151,11 @@ void main() {
           final images = tester.widgetList<Image>(
             find.descendant(of: layer, matching: find.byType(Image)),
           ).map((image) => (image.image as AssetImage).assetName).toList();
+          if (body == 'neutral') {
+            expect(images, neutralRobeLayers('alchemist'));
+            expect(find.descendant(of: layer, matching: find.byType(ClipPath)), findsNothing);
+            continue;
+          }
           if (body == 'female') {
             expect(images, [
               'assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v7.webp',

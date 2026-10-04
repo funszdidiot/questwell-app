@@ -4,20 +4,23 @@ import 'package:flutter/material.dart';
 /// Face layer registered to the frozen 240 x 320 avatar canvas.
 /// Match Image.asset's contain + bottomCenter transform, including wide cards.
 class QuestwellScholarGlasses extends StatelessWidget {
-  const QuestwellScholarGlasses({super.key, required this.bodyType});
+  const QuestwellScholarGlasses({super.key, required this.bodyType,
+    this.headOffset = Offset.zero});
   final String bodyType;
+  final Offset headOffset;
 
   @override
   Widget build(BuildContext context) => IgnorePointer(
     child: ExcludeSemantics(child: CustomPaint(
-      painter: _ScholarGlassesPainter(bodyType),
+      painter: _ScholarGlassesPainter(bodyType, headOffset),
     )),
   );
 }
 
 class _ScholarGlassesPainter extends CustomPainter {
-  const _ScholarGlassesPainter(this.bodyType);
+  const _ScholarGlassesPainter(this.bodyType, this.headOffset);
   final String bodyType;
+  final Offset headOffset;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -25,6 +28,7 @@ class _ScholarGlassesPainter extends CustomPainter {
     canvas.save();
     canvas.translate((size.width - 240 * scale) / 2, size.height - 320 * scale);
     canvas.scale(scale);
+    canvas.translate(headOffset.dx, headOffset.dy);
     final left = switch (bodyType) {
       'male' => const Offset(111, 51),
       'female' => const Offset(106, 55),
@@ -61,5 +65,5 @@ class _ScholarGlassesPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _ScholarGlassesPainter oldDelegate) =>
-      bodyType != oldDelegate.bodyType;
+      bodyType != oldDelegate.bodyType || headOffset != oldDelegate.headOffset;
 }

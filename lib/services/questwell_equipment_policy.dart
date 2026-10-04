@@ -3,12 +3,16 @@
 /// Catalog/business metadata (category, class, collection, edition, availability)
 /// is authoritative in Supabase and must not be duplicated here.
 abstract final class QuestwellEquipmentPolicy {
+  // Retired renderer capability; ownership/equipment history stays untouched.
+  static const retiredSlugs = {'pathfinder-boots'};
+  static bool isRetired(String slug) => retiredSlugs.contains(slug);
+
   static const renderReadySlugs = <String>{
     'woodland-scout-outfit','everyday-adventurer-outfit',
     'midnight-harvest-coat','starter-business-suit','moss-green-cloak','hearthguard-mantle',
     'round-scholar-glasses','tiny-wizard-hat','emerald-scholar-scarf',
     'leather-satchel','wayfarer-satchel','brass-lantern','annotated-grimoire',
-    'moonstone-brooch','pathfinder-boots','victory-sparkle','focus-tonic',
+    'moonstone-brooch','victory-sparkle','focus-tonic',
     'pumpkin-sprite','mushroom-familiar','tiny-owl-familiar','glass-slime',
     'emerald-dragon','archive-owl','signal-fox','moss-moth',
     'autumn-ember-lantern','harvest-apothecary-display','copper-potion-workbench',
@@ -32,5 +36,6 @@ abstract final class QuestwellEquipmentPolicy {
       (isClosedCloak(nextSlug) && currentCategory == 'hands') ||
       (nextCategory == 'hands' && isClosedCloak(currentSlug));
 
-  static bool isReady(String slug, String category) => renderReadySlugs.contains(slug);
+  static bool isReady(String slug, String category) =>
+      !isRetired(slug) && renderReadySlugs.contains(slug);
 }

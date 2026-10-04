@@ -36,7 +36,7 @@ class _CleanBaseReviewAppState extends State<CleanBaseReviewApp> {
     if (held != 'none') 'hands': held,
     if (accessories) ...{
       'face': 'round-scholar-glasses', 'neck': 'emerald-scholar-scarf',
-      'back': bag, 'feet': 'pathfinder-boots',
+      'back': bag,
       'head': 'tiny-wizard-hat', 'accessory': 'moonstone-brooch',
     },
   };

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import '../lib/preview/clean_base_review.dart';
 import '../lib/preview/neutral_paper_doll_review.dart';
 import '../lib/preview/neutral_scout_review.dart';
+import '../lib/preview/neutral_robes_review.dart';
 import '../lib/widgets/questwell_neutral_scout.dart';
 import '../lib/widgets/questwell_neutral_paper_doll.dart';
 import '../lib/widgets/questwell_brass_lantern.dart';
@@ -31,20 +32,21 @@ void main() {
     }
     final body = await pixels(QuestwellNeutralPaperDoll.baseAsset);
     final identity = await pixels(QuestwellNeutralPaperDoll.identityAsset);
-    final original = await pixels('assets/images/questwell/avatar/base/base_neutral.webp');
+    final original = await pixels('assets/images/questwell/avatar/base/paper_doll_neutral_v3.webp');
     final outfit = await pixels(QuestwellNeutralScout.outfitAsset);
     final previousOutfit = await pixels('assets/images/questwell/avatar/woodland_scout_unified_neutral_v1.webp');
-    final top = await pixels(QuestwellNeutralScout.topAsset);
-    final underTop = await pixels(QuestwellNeutralScout.topUnderRobeAsset);
     final trousers = await pixels(QuestwellNeutralScout.trousersAsset);
     final boots = await pixels(QuestwellNeutralScout.bootsAsset);
     for (var y = 0; y < 320; y++) {
       for (var x = 0; x < 240; x++) {
         final offset = (y * 240 + x) * 4;
-        if (y < 68) {
-          expect(body.getUint32(offset), original.getUint32(offset),
-              reason: 'Face and hair must remain unchanged at $x,$y');
-          expect(identity.getUint32(offset), original.getUint32(offset));
+        if (y < 62 || y >= 84 || (x >= 116 && x < 131 && y < 69)) {
+          // V4 repairs only the jaw/lower-hair/upper-neck join. The centered
+          // upper identity and complete body below the join remain fixed.
+          final expected = original.getUint32(offset);
+          expect(body.getUint32(offset), expected,
+              reason: 'Preserve the centered foundation outside its join at $x,$y');
+          if (y < 69) expect(identity.getUint32(offset), expected);
         }
         if (y >= 205 && body.getUint8(offset+3) > 180) {
           expect(outfit.getUint8(offset+3), greaterThanOrEqualTo(128),
@@ -56,12 +58,8 @@ void main() {
           expect(outfit.getUint32(offset), previousOutfit.getUint32(offset),
               reason: 'Sleeve correction must not change other garment pixels at $x,$y');
         }
-        if (y < 285) expect(boots.getUint8(offset+3), 0);
-        if (y >= 287) expect(trousers.getUint8(offset+3), 0);
-        expect(underTop.getUint8(offset+3), lessThanOrEqualTo(top.getUint8(offset+3)));
-        if (underTop.getUint8(offset+3) > 0) {
-          expect(underTop.getUint32(offset), top.getUint32(offset));
-        }
+        if (y < 282) expect(boots.getUint8(offset+3), 0);
+        if (y >= 288) expect(trousers.getUint8(offset+3), 0);
       }
     }
   });
@@ -88,13 +86,13 @@ void main() {
         QuestwellNeutralPaperDoll.baseAsset,
         if(layers.contains('outfit') && !layers.contains('robe')) QuestwellNeutralScout.outfitAsset
         else ...[
-          if(layers.contains('trousers')) QuestwellNeutralScout.trousersAsset,
-          if(layers.contains('top')) layers.contains('robe')
-            ? QuestwellNeutralScout.topUnderRobeAsset : QuestwellNeutralScout.topAsset,
           if(layers.contains('boots')) QuestwellNeutralScout.bootsAsset,
+          if(layers.contains('trousers')) QuestwellNeutralScout.trousersAsset,
+          if(layers.contains('top')) QuestwellNeutralScout.topAsset,
         ],
         if(layers.contains('robe')) QuestwellNeutralScout.robeAsset,
         QuestwellNeutralPaperDoll.identityAsset,
+        if(layers.contains('robe')) QuestwellNeutralScout.collarAsset,
         if(layers.contains('robe')) QuestwellNeutralScout.cuffsAsset,
       ]);
     }
@@ -119,6 +117,12 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
       expect(find.byType(QuestwellNeutralPaperDoll), findsNWidgets(12));
+      await tester.pumpWidget(const NeutralRobesReviewApp());
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      expect(find.byType(QuestwellNeutralPaperDoll), findsNWidgets(5));
+      expect(find.byType(QuestwellCleanBase), findsNothing);
+      expect(find.byType(ClipPath), findsNothing);
     });
   }
   for (final body in ['female', 'male', 'neutral']) {
@@ -175,6 +179,10 @@ void main() {
           'assets/images/questwell/avatar/scout_boots_female_v6.webp',
           'assets/images/questwell/avatar/classes/wanderer/wanderer_robe_female_v3.webp',
         ]));
+      } else if (body == 'neutral') {
+        expect(find.byType(QuestwellCleanBase), findsNothing);
+        expect(find.byType(QuestwellNeutralPaperDoll), findsOneWidget);
+        expect(find.byType(ClipPath), findsNothing);
       } else {
         expect(find.byType(QuestwellCleanBase), findsOneWidget);
         expect(tester.widget<QuestwellCleanBase>(find.byType(QuestwellCleanBase)).withTrousers, isTrue);

@@ -15,14 +15,38 @@ If an output needs a material design choice or clarification, ask Tanya before p
 ## Approved versus pending
 
 - Female: approved foundation and existing fit standards remain locked. See `FEMALE_FIT_STANDARD.md` and `tool/female_avatar_fit_reference.json`.
-- Neutral: approved foundation remains locked. See `tool/neutral_avatar_fit_reference.json`. Everyday garments, robes and Woodland Scout still require the current iterative fitting review; the v2 development delivery is not blanket fit approval.
+- Neutral: **Tanya approved and locked body v4, everyday v3 and robe v11 on 2026-10-03 (America/New_York).** The exact body, identity and everyday garment assets are immutable. The four robe alpha masks, registration and depth order are the template for every neutral class robe. Independent visual QA preceded founder approval. See `tool/neutral_avatar_fit_reference.json`, `tool/neutral_everyday_fit_reference.json`, `tool/neutral_robe_fit_reference.json` and their art records. Alchemist, Scholar, Guardian and Wanderer surface variants are authorized; neutral Woodland Scout remains in the fitting sequence.
 - Male: foundation draft only, pending Tanya's approval. No new male outfit fitting is authorized yet.
 
 ## Current work order
 
-1. Prepare and review the male avatar in undergarments only. Lock the final body after explicit approval.
-2. Return to the neutral everyday/casual outfit in the **same exact design and illustrated style as the female everyday outfit**, fitted to the neutral body; do not invent a different clothing style.
-3. Finish the neutral robes and Woodland Scout outfit on the locked neutral paper doll, with Tanya's review and any needed clarification.
+1. Neutral foundation v4 is approved and locked. Keep it fixed in all subsequent wardrobe work; v3 remains rejected.
+2. Neutral everyday v3 is approved in the **same exact design and illustrated style as the female everyday outfit**. Keep the shirt, trousers and boots fixed while fitting robes; retain body → boots → trousers → top → identity order.
+3. Build all remaining neutral class robes (Alchemist, Scholar, Guardian and Wanderer) on the approved v11 Scout robe template. Change surface color, pattern and flourishes only. Then finish the neutral Woodland Scout outfit on the locked paper doll, with Tanya's review and any needed clarification.
 4. Only after the neutral wardrobe work is finished, begin male outfits on the approved male foundation.
 
 No merge to `flutterflow`, launch, Market change or account write is authorized by this art workflow.
+
+## Consistent outfit families
+
+For each body and garment family, establish and review one foundational fit. Once accepted, freeze the silhouette, neck opening, shoulder fit, sleeve and cuff openings, waist/hip allowance, hem, registration and front/back layer masks. Reuse those measurements for that family's color, pattern, embroidery and decorative variants. Other body types require their own fitted templates. A structural garment change requires a new fit review; decorative variety must never drive a body edit.
+
+Check the complete unclothed foundation first, then everyday clothing, then the additional garment. View the neck, shoulders, wrists, waist and feet at normal scale and enlarged. Pixel hashes establish preservation; they cannot establish a natural visual connection. Neutral robe v11 supersedes the rejected cuff iterations and is the approved template. Do not reuse v6–v10 as geometry references for new class robes.
+
+## Required methodology for every future avatar
+
+Tanya explicitly adopted the v4 repair methodology for all future avatars on 2026-10-03. Construct and review the complete foundation before fitting clothing. When a join is defective, repair the entire connected region with consistent anatomy, contours, outlines and shading. Preserve the character's identity and unaffected anatomy. Avoid horizontal strip splices, unrelated patches, stale fragments and crossfading of displaced transparent silhouettes. An authorized foundation repair must resolve the connection fully before a new lock is recorded.
+
+Review the actual registered export and final depth-ordered composite, not only the attractive generated source. Inspect normal size, enlarged pixels, smooth enlargement, light and dark backgrounds, and the foreground identity layer. Check neck/head centering, shoulders, wrists/hands, hips, ankles and all affected joins. An independent visual review must pass before presenting a foundational avatar or garment fit; its result does not replace Tanya's approval. Retain reproducible sources, export logic, fixed-body checks and the exact reviewed hashes.
+
+For sleeves and cuffs, compare each complete hand and thumb silhouette directly against the fixed foundation. Inspect every overlapping garment layer, including the main robe side panels. A clean cuff opening does not establish correct hand depth; adjacent side cloth must not obscure the exposed palms, thumbs or fingers.
+
+Once approved, the full body, identity and registration are locked. A garment defect is repaired in one coherent garment region while that body stays byte-for-byte unchanged. Every foundational garment fit must be accepted before it becomes the geometry template for decorative variants.
+
+## Locked neutral robe v11 template
+
+Tanya's approval on 2026-10-03 (America/New_York): “Better. So, now lock this as the robe template for all robes for neutral avatar. You will build all the other class robes now”. This authorizes the neutral class robe surface variants. Tanya additionally instructed “and start pushing to the app”, authorizing development app integration and push for this work. No merge to `flutterflow`, production launch or Market/account writes are authorized.
+
+Use `tool/neutral_robe_fit_reference.json` for the exact four source assets and their file/alpha SHA-256 values. Preserve every alpha value rather than redrawing approximately similar outlines. Keep the 240 × 320 canvas, zero offsets, all registration parameters, natural hanging skirt, rear hem behind the legs, inward cuff width, complete cuff finishing edges, repaired inner cuff joins and exposed hand silhouettes fixed. The order is rear → body → boots → trousers → top → front → identity → collar → cuffs. The separate collar preserves continuous trim beneath the fixed hair while avoiding the former identity-layer cutoff.
+
+All five classes—Scout, Alchemist, Scholar, Guardian and Wanderer—share this neutral geometry. Decorative differences must remain within the locked masks. Check each final composite on the unchanged body v4 and everyday v3, and obtain independent visual review before presenting it. Geometry changes or a different body fit require a new explicit fitting review.

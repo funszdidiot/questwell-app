@@ -58,7 +58,7 @@ class _NeutralScoutReviewAppState extends State<NeutralScoutReviewApp> {
             const SizedBox(height: 10),
             const Text('Your approved frame. One body beneath every layer.', textAlign: TextAlign.center),
             const SizedBox(height: 6),
-            const Text('Everyday clothes beneath the robe · Woodland sleeves revised', style: TextStyle(color: Colors.white70), textAlign: TextAlign.center),
+            const Text('Approved everyday clothes and robe fit · Woodland fitting preview', style: TextStyle(color: Colors.white70), textAlign: TextAlign.center),
             const SizedBox(height: 16),
             Wrap(spacing: 10, alignment: WrapAlignment.center, children: [
               toggle('top', 'Everyday top'), toggle('trousers', 'Trousers'),

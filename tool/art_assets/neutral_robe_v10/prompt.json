@@ -1,0 +1,18 @@
+{
+  "tool": "built-in imagegen",
+  "prompt": "Use case: precise-object-edit. Image 1 is the exact transparent CLOTH-ONLY edit target, a cropped section of a paper-doll robe. Image 2 is a FIXED dressed-avatar fitting reference; never copy, redraw or include its skin, hands, trousers or belt in the output. Image 3 is the user's markup identifying the only TWO problem areas. Repair only the two small INNER cuff-to-side-panel junctions near x=24–31% and x=72–80%, y=35–62% of image 1. The inner tips of the brown cuffs have awkward pointed black notches and pale green fragments where they meet the robe side cloth. Make each small connection read naturally: the brown cuff facing ends in a neat soft rounded cloth edge; immediately behind it, the olive robe panel has one smooth continuous downward fold and restrained consistent dark contact shadow. Remove the ragged pale hooks, random chips and pinched triangular seam. Keep the cuff opening hollow and correctly behind the unchanged wrist in the final reference. DO NOT enlarge or shrink either cuff, change sleeve length or outer cuff contour, move the inner tip position, add flaps, bridge the wrist opening with green cloth, touch embroidery, or change any other part of the garment. Preserve the exact existing pixel-soft illustrated style, palette, line thickness, lighting and blur. Preserve image 1's exact crop, aspect ratio, scale and position; no zoom, reframing or rearrangement. Output only the repaired CLOTH crop on true transparency, identical to image 1 everywhere except the two tiny junctions. No person, hands, skin, underwear, shirt, trousers, text, annotation circles or background.",
+  "references": [
+    {
+      "path": "cloth_join_edit_target.png",
+      "role": "cloth-only edit target"
+    },
+    {
+      "path": "fixed_body_fit_reference.png",
+      "role": "immutable avatar fitting reference"
+    },
+    {
+      "path": "founder_markup.png",
+      "role": "two exact local edit regions"
+    }
+  ]
+}

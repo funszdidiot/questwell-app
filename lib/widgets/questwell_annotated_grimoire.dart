@@ -1,95 +1,86 @@
 import 'dart:math' as math;
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
-/// Integrated book-and-grip sprite; its wrist is registered beneath the cuff.
+/// The original book hangs from a belt loop; the avatar's hands stay intact.
 class QuestwellAnnotatedGrimoire extends StatelessWidget {
   const QuestwellAnnotatedGrimoire({super.key, required this.bodyType});
   static const slug = 'annotated-grimoire';
-  static const asset = 'assets/images/questwell_annotated_grimoire_grip_v3.webp';
+  static const asset = 'assets/images/questwell_annotated_grimoire_v1.webp';
+  static const angle = .10;
+  static const sourceAspectRatio = 356 / 499;
   final String bodyType;
 
-  static Rect bounds(String body) {
-    final (wrist, factor) = switch (body) {
-      'female' => (const Offset(162, 170.5), .041),
-      'male' => (const Offset(166.5, 175), .046),
-      _ => (const Offset(164.8, 174), .044),
-    };
-    // Mirror the integrated grip to the avatar LEFT hand (viewer right).
-    // Its thumb faces inward; the book rests against the thigh.
-    // Mirrored wrist center: (1062 - 296, 17).
-    return Rect.fromLTWH(wrist.dx - 766 * factor, wrist.dy - 17 * factor,
-      1062 * factor, 1481 * factor);
-  }
+  /// Shared 240 x 320 paper-doll coordinates, inset from the relaxed hand.
+  static Rect bounds(String body) => switch (body) {
+    'female' => const Rect.fromLTWH(126, 157, 24, 24 / sourceAspectRatio),
+    'male' => const Rect.fromLTWH(130, 164, 26, 26 / sourceAspectRatio),
+    _ => const Rect.fromLTWH(130, 165, 25, 25 / sourceAspectRatio),
+  };
+
+  static Offset beltAnchor(String body) => switch (body) {
+    'female' => const Offset(132, 147),
+    'male' => const Offset(137, 155),
+    _ => const Offset(136, 157),
+  };
 
   @override
   Widget build(BuildContext context) => IgnorePointer(child: ExcludeSemantics(
     child: LayoutBuilder(builder: (context, constraints) {
       final scale = math.min(constraints.maxWidth / 240, constraints.maxHeight / 320);
+      final origin = Offset((constraints.maxWidth - 240 * scale) / 2,
+          constraints.maxHeight - 320 * scale);
       final fit = bounds(bodyType);
-      return Stack(children: [Positioned(
-        left: (constraints.maxWidth - 240 * scale) / 2 + fit.left * scale,
-        top: constraints.maxHeight - 320 * scale + fit.top * scale,
-        width: fit.width * scale, height: fit.height * scale,
-        child: Transform.rotate(angle: .055,
-          alignment: const Alignment(766 / 1062 * 2 - 1, 17 / 1481 * 2 - 1),
-          child: Transform.flip(flipX: true,
-          child: Stack(fit: StackFit.expand, clipBehavior: Clip.none, children: [
-            Transform.translate(offset: Offset(.65 * scale, .8 * scale),
-              child: ImageFiltered(
-                imageFilter: ui.ImageFilter.blur(sigmaX: .45 * scale, sigmaY: .45 * scale),
-                child: Image.asset(asset, fit: BoxFit.contain,
-                  color: const Color(0x480B0806), colorBlendMode: BlendMode.srcIn,
-                  filterQuality: FilterQuality.high, gaplessPlayback: true))),
-            Image.asset(asset, fit: BoxFit.contain,
-              filterQuality: FilterQuality.high, gaplessPlayback: true),
-          ]))),
-      )]);
+      return Stack(clipBehavior: Clip.none, children: [
+        Positioned.fill(child: CustomPaint(painter: GrimoireBeltLoopPainter(
+            anchor: beltAnchor(bodyType), book: fit, scale: scale, origin: origin))),
+        Positioned(
+          left: origin.dx + fit.left * scale,
+          top: origin.dy + fit.top * scale,
+          width: fit.width * scale, height: fit.height * scale,
+          child: Transform.rotate(angle: angle, alignment: Alignment.topCenter,
+            child: Image.asset(asset, fit: BoxFit.contain,
+              filterQuality: FilterQuality.high, gaplessPlayback: true)),
+        ),
+      ]);
     }),
   ));
 }
 
-/// Hide the relaxed hand only; the source avatar and the rest of its body stay intact.
-class GrimoireHandUnderlayerClipper extends CustomClipper<Path> {
-  const GrimoireHandUnderlayerClipper(this.body, {this.preserveWrist = false});
-  final String body;
-  final bool preserveWrist;
-  @override
-  Path getClip(Size size) {
-    final scale = math.min(size.width / 240, size.height / 320);
-    final dx = (size.width - 240 * scale) / 2;
-    final dy = size.height - 320 * scale;
-    final hand = switch (body) {
-      'female' => Rect.fromLTWH(152, preserveWrist ? 171.5 : 168, 25,
-          preserveWrist ? 24.5 : 28),
-      'male' => const Rect.fromLTWH(153, 172, 29, 29),
-      _ => const Rect.fromLTWH(151, 171, 31, 29),
-    };
-    return Path()..fillType = PathFillType.evenOdd
-      ..addRect(Offset.zero & size)
-      ..addRect(Rect.fromLTWH(dx + hand.left * scale, dy + hand.top * scale,
-        hand.width * scale, hand.height * scale));
-  }
-  @override
-  bool shouldReclip(covariant GrimoireHandUnderlayerClipper oldClipper) =>
-      oldClipper.body != body || oldClipper.preserveWrist != preserveWrist;
-}
+/// A small leather loop connects the book to the existing clothing belt.
+/// This painter adds accessory pixels only; it never clips the avatar.
+class GrimoireBeltLoopPainter extends CustomPainter {
+  const GrimoireBeltLoopPainter({required this.anchor, required this.book,
+    required this.scale, required this.origin});
+  final Offset anchor;
+  final Rect book;
+  final double scale;
+  final Offset origin;
 
-/// Only the sleeve cuff returns over the new wrist, never the relaxed hand.
-class GrimoireCuffClipper extends CustomClipper<Path> {
-  const GrimoireCuffClipper(this.body);
-  final String body;
   @override
-  Path getClip(Size size) {
-    final scale = math.min(size.width / 240, size.height / 320);
-    final rect = body == 'female'
-      ? const Rect.fromLTWH(150, 155, 32, 20)
-      : const Rect.fromLTWH(152, 158, 34, 22);
-    return Path()..addRect(Rect.fromLTWH(
-      (size.width - 240 * scale) / 2 + rect.left * scale,
-      size.height - 320 * scale + rect.top * scale,
-      rect.width * scale, rect.height * scale));
+  void paint(Canvas canvas, Size size) {
+    canvas.save();
+    canvas.translate(origin.dx, origin.dy);
+    canvas.scale(scale);
+    final loop = RRect.fromRectAndRadius(
+      Rect.fromLTRB(anchor.dx - 3, anchor.dy - 1.5,
+          anchor.dx + 3, book.top + 5), const Radius.circular(1.7));
+    canvas.drawRRect(loop, Paint()..color = const Color(0xFF291C13));
+    canvas.drawRRect(RRect.fromRectAndRadius(
+      Rect.fromLTRB(anchor.dx - 2, anchor.dy - .5,
+          anchor.dx + 2, book.top + 4), const Radius.circular(1)),
+      Paint()..color = const Color(0xFF765032));
+    canvas.drawLine(Offset(anchor.dx - 1.5, anchor.dy + .7),
+      Offset(anchor.dx - 1.5, book.top + 3),
+      Paint()..color = const Color(0xFFAD8051)..strokeWidth = .6);
+    canvas.drawCircle(Offset(anchor.dx, anchor.dy + 2), 1.05,
+      Paint()..color = const Color(0xFFD0A24E));
+    canvas.drawCircle(Offset(anchor.dx - .25, anchor.dy + 1.7), .35,
+      Paint()..color = const Color(0xFFF3D487));
+    canvas.restore();
   }
+
   @override
-  bool shouldReclip(covariant GrimoireCuffClipper oldClipper) => oldClipper.body != body;
+  bool shouldRepaint(covariant GrimoireBeltLoopPainter oldDelegate) =>
+    anchor != oldDelegate.anchor || book != oldDelegate.book ||
+    scale != oldDelegate.scale || origin != oldDelegate.origin;
 }

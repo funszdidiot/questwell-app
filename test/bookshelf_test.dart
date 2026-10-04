@@ -9,9 +9,10 @@ import '../lib/preview/hearth_review.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
-  testWidgets('Bookshelf is behind the avatar and only uses the room slot', (tester) async {
+  testWidgets('Bookshelf is behind the avatar and preserves accessory slots', (tester) async {
     expect(QuestwellEquipmentPolicy.isReady('walnut-bookshelf', 'room'), true);
-    expect(QuestwellEquipmentPolicy.isReady('walnut-bookshelf', 'accessory'), false);
+    expect(QuestwellEquipmentPolicy.isReady('walnut-bookshelf', 'accessory'), true,
+      reason: 'Renderer readiness does not duplicate catalog category rules.');
     for (final width in [320.0, 390.0, 768.0]) {
       for (final placed in [true, false]) {
         await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(width: width,

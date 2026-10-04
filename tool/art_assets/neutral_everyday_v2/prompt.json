@@ -1,0 +1,34 @@
+{
+  "use_case": "precise-object-edit",
+  "mode": "built-in image_gen",
+  "status": "neutral everyday outfit fitting candidate; founder review pending",
+  "prompt": "Use case: precise-object-edit.\nAsset type: Questwell neutral paper-doll EVERYDAY CLOTHING overlay, transparent raster.\nImage 1 is the EDIT TARGET: existing neutral garments, already registered to the locked neutral body. Image 2 is the exact FEMALE GARMENT STYLE reference only, not an anatomy or placement reference. Image 3 is the LOCKED NEUTRAL BODY fit reference only; do not output or redraw it.\nPrimary request: Refine only the top and ankle boots of Image 1 so they are the same clothing design and drawing style as Image 2, fitted to Image 3. The brown trousers and belt in Image 1 MUST remain unchanged.\nTOP: same plain ivory crew-neck short-sleeved tee as the female. Softer thin ivory neck binding, not a thick dark ring. Sleeves closer to the upper arms, gently tapered rather than flaring like wings, with plain quiet short hems. No rolled cuffs, tabs, trim, pouch, or new decoration. Keep the neutral torso length, straight waist and natural regular fit; do not give it the female chest or cinched waist. Shoulder/neck placement and bottom hem at belt stay as in Image 1.\nBOOTS: same compact brown leather ankle boot style as the female reference, thinner-looking low sole, understated leather seam and crease treatment, no laces or decorative panels. Keep the exact neutral foot directions, ankle positions and toe/heel extent from Image 1 so ALL feet from Image 3 remain fully covered. Refine the sole styling without reducing foot coverage.\nOUTPUT ONLY CLOTHES on genuine transparent background: NO HEAD, FACE, HAIR, NECK, ARMS, SKIN, HANDS, LEGS, OR BARE FEET. Neck opening and sleeve openings are transparent. One aligned complete outfit, not a sheet of parts.\nKeep Image 1's exact 3:4 canvas placement and scale: preserve large empty head zone at top, shirt begins around y80, belt around y156, boots around y285-317 in 240x320 coordinates. Do not recenter, crop, enlarge, or move the clothing. Preserve trousers/belt unchanged. Hand-painted anime RPG sprite style matching references. No text, background scene, checkerboard drawing, or shadow.",
+  "inputs": [
+    {
+      "role": "edit target",
+      "path": "garment_edit_reference.png",
+      "reproduce": "node tool/neutral_everyday_v2_reference.cjs"
+    },
+    {
+      "role": "female garment design/style only",
+      "path": "female_garment_style_reference.png",
+      "reproduce": "node tool/neutral_everyday_v2_reference.cjs"
+    },
+    {
+      "role": "locked neutral fit only; anatomy never imported",
+      "path": "../neutral_scout_v2/fixed_base_reference.png"
+    }
+  ],
+  "registration": {
+    "top": "Preserve neckline/sleeve height; lengthen torso to existing belt, add local right-shoulder cloth ease.",
+    "trousers": "Refit existing v1 trouser drawing around exposed charcoal undergarment at hips/crotch. No design changes.",
+    "boots": "Align shafts and soles to locked feet; modest garment-only width allowance; hem overlaps shafts."
+  },
+  "verification": {
+    "lockedNeutralBodyAndIdentity": "exact SHA-256 match",
+    "lowerBodyExposedOpaquePixels": 0,
+    "testedRightShoulderExposedOpaquePixels": 0,
+    "independentVisualReview": "passed after correcting detached trouser-row fragments and shoulder coverage"
+  },
+  "scope": "Candidate files only. No runtime, Market/account, male clothing, merge or launch."
+}

@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "reviewer": "guardian_neutral_surface independent of Alchemist generation and final export",
+  "dateUTC": "2026-10-04",
+  "scope": "Rebuilt final registered exports and full locked-avatar composite; no artwork modifications by reviewer.",
+  "reviewedPreviewSha256": {
+    "native.png": "68ad8fac0d6a27c8aa0d0abc7c0939738fe96e45d4f89eb3fe50c046ce14142d",
+    "alchemist_neutral_v1.png": "5c11bcaa2503f4319ae16043a70b333f49d215d200a91ce31738d88be294dbfe",
+    "full_light.png": "f6091612137bc6fb5653e4f5ce4f668239b345f39791188dd62d890f4e44c6f0",
+    "full_dark.png": "1b2da1f300a1e2475d4b471b0fc2106cefd20d9523ad889a96a25c74991b8738",
+    "hands_light.png": "4d38ec94ea001c6c24aebd7894b1d5d9a524e9df3b288adc479fca6085703319",
+    "hands_dark.png": "a8d6e092464dd87ae3140d8ccc46117c3bde3bffb21c0ab34f3722b1ecbb4e50",
+    "collar_light.png": "c24797261789fb7a8dafa630e9f8058078e639b630e7b3b281d4599d288007f9",
+    "collar_dark.png": "d38db127d98712889696300a60bb3c4aaa2e49e4777437692e1253c895e80e32"
+  },
+  "comparedAgainst": "tool/art_assets/neutral_robe_v11/native_composite.png",
+  "checks": [
+    "Native and enlarged light/dark final composites preserve v11 proportions and natural drape.",
+    "Both entire cuff sides, outer rims and inner junctions form continuous complete borders. No detached generated cuff strips, duplicate rim edges or extra cuff slivers observed.",
+    "Complete palms, thumbs and fingers remain exposed in front of the side panels.",
+    "Both upper pockets and lower hip pockets appear as one coherent pocket each; no duplicated old pocket lips observed.",
+    "No Scout leaf/vine motifs remain around the collar, front strips, hips or beside the hands.",
+    "Silver trim continues to the neck beneath fixed hair. Rear silver hem stays behind both legs; no band crosses the foreground trousers.",
+    "Royal-blue cloth, silver edging and yellow geometric motif remain consistent through the registered layers.",
+    "All four decoded alpha planes match canonical v11 exactly; all five body/identity/everyday file hashes match canonical locks."
+  ],
+  "assets": {
+    "front": {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_neutral_v1.webp",
+      "sha256": "a1ad1beda55d19faa20660a6a7fcda42be4734180ba5fff7f434ae64f05dec43",
+      "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb",
+      "alphaDifferenceCount": 0
+    },
+    "rear": {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_neutral_v1.webp",
+      "sha256": "daa533f56eaad9a16ca25b24e5db7f1a6521b7b9a304515c6923a7d63bba2ea2",
+      "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae",
+      "alphaDifferenceCount": 0
+    },
+    "cuffs": {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_neutral_v1.webp",
+      "sha256": "1c3ad1c7865d370ac5bade441311209865ea21c25efc6b5b4f4b30cac4f61e13",
+      "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f",
+      "alphaDifferenceCount": 0
+    },
+    "collar": {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_collar_neutral_v1.webp",
+      "sha256": "3aff0b861f22de09b4ed0160930abc5bb37fe517af79cdaa950443e534fd7713",
+      "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e",
+      "alphaDifferenceCount": 0
+    }
+  },
+  "fixedAssetChecks": 5,
+  "allFixedAssetsUnchanged": true,
+  "founderSurfaceApproval": false,
+  "runtimeTested": false
+}

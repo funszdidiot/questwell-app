@@ -1,0 +1,33 @@
+{
+  "revision": "neutral-robe-v8",
+  "tool": "built-in imagegen",
+  "source": {
+    "path": "tool/art_assets/neutral_robe_v8/robe_repair_source.png",
+    "sha256": "277d7e82af6b005d65e7879a3633e458b2779149dbf07b50ae3a6bb093edfa33"
+  },
+  "prompt": {
+    "path": "tool/art_assets/neutral_robe_v8/prompt.json",
+    "sha256": "734cd58d65e67f16ca8533336ffbd081171ee86e4014cd9d016f65492844ef71"
+  },
+  "references": [
+    {
+      "path": "tool/art_assets/neutral_robe_v8/robe_edit_reference.png",
+      "sha256": "aa29a8b086ebaebc2ec5074cc8b45b35c9a4504f35148da1341bce26224e0cea"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v8/fixed_everyday_reference.png",
+      "sha256": "1803e2bcd55279bae77fe49e2a817d53825972c23b36386516cc669d6eadd013"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v8/female_inward_cuff_reference.png",
+      "sha256": "afe75589f109c79e1f288bfceed3917f611cb5e86b63bb9368e252064125576b"
+    }
+  ],
+  "exporter": {
+    "path": "tool/export_neutral_robe_v8.cjs",
+    "sha256": "2d67995412f287bd95e519a0221d3bab62dfe422672d4e64f0fcd3dc99a2fec6"
+  },
+  "scope": "Garment-only generation and registration, semantic layering, collar garment occlusion by fixed hair. Approved body and everyday assets unchanged.",
+  "reproduce": "node tool/export_neutral_robe_v8.cjs",
+  "approval": "Founder fitting review pending."
+}

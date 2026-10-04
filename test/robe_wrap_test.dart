@@ -1,3 +1,4 @@
+import 'support/neutral_robe_layers.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,6 +47,12 @@ void main() {
           child: QuestwellLayeredAdventurerArt(archetype:kind, avatarBodyType:body, equippedSlugs:const {}))));
         final images = tester.widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName).toList();
+        if (body == 'neutral') {
+          expect(images, neutralRobeLayers(kind));
+          expect(find.byType(ClipPath), findsNothing);
+          expect(tester.takeException(), isNull);
+          return;
+        }
         if (const {'scout', 'alchemist', 'scholar', 'guardian', 'wanderer'}.contains(kind) && body == 'female') {
           final prefix = kind == 'scout' ? 'assets/images/questwell/avatar/scout_'
               : 'assets/images/questwell/avatar/classes/$kind/${kind}_';

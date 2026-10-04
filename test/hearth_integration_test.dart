@@ -100,7 +100,8 @@ void main() {
 
   testWidgets('Approved brooch toggles independently across every class and body', (tester) async {
     expect(QuestwellEquipmentPolicy.isReady(QuestwellMoonstoneBrooch.slug, 'accessory'), true);
-    expect(QuestwellEquipmentPolicy.isReady(QuestwellMoonstoneBrooch.slug, 'neck'), false);
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellMoonstoneBrooch.slug, 'neck'), true,
+      reason: 'Renderer readiness does not duplicate catalog category rules.');
     for (final kind in ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer']) {
       for (final body in ['female', 'male', 'neutral']) {
         for (final enabled in [true, false]) {
@@ -123,8 +124,10 @@ void main() {
 
   testWidgets('Approved lantern can be removed independently across fits', (tester) async {
     expect(QuestwellEquipmentPolicy.isReady(QuestwellBrassLantern.slug, 'hands'), true);
-    expect(QuestwellEquipmentPolicy.isReady(QuestwellBrassLantern.slug, 'room'), false);
-    expect(QuestwellEquipmentPolicy.isReady('warding-lantern', 'hands'), false);
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellBrassLantern.slug, 'room'), true,
+      reason: 'Renderer readiness does not duplicate catalog category rules.');
+    expect(QuestwellEquipmentPolicy.isReady('warding-lantern', 'hands'), true,
+      reason: 'A known renderer stays ready independently of the catalog category.');
     for (final kind in ['scholar', 'scout', 'alchemist', 'guardian', 'wanderer']) {
       for (final body in ['female', 'male', 'neutral']) {
         for (final enabled in [true, false]) {
@@ -195,7 +198,7 @@ void main() {
     expect([scene.archetype, portrait.archetype], ['guardian', 'guardian']);
     expect(tester.takeException(), isNull);
   });
-  testWidgets('Satchel removal preserves scarf and only approved back-slot satchel is available', (tester) async {
+  testWidgets('Satchel removal preserves scarf and unknown renderers remain unavailable', (tester) async {
     await tester.binding.setSurfaceSize(const Size(390, 1800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(const EquipmentReviewApp(headwear: true, neckwear: true, satchel: true));
@@ -207,7 +210,8 @@ void main() {
     expect(find.byType(QuestwellLeatherSatchel), findsNothing);
     expect(find.byType(QuestwellEmeraldScarf), findsNWidgets(2));
     expect(QuestwellEquipmentPolicy.isReady(QuestwellLeatherSatchel.slug, 'back'), isTrue);
-    expect(QuestwellEquipmentPolicy.isReady(QuestwellLeatherSatchel.slug, 'neck'), isFalse);
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellLeatherSatchel.slug, 'neck'), isTrue,
+      reason: 'Renderer readiness does not duplicate catalog category rules.');
     for (final slug in [ 'preview-leather-satchel']) {
       expect(QuestwellEquipmentPolicy.isReady(slug, 'back'), isFalse);
     }

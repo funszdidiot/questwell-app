@@ -268,18 +268,6 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "unlock_method": "shop"
   },
   {
-    "id": "d3e3ffa7-e48b-4c7c-a236-deb64a0b7943",
-    "slug": "pathfinder-boots",
-    "name": "Pathfinder Boots",
-    "category": "feet",
-    "rarity": "rare",
-    "description": "For finding the shortest route through a long day.",
-    "price": 160,
-    "premium": false,
-    "required_archetype": "scout",
-    "unlock_method": "shop"
-  },
-  {
     "id": "8c7104b4-3aed-4033-9c11-e1f166dd0ff4",
     "slug": "wayfarer-satchel",
     "name": "Wayfarer Satchel",

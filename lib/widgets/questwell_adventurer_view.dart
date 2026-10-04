@@ -78,13 +78,15 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
 
   @override
   Widget build(BuildContext context) {
-    final masteryItem = widget.items.where((item) => item.owned &&
+    final availableItems = widget.items.where((item) =>
+        !QuestwellEquipmentPolicy.isRetired(item.slug)).toList();
+    final masteryItem = availableItems.where((item) => item.owned &&
       item.slug == QuestwellMasteryRelic.slugs[widget.archetype]).firstOrNull;
-    final owned = widget.items.where((item) => item.owned).length;
-    final equipped = widget.items.where((item) => item.equipped).toList();
+    final owned = availableItems.where((item) => item.owned).length;
+    final equipped = availableItems.where((item) => item.equipped).toList();
     const categories = ['All categories','Outfits','Gear','Familiars','Effects','Hearth'];
     final category = categories.contains(_category) ? _category : 'All categories';
-    final visible = widget.items.where((item) =>
+    final visible = availableItems.where((item) =>
       (_section != 'Collections' || item.collectionKey != null) &&
       (_collection == 'All collections' || item.collectionKey == _collection ||
         (_collection == 'Trophies' && (item.milestoneLevel != null || QuestwellMasteryRelic.supports(item.slug)))) &&
@@ -108,7 +110,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           QuestwellEquippedAvatar(archetype: widget.archetype, avatarBodyType: widget.bodyType,
             height: 250, artHeightFactor: .96, showRelic: widget.mastered,
             equippedSlugs: {for (final item in equipped) item.renderKey: item.slug}),
-          if (_section == 'Inventory' && category == 'Hearth' && widget.items.any((item) => (item.category == 'room' || item.category == 'wall_art') && item.owned)) ...[
+          if (_section == 'Inventory' && category == 'Hearth' && availableItems.any((item) => (item.category == 'room' || item.category == 'wall_art') && item.owned)) ...[
             const SizedBox(height: 16),
             _heading('YOUR HEARTH'),
             const SizedBox(height: 8),
@@ -175,7 +177,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
               decoration: const InputDecoration(labelText: 'Collection', border: OutlineInputBorder()),
               items: [
                 const DropdownMenuItem(value: 'All collections', child: Text('All collections')),
-                for (final key in (widget.items.map((i) => i.collectionKey).whereType<String>().toSet().toList()..sort()))
+                for (final key in (availableItems.map((i) => i.collectionKey).whereType<String>().toSet().toList()..sort()))
                   DropdownMenuItem(value: key, child: Text(_label(key.replaceAll('-', ' ')))),
               ],
               onChanged: (v) => setState(() => _collection = v ?? 'All collections')),

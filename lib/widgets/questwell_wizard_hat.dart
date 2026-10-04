@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 /// Illustrated accessory uses the same contain/bottom-center coordinates as
 /// the frozen body. The taller crown can extend into the scene's headroom.
 class QuestwellWizardHat extends StatelessWidget {
-  const QuestwellWizardHat({super.key, required this.bodyType});
+  const QuestwellWizardHat({super.key, required this.bodyType,
+    this.headOffset = Offset.zero});
   static const asset = 'assets/images/questwell/avatar/wizard_hat_illustrated_v2.png';
   final String bodyType;
+  final Offset headOffset;
 
   @override
   Widget build(BuildContext context) => IgnorePointer(
@@ -19,8 +21,8 @@ class QuestwellWizardHat extends StatelessWidget {
       };
       return Stack(clipBehavior: Clip.none, children: [
         Positioned(
-          left: (constraints.maxWidth - 240 * scale) / 2 + fit.left * scale,
-          top: constraints.maxHeight - 320 * scale + fit.top * scale,
+          left: (constraints.maxWidth - 240 * scale) / 2 + (fit.left + headOffset.dx) * scale,
+          top: constraints.maxHeight - 320 * scale + (fit.top + headOffset.dy) * scale,
           width: fit.width * scale, height: fit.height * scale,
           child: Image.asset(asset, fit: BoxFit.contain,
             filterQuality: FilterQuality.high, gaplessPlayback: true),

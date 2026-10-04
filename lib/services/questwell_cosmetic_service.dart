@@ -83,6 +83,7 @@ class QuestwellCosmeticService {
             source: ownedRows.where((owned) => owned['cosmetic_id'] == row['id']).map((owned) => owned['source']?.toString()).firstOrNull,
           ),
         )
+        .where((item) => !QuestwellEquipmentPolicy.isRetired(item.slug))
         .toList();
 
     return QuestwellCosmeticsSnapshot(

@@ -1,0 +1,149 @@
+{
+  "status": "passed",
+  "template": "tool/neutral_robe_fit_reference.json",
+  "fixedAssetsUnchanged": true,
+  "promotedEverydayIdentical": true,
+  "layerOrder": [
+    "rear",
+    "body",
+    "boots",
+    "trousers",
+    "top",
+    "front",
+    "identity",
+    "collar",
+    "cuffs"
+  ],
+  "classes": {
+    "scout": {
+      "front": {
+        "path": "assets/images/questwell/avatar/classes/scout/scout_robe_neutral_v1.webp",
+        "sha256": "dea2d75e45975f56049c91d0d17b82e361235ecd17efeda227c9b6f8a85c6e09",
+        "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb",
+        "exactTemplateAlpha": true
+      },
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_neutral_v1.webp",
+        "sha256": "3b87885ad45e811617d6c35388d4358da6e203694ff7046254115cb12769cd40",
+        "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae",
+        "exactTemplateAlpha": true
+      },
+      "cuffs": {
+        "path": "assets/images/questwell/avatar/classes/scout/scout_robe_cuff_front_neutral_v1.webp",
+        "sha256": "9a7b7b7b23f79c4079a0186f9630f13313a4e62bdbb0bd258381bd970d97b8d0",
+        "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f",
+        "exactTemplateAlpha": true
+      },
+      "collar": {
+        "path": "assets/images/questwell/avatar/classes/scout/scout_robe_collar_neutral_v1.webp",
+        "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e",
+        "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e",
+        "exactTemplateAlpha": true
+      }
+    },
+    "scholar": {
+      "front": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_v1.webp",
+        "sha256": "daf59ac8cf66885d6b15eeeae29a6e75ef89be9796691399977e3e8e8b277adf",
+        "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb",
+        "exactTemplateAlpha": true
+      },
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_neutral_v1.webp",
+        "sha256": "d4f783dbf2519e651c1d67ce63f3fcec14692f177e22ded99e544202678f4f7f",
+        "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae",
+        "exactTemplateAlpha": true
+      },
+      "cuffs": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_cuff_front_neutral_v1.webp",
+        "sha256": "4e095c56351ebc3edacdd3360fc661e728e1a64f6df34e10ffb9147e30116c95",
+        "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f",
+        "exactTemplateAlpha": true
+      },
+      "collar": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_collar_neutral_v1.webp",
+        "sha256": "f2b9cf1c6b1b6665eea149124c680a03362ac7e4b0c2b2e29f500691e0a24742",
+        "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e",
+        "exactTemplateAlpha": true
+      }
+    },
+    "alchemist": {
+      "front": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_neutral_v1.webp",
+        "sha256": "a1ad1beda55d19faa20660a6a7fcda42be4734180ba5fff7f434ae64f05dec43",
+        "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb",
+        "exactTemplateAlpha": true
+      },
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_neutral_v1.webp",
+        "sha256": "daa533f56eaad9a16ca25b24e5db7f1a6521b7b9a304515c6923a7d63bba2ea2",
+        "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae",
+        "exactTemplateAlpha": true
+      },
+      "cuffs": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_neutral_v1.webp",
+        "sha256": "1c3ad1c7865d370ac5bade441311209865ea21c25efc6b5b4f4b30cac4f61e13",
+        "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f",
+        "exactTemplateAlpha": true
+      },
+      "collar": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_collar_neutral_v1.webp",
+        "sha256": "3aff0b861f22de09b4ed0160930abc5bb37fe517af79cdaa950443e534fd7713",
+        "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e",
+        "exactTemplateAlpha": true
+      }
+    },
+    "guardian": {
+      "front": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_neutral_v1.webp",
+        "sha256": "7ed1ef7cb9bd1dfece8b4c5ce1d78384217b5da75737468f79eb9cb7b29e0afd",
+        "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb",
+        "exactTemplateAlpha": true
+      },
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_neutral_v1.webp",
+        "sha256": "264a5864c59fe62121c27c652d4798e3cd7da26ad6901b5498ddbe12f2239009",
+        "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae",
+        "exactTemplateAlpha": true
+      },
+      "cuffs": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_cuff_front_neutral_v1.webp",
+        "sha256": "8235cfbedeb2240d7b5f084d03a8806570c28408aad59be9388788fa14c94bca",
+        "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f",
+        "exactTemplateAlpha": true
+      },
+      "collar": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_collar_neutral_v1.webp",
+        "sha256": "84e03d1938dbe9097c08b22d3a1dcdd355ba5dba43173978911336a013538bcc",
+        "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e",
+        "exactTemplateAlpha": true
+      }
+    },
+    "wanderer": {
+      "front": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_neutral_v1.webp",
+        "sha256": "24c77196a27da4977a8b66e92ec4c6e1d1a4ac3e7bf25fa0bb0cff53845ea516",
+        "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb",
+        "exactTemplateAlpha": true
+      },
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_neutral_v1.webp",
+        "sha256": "9ac51aed8c301c3842382826487d703134e863377c3ced099393c11278b14f24",
+        "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae",
+        "exactTemplateAlpha": true
+      },
+      "cuffs": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuff_front_neutral_v1.webp",
+        "sha256": "1a48dc2466614926f2445f03a653c947e0cece92729e64c947511de812a70fff",
+        "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f",
+        "exactTemplateAlpha": true
+      },
+      "collar": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_collar_neutral_v1.webp",
+        "sha256": "97bdf9aeaa26bb9839bc50aa7eed3a9bf5c74acef179810fc21129cee763eb31",
+        "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e",
+        "exactTemplateAlpha": true
+      }
+    }
+  }
+}

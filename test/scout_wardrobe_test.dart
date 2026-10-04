@@ -1,3 +1,7 @@
+import '../lib/widgets/questwell_scholar_glasses.dart';
+import '../lib/widgets/questwell_wizard_hat.dart';
+import 'support/neutral_robe_layers.dart';
+import '../lib/widgets/questwell_neutral_paper_doll.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +39,31 @@ void main() {
           locked, reason: 'Guardian $part must preserve the same locked outline');
       expect(await alpha('assets/images/questwell/avatar/classes/wanderer/wanderer_${part}_female_v3.webp'),
           locked, reason: 'Wanderer $part must preserve the same locked outline');
+    }
+  });
+
+  test('Every neutral class preserves all four approved robe alpha masks', () async {
+    Future<List<int>> alpha(String path) async {
+      final data = await rootBundle.load(path);
+      final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(
+          data.offsetInBytes, data.lengthInBytes));
+      final image = (await codec.getNextFrame()).image;
+      codec.dispose();
+      try {
+        expect([image.width, image.height], [240, 320]);
+        final pixels = (await image.toByteData(format: ui.ImageByteFormat.rawRgba))!;
+        return [for (var at = 3; at < pixels.lengthInBytes; at += 4) pixels.getUint8(at)];
+      } finally {
+        image.dispose();
+      }
+    }
+    for (final part in ['robe', 'robe_rear', 'robe_collar', 'robe_cuff_front']) {
+      final reference = await alpha(QuestwellScoutWardrobeFoundation.asset('neutral', part));
+      for (final archetype in ['scholar', 'alchemist', 'guardian', 'wanderer']) {
+        expect(await alpha(QuestwellScoutWardrobeFoundation.asset('neutral', part,
+            archetype: archetype)), reference,
+            reason: '$archetype/$part cannot alter the approved silhouette or depth');
+      }
     }
   });
 
@@ -172,8 +201,10 @@ void main() {
         expect(assets(tester),contains(QuestwellScoutWardrobeFoundation.asset('female','top')));
       }
       await render(slug,boots:true);
-      expect(assets(tester).any((p)=>p.contains('scout_boots_female')),isFalse);
-      // Equipped Pathfinder boots use the existing footwear clip.
+      if (slug == 'everyday-adventurer-outfit') {
+        expect(assets(tester), contains(QuestwellScoutWardrobeFoundation.asset('female', 'boots')));
+      }
+      // Retired footwear never changes the approved outfit.
       if (slug == 'woodland-scout-outfit') {
         expect(asset(QuestwellWoodlandScoutFoundation.outfitAsset), findsOneWidget);
       }
@@ -187,7 +218,7 @@ void main() {
     }
   });
 
-  for (final body in ['male', 'neutral']) {
+  for (final body in ['male']) {
     testWidgets('$body modular clothing never restores suit trousers', (tester) async {
       Future<void> render(Set<String> layers) => tester.pumpWidget(MaterialApp(home:
         SizedBox(width: 240, height: 320, child: QuestwellLayeredAdventurerArt(
@@ -217,6 +248,84 @@ void main() {
       expect(find.byType(QuestwellCleanBase), findsWidgets);
     });
   }
+  for (final archetype in ['scout', 'scholar', 'alchemist', 'guardian', 'wanderer']) {
+    testWidgets('$archetype neutral uses locked body and authored cloth depth in every subset', (tester) async {
+      const choices = ['top', 'trousers', 'boots', 'robe'];
+      final baseFinder = asset(QuestwellNeutralPaperDoll.baseAsset);
+      Rect? bounds;
+      for (var mask = 0; mask < 16; mask++) {
+        final selection = <String>{
+          for (var index = 0; index < choices.length; index++)
+            if ((mask & (1 << index)) != 0) choices[index],
+        };
+        await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
+          width: 240, height: 320,
+          child: QuestwellLayeredAdventurerArt(archetype: archetype,
+            avatarBodyType: 'neutral', equippedSlugs: const {},
+            previewScoutLayers: selection)))));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+        expect(baseFinder, findsOneWidget);
+        bounds ??= tester.getRect(baseFinder);
+        expect(tester.getRect(baseFinder), bounds);
+        expect(tester.getSize(baseFinder), const Size(240, 320));
+        expect(find.byType(ClipPath), findsNothing,
+            reason: 'Fitted garments never clip or reconstruct the approved body');
+        expect(find.byType(QuestwellCleanBase), findsNothing);
+        final expected = neutralRobeLayers(archetype).where((path) {
+          if (path.contains('_robe_')) return selection.contains('robe');
+          for (final part in ['top', 'trousers', 'boots']) {
+            if (path.contains('everyday_${part}_')) return selection.contains(part);
+          }
+          return true;
+        }).toList();
+        expect(assets(tester), expected);
+      }
+      await tester.pumpWidget(MaterialApp(home: SizedBox(width: 240, height: 320,
+        child: QuestwellLayeredAdventurerArt(archetype: archetype,
+          avatarBodyType: 'neutral', equippedSlugs: const {}))));
+      await tester.pumpAndSettle();
+      expect(assets(tester), neutralRobeLayers(archetype),
+          reason: 'The default class robe uses exactly the reviewed stack');
+      await tester.pumpWidget(MaterialApp(home: SizedBox(width: 240, height: 320,
+        child: QuestwellLayeredAdventurerArt(archetype: archetype,
+          avatarBodyType: 'neutral',
+          equippedSlugs: const {'chest': 'everyday-adventurer-outfit'}))));
+      await tester.pumpAndSettle();
+      expect(assets(tester), neutralRobeLayers(archetype)
+          .where((path) => !path.contains('_robe_')).toList());
+    });
+  }
+
+  testWidgets('Head accessories follow the approved neutral head at native and double size', (tester) async {
+    for (final body in ['neutral', 'female', 'male']) {
+      for (final scale in [1.0, 2.0]) {
+        for (final legacySuit in [false, true]) {
+          await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
+            width: 240 * scale, height: 320 * scale,
+            child: QuestwellLayeredAdventurerArt(archetype: 'scout',
+              avatarBodyType: body, equippedSlugs: {
+                'head': 'tiny-wizard-hat', 'face': 'round-scholar-glasses',
+                if (legacySuit) 'chest': 'starter-business-suit',
+              })))));
+          await tester.pumpAndSettle();
+          expect(tester.takeException(), isNull);
+          final shift = body == 'neutral' && !legacySuit ? 4.0 : 0.0;
+          expect(tester.widget<QuestwellScholarGlasses>(find.byType(QuestwellScholarGlasses)).headOffset,
+              Offset(shift, 0));
+          expect(tester.widget<QuestwellWizardHat>(find.byType(QuestwellWizardHat)).headOffset,
+              Offset(shift, 0));
+          final frame = tester.getRect(find.byType(QuestwellLayeredAdventurerArt));
+          final actualScale = (frame.width / 240).clamp(0.0, frame.height / 320);
+          final left = body == 'male' ? 77.0 : body == 'female' ? 72.0 : 75.0;
+          final hat = tester.getRect(asset(QuestwellWizardHat.asset));
+          expect(hat.left,
+              closeTo(frame.left + (frame.width - 240 * actualScale) / 2 + (left + shift) * actualScale, .001));
+        }
+      }
+    }
+  });
+
   test('robe hides protruding sleeves but retains open front and hands', () {
     final clip = ScoutWardrobeClipper('male', 'robeUnder').getClip(const Size(240, 320));
     expect(clip.contains(const Offset(120, 120)), isTrue);

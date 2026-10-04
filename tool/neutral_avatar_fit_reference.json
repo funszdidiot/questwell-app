@@ -1,22 +1,48 @@
 {
-  "status": "founder_approved_neutral_frame_2026_10_03",
+  "status": "founder_approved_neutral_foundation_locked_2026_10_03",
   "canvas": [
     240,
     320
   ],
   "base": {
-    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v1.webp",
-    "sha256": "0c76468325e2ac1916ffc5578911c789dbb950be2b0d1344901d248d3582e078"
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+    "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24"
   },
   "head_hair": {
-    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v1.webp",
-    "sha256": "78069f75eba2e92e35fa28e0de1d226eff26cc168dfc997153d774bab453fb66"
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+    "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78"
   },
-  "approval": "Tanya requested a more gender-neutral frame and approved the revised balanced shoulders/hips and softened musculature with Yes.",
+  "approval": "Tanya explicitly accepted v4 on 2026-10-03: way better; lock it in and move on. She directed applying the complete-join repair and rigorous visual-review methodology to all future avatars. The body and identity are locked. Neutral everyday fitting may proceed; this does not approve any garment or publication.",
   "rules": [
     "Keep this complete base and original head/hair fixed.",
     "Clothing adds registered full-canvas layers; no anatomy masks or replacement legs.",
-    "Fit a neutral robe template before class color/pattern variants."
+    "Fit a neutral robe template before class color/pattern variants.",
+    "Never restore the rejected v1, v2 or v3 head/neck overlays on this corrected body.",
+    "Check neck and wrist continuity visually as well as verifying asset hashes.",
+    "Use one approved fitting template per body and garment family; retain its geometry for color, pattern and decorative variants.",
+    "Keep the v4 head position fixed. Future head accessories must use the v4 head anchor; never shift the body to accommodate them.",
+    "Founder approved this foundation on 2026-10-03. Fit garments to this immutable body; each foundational garment fit still requires its own review."
   ],
-  "review": "?review=neutral-scout"
+  "review": "?review=neutral-scout",
+  "revision": "neutral-paper-doll-v4",
+  "repair": {
+    "source_revision": "neutral-paper-doll-v3",
+    "scope": "One continuous contour-shaped lower-hair/under-jaw/upper-neck repair. No further head translation, scaling or rotation; body from y84 down unchanged.",
+    "head_translation": [
+      0,
+      0
+    ],
+    "verification": "tool/art_assets/neutral_paper_doll_v4/verification.json",
+    "visual_review": "tool/art_assets/neutral_paper_doll_v4/visual_review.json"
+  },
+  "head_anchor": {
+    "native_center_x": 122.5,
+    "offset_from_v2": [
+      4,
+      0
+    ],
+    "neck_base_center_x": 123,
+    "maximum_center_difference_pixels": 0.5
+  },
+  "methodology": "docs/art/PAPER_DOLL_STANDARD.md"
 }

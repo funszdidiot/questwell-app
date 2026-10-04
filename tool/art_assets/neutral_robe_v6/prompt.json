@@ -1,0 +1,16 @@
+{
+  "tool": "built-in imagegen",
+  "use_case": "precise-object-edit",
+  "prompt": "Use case: precise-object-edit.\nAsset: Questwell neutral paper-doll robe, transparent garment-only layer.\nImage 1 is the EDIT TARGET: the olive robe already registered on a 960 x 1280 transparent canvas. Image 2 is a FITTING REFERENCE ONLY: the approved neutral avatar in everyday clothes. Never draw or change that avatar; it will be composited from its original locked files.\nRepair this robe to fit Image 2. Preserve the same position, scale, collar, shoulder breadth, open-front A-line silhouette, olive textile, flax fern embroidery, narrow warm brown edge binding, two small LOWER hip pockets, hem length and continuous dark olive rear skirt panel. Preserve the generous transparent margin above and around the robe.\nMain correction: tailor both lower sleeves and cuff hems naturally to the fixed wrists in Image 2. Replace the stiff circular pipe openings with close, soft curved cloth hems. The sleeve should come down over the forearm and end at the wrist, leaving the hand free. A subtle rear cuff edge and shallow foreground brown hem should describe wrapped fabric. No large black oval, thick complete ellipse, floating band, exposed horizontal wrist slit, bell sleeve, mitten, or extra cuff ring. Match each wrist individually. Also clean the slight horizontal registration break in the skirt around hip/hand height so the front edges and embroidery flow continuously.\nOutput only ONE full robe garment on true transparency, same 3:4 canvas registration as Image 1. Include its rear skirt cloth for separation into a behind-body pass later. Do not include the avatar, any skin/hair/body, hands, shirt, trousers, boots, mannequin, accessories, background, labels, or shadows. No chest pockets, new decoration, interior front flaps, or design changes. Maintain the warm hand-illustrated fantasy RPG art style. This is a precise fit repair, not a new robe design.",
+  "inputs": [
+    {
+      "path": "robe_edit_reference.png",
+      "role": "garment edit target"
+    },
+    {
+      "path": "everyday_fit_reference.png",
+      "role": "locked-body fitting reference only"
+    }
+  ],
+  "invariant": "No generated anatomy is used. Only registered garment artwork is exported."
+}

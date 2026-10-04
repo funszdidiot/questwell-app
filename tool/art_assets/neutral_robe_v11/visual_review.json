@@ -1,0 +1,52 @@
+{
+  "status": "independent_visual_qa_passed_founder_fit_review_pending",
+  "reviewer": "cuff_rim_audit",
+  "reviewedAt": "2026-10-04",
+  "assets": [
+    {
+      "path": "tool/art_assets/neutral_robe_v11/scout_robe_front_neutral_candidate_v11.webp",
+      "sha256": "dea2d75e45975f56049c91d0d17b82e361235ecd17efeda227c9b6f8a85c6e09"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v11/scout_robe_rear_neutral_candidate_v11.webp",
+      "sha256": "3b87885ad45e811617d6c35388d4358da6e203694ff7046254115cb12769cd40"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v11/scout_robe_cuffs_neutral_candidate_v11.webp",
+      "sha256": "9a7b7b7b23f79c4079a0186f9630f13313a4e62bdbb0bd258381bd970d97b8d0"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v11/scout_robe_collar_neutral_candidate_v11.webp",
+      "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+    }
+  ],
+  "presentation": {
+    "path": "tool/art_assets/neutral_robe_v11/neutral_robe_v11.png",
+    "sha256": "7f93c20b12915b1095c078e0f0afa6b0ded74c210f1e27aae5c761fc3d66a171"
+  },
+  "reviewedViews": [
+    {
+      "path": "tool/art_assets/neutral_robe_v11/hands_light.png",
+      "sha256": "d7d1df93b127bd7d30fd31a2e0ac8ffb054f21e665219f83c6efede90308bf6d"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v11/hands_dark.png",
+      "sha256": "f891c7b1d23ebfa9241aefef29d75e4212ccf4ec51ebd25ef92b2d9145facc56"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v11/full_light.png",
+      "sha256": "c33f453b08b7ffbd844ff0a408503d25eabfbc0662066b860c007c14f3d10bfa"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v11/native_composite.png",
+      "sha256": "e67a0be7545e9233ee69ac631a945fd30bba951a2ad437ac1de603ac26995e29"
+    }
+  ],
+  "findings": {
+    "cuffRims": "PASS: continuous finished dark lower edges on both cuffs; no detached fragments or broken strokes.",
+    "innerJoins": "PASS: no reopened inner-tip gaps.",
+    "hands": "PASS: no cloth crosses exposed palms/fingers; native composite unchanged below cuff rims.",
+    "fit": "PASS: wider cuff shape intact, native/enlarged light/dark and full avatar coherent."
+  },
+  "founderApproval": false
+}

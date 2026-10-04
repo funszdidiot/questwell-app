@@ -1,0 +1,45 @@
+{
+  "status": "author_visual_review_passed_independent_review_pending",
+  "reviewer": "guardian_neutral_surface author agent",
+  "reviewed": [
+    "native_composite.png",
+    "full_light.png",
+    "full_dark.png",
+    "hands_light.png",
+    "hands_dark.png",
+    "collar_light.png",
+    "collar_dark.png"
+  ],
+  "findings": [
+    "Complete unchanged hands visible in front of side panels; inward-wide cuff silhouettes and dark finished rims retained.",
+    "Continuous gold neck trim below original fixed head/hair.",
+    "Rear lining and hem remain behind trousers and legs.",
+    "Required shield, four brass fasteners, chest and lower hip welts, and lower panel chevrons are present; Scout leaves removed.",
+    "Corrected preliminary palette fringe at gold edges and shoulder outline.",
+    "Four decoded alpha channels match canonical v11 exactly; fixed body, identity and everyday hashes verified."
+  ],
+  "founderSurfaceApproval": false,
+  "runtimeTested": false,
+  "assets": {
+    "front": {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_neutral_v1.webp",
+      "sha256": "7ed1ef7cb9bd1dfece8b4c5ce1d78384217b5da75737468f79eb9cb7b29e0afd",
+      "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb"
+    },
+    "rear": {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_neutral_v1.webp",
+      "sha256": "264a5864c59fe62121c27c652d4798e3cd7da26ad6901b5498ddbe12f2239009",
+      "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae"
+    },
+    "cuffs": {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_cuff_front_neutral_v1.webp",
+      "sha256": "8235cfbedeb2240d7b5f084d03a8806570c28408aad59be9388788fa14c94bca",
+      "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f"
+    },
+    "collar": {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_collar_neutral_v1.webp",
+      "sha256": "84e03d1938dbe9097c08b22d3a1dcdd355ba5dba43173978911336a013538bcc",
+      "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e"
+    }
+  }
+}

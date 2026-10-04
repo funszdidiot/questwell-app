@@ -1,0 +1,13 @@
+# Neutral foundation v4 — continuous join repair
+
+Tanya correctly rejected the v3 PNG: its rigid head translation had been joined to an independently generated rectangular neck band. The scanline splice and alpha fade left mismatched shadows, blunt lower-hair fragments and stale contours. Prior preservation checks did not establish visual quality, and the earlier completion claim was incorrect.
+
+V4 repairs the connected lower-hair, under-jaw and upper-neck region from one imagegen-edited crop of the actual centered sprite. A contour-shaped mask admits that repair. It replaces the complete lower-hair silhouette instead of crossfading displaced alpha contours; opaque interior transitions blend into the existing artwork. The original face position, upper identity and body below the join stay fixed. No clothing assets were altered.
+
+`node tool/export_neutral_join_v4.cjs` reproduces the 240 × 320 lossless WebPs, matching foreground and review PNGs. It reports 865 changed visible/alpha pixels, bounded by x92–152 and y62–83. Everything from y84 downward is identical. The central face is identical, the chin remains at x122.5, and the fixed neck base remains at x123.
+
+An independent visual review inspected the actual export, not just the generated source: native size, nearest-pixel enlargement, smooth enlargement, light/dark backgrounds, and base-plus-identity compositing. It found a continuous jaw shadow, connected lower-hair curls, no stale fragments or ghost contour, no visible upper repair boundary, and no y83/84 collar seam. Adding the identity foreground slightly strengthens existing edge opacity without shifting the silhouette. The exact reviewed hashes and checklist are recorded in `tool/art_assets/neutral_paper_doll_v4/visual_review.json`.
+
+Tanya explicitly approved and locked v4 on 2026-10-03, describing it as “way better” and directing that this methodology apply to all future avatars. The canonical fit reference and approved asset manifest record that approval without changing either image. The widget selects v4 for local development review. V3 is retained only as rejected history. Neutral everyday fitting may now proceed on the immutable v4 body; use body-specific, garment-family templates, with decorative variants retaining their geometry.
+
+Validation: exporter preservation/alignment checks and the repository asset manifest verifier passed. Flutter is unavailable in this environment, so the updated Flutter regression expectations were not executed. No remote push, deployment, account mutation, merge or launch occurred as part of this foundation approval.

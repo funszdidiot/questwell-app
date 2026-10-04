@@ -37,7 +37,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     if(['chest'].contains(i.category)) return 'Outfits';
     return 'Gear';
   }
-  bool get hasSeasonal => widget.data.cosmetics.any((i)=>i.unlockMethod=='shop'&&i.editionType!='standard');
+  bool get hasSeasonal => widget.data.cosmetics.any((i)=>i.unlockMethod=='shop'&&!QuestwellEquipmentPolicy.isRetired(i.slug)&&i.editionType!='standard');
   String editionLabel(String value)=>switch(value){
     'seasonal'=>'Seasonal','limited'=>'Limited Edition','event_reward'=>'Event Reward',
     'founder_beta'=>'Founder/Beta',_=>'Standard'};
@@ -109,7 +109,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   }
   @override
   Widget build(BuildContext context) {
-    final all=widget.data.cosmetics.where((i)=>i.unlockMethod=='shop').toList();
+    final all=widget.data.cosmetics.where((i)=>i.unlockMethod=='shop'&&!QuestwellEquipmentPolicy.isRetired(i.slug)).toList();
     final items=all.where((i)=>(category=='All'||category=='Collections'&&i.collectionKey!=null||category=='Seasonal'&&i.specialEdition||group(i)==category)&&
       (collection=='All'||i.collectionKey==collection)&&
       (rarity=='All'||i.rarity.toLowerCase()==rarity.toLowerCase())&&

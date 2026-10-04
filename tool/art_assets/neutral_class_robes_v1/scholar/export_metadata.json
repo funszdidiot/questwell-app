@@ -1,0 +1,258 @@
+{
+  "status": "exported_pending_independent_visual_review",
+  "template": "tool/neutral_robe_fit_reference.json",
+  "layers": {
+    "front": {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_v1.webp",
+      "sha256": "daf59ac8cf66885d6b15eeeae29a6e75ef89be9796691399977e3e8e8b277adf",
+      "alphaPixelsDifferent": 0
+    },
+    "rear": {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_neutral_v1.webp",
+      "sha256": "d4f783dbf2519e651c1d67ce63f3fcec14692f177e22ded99e544202678f4f7f",
+      "alphaPixelsDifferent": 0
+    },
+    "cuffs": {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_cuff_front_neutral_v1.webp",
+      "sha256": "4e095c56351ebc3edacdd3360fc661e728e1a64f6df34e10ffb9147e30116c95",
+      "alphaPixelsDifferent": 0
+    },
+    "collar": {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_collar_neutral_v1.webp",
+      "sha256": "f2b9cf1c6b1b6665eea149124c680a03362ac7e4b0c2b2e29f500691e0a24742",
+      "alphaPixelsDifferent": 0
+    }
+  },
+  "fixedAssetHashChecks": 5,
+  "allFixedAssetsUnchanged": true,
+  "registration": {
+    "method": "inverse_distance_landmark_rgb_warp",
+    "pins": [
+      [
+        109,
+        80,
+        108,
+        80
+      ],
+      [
+        136,
+        80,
+        138,
+        80
+      ],
+      [
+        85,
+        87,
+        83,
+        87
+      ],
+      [
+        160,
+        87,
+        162,
+        87
+      ],
+      [
+        77,
+        105,
+        77,
+        105
+      ],
+      [
+        169,
+        105,
+        169,
+        105
+      ],
+      [
+        98,
+        125,
+        98,
+        125
+      ],
+      [
+        147,
+        125,
+        147,
+        125
+      ],
+      [
+        74,
+        136,
+        74,
+        135
+      ],
+      [
+        172,
+        136,
+        172,
+        135
+      ],
+      [
+        67,
+        178,
+        67,
+        178
+      ],
+      [
+        93,
+        182,
+        93,
+        182
+      ],
+      [
+        153,
+        182,
+        153,
+        182
+      ],
+      [
+        179,
+        178,
+        179,
+        178
+      ],
+      [
+        113,
+        92,
+        113,
+        92
+      ],
+      [
+        115,
+        112,
+        115,
+        112
+      ],
+      [
+        114,
+        137,
+        114,
+        137
+      ],
+      [
+        111,
+        167,
+        111,
+        168
+      ],
+      [
+        108,
+        195,
+        109,
+        195
+      ],
+      [
+        105,
+        220,
+        105,
+        220
+      ],
+      [
+        102,
+        250,
+        102,
+        250
+      ],
+      [
+        101,
+        272,
+        101,
+        272
+      ],
+      [
+        134,
+        92,
+        134,
+        92
+      ],
+      [
+        132,
+        112,
+        132,
+        112
+      ],
+      [
+        133,
+        137,
+        133,
+        137
+      ],
+      [
+        136,
+        167,
+        136,
+        168
+      ],
+      [
+        139,
+        195,
+        138,
+        195
+      ],
+      [
+        141,
+        220,
+        141,
+        220
+      ],
+      [
+        144,
+        250,
+        144,
+        250
+      ],
+      [
+        146,
+        272,
+        146,
+        272
+      ],
+      [
+        63,
+        270,
+        61,
+        271
+      ],
+      [
+        184,
+        270,
+        186,
+        271
+      ],
+      [
+        75,
+        281,
+        73,
+        283
+      ],
+      [
+        102,
+        285,
+        104,
+        287
+      ],
+      [
+        144,
+        285,
+        143,
+        287
+      ],
+      [
+        171,
+        281,
+        173,
+        283
+      ],
+      [
+        123,
+        275,
+        123,
+        277
+      ]
+    ],
+    "immutableAlpha": true,
+    "cuffsNeckTrimAndSleeves": "Exact locked pixels palette mapped for navy cloth and gold edging; original geometry and shading structure retained"
+  },
+  "preview": "scholar_neutral_v1.png"
+}

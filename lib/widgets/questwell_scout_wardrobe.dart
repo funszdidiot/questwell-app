@@ -1,9 +1,9 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'questwell_clean_base.dart';
+import 'questwell_neutral_paper_doll.dart';
 
-/// Separate garments on a fixed body. The accepted female fit is used by
-/// the Scout default robe and Everyday Adventurer outfit in the shared renderer.
+/// Separate garments on the approved female and neutral paper dolls.
 class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   const QuestwellScoutWardrobeFoundation({super.key, required this.body, required this.layers});
   final String body;
@@ -13,7 +13,13 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   static const femaleIdentityAsset =
       'assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp';
 
-  static String asset(String body, String part) {
+  static String asset(String body, String part, {String archetype = 'scout'}) {
+    if (body == 'neutral') {
+      if (part.startsWith('robe')) {
+        return 'assets/images/questwell/avatar/classes/$archetype/${archetype}_${part}_neutral_v1.webp';
+      }
+      return 'assets/images/questwell/avatar/everyday_${part}_neutral_v3.webp';
+    }
     final version = body == 'female'
         ? (part.startsWith('robe') ? 'v8' : 'v6')
         : part.startsWith('robe') ? 'v4' : 'v1';
@@ -24,6 +30,15 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
       gaplessPlayback: true);
   @override
   Widget build(BuildContext context) {
+    if (body == 'neutral') {
+      return Stack(fit: StackFit.expand, children: [
+        const QuestwellNeutralPaperDoll(),
+        // Approved trouser hems overlap the boot shafts.
+        if (layers.contains('boots')) image(asset(body, 'boots')),
+        if (layers.contains('trousers')) image(asset(body, 'trousers')),
+        if (layers.contains('top')) image(asset(body, 'top')),
+      ]);
+    }
     if (body == 'female') {
       // Every garment shares this body's complete canvas. Clothing only adds
       // pixels: it never replaces, clips, translates, or rescales body parts.
@@ -35,7 +50,7 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
       ]);
     }
 
-    // Existing male and neutral candidates remain separate until each has
+    // The existing male candidate remains separate until it has
     // its own accepted paper-doll base and fitted clothing assets.
     final contents = Stack(fit: StackFit.expand, children: [
       ClipPath(clipper: ScoutWardrobeClipper(body, layers.contains('trousers') ? 'lowerReplacement' : 'all'),
@@ -50,8 +65,8 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   }
 }
 
-/// Legacy male and neutral fitting clips, registered to the 240x320 canvas.
-/// The female paper-doll renderer does not use these anatomy masks.
+/// Legacy fitting clips, registered to the 240x320 canvas.
+/// Approved female and neutral paper dolls bypass these anatomy masks.
 class ScoutWardrobeClipper extends CustomClipper<Path> {
   const ScoutWardrobeClipper(this.body, this.part);
   final String body;

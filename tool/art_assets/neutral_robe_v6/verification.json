@@ -1,0 +1,33 @@
+{
+  "status": "review_candidate_not_approved",
+  "lockedBodyAndIdentityVerified": true,
+  "canvas": [
+    240,
+    320
+  ],
+  "layerOrder": [
+    "rear cloth",
+    "complete approved body",
+    "boots",
+    "trousers",
+    "top",
+    "robe front",
+    "original identity",
+    "cuff fronts"
+  ],
+  "uncoveredArmPixels": [],
+  "assets": {
+    "front": {
+      "file": "scout_robe_neutral_candidate_v6.webp",
+      "sha256": "dd63423683d3a8cbe654eee770c78a69222654f248b02910bb38549d04a1df2d"
+    },
+    "rear": {
+      "file": "scout_robe_rear_neutral_candidate_v6.webp",
+      "sha256": "92b41b975c1231b804274e0546ec8e0a7b2fdf8c84b7b70d63c8184064532a0b"
+    },
+    "cuffs": {
+      "file": "scout_robe_cuff_front_neutral_candidate_v6.webp",
+      "sha256": "a44cff2267b0388f6b3adc9a946e301572abb70f8791b4ca37bd7f522a832c7f"
+    }
+  }
+}

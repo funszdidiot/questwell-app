@@ -11,7 +11,8 @@ void main() {
   GoogleFonts.config.allowRuntimeFetching = false;
   testWidgets('Wall art fits the upper wall with all floor furniture', (tester) async {
     expect(QuestwellEquipmentPolicy.isReady(QuestwellWallArt.slug, 'wall_art'), true);
-    expect(QuestwellEquipmentPolicy.isReady(QuestwellWallArt.slug, 'room'), false);
+    expect(QuestwellEquipmentPolicy.isReady(QuestwellWallArt.slug, 'room'), true,
+      reason: 'Renderer readiness is slug-only; catalog metadata owns the category.');
     for (final width in [320.0, 390.0]) {
       for (final body in ['female', 'male', 'neutral']) {
         await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(width: width,

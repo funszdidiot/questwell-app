@@ -1,0 +1,133 @@
+{
+  "status": "offline_visual_qa_pending",
+  "method": "Exact locked neutral/female garment compositing with identical native coordinate placement to Flutter widget. Male shows existing full business-suit base; Flutter runtime shader rendering remains unverified without Flutter.",
+  "bookAsset": "assets/images/questwell_annotated_grimoire_v1.webp",
+  "bookSha256": "c7d933a8adb7456b332409d76f05ff17bfaa6c70944179a54ddd20ed7c2fecc3",
+  "rotation": 0.1,
+  "bodies": {
+    "female": {
+      "anchor": [
+        132,
+        147
+      ],
+      "book": [
+        126,
+        157,
+        24
+      ],
+      "bookHeight": 33.640449438202246,
+      "handRegionChangedChannels": 0,
+      "sourceAssets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_female_v3.webp",
+          "sha256": "60ed6ed7cf04443bcc2e2eca36611684d2c15e277b2b549dac5ee0b6b8394327"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_female_v1.webp",
+          "sha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_trousers_female_v6.webp",
+          "sha256": "14d57926eeeea3b56451a4b6af1fc86022c74b673bd1be8870c8e388afe1fd8f"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_top_female_v6.webp",
+          "sha256": "07bbd9864164f7944750fc2f0beffb30d643407e0d72f0f3328802a2baee5a5a"
+        },
+        {
+          "path": "assets/images/questwell/avatar/scout_boots_female_v6.webp",
+          "sha256": "7b2fb6260c25d162582a672d8c0427da3a4ea0634d5423abc1b3fa959fd54ce3"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_female_v3.webp",
+          "sha256": "3747eb61a15702835c6bec5461e6672790e6a1bfe3e1609204f8579204be7719"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp",
+          "sha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_cuff_front_female_v3.webp",
+          "sha256": "5a25a424642949219470ef8db2cbeff36c8d8ddc5a21fdbc93ae919d344187b8"
+        }
+      ]
+    },
+    "neutral": {
+      "anchor": [
+        136,
+        157
+      ],
+      "book": [
+        130,
+        165,
+        25
+      ],
+      "bookHeight": 35.04213483146067,
+      "handRegionChangedChannels": 0,
+      "sourceAssets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_neutral_v1.webp",
+          "sha256": "d4f783dbf2519e651c1d67ce63f3fcec14692f177e22ded99e544202678f4f7f"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+          "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24"
+        },
+        {
+          "path": "assets/images/questwell/avatar/everyday_boots_neutral_v3.webp",
+          "sha256": "12ed127e63ba1548f39ebc65ed1cb9385d99cbe9bb0f16ce056295c72cb68130"
+        },
+        {
+          "path": "assets/images/questwell/avatar/everyday_trousers_neutral_v3.webp",
+          "sha256": "c08a045e586befc45cb0dbfcf6cec72121b47195e4f06ee8fb525aff27caa865"
+        },
+        {
+          "path": "assets/images/questwell/avatar/everyday_top_neutral_v3.webp",
+          "sha256": "4c5a4c4e36bffa1c43948a4d3b2805510e7f13abe16415d5ae49e0be4283d25c"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_v1.webp",
+          "sha256": "daf59ac8cf66885d6b15eeeae29a6e75ef89be9796691399977e3e8e8b277adf"
+        },
+        {
+          "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+          "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_collar_neutral_v1.webp",
+          "sha256": "f2b9cf1c6b1b6665eea149124c680a03362ac7e4b0c2b2e29f500691e0a24742"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_cuff_front_neutral_v1.webp",
+          "sha256": "4e095c56351ebc3edacdd3360fc661e728e1a64f6df34e10ffb9147e30116c95"
+        }
+      ]
+    },
+    "male": {
+      "anchor": [
+        137,
+        155
+      ],
+      "book": [
+        130,
+        164,
+        26
+      ],
+      "bookHeight": 36.443820224719104,
+      "handRegionChangedChannels": 0,
+      "sourceAssets": [
+        {
+          "path": "assets/images/questwell/avatar/base/base_male.webp",
+          "sha256": "6f99390508a3db5484e51ba77513423488f91def55a36615f0377e6595ca0254"
+        }
+      ]
+    }
+  },
+  "bookAssetPreserved": true,
+  "reviewedChanges": [
+    "Existing book-only sprite placed at body-specific belt anchors",
+    "Leather loop and rivet connect book to existing waist belt",
+    "No anatomy masks, replacement hand/grip artwork or modified foundation assets"
+  ],
+  "validationLimitation": "Flutter tests and runtime rendering cannot be executed locally because Flutter is unavailable. Offline composites validate asset placement; CI and live review remain separate."
+}

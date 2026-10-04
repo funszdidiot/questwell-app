@@ -68,6 +68,10 @@ void main() {
           expect(images, contains('assets/images/questwell/avatar/classes/wanderer/wanderer_robe_female_v3.webp'));
           expect(images, contains('assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuff_front_female_v3.webp'));
           expect(images.any((path) => path.contains('wanderer_coat_female_short_')), isFalse);
+        } else if (body == 'neutral' && chest == null) {
+          expect(images, contains('assets/images/questwell/avatar/classes/wanderer/wanderer_robe_neutral_v1.webp'));
+          expect(images, contains('assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuff_front_neutral_v1.webp'));
+          expect(images.any((path) => path.contains('wanderer_coat_neutral_short_')), isFalse);
         } else {
           expect(images.any((path) => path.contains('wanderer_coat_${body}_short_${body == 'female' ? 'v2' : body == 'male' ? 'v4' : 'v3'}')), chest != 'starter-business-suit');
         }

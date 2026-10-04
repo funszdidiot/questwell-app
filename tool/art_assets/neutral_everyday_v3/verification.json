@@ -1,0 +1,36 @@
+{
+  "body": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+    "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24"
+  },
+  "identity": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+    "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78"
+  },
+  "garmentLayersInOrder": [
+    {
+      "path": "tool/art_assets/neutral_everyday_v2/everyday_boots_neutral_candidate_v2.webp",
+      "sha256": "12ed127e63ba1548f39ebc65ed1cb9385d99cbe9bb0f16ce056295c72cb68130"
+    },
+    {
+      "path": "tool/art_assets/neutral_everyday_v3/everyday_trousers_neutral_candidate_v3.webp",
+      "sha256": "c08a045e586befc45cb0dbfcf6cec72121b47195e4f06ee8fb525aff27caa865"
+    },
+    {
+      "path": "tool/art_assets/neutral_everyday_v2/everyday_top_neutral_candidate_v2.webp",
+      "sha256": "4c5a4c4e36bffa1c43948a4d3b2805510e7f13abe16415d5ae49e0be4283d25c"
+    }
+  ],
+  "baseAndIdentityUnchanged": true,
+  "topAndBootsReusedWithoutChanges": true,
+  "exposedLowerBodyPixels": 0,
+  "trouserChangesOutsideRepair": 0,
+  "changedTrouserPixels": 1154,
+  "changedBounds": {
+    "left": 91,
+    "top": 151,
+    "right": 155,
+    "bottom": 174
+  },
+  "visualReview": "see_visual_review.json"
+}

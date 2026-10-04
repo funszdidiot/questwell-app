@@ -1,0 +1,37 @@
+{
+  "revision": "neutral-robe-v10",
+  "tool": "built-in imagegen",
+  "prompt": {
+    "path": "tool/art_assets/neutral_robe_v10/prompt.json",
+    "sha256": "cdee875fd1e3fd7e1bdb7fe9e2240495e2963206c93b1edeced1a2bd10028128"
+  },
+  "source": {
+    "path": "tool/art_assets/neutral_robe_v10/join_repair_source.png",
+    "sha256": "233ebb3f9332f6604144501e0f0bd38a99bd820be326225eb2057a9e26d71b27"
+  },
+  "references": [
+    {
+      "path": "tool/art_assets/neutral_robe_v10/cloth_join_edit_target.png",
+      "sha256": "1d006e84bc729d25bab66cf95ba701ff1dacc638e203d54a897f3f0be13df60c"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v10/fixed_body_fit_reference.png",
+      "sha256": "3b08159f8d337e78a63e201a2cfe0c7855e86e9d1e2514a7932872a06df66e48"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v10/founder_markup.png",
+      "sha256": "84e50efc25e901d9af0ee8f60764db6fed3e74b99f849327b7205aacd94c5c72"
+    }
+  ],
+  "exporter": {
+    "path": "tool/export_neutral_robe_v10.cjs",
+    "sha256": "1576b2b3cb388db6a935ccd771b6362801d86ccfc59f230574d1e9fb8e714278"
+  },
+  "sourceCrop": {
+    "left": 61,
+    "top": 151,
+    "width": 124,
+    "height": 64
+  },
+  "scope": "Only two founder-marked olive cloth joins; color repair and continuous rear opacity. No body edit, cuff-width change or change outside marked regions."
+}

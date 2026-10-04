@@ -1,0 +1,40 @@
+{
+  "status": "independent_visual_qa_passed_founder_fit_review_pending",
+  "reviewer": "inner_cuff_join_audit",
+  "reviewedAt": "2026-10-04",
+  "assets": [
+    {
+      "path": "tool/art_assets/neutral_robe_v10/scout_robe_front_neutral_candidate_v10.webp",
+      "sha256": "dea2d75e45975f56049c91d0d17b82e361235ecd17efeda227c9b6f8a85c6e09"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v10/scout_robe_rear_neutral_candidate_v10.webp",
+      "sha256": "262b8d395925e26871d67d8e0afe60d74154247c808b84c56a577dbd9967a6dd"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v10/scout_robe_cuffs_neutral_candidate_v10.webp",
+      "sha256": "110aa6fc4e0a319b28e574d7f7cd8a2c19eaa4a5f00c85a24abbfe9de944a442"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v10/scout_robe_collar_neutral_candidate_v10.webp",
+      "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+    }
+  ],
+  "presentation": {
+    "path": "tool/art_assets/neutral_robe_v10/neutral_robe_v10.png",
+    "sha256": "77bcabdd20eb34a27f8cf49361b22b949f32b5db571f864d51cb4e952da2c7a6"
+  },
+  "views": [
+    "native_composite.png",
+    "full_light.png",
+    "full_dark.png",
+    "hands_light.png",
+    "hands_dark.png"
+  ],
+  "findings": {
+    "markedJoins": "PASS: both pale hooks and background gaps gone; each inner cuff meets a continuous recessed olive fold.",
+    "preservation": "PASS: gold cuff shape/width and complete hand/thumb silhouettes remain intact.",
+    "scope": "227 native composite pixels changed; none outside the two marked local joins. Fixed body, identity and everyday files unchanged. Foreground alpha channels unchanged; rear opacity correction local only."
+  },
+  "founderApproval": false
+}

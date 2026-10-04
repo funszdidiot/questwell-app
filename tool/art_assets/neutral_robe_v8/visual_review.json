@@ -1,0 +1,60 @@
+{
+  "status": "independent_visual_qa_passed_founder_fit_review_pending",
+  "reviewer": "robe_v8_audit",
+  "date": "2026-10-03",
+  "assets": [
+    {
+      "path": "tool/art_assets/neutral_robe_v8/scout_robe_front_neutral_candidate_v8.webp",
+      "sha256": "cce3af391c8175d32cc1b226d6db0b6d81bd02ebdd7880eb1cecbd9841a6ed9c"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v8/scout_robe_rear_neutral_candidate_v8.webp",
+      "sha256": "bcaa1487d16fe3d03c59bcc1c44fb1a1e0af312e5c636f6a888b708fdd33285c"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v8/scout_robe_cuffs_neutral_candidate_v8.webp",
+      "sha256": "63abe9f756e73117763bda23c43c501fb049265464912bb61d90068797f02266"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v8/scout_robe_collar_neutral_candidate_v8.webp",
+      "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+    }
+  ],
+  "presentation": {
+    "path": "tool/art_assets/neutral_robe_v8/neutral_robe_v8.png",
+    "sha256": "ef736779e9959f6ab8fb983c17a65684805c91ba61c6ce36703438420c2aaf2f"
+  },
+  "reviewedViews": [
+    "native_composite.png",
+    "full_light.png",
+    "full_dark.png",
+    "cuffs_light.png",
+    "cuffs_dark.png",
+    "collar_light.png",
+    "collar_dark.png",
+    "rear_hem_light.png",
+    "rear_hem_dark.png"
+  ],
+  "findings": {
+    "drape": "PASS: narrower skirt hangs with natural downward folds.",
+    "rearBand": "PASS: complete rear hem stays behind both legs; no leftover dark rails over trousers.",
+    "cuffs": "PASS: restored outer anchors near x67/178; inner lips reach x93/153, approximately 8 pixels more inward coverage per side than v7. Wrists connect cleanly with complete facing and no liner fragments.",
+    "upperTrim": "PASS: both bands continue beneath fixed hair without the old abrupt cutoff.",
+    "joins": "PASS: no visible split-region seams or displaced fragments on native/enlarged light/dark renders.",
+    "fixedFoundation": "PASS: body, identity and all three approved everyday hashes match their locks."
+  },
+  "resolvedDuringQA": [
+    "Moved depth assignment into original high-resolution sampling coordinates.",
+    "Included full cuff undersides and rear-panel inner shading in rear masks.",
+    "Overlapped same-plane export regions to remove resampling seams.",
+    "Restored outer cuff anchors while retaining inward fullness."
+  ],
+  "founderApproval": false,
+  "runtimeOrDeploymentValidation": false,
+  "subsequentFounderReview": {
+    "status": "rejected",
+    "reason": "Cuff width appreciated; adjacent robe front panels obscured both thumbs and made the cuff/hand area read incorrectly.",
+    "missedDefect": "Main front cloth covered 25 opaque pixels on image-left hand and 46 on image-right hand; reviewing cuff layers alone missed it.",
+    "replacement": "neutral-robe-v9"
+  }
+}

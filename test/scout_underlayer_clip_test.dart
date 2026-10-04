@@ -1,3 +1,4 @@
+import 'support/neutral_robe_layers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:project_momentum/widgets/questwell_pixel_art.dart';
@@ -94,6 +95,11 @@ void main() {
           final images = tester.widgetList<Image>(
             find.descendant(of: layer, matching: find.byType(Image)),
           ).map((image) => (image.image as AssetImage).assetName).toList();
+          if (body == 'neutral') {
+            expect(images, neutralRobeLayers('scout'));
+            expect(find.descendant(of: layer, matching: find.byType(ClipPath)), findsNothing);
+            continue;
+          }
           if (body == 'female') {
             expect(images.first,'assets/images/questwell/avatar/scout_robe_rear_female_v8.webp');
             expect(images,contains('assets/images/questwell/avatar/base/paper_doll_female_v1.webp'));

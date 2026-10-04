@@ -1,0 +1,12 @@
+{
+  "prompt": "Edit image 1 in place: it is the exact upper-trouser clothing layer for a fixed neutral game avatar. Image 2 is STYLE ONLY: the approved female version's simple belt/waistband finish. Keep image 1's square framing, scale, neutral waist width, hip shape, trouser positions, brown palette and worn-fabric shading. Repair image 1's WHOLE continuous waistband and its transition into the upper trousers. Its belt currently ends in two unnatural pointed horizontal horns at the left and right waist, with ragged pale fragments along the top. Replace this coherent waistband region with a clean natural brown leather belt that wraps around the same waist, small simple rectangular antique-brass buckle at the same center, and belt loops. Belt ends must follow the existing side seam smoothly into the upper trousers, like image 2, without projecting sideways. Retain the neutral silhouette and regular waist; do not copy image 2's anatomy, narrow the hips or cinch the waist. Keep the waistband at the exact same height and the pockets/fly/leg shape in the same positions. Fully transparent above the waist and outside the pants. No shirt, skin, body, hands, background, text or new accessories. Do not crop or recenter. Match image 1's soft low-resolution illustrated RPG sprite rendering; avoid sharply redrawing the whole pants. Rebuild the complete belt-to-trouser connection consistently rather than placing little repair patches at the ends. Unaffected pants below the upper hip area remain as provided.",
+  "edit_target": "waistband_edit_reference.png",
+  "style_reference": "female_waistband_style_reference.png",
+  "canvasCrop": {
+    "left": 84,
+    "top": 140,
+    "width": 80,
+    "height": 80
+  },
+  "scope": "Clothing only. Locked neutral v4 body and identity never imported or edited."
+}

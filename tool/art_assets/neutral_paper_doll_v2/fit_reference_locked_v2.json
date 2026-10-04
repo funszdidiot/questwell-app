@@ -1,0 +1,38 @@
+{
+  "status": "founder_authorized_neck_repair_and_lock_2026_10_03",
+  "canvas": [
+    240,
+    320
+  ],
+  "base": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v2.webp",
+    "sha256": "4c816fcb5e57ad0041bb1c032212d7a8a4070d8f2ab85e4032f77b28f9a1c636"
+  },
+  "head_hair": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v2.webp",
+    "sha256": "af280025da32ee4d33691bdcda544cb0125a63e41ec5774db0681e2ef324ae60"
+  },
+  "approval": "Tanya instructed: fix the avatar first, then lock it; outfit fitting follows. This authorizes the narrow neck-seam repair and lock, preserving all other artwork. It is not approval of any garment candidate.",
+  "rules": [
+    "Keep this complete base and original head/hair fixed.",
+    "Clothing adds registered full-canvas layers; no anatomy masks or replacement legs.",
+    "Fit a neutral robe template before class color/pattern variants.",
+    "Never restore the old v1 head/neck overlay on top of this corrected body.",
+    "Check neck and wrist continuity visually as well as verifying asset hashes.",
+    "Use one approved fitting template per body and garment family; retain its geometry for color, pattern and decorative variants."
+  ],
+  "review": "?review=neutral-scout",
+  "revision": "neutral-paper-doll-v2",
+  "repair": {
+    "source_revision": "neutral-paper-doll-v1",
+    "scope": "Neck seam and adjacent lower-hair splice fragments only; all visible RGB and alpha outside the repair are unchanged.",
+    "changed_pixels": 335,
+    "changed_bounds": [
+      101,
+      73,
+      147,
+      81
+    ],
+    "verification": "tool/art_assets/neutral_paper_doll_v2/verification.json"
+  }
+}

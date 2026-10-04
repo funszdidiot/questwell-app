@@ -1,0 +1,32 @@
+{
+  "repair": "neck_seam_and_adjacent_splice_fragments_only",
+  "canvas": [
+    240,
+    320
+  ],
+  "changedVisiblePixels": 335,
+  "changedBounds": [
+    101,
+    73,
+    147,
+    81
+  ],
+  "outsideRepairVisibleChanges": 0,
+  "alphaChanges": 184,
+  "outsideRepairAlphaChanges": 0,
+  "originalBaseSha256": "0c76468325e2ac1916ffc5578911c789dbb950be2b0d1344901d248d3582e078",
+  "baseSha256": "4c816fcb5e57ad0041bb1c032212d7a8a4070d8f2ab85e4032f77b28f9a1c636",
+  "identitySha256": "af280025da32ee4d33691bdcda544cb0125a63e41ec5774db0681e2ef324ae60",
+  "preserved": [
+    "face and jaw above y73",
+    "main hairstyle above the join",
+    "head position",
+    "shoulders",
+    "torso",
+    "arms and hands",
+    "hips",
+    "legs and feet",
+    "undergarments",
+    "canvas and registration"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "tool": "built-in imagegen",
+  "use_case": "precise-object-edit",
+  "prompt": "Use case: precise-object-edit. Make a tiny surgical art repair to an existing Questwell avatar.\nImage 1 is the EDIT TARGET, a registered close-up of the current lower face, hair, neck and undershirt shoulders. Image 2 is the full fixed avatar for context only.\nRepair ONLY the bad horizontal join across the neck immediately beneath the chin in image 1. There is an unnatural pale horizontal slit and double dark line making the head look detached. Replace just that defective neck-band shading with one continuous neck connection: a subtle natural shadow directly beneath the original jaw, fading smoothly into the existing warm skin of the neck below. Preserve the existing neck width, neck length, outer contour, shoulders, and exact head position. Do not create a collar or necklace, a dark ring, a deep under-chin slit, or any detached fragment.\nEvery other pixel should look unchanged: do not redraw or move the jaw/chin, lips, cheeks, hair strands, face, neck outline, shirt collar or shoulders. Do not enlarge the neck, alter anatomy, change proportions, or add detail. Preserve the same soft illustrated fantasy RPG art, warm skin palette and lighting. Keep the crop and framing exactly as image 1 with its transparent background; output only the corrected crop, no full-body duplicate, labels, background, or extra imagery. Only a small interior neck patch will be imported into the original locked full-body sprite; no generated face or body will be used.",
+  "inputs": [
+    {
+      "path": "neck_edit_reference.png",
+      "role": "edit target, cropped from original neutral base at x92 y56, size62x46"
+    },
+    {
+      "path": "fixed_body_reference.png",
+      "role": "reference only"
+    }
+  ],
+  "output": "neck_repair_source.png",
+  "use": "Only the small neck connection and adjacent splice cleanup are imported; no generated face, shoulders, torso or clothing is used."
+}

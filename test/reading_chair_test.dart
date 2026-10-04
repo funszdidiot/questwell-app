@@ -36,7 +36,8 @@ void main() {
   });
   testWidgets('Chair fits every spot at phone widths alongside other decor', (tester) async {
     expect(QuestwellEquipmentPolicy.isReady('burgundy-reading-chair','room'), true);
-    expect(QuestwellEquipmentPolicy.isReady('burgundy-reading-chair','accessory'), false);
+    expect(QuestwellEquipmentPolicy.isReady('burgundy-reading-chair','accessory'), true,
+      reason: 'Renderer readiness does not duplicate catalog category rules.');
     for (final width in [320.0, 390.0]) {
       for (final slot in ['left','right','front']) {
         final others = ['left','right','front']..remove(slot);

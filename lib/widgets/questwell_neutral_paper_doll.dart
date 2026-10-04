@@ -6,9 +6,9 @@ class QuestwellNeutralPaperDoll extends StatelessWidget {
   const QuestwellNeutralPaperDoll({super.key});
 
   static const baseAsset =
-      'assets/images/questwell/avatar/base/paper_doll_neutral_v1.webp';
+      'assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp';
   static const identityAsset =
-      'assets/images/questwell/avatar/base/paper_doll_neutral_identity_v1.webp';
+      'assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp';
 
   @override
   Widget build(BuildContext context) => Image.asset(

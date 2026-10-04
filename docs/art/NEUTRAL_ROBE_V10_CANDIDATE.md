@@ -1,0 +1,7 @@
+# Neutral robe v10 — two inner cuff joins
+
+Tanya marked the two small inner cuff-to-side-panel junctions in v9 and requested natural transitions without any other changes. Built-in image generation supplied a local cloth-fold repair using the exact cloth crop, fixed avatar crop and her markup. The source, inputs and prompt are retained under `tool/art_assets/neutral_robe_v10/`.
+
+The exporter applies olive shading from that source within the marked junctions. A short edge taper connects the repaired shading to the existing cloth. The source fold's recessed shadow is registered to the existing cuff tips. Close inspection also found interior opacity holes from the earlier layer split; continuous matching rear cloth closes those holes behind the full fixed hands. The final native composite changes 227 pixels, all within the two local regions. Foreground alpha channels remain identical to v9, preserving cuff width, openings and hand depth; rear opacity changes only in those inner folds. The approved body, identity and everyday images remain byte-identical, and the collar file is unchanged.
+
+Run `node tool/export_neutral_robe_v10.cjs` to reproduce the result. `verification.json` records the local-change limits and fixed assets; `visual_review.json` records independent inspection of the actual native and enlarged light/dark exports. Founder approval remains pending. No runtime or remote deployment change is part of this local fitting candidate.

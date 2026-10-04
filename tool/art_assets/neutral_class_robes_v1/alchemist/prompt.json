@@ -1,0 +1,8 @@
+{
+  "tool": "built-in imagegen",
+  "prompt": "Use case: precise-object-edit. Image 1 is the EXACT LOCKED NEUTRAL ROBE SHAPE AND POSITION to edit. Image 2 is only the AL CHEMIST class surface/design reference, not a shape reference. Repaint Image 1's surface into the same Alchemist design as Image 2: rich cobalt/royal-blue cloth; pearl ivory/silver continuous collar, front edge, cuff and hem binding; fine yellow-green/gold linked hexagonal alchemical ring embroidery down both front panels and a narrow yellow-green cuff accent; two modest functional chest flap pockets plus existing lower hip pockets, pearl/silver welt accents and small brass fasteners. Remove all Scout fern/leaf embroidery and olive/brown coloring. Keep the original neutral robe's exact outline, broader straight body fit, sleeve and inward cuff shapes, complete narrow dark cuff rims, soft natural straight-hanging skirt, full central rear panel, collar loop, inner opening, and pocket anchor locations. Retain the SAME square canvas, enormous empty head space, exact garment position and pixel registration, no scaling, no crop, no zoom. Existing cloth shadows/folds should stay registered. Keep Image 1 geometry; do NOT borrow Image 2's narrower waist, flare, sleeve position or proportions. No extra hanging front strips or inner flaps. Output only this complete full robe on transparent background. No body, person, hands, skin, shirt, trousers, mannequin, labels, text or background. Match the soft illustrated RPG sprite style; class palette and decoration are the only design changes.",
+  "references": [
+    "../references/neutral_locked_cloth.png",
+    "../references/alchemist_female_surface.png"
+  ]
+}

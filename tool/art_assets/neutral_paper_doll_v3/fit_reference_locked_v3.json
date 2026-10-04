@@ -1,0 +1,45 @@
+{
+  "status": "founder_authorized_alignment_repair_and_lock_2026_10_03",
+  "canvas": [
+    240,
+    320
+  ],
+  "base": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v3.webp",
+    "sha256": "0601c52466c328765c0520e82a6b01fd8712164d8e7d6baa58a26c06b1f49146"
+  },
+  "head_hair": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v3.webp",
+    "sha256": "4d931d137020813c4c66ee2d6930589ea40ba8f6df60c3692c809d249468ab26"
+  },
+  "approval": "Tanya directed fixing the avatar first and locking it, then identified that the head was not centered on the neck. V3 corrects that alignment before any clothing fitting continues. This is not garment approval.",
+  "rules": [
+    "Keep this complete base and original head/hair fixed.",
+    "Clothing adds registered full-canvas layers; no anatomy masks or replacement legs.",
+    "Fit a neutral robe template before class color/pattern variants.",
+    "Never restore the old v1 or v2 head/neck overlays on this corrected body.",
+    "Check neck and wrist continuity visually as well as verifying asset hashes.",
+    "Use one approved fitting template per body and garment family; retain its geometry for color, pattern and decorative variants.",
+    "Keep the v3 head position fixed. Future head accessories must use the v3 head anchor; never shift the body to accommodate them."
+  ],
+  "review": "?review=neutral-scout",
+  "revision": "neutral-paper-doll-v3",
+  "repair": {
+    "source_revision": "neutral-paper-doll-v2",
+    "scope": "Original head translated four native pixels right; local under-jaw/lower-hair transition refitted. No scale, rotation or body changes below y84.",
+    "head_translation": [
+      4,
+      0
+    ],
+    "verification": "tool/art_assets/neutral_paper_doll_v3/verification.json"
+  },
+  "head_anchor": {
+    "native_center_x": 122.5,
+    "offset_from_v2": [
+      4,
+      0
+    ],
+    "neck_base_center_x": 123,
+    "maximum_center_difference_pixels": 0.5
+  }
+}

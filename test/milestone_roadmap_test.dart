@@ -46,7 +46,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Next reward · Level 10'),findsOneWidget);
   });
-  testWidgets('Adventurer filters class items and trophies without duplicate inventory rows',(tester)async{
+  testWidgets('Adventurer finds trophies in Hearth inventory and filters class collections without duplicates',(tester)async{
     await tester.binding.setSurfaceSize(const Size(390,2000));
     addTearDown(()=>tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(MaterialApp(theme:ThemeData.dark(),home:Scaffold(body:QuestwellAdventurerView(
@@ -57,18 +57,32 @@ void main() {
           description:'A milestone trophy',owned:true,equipped:false,classLocked:false,shop:false,
           milestoneLevel:5,source:'founder_testing_grant',unlockedAt:DateTime(2026,9,30)),
         const AdventurerInventoryItem(id:'class',name:'Class item',slug:'sample',category:'neck',
-          description:'Class collection',owned:false,equipped:false,classLocked:false,shop:true,archetype:'scholar'),
+          description:'Class collection',owned:false,equipped:false,classLocked:false,shop:true,archetype:'scholar',
+          collectionKey:'scholar-set'),
         const AdventurerInventoryItem(id:'other',name:'Other class',slug:'sample-other',category:'neck',
-          description:'Other collection',owned:true,equipped:false,classLocked:true,shop:true,archetype:'scout'),
+          description:'Other collection',owned:true,equipped:false,classLocked:true,shop:true,archetype:'scout',
+          collectionKey:'scout-set'),
       ],
     ))));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Inventory · 2'));await tester.pumpAndSettle();
-    await tester.tap(find.text('Trophies'));await tester.pumpAndSettle();
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Hearth'));
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Hearth'));
+    await tester.pumpAndSettle();
     expect(find.text('First Journey'),findsOneWidget);
     expect(find.text('Added Sep 30, 2026'),findsOneWidget);
     expect(find.text('Class item'),findsNothing);expect(find.text('Other class'),findsNothing);
-    await tester.tap(find.text('Class items'));await tester.pumpAndSettle();
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Collections'));
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Collections'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'All items'));
+    await tester.tap(find.widgetWithText(ChoiceChip, 'All items'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byType(DropdownButtonFormField<String>));
+    await tester.tap(find.byType(DropdownButtonFormField<String>));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Scholar set').last);
+    await tester.pumpAndSettle();
     expect(find.text('Class item'),findsOneWidget);expect(find.text('First Journey'),findsNothing);
     expect(find.text('Other class'),findsNothing);
     expect(find.text('View in Market'),findsOneWidget);

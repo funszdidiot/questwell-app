@@ -1,0 +1,24 @@
+{
+  "prompt": "Use case: precise-object-edit. Edit IMAGE 1, the transparent robe garment only. IMAGE 2 is the fixed neutral avatar fitting reference only; never redraw or output any part of that avatar. IMAGE 3 shows the accepted FEMALE CUFF CONSTRUCTION only; use its inward cuff fullness, not its body proportions.\nKeep image 1's exact square framing, garment position, scale, shoulder/neck placement, wrist heights, robe length, olive cloth, flax-gold leaf embroidery, warm brown/gold edge trim and two small LOWER hip pockets. Preserve the generous empty head zone. Make these coherent garment changes:\n1. MUCH MORE NATURAL GRAVITY DRAPE: the lower skirt should hang down with soft near-vertical folds, only a modest A-line ease. Reduce the lower outer skirt spread by about 25–30%, bringing the hem width approximately into line with the overall wrist-to-wrist width. Keep waist fixed. No wind-blown wings, upturned outer tails, bell shape or stiff triangular flare. Front panels fall gently alongside the legs.\n2. WIDEN EACH CUFF INWARD toward the torso by roughly one-third of its current width, exactly like the female reference's cuff shape. Preserve the OUTER wrist-side contour and wrist position. On the image-left cuff, grow its inner edge to the RIGHT; on image-right, grow the inner edge to the LEFT. Blend this extra cloth naturally up the whole lower sleeve toward the elbow. The opening has a soft curved facing hem and dark inner edge, wrapping around the wrist. Hands will remain the fixed original hands; no skin in this output. No floating rings or cylindrical pipe openings.\n3. CONTINUOUS UPPER EDGE TRIM: continue both front trim bands all the way into the collar/neck opening, with natural turns around the back neckline. No flat chopped trim endpoints, white interruption or gaps. Collar will tuck under the fixed hair in the final composite.\n4. Preserve one complete central REAR skirt lining with its full warm gold/brown bottom border as rear cloth, for later separate layering behind both legs. The rear border must connect only to the rear lining. No extra inner FRONT flap or stray band across the open front.\nOutput one complete robe ONLY on true transparency, in exactly the same registration as image 1. Do not add the person, hair, face, neck, skin, hands, everyday shirt, trousers, boots, mannequin, text, frame, background or shadows. Maintain the same soft illustrated RPG sprite style and neutral-body tailoring. Do not copy the female silhouette or cinch the waist.",
+  "tool": "built-in imagegen",
+  "references": [
+    {
+      "path": "robe_edit_reference.png",
+      "role": "registered garment edit target; 320 square includes 40px left padding around 240x320 avatar canvas"
+    },
+    {
+      "path": "fixed_everyday_reference.png",
+      "role": "fixed neutral body/everyday fit only, never import anatomy"
+    },
+    {
+      "path": "female_inward_cuff_reference.png",
+      "role": "inward cuff shape reference only"
+    }
+  ],
+  "changes": [
+    "less lower-skirt flare",
+    "inward cuff fullness",
+    "continuous neckline trim",
+    "complete separately layered rear panel and border"
+  ]
+}

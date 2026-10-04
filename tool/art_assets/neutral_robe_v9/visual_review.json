@@ -1,0 +1,42 @@
+{
+  "status": "independent_visual_qa_passed_founder_fit_review_pending",
+  "reviewer": "hand_occlusion_audit",
+  "reviewedAt": "2026-10-04",
+  "assets": [
+    {
+      "path": "tool/art_assets/neutral_robe_v9/scout_robe_front_neutral_candidate_v9.webp",
+      "sha256": "187d4ee2e05d44f83effd3ab9b4d120ebb8efc90dcf18ed56a836e9c6d13339a"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v9/scout_robe_rear_neutral_candidate_v9.webp",
+      "sha256": "480ddf4897351ac7610740882628749f511009626b15df8211d7692c27663265"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v9/scout_robe_cuffs_neutral_candidate_v9.webp",
+      "sha256": "63abe9f756e73117763bda23c43c501fb049265464912bb61d90068797f02266"
+    },
+    {
+      "path": "tool/art_assets/neutral_robe_v9/scout_robe_collar_neutral_candidate_v9.webp",
+      "sha256": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+    }
+  ],
+  "presentation": {
+    "path": "tool/art_assets/neutral_robe_v9/neutral_robe_v9.png",
+    "sha256": "3ff9e748f3d2153625a85742385a237d5c66943d599ff1cf818e4cd5cb38d121"
+  },
+  "views": [
+    "native_composite.png",
+    "full_light.png",
+    "full_dark.png",
+    "hands_light.png",
+    "hands_dark.png"
+  ],
+  "findings": {
+    "hands": "PASS: both complete thumb and inner palm contours restored against fixed foundation.",
+    "cuffs": "PASS: existing width retained; rear openings behind wrists and front lips above, with no new fragments.",
+    "sidePanels": "PASS: no visible transfer seams or trouser intrusion.",
+    "preservation": "PASS: five approved body/everyday assets unchanged; cuffs and collar byte-identical to v8.",
+    "handPixelComparison": "PASS: all fully opaque body hand pixels in y188–202, left x60–88 and right x158–184, match the final composite exactly."
+  },
+  "founderApproval": false
+}

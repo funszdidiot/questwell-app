@@ -1,4 +1,5 @@
 import 'preview/neutral_scout_review.dart';
+import 'preview/neutral_robes_review.dart';
 import 'preview/neutral_paper_doll_review.dart';
 import 'preview/scout_wardrobe_review.dart';
 import 'preview/clean_base_review.dart';
@@ -21,7 +22,6 @@ import 'preview/familiar_review.dart';
 import 'preview/cloak_review.dart';
 import 'preview/wayfarer_review.dart';
 import 'preview/grimoire_review.dart';
-import 'preview/boots_review.dart';
 import 'preview/milestone_roadmap_review.dart';
 import 'preview/hearth_polish_review.dart';
 import 'preview/hearth_decor_review.dart';
@@ -33,7 +33,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'neutral-scout') {
+  if (Uri.base.queryParameters['review'] == 'neutral-robes') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(QuestwellPreviewNavigationHost(child: const NeutralRobesReviewApp()));
+  } else if (Uri.base.queryParameters['review'] == 'neutral-scout') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const NeutralScoutReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'neutral-paper-doll') {
@@ -104,7 +107,7 @@ void main() {
     runApp(QuestwellPreviewNavigationHost(child: const EffectsReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'boots') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const BootsReviewApp()));
+    runApp(QuestwellPreviewNavigationHost(child: const NeutralRobesReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'grimoire') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const GrimoireReviewApp()));

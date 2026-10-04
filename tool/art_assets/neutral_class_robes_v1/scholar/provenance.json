@@ -1,0 +1,24 @@
+{
+  "class": "scholar",
+  "status": "generated_surface_pending_root_registration_and_visual_qa",
+  "method": "built-in image_gen.imagegen",
+  "generatedOriginal": "/workspace/scratch/037df595da3c/generated_images/exec-839f9d0c-ac40-413e-91a1-e3e20bd65f5e.png",
+  "source": "robe_source.png",
+  "sha256": "c9c26d8f31e0fc7ea5525a244cbfc7f488745c815da4d40603f39e96f1c55e98",
+  "references": [
+    {
+      "path": "../references/neutral_locked_cloth.png",
+      "sha256": "08f56f813894fe1fc39c165287cfb72a8b6fbc4ad5aa6b0c7e2888f78b5fc09a"
+    },
+    {
+      "path": "../references/scholar_female_surface.png",
+      "sha256": "5983800d0b3b92c6d8a02e35c64b229da1692426016da67d880133aa0822848f"
+    }
+  ],
+  "prompt": "prompt.json",
+  "observations": [
+    "Clean navy/violet cloth and gold linked diamond motif; no person/anatomy; no breast pockets; lower welt pockets retained.",
+    "Generated alpha bounds normalized to 320 are x99.78..226.86,y74.26..288.36; target x102.25..225,y75.25..287. Generated source is about 3.5% wider. Root must register RGB to immutable approved geometry; do not adopt generated alpha.",
+    "Cuff openings are complete but slightly redrawn; root must preserve exact locked cuff masks and joins."
+  ]
+}

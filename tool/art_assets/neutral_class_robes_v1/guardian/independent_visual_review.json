@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "reviewer": "root",
+  "reviewedAt": "2026-10-04",
+  "inspected": [
+    {
+      "path": "native_composite.png",
+      "sha256": "8495bde89a15417ada250e0ec78f4dceba8ee46b00f1ed76e7b806beb3152702"
+    },
+    {
+      "path": "full_light.png",
+      "sha256": "a107d7f2315802352931a8c78d6f6ec5605dbeab483cfdbdee6fed3492ef22e2"
+    },
+    {
+      "path": "full_dark.png",
+      "sha256": "3c8cec14a249a19abf41931b665c4812cc38a95b1e99d6a499af06289d9c2ef8"
+    },
+    {
+      "path": "hands_dark.png",
+      "sha256": "530b31e832d890c455ebf0a5eca370f5f39f72026c0ce5887a41a8f7215f922d"
+    },
+    {
+      "path": "collar_light.png",
+      "sha256": "ff5971644aff01cd28b63016b20d45a0140e1fb103d0d6095f95203b25a22f44"
+    }
+  ],
+  "outputs": {
+    "front": {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_neutral_v1.webp",
+      "sha256": "7ed1ef7cb9bd1dfece8b4c5ce1d78384217b5da75737468f79eb9cb7b29e0afd",
+      "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb"
+    },
+    "rear": {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_neutral_v1.webp",
+      "sha256": "264a5864c59fe62121c27c652d4798e3cd7da26ad6901b5498ddbe12f2239009",
+      "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae"
+    },
+    "cuffs": {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_cuff_front_neutral_v1.webp",
+      "sha256": "8235cfbedeb2240d7b5f084d03a8806570c28408aad59be9388788fa14c94bca",
+      "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f"
+    },
+    "collar": {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_collar_neutral_v1.webp",
+      "sha256": "84e03d1938dbe9097c08b22d3a1dcdd355ba5dba43173978911336a013538bcc",
+      "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e"
+    }
+  },
+  "findings": [
+    "Complete continuous cuff rims; both original hands remain in front of side cloth.",
+    "Neck bands continue under fixed hair; shoulder contours and head connection match approved template.",
+    "Natural drape and rear band remain behind trousers and legs.",
+    "No detached edge fragments or abrupt surface seams visible in reviewed composites."
+  ],
+  "founderSurfaceApproval": false
+}

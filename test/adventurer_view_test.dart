@@ -15,10 +15,10 @@ import '../lib/widgets/questwell_moonstone_brooch.dart';
 void main() {
   inventoryIconTests();
   for (final gear in [
-    (name: 'Moonlit Woodland', category: 'Wall art', type: QuestwellWallArt),
-    (name: 'Brass Lantern', category: 'Hands', type: QuestwellBrassLantern),
-    (name: 'Moonstone Brooch', category: 'Accessory', type: QuestwellMoonstoneBrooch),
-    (name: 'Walnut Bookshelf', category: 'Hearth décor', type: QuestwellBookshelf),
+    (id: 'painting', name: 'Moonlit Woodland', category: 'Wall art', group: 'Hearth', type: QuestwellWallArt),
+    (id: 'b', name: 'Brass Lantern', category: 'Hands', group: 'Gear', type: QuestwellBrassLantern),
+    (id: 'm', name: 'Moonstone Brooch', category: 'Accessory', group: 'Gear', type: QuestwellMoonstoneBrooch),
+    (id: 'bookshelf', name: 'Walnut Bookshelf', category: 'Hearth décor', group: 'Hearth', type: QuestwellBookshelf),
   ]) {
   testWidgets('${gear.name} inventory toggles the illustrated avatar and retains ownership', (tester) async {
     GoogleFonts.config.allowRuntimeFetching = false;
@@ -28,15 +28,14 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Inventory · 14'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('All categories'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(gear.category).last);
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, gear.group));
+    await tester.tap(find.widgetWithText(ChoiceChip, gear.group));
     await tester.pumpAndSettle();
     expect(find.text(gear.name), findsOneWidget);
     expect(find.byType(gear.type), findsNothing);
     final action = find.widgetWithText(OutlinedButton, gear.type == QuestwellBookshelf ? 'Place in Hearth' : gear.type == QuestwellWallArt ? 'Hang in Hearth' : 'Equip');
-    final equipButton = gear.type == QuestwellWallArt
-      ? find.descendant(of: find.byKey(const ValueKey('inventory-painting')), matching: action) : action.first;
+    final itemRow = find.byKey(ValueKey('inventory-${gear.id}'));
+    final equipButton = find.descendant(of: itemRow, matching: action);
     await tester.ensureVisible(equipButton);
     await tester.tap(equipButton);
     await tester.pumpAndSettle();
@@ -46,10 +45,13 @@ void main() {
     }
     expect(find.byType(gear.type), findsOneWidget);
     expect(find.text('${gear.type == QuestwellBookshelf ? 'Placed' : gear.type == QuestwellWallArt ? 'Hung' : 'Equipped'} · ${gear.category}'), findsOneWidget);
-    await tester.tap(find.widgetWithText(OutlinedButton, (gear.type == QuestwellBookshelf || gear.type == QuestwellWallArt) ? 'Remove from Hearth' : 'Unequip'));
+    final remove = find.descendant(of: itemRow, matching: find.widgetWithText(OutlinedButton,
+      (gear.type == QuestwellBookshelf || gear.type == QuestwellWallArt) ? 'Remove from Hearth' : 'Unequip'));
+    await tester.ensureVisible(remove);
+    await tester.tap(remove);
     await tester.pumpAndSettle();
     expect(find.byType(gear.type), findsNothing);
-    expect(find.text('Owned · ${gear.category}'), gear.type == QuestwellBookshelf ? findsNWidgets(4) : gear.type == QuestwellWallArt ? findsNWidgets(3) : findsOneWidget);
+    expect(find.descendant(of: itemRow, matching: find.text('Owned · ${gear.category}')), findsOneWidget);
     expect(find.text('Inventory · 14'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -110,26 +112,29 @@ void main() {
         ])),
     )));
     await tester.pumpAndSettle();
-    for (final title in ['ADVENTURER', 'Scout', 'BODY STYLE', 'YOUR CLASS', 'CLASS MASTERY']) {
+    for (final title in ['ADVENTURER', 'Scout', 'CLASS MASTERY']) {
       expect(tester.widget<Text>(find.byWidgetPredicate((w) => w is Text && w.data == title && w.style != null)).style?.fontFamily, GoogleFonts.pressStart2p().fontFamily);
     }
+    expect(tester.widget<Text>(find.text('Level 3')).style?.fontFamily,
+      GoogleFonts.roboto(fontWeight: FontWeight.w700).fontFamily);
+    await tester.ensureVisible(find.widgetWithText(OutlinedButton, 'Edit Adventurer'));
+    await tester.tap(find.widgetWithText(OutlinedButton, 'Edit Adventurer'));
+    await tester.pumpAndSettle();
+    expect(find.text('EDIT ADVENTURER'), findsOneWidget);
+    expect(find.text('Body style'), findsOneWidget);
+    expect(find.text('Class'), findsOneWidget);
     expect(find.byType(QuestwellClassEmblem), findsNWidgets(5));
-    for (final element in find.byType(QuestwellClassEmblem).evaluate()) {
-      final emblem = element.widget as QuestwellClassEmblem;
-      final finder = find.byWidget(emblem);
-      expect(tester.getSize(finder), const Size(24, 24));
-      final chip = tester.widget<ChoiceChip>(find.ancestor(of: finder, matching: find.byType(ChoiceChip)));
-      expect(chip.showCheckmark, false);
-      expect(chip.side?.width, emblem.archetype == 'scout' ? 2 : 1);
-      expect(chip.backgroundColor, const Color(0xFF14202F));
+    for (final label in ['Scholar', 'Scout', 'Alchemist', 'Guardian', 'Wanderer']) {
+      final chip = tester.widget<ChoiceChip>(find.widgetWithText(ChoiceChip, label));
+      expect(chip.onSelected, isNotNull);
+      expect(chip.selected, label == 'Scout');
     }
-    expect(tester.widget<Text>(find.text('Level 3')).style?.fontFamily, GoogleFonts.roboto(fontWeight: FontWeight.w700).fontFamily);
-    for (final chip in tester.widgetList<ChoiceChip>(find.byType(ChoiceChip))) {
-      expect(chip.labelStyle?.fontFamily, GoogleFonts.roboto().fontFamily);
-    }
-    await tester.ensureVisible(find.text('Female'));
-    await tester.tap(find.text('Female'));
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Female'));
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Female'));
     expect(body, 'female');
+    await tester.ensureVisible(find.widgetWithText(FilledButton, 'Done'));
+    await tester.tap(find.widgetWithText(FilledButton, 'Done'));
+    await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Inventory · 1'));
     await tester.tap(find.text('Inventory · 1'));
     await tester.pumpAndSettle();
@@ -144,12 +149,12 @@ void main() {
     await tester.ensureVisible(find.text('View in Market'));
     await tester.tap(find.text('View in Market'));
     expect(market, 1);
-    await tester.ensureVisible(find.text('Equipped'));
-    await tester.tap(find.text('Equipped'));
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Equipped').last);
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Equipped').last);
     await tester.pumpAndSettle();
-    expect(find.text('Nothing equipped here yet.'), findsOneWidget);
-    expect(tester.widget<Text>(find.text('Nothing equipped here yet.')).style?.fontFamily,
-      GoogleFonts.pressStart2p().fontFamily);
+    expect(find.text('No items match this view.'), findsOneWidget);
+    expect(tester.widget<Text>(find.text('No items match this view.')).style?.fontFamily,
+      GoogleFonts.roboto().fontFamily);
     expect(tester.takeException(), isNull);
   });
   testWidgets('Approved accessories honor ownership, class locks, busy saves and unequip', (tester) async {

@@ -1,4 +1,5 @@
 import 'questwell_scout_wardrobe.dart';
+import 'questwell_neutral_paper_doll.dart';
 import 'questwell_woodland_scout.dart';
 import 'questwell_clean_base.dart';
 import 'questwell_woven_rug.dart';
@@ -19,7 +20,7 @@ import 'questwell_leather_satchel.dart';
 import 'questwell_wayfarer_satchel.dart';
 import 'questwell_brass_lantern.dart';
 import 'questwell_annotated_grimoire.dart';
-import 'questwell_pathfinder_boots.dart';
+import '../services/questwell_equipment_policy.dart';
 import 'questwell_moonstone_brooch.dart';
 import 'questwell_bookshelf.dart';
 import 'questwell_potion_workbench.dart';
@@ -213,22 +214,30 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   // body-specific canvas. Do not apply another generic scale/offset here.
   @override
   Widget build(BuildContext context) {
-    final equippedSlugs = QuestwellCloak.supports(this.equippedSlugs['chest'])
-        ? ({...this.equippedSlugs}..remove('hands')) : this.equippedSlugs;
+    final equippedSlugs = Map<String, String>.of(this.equippedSlugs)
+      ..removeWhere((_, slug) => QuestwellEquipmentPolicy.isRetired(slug));
+    if (QuestwellCloak.supports(equippedSlugs['chest'])) {
+      equippedSlugs.remove('hands');
+    }
     final harvestCoat = equippedSlugs['chest'] == 'midnight-harvest-coat';
     final harvestBody = ['male', 'female'].contains(avatarBodyType) ? avatarBodyType : 'neutral';
     final woodland = harvestBody == 'female' && (previewWoodlandLayers != null ||
         equippedSlugs['chest'] == 'woodland-scout-outfit');
-    final fittedDefault = harvestBody == 'female' &&
+    final fittedBody = harvestBody == 'female' || harvestBody == 'neutral';
+    final fittedDefault = fittedBody &&
         const {'scout', 'alchemist', 'scholar', 'guardian', 'wanderer'}.contains(archetype) &&
         equippedSlugs['chest'] == null && previewWoodlandLayers == null;
-    final scoutLayers = previewScoutLayers ?? (harvestBody == 'female' &&
+    final scoutLayers = previewScoutLayers ?? (fittedBody &&
         equippedSlugs['chest'] == 'everyday-adventurer-outfit'
         ? const {'top', 'trousers', 'boots'}
         : fittedDefault ? const {'top', 'trousers', 'boots', 'robe'} : null);
     final woodlandLayers = previewWoodlandLayers ?? const {'outfit'};
     final modular = scoutLayers != null || woodland;
     String fittedRobeAsset(String part) {
+      if (harvestBody == 'neutral') {
+        return QuestwellScoutWardrobeFoundation.asset(
+            harvestBody, part, archetype: archetype);
+      }
       if (harvestBody == 'female' && const {'alchemist', 'scholar', 'guardian', 'wanderer'}.contains(archetype)) {
         final version = switch (archetype) {
           'alchemist' => 'v7',
@@ -248,9 +257,12 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final body = ['male', 'female'].contains(avatarBodyType)
         ? avatarBodyType : 'neutral';
     final paperDollFemale = modular && body == 'female';
+    final paperDollNeutral = modular && body == 'neutral';
+    final paperDoll = paperDollFemale || paperDollNeutral;
+
 
     Widget classLayer(String asset) {
-      final image = modular && !paperDollFemale
+      final image = modular && !paperDoll
           ? ClipPath(clipper: ScoutWardrobeClipper(body, 'robe'), child: _assetLayer(asset))
           : !modular && !harvestCoat && archetype == 'scholar' &&
               !QuestwellCloak.supports(equippedSlugs['chest'])
@@ -261,28 +273,24 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           : image;
     }
 
-    final fittedFeet = equippedSlugs['feet'] == QuestwellPathfinderBoots.slug;
-    Set<String> fittedLayers(Set<String> layers) => fittedFeet
-        ? (Set<String>.of(layers)..remove('boots')) : layers;
     Widget foundation() => woodland
-        ? QuestwellWoodlandScoutFoundation(layers: fittedLayers(woodlandLayers))
+        ? QuestwellWoodlandScoutFoundation(layers: woodlandLayers)
         : modular
-        ? QuestwellScoutWardrobeFoundation(body: body, layers: fittedLayers(scoutLayers!))
+        ? QuestwellScoutWardrobeFoundation(body: body, layers: scoutLayers!)
         : equippedSlugs['chest'] == 'starter-business-suit'
         ? _assetLayer(_baseAsset)
         : QuestwellCleanBase(body: body, withTrousers: classOverlay != null);
 
-    Widget baseImage() => fittedFeet
-        ? ClipPath(clipper: PathfinderBaseClipper(body), child: foundation())
-        : foundation();
+    Widget baseImage() => foundation();
 
-    Widget baseLayer() => !paperDollFemale &&
-        QuestwellCloak.supports(equippedSlugs['chest'])
-        ? ClipPath(clipper: QuestwellClosedCloakBodyClipper(body), child: baseImage())
-        : equippedSlugs['hands'] == QuestwellAnnotatedGrimoire.slug
-          ? ClipPath(clipper: GrimoireHandUnderlayerClipper(body,
-              preserveWrist: paperDollFemale), child: baseImage())
-          : baseImage();
+    Widget baseLayer() {
+      if (paperDollNeutral) return baseImage();
+      if (!paperDollFemale && QuestwellCloak.supports(equippedSlugs['chest'])) {
+        return ClipPath(
+            clipper: QuestwellClosedCloakBodyClipper(body), child: baseImage());
+      }
+      return baseImage();
+    }
 
     return RepaintBoundary(
       child: Stack(
@@ -329,19 +337,21 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             )
           else
             baseLayer(),
-          if (equippedSlugs['feet'] == QuestwellPathfinderBoots.slug)
-            QuestwellPathfinderBoots(bodyType: body),
           if (classOverlay != null) classLayer(classOverlay),
           // This overlay contains only the fixed base's head/hair pixels.
           // It restores hair in front of collars without rebuilding anatomy.
           if (paperDollFemale)
             _assetLayer(QuestwellScoutWardrobeFoundation.femaleIdentityAsset)
+          else if (paperDollNeutral)
+            _assetLayer(QuestwellNeutralPaperDoll.identityAsset)
           else if (modular) ClipPath(clipper: classOverlay != null
               ? ScoutWardrobeClipper(body, 'identityHead')
               : CleanBaseClipper(body, 'identity'),
-            child: equippedSlugs['hands'] == QuestwellAnnotatedGrimoire.slug
-              ? ClipPath(clipper: GrimoireHandUnderlayerClipper(body), child: QuestwellCleanBase(body: body))
-              : QuestwellCleanBase(body: body)),
+            child: QuestwellCleanBase(body: body)),
+          // The fitted collar covers only garment pixels in the identity
+          // layer. Its authored mask preserves the fixed hair and neckline.
+          if (paperDollNeutral && classOverlay != null)
+            _assetLayer(fittedRobeAsset('robe_collar')),
           // Neckwear is tucked beneath a closed cloak, keeping its clasp clear.
           if (QuestwellCloak.supports(equippedSlugs['chest']) &&
               equippedSlugs['neck'] == 'emerald-scholar-scarf')
@@ -364,11 +374,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             if (classOverlay != null)
               ClipPath(clipper: SatchelForearmClipper(body), child: classLayer(classOverlay)),
           ],
-          if (equippedSlugs['hands'] == QuestwellAnnotatedGrimoire.slug) ...[
+          if (equippedSlugs['hands'] == QuestwellAnnotatedGrimoire.slug)
             QuestwellAnnotatedGrimoire(bodyType: body),
-            if (classOverlay != null)
-              ClipPath(clipper: GrimoireCuffClipper(body), child: classLayer(classOverlay)),
-          ],
           if (equippedSlugs['hands'] == QuestwellBrassLantern.slug) ...[
             QuestwellBrassLantern(bodyType: body),
             ClipPath(clipper: LanternHandClipper(body), child: baseLayer()),
@@ -386,9 +393,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               !QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellEmeraldScarf(bodyType: body),
           if (equippedSlugs['face'] == 'round-scholar-glasses')
-            QuestwellScholarGlasses(bodyType: body),
+            QuestwellScholarGlasses(bodyType: body,
+                headOffset: paperDollNeutral ? const Offset(4, 0) : Offset.zero),
           if (equippedSlugs['head'] == 'tiny-wizard-hat')
-            QuestwellWizardHat(bodyType: body),
+            QuestwellWizardHat(bodyType: body,
+                headOffset: paperDollNeutral ? const Offset(4, 0) : Offset.zero),
           if (equippedSlugs['familiar'] != null)
             QuestwellFamiliarLayer(slug: equippedSlugs['familiar']!),
         ],
@@ -3446,15 +3455,9 @@ class _EquippedAvatarPainter extends CustomPainter {
     pr(41, 76, 8, 25, suitShadow);
     pr(57, 76, 8, 25, suitShadow);
 
-    // Boots, with class/exclusive boot override.
-    final feetSlug = feet ?? '';
-    final legacyBoots = outfitSlug.contains('pathfinder-boots');
-    final pathfinderBoots =
-        feetSlug.contains('pathfinder-boots') || legacyBoots;
-    final bootColor =
-        pathfinderBoots ? const Color(0xFF6B4229) : boot;
-    final bootHi =
-        pathfinderBoots ? const Color(0xFFA87843) : const Color(0xFF41302A);
+    // Foundation boots remain fixed; retired footwear has no override.
+    final bootColor = boot;
+    const bootHi = Color(0xFF41302A);
     pr(36, 99, 16, 9, deepest);
     pr(55, 99, 17, 9, deepest);
     pr(38, 98, 13, 7, bootColor);
@@ -3636,11 +3639,13 @@ class _EquippedAvatarPainter extends CustomPainter {
     }
 
     if (handsSlug.contains('grimoire')) {
-      pr(73, 62, 20, 23, const Color(0xFF512467));
-      pr(76, 65, 3, 17, gold);
-      pr(82, 67, 8, 2, paper);
-      pr(82, 72, 7, 2, paper);
-      pr(82, 77, 6, 2, paper);
+      // Miniature book hangs from the belt, preserving both original hands.
+      pr(63, 73, 3, 8, leather);
+      pr(60, 79, 14, 17, const Color(0xFF512467));
+      pr(62, 81, 2, 13, gold);
+      pr(66, 82, 6, 2, paper);
+      pr(66, 87, 5, 2, paper);
+      pr(66, 91, 4, 2, paper);
     } else if (handsSlug.contains('compass')) {
       p.style = PaintingStyle.stroke;
       p.strokeWidth = math.max(2.0, unit * 1.4);
