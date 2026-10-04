@@ -6,7 +6,7 @@ This file tells automation what may be reused without reopening design.
 |---|---|---|---|---|
 | Paper doll | Female | LOCKED | `docs/art/FEMALE_FIT_STANDARD.md` | Never alter anatomy for garment fit. |
 | Paper doll | Neutral | LOCKED | latest canonical neutral foundation referenced by `lib/widgets/questwell_neutral_paper_doll.dart` and its fit JSON | Historical v2 is superseded. |
-| Paper doll | Male | LOCKED only when the current male foundation documentation explicitly says founder-approved | body-specific male lock docs | Do not infer approval from existence of assets. |
+| Paper doll | Male | LOCKED | `docs/art/MALE_PAPER_DOLL_NECK_V3.md` | Founder locked v3 on 2026-10-03. Fit all male garments to this immutable body. |
 | Robe geometry | Female | LOCKED | `docs/art/FEMALE_FIT_STANDARD.md` | Alchemist female v7 geometry; class surfaces inherit exact geometry. |
 | Robe geometry | Neutral | LOCKED | `docs/art/NEUTRAL_CLASS_ROBES_V1.md` + `tool/neutral_robe_fit_reference.json` | Neutral v11 shared geometry; approved class surfaces preserve masks. |
 | Everyday outfit | Neutral | REVIEW/INTEGRATION | neutral everyday v3 docs/assets | Existing fitted asset; do not redesign unless founder rejects it. |
