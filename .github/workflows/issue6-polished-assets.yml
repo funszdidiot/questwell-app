@@ -1,0 +1,55 @@
+name: Issue 6 Polished Assets
+
+on:
+  push:
+    branches:
+      - questwell-dev
+    paths:
+      - tool/generate_issue6_polished_assets.cjs
+      - .github/workflows/issue6-polished-assets.yml
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: questwell-dev
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install image dependency outside repository
+        run: |
+          mkdir -p "$RUNNER_TEMP/issue6-assets"
+          npm install --prefix "$RUNNER_TEMP/issue6-assets" --no-save --ignore-scripts=false sharp
+
+      - name: Generate polished decor assets
+        env:
+          NODE_PATH: ${{ runner.temp }}/issue6-assets/node_modules
+        run: node tool/generate_issue6_polished_assets.cjs
+
+      - name: Verify generated files
+        run: |
+          set -euo pipefail
+          test -f assets/images/questwell/hearth/warding_lantern_v2.webp
+          test -f assets/images/questwell/hearth/emerald_wayfarer_rug_v2.webp
+
+      - name: Commit generated assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "questwell-production-agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add assets/images/questwell/hearth/warding_lantern_v2.webp                   assets/images/questwell/hearth/emerald_wayfarer_rug_v2.webp
+          if git diff --cached --quiet; then
+            echo "Assets already current."
+            exit 0
+          fi
+          git commit -m "Generate polished Issue 6 decor assets"
+          git push origin HEAD:questwell-dev
