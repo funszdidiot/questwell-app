@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import '../services/questwell_equipment_policy.dart';
+import '../services/questwell_loadout_model.dart';
 import 'questwell_body_fit_labels.dart';
 
 class AdventurerInventoryItem {
@@ -21,8 +22,10 @@ class AdventurerInventoryItem {
   final DateTime? unlockedAt;
   final String? source, collectionKey;
   final String editionType;
-  String get renderKey => category == 'room' ? 'room:${roomSlot ?? "right"}'
-    : category == 'wall_art' && roomSlot != null && roomSlot != 'wall_center' ? 'wall_art:$roomSlot' : category;
+  String get renderKey => QuestwellLoadoutModel.renderKey(
+    category: category,
+    roomSlot: roomSlot,
+  );
   final bool owned, equipped, classLocked, shop;
 }
 
@@ -69,13 +72,8 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
   @override
   void dispose() { _searchController.dispose(); super.dispose(); }
 
-  String _group(AdventurerInventoryItem item) {
-    if (item.category == 'room' || item.category == 'wall_art') return 'Hearth';
-    if (item.category == 'familiar') return 'Familiars';
-    if (item.category == 'effect') return 'Effects';
-    if (item.category == 'chest') return 'Outfits';
-    return 'Gear';
-  }
+  String _group(AdventurerInventoryItem item) =>
+      QuestwellLoadoutModel.inventoryGroup(item.category);
 
   @override
   Widget build(BuildContext context) {
