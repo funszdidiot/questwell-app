@@ -236,10 +236,14 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
         }.contains(chest);
     final woodland = fittedBody && harvestBody != 'male' && (previewWoodlandLayers != null ||
         chest == 'woodland-scout-outfit');
+    final maleFallbackToDefault = avatarBodyType == 'male' &&
+        chest != null &&
+        chest != 'everyday-adventurer-outfit' &&
+        !maleLegacyChest;
     final fittedDefault = fittedBody &&
         (harvestBody == 'male' ||
           const {'scout', 'alchemist', 'scholar', 'guardian', 'wanderer'}.contains(archetype)) &&
-        chest == null &&
+        (chest == null || maleFallbackToDefault) &&
         previewWoodlandLayers == null;
     final scoutLayers = previewScoutLayers ?? (fittedBody &&
         equippedSlugs['chest'] == 'everyday-adventurer-outfit'
