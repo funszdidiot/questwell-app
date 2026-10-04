@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 import '../lib/widgets/questwell_scholar_cuffs.dart';
+import '../lib/widgets/questwell_male_paper_doll.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +39,13 @@ void main() {
           final images=tester.widgetList<Image>(find.byType(Image)).map((w)=>(w.image as AssetImage).assetName).toList();
           expect(images,contains(asset));
           expect(images.any((s)=>s.contains('/classes/')),isFalse,reason:'No original class garment should leak through');
+          if (body == 'male') {
+            expect(images, containsAll([
+              QuestwellMalePaperDoll.baseAsset,
+              QuestwellMalePaperDoll.everydayAsset,
+              QuestwellMalePaperDoll.identityAsset,
+            ]));
+          }
           expect(find.byType(QuestwellScholarCuffs),findsNothing);
           expect(tester.takeException(),isNull);
         }
