@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../../lib/widgets/questwell_male_paper_doll.dart';
+import 'package:project_momentum/widgets/questwell_male_paper_doll.dart';
 
 void expectMaleRobeGarmentOnlyClip(WidgetTester tester, Finder layer) {
   final clips = tester.widgetList<ClipPath>(find.descendant(

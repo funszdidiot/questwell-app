@@ -386,7 +386,8 @@ void main() {
               })))));
           await tester.pumpAndSettle();
           expect(tester.takeException(), isNull);
-          final shift = body == 'neutral' && !legacySuit ? 4.0 : 0.0;
+          // Legacy garments now share the same locked neutral v4 head.
+          final shift = body == 'neutral' ? 4.0 : 0.0;
           expect(tester.widget<QuestwellScholarGlasses>(find.byType(QuestwellScholarGlasses)).headOffset,
               Offset(shift, 0));
           expect(tester.widget<QuestwellWizardHat>(find.byType(QuestwellWizardHat)).headOffset,
