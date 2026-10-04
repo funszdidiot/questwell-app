@@ -2,8 +2,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'questwell_clean_base.dart';
 import 'questwell_neutral_paper_doll.dart';
+import 'questwell_male_paper_doll.dart';
 
-/// Separate garments on the approved female and neutral paper dolls.
+/// Registered garments on the approved paper dolls. Male Everyday is unified.
 class QuestwellScoutWardrobeFoundation extends StatelessWidget {
   const QuestwellScoutWardrobeFoundation({super.key, required this.body, required this.layers});
   final String body;
@@ -14,6 +15,14 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
       'assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp';
 
   static String asset(String body, String part, {String archetype = 'scout'}) {
+    if (body == 'male') {
+      return part.startsWith('robe')
+          ? QuestwellMalePaperDoll.robeAsset(archetype, switch (part) {
+              'robe_rear' => 'rear', 'robe_collar' => 'collar',
+              'robe_cuff_front' => 'cuffs', _ => 'front',
+            })
+          : QuestwellMalePaperDoll.everydayAsset;
+    }
     if (body == 'neutral') {
       if (part.startsWith('robe')) {
         return 'assets/images/questwell/avatar/classes/$archetype/${archetype}_${part}_neutral_v1.webp';
@@ -30,6 +39,13 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
       gaplessPlayback: true);
   @override
   Widget build(BuildContext context) {
+    if (body == 'male') {
+      return Stack(fit: StackFit.expand, children: [
+        image(QuestwellMalePaperDoll.baseAsset),
+        // Even development subset controls must never split this outfit.
+        if (layers.isNotEmpty) image(QuestwellMalePaperDoll.everydayAsset),
+      ]);
+    }
     if (body == 'neutral') {
       return Stack(fit: StackFit.expand, children: [
         const QuestwellNeutralPaperDoll(),
