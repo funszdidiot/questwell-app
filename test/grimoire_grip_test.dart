@@ -64,8 +64,8 @@ void main() {
       expect(find.byType(QuestwellAnnotatedGrimoire), findsNothing);
       await tester.pumpWidget(scene({'hands': 'annotated-grimoire', 'chest': 'moss-green-cloak'}));
       await tester.pumpAndSettle();
-      expect(find.byType(QuestwellAnnotatedGrimoire), body == 'male' ? findsOneWidget : findsNothing,
-        reason: 'Only a supported closed cloak hides held equipment');
+      expect(find.byType(QuestwellAnnotatedGrimoire), findsNothing,
+        reason: 'A supported closed cloak hides held equipment on every body');
       expect(tester.takeException(), isNull);
     }
   });
