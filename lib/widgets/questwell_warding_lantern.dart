@@ -11,7 +11,7 @@ class QuestwellWardingLantern extends StatelessWidget {
 
   static const slug = 'warding-lantern';
   static const asset =
-      'assets/images/questwell/hearth/warding_lantern_v2.webp';
+      'assets/images/questwell/hearth/warding_lantern_v3_64bit.webp';
 
   static Rect bounds(Size scene, String slot) {
     final avatarHeight =
@@ -43,7 +43,7 @@ class QuestwellWardingLantern extends StatelessWidget {
                 Image.asset(
                   asset,
                   fit: BoxFit.contain,
-                  filterQuality: FilterQuality.high,
+                  filterQuality: FilterQuality.none,
                   gaplessPlayback: true,
                   excludeFromSemantics: true,
                 ),
@@ -61,15 +61,15 @@ class _WardingGlow extends StatelessWidget {
   Widget build(BuildContext context) => Align(
         alignment: const Alignment(0, -.23),
         child: FractionallySizedBox(
-          widthFactor: .70,
-          heightFactor: .42,
+          widthFactor: .56,
+          heightFactor: .34,
           child: DecoratedBox(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(999),
               gradient: const RadialGradient(
                 colors: [
-                  Color(0x2FCDEB8C),
-                  Color(0x1874A76F),
+                  Color(0x28CDEB8C),
+                  Color(0x1274A76F),
                   Color(0x0074A76F),
                 ],
               ),
