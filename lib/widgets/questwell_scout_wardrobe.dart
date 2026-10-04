@@ -43,7 +43,8 @@ class QuestwellScoutWardrobeFoundation extends StatelessWidget {
       return Stack(fit: StackFit.expand, children: [
         image(QuestwellMalePaperDoll.baseAsset),
         // Even development subset controls must never split this outfit.
-        if (layers.isNotEmpty) image(QuestwellMalePaperDoll.everydayAsset),
+        if (layers.isNotEmpty)
+          QuestwellMaleEverydayGarment(underRobe: layers.contains('robe')),
       ]);
     }
     if (body == 'neutral') {

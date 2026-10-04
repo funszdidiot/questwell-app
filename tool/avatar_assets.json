@@ -1601,6 +1601,41 @@
           "sha256": "1c67cb83fec509a822adbdbfd61de9aac478466cadb87429e421c3ac40756728"
         }
       ]
+    },
+    "male_robe_edge_repair_v2": {
+      "art_revision": "male-robe-edge-repair-v2",
+      "status": "founder_requested_repair_not_newly_locked",
+      "body_types": [
+        "male"
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/male_robe_edge_repair_reference.json",
+          "sha256": "6297e180371b829e1f2f2831e22e0d0a5702c9bed8d8b23f863775cd3cb7fe7c"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v4.webp",
+          "sha256": "487840ba3657f1810d8c1bda3a5d7fcef934099f9fa4627af3077e42e3555e3d"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_front_male_v2.webp",
+          "sha256": "ee6ce305535e4a4cc6ae2516a69cbe20719a3a7799460dee5b90f4d9284695bb"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_front_male_v2.webp",
+          "sha256": "4a7ce99aa994e61dd141e0acc9c056828f13cfa770ca056a1b6f4eff27d7fdc0"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_front_male_v2.webp",
+          "sha256": "e52e15e0d1f4d03d28a7c47e3ad9b7a2d7631c915c4f08463c3c0dd7ee2e4f0b"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_front_male_v2.webp",
+          "sha256": "4ae8d74f777b96f7b93926c3a653590a3c0493ebbf4324202fab0e8c6f16934c"
+        }
+      ]
     }
   },
   "approved_layers": {

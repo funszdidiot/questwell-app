@@ -49,3 +49,10 @@ Tanya reported “The robes weren’t pushed to the app.” Confirmed: earlier d
 
 
 Current delivery evidence: `docs/qa/MALE_ROBE_EVERYDAY_APP_INTEGRATION.md`. Male Everyday backend support and retained legacy availability pass deployed public-RPC checks. App deployment and delivered-runtime verification remain in progress.
+
+
+## Latest male sleeve and thumb repair (2026-10-04)
+
+Tanya additionally reported dark outer sleeves and persistent thumb-adjacent holes. This newer instruction supersedes the earlier rear-only scope: `tool/male_robe_edge_repair_reference.json` permits new foreground RGB surfaces inside the existing alpha masks and a garment-only occlusion contour. The Everyday file stays one byte-identical overlay; only when a robe is worn, the renderer clips its hidden trouser pixels beside the thumbs. Never wrap or clip the body with that contour. The whole original body and hands remain visible at their original registration, with the existing repaired rear lining behind them. Collar, cuffs, rear, all historical files and every front alpha remain unchanged. This scoped correction does not establish a new founder lock.
+
+Lesson: alpha-only thumb checks can pass while an opaque trouser layer still covers the lining. Inspect final composite color and actual renderer depth, not just rear opacity. Check all class colors, garment-only clipping, equip/unequip and the complete hand silhouette.

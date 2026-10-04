@@ -1,0 +1,8 @@
+{
+  "mode": "built-in image_gen precise-object-edit",
+  "target": "assets/images/questwell/avatar/classes/guardian/guardian_robe_front_male_v1.webp",
+  "instruction": "Repair only the excessively thick nearly-black contour along the outside of both shoulders and sleeves with natural crimson cloth shading. Preserve exact silhouette, registration, gold trim, insignia, seams, panels, hems, transparency and hand openings. No body, hands, head or new cuffs.",
+  "import": "Original alpha retained. Generated edge shading ratio transferred into each existing class color inside a common bounded sleeve region. No generated anatomy or geometry used.",
+  "sourcePngSha256": "1c77a16bc970b47162db73cad8ff4eda9f6302ef3b535589139e0bd54feba922",
+  "sourceStorage": "lossless WebP; original generated PNG remains in generated_images."
+}

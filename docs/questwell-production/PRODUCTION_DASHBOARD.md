@@ -1,6 +1,6 @@
 # Questwell Production Dashboard
 
-Continued **2026-10-04 (America/Chicago)**. Tanya directed “Push the male robes and every day outfit to the app”, then chose keeping the legacy outfits available on locked male v3. The combined rollout is **QA / DEV DEPLOYING**: same-body shared rendering, male Everyday support and preserved legacy availability. Backend migration and public-RPC verification pass; actual app deployment remains to be verified. This is a recorded snapshot, not a background-worker claim.
+Continued **2026-10-04 (America/Chicago)**. The shared male robe/Everyday app integration was delivered at `20489ad` (367 Flutter + 8 Node tests; 28 delivered asset hashes matched). Tanya's newer thumb/sleeve finding supersedes the prior detailed visual PASS. The scoped correction is **QA → DEV DEPLOYING** across all five classes; no founder action is needed. Locked body, identity and Everyday bytes remain unchanged. This is a recorded snapshot, not a background-worker claim.
 
 ## Production lifecycle
 
@@ -21,6 +21,10 @@ Use **BLOCKED** only when the affected work cannot proceed. Active visual develo
 | 1 | Male class robe surfaces and thumb-gap repair (art-review routes only) | DEV DEPLOYED | Historical v3/foreground locked; requested rear repair is not a new lock | Repaired `7cc9030`, run `37181630492`: 363 Flutter + 8 Node tests, assets/analyzer/build/deploy, 28 delivered hashes, actual all-five gallery/controls/class switch/reload and independent delivered visual QA passed. Bodies, hands, foreground and class designs unchanged. Male Woodland is now DEV DEPLOYED as a separate outfit candidate (`0330c3b`). |
 | 2 | Issue #6: Warding Lantern and Emerald Wayfarer Rug | QUEUED | Replacement visuals not approved | Immediately after avatar/template work. Rebuild within the approved briefs and review at game scale. Keep both catalog entries inactive and preserve existing ownership until Tanya approves replacements. |
 | 3 | Issue #7: architecture/scalability and replaceable presentation | QUEUED | Existing architecture decisions preserved | Follow #6 before launch. First bounded item: extract inventory/loadout data and duplicated slot mapping from presentation into a shared model, preserving behavior. Architecture protections continue throughout avatar work. |
+
+## Active sleeve/thumb correction
+
+**QA / DEV DEPLOYING.** New front surfaces retain the historical exact alpha. A robe-only clip hides trouser pixels beside the thumbs, leaving the complete body and hands untouched. Local color/depth, immutable-file, shared-alpha and visual checks pass for all five classes; full CI and delivered runtime verification are pending. See `../qa/MALE_ROBE_EDGE_REPAIR_V2.md`. No catalog, economy, account or grimoire changes. Earlier rear-only repair evidence is historical and does not prove this defect fixed.
 
 ## Tanya needed now
 

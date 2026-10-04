@@ -1,0 +1,204 @@
+{
+  "status": "founder_requested_repair_not_newly_locked",
+  "feedback": {
+    "date": "2026-10-04",
+    "by": "Tanya",
+    "quote": "The male robes have holes by the thumbs and there are dark outlines at the outer sleeves- fix these across the different robes where relevant"
+  },
+  "historicalTemplate": "tool/male_robe_fit_reference.json",
+  "canvas": [
+    240,
+    320
+  ],
+  "layerOrder": [
+    "rear",
+    "body",
+    "outfit",
+    "front",
+    "identity",
+    "collar",
+    "cuffs"
+  ],
+  "body": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+    "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+    "alphaSha256": "bd602a2de9f4716ca732459b8e5459e3508667cdde12be133fae6aabe6ff9475",
+    "rgbaSha256": "dd273fb212b50b586f9f7c3b3394d9efd0cc868cb333237e3f14c1480d335122",
+    "source": "tool/art_assets/male_paper_doll_v3/paper_doll_male_candidate_v3.webp",
+    "sourceSha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda"
+  },
+  "identity": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+    "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+    "alphaSha256": "429bda841e97d6c48b32e3ab0e81690032e0d4679d06beaea29cf1e5fba1bea8",
+    "rgbaSha256": "711cd359347f976792581ecfa5a14892eb899266371215f9ecccc08be19e3244",
+    "source": "tool/art_assets/male_paper_doll_v3/paper_doll_male_identity_candidate_v3.webp",
+    "sourceSha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a"
+  },
+  "outfit": {
+    "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+    "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+    "alphaSha256": "97b18acceae5a7c66698f18f7ca927069c9a478ec4c78800786bd80b7d60c282"
+  },
+  "method": "Generated sleeve RGB only inside a shared outer-edge region; all original robe alpha retained. Clip only hidden Everyday trouser pixels using the connected rear-lining contour, with the complete original body below the unaltered outfit asset.",
+  "source": {
+    "path": "tool/art_assets/male_robe_edge_repair_v2/sleeve_redraw_source.webp",
+    "sha256": "6fec5eecf4928627f5cd3e08fc850d70f401734355bca8fe506c840d8d800d98"
+  },
+  "sleeveRegion": {
+    "path": "tool/art_assets/male_robe_edge_repair_v2/sleeve_rgb_region.bin",
+    "sha256": "c833c9e82ad06e4fe7c1b7ae7f79efbde1cefcdfcaa5ed04cec0dc53e99095f0"
+  },
+  "outfitOcclusion": {
+    "path": "tool/art_assets/male_robe_edge_repair_v2/underrobe_occlusion.svg",
+    "sha256": "01dd002715fea26b7151d17d6070096518ed033f1c981b4fcc928eee296b9fe6",
+    "appliesOnlyWhenRobe": true
+  },
+  "classes": {
+    "scout": {
+      "front": {
+        "path": "assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v4.webp",
+        "sha256": "487840ba3657f1810d8c1bda3a5d7fcef934099f9fa4627af3077e42e3555e3d",
+        "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+      },
+      "previousFront": {
+        "path": "tool/art_assets/male_robe_v3/scout_robe_front_male_v3.webp",
+        "sha256": "b5407144c8935687e01c8372d4873b5b9ac2bd79eeb39658f9138ed4ea420dcf",
+        "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+      },
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v4.webp",
+        "sourcePath": "tool/art_assets/male_robe_thumb_repair_v1/scout/rear.webp",
+        "sha256": "2147de65e671da707df1e3c210e8851f6330878e8d974a9b1f377e3536b7e845",
+        "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+      },
+      "collar": {
+        "path": "tool/art_assets/male_robe_v3/scout_robe_collar_male_v3.webp",
+        "sha256": "180e7987b3bcc88e0b394aa081de0475761429bab164a986fb55c90a0d8cf850",
+        "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+      },
+      "cuffs": {
+        "path": "tool/art_assets/male_robe_v3/scout_robe_cuffs_male_v3.webp",
+        "sha256": "273c2bdc8ba2b71cc83621b65dd8f85fa2ef95693a6c88048cf795624fe15539",
+        "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+      },
+      "compositeSha256": "b1c61f21cb7f7cd526bf33aa2a4a1cfdfccb70eeb7c8d21dbe5e23415148559f"
+    },
+    "scholar": {
+      "front": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_front_male_v2.webp",
+        "sha256": "ee6ce305535e4a4cc6ae2516a69cbe20719a3a7799460dee5b90f4d9284695bb",
+        "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+      },
+      "previousFront": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_front_male_v1.webp",
+        "sha256": "632fcf8a64cdc6ecf0085a52d07e5cb9734e23a9229e0c3dc22e7c93561e5200",
+        "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+      },
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_male_v2.webp",
+        "sourcePath": "tool/art_assets/male_robe_thumb_repair_v1/scholar/rear.webp",
+        "sha256": "b29dd5be28e3ca094a900bfdae8416b6d7b865caa91b15fdcb13ac0dc7ba523e",
+        "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+      },
+      "collar": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_collar_male_v1.webp",
+        "sha256": "33af471b25aa5cc37e7c9ff42d975f655302db7103332039c895c187e9bd10f2",
+        "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+      },
+      "cuffs": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_cuffs_male_v1.webp",
+        "sha256": "83093bd7ceaf523127bdc0eca07ae38090260bc3213b5909539dc438bd676492",
+        "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+      },
+      "compositeSha256": "cb45f48a113463f463d86781ad99cb121665de360c81281b74974eeb3127e58c"
+    },
+    "alchemist": {
+      "front": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_front_male_v2.webp",
+        "sha256": "4a7ce99aa994e61dd141e0acc9c056828f13cfa770ca056a1b6f4eff27d7fdc0",
+        "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+      },
+      "previousFront": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_front_male_v1.webp",
+        "sha256": "425f15eab2fed4f57dff1376465c561ac853a36b31deb16a32c01943894f6b73",
+        "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+      },
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_male_v2.webp",
+        "sourcePath": "tool/art_assets/male_robe_thumb_repair_v1/alchemist/rear.webp",
+        "sha256": "e285f3347a51f27be48d844d6835f548c00fad384a5b928e21be6e92028a9f3f",
+        "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+      },
+      "collar": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_collar_male_v1.webp",
+        "sha256": "95b092578800139d11b0002a3dae9c26d84dbe0c3659af8dd8ef1cccdc3c8327",
+        "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+      },
+      "cuffs": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuffs_male_v1.webp",
+        "sha256": "f052a834bf3ad68f1ddf227fe92a2dc2e96a8ee81192fe7cbff01cbf539e8c28",
+        "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+      },
+      "compositeSha256": "81c768ba9b1fe0b576f34f1288f8bc86a79bdefec2cd2ce12598380af64f2bee"
+    },
+    "guardian": {
+      "front": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_front_male_v2.webp",
+        "sha256": "e52e15e0d1f4d03d28a7c47e3ad9b7a2d7631c915c4f08463c3c0dd7ee2e4f0b",
+        "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+      },
+      "previousFront": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_front_male_v1.webp",
+        "sha256": "b7da5b312ecc853f8a9ed46ffaa0169449f14211088e59f176aae5cc1e265e42",
+        "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+      },
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_male_v2.webp",
+        "sourcePath": "tool/art_assets/male_robe_thumb_repair_v1/guardian/rear.webp",
+        "sha256": "8414f283c04cc8e6b20d4cba013ebf42b5d99b718ea4b98745874bcc45894aad",
+        "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+      },
+      "collar": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_collar_male_v1.webp",
+        "sha256": "bbb8d21564ffa7392da73a7e00e9c8b15e104b914dc24f5fd6cce24c8fc67be6",
+        "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+      },
+      "cuffs": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_cuffs_male_v1.webp",
+        "sha256": "a8457ca830dc602337c0331a4e643bcd3b67d53ad6c00344f7d463b77126e2fe",
+        "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+      },
+      "compositeSha256": "6a1844e0a305a877bb770a7964eb99dfc564bd9bb70509272b541954ed260930"
+    },
+    "wanderer": {
+      "front": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_front_male_v2.webp",
+        "sha256": "4ae8d74f777b96f7b93926c3a653590a3c0493ebbf4324202fab0e8c6f16934c",
+        "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+      },
+      "previousFront": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_front_male_v1.webp",
+        "sha256": "8b89ee1020ff74fc5182d39c3fafaa7bf62d60c16ac908b4a46c8d955f94b913",
+        "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+      },
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_male_v2.webp",
+        "sourcePath": "tool/art_assets/male_robe_thumb_repair_v1/wanderer/rear.webp",
+        "sha256": "fd98dad2eb9e9608e0e14693bb768113fb051df5d5930a842fba7c4a669e06ff",
+        "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+      },
+      "collar": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_collar_male_v1.webp",
+        "sha256": "1de9e9ccb28e80a7861cb5db38fc8e25a60833dd2648fef4024f9c681a2eb2b3",
+        "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+      },
+      "cuffs": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuffs_male_v1.webp",
+        "sha256": "76f4714c6500158b8fe1bed5571675dce60c99976d2a75f24c4ab5910bdc9fe6",
+        "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+      },
+      "compositeSha256": "34946d9b386b3e6e02ac7a43897dbbfe96aefe194aff9d94bc1387e3faab6318"
+    }
+  }
+}

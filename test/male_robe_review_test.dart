@@ -10,10 +10,9 @@ import '../lib/widgets/questwell_male_paper_doll.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('bundled male robe retains foreground and the requested rear repair', () async {
+  test('bundled male robe preserves the repaired rear and locked collar/cuffs', () async {
     const sources = {
       QuestwellMalePaperDoll.robeRearAsset: 'rear',
-      QuestwellMalePaperDoll.robeFrontAsset: 'front',
       QuestwellMalePaperDoll.robeCollarAsset: 'collar',
       QuestwellMalePaperDoll.robeCuffsAsset: 'cuffs',
     };
@@ -74,7 +73,13 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(tester.getSize(bodyImage.first), const Size(480, 640));
       expect(layers(), robe);
-      for (final type in [ClipPath, ClipRect, Transform, ColorFiltered]) {
+      for (final clip in tester.widgetList<ClipPath>(find.descendant(
+          of: find.byType(QuestwellMalePaperDoll), matching: find.byType(ClipPath)))) {
+        expect(clip.clipper, isA<MaleRobeUnderlayClipper>());
+        expect((clip.child! as Image).image, const AssetImage(outfit));
+      }
+      expect(find.ancestor(of: bodyImage.first, matching: find.byType(ClipPath)), findsNothing);
+      for (final type in [ClipRect, Transform, ColorFiltered]) {
         expect(find.descendant(
           of: find.byType(QuestwellMalePaperDoll), matching: find.byType(type),
         ), findsNothing);

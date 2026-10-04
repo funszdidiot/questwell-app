@@ -1,0 +1,61 @@
+{
+  "classes": {
+    "scout": {
+      "changedSleevePixels": 1108,
+      "unchangedOpaqueHandPixels": 41,
+      "thumbColor": [
+        66,
+        47,
+        26,
+        255
+      ],
+      "frontAlphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+    },
+    "scholar": {
+      "changedSleevePixels": 1664,
+      "unchangedOpaqueHandPixels": 41,
+      "thumbColor": [
+        32,
+        19,
+        29,
+        255
+      ],
+      "frontAlphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+    },
+    "alchemist": {
+      "changedSleevePixels": 1710,
+      "unchangedOpaqueHandPixels": 41,
+      "thumbColor": [
+        25,
+        24,
+        54,
+        255
+      ],
+      "frontAlphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+    },
+    "guardian": {
+      "changedSleevePixels": 1645,
+      "unchangedOpaqueHandPixels": 41,
+      "thumbColor": [
+        78,
+        14,
+        12,
+        255
+      ],
+      "frontAlphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+    },
+    "wanderer": {
+      "changedSleevePixels": 929,
+      "unchangedOpaqueHandPixels": 41,
+      "thumbColor": [
+        58,
+        27,
+        12,
+        255
+      ],
+      "frontAlphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+    }
+  },
+  "bodyIdentityEverydayUnchanged": true,
+  "allFrontAlphaUnchanged": true
+}

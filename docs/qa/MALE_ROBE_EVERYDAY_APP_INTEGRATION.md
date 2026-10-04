@@ -1,6 +1,6 @@
 # Male robes and Everyday: normal-app integration
 
-Status: **QA / DEV DEPLOYING**. Last updated 2026-10-04 UTC. This corrects the earlier review-only delivery; deployment and delivered-runtime checks are pending.
+Status: **DEV DEPLOYED** at `20489ad`. Last updated 2026-10-04 UTC. Shared-renderer integration and delivered assets are verified; the newer thumb/sleeve visual correction is tracked separately in `MALE_ROBE_EDGE_REPAIR_V2.md`.
 
 ## Authority and scope
 
@@ -18,6 +18,6 @@ Canonical CLI-created migrations are reconciled to their applied server versions
 
 ## Build and runtime verification
 
-The earlier proposal passed run `37216424382` with 367 Flutter tests, 8 Node tests, assets, analyzer and release build. The combined final code must pass the full mandatory workflow again. No art assets changed.
+The earlier proposal passed run `37216424382` with 367 Flutter tests, 8 Node tests, assets, analyzer and release build. The combined final code passed the full mandatory workflow as recorded below. No art assets changed.
 
-Development deployment, delivered version/hash checks and browser verification are pending. The normal app browser is signed out. Shared Hearth/Adventurer/Market fixture checks are in-memory and do not establish real-user login or refresh persistence; deployed public-RPC checks separately test database behavior without retained data.
+Workflow `37218307696` passed 367 Flutter + 8 Node tests, assets, analyzer, release build and deploy. `questwell-version.json` and all 28 delivered male assets matched. The deployed shared Adventurer fixture rendered all five male class robes and equipped Everyday from its inventory. Tanya’s subsequent thumb/sleeve report supersedes the old detail visual PASS; do not treat it as fixed by the earlier rear-only repair. The normal app browser is signed out. Shared Hearth/Adventurer/Market fixture checks are in-memory and do not establish real-user login or refresh persistence; deployed public-RPC checks separately test database behavior without retained data.
