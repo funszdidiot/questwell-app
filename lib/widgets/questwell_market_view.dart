@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/questwell_cosmetic_models.dart';
 import '../services/questwell_equipment_policy.dart';
+import '../services/questwell_loadout_model.dart';
 import 'questwell_body_fit_labels.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_hearth_decor.dart';
@@ -31,13 +32,8 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   bool bodyRestricted(QuestwellCosmetic i)=>!QuestwellEquipmentPolicy.supportsBody(i.slug,widget.data.profile.avatarBodyType);
   bool classRestricted(QuestwellCosmetic i)=>i.requiredArchetype!=null&&i.requiredArchetype!=widget.data.profile.adventurerArchetype;
   bool restricted(QuestwellCosmetic i)=>bodyRestricted(i)||classRestricted(i);
-  String group(QuestwellCosmetic i) {
-    if(room(i)) return 'Hearth';
-    if(i.category=='familiar') return 'Familiars';
-    if(i.category=='effect') return 'Effects';
-    if(['chest'].contains(i.category)) return 'Outfits';
-    return 'Gear';
-  }
+  String group(QuestwellCosmetic i) =>
+      QuestwellLoadoutModel.inventoryGroup(i.category);
   bool get hasSeasonal => widget.data.cosmetics.any((i)=>i.unlockMethod=='shop'&&!QuestwellEquipmentPolicy.isRetired(i.slug)&&i.editionType!='standard');
   String editionLabel(String value)=>switch(value){
     'seasonal'=>'Seasonal','limited'=>'Limited Edition','event_reward'=>'Event Reward',
@@ -73,9 +69,9 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     if(item.category=='room') {
       result.removeWhere((key,value)=>value==item.slug);
       final slot=QuestwellHearthDecor.choices(item.slug).keys.firstWhere((s)=>s!='bookshelf_top',orElse:()=> 'right');
-      result['room:$slot']=item.slug;
+      result[QuestwellLoadoutModel.roomRenderKey(slot)]=item.slug;
     }else if(item.category=='wall_art'){
-      result[item.slug=='moonlit-woodland'?'wall_art':'wall_art:wall_left']=item.slug;
+      result[QuestwellLoadoutModel.wallArtRenderKey(item.slug=='moonlit-woodland'?'wall_center':'wall_left')]=item.slug;
     }else {result[item.category]=item.slug;}
     return result;
   }
