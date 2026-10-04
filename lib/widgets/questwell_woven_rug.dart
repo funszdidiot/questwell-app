@@ -18,10 +18,10 @@ class QuestwellWovenRug extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   Positioned(
-                    left: width * .16,
-                    top: height * .675,
-                    width: width * .68,
-                    height: height * .285,
+                    left: width * .22,
+                    top: height * .69,
+                    width: width * .56,
+                    height: height * .26,
                     child: Image.asset(
                       emeraldAsset,
                       fit: BoxFit.fill,
