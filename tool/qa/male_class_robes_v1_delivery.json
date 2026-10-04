@@ -1,0 +1,200 @@
+{
+  "status": "baseline_delivered_verified_founder_thumb_gap_reported",
+  "revision": "b62e4ae0a69de7f47d14ecd8b8593e0b4a05a5ad",
+  "workflowRun": 37179075947,
+  "verifiedAtUTC": "2026-10-04T05:17:22.212581+00:00",
+  "version": {
+    "revision": "b62e4ae0a69de7f47d14ecd8b8593e0b4a05a5ad"
+  },
+  "quality": {
+    "flutterTestsPassed": 362,
+    "nodeTestsPassed": 8,
+    "assetIntegrity": "PASS",
+    "analyzer": "PASS",
+    "webBuild": "PASS",
+    "developmentDeployment": "PASS"
+  },
+  "assets": [
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "bytes": 38704,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "bytes": 8828,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "bytes": 27924,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v3.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v3.webp",
+      "sha256": "b5407144c8935687e01c8372d4873b5b9ac2bd79eeb39658f9138ed4ea420dcf",
+      "bytes": 29824,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v3.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v3.webp",
+      "sha256": "9f81903c78b8a4912ca31e553e0bbb990221152cba22417a0b79e006ade459a4",
+      "bytes": 10382,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_collar_male_v3.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/scout/scout_robe_collar_male_v3.webp",
+      "sha256": "180e7987b3bcc88e0b394aa081de0475761429bab164a986fb55c90a0d8cf850",
+      "bytes": 1198,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_cuffs_male_v3.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/scout/scout_robe_cuffs_male_v3.webp",
+      "sha256": "273c2bdc8ba2b71cc83621b65dd8f85fa2ef95693a6c88048cf795624fe15539",
+      "bytes": 1970,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_front_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/scholar/scholar_robe_front_male_v1.webp",
+      "sha256": "632fcf8a64cdc6ecf0085a52d07e5cb9734e23a9229e0c3dc22e7c93561e5200",
+      "bytes": 31086,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_male_v1.webp",
+      "sha256": "c947226571561f2cdf3a2a39738e4ec344ab2c7f693ef82569d60d59c0af5e16",
+      "bytes": 7988,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_collar_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/scholar/scholar_robe_collar_male_v1.webp",
+      "sha256": "33af471b25aa5cc37e7c9ff42d975f655302db7103332039c895c187e9bd10f2",
+      "bytes": 1252,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_cuffs_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/scholar/scholar_robe_cuffs_male_v1.webp",
+      "sha256": "83093bd7ceaf523127bdc0eca07ae38090260bc3213b5909539dc438bd676492",
+      "bytes": 2070,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_front_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/alchemist/alchemist_robe_front_male_v1.webp",
+      "sha256": "425f15eab2fed4f57dff1376465c561ac853a36b31deb16a32c01943894f6b73",
+      "bytes": 41616,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_male_v1.webp",
+      "sha256": "cca59e1b10ea483f0a6358e9846fcb8d2e886f2a40739b59058ff4ae350e37aa",
+      "bytes": 8586,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_collar_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/alchemist/alchemist_robe_collar_male_v1.webp",
+      "sha256": "95b092578800139d11b0002a3dae9c26d84dbe0c3659af8dd8ef1cccdc3c8327",
+      "bytes": 1216,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuffs_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuffs_male_v1.webp",
+      "sha256": "f052a834bf3ad68f1ddf227fe92a2dc2e96a8ee81192fe7cbff01cbf539e8c28",
+      "bytes": 1844,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_front_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/guardian/guardian_robe_front_male_v1.webp",
+      "sha256": "b7da5b312ecc853f8a9ed46ffaa0169449f14211088e59f176aae5cc1e265e42",
+      "bytes": 29820,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_male_v1.webp",
+      "sha256": "cc13f76eaf6961679eace9e7a7c08b6fbe1a63d6f5a7aeeec89fdaf0ed64e61c",
+      "bytes": 9150,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_collar_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/guardian/guardian_robe_collar_male_v1.webp",
+      "sha256": "bbb8d21564ffa7392da73a7e00e9c8b15e104b914dc24f5fd6cce24c8fc67be6",
+      "bytes": 1244,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_cuffs_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/guardian/guardian_robe_cuffs_male_v1.webp",
+      "sha256": "a8457ca830dc602337c0331a4e643bcd3b67d53ad6c00344f7d463b77126e2fe",
+      "bytes": 2090,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_front_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/wanderer/wanderer_robe_front_male_v1.webp",
+      "sha256": "8b89ee1020ff74fc5182d39c3fafaa7bf62d60c16ac908b4a46c8d955f94b913",
+      "bytes": 26910,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_male_v1.webp",
+      "sha256": "5b8cec180a3691574d0f4dc526ab0fb19923b04cb5e611b85b8ee3b07cc09b4d",
+      "bytes": 8046,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_collar_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/wanderer/wanderer_robe_collar_male_v1.webp",
+      "sha256": "1de9e9ccb28e80a7861cb5db38fc8e25a60833dd2648fef4024f9c681a2eb2b3",
+      "bytes": 1214,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuffs_male_v1.webp",
+      "url": "https://funszdidiot.github.io/questwell-app/assets/assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuffs_male_v1.webp",
+      "sha256": "76f4714c6500158b8fe1bed5571675dce60c99976d2a75f24c4ab5910bdc9fe6",
+      "bytes": 2056,
+      "matches": true
+    }
+  ],
+  "scope": "Development class robe review; account/economy/eligibility/persistence code unchanged.",
+  "runtime": {
+    "galleryAllFiveClasses": "PASS",
+    "selectorAllFiveClasses": "PASS",
+    "bodyOutfitRobeBounds": [
+      413.5,
+      336,
+      240,
+      320
+    ],
+    "enlargement": "PASS",
+    "reload": "Restored URL Guardian/native robe; local selector/enlargement intentionally not persisted.",
+    "appConsoleErrors": 0,
+    "accountWritesExercised": false
+  },
+  "founderDefect": {
+    "by": "Tanya",
+    "report": "Holes beside thumbs",
+    "status": "Repair in independent export QA; original visual PASS superseded for this detail."
+  }
+}

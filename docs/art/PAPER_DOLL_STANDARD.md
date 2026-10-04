@@ -20,6 +20,8 @@ If an output needs a material design choice or clarification, ask Tanya before p
 
 ## Current work order
 
+The newer 2026-10-04 thumb-gap repair instruction authorizes a scoped male rear-lining correction. Keep the historical accepted v3 template intact and use `tool/male_robe_thumb_repair_reference.json` for the versioned repaired rear layers. Body, identity, Everyday, front, collar and cuffs stay unchanged. This is a development repair with independent QA; it is not a newly founder-locked template.
+
 1. Neutral foundation v4 is approved and locked. Keep it fixed in all subsequent wardrobe work; v3 remains rejected.
 2. Neutral everyday v3 is approved in the **same exact design and illustrated style as the female everyday outfit**. Keep the shirt, trousers and boots fixed while fitting robes; retain body → boots → trousers → top → identity order.
 3. Verify the neutral class robes (Alchemist, Scholar, Guardian and Wanderer) against the approved v11 Scout robe geometry and the actual development renderer. Change surface color, pattern and flourishes only. Neutral Woodland Scout remains an unaccepted candidate in active development; it must not be treated as locked or automatically promoted by passing tests.

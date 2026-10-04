@@ -1,0 +1,364 @@
+{
+  "status": "founder_requested_repair_visual_qa_pending_not_newly_locked",
+  "feedback": {
+    "by": "Tanya",
+    "localDate": "2026-10-04",
+    "timezone": "America/Chicago",
+    "quote": "It looks like the robes have holes in them right next to the thumbs- fix it",
+    "scope": "Close both thumb-adjacent rear lining gaps; preserve body and all foreground designs."
+  },
+  "canvas": [
+    240,
+    320
+  ],
+  "historicalLockedTemplate": "tool/male_robe_fit_reference.json",
+  "contour": {
+    "path": "tool/art_assets/male_robe_thumb_repair_v1/lining_contours.svg",
+    "sha256": "01dd002715fea26b7151d17d6070096518ed033f1c981b4fcc928eee296b9fe6"
+  },
+  "body": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+    "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+    "alphaSha256": "bd602a2de9f4716ca732459b8e5459e3508667cdde12be133fae6aabe6ff9475",
+    "rgbaSha256": "dd273fb212b50b586f9f7c3b3394d9efd0cc868cb333237e3f14c1480d335122",
+    "source": "tool/art_assets/male_paper_doll_v3/paper_doll_male_candidate_v3.webp",
+    "sourceSha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda"
+  },
+  "identity": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+    "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+    "alphaSha256": "429bda841e97d6c48b32e3ab0e81690032e0d4679d06beaea29cf1e5fba1bea8",
+    "rgbaSha256": "711cd359347f976792581ecfa5a14892eb899266371215f9ecccc08be19e3244",
+    "source": "tool/art_assets/male_paper_doll_v3/paper_doll_male_identity_candidate_v3.webp",
+    "sourceSha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a"
+  },
+  "outfit": {
+    "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+    "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+    "alphaSha256": "97b18acceae5a7c66698f18f7ca927069c9a478ec4c78800786bd80b7d60c282"
+  },
+  "layerOrder": [
+    "rear",
+    "body",
+    "outfit",
+    "front",
+    "identity",
+    "collar",
+    "cuffs"
+  ],
+  "bounds": {
+    "left": [
+      71,
+      179,
+      91,
+      203
+    ],
+    "right": [
+      149,
+      179,
+      169,
+      203
+    ]
+  },
+  "fixedInputsUnchanged": true,
+  "foregroundLayersUnchanged": true,
+  "underarmSpaceAbove179Unchanged": true,
+  "method": "Complete connected rear side-lining contours behind the unchanged hands; existing cloth RGB. Historical fit, source exports and class surfaces preserved.",
+  "classes": {
+    "scout": {
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v4.webp",
+        "sourcePath": "tool/art_assets/male_robe_thumb_repair_v1/scout/rear.webp",
+        "sha256": "2147de65e671da707df1e3c210e8851f6330878e8d974a9b1f377e3536b7e845",
+        "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+      },
+      "previousRear": {
+        "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v3.webp",
+        "sha256": "9f81903c78b8a4912ca31e553e0bbb990221152cba22417a0b79e006ade459a4",
+        "alphaSha256": "74f4e17ff9706adf03761554609f764cad71a9f968016e6f31ddd33a9fd973e9"
+      },
+      "changedRearPixels": 747,
+      "opaqueHandPixelsChanged": 0,
+      "compositeChangesOutsideRepair": 0,
+      "compositeSha256": "22c8a87648f85bb5787e7251beeec28da2b0841452c0ba1737da9b2ca91d9391",
+      "holes": [
+        {
+          "x": 76,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 77,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 163,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 164,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 163,
+          "y": 186,
+          "alpha": 255
+        },
+        {
+          "x": 164,
+          "y": 186,
+          "alpha": 255
+        },
+        {
+          "x": 78,
+          "y": 195,
+          "alpha": 255
+        },
+        {
+          "x": 79,
+          "y": 196,
+          "alpha": 255
+        }
+      ]
+    },
+    "scholar": {
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_male_v2.webp",
+        "sourcePath": "tool/art_assets/male_robe_thumb_repair_v1/scholar/rear.webp",
+        "sha256": "b29dd5be28e3ca094a900bfdae8416b6d7b865caa91b15fdcb13ac0dc7ba523e",
+        "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+      },
+      "previousRear": {
+        "path": "assets/images/questwell/avatar/classes/scholar/scholar_robe_rear_male_v1.webp",
+        "sha256": "c947226571561f2cdf3a2a39738e4ec344ab2c7f693ef82569d60d59c0af5e16",
+        "alphaSha256": "74f4e17ff9706adf03761554609f764cad71a9f968016e6f31ddd33a9fd973e9"
+      },
+      "changedRearPixels": 747,
+      "opaqueHandPixelsChanged": 0,
+      "compositeChangesOutsideRepair": 0,
+      "compositeSha256": "4f34760e7e9378000438350e173ce705182ba2b93deefdd28a4ce00b16955e86",
+      "holes": [
+        {
+          "x": 76,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 77,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 163,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 164,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 163,
+          "y": 186,
+          "alpha": 255
+        },
+        {
+          "x": 164,
+          "y": 186,
+          "alpha": 255
+        },
+        {
+          "x": 78,
+          "y": 195,
+          "alpha": 255
+        },
+        {
+          "x": 79,
+          "y": 196,
+          "alpha": 255
+        }
+      ]
+    },
+    "alchemist": {
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_male_v2.webp",
+        "sourcePath": "tool/art_assets/male_robe_thumb_repair_v1/alchemist/rear.webp",
+        "sha256": "e285f3347a51f27be48d844d6835f548c00fad384a5b928e21be6e92028a9f3f",
+        "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+      },
+      "previousRear": {
+        "path": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_male_v1.webp",
+        "sha256": "cca59e1b10ea483f0a6358e9846fcb8d2e886f2a40739b59058ff4ae350e37aa",
+        "alphaSha256": "74f4e17ff9706adf03761554609f764cad71a9f968016e6f31ddd33a9fd973e9"
+      },
+      "changedRearPixels": 747,
+      "opaqueHandPixelsChanged": 0,
+      "compositeChangesOutsideRepair": 0,
+      "compositeSha256": "50b2e289ab67b55ad6f8d9d1c43983ed09f4379ddc8912000aa5f41cf39de2e9",
+      "holes": [
+        {
+          "x": 76,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 77,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 163,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 164,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 163,
+          "y": 186,
+          "alpha": 255
+        },
+        {
+          "x": 164,
+          "y": 186,
+          "alpha": 255
+        },
+        {
+          "x": 78,
+          "y": 195,
+          "alpha": 255
+        },
+        {
+          "x": 79,
+          "y": 196,
+          "alpha": 255
+        }
+      ]
+    },
+    "guardian": {
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_male_v2.webp",
+        "sourcePath": "tool/art_assets/male_robe_thumb_repair_v1/guardian/rear.webp",
+        "sha256": "8414f283c04cc8e6b20d4cba013ebf42b5d99b718ea4b98745874bcc45894aad",
+        "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+      },
+      "previousRear": {
+        "path": "assets/images/questwell/avatar/classes/guardian/guardian_robe_rear_male_v1.webp",
+        "sha256": "cc13f76eaf6961679eace9e7a7c08b6fbe1a63d6f5a7aeeec89fdaf0ed64e61c",
+        "alphaSha256": "74f4e17ff9706adf03761554609f764cad71a9f968016e6f31ddd33a9fd973e9"
+      },
+      "changedRearPixels": 747,
+      "opaqueHandPixelsChanged": 0,
+      "compositeChangesOutsideRepair": 0,
+      "compositeSha256": "6d01e25825a3e9d58a62772cb93e7f2f415cb8e546ce4b2662756cd4dd0da6f7",
+      "holes": [
+        {
+          "x": 76,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 77,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 163,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 164,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 163,
+          "y": 186,
+          "alpha": 255
+        },
+        {
+          "x": 164,
+          "y": 186,
+          "alpha": 255
+        },
+        {
+          "x": 78,
+          "y": 195,
+          "alpha": 255
+        },
+        {
+          "x": 79,
+          "y": 196,
+          "alpha": 255
+        }
+      ]
+    },
+    "wanderer": {
+      "rear": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_male_v2.webp",
+        "sourcePath": "tool/art_assets/male_robe_thumb_repair_v1/wanderer/rear.webp",
+        "sha256": "fd98dad2eb9e9608e0e14693bb768113fb051df5d5930a842fba7c4a669e06ff",
+        "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+      },
+      "previousRear": {
+        "path": "assets/images/questwell/avatar/classes/wanderer/wanderer_robe_rear_male_v1.webp",
+        "sha256": "5b8cec180a3691574d0f4dc526ab0fb19923b04cb5e611b85b8ee3b07cc09b4d",
+        "alphaSha256": "74f4e17ff9706adf03761554609f764cad71a9f968016e6f31ddd33a9fd973e9"
+      },
+      "changedRearPixels": 747,
+      "opaqueHandPixelsChanged": 0,
+      "compositeChangesOutsideRepair": 0,
+      "compositeSha256": "fb11556279fe130fc8295adcf0ec30d787d1d7edcb981e27046ba52f73c042d1",
+      "holes": [
+        {
+          "x": 76,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 77,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 163,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 164,
+          "y": 185,
+          "alpha": 255
+        },
+        {
+          "x": 163,
+          "y": 186,
+          "alpha": 255
+        },
+        {
+          "x": 164,
+          "y": 186,
+          "alpha": 255
+        },
+        {
+          "x": 78,
+          "y": 195,
+          "alpha": 255
+        },
+        {
+          "x": 79,
+          "y": 196,
+          "alpha": 255
+        }
+      ]
+    }
+  }
+}

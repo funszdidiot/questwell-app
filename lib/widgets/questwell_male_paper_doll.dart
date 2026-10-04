@@ -31,12 +31,16 @@ class QuestwellMalePaperDoll extends StatelessWidget {
 
   static String robeAsset(String archetype, String part) {
     final name = classLabels.containsKey(archetype) ? archetype : 'scout';
-    final version = name == 'scout' ? 'v3' : 'v1';
+    // Tanya's thumb-gap repair changes rear lining only. Historical accepted
+    // foreground templates and decorative surfaces are retained unchanged.
+    final version = part == 'rear'
+        ? (name == 'scout' ? 'v4' : 'v2')
+        : (name == 'scout' ? 'v3' : 'v1');
     return 'assets/images/questwell/avatar/classes/$name/${name}_robe_${part}_male_$version.webp';
   }
 
   static const robeRearAsset =
-      'assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v3.webp';
+      'assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v4.webp';
   static const robeFrontAsset =
       'assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v3.webp';
   static const robeCollarAsset =

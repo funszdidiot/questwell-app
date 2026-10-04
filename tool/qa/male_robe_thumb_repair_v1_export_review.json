@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "reviewer": "independent_visual_agent_male_robe_integration_review",
+  "reviewedAtUTC": "2026-10-04T05:36:19.551274+00:00",
+  "scope": "Exported native, full light/dark, hand detail light/dark and before/after for every class; delivered repaired runtime pending.",
+  "classes": [
+    "scout",
+    "scholar",
+    "alchemist",
+    "guardian",
+    "wanderer"
+  ],
+  "findings": [
+    "Thumb-adjacent gaps and lower left hand/cloth seam visually closed.",
+    "Continuous class-consistent rear shading joins existing side cloth.",
+    "No new protrusion, cuff/hand concealment or intentional underarm filling.",
+    "Zero changed opaque body-hand pixels and zero composite changes outside the repair bounds."
+  ],
+  "knownDefectSamplesOpaque": true,
+  "outerEdgeAntialiasing": {
+    "x": 78,
+    "y": 196,
+    "alpha": 251,
+    "interpretation": "Adjacent outer edge; not an interior hole."
+  },
+  "founderTemplateLockClaimed": false,
+  "previousPassSuperseded": "The earlier baseline image PASS missed small page-background holes Tanya identified; a new defect-coordinate regression is now required."
+}

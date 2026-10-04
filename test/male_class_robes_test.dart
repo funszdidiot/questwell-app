@@ -11,7 +11,7 @@ import '../lib/widgets/questwell_male_paper_doll.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('all twenty bundled class layers preserve every locked mask value', () async {
+  test('all twenty class layers share the repaired rear and locked foreground masks', () async {
     Future<List<int>> alpha(String asset) async {
       final bytes = await rootBundle.load(asset);
       final codec = await ui.instantiateImageCodec(
@@ -34,6 +34,47 @@ void main() {
         expect(await alpha(QuestwellMalePaperDoll.robeAsset(name, part)),
             orderedEquals(locked), reason: '$name/$part must retain the exact fit');
       }
+    }
+  });
+
+  test('rear lining closes both thumb holes without changing other mask regions', () async {
+    Future<List<int>> alpha(String asset) async {
+      final bytes = await rootBundle.load(asset);
+      final codec = await ui.instantiateImageCodec(
+          bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes));
+      final image = (await codec.getNextFrame()).image;
+      try {
+        final pixels = (await image.toByteData(format: ui.ImageByteFormat.rawRgba))!;
+        return [for (var i = 3; i < pixels.lengthInBytes; i += 4) pixels.getUint8(i)];
+      } finally {
+        image.dispose();
+        codec.dispose();
+      }
+    }
+
+    final previous = await alpha(
+        'assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v3.webp');
+    const defects = [(76, 185), (77, 185), (163, 185), (164, 185),
+      (163, 186), (164, 186), (79, 196)];
+    // These are actual delivered defects, not arbitrary implementation pixels.
+    for (final (x, y) in defects) {
+      expect(previous[y * 240 + x], lessThan(255));
+    }
+    final unchanged = [
+      for (var y = 0; y < 320; y++)
+        for (var x = 0; x < 240; x++)
+          if (!(y >= 179 && y <= 203 &&
+              ((x >= 71 && x <= 91) || (x >= 149 && x <= 169))))
+            y * 240 + x,
+    ];
+    for (final name in QuestwellMalePaperDoll.classLabels.keys) {
+      final repaired = await alpha(QuestwellMalePaperDoll.robeAsset(name, 'rear'));
+      for (final (x, y) in defects) {
+        expect(repaired[y * 240 + x], 255, reason: '$name lining behind $x,$y');
+      }
+      expect(unchanged.map((i) => repaired[i]),
+          orderedEquals(unchanged.map((i) => previous[i])),
+          reason: '$name must preserve all unrelated rear geometry');
     }
   });
 

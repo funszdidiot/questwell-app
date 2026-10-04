@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="320" viewBox="0 0 240 320">
+  <!-- Connected rear side lining only. The fixed hands render above this. -->
+  <path fill="#fff" d="M74 179 C77 181 81 180 87 179 L91 179 L91 203 L79 203 C80 198 77 195 74 191 C71 188 71 182 74 179 Z"/>
+  <path fill="#fff" d="M166 179 C163 181 159 180 153 179 L149 179 L149 203 L161 203 C160 198 163 195 166 191 C169 188 169 182 166 179 Z"/>
+</svg>

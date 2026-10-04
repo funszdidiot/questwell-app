@@ -10,7 +10,7 @@ import '../lib/widgets/questwell_male_paper_doll.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('bundled male robe layers match the accepted exports', () async {
+  test('bundled male robe retains foreground and the requested rear repair', () async {
     const sources = {
       QuestwellMalePaperDoll.robeRearAsset: 'rear',
       QuestwellMalePaperDoll.robeFrontAsset: 'front',
@@ -21,8 +21,9 @@ void main() {
       final bundled = await rootBundle.load(entry.key);
       expect(
         bundled.buffer.asUint8List(bundled.offsetInBytes, bundled.lengthInBytes),
-        orderedEquals(await File(
-          'tool/art_assets/male_robe_v3/scout_robe_${entry.value}_male_v3.webp',
+        orderedEquals(await File(entry.value == 'rear'
+          ? 'tool/art_assets/male_robe_thumb_repair_v1/scout/rear.webp'
+          : 'tool/art_assets/male_robe_v3/scout_robe_${entry.value}_male_v3.webp',
         ).readAsBytes()),
       );
     }
