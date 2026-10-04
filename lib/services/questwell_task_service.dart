@@ -30,6 +30,31 @@ class QuestwellTaskCompletionResult {
 class QuestwellTaskService {
   const QuestwellTaskService._();
 
+  static List<TasksRow> visibleHomeTasks(
+    List<TasksRow> tasks, {
+    required bool campfireMode,
+  }) {
+    final orderedTasks = List<TasksRow>.from(tasks)
+      ..sort((a, b) {
+        final aPinned = a.pinnedAt != null;
+        final bPinned = b.pinnedAt != null;
+        if (aPinned != bPinned) return aPinned ? -1 : 1;
+        return (b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0));
+      });
+
+    if (!campfireMode) return orderedTasks;
+
+    final campfireTasks = List<TasksRow>.from(orderedTasks)
+      ..sort((a, b) {
+        final aPinned = a.pinnedAt != null;
+        final bPinned = b.pinnedAt != null;
+        if (aPinned != bPinned) return aPinned ? -1 : 1;
+        return (a.frictionLevel ?? 99).compareTo(b.frictionLevel ?? 99);
+      });
+    return campfireTasks.take(1).toList();
+  }
+
   static Future<void> setAside(String taskId) => _changeStatus(taskId, 'open', 'set_aside');
   static Future<void> restore(String taskId) => _changeStatus(taskId, 'set_aside', 'open');
 
