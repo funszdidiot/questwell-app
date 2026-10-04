@@ -30,12 +30,13 @@ void main() {
     loadout.setBody('female');
     loadout.otherEquipped..remove('everyday')..add('suit');
     loadout.setBody('male');
-    expect(loadout.equipment.containsKey('chest'), isFalse);
+    expect(loadout.equipment['chest'], 'starter-business-suit',
+        reason: 'The legacy suit stays available but now renders on locked male v3');
     expect(loadout.equipment['head'], 'tiny-wizard-hat');
     expect(QuestwellReviewLoadout.catalog['everyday']?.$2, 'everyday-adventurer-outfit');
     loadout.setBody('female');
-    expect(loadout.equipment.containsKey('chest'), isFalse,
-        reason: 'Returning to a supported body does not silently re-equip an item');
+    expect(loadout.equipment['chest'], 'starter-business-suit',
+        reason: 'Supported legacy equipment remains equipped across body changes');
   });
   testWidgets('approved female Everyday carries in-memory equipment across Hearth and re-entry without changing body', (tester) async {
     GoogleFonts.config.allowRuntimeFetching = false;
