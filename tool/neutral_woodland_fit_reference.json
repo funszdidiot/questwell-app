@@ -1,0 +1,38 @@
+{
+  "status": "LOCKED",
+  "founderApproval": {
+    "date": "2026-10-04",
+    "quote": "The neutral outfits are good- push them"
+  },
+  "revision": "neutral-woodland-v3",
+  "canvas": {
+    "width": 240,
+    "height": 320,
+    "origin": "top_left",
+    "offset": [
+      0,
+      0
+    ],
+    "runtimeFit": "contain",
+    "runtimeAlignment": "bottom_center"
+  },
+  "body": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+    "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24"
+  },
+  "identity": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+    "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78"
+  },
+  "outfit": {
+    "path": "assets/images/questwell/avatar/woodland_scout_unified_neutral_v3.webp",
+    "sha256": "57adcddeb64047799e536ec221dd826beb2036ef3a7611e1b45d5a3e915f69f9",
+    "alphaSha256": "b02fcd6a1126cb25249055cee78cb8fcbc64d8abb5edfb3152b00d88d0f496c2"
+  },
+  "layerOrder": [
+    "body",
+    "outfit",
+    "identity"
+  ],
+  "geometry": "Single coherent overlay; exact alpha, registration, hand clearance and heel coverage locked. Fit garments to the unchanged neutral v4 body."
+}

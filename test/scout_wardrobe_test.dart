@@ -221,7 +221,7 @@ void main() {
     }
   });
 
-  testWidgets('neutral Woodland remains review-only on its locked body', (tester) async {
+  testWidgets('approved neutral Woodland equips and restores its locked body', (tester) async {
     Future<void> render({bool equipped = false, Set<String>? reviewLayers}) async {
       await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
         width: 240, height: 320,
@@ -239,8 +239,8 @@ void main() {
     final classLayers = assets(tester);
     expect(classLayers, neutralRobeLayers('scout'));
     await render(equipped: true);
-    expect(assets(tester), classLayers,
-        reason: 'An unapproved candidate cannot become account equipment');
+    expect(assets(tester), [QuestwellNeutralPaperDoll.baseAsset,
+      QuestwellNeutralScout.outfitAsset, QuestwellNeutralPaperDoll.identityAsset]);
     {
       await render(reviewLayers: {'outfit'});
       final paths = assets(tester);
@@ -259,7 +259,7 @@ void main() {
           tester.getRect(asset(QuestwellNeutralPaperDoll.baseAsset)));
       await render();
       expect(assets(tester), classLayers,
-          reason: 'Leaving candidate review returns to the locked class stack');
+          reason: 'Unequipping or leaving review returns to the locked class stack');
     }
   });
 

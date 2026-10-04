@@ -41,11 +41,11 @@ async function main() {
   const composite = await sharp(body.input).composite([
     {input:outfit.input}, {input:identity.input},
   ]).png().toBuffer();
-  const result = {status:'PASS', candidate:true, founderLock:false,
+  const result = {status:'PASS', candidate:false, founderLock:true,
     composition:[body, outfit, identity].map(({path,sha256})=>({path,sha256})),
     unchangedBodyAndIdentity:true, changedGarmentPixels:changed,
     handPixelsCleared:hand.length, heelPixelsOpaque:heels.length,
-    accountEligibility:'female only; neutral explicit development review only'};
+    accountEligibility:'female and neutral Scouts; founder approved 2026-10-04'};
   if(process.argv.includes('--render-qa')) {
     const dir = path.join(root,'tool/qa/neutral_woodland_v3');
     fs.mkdirSync(dir,{recursive:true});

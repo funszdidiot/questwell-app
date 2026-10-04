@@ -122,7 +122,7 @@ void main() {
       for (final slug in ['starter-business-suit', 'midnight-harvest-coat', 'moss-green-cloak', 'hearthguard-mantle'])
         (body: 'male', slug: slug, classLocked: false, label: 'Equip'),
       (body: 'neutral', slug: 'everyday-adventurer-outfit', classLocked: false, label: 'Equip'),
-      (body: 'neutral', slug: 'woodland-scout-outfit', classLocked: false, label: 'Fit unavailable'),
+      (body: 'neutral', slug: 'woodland-scout-outfit', classLocked: false, label: 'Equip'),
       (body: 'male', slug: 'woodland-scout-outfit', classLocked: false, label: 'Fit unavailable'),
       (body: 'female', slug: 'woodland-scout-outfit', classLocked: true, label: 'Class restricted'),
     ]) {
@@ -151,7 +151,7 @@ void main() {
         expect(equipped, isNull);
         if (scenario.label == 'Fit unavailable') {
           expect(find.text(scenario.slug == 'woodland-scout-outfit'
-              ? 'Available for the female body.'
+              ? 'Available for female and gender-neutral bodies.'
               : 'Available for female and gender-neutral bodies.'), findsOneWidget);
         }
       }

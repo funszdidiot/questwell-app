@@ -33,7 +33,7 @@ abstract final class QuestwellEquipmentPolicy {
   };
   static const bodyFits = <String, Set<String>>{
     'everyday-adventurer-outfit': {'female', 'neutral', 'male'},
-    'woodland-scout-outfit': {'female'},
+    'woodland-scout-outfit': {'female', 'neutral'},
   };
   static bool supportsBody(String slug, String body) =>
       bodyFits[slug]?.contains(body) ?? true;
