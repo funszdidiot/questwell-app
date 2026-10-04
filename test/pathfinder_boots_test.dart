@@ -52,6 +52,10 @@ void main() {
   });
 
   testWidgets('Server-returned historical boots are hidden from Market and inventory', (tester) async {
+    // Keep the Market's count and both inventory sections inside the viewport,
+    // so absence checks cover built catalog content rather than lazy offscreen rows.
+    await tester.binding.setSurfaceSize(const Size(430, 2400));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     final retired = QuestwellCosmetic.fromJson({
       'id': 'historical-boots', 'slug': retiredSlug, 'name': 'Pathfinder Boots',
       'category': 'feet', 'rarity': 'rare', 'description': 'Historical item',
@@ -74,6 +78,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Pathfinder Boots'), findsNothing);
     expect(find.text('0 treasures'), findsOneWidget);
+    expect(find.text('No treasures match these filters.'), findsOneWidget);
     await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellAdventurerView(
       archetype: 'scout', bodyType: 'neutral', level: 5, xp: 500, coins: 200,
       description: '', mastered: false, collectionOwned: 0, collectionTotal: 0,
@@ -88,6 +93,11 @@ void main() {
     expect(find.text('Pathfinder Boots'), findsNothing);
     expect(find.text('Inventory · 0'), findsOneWidget);
     expect(find.text('Nothing equipped yet.'), findsOneWidget);
+    await tester.tap(find.text('Inventory · 0'));
+    await tester.pumpAndSettle();
+    expect(find.text('0 owned · 0 equipped'), findsOneWidget);
+    expect(find.text('No items match this view.'), findsOneWidget);
+    expect(find.text('Pathfinder Boots'), findsNothing);
     expect(writes, 0);
     expect(retired.owned && retired.equipped, isTrue);
     expect(tester.takeException(), isNull);
