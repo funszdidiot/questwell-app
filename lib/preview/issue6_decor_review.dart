@@ -96,9 +96,10 @@ class _Issue6DecorReviewAppState extends State<Issue6DecorReviewApp> {
                       equippedSlugs: {
                         if (showRug)
                           'room:floor': QuestwellWovenRugPainter.slug,
+                        if (lanternSlot != 'left')
+                          'room:left': 'walnut-bookshelf',
                         if (showLantern)
                           'room:$lanternSlot': QuestwellWardingLantern.slug,
-                        'room:left': 'walnut-bookshelf',
                         if (lanternSlot != 'front')
                           'room:front': 'burgundy-reading-chair',
                         'room:side': 'walnut-reading-table',
