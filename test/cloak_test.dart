@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_cloak.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
+import '../lib/widgets/questwell_male_paper_doll.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -82,9 +83,18 @@ void main() {
         expect(tester.takeException(),isNull,reason:'$slug/$archetype/$body');
         expect(find.byType(QuestwellCloak),findsNWidgets(2));
         final assets=tester.widgetList<Image>(find.byType(Image)).map((i)=>i.image).whereType<AssetImage>().map((i)=>i.assetName).toList();
-        expect(assets,contains('assets/images/questwell/avatar/base/base_$body.webp'));
+        if (body == 'male') {
+          expect(assets, containsAll([
+            QuestwellMalePaperDoll.baseAsset,
+            QuestwellMalePaperDoll.everydayAsset,
+            QuestwellMalePaperDoll.identityAsset,
+          ]));
+          expect(assets.any((a)=>a.contains('/classes/$archetype/')), isFalse);
+        } else {
+          expect(assets,contains('assets/images/questwell/avatar/base/base_$body.webp'));
+          expect(assets.any((a)=>a.contains('/classes/$archetype/')),isTrue);
+        }
         expect(assets.where((a)=>a==QuestwellCloak.asset(slug)).length,2);
-        expect(assets.any((a)=>a.contains('/classes/$archetype/')),isTrue);
         final fit=QuestwellCloak.bounds(body,slug);
         expect(fit.left,greaterThanOrEqualTo(0));expect(fit.right,lessThanOrEqualTo(240));
         expect(fit.bottom,lessThan(300),reason:'Hem clears the boots');
