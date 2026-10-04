@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 import '../lib/widgets/questwell_woven_rug.dart';
 import '../lib/widgets/questwell_room_picker.dart';
+import '../lib/widgets/questwell_warding_lantern.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +55,30 @@ void main() {
       }
       image.dispose(); picture.dispose();
     }
+  });
+
+  testWidgets('Warding Lantern and emerald rug coexist without replacing furniture', (tester) async {
+    await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(width: 390,
+      child: QuestwellHearthPixelScene(height: 342, archetype: 'guardian',
+        avatarBodyType: 'neutral', equippedSlugs: const {
+          'room:floor': QuestwellWovenRugPainter.slug,
+          'room:left': 'walnut-bookshelf',
+          'room:right': QuestwellWardingLantern.slug,
+          'room:front': 'burgundy-reading-chair',
+          'room:side': 'walnut-reading-table',
+        })))));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('hearth-warding-lantern-bounds')), findsOneWidget);
+    final lantern = find.byType(QuestwellWardingLantern);
+    expect(lantern, findsOneWidget);
+    final paint = tester.widget<CustomPaint>(find.descendant(
+      of: find.byKey(const ValueKey('hearth-woven-rug')),
+      matching: find.byType(CustomPaint)));
+    expect((paint.painter! as QuestwellWovenRugPainter).emerald, isTrue);
+    for (final item in ['bookshelf', 'chair', 'table', 'avatar']) {
+      expect(find.byKey(ValueKey('hearth-$item-bounds')), findsOneWidget);
+    }
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('Rug placement saves the floor slot on a small enlarged-text screen', (tester) async {
