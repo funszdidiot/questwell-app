@@ -56,12 +56,21 @@ all-wardrobe or all-body migration.
 Runtime code revision **`4cfef7f277eba89ac65a1ea965cdea7dfb169d1f`** was served by
 `questwell-version.json` and inspected in the development browser. GitHub Actions
 run **`37174925231`** passed asset verification, analyzer, **351 Flutter tests**,
-**8 Node tests**, web build and development deployment. The final publishing
-commit also includes a bounded Market fixture correction: changing its body now
-clears unsupported equipped slugs through the shared policy while retaining
-ownership. The final full gate and additional delivered Market body-switch check
-are pending for that follow-up. The detailed runtime evidence below remains
-verified on `4cfef7f`; the dashboard publishing stamp may therefore differ.
+**8 Node tests**, web build and development deployment.
+
+Follow-up **`a4d3b794e5757303a57e41128ffdc581a306b998`** was also confirmed through
+`questwell-version.json`. Run **`37175899729`** passed the same complete gate,
+including **351 Flutter tests**, build and deployment. Its Market fixture body
+selector was verified in the delivered browser: neutral Everyday purchase and
+equip used 40 sample coins (650 → 610); neutral → male retained ownership and
+610 coins, cleared equipment and showed disabled **Fit unavailable**; returning
+to neutral showed **Owned / Equip**, without silently re-equipping. This is
+in-memory sample state, not a real account transaction. No application code
+changes follow this verification; the final dashboard publishing stamp may differ.
+
+A separate read-only live catalog check confirmed `warding-lantern` and
+`emerald-wayfarer-rug` remain inactive. Synthetic gallery entries do not indicate
+live catalog availability.
 
 The exact delivered male files matched their locked SHA-256 values:
 
