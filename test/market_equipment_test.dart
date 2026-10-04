@@ -70,7 +70,10 @@ void main(){
         'rarity': 'common', 'description': 'Legacy fit', 'price': 0,
         'premium': false, 'unlock_method': 'shop',
       }, owned: true);
-      await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellMarketView(
+      await tester.pumpWidget(MaterialApp(
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(disableAnimations: true), child: child!),
+        home: Scaffold(body: QuestwellMarketView(
         key: ValueKey(slug),
         data: QuestwellCosmeticsSnapshot(profile: const QuestwellProfile(
           level: 4, totalXp: 355, coinBalance: 650, currentEnergyMode: 'normal',
@@ -162,7 +165,7 @@ void main(){
   testWidgets('Market supports small screens, class filters and purchase confirmation',(tester)async{
     await tester.binding.setSurfaceSize(const Size(320,1000));addTearDown(()=>tester.binding.setSurfaceSize(null));
     var purchased=0;
-    final data=QuestwellCosmeticsSnapshot(profile:const QuestwellProfile(level:4,totalXp:355,coinBalance:650,currentEnergyMode:'normal',onboardingCompleted:true,adventurerArchetype:'scholar',avatarBodyType:'male'),cosmetics:items);
+    final data=QuestwellCosmeticsSnapshot(profile:const QuestwellProfile(level:4,totalXp:355,coinBalance:650,currentEnergyMode:'normal',onboardingCompleted:true,adventurerArchetype:'scholar',avatarBodyType:'female'),cosmetics:items);
     await tester.pumpWidget(MaterialApp(theme:ThemeData.dark(),home:Scaffold(body:MediaQuery(data:const MediaQueryData(disableAnimations:true,textScaler:TextScaler.linear(1.6)),child:QuestwellMarketView(data:data,onPurchase:(_)async{purchased++;},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{})))));
     await tester.pumpAndSettle();expect(tester.takeException(),isNull);
     final categories=find.byType(SingleChildScrollView);

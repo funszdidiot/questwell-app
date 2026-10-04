@@ -26,6 +26,10 @@ void main() {
     expect(loadout.equipment['chest'], 'everyday-adventurer-outfit');
     loadout.setBody('male');
     expect(loadout.body, 'male');
+    expect(loadout.equipment['chest'], 'everyday-adventurer-outfit');
+    loadout.setBody('female');
+    loadout.otherEquipped..remove('everyday')..add('suit');
+    loadout.setBody('male');
     expect(loadout.equipment.containsKey('chest'), isFalse);
     expect(loadout.equipment['head'], 'tiny-wizard-hat');
     expect(QuestwellReviewLoadout.catalog['everyday']?.$2, 'everyday-adventurer-outfit');
@@ -113,7 +117,9 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(390, 1800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     for (final scenario in [
-      (body: 'male', slug: 'everyday-adventurer-outfit', classLocked: false, label: 'Fit unavailable'),
+      (body: 'male', slug: 'everyday-adventurer-outfit', classLocked: false, label: 'Equip'),
+      for (final slug in ['starter-business-suit', 'midnight-harvest-coat', 'moss-green-cloak', 'hearthguard-mantle'])
+        (body: 'male', slug: slug, classLocked: false, label: 'Fit unavailable'),
       (body: 'neutral', slug: 'everyday-adventurer-outfit', classLocked: false, label: 'Equip'),
       (body: 'neutral', slug: 'woodland-scout-outfit', classLocked: false, label: 'Fit unavailable'),
       (body: 'male', slug: 'woodland-scout-outfit', classLocked: false, label: 'Fit unavailable'),

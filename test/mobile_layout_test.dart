@@ -60,7 +60,7 @@ void main() {
     final data = QuestwellCosmeticsSnapshot(
       profile: const QuestwellProfile(level: 4, totalXp: 355, coinBalance: 650,
         currentEnergyMode: 'normal', onboardingCompleted: true,
-        adventurerArchetype: 'scholar', avatarBodyType: 'male'),
+        adventurerArchetype: 'scholar', avatarBodyType: 'female'),
       cosmetics: marketReviewCatalog.map((r) => QuestwellCosmetic.fromJson(r)).toList());
     await tester.pumpWidget(phone(Scaffold(body: QuestwellMarketView(
       data: data, onPurchase: (_) async { purchases++; }, onEquip: (_) async {},
@@ -101,7 +101,7 @@ void main() {
     await tester.tap(find.text('430 px')); await tester.pumpAndSettle();
     await tester.tap(find.text('100% text')); await tester.pumpAndSettle();
     await tester.tap(find.text('160% text')); await tester.pumpAndSettle();
-    final claim = find.widgetWithText(FilledButton, 'Claim free');
+    final claim = find.widgetWithText(FilledButton, 'Buy · 40 coins');
     await tester.dragUntilVisible(claim.hitTestable(), find.byType(ListView),
       const Offset(0, -200), maxIteration: 30);
     await tester.tap(claim); await tester.pumpAndSettle();
