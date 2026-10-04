@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_momentum/flutter_flow/nav/nav.dart' show NavigationExtensions;
 import 'package:project_momentum/preview/adventurer_review.dart';
 import 'package:project_momentum/preview/mobile_review.dart';
+import 'package:project_momentum/preview/review_loadout.dart';
 import 'package:project_momentum/widgets/questwell_app_navigation.dart';
 import 'package:project_momentum/widgets/questwell_scout_wardrobe.dart';
 import 'package:project_momentum/widgets/questwell_pixel_art.dart';
@@ -18,6 +19,20 @@ import 'package:project_momentum/widgets/questwell_moonstone_brooch.dart';
 
 void main() {
   inventoryIconTests();
+  test('preview body switching removes unsupported equipment and retains its sample catalog', () {
+    final loadout = QuestwellReviewLoadout()
+      ..otherEquipped.addAll({'everyday', 'h'});
+    loadout.setBody('neutral');
+    expect(loadout.equipment['chest'], 'everyday-adventurer-outfit');
+    loadout.setBody('male');
+    expect(loadout.body, 'male');
+    expect(loadout.equipment.containsKey('chest'), isFalse);
+    expect(loadout.equipment['head'], 'tiny-wizard-hat');
+    expect(QuestwellReviewLoadout.catalog['everyday']?.$2, 'everyday-adventurer-outfit');
+    loadout.setBody('female');
+    expect(loadout.equipment.containsKey('chest'), isFalse,
+        reason: 'Returning to a supported body does not silently re-equip an item');
+  });
   testWidgets('approved female Everyday carries in-memory equipment across Hearth and re-entry without changing body', (tester) async {
     GoogleFonts.config.allowRuntimeFetching = false;
     await tester.binding.setSurfaceSize(const Size(1000, 1000));

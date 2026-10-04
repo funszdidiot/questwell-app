@@ -1,3 +1,5 @@
+import '../services/questwell_equipment_policy.dart';
+
 /// Shared, account-free state across the mobile preview's screens.
 class QuestwellReviewLoadout {
   String archetype = 'alchemist', body = 'female';
@@ -17,6 +19,13 @@ class QuestwellReviewLoadout {
     'everyday': ('chest', 'everyday-adventurer-outfit'),
     'suit': ('chest', 'starter-business-suit'),
   };
+  void setBody(String nextBody) {
+    body = nextBody;
+    otherEquipped.removeWhere((id) {
+      final slug = catalog[id]?.$2;
+      return slug != null && !QuestwellEquipmentPolicy.supportsBody(slug, nextBody);
+    });
+  }
   void placeRoom(String id, String slot) {
     roomSlots.removeWhere((key, value) => value == slot || key == id);
     roomSlots[id] = slot;

@@ -35,7 +35,7 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
           level: 3, xp: 295, coins: 49, description: 'Choose a class and body style to preview your look. Sample data only.',
           mastered: _loadout.mastered.contains(_class), collectionOwned: widget.masteryPreview ? 6 : 5, collectionTotal: 6, relicName: QuestwellMasteryRelic.names[_class]!,
           canClaim: widget.masteryPreview && !_loadout.mastered.contains(_class), onClaim: () => setState(() => _loadout.mastered.add(_class)), onBack: () => QuestwellNavigationScope.open(context, QuestwellDestination.hearth), onMarket: () => QuestwellNavigationScope.open(context, QuestwellDestination.market),
-          onBody: (v) => setState(() => _loadout.body = v), onClass: (v) => setState(() {
+          onBody: (v) => setState(() => _loadout.setBody(v)), onClass: (v) => setState(() {
             _loadout.archetype = v;
             _loadout.roomSlots.removeWhere((key, _) => QuestwellMasteryRelic.supports(key) && QuestwellMasteryRelic.classFor(key) != v);
           }),
@@ -89,7 +89,7 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
               description: 'Sample ownership. Try Equip and Unequip here.', owned: true, equipped: _loadout.satchel, classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'everyday', name: 'Everyday Adventurer Outfit',
               slug: 'everyday-adventurer-outfit', category: 'chest',
-              description: 'Sample ownership. The approved outfit fitted to each body.',
+              description: 'Sample ownership. Available for female and gender-neutral adventurers.',
               owned: true, equipped: _loadout.otherEquipped.contains('everyday'),
               classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'suit', name: 'Business Suit', slug: 'starter-business-suit', category: 'chest',
@@ -102,4 +102,3 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
       ))),
     ));
 }
-
