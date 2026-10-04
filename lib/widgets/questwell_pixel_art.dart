@@ -1,7 +1,6 @@
 import 'questwell_scout_wardrobe.dart';
 import 'questwell_neutral_paper_doll.dart';
 import 'questwell_male_paper_doll.dart';
-import 'questwell_male_legacy_chest.dart';
 import 'questwell_legacy_chest.dart';
 import 'questwell_neutral_scout.dart';
 import 'questwell_woodland_scout.dart';
