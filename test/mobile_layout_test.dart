@@ -101,7 +101,9 @@ void main() {
     await tester.tap(find.text('430 px')); await tester.pumpAndSettle();
     await tester.tap(find.text('100% text')); await tester.pumpAndSettle();
     await tester.tap(find.text('160% text')); await tester.pumpAndSettle();
-    final claim = find.widgetWithText(FilledButton, 'Buy · 40 coins');
+    final claim = find.descendant(
+      of: find.byKey(const ValueKey('market-everyday-adventurer-outfit')),
+      matching: find.widgetWithText(FilledButton, 'Buy · 40 coins'));
     await tester.dragUntilVisible(claim.hitTestable(), find.byType(ListView),
       const Offset(0, -200), maxIteration: 30);
     await tester.tap(claim); await tester.pumpAndSettle();
