@@ -58,7 +58,12 @@ void main() {
       'price': 160, 'premium': false, 'unlock_method': 'shop',
     }, owned: true, equipped: true);
     var writes = 0;
-    await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellMarketView(
+    // The Market sign animates continuously; reduce motion while checking data
+    // visibility so pumpAndSettle can finish without changing these assertions.
+    await tester.pumpWidget(MaterialApp(
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(disableAnimations: true), child: child!),
+      home: Scaffold(body: QuestwellMarketView(
       data: QuestwellCosmeticsSnapshot(profile: const QuestwellProfile(
         level: 5, totalXp: 500, coinBalance: 200, currentEnergyMode: 'normal',
         onboardingCompleted: true, adventurerArchetype: 'scout', avatarBodyType: 'neutral'),
