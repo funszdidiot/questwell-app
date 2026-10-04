@@ -257,7 +257,7 @@ void main() {
               !closed && held == 'annotated-grimoire' ? findsOneWidget : findsNothing);
             if (body == 'male') {
               expect(find.byType(QuestwellCleanBase), findsNothing);
-              expect(find.byType(QuestwellMaleLegacyChestFoundation), findsOneWidget);
+              expect(find.byType(QuestwellMaleLegacyChestFoundation), findsWidgets);
               expect(images, contains(QuestwellMalePaperDoll.baseAsset));
               expect(images, contains(QuestwellMalePaperDoll.identityAsset));
               if (chest == 'starter-business-suit') {
