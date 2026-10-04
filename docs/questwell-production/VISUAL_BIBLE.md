@@ -4,6 +4,8 @@
 
 Questwell is a cozy fantasy productivity game with a high-detail 64-bit-era RPG sensibility. Art should feel intentionally pixel-authored, warm, tactile and game-like rather than generically AI-rendered.
 
+**Founder-locked visual rule — 64-bit vision:** Questwell must remain visibly rooted in a 64-bit-era cozy fantasy RPG aesthetic across avatars, Hearth décor, Market art, seasonal releases, limited releases, bosses and secondary screens. Polish means richer pixel-authored material depth, selective shading, controlled glow, tactile texture, stronger silhouettes and cleaner sprite craftsmanship—not photorealism, painterly concept-art rendering, smooth vector illustration or modern 3D realism. High-detail assets may use higher-resolution source art, but the final runtime presentation must still read as cohesive retro game art at app scale.
+
 Typography and UI must remain consistent with the established Questwell system. Avoid visual drift between Hearth, Adventurer, Market, Boss Battles, Chronicle and secondary modes.
 
 ## Avatar architecture
