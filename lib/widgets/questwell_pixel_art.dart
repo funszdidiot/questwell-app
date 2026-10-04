@@ -1161,15 +1161,9 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               if (equippedSlugs['room:window'] == 'rainy-window')
                 const Positioned.fill(key: ValueKey('hearth-rainy-window-bounds'),
                   child: QuestwellRainyWindow()),
-              for (final slot in ['left','right','front'])
-                if (equippedSlugs['room:$slot'] == 'warding-lantern')
-                  Positioned(key: const ValueKey('hearth-warding-lantern-bounds'),
-                    left: sceneWidth*(slot=='left' ? .24 : slot=='right' ? .78 : .16),
-                    top: sceneHeight*(slot=='front' ? .65 : .48), width: sceneWidth*.10, height: sceneHeight*.21,
-                    child: const QuestwellCatalogRoomArt(slug:'warding-lantern')),
               for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
-                  if (slug == QuestwellAutumnLantern.slug || slug == QuestwellHarvestDisplay.slug || slug == QuestwellPotionWorkbench.slug || QuestwellMasteryRelic.supports(slug) || slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
+                  if (slug == QuestwellAutumnLantern.slug || slug == 'warding-lantern' || slug == QuestwellHarvestDisplay.slug || slug == QuestwellPotionWorkbench.slug || QuestwellMasteryRelic.supports(slug) || slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
                     QuestwellHearthDecor.positioned(
                       slug: slug, slot: slot, equipment: equippedSlugs,
                       scene: Size(sceneWidth, sceneHeight),
