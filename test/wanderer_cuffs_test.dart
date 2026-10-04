@@ -1,3 +1,4 @@
+import '../lib/widgets/questwell_male_paper_doll.dart';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -64,7 +65,11 @@ void main() {
         expect(find.byType(QuestwellWandererCuffs), findsNothing);
         final images = tester.widgetList<Image>(find.byType(Image))
             .map((image) => (image.image as AssetImage).assetName).toList();
-        if (body == 'female' && chest == null) {
+        if (body == 'male') {
+          expect(images, contains(QuestwellMalePaperDoll.robeAsset('wanderer', 'front')));
+          expect(images, contains(QuestwellMalePaperDoll.robeAsset('wanderer', 'cuffs')));
+          expect(images.any((path) => path.contains('wanderer_coat_male_short_')), isFalse);
+        } else if (body == 'female' && chest == null) {
           expect(images, contains('assets/images/questwell/avatar/classes/wanderer/wanderer_robe_female_v3.webp'));
           expect(images, contains('assets/images/questwell/avatar/classes/wanderer/wanderer_robe_cuff_front_female_v3.webp'));
           expect(images.any((path) => path.contains('wanderer_coat_female_short_')), isFalse);
