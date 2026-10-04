@@ -23,10 +23,16 @@ void main() {
                 'room:side': 'walnut-reading-table',
               })))));
           await tester.pump();
-          final paint = tester.widget<CustomPaint>(find.descendant(
-            of: find.byKey(const ValueKey('hearth-woven-rug')),
-            matching: find.byType(CustomPaint)));
-          expect((paint.painter! as QuestwellWovenRugPainter).emerald, placed);
+          expect(find.byType(QuestwellWovenRug), findsOneWidget);
+          final rug = tester.widget<QuestwellWovenRug>(
+            find.byType(QuestwellWovenRug));
+          expect(rug.emerald, placed);
+          if (placed) {
+            expect(find.byWidgetPredicate((widget) => widget is Image &&
+              widget.image is AssetImage &&
+              (widget.image as AssetImage).assetName == QuestwellWovenRug.emeraldAsset),
+              findsOneWidget);
+          }
           for (final item in ['bookshelf', 'chair', 'table', 'avatar']) {
             expect(find.byKey(ValueKey('hearth-$item-bounds')), findsOneWidget);
           }
@@ -71,10 +77,12 @@ void main() {
     expect(find.byKey(const ValueKey('hearth-warding-lantern-bounds')), findsOneWidget);
     final lantern = find.byType(QuestwellWardingLantern);
     expect(lantern, findsOneWidget);
-    final paint = tester.widget<CustomPaint>(find.descendant(
-      of: find.byKey(const ValueKey('hearth-woven-rug')),
-      matching: find.byType(CustomPaint)));
-    expect((paint.painter! as QuestwellWovenRugPainter).emerald, isTrue);
+    final rug = tester.widget<QuestwellWovenRug>(find.byType(QuestwellWovenRug));
+    expect(rug.emerald, isTrue);
+    expect(find.byWidgetPredicate((widget) => widget is Image &&
+      widget.image is AssetImage &&
+      (widget.image as AssetImage).assetName == QuestwellWovenRug.emeraldAsset),
+      findsOneWidget);
     for (final item in ['bookshelf', 'chair', 'table', 'avatar']) {
       expect(find.byKey(ValueKey('hearth-$item-bounds')), findsOneWidget);
     }
