@@ -9,6 +9,7 @@ This file tells automation what may be reused without reopening design.
 | Paper doll | Male | LOCKED | `docs/art/MALE_PAPER_DOLL_NECK_V3.md` | Founder locked v3 on 2026-10-03. Fit all male garments to this immutable body. |
 | Robe geometry | Female | LOCKED | `docs/art/FEMALE_FIT_STANDARD.md` | Alchemist female v7 geometry; class surfaces inherit exact geometry. |
 | Robe geometry | Neutral | LOCKED | `docs/art/NEUTRAL_CLASS_ROBES_V1.md` + `tool/neutral_robe_fit_reference.json` | Neutral v11 shared geometry; approved class surfaces preserve masks. |
+| Everyday outfit | Male | LOCKED / AWAITING REPO INGEST | approved `male_everyday_v2` from 2026-10-03 production review | Unified single overlay on locked male v3; sleeves, crotch/inner-leg contours and both boot fits corrected. Founder approved with “It’s good. Next.” Do not regenerate; ingest exact approved artifact when available in repo. |
 | Everyday outfit | Neutral | REVIEW/INTEGRATION | neutral everyday v3 docs/assets | Existing fitted asset; do not redesign unless founder rejects it. |
 | Woodland Scout outfit | Female | LOCKED | `docs/art/FEMALE_FIT_STANDARD.md` | unified female v11. |
 | Woodland Scout outfit | Neutral | REVIEW/INTEGRATION | neutral Scout v2 assets/review | Existing fitted asset; do not regenerate merely because runtime wiring is incomplete. |
