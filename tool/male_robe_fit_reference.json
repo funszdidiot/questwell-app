@@ -1,0 +1,145 @@
+{
+  "status": "founder_accepted_with_requested_cuff_finish_completed",
+  "canvas": [
+    240,
+    320
+  ],
+  "body": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+    "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+    "alphaSha256": "bd602a2de9f4716ca732459b8e5459e3508667cdde12be133fae6aabe6ff9475",
+    "rgbaSha256": "dd273fb212b50b586f9f7c3b3394d9efd0cc868cb333237e3f14c1480d335122",
+    "source": "tool/art_assets/male_paper_doll_v3/paper_doll_male_candidate_v3.webp",
+    "sourceSha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda"
+  },
+  "identity": {
+    "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+    "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+    "alphaSha256": "429bda841e97d6c48b32e3ab0e81690032e0d4679d06beaea29cf1e5fba1bea8",
+    "rgbaSha256": "711cd359347f976792581ecfa5a14892eb899266371215f9ecccc08be19e3244",
+    "source": "tool/art_assets/male_paper_doll_v3/paper_doll_male_identity_candidate_v3.webp",
+    "sourceSha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a"
+  },
+  "everydayReference": "tool/male_everyday_fit_reference.json",
+  "outfit": {
+    "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+    "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+    "alphaSha256": "97b18acceae5a7c66698f18f7ca927069c9a478ec4c78800786bd80b7d60c282"
+  },
+  "layers": {
+    "front": {
+      "path": "tool/art_assets/male_robe_v3/scout_robe_front_male_v3.webp",
+      "sha256": "b5407144c8935687e01c8372d4873b5b9ac2bd79eeb39658f9138ed4ea420dcf",
+      "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+    },
+    "rear": {
+      "path": "tool/art_assets/male_robe_v3/scout_robe_rear_male_v3.webp",
+      "sha256": "9f81903c78b8a4912ca31e553e0bbb990221152cba22417a0b79e006ade459a4",
+      "alphaSha256": "74f4e17ff9706adf03761554609f764cad71a9f968016e6f31ddd33a9fd973e9"
+    },
+    "collar": {
+      "path": "tool/art_assets/male_robe_v3/scout_robe_collar_male_v3.webp",
+      "sha256": "180e7987b3bcc88e0b394aa081de0475761429bab164a986fb55c90a0d8cf850",
+      "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+    },
+    "cuffs": {
+      "path": "tool/art_assets/male_robe_v3/scout_robe_cuffs_male_v3.webp",
+      "sha256": "273c2bdc8ba2b71cc83621b65dd8f85fa2ef95693a6c88048cf795624fe15539",
+      "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+    }
+  },
+  "layerOrder": [
+    "rear",
+    "body",
+    "outfit",
+    "front",
+    "identity",
+    "collar",
+    "cuffs"
+  ],
+  "registration": {
+    "sourceCanvas": [
+      1086,
+      1448
+    ],
+    "sourceRegistration": [
+      233,
+      310
+    ],
+    "normalizedCanvas": [
+      240,
+      320
+    ],
+    "scale": 0.827,
+    "centerX": 121,
+    "offsetY": 46,
+    "garmentWidthKnots": [
+      [
+        72,
+        1
+      ],
+      [
+        84,
+        1.16
+      ],
+      [
+        103,
+        1.22
+      ],
+      [
+        123,
+        1.16
+      ],
+      [
+        145,
+        1.08
+      ],
+      [
+        167,
+        1
+      ],
+      [
+        320,
+        1
+      ]
+    ],
+    "sleeveEase": "Smooth inward ease across full underarm-to-forearm cloth, with fixed outer anchors and wrist registration.",
+    "shoulderLift": 1.8,
+    "sideClothDepth": "Short outer side cloth beside each hand remains behind the entire fixed body; embroidered fronts stay foreground."
+  },
+  "source": {
+    "path": "tool/art_assets/male_robe_v2/robe_source.png",
+    "sha256": "44beecb2fef49afe7ebb5e59cf288353e44f8aa9b1f42f60187bb91558fe59e1"
+  },
+  "depthPaths": {
+    "lining": "M106 33 Q120 36 134 33 L134 47 Q129 65 129 88 Q128 116 134 148 Q136 185 140 222 L148 287 L95 287 Q97 250 100 220 Q103 185 108 151 Q112 122 113 99 Q114 72 110 55 L106 33 Z",
+    "cavities": "M47.7 151.3 Q54 147.4 62.4 152 Q68.8 155.1 71.3 159 L76 169 L41 168 Z M169.4 159 Q174 152.7 182 150.1 Q189.5 147.8 193.7 151.3 L200 168 L163 169 Z"
+  },
+  "compositeSha256": "5217cbf4ccdd38b84fd634d88506b44bcad894d79cdf7e7903acc2826089936e",
+  "revision": "male-robe-v3",
+  "bodyType": "male",
+  "founderFeedback": {
+    "quote": "make the ropes less curvy in the hips- it reads too feminine",
+    "editTarget": "tool/art_assets/male_robe_v1/founder_edit_target.png",
+    "markup": "tool/art_assets/male_robe_v1/founder_markup.png"
+  },
+  "visualReview": "tool/art_assets/male_robe_v3/visual_review.json",
+  "verification": "tool/art_assets/male_robe_v3/verification.json",
+  "sourceRevision": "male-robe-v2",
+  "cuffRedraw": {
+    "path": "tool/art_assets/male_robe_v3/cuff_redraw_source.png",
+    "sha256": "fec37eb0c06c691916d2c4db491d9d9f86f9719298d49a11e3f5c7638481ad60",
+    "import": "Color only inside original brown cuff facings; exact original alpha and registration retained."
+  },
+  "approval": {
+    "approvedBy": "Tanya",
+    "localDate": "2026-10-03",
+    "timezone": "America/Chicago",
+    "quote": "Make the cuff edges sharper and we’re good",
+    "scope": "Male robe fit accepted subject to the requested cuff-edge finish. The finish is implemented and independently verified; this locks the existing geometry and finished cuff treatment without inferring additional aesthetic changes or a deployment.",
+    "condition": "Sharper complete cuff edges with all other artwork and fit preserved",
+    "conditionVerification": "tool/art_assets/male_robe_v3/visual_review.json"
+  },
+  "variantRule": "Preserve all four alpha masks exactly, canvas, registration, layer order, straighter waist/hip cut, collar continuity, cuff width/openings and hand clearance. Future male class variants change only colors, patterns and flourishes. Never change the fixed body or unified everyday outfit.",
+  "templateReference": "tool/art_assets/male_robe_v3/fit_reference.json"
+}

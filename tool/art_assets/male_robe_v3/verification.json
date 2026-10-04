@@ -1,0 +1,9 @@
+{
+  "bodyIdentityEverydayByteIdentical": true,
+  "frontRearCollarByteIdentical": true,
+  "allFourAlphaMasksIdentical": true,
+  "changedCuffPixels": 419,
+  "changedCompositePixels": 414,
+  "changedOutsideCuffLayer": 0,
+  "compositeSha256": "5217cbf4ccdd38b84fd634d88506b44bcad894d79cdf7e7903acc2826089936e"
+}

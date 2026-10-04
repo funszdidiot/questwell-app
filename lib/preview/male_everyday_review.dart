@@ -6,7 +6,9 @@ import '../widgets/questwell_male_paper_doll.dart';
 
 /// Isolated fit review: no account, catalog, class defaults or equipment writes.
 class MaleEverydayReviewApp extends StatefulWidget {
-  const MaleEverydayReviewApp({super.key});
+  const MaleEverydayReviewApp({super.key, this.initialRobe = false});
+
+  final bool initialRobe;
 
   @override
   State<MaleEverydayReviewApp> createState() => _MaleEverydayReviewAppState();
@@ -15,6 +17,7 @@ class MaleEverydayReviewApp extends StatefulWidget {
 class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
   bool _showEveryday = true;
   bool _enlarged = false;
+  late bool _showRobe = widget.initialRobe;
 
   Widget _preview(String label, Color background, double availableWidth) {
     final canvasWidth = _enlarged ? 480.0 : 240.0;
@@ -39,9 +42,11 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                   width: canvasWidth,
                   height: canvasWidth * 320 / 240,
                   child: Semantics(
-                    label: '$label: ${_showEveryday ? 'Everyday outfit' : 'Locked body'}',
+                    label: '$label: ${_showRobe ? 'Scout robe' : _showEveryday ? 'Everyday outfit' : 'Locked body'}',
                     image: true,
-                    child: QuestwellMalePaperDoll(showEveryday: _showEveryday),
+                    child: QuestwellMalePaperDoll(
+                      showEveryday: _showEveryday, showRobe: _showRobe,
+                    ),
                   ),
                 ),
               ),
@@ -74,7 +79,7 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                       ),
                       const SizedBox(height: 10),
                       const Text(
-                        'Approved everyday outfit on the same fixed body.',
+                        'Approved everyday outfit and Scout robe on the same fixed body.',
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
@@ -91,13 +96,27 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                         children: [
                           ChoiceChip(
                             label: const Text('Outfit'),
-                            selected: _showEveryday,
-                            onSelected: (_) => setState(() => _showEveryday = true),
+                            selected: _showEveryday && !_showRobe,
+                            onSelected: (_) => setState(() {
+                              _showEveryday = true;
+                              _showRobe = false;
+                            }),
                           ),
                           ChoiceChip(
                             label: const Text('Body only'),
                             selected: !_showEveryday,
-                            onSelected: (_) => setState(() => _showEveryday = false),
+                            onSelected: (_) => setState(() {
+                              _showEveryday = false;
+                              _showRobe = false;
+                            }),
+                          ),
+                          ChoiceChip(
+                            label: const Text('Scout robe'),
+                            selected: _showRobe,
+                            onSelected: (_) => setState(() {
+                              _showEveryday = true;
+                              _showRobe = true;
+                            }),
                           ),
                           FilterChip(
                             label: const Text('Enlarged view'),

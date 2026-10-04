@@ -1,0 +1,7 @@
+{
+  "mode": "built_in_imagegen",
+  "prompt": "Use case: precise-object-edit. Image1 is the EXACT edit target. Image2 is the user's markup showing the ONLY areas to change. Edit this same transparent robe image: make both side contours in the waist/upper hip area less curvy and less cinched. Give the torso a straighter, squarer male cut, dropping more directly from the ribcage into the upper skirt with subtle natural cloth ease. Relax/widen the pinched waist slightly, smoothing away the pronounced inward scoop and outward hip swell marked red. Make the transition one coherent natural continuous cloth region with matching folds and outlines, no patches or seams. Keep the entire rest of this exact image unchanged: same shoulders, sleeves, hollow cuffs, collar, embroidery pattern and placement, colors, texture, lower skirt drape and hem width/length. Same full canvas, registration and scale; do not crop or recenter. Do not add a wearer or body. Remove all red markup from the result. Preserve transparent background.",
+  "editTarget": "tool/art_assets/male_robe_v1/founder_edit_target.png",
+  "markup": "tool/art_assets/male_robe_v1/founder_markup.png",
+  "output": "tool/art_assets/male_robe_v2/robe_source.png"
+}

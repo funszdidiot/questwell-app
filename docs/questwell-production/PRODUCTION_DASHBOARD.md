@@ -17,13 +17,14 @@ Use **BLOCKED** only when the affected work cannot proceed. Active visual develo
 | 1 | Neutral Woodland Scout candidate review | QA | CANDIDATE — NOT LOCKED | Delivered `?review=neutral-scout` four-stage/off-on/detail-control checks passed on fixed v4. Visual QA remains active; no founder lock or independent delivered screenshot audit. Account eligibility stays female-only. |
 | 1 | Male Woodland Scout outfit | QUEUED | No male Woodland fit/template lock established | Explicit avatar priority alongside neutral Woodland. Create one coherent body-specific outfit on immutable male v3; no cross-body scaling. Source audit found no existing male Woodland candidate/provenance. Preserve art/account boundaries; no decision is requested now. |
 | 1 | Migrate legacy female/neutral chest foundations coherently | QUEUED | Existing paper-doll bodies stay locked; legacy garment migration incomplete | Business Suit still selects `base_{body}.webp`; Harvest Coat and closed cloaks use `QuestwellCleanBase` with legacy identity/trousers. Separately fit and verify these transitions to the approved paper dolls. Current catalog behavior is unchanged; no new blocker or founder request. |
-| 1 | Remaining male garment templates | BUILDING | New robe template not yet locked | Existing unapproved male robe candidates remain in active development, including unfinished cuff work. Continue on the unchanged male v3 body/everyday v2 outfit. Template acceptance requires independent QA and Tanya's decision before class surfaces; no decision is requested now. |
+| 1 | Accepted male robe v3 fixed-body review integration | QA | Robe v3 LOCKED — accepted cuff finish verified | Recovered exact `16facaf` handoff and independent source QA. Body, everyday, identity and all four robe masks preserved. New `?review=male-robe` route and clothing transitions under technical verification; deployment/runtime pending. |
+| 1 | Male class robe surfaces | QUEUED | Inherit locked male robe v3 geometry | Create remaining class colors/patterns on exact masks after template runtime integration. No body or garment refitting. Male Woodland remains the separately queued coherent outfit. |
 | 2 | Issue #6: Warding Lantern and Emerald Wayfarer Rug | QUEUED | Replacement visuals not approved | Immediately after avatar/template work. Rebuild within the approved briefs and review at game scale. Keep both catalog entries inactive and preserve existing ownership until Tanya approves replacements. |
 | 3 | Issue #7: architecture/scalability and replaceable presentation | QUEUED | Existing architecture decisions preserved | Follow #6 before launch. First bounded item: extract inventory/loadout data and duplicated slot mapping from presentation into a shared model, preserving behavior. Architecture protections continue throughout avatar work. |
 
 ## Tanya needed now
 
-**No founder decision is currently requested.** The scoped technical batch is deployed. Woodland Scout remains explicit: neutral candidate QA and male outfit QUEUED, alongside the remaining avatar work. Future male template acceptance and #6 replacement approval are concrete later review points, not blockers to current work.
+**No founder decision is currently requested.** The scoped technical batch is deployed. Woodland Scout remains explicit: neutral candidate QA and male outfit QUEUED, alongside the remaining avatar work. The newer male robe v3 handoff records completed conditional acceptance; no repeat template decision is needed. #6 replacement approval remains a later review point.
 
 If a task becomes BLOCKED, record its precise reason, evidence, work that can still continue and the smallest required action. Request Tanya only for a genuine founder aesthetic/template decision, required permission/credentials, a paid service, a destructive or irreversible action, a material product/economy change, or an unavoidable manual action.
 
@@ -53,4 +54,8 @@ DEV DEPLOYED requires verification of the delivered development revision and act
 
 ## Durable handoff
 
-Continue the active neutral Woodland candidate review and male robe/cuff work; keep male Woodland Scout explicitly queued on the immutable v3 body. Preserve female Woodland's existing lock and female-only account eligibility. Complete the queued male/legacy chest foundation transitions before claiming wardrobe-wide migration. After avatars, continue #6 then #7. No new founder action is needed for this handoff.
+Integrate the accepted male robe v3 from the newer `16facaf` handoff, then build male class surfaces on its exact masks. Continue neutral Woodland candidate review and keep male Woodland Scout explicitly queued on the immutable v3 body. Preserve female Woodland's existing lock and female-only account eligibility. Complete the queued male/legacy chest foundation transitions before claiming wardrobe-wide migration. After avatars, continue #6 then #7. No new founder action is needed for this handoff.
+
+## Current male robe integration
+
+The previous unfinished-cuff status was stale relative to source commit `16facaf3b688b2d2f96e47bf2bd4a215685d0e6e`. Its accepted fit reference, sharp-cuff verification and independent visual review are now preserved in this repository. This reconciles an existing founder decision; it does not create a new approval. Current integration status: **QA**. Runtime delivery is not yet claimed.

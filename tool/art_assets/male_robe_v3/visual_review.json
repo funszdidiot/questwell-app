@@ -1,0 +1,110 @@
+{
+  "status": "independent_visual_qa_passed",
+  "reviewer": "guardian_neutral_surface",
+  "reviewDate": "2026-10-04",
+  "scope": "Narrow cuff-edge finish review, comparing male robe v2 and v3 full and enlarged hand renders on light and dark backgrounds. No artwork or code edits by reviewer.",
+  "requestedFinish": "Make the cuff edges sharper and we\u2019re good.",
+  "nativeComposite": {
+    "path": "tool/art_assets/male_robe_v3/native_composite.png",
+    "sha256": "5217cbf4ccdd38b84fd634d88506b44bcad894d79cdf7e7903acc2826089936e"
+  },
+  "previousComposite": {
+    "path": "tool/art_assets/male_robe_v2/native_composite.png",
+    "sha256": "f8e87003aa21735380756c496447e7cff51e9c0295241bbfde5bf193ca514a90"
+  },
+  "robeLayers": {
+    "front": {
+      "path": "tool/art_assets/male_robe_v3/scout_robe_front_male_v3.webp",
+      "sha256": "b5407144c8935687e01c8372d4873b5b9ac2bd79eeb39658f9138ed4ea420dcf",
+      "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+    },
+    "rear": {
+      "path": "tool/art_assets/male_robe_v3/scout_robe_rear_male_v3.webp",
+      "sha256": "9f81903c78b8a4912ca31e553e0bbb990221152cba22417a0b79e006ade459a4",
+      "alphaSha256": "74f4e17ff9706adf03761554609f764cad71a9f968016e6f31ddd33a9fd973e9"
+    },
+    "collar": {
+      "path": "tool/art_assets/male_robe_v3/scout_robe_collar_male_v3.webp",
+      "sha256": "180e7987b3bcc88e0b394aa081de0475761429bab164a986fb55c90a0d8cf850",
+      "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+    },
+    "cuffs": {
+      "path": "tool/art_assets/male_robe_v3/scout_robe_cuffs_male_v3.webp",
+      "sha256": "273c2bdc8ba2b71cc83621b65dd8f85fa2ef95693a6c88048cf795624fe15539",
+      "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+    }
+  },
+  "fixedAssets": {
+    "body": {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "fileHashVerifiedUnchanged": true
+    },
+    "identity": {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "fileHashVerifiedUnchanged": true
+    },
+    "outfit": {
+      "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "fileHashVerifiedUnchanged": true
+    }
+  },
+  "inspectedImages": [
+    {
+      "path": "tool/art_assets/male_robe_v2/male_robe_light.png",
+      "sha256": "ce19b8391e7ba3ed09dd80c771ae21bcb9f5ef8af6aacca0a0a9bf98f34f0638"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v2/male_robe_dark.png",
+      "sha256": "87cc88486fb161f2240078266d343a465aa76104012e0bd19918c4a43d68682f"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v2/hands_light.png",
+      "sha256": "8f90d4b5538139bc9d2ff5b1c6b933024f18540212dd7d2e5ea45ee950421150"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v2/hands_dark.png",
+      "sha256": "22aefeaec0d3b1902a1f1a0f55a5713a9448f140e9ea0db09b11701da53b1bbd"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v3/male_robe_light.png",
+      "sha256": "35dfb8e9a11960fdc64121698b569b9d36098e37b8136c59a918eb744f5a3192"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v3/male_robe_dark.png",
+      "sha256": "effd4e8274be8fdd3a7a42531b06504472e71450504f9e6afb88948417feaec1"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v3/hands_light.png",
+      "sha256": "a5d20820cf81d71e25cfe7b5b8db056fac7c37baae066cf79a8a592d39aa9f4c"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v3/hands_dark.png",
+      "sha256": "38b83403941451c1c20c4bc16b6de02c6c937d51f73bb8eb63d360ba4f416994"
+    }
+  ],
+  "findings": {
+    "edgeDefinition": "Both brown cuff rims have a clearer, more continuous dark opening edge and better-defined facing highlights. The viewer-right rim in particular now reads continuously across the wrist rather than softening into the skin edge.",
+    "shapeAndWidth": "The original cuff width, silhouette, position and opening shape are preserved. No projecting addition or tightened cuff is apparent.",
+    "handsAndClearance": "Both palms, fingers and thumbs remain complete, with the same clearance and natural cloth-over-wrist depth as v2. No floating rim, new skin overlap, or detached fragment is apparent.",
+    "restOfAvatar": "The full light/dark views retain the approved waist/hip silhouette, shoulder coverage, collar continuity, and rear-hem layering. The sharper cuff finish remains consistent with the illustrated style."
+  },
+  "independentVerification": {
+    "allFourAlphaMasksIdenticalToV2": true,
+    "decodedAlphaSha256": {
+      "front": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23",
+      "rear": "74f4e17ff9706adf03761554609f764cad71a9f968016e6f31ddd33a9fd973e9",
+      "collar": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02",
+      "cuffs": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+    },
+    "frontRearCollarByteIdenticalToV2": true,
+    "bodyIdentityEverydayFileHashesUnchanged": true,
+    "changedCompositePixels": 414,
+    "changedOutsideCuffLayer": 0
+  },
+  "concreteBlockingDefects": [],
+  "runtimeTested": false,
+  "approvalScope": "Independent visual QA of the requested cuff finish; template-lock and release metadata are managed by the parent task."
+}

@@ -1,0 +1,116 @@
+{
+  "status": "ready_for_founder_review",
+  "reviewer": "guardian_neutral_surface",
+  "reviewDate": "2026-10-04",
+  "founderApproval": false,
+  "runtimeTested": false,
+  "scope": "Cumulative independent visual review of the actual male robe v2 over fixed male v3 body and unified everyday v2 outfit. Full light/dark, shoulder/collar, hand, native and hem views reviewed across the final two local correction stages; final export independently rechecked in the changed hand areas.",
+  "canvas": [
+    240,
+    320
+  ],
+  "nativeComposite": {
+    "path": "tool/art_assets/male_robe_v2/native_composite.png",
+    "sha256": "f8e87003aa21735380756c496447e7cff51e9c0295241bbfde5bf193ca514a90"
+  },
+  "fixedAssets": {
+    "body": {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "fileHashVerifiedUnchanged": true
+    },
+    "identity": {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "fileHashVerifiedUnchanged": true
+    },
+    "outfit": {
+      "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "fileHashVerifiedUnchanged": true
+    }
+  },
+  "robeLayers": {
+    "front": {
+      "path": "tool/art_assets/male_robe_v2/scout_robe_front_male_candidate_v2.webp",
+      "sha256": "b5407144c8935687e01c8372d4873b5b9ac2bd79eeb39658f9138ed4ea420dcf",
+      "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+    },
+    "rear": {
+      "path": "tool/art_assets/male_robe_v2/scout_robe_rear_male_candidate_v2.webp",
+      "sha256": "9f81903c78b8a4912ca31e553e0bbb990221152cba22417a0b79e006ade459a4",
+      "alphaSha256": "74f4e17ff9706adf03761554609f764cad71a9f968016e6f31ddd33a9fd973e9"
+    },
+    "cuffs": {
+      "path": "tool/art_assets/male_robe_v2/scout_robe_cuffs_male_candidate_v2.webp",
+      "sha256": "1d38bb8fd56c4aee96079452c272cc10b1e150f60fe63eeb080f8d19eaf2b7b4",
+      "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+    },
+    "collar": {
+      "path": "tool/art_assets/male_robe_v2/scout_robe_collar_male_candidate_v2.webp",
+      "sha256": "180e7987b3bcc88e0b394aa081de0475761429bab164a986fb55c90a0d8cf850",
+      "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+    }
+  },
+  "source": {
+    "path": "tool/art_assets/male_robe_v2/robe_source.png",
+    "sha256": "44beecb2fef49afe7ebb5e59cf288353e44f8aa9b1f42f60187bb91558fe59e1"
+  },
+  "layerOrder": [
+    "rear",
+    "body",
+    "outfit",
+    "front",
+    "identity",
+    "collar",
+    "cuffs"
+  ],
+  "findings": {
+    "waistAndHips": "The marked waist pinch is removed. The torso reads straighter and squarer on the fixed male; the lower panels retain the intentional A-line fall.",
+    "shouldersAndArms": "The final robe covers the shirt shoulder edges and the arms. The previously flagged ivory strip above the viewer-left shoulder and weaker viewer-right trace are no longer visible. Shoulder contours remain continuous.",
+    "cuffsAndHands": "Both cuffs have complete rims and a natural opening around the fixed wrists. Palms, fingers and thumbs remain complete; the adjacent robe cloth now reads behind the hands. No floating cuff, clipped hand, or visible split-alpha seam is apparent on either background.",
+    "collar": "The brown trim continues up both sides of the neckline without an abrupt stop or disconnected neck appearance.",
+    "rearAndHem": "The rear panel and its trim remain behind both trouser legs. Front panels fall in front of the legs; boots and their soles remain coherent and visible."
+  },
+  "concreteBlockingDefects": [],
+  "limitations": "Ready for founder review only. This record does not constitute founder approval, a robe-template lock, or runtime validation.",
+  "artworkOrExporterModifiedByReviewer": false,
+  "previousReviewCompositeSha256": "579cc30a7ff93176f887e171f231ff30724ca2ca2cd54ab10ea53c9f1595a089",
+  "previousInspectedImages": [
+    {
+      "path": "tool/art_assets/male_robe_v2/male_robe_light.png",
+      "sha256": "e08c3a6f3af3d93fceadbb17a5f0f861f661a3c2f4e8ab7a6d2155443fe863af"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v2/male_robe_dark.png",
+      "sha256": "73aae9e0d39bcb83fb0c7d0fa44a477f3b5d1e4d79d0440cfa53779afa289f9b"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v2/neck_light.png",
+      "sha256": "a94a64358c1aa725a8a1aa04cf61436cb130604aa678b1920a702b68f58223db"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v2/neck_dark.png",
+      "sha256": "8cefff294ceb363c0683e078a39c44b7a79bd87730042dd17fb59234fc2864f0"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v2/hands_light.png",
+      "sha256": "af1791bfd7c9bccb4b4854af1f7af8c8c55761c939722f758faecd0aa332d369"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v2/hands_dark.png",
+      "sha256": "5eec02a9bd17f4230fc9ec0aaedb85a48da346c49b9b0a2e513dae0e5f8d59a9"
+    }
+  ],
+  "finalInspectedImages": [
+    {
+      "path": "tool/art_assets/male_robe_v2/hands_light.png",
+      "sha256": "8f90d4b5538139bc9d2ff5b1c6b933024f18540212dd7d2e5ea45ee950421150"
+    },
+    {
+      "path": "tool/art_assets/male_robe_v2/hands_dark.png",
+      "sha256": "22aefeaec0d3b1902a1f1a0f55a5713a9448f140e9ea0db09b11701da53b1bbd"
+    }
+  ],
+  "finalFocusedRecheck": "Rechecked final hand detail renders on both backgrounds after approximately one native pixel of additional hand-side cloth antialias clearance. Both hands and thumbs remain complete, cuff rims remain natural, and no visible cloth seam or clipped hand edge is apparent. Other visual findings carry forward from the preceding full review; only this local depth boundary changed."
+}

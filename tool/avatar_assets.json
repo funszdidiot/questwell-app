@@ -1972,6 +1972,67 @@
           "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a"
         }
       ]
+    },
+    "male_robe_v3": {
+      "art_revision": "male-robe-v3",
+      "visual_approval": "founder_accepted_with_requested_cuff_finish_completed",
+      "approved_source_commit": "16facaf3b688b2d2f96e47bf2bd4a215685d0e6e",
+      "bodies": [
+        "male"
+      ],
+      "layer_order": [
+        "rear",
+        "body",
+        "outfit",
+        "front",
+        "identity",
+        "collar",
+        "cuffs"
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/male_robe_fit_reference.json",
+          "sha256": "d29af8c326fb06d785b99813036342e3f4b25242f4eee3fe88dc36b41023c022"
+        },
+        {
+          "path": "tool/art_assets/male_robe_v3/visual_review.json",
+          "sha256": "e134b8b8ca44bf53df1a44fa19d901b05d210dd451672aead8bef8021309b85f"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v3.webp",
+          "sha256": "b5407144c8935687e01c8372d4873b5b9ac2bd79eeb39658f9138ed4ea420dcf"
+        },
+        {
+          "path": "tool/art_assets/male_robe_v3/scout_robe_front_male_v3.webp",
+          "sha256": "b5407144c8935687e01c8372d4873b5b9ac2bd79eeb39658f9138ed4ea420dcf"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v3.webp",
+          "sha256": "9f81903c78b8a4912ca31e553e0bbb990221152cba22417a0b79e006ade459a4"
+        },
+        {
+          "path": "tool/art_assets/male_robe_v3/scout_robe_rear_male_v3.webp",
+          "sha256": "9f81903c78b8a4912ca31e553e0bbb990221152cba22417a0b79e006ade459a4"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_robe_collar_male_v3.webp",
+          "sha256": "180e7987b3bcc88e0b394aa081de0475761429bab164a986fb55c90a0d8cf850"
+        },
+        {
+          "path": "tool/art_assets/male_robe_v3/scout_robe_collar_male_v3.webp",
+          "sha256": "180e7987b3bcc88e0b394aa081de0475761429bab164a986fb55c90a0d8cf850"
+        },
+        {
+          "path": "assets/images/questwell/avatar/classes/scout/scout_robe_cuffs_male_v3.webp",
+          "sha256": "273c2bdc8ba2b71cc83621b65dd8f85fa2ef95693a6c88048cf795624fe15539"
+        },
+        {
+          "path": "tool/art_assets/male_robe_v3/scout_robe_cuffs_male_v3.webp",
+          "sha256": "273c2bdc8ba2b71cc83621b65dd8f85fa2ef95693a6c88048cf795624fe15539"
+        }
+      ]
     }
   }
 }

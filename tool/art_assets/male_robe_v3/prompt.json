@@ -1,0 +1,8 @@
+{
+  "mode": "built_in_imagegen",
+  "skill": "imagegen",
+  "prompt": "Precise-object-edit for a game sprite: sharpen and finish these two brown leather robe cuff rims ONLY. Retain EXACT canvas aspect 3:2, exact object positions, widths, heights and outline shapes. These are depth-layer cuff facings, not complete sleeves: preserve their two arched openings and the small olive fabric above each leather band. Replace the blurred leather edge with a clean crisp continuous dark-brown narrow outline, a subtle sharply defined bevel highlight and clean finished corners. Keep the same warm medium brown leather and olive fabric, same painterly game-art style, restrained details readable at very small size. No stitches, buckles, ornaments, extra material, hands or body. Do NOT enlarge, move, crop, rotate, or complete the isolated pieces into full cuffs. Keep empty space empty and preserve transparent background. Exact same shapes and locations, just clearer sharper rim drawing, no fuzzy brushwork or ragged fragmented edges.",
+  "editTarget": "tool/art_assets/male_robe_v3/cuff_edit_target.png",
+  "output": "tool/art_assets/male_robe_v3/cuff_redraw_source.png",
+  "scope": "Sharper cuff rim color/detail only; original v2 alpha, geometry, registration and every non-cuff pixel retained."
+}
