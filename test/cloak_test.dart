@@ -95,6 +95,13 @@ void main() {
           expect(assets.any((a)=>a.contains('/classes/$archetype/')),isTrue);
         }
         expect(assets.where((a)=>a==QuestwellCloak.asset(slug)).length,2);
+        if (body == 'male') {
+          final primaryBody = find.byWidgetPredicate((widget) => widget is Image &&
+              widget.image is AssetImage &&
+              (widget.image as AssetImage).assetName == QuestwellMalePaperDoll.baseAsset).first;
+          expect(find.ancestor(of: primaryBody, matching: find.byType(ClipPath)), findsNothing,
+              reason: 'The primary locked body cannot be clipped to fit clothing');
+        }
         final fit=QuestwellCloak.bounds(body,slug);
         expect(fit.left,greaterThanOrEqualTo(0));expect(fit.right,lessThanOrEqualTo(240));
         expect(fit.bottom,lessThan(300),reason:'Hem clears the boots');

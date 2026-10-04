@@ -26,10 +26,13 @@ abstract final class QuestwellEquipmentPolicy {
   };
 
   // Body-specific renderer fits; the catalog still owns class/collection rules.
-  // Male art is isolated in development review until its production foundation
-  // migrates coherently; equipment must never switch the underlying body.
+  // Legacy chest availability is preserved on the locked v3 foundation.
+  static const legacyMaleChestFits = {
+    'starter-business-suit', 'midnight-harvest-coat',
+    'moss-green-cloak', 'hearthguard-mantle',
+  };
   static const bodyFits = <String, Set<String>>{
-    'everyday-adventurer-outfit': {'female', 'neutral'},
+    'everyday-adventurer-outfit': {'female', 'neutral', 'male'},
     'woodland-scout-outfit': {'female'},
   };
   static bool supportsBody(String slug, String body) =>

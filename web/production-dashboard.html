@@ -53,10 +53,10 @@
   </header>
 
   <section class="notice" aria-labelledby="decision-title">
-    <h2 id="decision-title">Tanya needed: temporary male outfit availability</h2>
-    <p><strong>The male robes are not yet integrated into the normal app.</strong> They are visible only on art-review routes. The previous delivery wording was too broad.</p>
-    <p>The prepared correction connects all five robes to the shared avatar renderer. To keep locked v3 unchanged through outfit changes, approve temporarily making the male Business Suit, Midnight Harvest Coat, Moss Green Cloak and Hearthguard Mantle unavailable for purchase/equip while their fits are rebuilt. Ownership remains intact; prices and other bodies stay unchanged.</p>
-    <p>These items are active and owned, so this restriction needs your product decision. None is currently equipped on a male profile. <a href="https://github.com/funszdidiot/questwell-app/pull/9">Draft PR #9</a> contains the correction, transition tests and unapplied SQL proposal. The alternative is to finish those four refits before rollout. No final artwork approval is requested.</p>
+    <h2 id="decision-title">Male robes and Everyday: deployment authorized</h2>
+    <p><strong>DEV DEPLOYING.</strong> Your instruction to push the male robes and Everyday outfit, followed by the decision to retain legacy availability, governs this combined update. All five class robes now use the shared normal-app renderer on locked male v3.</p>
+    <p>The database rollout is applied. Everyday purchase/equip and five-class persistence checks pass. The four legacy male chest items remain available on locked v3; ownership, prices, balances and other-body support are preserved.</p>
+    <p>No Tanya decision is needed for this rollout. The development build and delivered-screen checks are in progress. No new art lock or production launch is implied.</p>
   </section>
 
   <section class="flow" aria-labelledby="flow-title">
@@ -77,20 +77,20 @@
       <h2>Approved male outfit on its fixed body</h2>
       <p class="lock">Art lock: male v3 body and everyday v2 outfit remain founder-approved.</p>
       <p>All three delivered files match their locked hashes. Body Only ↔ Outfit and enlarged browser review passed on the same v3 foundation, followed by independent screenshot inspection.</p>
-      <p class="detail">This is the dedicated development review. Male account wardrobe rollout remains queued.</p>
+      <p class="detail">Historical fixed-body review verified. The authorized normal-app rollout is deploying below.</p>
     </article>
-    <article data-stage="BLOCKED">
-      <div class="meta"><span class="priority">PRIORITY 1 · APP INTEGRATION</span><span class="badge">BLOCKED</span></div>
-      <h2>Push the five male robes into the app</h2>
+    <article data-stage="DEV DEPLOYING">
+      <div class="meta"><span class="priority">PRIORITY 1 · APP INTEGRATION</span><span class="badge">DEV DEPLOYING</span></div>
+      <h2>Male robes and Everyday in the app</h2>
       <p class="lock">Body v3, Everyday v2 and historical robe v3 remain locked.</p>
-      <p>The normal app still selects legacy male robes. The shared-renderer correction is prepared in draft PR #9 with same-body equip, unequip, class-change and reconstruction checks.</p>
-      <p class="detail">Rollout awaits the temporary male-only legacy-fit restriction above. Database and app behavior remain unchanged. This work is not DEV DEPLOYED.</p>
+      <p>The shared renderer integrates all five male class robes, the exact Everyday v2 overlay and the concurrent legacy garment migration. The locked primary male body is never clipped to fit clothing. The full build gate is running.</p>
+      <p class="detail">Migration 20261004164110 is applied; purchase, equip/unequip, body/class changes and retained ownership pass deployed public-RPC checks. App deployment and actual delivered-screen verification are pending.</p>
     </article>
     <article data-stage="DEV DEPLOYED">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
       <h2>Approved neutral Everyday outfit and class robes verified</h2>
       <p class="lock">Art lock: neutral body v4, everyday v3 and robe v11 remain authoritative.</p>
-      <p>All five robes rendered. At phone width, Adventurer/Hearth equip and unequip restored the same neutral class robe; Market sample purchase, preview and equip worked. Unsupported male Everyday and neutral Woodland actions stayed disabled.</p>
+      <p>All five robes rendered. At phone width, Adventurer/Hearth equip and unequip restored the same neutral class robe; Market sample purchase, preview and equip worked. The earlier audit kept male Everyday disabled; the new authorized rollout enables it. Neutral Woodland remains unavailable.</p>
       <p class="detail">The scoped database migration is applied and public-RPC checks passed with zero retained fixtures or security findings. Browser checks used in-memory examples; real-user login and refresh persistence were not tested. Legacy chest migration is separate.</p>
     </article>
     <article data-stage="QA">
@@ -118,7 +118,7 @@
       <h2>Accepted male Scout robe: art review only</h2>
       <p class="lock">Art lock: male robe v3; your requested sharper cuff finish is complete.</p>
       <p>The exact four robe layers render over the unchanged male body and everyday outfit. All seven delivered files match their locked hashes. Body only, Outfit, Scout robe, enlargement and reload passed actual browser checks and independent delivered-image QA.</p>
-      <p class="detail">Verified runtime 31dfebe · 355 Flutter tests · 8 Node tests. Dedicated development review only; normal app integration is blocked on the product decision above.</p>
+      <p class="detail">Verified runtime 31dfebe · 355 Flutter tests · 8 Node tests. Dedicated development review only; normal app integration is now authorized and deploying above.</p>
     </article>
     <article data-stage="DEV DEPLOYED">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
@@ -153,7 +153,7 @@
   </section>
   <footer>
     <p>Governed by <code>docs/questwell-production/</code>. Artwork approval and technical integration are tracked separately.</p>
-    <p>Verified Woodland runtime: 0330c3b (367 Flutter tests, 8 Node tests, five delivered hashes and browser controls/grimoire/reload). Earlier repaired class runtime: 7cc9030 (363 Flutter tests, 8 Node tests, 28 delivered hashes and independent visual QA). Earlier neutral and Market verification: 4cfef7f and a4d3b794. Account wardrobe migration remains separate. Dashboard publishing build: <code>__QUESTWELL_BUILD__</code>. This snapshot does not indicate a background worker.</p>
+    <p>Verified Woodland runtime: 0330c3b (367 Flutter tests, 8 Node tests, five delivered hashes and browser controls/grimoire/reload). Earlier repaired class runtime: 7cc9030 (363 Flutter tests, 8 Node tests, 28 delivered hashes and independent visual QA). Earlier neutral and Market verification: 4cfef7f and a4d3b794. The authorized male account migration is applied; app delivery is in progress. Dashboard publishing build: <code>__QUESTWELL_BUILD__</code>. This snapshot does not indicate a background worker.</p>
   </footer>
 </main>
 </body>

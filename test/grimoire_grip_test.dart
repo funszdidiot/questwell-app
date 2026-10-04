@@ -64,8 +64,8 @@ void main() {
       expect(find.byType(QuestwellAnnotatedGrimoire), findsNothing);
       await tester.pumpWidget(scene({'hands': 'annotated-grimoire', 'chest': 'moss-green-cloak'}));
       await tester.pumpAndSettle();
-      expect(find.byType(QuestwellAnnotatedGrimoire), findsNothing,
-        reason: 'Existing cloak equipment conflict still applies');
+      expect(find.byType(QuestwellAnnotatedGrimoire), body == 'male' ? findsOneWidget : findsNothing,
+        reason: 'Only a supported closed cloak hides held equipment');
       expect(tester.takeException(), isNull);
     }
   });

@@ -272,6 +272,13 @@ void main() {
               expect(find.byType(QuestwellCleanBase), findsWidgets);
               expect(images, contains('assets/images/questwell/avatar/base/clean_${body}_v1.webp'));
             }
+            if (body == 'male') {
+              final primaryBody = find.byWidgetPredicate((widget) => widget is Image &&
+                  widget.image is AssetImage &&
+                  (widget.image as AssetImage).assetName == QuestwellMalePaperDoll.baseAsset).first;
+              expect(find.ancestor(of: primaryBody, matching: find.byType(ClipPath)), findsNothing,
+                  reason: 'The primary locked body cannot be clipped to fit clothing');
+            }
             expect(await render({}), baseline, reason:'Unequipping restores this class and body exactly');
           }
         }

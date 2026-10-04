@@ -26,9 +26,9 @@ void main(){
     }
     expect(QuestwellEquipmentPolicy.conflicts('starter-business-suit','chest','brass-lantern','hands'),isFalse);
   });
-  test('production eligibility keeps both male outfits gated until foundation migration', () {
+  test('production eligibility enables approved Everyday and keeps unaccepted Woodland gated', () {
     for (final body in ['female', 'neutral', 'male']) {
-      expect(QuestwellEquipmentPolicy.supportsBody('everyday-adventurer-outfit', body), body != 'male');
+      expect(QuestwellEquipmentPolicy.supportsBody('everyday-adventurer-outfit', body), isTrue);
       expect(QuestwellEquipmentPolicy.supportsBody('woodland-scout-outfit', body), body == 'female');
     }
     final woodland = items.firstWhere((item) => item.slug == 'woodland-scout-outfit');
@@ -60,6 +60,38 @@ void main(){
         expect(tester.widget<FilledButton>(button).onPressed,isNotNull);
       }
       expect(tester.takeException(),isNull);
+    }
+  });
+  testWidgets('owned legacy male chest items preserve availability and equip actions', (tester) async {
+    var actions = 0;
+    for (final slug in QuestwellEquipmentPolicy.legacyMaleChestFits) {
+      final outfit = QuestwellCosmetic.fromJson({
+        'id': 'review-$slug', 'slug': slug, 'name': slug, 'category': 'chest',
+        'rarity': 'common', 'description': 'Legacy fit', 'price': 0,
+        'premium': false, 'unlock_method': 'shop',
+      }, owned: true);
+      await tester.pumpWidget(MaterialApp(
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(disableAnimations: true), child: child!),
+        home: Scaffold(body: QuestwellMarketView(
+        key: ValueKey(slug),
+        data: QuestwellCosmeticsSnapshot(profile: const QuestwellProfile(
+          level: 4, totalXp: 355, coinBalance: 650, currentEnergyMode: 'normal',
+          onboardingCompleted: true, adventurerArchetype: 'scout', avatarBodyType: 'male'),
+          cosmetics: [outfit]),
+        onPurchase: (_) async { actions++; }, onEquip: (_) async { actions++; },
+        onUnequip: (_) async { actions++; }, onRefresh: () async {},
+      ))));
+      await tester.pumpAndSettle();
+      final action = find.widgetWithText(FilledButton, 'Equip');
+      await tester.dragUntilVisible(action, find.byType(ListView), const Offset(0, -180), maxIteration: 20);
+      expect(tester.widget<FilledButton>(action).onPressed, isNotNull);
+      expect(outfit.owned, isTrue);
+      final before = actions;
+      await tester.tap(action);
+      await tester.pumpAndSettle();
+      expect(actions, before + 1);
+      expect(tester.takeException(), isNull);
     }
   });
   testWidgets('neutral Everyday Market preview uses the approved fit and allows equip', (tester) async {
@@ -136,7 +168,7 @@ void main(){
   testWidgets('Market supports small screens, class filters and purchase confirmation',(tester)async{
     await tester.binding.setSurfaceSize(const Size(320,1000));addTearDown(()=>tester.binding.setSurfaceSize(null));
     var purchased=0;
-    final data=QuestwellCosmeticsSnapshot(profile:const QuestwellProfile(level:4,totalXp:355,coinBalance:650,currentEnergyMode:'normal',onboardingCompleted:true,adventurerArchetype:'scholar',avatarBodyType:'male'),cosmetics:items);
+    final data=QuestwellCosmeticsSnapshot(profile:const QuestwellProfile(level:4,totalXp:355,coinBalance:650,currentEnergyMode:'normal',onboardingCompleted:true,adventurerArchetype:'scholar',avatarBodyType:'female'),cosmetics:items);
     await tester.pumpWidget(MaterialApp(theme:ThemeData.dark(),home:Scaffold(body:MediaQuery(data:const MediaQueryData(disableAnimations:true,textScaler:TextScaler.linear(1.6)),child:QuestwellMarketView(data:data,onPurchase:(_)async{purchased++;},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{})))));
     await tester.pumpAndSettle();expect(tester.takeException(),isNull);
     final categories=find.byType(SingleChildScrollView);

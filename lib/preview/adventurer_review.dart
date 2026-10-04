@@ -89,7 +89,7 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
               description: 'Sample ownership. Try Equip and Unequip here.', owned: true, equipped: _loadout.satchel, classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'everyday', name: 'Everyday Adventurer Outfit',
               slug: 'everyday-adventurer-outfit', category: 'chest',
-              description: 'Sample ownership. Available for female and gender-neutral adventurers.',
+              description: 'Sample ownership. Available for every body and class.',
               owned: true, equipped: _loadout.otherEquipped.contains('everyday'),
               classLocked: false, shop: true),
             AdventurerInventoryItem(id: 'suit', name: 'Business Suit', slug: 'starter-business-suit', category: 'chest',

@@ -278,6 +278,8 @@ void main() {
         expect(tester.takeException(), isNull);
         expect(asset(QuestwellMalePaperDoll.baseAsset), findsWidgets);
         expect(find.byType(QuestwellCleanBase), findsNothing);
+        expect(find.ancestor(of: asset(QuestwellMalePaperDoll.baseAsset).first,
+          matching: find.byType(ClipPath)), findsNothing);
       }
       await render();
       final bounds = tester.getRect(asset(QuestwellMalePaperDoll.baseAsset));

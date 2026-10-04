@@ -41,7 +41,6 @@ class QuestwellMaleLegacyChestFoundation extends StatelessWidget {
           )
         else
           _layer(QuestwellMalePaperDoll.everydayAsset),
-        _layer(QuestwellMalePaperDoll.identityAsset),
       ],
     );
   }
