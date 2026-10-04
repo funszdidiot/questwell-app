@@ -1,0 +1,61 @@
+{
+  "revision": "31dfebe7e8907daf434de9cb95372bf9cce0706d",
+  "workflow": 37177492039,
+  "flutterTests": 355,
+  "nodeTests": 8,
+  "deliveredAssets": [
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v3.webp",
+      "sha256": "b5407144c8935687e01c8372d4873b5b9ac2bd79eeb39658f9138ed4ea420dcf",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v3.webp",
+      "sha256": "9f81903c78b8a4912ca31e553e0bbb990221152cba22417a0b79e006ade459a4",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_collar_male_v3.webp",
+      "sha256": "180e7987b3bcc88e0b394aa081de0475761429bab164a986fb55c90a0d8cf850",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/classes/scout/scout_robe_cuffs_male_v3.webp",
+      "sha256": "273c2bdc8ba2b71cc83621b65dd8f85fa2ef95693a6c88048cf795624fe15539",
+      "matched": true
+    }
+  ],
+  "runtimeReview": "PASS",
+  "reviewUrl": "https://funszdidiot.github.io/questwell-app/?review=male-robe",
+  "clothingTransitions": [
+    "Scout robe",
+    "Body only",
+    "Outfit",
+    "Scout robe"
+  ],
+  "enlargement": [
+    "keyboard Space PASS",
+    "direct pointer after reload PASS"
+  ],
+  "reload": "Scout robe default on unchanged foundation",
+  "independentDeliveredVisualQA": "PASS: male_robe_integration_review",
+  "screenshot": "docs/qa/male-robe-runtime-31dfebe.jpg",
+  "accountWrites": false,
+  "databaseChanges": false,
+  "phoneVerification": "Flutter widget tests at 320/390px; no physical mobile browser claim"
+}
