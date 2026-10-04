@@ -1,0 +1,67 @@
+{
+  "revision": "0330c3b57cf1d26e0979a072999c060af444b694",
+  "workflowRun": 37213357594,
+  "version": {
+    "revision": "0330c3b57cf1d26e0979a072999c060af444b694"
+  },
+  "assets": [
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "bytes": 38704,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "bytes": 8828,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "bytes": 27924,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v1.webp",
+      "sha256": "1c67cb83fec509a822adbdbfd61de9aac478466cadb87429e421c3ac40756728",
+      "bytes": 32114,
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell_annotated_grimoire_v1.webp",
+      "sha256": "c7d933a8adb7456b332409d76f05ff17bfaa6c70944179a54ddd20ed7c2fecc3",
+      "bytes": 47720,
+      "matches": true
+    }
+  ],
+  "runtimeInspection": {
+    "bodyOutfitRobeWoodlandTransitions": "PASS \u2014 actual browser controls and screenshots",
+    "classSwitch": "PASS \u2014 Scout to Scholar, then Woodland on the same male v3",
+    "grimoireOnOff": "PASS \u2014 unchanged book-only belt renderer; both hands clear",
+    "enlargedLightDark": "PASS \u2014 sleeves, shoulders, hips, crotch, seams, legs and complete soles inspected",
+    "reload": "PASS \u2014 direct route restored Woodland, Scout class, native size, accessory off",
+    "marketMaleScout": "PASS \u2014 catalog card and modal disable Fit unavailable; modal explicitly labels Female fit preview",
+    "fiveMaleRobeGallery": "PASS \u2014 all five existing variants visible on the same foundation",
+    "applicationConsoleErrors": "None observed; browser-extension metadata errors excluded",
+    "phoneWidths": "320 and 390 via Flutter widget tests; browser inspection at 1363px, not physical iOS/Safari",
+    "accountPersistence": "No account writes or real-user saved-loadout verification in this candidate review; account capability remains gated"
+  },
+  "productionStatus": "DEV DEPLOYED",
+  "artStatus": "candidate_not_founder_locked",
+  "workflowConclusion": "success",
+  "flutterTests": 367,
+  "nodeTests": 8,
+  "analyzer": "passed_required_gate",
+  "build": "passed",
+  "deploy": "passed",
+  "reviewUrl": "https://funszdidiot.github.io/questwell-app/?review=male-woodland&rev=0330c3b",
+  "screenshots": [
+    "docs/qa/questwell-male-woodland-runtime-0330c3b.jpg",
+    "docs/qa/questwell-male-woodland-enlarged-0330c3b.jpg",
+    "docs/qa/questwell-male-woodland-grimoire-0330c3b.jpg",
+    "docs/qa/questwell-woodland-male-eligibility-0330c3b.jpg",
+    "docs/qa/questwell-male-robes-regression-0330c3b.jpg"
+  ]
+}

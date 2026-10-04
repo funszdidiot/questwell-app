@@ -1,6 +1,6 @@
 # Male Woodland Scout v1 integration evidence
 
-Current production stage: **QA**. Art status: **candidate, not founder-locked**.
+Current production stage: **DEV DEPLOYED** at `0330c3b57cf1d26e0979a072999c060af444b694` (workflow `37213357594`). Art status: **candidate, not founder-locked**.
 
 ## Verified before deployment
 
@@ -19,9 +19,17 @@ The route uses local review state and no account, catalog, persistence or authen
 
 Neutral v2 received an independent source/export audit under `tool/qa/neutral_woodland_audit_20261004/`. It remains QA with small right-hand intrusion and inner-heel opacity repairs outstanding. No neutral asset was changed or accepted in this delivery.
 
-## Delivery checks still pending
+## Delivered verification
 
-Exact CI revision and full Flutter count, development version stamp, delivered asset hashes, live controls/reload, independent delivered screenshot QA and founder dashboard publishing verification must pass before DEV DEPLOYED is recorded.
+Workflow `37213357594` passed all **367 Flutter tests, 8 Node tests**, the asset-integrity gate, analyzer, release web build and development deployment. The delivered `questwell-version.json` identifies `0330c3b57cf1d26e0979a072999c060af444b694`. All five fetched runtime assets (body, identity, Everyday, Woodland and belt book) match repository SHA-256 values.
+
+Actual browser controls passed Body only → Everyday → Scout robe → Scholar robe → Woodland, grimoire on/off, enlarged light/dark views and route reload. Native and enlarged screenshots were inspected by the continuation reviewer against the unchanged independently reviewed export. Shoulders, rolled sleeves, exposed hands, waist/hips, crotch, inner legs, trouser seams and correct boot/heel/sole coverage show no blocking defect. The original independent export PASS remains attached to the exact unchanged candidate hash. This is technical/visual QA, not Tanya's approval.
+
+The delivered 390px sample Market shows the Woodland card and explicitly labelled **Female fit preview**, both with **Fit unavailable** for a male Scout. The full regression suite verifies inventory/catalog routes, Scout-only collection metadata, female-only account support, retirement of Pathfinder boots, retained ownership and protected unsupported-equipment behavior. No catalog, backend policy, economy, saved loadout or account writes changed. This proves the candidate/account boundary; it does not complete the queued male account wardrobe migration.
+
+The existing all-five male robe gallery also rendered correctly. Historical v3, sixteen class layers and all five requested thumb repairs pass their preservation checks. No robe was regenerated, no historical lock was reopened, and no repair was promoted to a newly locked template.
+
+Evidence: `tool/qa/male_woodland_v1_delivery.json` and the five `docs/qa/*0330c3b.jpg` captures. Review: https://funszdidiot.github.io/questwell-app/?review=male-woodland&rev=0330c3b . Phone-width evidence is from widget tests at 320 and 390 pixels; this is not physical iOS/Safari validation. Real-user saved-loadout restoration was not exercised because male account rollout remains queued.
 
 ## October 4 continuation reconciliation
 
