@@ -1,6 +1,30 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
+class QuestwellWovenRug extends StatelessWidget {
+  const QuestwellWovenRug({super.key, required this.emerald});
+  final bool emerald;
+  static const emeraldAsset =
+      'assets/images/questwell/hearth/emerald_wayfarer_rug_v2.webp';
+
+  @override
+  Widget build(BuildContext context) => emerald
+      ? IgnorePointer(
+          child: Image.asset(
+            emeraldAsset,
+            fit: BoxFit.fill,
+            filterQuality: FilterQuality.high,
+            gaplessPlayback: true,
+            excludeFromSemantics: true,
+          ),
+        )
+      : IgnorePointer(
+          child: CustomPaint(
+            painter: const QuestwellWovenRugPainter(),
+          ),
+        );
+}
+
 /// Shares the accepted Hearth rug's floor perspective and woven construction.
 class QuestwellWovenRugPainter extends CustomPainter {
   const QuestwellWovenRugPainter({this.emerald = false});
