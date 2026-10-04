@@ -1111,11 +1111,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               ),
               Positioned.fill(
                 key: const ValueKey('hearth-woven-rug'),
-                child: IgnorePointer(
-                  child: CustomPaint(
-                    painter: QuestwellWovenRugPainter(
-                      emerald: equippedSlugs['room:floor'] == QuestwellWovenRugPainter.slug),
-                  ),
+                child: QuestwellWovenRug(
+                  emerald: equippedSlugs['room:floor'] == QuestwellWovenRugPainter.slug,
                 ),
               ),
               Positioned.fill(
