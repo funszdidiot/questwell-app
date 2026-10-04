@@ -1,5 +1,6 @@
 import 'preview/neutral_scout_review.dart';
 import 'preview/male_everyday_review.dart';
+import 'preview/male_class_robes_review.dart';
 import 'preview/neutral_robes_review.dart';
 import 'preview/neutral_paper_doll_review.dart';
 import 'preview/scout_wardrobe_review.dart';
@@ -34,9 +35,15 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'male-robe') {
+  if (Uri.base.queryParameters['review'] == 'male-robes') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(const MaleEverydayReviewApp(initialRobe: true));
+    runApp(const MaleClassRobesReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'male-robe') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(MaleEverydayReviewApp(
+      initialRobe: true,
+      initialArchetype: Uri.base.queryParameters['class'] ?? 'scout',
+    ));
   } else if (Uri.base.queryParameters['review'] == 'male-everyday') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const MaleEverydayReviewApp());

@@ -6,9 +6,12 @@ import '../widgets/questwell_male_paper_doll.dart';
 
 /// Isolated fit review: no account, catalog, class defaults or equipment writes.
 class MaleEverydayReviewApp extends StatefulWidget {
-  const MaleEverydayReviewApp({super.key, this.initialRobe = false});
+  const MaleEverydayReviewApp({
+    super.key, this.initialRobe = false, this.initialArchetype = 'scout',
+  });
 
   final bool initialRobe;
+  final String initialArchetype;
 
   @override
   State<MaleEverydayReviewApp> createState() => _MaleEverydayReviewAppState();
@@ -18,6 +21,10 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
   bool _showEveryday = true;
   bool _enlarged = false;
   late bool _showRobe = widget.initialRobe;
+  late String _robeClass = QuestwellMalePaperDoll.classLabels
+          .containsKey(widget.initialArchetype)
+      ? widget.initialArchetype : 'scout';
+  String get _robeLabel => '${QuestwellMalePaperDoll.classLabels[_robeClass]} robe';
 
   Widget _preview(String label, Color background, double availableWidth) {
     final canvasWidth = _enlarged ? 480.0 : 240.0;
@@ -42,10 +49,11 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                   width: canvasWidth,
                   height: canvasWidth * 320 / 240,
                   child: Semantics(
-                    label: '$label: ${_showRobe ? 'Scout robe' : _showEveryday ? 'Everyday outfit' : 'Locked body'}',
+                    label: '$label: ${_showRobe ? _robeLabel : _showEveryday ? 'Everyday outfit' : 'Locked body'}',
                     image: true,
                     child: QuestwellMalePaperDoll(
                       showEveryday: _showEveryday, showRobe: _showRobe,
+                      robeArchetype: _robeClass,
                     ),
                   ),
                 ),
@@ -79,7 +87,7 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                       ),
                       const SizedBox(height: 10),
                       const Text(
-                        'Approved everyday outfit and Scout robe on the same fixed body.',
+                        'Class robes on the same locked body and everyday outfit.',
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
@@ -111,7 +119,7 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                             }),
                           ),
                           ChoiceChip(
-                            label: const Text('Scout robe'),
+                            label: const Text('Robe'),
                             selected: _showRobe,
                             onSelected: (_) => setState(() {
                               _showEveryday = true;
@@ -125,6 +133,23 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                           ),
                         ],
                       ),
+                      ...[
+                        const SizedBox(height: 16),
+                        SizedBox(
+                          width: 260,
+                          child: DropdownButtonFormField<String>(
+                            initialValue: _robeClass,
+                            decoration: const InputDecoration(labelText: 'Robe class'),
+                            items: [
+                              for (final entry in QuestwellMalePaperDoll.classLabels.entries)
+                                DropdownMenuItem(value: entry.key, child: Text(entry.value)),
+                            ],
+                            onChanged: (value) {
+                              if (value != null) setState(() => _robeClass = value);
+                            },
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 12),
                       Text(
                         _enlarged

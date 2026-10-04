@@ -60,12 +60,12 @@ void main() {
       final bodyImage = find.image(const AssetImage(body));
       final bodyBounds = tester.getRect(bodyImage.first);
       expect(layers(), robe);
-      for (final state in ['Body only', 'Outfit', 'Scout robe']) {
+      for (final state in ['Body only', 'Outfit', 'Robe']) {
         await tester.tap(find.widgetWithText(ChoiceChip, state));
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
         expect(tester.getRect(bodyImage.first), bodyBounds);
-        expect(layers(), state == 'Scout robe'
+        expect(layers(), state == 'Robe'
             ? robe : state == 'Outfit' ? [body, outfit, identity] : [body]);
       }
       await tester.tap(find.widgetWithText(FilterChip, 'Enlarged view'));

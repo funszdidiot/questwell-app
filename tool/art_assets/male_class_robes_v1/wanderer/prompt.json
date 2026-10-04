@@ -1,0 +1,8 @@
+{
+  "usecase": "precise-object-edit",
+  "mode": "built-in-imagegen",
+  "prompt": "Use case: precise-object-edit. Asset type: Questwell male paper-doll wanderer class robe surface. Image 1 is the ONLY edit target, the locked male Scout robe cloth on a square transparent canvas. Image 2 is COLOR AND ORNAMENT reference only. Edit image 1: Tobacco brown cloth, darker brown rear lining, warm copper-gold trim and cuff bands, muted ochre details. Remove ALL Scout leaf/vine/flax embroidery; keep cloth mostly plain. Restrained small compass/star motifs on the upper sleeves and near each lower front panel, with discreet brass fastener details at waist, matching image 2. Preserve image 1's exact square canvas, margins, placement, scale, every outside contour, straight waist and hips, shoulders, neckline opening, sleeve folds, complete sharp curved cuff rims and openings, front opening, natural skirt drape, rear hem, cloth shading and all seam positions. Preserve width of all trim. Surface decoration only. No tailoring or silhouette from image 2; no new pockets, lapels, inner flaps or garment pieces. No body, hands, head, footwear or accessories. Same polished illustrated RPG asset style and lighting. Actual transparent background, no ground shadow, text or watermark. Output the complete recolored target in exactly the same square composition.",
+  "editTarget": "../references/male_locked_cloth.png",
+  "colorAndMotifReference": "../../neutral_class_robes_v1/references/wanderer_female_surface.png",
+  "transparentBackground": true
+}

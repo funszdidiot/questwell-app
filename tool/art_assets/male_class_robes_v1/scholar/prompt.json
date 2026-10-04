@@ -1,0 +1,8 @@
+{
+  "usecase": "precise-object-edit",
+  "mode": "built-in-imagegen",
+  "prompt": "Use case: precise-object-edit. Asset type: Questwell male paper-doll scholar class robe surface. Image 1 is the ONLY edit target, the locked male Scout robe cloth on a square transparent canvas. Image 2 is COLOR AND ORNAMENT reference only. Edit image 1: Deep navy/plum-blue cloth and darker navy lining, antique gold trim and cuff bands. Replace every Scout leaf/vine/flax motif with restrained gold linked diamonds in the two existing vertical front embroidered lanes. Match image 2's Scholar surface language. Preserve image 1's exact square canvas, margins, placement, scale, every outside contour, straight waist and hips, shoulders, neckline opening, sleeve folds, complete sharp curved cuff rims and openings, front opening, natural skirt drape, rear hem, cloth shading and all seam positions. Preserve width of all trim. Surface decoration only. No tailoring or silhouette from image 2; no new pockets, lapels, inner flaps or garment pieces. No body, hands, head, footwear or accessories. Same polished illustrated RPG asset style and lighting. Actual transparent background, no ground shadow, text or watermark. Output the complete recolored target in exactly the same square composition.",
+  "editTarget": "../references/male_locked_cloth.png",
+  "colorAndMotifReference": "../../neutral_class_robes_v1/references/scholar_female_surface.png",
+  "transparentBackground": true
+}

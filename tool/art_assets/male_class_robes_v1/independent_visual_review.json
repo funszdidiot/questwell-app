@@ -1,0 +1,18 @@
+{
+  "status": "independent_export_visual_qa_passed",
+  "reviewer": "male_robe_integration_review",
+  "classes": [
+    "scholar",
+    "alchemist",
+    "guardian",
+    "wanderer"
+  ],
+  "scope": "Sources, native composites, full light/dark and enlarged hand/collar views; file/alpha preservation independently checked. Delivered runtime pending.",
+  "findings": "Class motifs read continuously; cuff rims, complete hands, collar joins, straight hips and rear drape match locked geometry. No torn/jagged surface registration defect.",
+  "all16LayerHashesChecked": true,
+  "all16AlphaMasksExact": true,
+  "bodyIdentityEverydayUnchanged": true,
+  "founderSurfaceApprovalClaimed": false,
+  "runtimeTested": false,
+  "exportsSha256": "b5cac4e60daa5054363405b32d64b93e4cc502fcdf9b59b416988a982dec7193"
+}
