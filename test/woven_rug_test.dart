@@ -89,6 +89,48 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+
+  testWidgets('64-bit Issue 6 assets use v3 art and preserve the approved floor footprint', (tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: Center(
+        child: SizedBox(
+          width: 320,
+          height: 400,
+          child: QuestwellWovenRug(emerald: true),
+        ),
+      ),
+    ));
+    await tester.pump();
+
+    expect(QuestwellWovenRug.emeraldAsset,
+      'assets/images/questwell/hearth/emerald_wayfarer_rug_v3_64bit.webp');
+    final imageFinder = find.byWidgetPredicate((widget) => widget is Image &&
+      widget.image is AssetImage &&
+      (widget.image as AssetImage).assetName == QuestwellWovenRug.emeraldAsset);
+    expect(imageFinder, findsOneWidget);
+    final image = tester.widget<Image>(imageFinder);
+    expect(image.filterQuality, FilterQuality.none);
+
+    final rect = tester.getRect(imageFinder);
+    final root = tester.getRect(find.byType(QuestwellWovenRug));
+    expect(rect.left - root.left, closeTo(320 * .22, .5));
+    expect(rect.top - root.top, closeTo(400 * .69, .5));
+    expect(rect.width, closeTo(320 * .56, .5));
+    expect(rect.height, closeTo(400 * .26, .5));
+
+    await tester.pumpWidget(const MaterialApp(
+      home: SizedBox(width: 180, height: 300, child: QuestwellWardingLantern()),
+    ));
+    await tester.pump();
+    expect(QuestwellWardingLantern.asset,
+      'assets/images/questwell/hearth/warding_lantern_v3_64bit.webp');
+    final lanternImage = tester.widget<Image>(find.byWidgetPredicate((widget) =>
+      widget is Image &&
+      widget.image is AssetImage &&
+      (widget.image as AssetImage).assetName == QuestwellWardingLantern.asset));
+    expect(lanternImage.filterQuality, FilterQuality.none);
+  });
+
   testWidgets('Rug placement saves the floor slot on a small enlarged-text screen', (tester) async {
     await tester.binding.setSurfaceSize(const Size(320, 700));
     addTearDown(() => tester.binding.setSurfaceSize(null));
