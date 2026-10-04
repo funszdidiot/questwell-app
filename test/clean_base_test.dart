@@ -14,7 +14,6 @@ import 'package:flutter_test/flutter_test.dart';
 import '../lib/widgets/questwell_clean_base.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 import '../lib/widgets/questwell_male_paper_doll.dart';
-import '../lib/widgets/questwell_male_legacy_chest.dart';
 import '../lib/widgets/questwell_legacy_chest.dart';
 
 void main() {
