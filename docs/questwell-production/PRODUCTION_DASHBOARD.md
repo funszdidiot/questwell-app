@@ -2,10 +2,13 @@
 
 ## Active garment correction — 2026-10-05 America/Chicago
 
-**Coat cuffs: QA — founder correction.** Tanya accepted cloak/mantle v4 and
+**Coat cuffs: DEV DEPLOYED — founder correction.** Tanya accepted cloak/mantle v4 and
 reported disconnected wrist joins on all three coats. Preserve accepted cloth.
-Correcting original-hand foreground depth at the cuff openings; no body or art
-bytes change. Earlier all-nine QA is superseded for coat wrists. No founder blocker.
+Corrected original-hand foreground depth at the cuff openings; no body or art
+bytes changed. Runtime `dc3e464`, workflow `37314935274`: 386 Flutter + 8 Node
+tests and full build/deploy passed; 31 delivered hashes match. Actual three-body
+avatar/Hearth, wear/remove/restoration and independent delivered visual QA passed.
+Earlier all-nine QA is superseded for coat wrists. No founder blocker or new lock.
 
 **DEV DEPLOYED.** Tanya requested narrower male coat elbows, wrapping wider cuffs,
 no cloak/mantle inner flaps, proper rear layers and natural shoulder drape. She

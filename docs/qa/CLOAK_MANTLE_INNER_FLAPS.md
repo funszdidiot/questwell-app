@@ -5,11 +5,17 @@
 2026-10-05: Tanya accepted the cloak and mantle appearance but rejected wrist
 connections on all three coats. This supersedes the earlier all-nine visual
 pass for the coat cuffs. Cloak/mantle v4 artwork and registration are preserved.
-Coat cuff repair: **QA**. The original-hand foreground contour began below the
+Coat cuff repair: **DEV DEPLOYED** at `dc3e46473d5cd8d9f055ee0bde9393ff3192f0a3`,
+workflow `37314935274`: 386 Flutter + 8 Node tests, analysis/assets/build/deploy
+passed. All 31 delivered hashes match. Actual all-three shared-avatar and Hearth
+views, wear/remove/restoration and independent delivered visual review passed.
+Evidence: `coat-wrists-hearth-live.jpg`. Cloak/mantle and all other artwork bytes
+remain unchanged. No new founder lock. The original-hand foreground contour began below the
 cuff, exposing disconnected wrist tabs and a square hand cutoff. Extend that
 duplicate original-pixel contour to inside each cuff opening (female y169,
 male/neutral y175); do not change any body or garment bytes. Export composites
-and actual renderer use matching boundaries. Full CI and runtime checks follow.
+and actual renderer use matching boundaries. Female y168 was rejected during QA
+because it erased the thin cuff lip; y169 preserves it with continuous wrists.
 
 Status: **DEV DEPLOYED** — 2026-10-05. Runtime `e46a42bf8c14debd2ad338c12228f16da39f46ca`, workflow `37312732888` passed analysis, 386 Flutter tests, 8 Node tests, asset verification, build and deployment. Analyzer retains 45 nonfatal baseline findings.
 
