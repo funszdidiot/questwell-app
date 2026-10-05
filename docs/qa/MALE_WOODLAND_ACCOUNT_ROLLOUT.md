@@ -1,6 +1,6 @@
 # Approved male Woodland account integration
 
-Status: **QA — implementation prepared; CI verification pending.**
+Status: **QA complete; live account rollout BLOCKED by the existing G3 deployment hold.**
 Art: **LOCKED**, founder approval “It’s good”, 2026-10-05 America/Chicago.
 The subsequent “Keep going” continues the inventory/equip integration.
 No asset bytes or locked fit geometry change.
@@ -57,7 +57,35 @@ Auth sessions test all three fits, concurrent purchase retries, fresh-login
 persistence, chest exclusivity, class/body transitions, rejection paths and RLS.
 No real users, linked database, production keys or live account writes are used.
 
-CI results and delivered runtime evidence will be recorded here after completion.
+Green implementation head: `2ff805685ed4e3a2858a78624449f738c4849b1a`,
+[PR #22](https://github.com/funszdidiot/questwell-app/pull/22).
+
+- [Flutter workflow 37353366514](https://github.com/funszdidiot/questwell-app/actions/runs/37353366514),
+  job `111909498719`: **SUCCESS**, all **390 Flutter tests**, 12 preview Node
+  checks, asset and locked-dependency checks, analyzer gate and release web build.
+  The gate retains its existing 46 analyzer warnings/infos and generated counter
+  placeholder exclusion; this is not a zero-warning claim. Both pixel comparison
+  tests pass, covering eight native/enlarged/background/grimoire compositions.
+- [Backend workflow 37353366576](https://github.com/funszdidiot/questwell-app/actions/runs/37353366576),
+  job `111909647238`: **SUCCESS**, 19 Node guards/catalog checks, 10 fixture checks,
+  4 app-smoke checks, 20 task-reward regressions, 2 forced rollback checks and all
+  **8 Woodland Auth/RPC/persistence checks**. SQL fit assertions and exact catalog
+  comparison pass; post-migration SQL lint reports no schema errors. The isolated
+  stack and all synthetic users/data were disposed.
+- Initial run `37352836043` stopped on the CLI's single prepared-statement rule;
+  the fixture is now one atomic `DO` block. Initial pixel captures did not await
+  image decoding; explicit precaching fixes the test setup without changing the
+  renderer or relaxing pixel equality. Both corrections passed the runs above.
+- Read-only live check on 2026-10-05 confirms male Woodland support is still
+  `false`; Woodland remains active at 120 coins, Scout-only, standard shop edition.
+  No live account or schema writes occurred.
+- The separate approval record #21 is merged and its dashboard is delivered at
+  `08c925141f4dcc2f24711efcde65336b6a1e7173`, preview workflow `37352574164`.
+  The fetched version stamp and founder-approval dashboard text match. This is
+  approval-record delivery, not delivery of the account integration in #22.
+
+The source/rendering and isolated account contract are verified. Actual delivered
+account runtime and physical-device QA remain behind the gate below.
 
 ## Deployment gate
 

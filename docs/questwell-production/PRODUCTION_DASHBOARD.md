@@ -2,13 +2,14 @@
 
 ## Male Woodland account integration — 2026-10-05
 
-**QA; live rollout BLOCKED by the existing G3 database deployment hold.**
+**QA complete; live rollout BLOCKED by the existing G3 database deployment hold.**
 The approved male v2 fit is wired into the proposed shared renderer, Market and
 inventory eligibility. The forward migration preserves the 120-coin Scout-only
-contract and all existing ownership. Asset checks and 31 Node tests pass; full
-Flutter and isolated Auth/RPC/persistence checks are pending CI. No live account
-capability or artwork change is claimed. See `../qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md`.
-Next: complete CI; deploy only after the separately reviewed forward-migration
+contract and all existing ownership. At `2ff8056`, 390 Flutter tests, 31 Node checks,
+release build and all 8 Woodland Auth/RPC/persistence scenarios pass. Shared pixels
+match the approved review. No live account capability or artwork change is claimed.
+See `../qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md` and draft PR #22.
+Next: deploy only after the separately reviewed forward-migration
 path resolves `supabase/README.md`'s hold. Existing art approval remains LOCKED.
 
 ## Male Woodland sleeve and size correction — 2026-10-05
