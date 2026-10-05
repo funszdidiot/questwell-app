@@ -205,6 +205,47 @@
         "runtime": "not_run",
         "visual": "not_run"
       }
+    },
+    {
+      "slug": "fixture-solstice-scholar-robe",
+      "name": "Fixture Solstice Scholar Robe",
+      "category": "outfit",
+      "rarity": "rare",
+      "description": "Fictional wearable candidate using the locked scholar robe body assets to prove body-specific seasonal review.",
+      "price": null,
+      "premium": false,
+      "required_archetype": "scholar",
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "scholar_robe",
+      "asset_state": "candidate",
+      "hearth": null,
+      "wearable": {
+        "template_id": "scholar-robe-locked",
+        "supported_bodies": [
+          "female",
+          "neutral",
+          "male"
+        ],
+        "fit_reference": "Locked scholar robe body-specific template",
+        "render_mode": "full_canvas_overlay",
+        "assets_by_body": {
+          "female": "assets/images/questwell/avatar/classes/scholar/scholar_robe_female_polish_v2.webp",
+          "neutral": "assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_polish_v2.webp",
+          "male": "assets/images/questwell/avatar/classes/scholar/scholar_robe_male_polish_v2.webp"
+        }
+      },
+      "provenance": {
+        "source": "Questwell review fixture",
+        "version": 1,
+        "method": "locked-template derivative proof",
+        "source_art_ref": "scholar-robe-locked-reference"
+      },
+      "qa": {
+        "preflight": "pass",
+        "runtime": "not_run",
+        "visual": "not_run"
+      }
     }
   ]
 }
