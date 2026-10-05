@@ -5,6 +5,11 @@ Art: **LOCKED**, founder approval “It’s good”, 2026-10-05 America/Chicago.
 The subsequent “Keep going” continues the inventory/equip integration.
 No asset bytes or locked fit geometry change.
 
+Tanya's subsequent “Next” authorizes work on the scoped database deployment
+step. Its forward-only CI path is being validated in
+[`MALE_WOODLAND_FORWARD_DEPLOYMENT.md`](MALE_WOODLAND_FORWARD_DEPLOYMENT.md).
+The broader history hold and client gate remain until that operation is verified.
+
 ## Behavior and API contract
 
 Woodland is the existing `woodland-scout-outfit` chest cosmetic: 120 coins,

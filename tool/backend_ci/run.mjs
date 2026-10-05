@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {assertDisposableCi, assertLocalStatus} from './guard.mjs';
 import {smoke} from './smoke.mjs';
 import {assertCatalogMatches} from './catalog.mjs';
+import {exerciseWoodlandForward} from './woodland-forward.mjs';
 
 assertDisposableCi(process.env);
 if (process.argv.includes('--preflight')) {
@@ -36,6 +37,14 @@ function run(args, timeout = 120000) {
   }
   if (args[0] === 'db' && ['lint', 'advisors'].includes(args[1]) && result.stderr) console.log(redact(result.stderr));
   return result.stdout;
+}
+function expectSqlFailure(file, expectedMessage) {
+  const result = spawnSync(cli,['db','query','--local','--file',file,'--workdir',workdir,'--agent','no'],{
+    env,encoding:'utf8',timeout:120000,maxBuffer:1024*1024,
+  });
+  assert.ok(result.status!==null && result.status!==0,'Negative SQL control unexpectedly succeeded or timed out');
+  assert.ok(((result.stderr||'')+(result.stdout||'')).includes(expectedMessage),
+    `Negative SQL control did not reach the expected assertion: ${expectedMessage}`);
 }
 const version = run(['--version']).trim();
 if (version !== '2.119.0') throw new Error(`Unexpected Supabase CLI version: ${version}`);
@@ -106,6 +115,21 @@ try {
     if (app.stderr) console.error(redact(app.stderr));
     throw new Error(`Application smoke failed: exit ${app.status}, ${app.error?.code || 'test error'}`);
   }
+  const runWoodlandAccounts = () => {
+    const accounts = spawnSync(process.execPath,[join(source,'woodland.mjs')],{
+      input:JSON.stringify(status),env,encoding:'utf8',timeout:120000,maxBuffer:1024*1024,
+    });
+    if (accounts.stdout) console.log(redact(accounts.stdout));
+    if (accounts.stderr) console.error(redact(accounts.stderr));
+    if (accounts.status!==0) throw new Error('Woodland account integration failed');
+  };
+  // This live rollout cannot depend on the separately gated, unapplied R01 fix.
+  exerciseWoodlandForward({source,workdir,run,expectSqlFailure,runAccountChecks:runWoodlandAccounts});
+  // Reset only this new runner-local stack to test the other independent path.
+  // The workdir currently contains just the observed baseline migration.
+  run(['db','reset','--local','--no-seed'],5*60*1000);
+  assertCatalogMatches(expected,readCatalog());
+  console.log('Disposed forward-migration fixtures and restored the isolated observed baseline.');
   // Apply exactly the reviewed proposal AFTER proving the observed baseline.
   // Never replay the incomplete root chain or contact a linked/remote project.
   const rewardMigration = '20261005165421_task_reward_authority.sql';
@@ -157,13 +181,7 @@ try {
   run(['db', 'query', '--local', '--file', join(source, 'woodland-contract.sql')]);
   console.log('Woodland fit contract passed; all other schema/ACL/RLS/API definitions unchanged.');
   console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
-  const woodlandTests = spawnSync(process.execPath, [join(source, 'woodland.mjs')], {
-    input: JSON.stringify(status), env, encoding: 'utf8', timeout: 120000,
-    maxBuffer: 1024 * 1024,
-  });
-  if (woodlandTests.stdout) console.log(redact(woodlandTests.stdout));
-  if (woodlandTests.stderr) console.error(redact(woodlandTests.stderr));
-  if (woodlandTests.status !== 0) throw new Error('Woodland account integration failed');
+  runWoodlandAccounts();
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   if (attemptedStart) {

@@ -1,0 +1,49 @@
+name: Reviewed Woodland forward migration
+
+on:
+  pull_request:
+    branches: [questwell-dev]
+  push:
+    branches: [deploy/male-woodland-approved]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: questwell-reviewed-woodland-forward
+  cancel-in-progress: false
+
+jobs:
+  guards:
+    name: Woodland deployment guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout without stored credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Validate the exact source and failure paths without credentials
+        run: |
+          node --test tool/qa/woodland_forward_test.mjs
+          node tool/deploy/male-woodland.mjs --check
+
+  apply:
+    name: Apply only the reviewed male Woodland fit
+    if: github.event_name == 'push' && github.ref == 'refs/heads/deploy/male-woodland-approved'
+    needs: guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      checks: read
+    steps:
+      - name: Checkout the reviewed revision without stored credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Apply the one hash-locked migration and verify its recorded result
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          QUESTWELL_WOODLAND_MIGRATION_TOKEN: ${{ secrets.QUESTWELL_WOODLAND_MIGRATION_TOKEN }}
+        run: node tool/deploy/male-woodland.mjs

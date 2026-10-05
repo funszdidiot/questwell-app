@@ -67,3 +67,10 @@ forward migration. QA: `docs/qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md`. Preserve the
 G3 live-database deployment hold in `supabase/README.md`; do not publish enabled
 client capability against the still-gated live backend. Art remains LOCKED;
 isolated CI readiness and delivered account support must be reported separately.
+
+Tanya's subsequent “Next” authorizes the scoped database deployment step requested
+at that handoff. Use only the reviewed male Woodland forward CI path documented
+in `docs/qa/MALE_WOODLAND_FORWARD_DEPLOYMENT.md`. Preserve existing history and
+stop on drift; this does not authorize replay/repair, other pending migrations,
+new credentials or `flutterflow` promotion. Keep client integration gated until
+the database result is verified. The broader G3 history hold remains in force.

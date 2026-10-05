@@ -1,0 +1,32 @@
+{
+  "records": [],
+  "fit_sha256": "4daa444602ab5485b00b153070d8cc613ad47dfbfaaa2525a57c8c6719c32637",
+  "woodland_rows": [
+    {
+      "id": "a406a85a-dcab-4e5f-bbcd-d71366c536a7",
+      "name": "Woodland Scout Outfit",
+      "slug": "woodland-scout-outfit",
+      "price": 120,
+      "active": true,
+      "rarity": "uncommon",
+      "premium": false,
+      "category": "chest",
+      "asset_key": "chest_woodland_scout_outfit",
+      "created_at": "2026-10-03T06:18:42.444398+00:00",
+      "description": "Moss leather, an ivory rolled-sleeve shirt, reinforced trousers and travel boots. Available for female and neutral Scout avatars.",
+      "edition_type": "standard",
+      "unlock_method": "shop",
+      "collection_key": "woodland-scout",
+      "milestone_level": null,
+      "availability_end": null,
+      "availability_start": null,
+      "hearth_profile_key": null,
+      "required_archetype": "scout"
+    }
+  ],
+  "prior_history_count": 48,
+  "prior_history_sha256": "ca00a6cb9cb88eefd8f021fbec92202c437bdaab7855bd6e1079d71aeeca18f0",
+  "protected_schema_sha256": "28d71701fd3d05ae5308625fdc1207e45a14a4c34831b2f5e31a3ba1fdf3a366",
+  "source_sha256": "55f21d28dd1ad427de09ab87327d96e61e767be53bd727b7ffdc9ab5c9c249cb",
+  "after_fit_sha256": "e5670399e6be734b0ead64a49681bbc5ef4cca67a986be2dfd2f7205e06e9d10"
+}

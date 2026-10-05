@@ -9,8 +9,10 @@ contract and all existing ownership. At `2ff8056`, 390 Flutter tests, 31 Node ch
 release build and all 8 Woodland Auth/RPC/persistence scenarios pass. Shared pixels
 match the approved review. No live account capability or artwork change is claimed.
 See `../qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md` and draft PR #22.
-Next: deploy only after the separately reviewed forward-migration
-path resolves `supabase/README.md`'s hold. Existing art approval remains LOCKED.
+Tanya's “Next” authorizes the scoped database step. Its guarded forward-only CI
+path is BUILDING and undergoing failure/rollback tests; see
+`../qa/MALE_WOODLAND_FORWARD_DEPLOYMENT.md`. The enabled client remains unmerged
+until that operation succeeds. Existing art approval remains LOCKED.
 
 ## Male Woodland sleeve and size correction — 2026-10-05
 
