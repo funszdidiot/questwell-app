@@ -34,6 +34,10 @@ Founder visual approval locks geometry. Later color/pattern/detail variants inhe
 - `LOCKED_TEMPLATE_REGISTRY.md`
 - `AGENT_OPERATING_RULES.md`
 - `SEASONAL_RELEASE_PLAYBOOK.md`
+- `SEASONAL_RELEASE_MANIFEST.schema.json`
+- `SEASONAL_RELEASE_MANIFEST.example.yaml`
+- `SEASONAL_RELEASE_MANIFEST.example.json`
+- `VISUAL_FAMILY_SPECS.md`
 - `VISUAL_QA_CHECKLIST.md`
 - `LESSONS_LEARNED.md`
 
@@ -44,3 +48,5 @@ The repository, not chat memory, is the durable source of truth. When a new foun
 Complete the current avatar-production pipeline first. The established issue order is then #6 Warding Lantern/Emerald Wayfarer Rug replacements, followed by #7 architecture/scalability before launch. Keep both #6 catalog entries inactive and preserve ownership until Tanya approves replacement visuals. Preserve architecture boundaries and mandatory QA throughout all phases; this order never defers core architecture protections merely to move artwork faster.
 
 The development preview must pass the reusable Flutter Check workflow before the build/deploy jobs can run. The gate covers asset integrity, Node checks, analyzer and discovered substantive Flutter tests. The generated `test/widget_test.dart` counter placeholder is explicitly excluded because it contains no behavioral assertion. Adding a real regression test under `test/` must automatically include it in CI. Runtime verification remains a separate required step after deployment.
+
+Seasonal/limited manifests are preflighted with `tool/validate_seasonal_release_manifest.cjs` before catalog integration.

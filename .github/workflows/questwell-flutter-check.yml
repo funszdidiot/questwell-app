@@ -20,6 +20,12 @@ jobs:
       - name: Test preview update handling
         run: node --test tool/qa/preview_updates_test.cjs tool/qa/delete_account_test.mjs
 
+      - name: Validate seasonal release standards
+        run: |
+          node -e "JSON.parse(require('node:fs').readFileSync('docs/questwell-production/SEASONAL_RELEASE_MANIFEST.schema.json','utf8'))"
+          node tool/validate_seasonal_release_manifest.cjs docs/questwell-production/SEASONAL_RELEASE_MANIFEST.example.json --structure-only
+
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:

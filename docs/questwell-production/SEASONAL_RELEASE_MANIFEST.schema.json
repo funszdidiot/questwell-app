@@ -1,0 +1,535 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://getquestwell.com/schemas/seasonal-release-manifest-v1.json",
+  "title": "Questwell Seasonal and Limited Release Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release_id",
+    "display_name",
+    "release_type",
+    "collection_key",
+    "theme",
+    "availability",
+    "approval",
+    "items"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "questwell.seasonal-release/v1"
+    },
+    "release_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "release_type": {
+      "enum": [
+        "seasonal",
+        "limited",
+        "event_reward",
+        "founder_beta"
+      ]
+    },
+    "collection_key": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "summary",
+        "palette",
+        "materials",
+        "motifs"
+      ],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "palette": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "materials": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "motifs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "availability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "ownership_persists_after_archive"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "planned",
+            "scheduled",
+            "available",
+            "archived"
+          ]
+        },
+        "starts_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "ends_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "ownership_persists_after_archive": {
+          "const": true
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "brief_status",
+        "visual_status",
+        "economy_status",
+        "activation_status"
+      ],
+      "properties": {
+        "brief_status": {
+          "enum": [
+            "draft",
+            "approved"
+          ]
+        },
+        "visual_status": {
+          "enum": [
+            "candidate",
+            "approved",
+            "locked",
+            "superseded",
+            "retired"
+          ]
+        },
+        "economy_status": {
+          "enum": [
+            "not_required",
+            "pending",
+            "approved"
+          ]
+        },
+        "activation_status": {
+          "enum": [
+            "not_authorized",
+            "authorized",
+            "launched",
+            "archived"
+          ]
+        },
+        "founder_decision_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/item"
+      }
+    }
+  },
+  "$defs": {
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slug",
+        "name",
+        "category",
+        "rarity",
+        "description",
+        "premium",
+        "unlock_method",
+        "visual_family",
+        "asset_state",
+        "provenance"
+      ],
+      "properties": {
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "enum": [
+            "head",
+            "face",
+            "neck",
+            "chest",
+            "hands",
+            "legs",
+            "feet",
+            "back",
+            "familiar",
+            "room",
+            "effect",
+            "outfit",
+            "accessory",
+            "wall_art"
+          ]
+        },
+        "rarity": {
+          "enum": [
+            "common",
+            "uncommon",
+            "rare",
+            "epic",
+            "legendary"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "price": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "premium": {
+          "type": "boolean"
+        },
+        "required_archetype": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            null,
+            "scholar",
+            "scout",
+            "alchemist",
+            "guardian",
+            "wanderer"
+          ]
+        },
+        "unlock_method": {
+          "enum": [
+            "shop",
+            "class_mastery",
+            "level_milestone"
+          ]
+        },
+        "milestone_level": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 2
+        },
+        "visual_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "asset_state": {
+          "enum": [
+            "candidate",
+            "approved",
+            "locked",
+            "superseded",
+            "retired"
+          ]
+        },
+        "hearth": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "profile_key"
+          ],
+          "properties": {
+            "profile_key": {
+              "enum": [
+                "large_furniture",
+                "pedestal_light",
+                "seating",
+                "plant",
+                "side_table",
+                "trophy_surface",
+                "relic_display",
+                "floor_rug",
+                "window_feature",
+                "hearth_setting",
+                "wall_art_side",
+                "wall_art_center"
+              ]
+            },
+            "render": {
+              "$ref": "#/$defs/render"
+            }
+          }
+        },
+        "wearable": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "template_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "supported_bodies": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "female",
+                  "male",
+                  "neutral"
+                ]
+              }
+            },
+            "fit_reference": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source",
+            "version"
+          ],
+          "properties": {
+            "source": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "method": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "source_art_ref": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "qa": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "preflight": {
+              "enum": [
+                "not_run",
+                "pass",
+                "fail"
+              ]
+            },
+            "runtime": {
+              "enum": [
+                "not_run",
+                "pass",
+                "fail"
+              ]
+            },
+            "visual": {
+              "enum": [
+                "not_run",
+                "pass",
+                "fail"
+              ]
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "category": {
+                "enum": [
+                  "room",
+                  "wall_art"
+                ]
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "then": {
+            "required": [
+              "hearth"
+            ],
+            "properties": {
+              "hearth": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "unlock_method": {
+                "const": "level_milestone"
+              }
+            },
+            "required": [
+              "unlock_method"
+            ]
+          },
+          "then": {
+            "required": [
+              "milestone_level"
+            ],
+            "properties": {
+              "milestone_level": {
+                "type": "integer",
+                "minimum": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "render": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "render_kind",
+        "asset_source",
+        "asset_path",
+        "canvas_width",
+        "canvas_height",
+        "visible_base",
+        "filter_mode",
+        "asset_revision"
+      ],
+      "properties": {
+        "render_kind": {
+          "enum": [
+            "static_sprite",
+            "floor_sprite"
+          ]
+        },
+        "asset_source": {
+          "enum": [
+            "bundle",
+            "network"
+          ]
+        },
+        "asset_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canvas_width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "canvas_height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "visible_base": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "shadow_profile": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            null,
+            "wide_plinth",
+            "pedestal",
+            "seating",
+            "side_table",
+            "plant",
+            "none"
+          ]
+        },
+        "effect_profile": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            null,
+            "ward_glow",
+            "warm_glow"
+          ]
+        },
+        "filter_mode": {
+          "enum": [
+            "pixel",
+            "smooth"
+          ]
+        },
+        "asset_revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "min_client_build": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

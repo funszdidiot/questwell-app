@@ -1,0 +1,128 @@
+{
+  "schema_version": "questwell.seasonal-release/v1",
+  "release_id": "winter-solstice-2026",
+  "display_name": "Winter Solstice",
+  "release_type": "seasonal",
+  "collection_key": "winter-solstice-2026",
+  "theme": {
+    "summary": "Cozy starlit winter Hearth pieces with aged brass, dark evergreen textiles, warm candlelight, and restrained frost motifs.",
+    "palette": [
+      "deep evergreen",
+      "midnight blue",
+      "aged brass",
+      "warm ivory",
+      "muted cranberry"
+    ],
+    "materials": [
+      "aged brass",
+      "walnut",
+      "woven wool",
+      "frosted glass"
+    ],
+    "motifs": [
+      "stars",
+      "evergreen",
+      "subtle snow crystals",
+      "candlelight"
+    ]
+  },
+  "availability": {
+    "status": "planned",
+    "starts_at": null,
+    "ends_at": null,
+    "ownership_persists_after_archive": true
+  },
+  "approval": {
+    "brief_status": "draft",
+    "visual_status": "candidate",
+    "economy_status": "pending",
+    "activation_status": "not_authorized",
+    "founder_decision_ref": null
+  },
+  "items": [
+    {
+      "slug": "solstice-ward-lantern",
+      "name": "Solstice Ward Lantern",
+      "category": "room",
+      "rarity": "rare",
+      "description": "An evergreen-and-brass standing ward lamp with a soft winter glow.",
+      "price": null,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "pedestal_light",
+      "asset_state": "candidate",
+      "hearth": {
+        "profile_key": "pedestal_light",
+        "render": {
+          "render_kind": "static_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/seasonal/winter-solstice-2026/solstice_ward_lantern_v1.webp",
+          "canvas_width": 960,
+          "canvas_height": 1680,
+          "visible_base": 0.965,
+          "shadow_profile": "pedestal",
+          "effect_profile": "warm_glow",
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Questwell seasonal art pipeline",
+        "version": 1,
+        "method": "64-bit asset-led production",
+        "source_art_ref": null
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "not_run"
+      }
+    },
+    {
+      "slug": "solstice-wayfarer-rug",
+      "name": "Solstice Wayfarer Rug",
+      "category": "room",
+      "rarity": "uncommon",
+      "description": "A deep evergreen woven Hearth rug with a restrained starlit compass motif.",
+      "price": null,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "floor_rug",
+      "asset_state": "candidate",
+      "hearth": {
+        "profile_key": "floor_rug",
+        "render": {
+          "render_kind": "floor_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/seasonal/winter-solstice-2026/solstice_wayfarer_rug_v1.webp",
+          "canvas_width": 384,
+          "canvas_height": 256,
+          "visible_base": 1,
+          "shadow_profile": "none",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Questwell seasonal art pipeline",
+        "version": 1,
+        "method": "64-bit asset-led production",
+        "source_art_ref": null
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "not_run"
+      }
+    }
+  ]
+}
