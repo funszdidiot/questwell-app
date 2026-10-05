@@ -1716,7 +1716,7 @@
       ]
     },
     "harvest_coat_underarm_v8": {
-      "visual_approval": "independent_local_visual_QA_pass_founder_lock_not_inferred",
+      "visual_approval": "independent_local_and_delivered_visual_QA_pass_no_founder_lock",
       "description": "Founder-authorized direct raster repair of continuous inner sleeves and female curved cuffs. Locked bodies and accepted cloak/mantle unchanged.",
       "assets": [
         {
@@ -1743,7 +1743,9 @@
           "path": "assets/images/questwell/avatar/harvest_coat_rear_neutral_v8.webp",
           "sha256": "5a48199a9f28b559e523f3f80e563571a8b3e2eb52372a6da6f3410342d91c14"
         }
-      ]
+      ],
+      "development_status": "DEV DEPLOYED",
+      "verified_revision": "4b6be2bb4fff866f4314b5a57025d7ca7883f007"
     }
   },
   "approved_layers": {

@@ -1,6 +1,27 @@
 # Coat underarm and female cuff correction
 
-2026-10-05 America/Chicago — QA; local repair passed independent visual review, development delivery pending.
+2026-10-05 America/Chicago — DEV DEPLOYED, independently verified.
+
+Final runtime `4b6be2bb4fff866f4314b5a57025d7ca7883f007`, workflow
+`37331784954`: 387 Flutter tests and 12 Node checks passed; assets, analysis,
+locked dependencies, development build and deployment succeeded. Browser DOM
+build marker and 31 delivered garment/body/identity/Everyday hashes match.
+All three actual coat fits passed independent native/enlarged/Hearth visual QA.
+No new founder lock is inferred. No founder blocker remains.
+
+Repaired continuous inner sleeves remove skin/undershirt bleed and compensating
+cloth while retaining natural air gaps. Female cuffs have curved front hems and
+rear depth around the original wrists. Locked bodies, identities, Everyday and
+accepted cloak/mantle files are unchanged. The male legacy identity renderer
+samples pixel-identical head rows from the full locked body; this removed the
+pre-existing rectangular neckline artifact. The primary body stays complete.
+
+Evidence: `coat-v8-final-hearth-live.jpg`, `coat-v8-male-final-live.jpg`,
+`coat-v8-female-enlarged-live.jpg`, `coat-v8-neutral-enlarged-live.jpg`,
+`coat-v8-market-preview-live.jpg`, `coat-v8-unequip-live.jpg`, and
+`../../tool/qa/coat_v8_final_delivery.json`.
+
+The following sections retain the investigation and rejected-pass history.
 
 Founder finding: all three coats have exposed skin or compensating fabric
 between sleeves and inner arms; female cuffs remain unnatural. No shoddy patches,
@@ -74,10 +95,10 @@ seam and male cuff endpoint notch. This is not founder approval or runtime QA.
 ## Delivered fit verification and sampling follow-up
 
 Runtime `9f65041`, workflow `37326943014`: 386 Flutter and 12 Node tests,
-analysis, locked dependencies, build and deployment passed. All31 delivered
+analysis, locked dependencies, build and deployment passed. All three1 delivered
 asset hashes matched. Actual shared renderer/Hearth, wear/remove/restoration,
 belt grimoire and sample Market preview/purchase/equip/unequip were verified.
-All3 delivered enlarged coat fits passed independent visual QA.
+All three delivered enlarged coat fits passed independent visual QA.
 
 Enlarged runtime review caught a separate straight line below the male chin on
 coat and cloak, absent from an exact local layer composite. Investigating
@@ -86,16 +107,30 @@ chest states is under QA. No body, identity or accepted cloth bytes are changed.
 Do not close runtime QA until the delivered follow-up is checked.
 
 Sample Market evidence: female Scholar, 390px layout, Harvest Coat search;
-try-on showed v8, sample purchase650→470, Owned→Equip→In use, preview Unequip
-returned Owned with470 unchanged. These are in-memory review fixtures, not
+try-on showed v8, sample purchase 650 → 470, Owned→Equip→In use, preview Unequip
+returned Owned with 470 unchanged. These are in-memory review fixtures, not
 a real-account purchase or persistence claim. Catalog eligibility and equipment
 policy were unchanged; existing all-body/class restoration regressions passed.
 
-Sampling follow-up `0a4814f`, workflow37329335033, passed the full386Flutter +
-12Node gate and31delivery hashes, but the neckline line remained. Bilinear
+Sampling follow-up `0a4814f`, workflow 37329335033, passed the full 386 Flutter +
+12 Node gate and31 delivery hashes, but the neckline line remained. Bilinear
 sampling is therefore reverted. The next rendering correction samples the
 exact original head rows0..73 from the complete locked body before clipping the
 foreground duplicate. Every visible RGBA pixel in this region equals the locked
 identity export; the source files and primary full body stay unchanged. This
 is a rendering correction, not replacement anatomy. Actual runtime verification
 remains pending.
+
+## Final runtime result
+
+The sampling hypothesis was rejected and reverted. Rendering the original
+visible head region from the complete body removed the line on the delivered
+male coat and cloak. Independent review of `coat-v8-male-final-live.jpg` confirms
+clean jaw-to-neck continuity and unchanged garment contours. All three coat runtime
+fits pass; the complete bodies and hands remain unchanged. This scoped rendering
+correction affects legacy chest states; historical class-robe neckline evidence
+is recorded for a separate renderer audit, not silently changed here.
+
+The complete runtime was reloaded at 4b6be2b and the all-body/Hearth gallery
+captured again. All three87Flutter regressions passed, including the visible-head
+RGBA equality test and original-primary-body preservation through equip/removal.

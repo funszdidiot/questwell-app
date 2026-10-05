@@ -38,5 +38,17 @@
       "path": "assets/images/questwell/avatar/harvest_coat_rear_neutral_v8.webp",
       "sha256": "5a48199a9f28b559e523f3f80e563571a8b3e2eb52372a6da6f3410342d91c14"
     }
-  ]
+  ],
+  "delivered_review": {
+    "status": "PASS",
+    "revision": "4b6be2bb4fff866f4314b5a57025d7ca7883f007",
+    "reviewer": "legacy_depth_visual_qa",
+    "evidence": [
+      "docs/qa/coat-v8-final-hearth-live.jpg",
+      "docs/qa/coat-v8-male-final-live.jpg",
+      "docs/qa/coat-v8-female-enlarged-live.jpg",
+      "docs/qa/coat-v8-neutral-enlarged-live.jpg"
+    ],
+    "scope": "Three coat fits and corrected male legacy neckline; not founder approval"
+  }
 }

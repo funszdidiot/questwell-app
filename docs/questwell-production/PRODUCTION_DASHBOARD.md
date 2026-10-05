@@ -2,17 +2,17 @@
 
 ## Active garment correction — 2026-10-05 America/Chicago
 
-**Coats: DEV DEPLOYING / local visual repair passed.** Tanya rejected inner-arm
-skin slivers or compensating fabric on all three coats and still rejects the
-female cuffs. This newer finding supersedes the coat visual PASS below; technical
-deployment is historical evidence only. Accepted cloak/mantle v4 are preserved.
-Repeated image-generation edits failed exact sleeve registration or introduced
-unrequested cuff details. No replacement candidate was integrated or deployed.
-Tanya authorized precise direct raster editing of complete sleeve/underarm/cuff
-regions. All three v8 fits passed independent native/enlarged light/dark review.
-Renderer integration and full development build/runtime verification are next; no founder
-blocker remains. Locked bodies and accepted cloak/mantle are preserved.
-See `../qa/COAT_UNDERARM_REBUILD.md`. This does not block other approved work.
+**Coats: DEV DEPLOYED / repair technically verified.** All three Harvest Coat v8
+inner sleeves cover the locked arms without exposed skin/undershirt or broad
+compensating cloth. Female cuffs wrap the fixed wrists with curved hems and rear
+depth. Accepted cloak/mantle art and all locked body/identity/Everyday bytes are
+unchanged. A scoped male legacy head-layer correction also removed the existing
+rectangular neckline artifact using pixel-identical original head pixels.
+Runtime `4b6be2b`, workflow `37331784954`: 387 Flutter + 12 Node checks, asset,
+analysis, locked-dependency, build/deploy gates and 31 delivered hashes passed.
+Actual native/enlarged/Hearth independent visual QA, wear/remove/restoration,
+belt grimoire and sample Market purchase/equip/unequip verified. No new founder
+lock or founder blocker. See `../qa/COAT_UNDERARM_REBUILD.md`.
 
 **Coat cuffs: DEV DEPLOYED — founder correction.** Tanya accepted cloak/mantle v4 and
 reported disconnected wrist joins on all three coats. Preserve accepted cloth.
