@@ -13,6 +13,7 @@ import 'questwell_contact_shadow.dart';
 import 'questwell_first_journey.dart';
 import 'questwell_starlit_orrery.dart';
 import 'questwell_warding_lantern.dart';
+import 'questwell_hearth_layout.dart';
 
 /// Authored furniture proportions and floor anchors shared by every Hearth view.
 class QuestwellHearthDecor {
@@ -20,7 +21,7 @@ class QuestwellHearthDecor {
     ? const {'mantel': 'On the fireplace mantel', 'bookshelf_top': 'On the bookcase',
       'left': 'Back left pedestal', 'right': 'Back right pedestal',
       'front': 'Front left pedestal'}
-    : switch (slug) {
+    : QuestwellHearthLayout.choicesFor(slug) ?? switch (slug) {
     'woodland-cottage' || 'midnight-harvest' || 'enchanted-library' || 'midnight-observatory' || 'alchemists-workshop' || 'astral-sanctuary' || 'emberglass-conservatory' => const {'setting': 'Hearth setting'},
     'emerald-wayfarer-rug' => const {'floor': 'Beneath the adventurer'},
     'rainy-window' => const {'window': 'Window alcove'},
@@ -32,12 +33,14 @@ class QuestwellHearthDecor {
     QuestwellReadingChair.slug => const {'front': 'Left floor', 'right': 'Right floor'},
     _ => const {'left': 'Beside the fireplace', 'right': 'Near the window', 'front': 'Foreground'},
   };
-  static double floorDepth(String slug, String slot) =>
-    QuestwellMasteryRelic.supports(slug) ? (slot == 'front' ? .89 : .68) : slug == QuestwellReadingTable.slug ? .89
-      : slug == QuestwellAutumnLantern.slug ? .72
-      : slug == QuestwellPotionWorkbench.slug || slug == QuestwellHarvestDisplay.slug ? .70
-      : slug == QuestwellBookshelf.slug ? .68
-      : slug == QuestwellFern.slug && slot != 'front' ? .70 : .86;
+  static double floorDepth(String slug, String slot) {
+    if (QuestwellHearthLayout.profile(slug) != null) {
+      return QuestwellHearthLayout.floorDepthFor(slug, slot);
+    }
+    return QuestwellMasteryRelic.supports(slug)
+        ? (slot == 'front' ? .89 : .68)
+        : .86;
+  }
 
   static List<String> backToFront(Map<String, String> equipment) {
     String slug(String slot) => equipment['room:$slot'] ??
@@ -89,6 +92,14 @@ class QuestwellHearthDecor {
     required String slug, required String slot, required Size scene,
     Map<String, String> equipment = const {},
   }) {
+    if (QuestwellHearthLayout.profile(slug) != null) {
+      return QuestwellHearthLayout.bounds(
+        slug: slug,
+        slot: slot,
+        scene: scene,
+        equipment: equipment,
+      );
+    }
     if (slug == QuestwellAutumnLantern.slug) return QuestwellAutumnLantern.bounds(scene, slot);
     if (slug == QuestwellWardingLantern.slug) return QuestwellWardingLantern.bounds(scene, slot);
     if (slug == QuestwellHarvestDisplay.slug) return QuestwellHarvestDisplay.bounds(scene, slot);
