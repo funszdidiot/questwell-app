@@ -36,6 +36,21 @@ The continuation audit independently observed the mantle band at `588994d` (see 
 
 PR #13 additionally unions the head and body-specific neck foreground contours. Appending opposite-winding subpaths can cancel their overlap under the nonzero fill rule; an explicit union preserves continuous coverage without altering the existing contours or any artwork. The original full body remains an unclipped sibling beneath the garments. A new regression checks the observed chin/neck band for all three bodies at native, enlarged, tall and wide render dimensions.
 
-The proposal passed workflow `37261189106`: 388 Flutter tests (including the new continuity regression), 8 Node tests, asset verification, the configured analyzer gate and release web build. Analysis has 45 nonfatal warnings/information findings; this is not warning-free. Post-merge delivery verification remains pending for this follow-up. Baseline visual acceptance and account/persistence limits above are unchanged.
+The proposal passed workflow `37261189106`: 388 Flutter tests (including the new continuity regression), 8 Node tests, asset verification, the configured analyzer gate and release web build. Analysis has 45 nonfatal warnings/information findings; this is not warning-free. Post-merge delivery is verified below. Baseline visual acceptance and account/persistence limits above are unchanged.
 
 Flutter remains pinned to 3.44.6 in CI. Existing CustomClipper/ClipPath contracts and Path.combine(PathOperation.union, ...) were verified in official Flutter API documentation. No dependency was added or upgraded.
+
+
+### Follow-up DEV DEPLOYED — 9d47ee6
+
+PR #13 merged into `questwell-dev` as `9d47ee66e2c3d7c94b390136b7b2736970cfa0ec`. Workflow `37261924230` passed 388 Flutter tests, 8 Node tests, asset checks, the configured analyzer gate, build and development deployment. The served version stamp and browser-loaded `main.dart.js?rev=9d47ee66e2c3d7c94b390136b7b2736970cfa0ec` both match. This follow-up changes no raster files, account policy, backend or persistence code.
+
+Primary delivered-browser review passed all three bodies' native suit/coat/cloak/mantle views, enlarged neutral mantle neckline, light/dark comparison, neutral Guardian class selection, garments off → same Guardian robe across all five cards, and garments on → original legacy outfits. Necklines connect without the earlier band; original faces/hair, hands and feet retain their established appearance. The male Woodland review remains available as a candidate; it was not promoted to account eligibility or founder lock.
+
+The screenshots and hashes are recorded in `tool/qa/neckline_continuity_delivery_9d47ee6.json`. Prior independent artwork/runtime review remains separately recorded above; this final continuation check is primary-agent browser QA. Phone dimensions are covered by the automated suite; native Safari/device testing and real-account login/refresh persistence were not repeated. The analyzer still reports 45 nonfatal findings. No new founder decision is needed for this scoped fix.
+
+Official API references checked for the existing Flutter 3.44.6 workflow: https://api.flutter.dev/flutter/rendering/CustomClipper-class.html and https://api.flutter.dev/flutter/dart-ui/Path/combine.html .
+
+![Verified female wardrobe](legacy-female-neckline-9d47ee6.jpg)
+![Verified neutral wardrobe](legacy-neutral-neckline-9d47ee6.jpg)
+![Verified male wardrobe](legacy-male-neckline-9d47ee6.jpg)
