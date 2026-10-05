@@ -21,7 +21,15 @@ void main() {
     );
 
     expect(autumn.height, closeTo(warding.height, .01));
-    expect(autumn.bottom, closeTo(warding.bottom, .01));
+    expect(
+      autumn.top + autumn.height *
+          QuestwellHearthLayout.assetSpec('autumn-ember-lantern')!.visibleBase,
+      closeTo(
+        warding.top + warding.height *
+            QuestwellHearthLayout.assetSpec('warding-lantern')!.visibleBase,
+        .01,
+      ),
+    );
 
     final shelf = QuestwellHearthLayout.bounds(
       slug: 'walnut-bookshelf',
@@ -44,15 +52,14 @@ void main() {
 
     expect(shelf.height, closeTo(workbench.height, .01));
     expect(workbench.height, closeTo(harvest.height, .01));
-    expect(
-      shelf.top + shelf.height *
-          QuestwellHearthLayout.assetSpec('walnut-bookshelf')!.visibleBase,
-      closeTo(
-        workbench.top + workbench.height *
-            QuestwellHearthLayout.assetSpec('copper-potion-workbench')!.visibleBase,
-        .01,
-      ),
-    );
+    final shelfFloor = shelf.top + shelf.height *
+        QuestwellHearthLayout.assetSpec('walnut-bookshelf')!.visibleBase;
+    final workbenchFloor = workbench.top + workbench.height *
+        QuestwellHearthLayout.assetSpec('copper-potion-workbench')!.visibleBase;
+    final harvestFloor = harvest.top + harvest.height *
+        QuestwellHearthLayout.assetSpec('harvest-apothecary-display')!.visibleBase;
+    expect(shelfFloor, closeTo(workbenchFloor, .01));
+    expect(workbenchFloor, closeTo(harvestFloor, .01));
   });
 
   test('pedestal lights share one placement vocabulary', () {
