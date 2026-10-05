@@ -231,7 +231,7 @@ void main() {
       expect(images, containsAll([
         lockedBase,
         lockedIdentity,
-        'assets/images/questwell/avatar/base/base_${body}.webp',
+        'assets/images/questwell/avatar/business_suit_${body}_v1.webp',
       ]));
       await render({'chest':'midnight-harvest-coat'});
       expect(find.byType(QuestwellCleanBase), findsNothing);
@@ -241,7 +241,7 @@ void main() {
       expect(images, containsAll([
         lockedBase,
         lockedIdentity,
-        'assets/images/questwell/avatar/harvest_coat_${body}_v2.webp',
+        'assets/images/questwell/avatar/harvest_coat_${body}_v3.webp',
       ]));
       if (body == 'male') {
         expect(images, contains(QuestwellMalePaperDoll.everydayAsset));
@@ -296,7 +296,9 @@ void main() {
             expect(images, contains(lockedBase));
             expect(images, contains(lockedIdentity));
             if (chest == 'starter-business-suit') {
-              expect(images, contains('assets/images/questwell/avatar/base/base_${body}.webp'));
+              expect(images, contains('assets/images/questwell/avatar/business_suit_${body}_v1.webp'));
+              expect(images, isNot(contains('assets/images/questwell/avatar/base/base_${body}.webp')),
+                  reason: 'Suit art must contain no old anatomy');
             } else if (body == 'male') {
               expect(images, contains(QuestwellMalePaperDoll.everydayAsset));
             } else {

@@ -262,7 +262,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final classOverlay = woodland ? null : modular
         ? (scoutLayers!.contains('robe') ? fittedRobeAsset('robe') : null)
         : harvestCoat
-        ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v2.webp'
+        ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v3.webp'
         : legacyChest ? null
         : chest == 'starter-business-suit' ? null : _classOverlayAsset;
     final rearRevision = archetype == 'wanderer' ? 'short_v1' : 'v1';
@@ -389,9 +389,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               QuestwellWayfarerSatchel(bodyType: body)
             else
               QuestwellLeatherSatchel(bodyType: body),
-            ClipPath(clipper: SatchelForearmClipper(body), child: baseLayer()),
-            if (classOverlay != null)
-              ClipPath(clipper: SatchelForearmClipper(body), child: classLayer(classOverlay)),
+            if (!QuestwellCloak.supports(chest)) ...[
+              ClipPath(clipper: SatchelForearmClipper(body), child: baseLayer()),
+              if (classOverlay != null)
+                ClipPath(clipper: SatchelForearmClipper(body), child: classLayer(classOverlay)),
+            ],
           ],
           if (equippedSlugs['hands'] == QuestwellAnnotatedGrimoire.slug)
             QuestwellAnnotatedGrimoire(bodyType: body),

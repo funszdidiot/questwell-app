@@ -26,8 +26,8 @@ class QuestwellLegacyChestFoundation extends StatelessWidget {
     'hearthguard-mantle',
   };
 
-  static String _legacySuitAsset(String body) =>
-      'assets/images/questwell/avatar/base/base_$body.webp';
+  static String suitAsset(String body) =>
+      'assets/images/questwell/avatar/business_suit_${body}_v1.webp';
 
   static String _identity(String body) => switch (body) {
         'male' => QuestwellMalePaperDoll.identityAsset,
@@ -49,20 +49,24 @@ class QuestwellLegacyChestFoundation extends StatelessWidget {
         _ => _image(QuestwellScoutWardrobeFoundation.femaleBaseAsset),
       };
 
-  Widget _everydayFoundation() => switch (body) {
-        'male' => Stack(fit: StackFit.expand, children: [
-            _image(QuestwellMalePaperDoll.baseAsset),
-            _image(QuestwellMalePaperDoll.everydayAsset),
-          ]),
-        'neutral' => const QuestwellScoutWardrobeFoundation(
-            body: 'neutral',
-            layers: {'top', 'trousers', 'boots'},
-          ),
-        _ => const QuestwellScoutWardrobeFoundation(
-            body: 'female',
-            layers: {'top', 'trousers', 'boots'},
-          ),
-      };
+  Widget _everydayFoundation() {
+    final garments = body == 'male'
+        ? <Widget>[_image(QuestwellMalePaperDoll.everydayAsset)]
+        : <Widget>[
+            for (final part in ['boots', 'trousers', 'top'])
+              _image(QuestwellScoutWardrobeFoundation.asset(body, part)),
+          ];
+    return Stack(fit: StackFit.expand, children: [
+      _baseOnly(),
+      if (slug == 'midnight-harvest-coat')
+        ClipPath(
+          clipper: const HarvestEverydayGarmentClipper(),
+          child: Stack(fit: StackFit.expand, children: garments),
+        )
+      else
+        ...garments,
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,51 +75,24 @@ class QuestwellLegacyChestFoundation extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         businessSuit ? _baseOnly() : _everydayFoundation(),
-        if (businessSuit)
-          ClipPath(
-            clipper: _LegacySuitGarmentClipper(body),
-            child: _image(_legacySuitAsset(body)),
-          ),
+        if (businessSuit) _image(suitAsset(body)),
         _image(_identity(body)),
       ],
     );
   }
 }
 
-/// Retains only legacy suit garment pixels and excludes old face/hair/hands.
-///
-/// The clip is intentionally coarse and body-specific. It changes no locked
-/// body pixels and keeps the legacy suit as a removable overlay.
-class _LegacySuitGarmentClipper extends CustomClipper<Path> {
-  const _LegacySuitGarmentClipper(this.body);
-  final String body;
-
+/// The coat supplies its own shirt and sleeves. Only hidden Everyday garment
+/// pixels are excluded; the complete locked body is an unclipped sibling.
+class HarvestEverydayGarmentClipper extends CustomClipper<Path> {
+  const HarvestEverydayGarmentClipper();
   @override
   Path getClip(Size size) {
-    final headBottom = body == 'female' ? 74.0 : 74.0;
-    var path = Path()..addRect(Rect.fromLTRB(0, headBottom, 240, 320));
-
-    final hands = Path();
-    if (body == 'female') {
-      hands
-        ..addRect(const Rect.fromLTRB(58, 164, 91, 202))
-        ..addRect(const Rect.fromLTRB(149, 164, 183, 202));
-    } else {
-      hands
-        ..addRect(const Rect.fromLTRB(52, 168, 91, 205))
-        ..addRect(const Rect.fromLTRB(149, 168, 189, 205));
-    }
-    path = Path.combine(PathOperation.difference, path, hands);
-
     final scale = math.min(size.width / 240, size.height / 320);
-    final dx = (size.width - 240 * scale) / 2;
-    final dy = size.height - 320 * scale;
-    return path
+    return (Path()..addRect(const Rect.fromLTRB(0, 150, 240, 320)))
         .transform((Matrix4.identity()..scale(scale, scale)).storage)
-        .shift(Offset(dx, dy));
+        .shift(Offset((size.width - 240 * scale) / 2, size.height - 320 * scale));
   }
-
   @override
-  bool shouldReclip(covariant _LegacySuitGarmentClipper oldClipper) =>
-      body != oldClipper.body;
+  bool shouldReclip(covariant HarvestEverydayGarmentClipper oldClipper) => false;
 }

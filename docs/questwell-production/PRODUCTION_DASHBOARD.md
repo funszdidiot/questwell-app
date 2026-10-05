@@ -95,4 +95,11 @@ Tanya: **“The neutral outfits are good- push them.”** Neutral Woodland v3 is
 
 ## Legacy wardrobe visual audit — 2026-10-04 America/Chicago
 
-BUILDING: add `?review=legacy-wardrobe`, an account-free comparison of the actual shared renderer for all three locked bodies, every class, and the four retained legacy chest garments. Native/enlarged, light/dark and equipment-removal controls expose fit and restoration issues without changing assets or account policy. This is a QA surface, not a new garment approval. Delivered runtime inspection follows the full development gate.
+Audit DEV DEPLOYED at `7533e3b`: `?review=legacy-wardrobe` provides, an account-free comparison of the actual shared renderer for all three locked bodies, every class, and the four retained legacy chest garments. Native/enlarged, light/dark and equipment-removal controls expose fit and restoration issues without changing assets or account policy. This is a QA surface, not a new garment approval. Delivered runtime inspection follows the full development gate.
+
+
+## Legacy fits — all three bodies, repair QA
+
+Tanya explicitly expanded scope to female and neutral. **QA**: new coherent Business Suit v1 and Harvest Coat v3 overlays are integrated into the shared renderer for all three bodies. Independent light/dark export QA passed after resolving shoulder, underarm, forearm, cuff, leg and footwear gaps. Cloak/mantle registration now covers complete arms with cloth rather than clipping anatomy; runtime mantle neckline verification remains pending. Full CI/build/deployment and delivered runtime checks are next. These are scoped repair candidates, not new founder locks. No blocker or new founder decision is required.
+
+Suit rendering no longer samples historical full-body Business Suit images. Harvest occlusion clips only hidden Everyday garment pixels; the locked body stays an unclipped sibling. Catalog, prices, ownership, eligibility, persistence, class policy and belt grimoire are unchanged. Provenance and exact export hashes: `tool/art_assets/legacy_refit_v1/provenance.json`.

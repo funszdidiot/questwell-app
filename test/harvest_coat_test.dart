@@ -9,7 +9,7 @@ import '../lib/widgets/questwell_male_paper_doll.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   for (final body in ['female','male','neutral']) {
-    final asset='assets/images/questwell/avatar/harvest_coat_${body}_v2.webp';
+    final asset='assets/images/questwell/avatar/harvest_coat_${body}_v3.webp';
     test('$body Harvest coat retains the authored canvas and clear hands/legs',()async{
       final data=await rootBundle.load(asset);
       final codec=await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes,data.lengthInBytes));

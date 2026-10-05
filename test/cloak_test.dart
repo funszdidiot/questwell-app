@@ -1,4 +1,7 @@
+import 'dart:ui' as ui;
+import 'package:flutter/services.dart';
 import '../lib/widgets/questwell_brass_lantern.dart';
+import '../lib/widgets/questwell_leather_satchel.dart';
 import '../lib/widgets/questwell_emerald_scarf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,6 +15,30 @@ import '../lib/widgets/questwell_scout_wardrobe.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching=false;
+  test('Registered opaque cloak cloth stays inside the paper-doll canvas', () async {
+    for (final slug in ['moss-green-cloak', 'hearthguard-mantle']) {
+      final data = await rootBundle.load(QuestwellCloak.asset(slug));
+      final codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
+      final image = (await codec.getNextFrame()).image;
+      final bytes = (await image.toByteData())!;
+      for (final body in ['male', 'female', 'neutral']) {
+        final fit = QuestwellCloak.bounds(body, slug);
+        final transform = QuestwellCloak.drapeTransform(fit.width, fit.height,
+            slug == 'hearthguard-mantle' ? -1.2 : 1.2);
+        for (var y = 0; y < image.height; y++) {
+          for (var x = 0; x < image.width; x++) {
+            if (bytes.getUint8((y * image.width + x) * 4 + 3) < 200) continue;
+            final point = MatrixUtils.transformPoint(transform,
+                Offset(x * fit.width / image.width, y * fit.height / image.height)) + fit.topLeft;
+            expect(point.dx, inInclusiveRange(0, 240), reason: '$slug/$body visible hem must not clip');
+            expect(point.dy, inInclusiveRange(0, 320));
+          }
+        }
+      }
+      image.dispose();
+      codec.dispose();
+    }
+  });
   test('Closed cloak keeps faces in front and hands inside', () {
     for (final body in ['female','male','neutral']) {
       final path=QuestwellCloakForegroundClipper(body).getClip(const Size(240,320));
@@ -58,6 +85,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(),isNull);
     expect(find.byType(QuestwellBrassLantern),findsNothing);
+    expect(tester.widgetList<ClipPath>(find.byType(ClipPath))
+        .where((widget) => widget.clipper is SatchelForearmClipper), isEmpty,
+        reason: 'A satchel cannot restore bare arms above closed cloth');
   });
   testWidgets('Full Wanderer outfit keeps the scarf beneath the cloak clasp', (tester) async {
     for (final body in ['male', 'female', 'neutral']) {
@@ -110,7 +140,8 @@ void main() {
               reason: 'The primary locked body cannot be clipped to fit clothing');
         }
         final fit=QuestwellCloak.bounds(body,slug);
-        expect(fit.left,greaterThanOrEqualTo(0));expect(fit.right,lessThanOrEqualTo(240));
+        expect(fit.center.dx, 120, reason: 'Keep neckline centered on locked canvas');
+        expect(fit.width, greaterThan(0));
         expect(fit.bottom,lessThan(300),reason:'Hem clears the boots');
       }}
     }

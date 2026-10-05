@@ -1,0 +1,119 @@
+{
+  "status": "QA \u2014 repair candidate, not a new founder lock",
+  "canvas": [
+    240,
+    320
+  ],
+  "exporters": [
+    "tool/export_legacy_suits_v1.cjs",
+    "tool/export_legacy_coats_v3.cjs"
+  ],
+  "method": "Built-in image generation with each locked body as fit reference and historical same-body garment as design reference. Continuous whole-garment registration, premultiplied bilinear sampling; never sample or modify body pixels. One unified suit overlay and one coherent coat overlay per body.",
+  "prompts": {
+    "suit": "Clothing only: preserve historical navy Business Suit, white shirt, blue tie, brown belt/brass buckle, black formal shoes and cream pocket square. Fit exactly to referenced locked body, complete shoulders/sleeves/cuffs/inner legs/feet; preserve transparent head/neck/hands; full 3:4 canvas, no anatomy or recentering.",
+    "coat": "Clothing only: preserve Midnight Harvest burgundy wool coat, moss-green waistcoat/lapels, copper-gold piping/oak-leaf ornament, ivory open collar and two hip pockets. Fit locked same-body shoulders, arms and wrists. No head, skin, hands, trousers or boots. Transparent full 3:4 canvas."
+  },
+  "files": [
+    {
+      "path": "assets/images/questwell/avatar/business_suit_female_v1.webp",
+      "sha256": "64c2ea9a5ee38197ce291397006147fbdbf99e753d1973aef03a82c62c62bdf2"
+    },
+    {
+      "path": "assets/images/questwell/avatar/business_suit_male_v1.webp",
+      "sha256": "ba21e4b0dd7813a8d50d80cb976ba9f1cfcf116632f93866f763002c43e49301"
+    },
+    {
+      "path": "assets/images/questwell/avatar/business_suit_neutral_v1.webp",
+      "sha256": "6493b297e64d5b9cae7a39a5d37eb6d5bdb41ebc8f598f7a57f8ea1d843c2b9e"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_female_v3.webp",
+      "sha256": "65960800ebfff282171e44f11d1cfa011b191f85cfc811eb9e6f5e7e7d69045c"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_male_v3.webp",
+      "sha256": "36a311485699c40caca48b96ec054a469f2161fffec1d55610fa49f9c2d7101c"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_neutral_v3.webp",
+      "sha256": "a56652aa1a23fbdf7207b1445a5d654b49d732c2bfeefae36c8bc73386cd15e5"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/coat_female_dark.png",
+      "sha256": "716a1d83b6ad4b6a452d7d778225bd76ac8cc0ef8fd8006e35e13803d2279ddb"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/coat_female_light.png",
+      "sha256": "65a362b7b9219bb21440c35336c056df422c60a3579feaea1d083d867633c959"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/coat_female_source.png",
+      "sha256": "3137672b2fabfcecefcab07dd9b5adf83ddfa217517ab18d2b73aea722e6ea61"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/coat_male_dark.png",
+      "sha256": "47673c28e99f11951e43bde6d4e4fa72882b2536865878661ad5871f37d31f47"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/coat_male_light.png",
+      "sha256": "8f584d4a5f6d28f0367660da9d7836c885b30117ab5faee4876cb7ff348bc0d1"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/coat_male_source.png",
+      "sha256": "574d99f343811680d91964613ce7f95f9e8eb5c2542b10667d2c3e6deb7173bf"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/coat_neutral_dark.png",
+      "sha256": "88cfd4e113e2d5d79e4b555f5df8136772fb0b403f91f3af0c1841bd08fc3cc6"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/coat_neutral_light.png",
+      "sha256": "3a42e8be4587406532aad054322197229f8460aec241f05ec298c2b7d0404519"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/coat_neutral_source.png",
+      "sha256": "30d7b6214eeacbd8818dcb2d59b88b6411eeb999732bea76b7638600c8335026"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/suit_female_dark.png",
+      "sha256": "40844aa30c56c49ff5715341f0f80149849bd56b801b02b7c54a0102a511bfad"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/suit_female_light.png",
+      "sha256": "1291d1180601e8948189c0b5bff85ad842ecd9dee3eaaf692d7b6a96fd21d71c"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/suit_female_source.png",
+      "sha256": "ccab07a42af04dd801cc9174d76954d78826babacb6efb335a32dda4f8fa6d02"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/suit_male_dark.png",
+      "sha256": "c12429bfe48905d9bf568bd135bbc1120b8ad069f7ebde9e4c5f03bdc9aff7ff"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/suit_male_light.png",
+      "sha256": "e45970d183fe25ae91367dc0908c01058f344583658876c898fe357050399e20"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/suit_male_source.png",
+      "sha256": "7d7e2bdbd864714e5d705038e4c8e991a6da4006a977897a762127376292f52d"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/suit_neutral_dark.png",
+      "sha256": "1aad74d0763daf181dcf05cd65062030defc2ce392f6317220fb39e011ce1ab5"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/suit_neutral_light.png",
+      "sha256": "0fdcfb013f239a9eb15786b7e3913788bee4eec0cb28b01cb3e1896d93fa9ae6"
+    },
+    {
+      "path": "tool/art_assets/legacy_refit_v1/suit_neutral_source.png",
+      "sha256": "e4d022b4c58a52090171f2073d0f98061a9d15ae63613874f3d08e518f977447"
+    }
+  ],
+  "independentVisualQA": {
+    "status": "PASS \u2014 suits and coats all three bodies; cloak/mantle arm coverage/drape PASS; runtime neckline pending",
+    "reviewer": "legacy_suit_visual_qa",
+    "scope": "Light/dark exported composites, coverage, cuffs, feet, hand clearance, motifs. Female shoulder/armpit and neutral arm/cuff defects corrected and independently rechecked. Male sleeve fullness is styling, not a remaining coverage failure. Not founder approval."
+  }
+}

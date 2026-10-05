@@ -15,14 +15,24 @@ class QuestwellCloak extends StatelessWidget {
     : 'assets/images/questwell_moss_cloak_v2.webp';
   static Rect bounds(String body, String slug) {
     final mantle = slug == 'hearthguard-mantle';
-    return switch (body) {
-      'female' => Rect.fromLTWH(mantle ? 43 : 41, 76, mantle ? 150 : 154, 212),
-      'male' => Rect.fromLTWH(mantle ? 38 : 36, 75, mantle ? 164 : 168, 216),
-      _ => Rect.fromLTWH(mantle ? 42 : 40, 77, mantle ? 156 : 160, 211),
+    final width = switch (body) {
+      'male' => 258.0,
+      'female' => 214.0,
+      _ => 226.0,
     };
+    final top = switch (body) {
+      'male' => 75.0,
+      'female' => 76.0,
+      _ => 77.0,
+    };
+    final height = body == 'male' ? 216.0 : 211.0;
+    // Continuous cloth covers the intact arms. The raised mantle collar needs
+    // its own registration; body/identity pixels are never clipped to fit it.
+    return Rect.fromLTWH((240 - width) / 2, top - (mantle ? 8 : 0),
+      width, height + (mantle ? 8 : 0));
   }
   static Matrix4 drapeTransform(double width, double height, double lean) {
-    const taper = .93;
+    const taper = .70;
     final perspective = (1/taper - 1)/height;
     return Matrix4.identity()
       ..setEntry(3, 1, perspective)
