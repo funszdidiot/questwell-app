@@ -1,2 +1,39 @@
+# Python tooling caches.
 __pycache__/
 *.py[cod]
+
+# Local environment values. Examples must contain placeholders, never secrets.
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+!.env.*.example
+!.env.*.sample
+!.env.*.template
+
+# Signing credentials and private Apple keys (at any directory depth).
+key.properties
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.p8
+*.mobileprovision
+*.provisionprofile
+
+# Generated Flutter/Dart and JavaScript dependency state.
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+/build/
+/coverage/
+node_modules/
+
+# Local Supabase state; keep config.toml, migrations and seed sources trackable.
+/supabase/.temp/
+/supabase/.branches/
+
+# Application lockfiles (including pubspec.lock) are intentionally NOT ignored.
+# Ignores do not protect already tracked files or replace secret scanning.

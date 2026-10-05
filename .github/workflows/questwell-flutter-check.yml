@@ -17,8 +17,8 @@ jobs:
       - name: Verify approved and candidate class assets
         run: python3 tool/verify_avatar_assets.py
 
-      - name: Test preview update handling
-        run: node --test tool/qa/preview_updates_test.cjs tool/qa/delete_account_test.mjs
+      - name: Test preview updates, account deletion and repository protection
+        run: node --test tool/qa/preview_updates_test.cjs tool/qa/delete_account_test.mjs tool/qa/repository_ignore_test.cjs
 
       - name: Validate seasonal release standards
         run: |
