@@ -48,7 +48,7 @@ class _LegacyWardrobeReviewAppState extends State<LegacyWardrobeReviewApp> {
         ]),
         const SizedBox(height: 16),
         LayoutBuilder(builder: (context, constraints) {
-          final width = (enlarged ? 480.0 : 240.0).clamp(0.0, constraints.maxWidth);
+          final width = (enlarged ? 480.0 : 240.0).clamp(0.0, constraints.maxWidth).toDouble();
           return Wrap(spacing: 16, runSpacing: 16, children: [
             for (final entry in garments.entries) SizedBox(width: width, child: Column(children: [
               Text(entry.key, style: const TextStyle(fontWeight: FontWeight.bold)),
