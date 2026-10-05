@@ -381,6 +381,14 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               baseLayer(),
               if (classOverlay != null) classLayer(classOverlay),
             ]),
+            // Original complete identity stays in front of the raised collar.
+            // A historical generic head crop must not cut the v4 jaw or hair.
+            if (paperDollNeutral)
+              _assetLayer(QuestwellNeutralPaperDoll.identityAsset)
+            else if (paperDollMale)
+              _assetLayer(QuestwellMalePaperDoll.identityAsset)
+            else if (paperDollFemale)
+              _assetLayer(QuestwellScoutWardrobeFoundation.femaleIdentityAsset),
           ],
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body),
           if (equippedSlugs['back'] == QuestwellLeatherSatchel.slug ||

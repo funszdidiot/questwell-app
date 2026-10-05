@@ -62,7 +62,9 @@ void main() {
       final front = QuestwellCloakForegroundClipper(body).getClip(const Size(240,320));
       expect(front.contains(const Offset(120,81)),isTrue,reason:'Restore the curved skin neckline');
       expect(front.contains(const Offset(106,81)),isFalse,reason:'No restored shirt collar');
-      expect(front.contains(const Offset(133,81)),isFalse,reason:'No restored shirt collar');
+      expect(front.contains(const Offset(137,81)),isFalse,reason:'No restored shirt shoulder');
+      expect(front.contains(Offset(body == 'neutral' ? 123 : 120, body == 'neutral' ? 87 : 84)), isTrue,
+          reason: 'Restore each locked body neckline below the old generic crop');
       expect(front.contains(const Offset(82,128)),isFalse,reason:'Upper sleeves remain beneath capelet');
       expect(path.contains(const Offset(85,281)),isFalse,reason:'No outer gold undercoat hem');
       expect(path.contains(const Offset(150,281)),isFalse,reason:'No outer gold undercoat hem');
