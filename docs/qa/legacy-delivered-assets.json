@@ -1,0 +1,110 @@
+{
+  "revision": "588994dc017181b636b14d2f30d27622099e3c15",
+  "assets": [
+    {
+      "path": "assets/images/questwell/avatar/business_suit_male_v1.webp",
+      "sha256": "ba21e4b0dd7813a8d50d80cb976ba9f1cfcf116632f93866f763002c43e49301",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/business_suit_neutral_v1.webp",
+      "sha256": "6493b297e64d5b9cae7a39a5d37eb6d5bdb41ebc8f598f7a57f8ea1d843c2b9e",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/business_suit_female_v1.webp",
+      "sha256": "64c2ea9a5ee38197ce291397006147fbdbf99e753d1973aef03a82c62c62bdf2",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_female_v3.webp",
+      "sha256": "65960800ebfff282171e44f11d1cfa011b191f85cfc811eb9e6f5e7e7d69045c",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_male_v3.webp",
+      "sha256": "36a311485699c40caca48b96ec054a469f2161fffec1d55610fa49f9c2d7101c",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_neutral_v3.webp",
+      "sha256": "a56652aa1a23fbdf7207b1445a5d654b49d732c2bfeefae36c8bc73386cd15e5",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_female_v1.webp",
+      "sha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp",
+      "sha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+      "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+      "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell_moss_cloak_v2.webp",
+      "sha256": "e72fe6d9ed334c3c3ee74953bea39512d58ae137ec2940fb79efb2323b71e2d0",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell_guardian_mantle_v1.webp",
+      "sha256": "a97f4997b6b8b17a9bd919c8008eb60664c364d57b7abebf4124214f498bc4e5",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/scout_top_female_v6.webp",
+      "sha256": "07bbd9864164f7944750fc2f0beffb30d643407e0d72f0f3328802a2baee5a5a",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/scout_trousers_female_v6.webp",
+      "sha256": "14d57926eeeea3b56451a4b6af1fc86022c74b673bd1be8870c8e388afe1fd8f",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/scout_boots_female_v6.webp",
+      "sha256": "7b2fb6260c25d162582a672d8c0427da3a4ea0634d5423abc1b3fa959fd54ce3",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_top_neutral_v3.webp",
+      "sha256": "4c5a4c4e36bffa1c43948a4d3b2805510e7f13abe16415d5ae49e0be4283d25c",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_trousers_neutral_v3.webp",
+      "sha256": "c08a045e586befc45cb0dbfcf6cec72121b47195e4f06ee8fb525aff27caa865",
+      "match": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_boots_neutral_v3.webp",
+      "sha256": "12ed127e63ba1548f39ebc65ed1cb9385d99cbe9bb0f16ce056295c72cb68130",
+      "match": true
+    }
+  ]
+}
