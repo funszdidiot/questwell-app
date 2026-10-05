@@ -33,7 +33,8 @@ Existing completed-step rejection and same-step serialization remain.
 ## Proposed implementation
 
 CLI-created migration `20261005183917_boss_reward_authority.sql` replaces only
-`private.create_boss_battle`: it writes literal 25/50 rewards and uses an empty
+`private.create_boss_battle`: it overwrites compatibility reward parameters with
+25/50 before insertion and uses an empty
 search path with qualified application tables. It removes client table-write,
 TRUNCATE and administrative privileges from boss battles/steps while retaining
 authenticated SELECT and existing owner RLS. The public wrapper, completion
@@ -56,6 +57,13 @@ assertions: RLS can safely return HTTP 200 with no affected rows, and the existi
 missing-profile foreign-key rejection returns HTTP 409. The corrected baseline
 accepts those safe outcomes and verifies persisted state. They are not product
 defects and no completion-function change is needed.
+
+The initial implementation at `47fe715` passed backend run `37358043065`
+(19 boss regressions + two injected rollbacks, all R01 tests and SQL privilege
+checks), Flutter/web run `37358043138`, and automatic review. SQL lint identified
+two unused compatibility parameters. The follow-up explicitly overwrites those
+parameters with fixed values before reading them for insertion; it does not add
+a no-op parameter read or suppress lint. The final head must rerun all checks.
 
 The fixed-schema checks run in [PR #23](https://github.com/funszdidiot/questwell-app/pull/23/checks).
 Its description and the Phase 2 FIX_PLAN checkpoint record the final verified

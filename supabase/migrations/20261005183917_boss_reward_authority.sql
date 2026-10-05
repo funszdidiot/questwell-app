@@ -60,15 +60,17 @@ begin
     end if;
   end;
 
-  -- Reward arguments remain for API compatibility; the server owns new rewards.
+  -- Normalize compatibility parameters to server values before either is used.
+  p_reward_xp := 25;
+  p_reward_coins := 50;
   insert into public.boss_battles(
     user_id, title, reward_xp, reward_coins, boss_type
   )
   values (
     v_user_id,
     trim(p_title),
-    25,
-    50,
+    p_reward_xp,
+    p_reward_coins,
     p_boss_type
   )
   returning id into v_boss_id;
