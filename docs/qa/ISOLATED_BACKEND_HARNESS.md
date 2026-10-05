@@ -1,8 +1,10 @@
 # Isolated backend test foundation
 
-Scope: the approved temporary GitHub Actions test target (G2), a prerequisite
-for B02/B03 and the reward/deletion fixes. This is **infrastructure evidence,
-not a Questwell authorization, deletion or release-readiness attestation**.
+Scope: the approved temporary GitHub Actions test target (G2), now extended
+with the observed application schema and a narrow task-completion smoke test.
+See [APPLICATION_SCHEMA_BASELINE.md](APPLICATION_SCHEMA_BASELINE.md) for B03's
+source capture, comparison, failed legacy replay and remaining deployment gate.
+This is **not a complete authorization, deletion or release-readiness attestation**.
 
 ## Safety boundary
 
@@ -11,14 +13,18 @@ not a Questwell authorization, deletion or release-readiness attestation**.
 - No repository secrets, Supabase login/link, hosted project creation or remote
   migration command. Unexpected Supabase/Postgres target/credential environment
   variables cause a preflight failure without printing their values.
-- A new runner-temporary workdir receives only the reviewed harness config.
-  The repository's live linkage, app migrations and environment files are not
-  copied. API and database endpoints must match fixed numeric loopback URLs.
+- A new runner-temporary workdir first receives only the reviewed harness config.
+  After fixture checks, it receives the isolated observed-schema migration from
+  tool/backend_ci/app. The root legacy chain, live linkage and environment files
+  are never copied. API/database endpoints must match fixed numeric loopback URLs.
 - HTTP redirects are forbidden; requests have a ten-second timeout.
 - Tests use random synthetic @example.test accounts. Email confirmation is
   disabled only in this disposable configuration; no real SMTP/OAuth is used.
-- SQL fixture writes are local-only. Later writes require the private fixture
-  marker. Cleanup targets only questwell-disposable-ci with its exact workdir.
+- SQL fixture writes are local-only and later fixture writes require its marker.
+  The subsequent reset replaces the fixture with the observed application schema;
+  its migration refuses a database containing public.users or Auth users. Schema
+  comparison precedes synthetic application writes and the app RLS negative control.
+  Cleanup targets only questwell-disposable-ci with its exact workdir.
   Normal completion/failure disposes its containers and volumes. A cancelled
   runner is discarded by GitHub; do not reuse its state.
 
@@ -54,7 +60,7 @@ The changelog review included current Postgres, API grants and gateway changes.
 The fixture uses explicit grants and RLS, no implicit table exposure. No hosted
 upgrade or gateway reconfiguration is part of this work.
 
-## Tests and honest limits
+## Original PR #18 evidence and current limits
 
 First red test (before the guard existed):
 
@@ -90,16 +96,16 @@ The hosted runner also warned that checkout v4 targets the deprecated Node 20
 action runtime and is being executed under Node 24. Existing workflow action
 upgrades remain the separate C08 concern; this PR does not silently bump them.
 
-`db reset --local --no-seed` rebuilds the **harness**, not the Questwell schema.
-The first root app migration locks public.users, but the repository lacks its
-prior creation/baseline. QW-04 stays open. App migrations, actual task/boss
-policies, Storage ownership/deletion, Edge Functions, email deliverability,
-native/device flows and production parity remain unverified by this job.
+The original PR #18 rebuilt only the fixture. PR #19 adds a second local reset
+from the separately identified observed application baseline, exact recorded
+catalog comparison, a real catalog negative control and limited actual-app checks.
+The legacy root chain still fails, and no production history repair is performed.
+QW-04 therefore remains partially open. Storage operations, hostile reward inputs,
+deletion, Edge Functions, native/devices and full hosted parity are not certified.
 
-Do not mark QW-01, QW-02 or QW-03 fixed because a fixture policy passed. Next,
-reconcile the missing app schema baseline in a separate reviewed PR and make
-clean app-migration replay mandatory before testing/fixing those contracts.
-Client environment selection (B02) also remains separate and unchanged.
+Do not mark QW-01, QW-02 or QW-03 fixed by these checks. They preserve the observed
+application behavior, including known defects, to enable focused regressions next.
+Client environment selection (B02) remains separate and unchanged.
 
 ## Risk and rollback
 

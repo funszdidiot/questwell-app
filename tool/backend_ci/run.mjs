@@ -1,9 +1,11 @@
 import {spawnSync} from 'node:child_process';
-import {copyFileSync, mkdirSync, mkdtempSync, realpathSync} from 'node:fs';
+import assert from 'node:assert/strict';
+import {copyFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {assertDisposableCi, assertLocalStatus} from './guard.mjs';
 import {smoke} from './smoke.mjs';
+import {assertCatalogMatches} from './catalog.mjs';
 
 assertDisposableCi(process.env);
 if (process.argv.includes('--preflight')) {
@@ -32,12 +34,13 @@ function run(args, timeout = 120000) {
     console.error(redact((result.stderr || '') + (result.stdout || '')).slice(-14000));
     throw new Error(`Supabase ${args.slice(0, 2).join(' ')} failed: exit ${result.status}, ${result.error?.code || 'command error'}`);
   }
+  if (args[0] === 'db' && args[1] === 'lint' && result.stderr) console.log(redact(result.stderr));
   return result.stdout;
 }
 const version = run(['--version']).trim();
 if (version !== '2.119.0') throw new Error(`Unexpected Supabase CLI version: ${version}`);
 console.log(`Supabase CLI ${version}; temporary local fixture stack only.`);
-for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['stop', '--help']]) {
+for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['db', 'lint', '--help'], ['stop', '--help']]) {
   run(args); // Installed-version help verifies the command surface on the runner.
 }
 
@@ -69,7 +72,41 @@ try {
   `);
   console.log('Clean harness reset and fixture RLS catalog check passed.');
   await smoke(status, executeSql);
-  console.log('APP MIGRATION REPLAY: NOT RUN. QW-04 remains open; this is not an app-schema release gate.');
+  // The legacy root chain's failing CI evidence remains documented; it is not deployable.
+  // This separately named baseline reproduces an observed schema, not invented prehistory.
+  cpSync(resolve(source, 'app/supabase/migrations'), join(workdir, 'supabase/migrations'), {recursive: true});
+  run(['db', 'reset', '--local', '--no-seed'], 5 * 60 * 1000);
+  const expected = JSON.parse(readFileSync(join(source, 'observed_catalog.json'), 'utf8'));
+  const readCatalog = () => {
+    const result = JSON.parse(run(['db', 'query', '--local', '-o', 'json', '--file', join(source, 'catalog.sql')]));
+    assert.ok(Array.isArray(result) && result.length === 1 && result[0].catalog, 'Expected one catalog result');
+    return result[0].catalog;
+  };
+  assertCatalogMatches(expected, readCatalog());
+  console.log('Observed application baseline rebuilt; all recorded catalog sections match.');
+  // Inventory inherited source findings; this is a reconstruction, not a lint-clean claim.
+  console.log('Observed-source SQL lint inventory (warnings/errors remain release findings):');
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'none']));
+  // Real negative control, on the disposable application's table only.
+  run(['db', 'query', '--local', 'alter table public.tasks disable row level security;']);
+  try {
+    assert.throws(() => assertCatalogMatches(expected, readCatalog()), /Catalog mismatch: tables/);
+  } finally {
+    run(['db', 'query', '--local', 'alter table public.tasks enable row level security;']);
+  }
+  assertCatalogMatches(expected, readCatalog());
+  console.log('Catalog negative control detected disabled application RLS and verified restoration.');
+  // Reset restarts the API. Use a fresh HTTP client process, without retrying writes.
+  const app = spawnSync(process.execPath, [join(source, 'app-smoke.mjs')], {
+    input: JSON.stringify(status), env, encoding: 'utf8', timeout: 120000,
+    maxBuffer: 1024 * 1024,
+  });
+  if (app.stdout) console.log(redact(app.stdout));
+  if (app.status !== 0) {
+    if (app.stderr) console.error(redact(app.stderr));
+    throw new Error(`Application smoke failed: exit ${app.status}, ${app.error?.code || 'test error'}`);
+  }
+  console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   if (attemptedStart) {
     // Exact new workdir and explicit local project only; never --all or --linked.
