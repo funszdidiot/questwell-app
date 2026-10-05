@@ -22,11 +22,9 @@ begin
   if (select count(*) from pg_policy where polrelid = 'storage.objects'::regclass and polpermissive) <> 3 then
     raise exception 'Existing Storage ownership policies changed';
   end if;
-end;
-$check$;
-
 -- Failure injection on app-owned rows only, in the disposable fixture only.
 -- A test clears the flag through REST and retries after the real Auth failure.
+execute $ddl$
 create function public.ci_account_delete_failure() returns trigger
 language plpgsql set search_path = '' as $function$
 begin
@@ -34,11 +32,18 @@ begin
   return old;
 end;
 $function$;
-revoke all on function public.ci_account_delete_failure() from public, anon, authenticated;
+$ddl$;
+execute 'revoke all on function public.ci_account_delete_failure() from public, anon, authenticated';
+execute $ddl$
 create trigger ci_account_delete_failure before delete on public.users
 for each row execute function public.ci_account_delete_failure();
+$ddl$;
 
 -- A second synthetic bucket proves cleanup is owner-based across buckets, not
 -- hard-coded to beta-feedback or a user's path prefix. Never applied to hosted DBs.
+execute $ddl$
 create policy ci_secondary_upload on storage.objects as permissive for insert to authenticated
 with check (bucket_id = 'ci-deletion-secondary' and owner_id = (select auth.uid())::text);
+$ddl$;
+end;
+$check$;
