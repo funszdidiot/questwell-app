@@ -15,13 +15,15 @@ class AdventurerInventoryItem {
     required this.category, required this.description, required this.owned,
     required this.equipped, required this.classLocked, required this.shop,
     this.archetype, this.roomSlot, this.milestoneLevel, this.unlockedAt, this.source,
-    this.collectionKey, this.editionType = 'standard'});
+    this.collectionKey, this.editionType = 'standard',
+    this.hearthPlacements = const []});
   final String id, name, slug, category, description;
   final String? archetype, roomSlot;
   final int? milestoneLevel;
   final DateTime? unlockedAt;
   final String? source, collectionKey;
   final String editionType;
+  final List<MapEntry<String, String>> hearthPlacements;
   String get renderKey => QuestwellLoadoutModel.renderKey(
     category: category,
     roomSlot: roomSlot,
@@ -264,7 +266,10 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       archetype: widget.archetype, bodyType: widget.bodyType,
       equippedSlugs: {for (final i in widget.items.where((i) => i.equipped)) i.renderKey: i.slug},
       occupants: {for (final i in widget.items.where((i) => i.category == item.category && i.equipped))
-        i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)});
+        i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)},
+      placementChoices: item.hearthPlacements.isEmpty
+          ? null
+          : {for (final choice in item.hearthPlacements) choice.key: choice.value});
     if (pick != null && mounted) await widget.onPlace?.call(item.id, pick.slot, pick.expectedOccupant);
   }
 
@@ -275,7 +280,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
     final room = item.category == 'room';
     final wallArt = item.category == 'wall_art';
     final outfit = item.category == 'chest';
-    final movable = room || QuestwellWallArt.isSide(item.slug);
+    final movable = room || wallArt;
     final status = item.equipped ? (room ? 'Placed' : wallArt ? 'Hung' : 'Equipped') : item.owned ? 'Owned' : 'Locked';
     return _panel(Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
