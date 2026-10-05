@@ -139,6 +139,35 @@ try {
       run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_reward_failure;`]);
     }
   }
+  const bossTests = phase => {
+    const bosses = spawnSync(process.execPath, [join(source, 'boss-rewards.mjs')], {
+      input: JSON.stringify({status, phase}), env, encoding: 'utf8', timeout: 120000,
+      maxBuffer: 1024 * 1024,
+    });
+    if (bosses.stdout) console.log(redact(bosses.stdout));
+    if (bosses.stderr) console.error(redact(bosses.stderr));
+    if (bosses.status !== 0) throw new Error(`Boss reward ${phase} failed`);
+  };
+  // Run both boundaries so a failing private SQL assertion cannot hide REST evidence.
+  let bossFailed = false;
+  try {
+    run(['db', 'query', '--local', '--file', join(source, 'boss-reward-contract.sql')]);
+    console.log('Private boss reward contract, privileges and RLS assertions passed.');
+  } catch { bossFailed = true; }
+  try { bossTests('regressions'); } catch { bossFailed = true; }
+  if (bossFailed) throw new Error('Boss reward contract/regressions failed');
+  for (const [table, expression] of [
+    ['reward_events', "event_type is distinct from 'boss_battle_completed'"],
+    ['users', 'total_xp = 0'],
+  ]) {
+    run(['db', 'query', '--local', `alter table public.${table} add constraint ci_boss_reward_failure check (${expression}) not valid;`]);
+    try {
+      bossTests('rollback');
+      console.log(`Verified boss rollback after forced ${table} write failure.`);
+    } finally {
+      run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_boss_reward_failure;`]);
+    }
+  }
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   if (attemptedStart) {
