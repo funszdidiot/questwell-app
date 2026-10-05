@@ -25,6 +25,13 @@ void main() {
           key: capture, child: SizedBox.fromSize(size: size,
             child: ColoredBox(color: background, child: art)),
         ))));
+        // pumpAndSettle does not guarantee completion of engine image decoding.
+        // Both compositions must contain decoded assets before raster capture.
+        await tester.runAsync(() => Future.wait([
+          for (final path in [QuestwellMalePaperDoll.baseAsset,
+              QuestwellMaleWoodland.outfitAsset, QuestwellAnnotatedGrimoire.asset])
+            precacheImage(AssetImage(path), capture.currentContext!),
+        ]));
         await tester.pumpAndSettle();
         return (await tester.runAsync(() async {
           final boundary = capture.currentContext!.findRenderObject()! as RenderRepaintBoundary;
@@ -52,7 +59,7 @@ void main() {
           expect(shared.length, approved.length);
           expect([for (var i = 0; i < shared.length; i++)
             if (shared[i] != approved[i]) i].length, 0,
-            reason: 'Shared rendering must preserve approved pixels, including the belt book');
+            reason: 'Approved pixels at $size on $background; belt grimoire: $grimoire');
           expect(tester.takeException(), isNull);
         }
       }
