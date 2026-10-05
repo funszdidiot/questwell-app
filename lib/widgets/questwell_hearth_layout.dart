@@ -127,7 +127,7 @@ abstract final class QuestwellHearthLayout {
         math.min(scene.height * .76, scene.width * .62 * 4 / 3);
 
     final heightFactor = switch (profileKey) {
-      'large_furniture' => .59,
+      'large_furniture' => .50,
       'pedestal_light' => .52,
       'seating' => .62,
       'plant' => slot == 'front' ? .43 : .40,
@@ -136,20 +136,11 @@ abstract final class QuestwellHearthLayout {
       _ => .40,
     };
 
-    final maxWidthFactor = switch (profileKey) {
-      'large_furniture' => .44,
-      'pedestal_light' => .45,
-      'seating' => .50,
-      'plant' => .30,
-      'side_table' => .28,
-      'relic_display' => .23,
-      _ => .30,
-    };
-
-    final height = math.min(
-      avatarHeight * heightFactor,
-      scene.width * maxWidthFactor / spec.aspectRatio,
-    );
+    // Family scale is height-based and never shrinks because one asset is
+    // wider. That guarantees a stable visual scale when users swap items.
+    // Artwork must be authored to the family's envelope instead of forcing the
+    // room to compensate for an oversized sprite.
+    final height = avatarHeight * heightFactor;
     final width = height * spec.aspectRatio;
 
     final hasTable = equipment['room:side'] == 'walnut-reading-table';
