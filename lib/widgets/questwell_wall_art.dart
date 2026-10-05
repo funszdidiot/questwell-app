@@ -1,14 +1,16 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import '../services/questwell_cosmetic_models.dart';
 
 /// Center and side paintings remain independent of floor decor.
 class QuestwellWallArt extends StatelessWidget {
-  const QuestwellWallArt({super.key, this.artSlug = slug});
+  const QuestwellWallArt({super.key, this.artSlug = slug, this.renderSpec});
   static const slug = 'moonlit-woodland';
   static const fern = 'fern-study';
   static const celestial = 'celestial-study';
   static bool isSide(String value) => value == fern || value == celestial;
   final String artSlug;
+  final QuestwellHearthRenderSpec? renderSpec;
 
   // A restrained room-light grade: 7% less saturation, slightly lower
   // brightness, and warmer highlights. Preserve the source alpha exactly.
@@ -21,18 +23,36 @@ class QuestwellWallArt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = artSlug == fern ? 'Fern Study' : artSlug == celestial ? 'Celestial Study' : 'Moonlit Woodland';
-    final asset = artSlug.replaceAll('-', '_');
+    final name = artSlug == fern ? 'Fern Study' : artSlug == celestial ? 'Celestial Study' : artSlug == slug ? 'Moonlit Woodland' : artSlug.split('-').map((word) => word.isEmpty ? word : '${word[0].toUpperCase()}${word.substring(1)}').join(' ');
+    final asset = renderSpec?.assetPath ?? 'assets/images/questwell/hearth/${artSlug.replaceAll('-', '_')}.webp';
     return Semantics(
       label: '$name painting hanging on the Hearth wall', image: true,
       child: IgnorePointer(child: LayoutBuilder(builder: (context, constraints) {
         final scale = ((isSide(artSlug)
           ? constraints.maxHeight / 64 : constraints.maxWidth / 80))
           .clamp(.6, 2.0).toDouble();
-        Widget artwork() => Image.asset(
-          'assets/images/questwell/hearth/$asset.webp',
-          fit: BoxFit.contain, filterQuality: FilterQuality.high,
-          excludeFromSemantics: true);
+        Widget artwork() {
+          final quality = renderSpec?.pixelated == true
+              ? FilterQuality.none
+              : FilterQuality.high;
+          if (renderSpec?.assetSource == 'network') {
+            return Image.network(
+              asset,
+              fit: BoxFit.contain,
+              filterQuality: quality,
+              gaplessPlayback: true,
+              errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+            );
+          }
+          return Image.asset(
+            asset,
+            fit: BoxFit.contain,
+            filterQuality: quality,
+            gaplessPlayback: true,
+            excludeFromSemantics: true,
+            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+          );
+        }
         return Stack(fit: StackFit.expand, clipBehavior: Clip.none, children: [
           // Use the actual frame silhouette, including transparent margins.
           // The fireplace casts this shallow shadow down and to the right.
