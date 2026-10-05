@@ -4,6 +4,7 @@ import 'questwell_hearth_decor.dart';
 import 'questwell_wall_art.dart';
 import 'questwell_milestone_reward.dart';
 import 'questwell_mastery_relic.dart';
+import '../services/questwell_cosmetic_models.dart';
 
 class RoomOccupant {
   const RoomOccupant(this.id, this.name);
@@ -24,7 +25,9 @@ Future<RoomPlacement?> showRoomPicker(BuildContext context, {
   required Map<String, RoomOccupant> occupants,
   Map<String, String>? placementChoices,
   Map<String, String> hearthProfilesBySlug = const {},
+  Map<String, QuestwellHearthRenderSpec> hearthRenderBySlug = const {},
   String? hearthProfileKey,
+  QuestwellHearthRenderSpec? hearthRenderSpec,
   String? currentSlot,
 }) => showDialog<RoomPlacement>(
   context: context,
@@ -38,7 +41,9 @@ Future<RoomPlacement?> showRoomPicker(BuildContext context, {
     occupants: occupants,
     placementChoices: placementChoices,
     hearthProfilesBySlug: hearthProfilesBySlug,
+    hearthRenderBySlug: hearthRenderBySlug,
     hearthProfileKey: hearthProfileKey,
+    hearthRenderSpec: hearthRenderSpec,
     currentSlot: currentSlot,
   ),
 );
@@ -53,8 +58,10 @@ class _RoomPicker extends StatefulWidget {
     required this.equippedSlugs,
     required this.occupants,
     required this.hearthProfilesBySlug,
+    required this.hearthRenderBySlug,
     this.placementChoices,
     this.hearthProfileKey,
+    this.hearthRenderSpec,
     this.currentSlot,
   });
 
@@ -63,7 +70,9 @@ class _RoomPicker extends StatefulWidget {
   final Map<String, RoomOccupant> occupants;
   final Map<String, String>? placementChoices;
   final Map<String, String> hearthProfilesBySlug;
+  final Map<String, QuestwellHearthRenderSpec> hearthRenderBySlug;
   final String? hearthProfileKey;
+  final QuestwellHearthRenderSpec? hearthRenderSpec;
   final String? currentSlot;
 
   @override
@@ -139,6 +148,11 @@ class _RoomPickerState extends State<_RoomPicker> {
                 ...widget.hearthProfilesBySlug,
                 if (widget.hearthProfileKey != null)
                   widget.slug: widget.hearthProfileKey!,
+              },
+              hearthRenderBySlug: {
+                ...widget.hearthRenderBySlug,
+                if (widget.hearthRenderSpec != null)
+                  widget.slug: widget.hearthRenderSpec!,
               },
             ),
             const SizedBox(height: 12),
