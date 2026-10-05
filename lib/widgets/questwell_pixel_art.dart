@@ -1,6 +1,7 @@
 import 'questwell_scout_wardrobe.dart';
 import 'questwell_neutral_paper_doll.dart';
 import 'questwell_male_paper_doll.dart';
+import 'questwell_male_woodland.dart';
 import 'questwell_legacy_chest.dart';
 import 'questwell_neutral_scout.dart';
 import 'questwell_woodland_scout.dart';
@@ -231,13 +232,13 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final fittedBody = const {'female', 'neutral', 'male'}.contains(harvestBody);
     final legacyChest = chest != null &&
         QuestwellLegacyChestFoundation.supported.contains(chest);
-    final woodland = fittedBody && harvestBody != 'male' && (previewWoodlandLayers != null ||
+    final woodland = fittedBody && (previewWoodlandLayers != null ||
         chest == 'woodland-scout-outfit');
     final fittedDefault = fittedBody &&
         (harvestBody == 'male' ||
           const {'scout', 'alchemist', 'scholar', 'guardian', 'wanderer'}.contains(archetype)) &&
         (chest == null || (harvestBody == 'male' && !legacyChest)) &&
-        (previewWoodlandLayers == null || harvestBody == 'male');
+        previewWoodlandLayers == null && !woodland;
     final scoutLayers = previewScoutLayers ?? (fittedBody &&
         equippedSlugs['chest'] == 'everyday-adventurer-outfit'
         ? const {'top', 'trousers', 'boots'}
@@ -289,7 +290,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     Widget foundation() => legacyChest
         ? QuestwellLegacyChestFoundation(body: body, slug: chest!)
         : woodland
-        ? (harvestBody == 'neutral'
+        ? (harvestBody == 'male'
+            ? QuestwellMaleWoodland(
+                showOutfit: woodlandLayers.contains('outfit'),
+                includeIdentity: false)
+            : harvestBody == 'neutral'
             ? QuestwellNeutralScout(layers: woodlandLayers)
             : QuestwellWoodlandScoutFoundation(layers: woodlandLayers))
         : modular

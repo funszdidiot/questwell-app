@@ -37,7 +37,7 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
     _WardrobeStage.body => 'Locked body',
     _WardrobeStage.everyday => 'Everyday outfit',
     _WardrobeStage.robe => _robeLabel,
-    _WardrobeStage.woodland => 'Woodland Scout candidate v2',
+    _WardrobeStage.woodland => 'Approved Woodland Scout v2',
   };
 
   Widget _preview(String label, Color background, double availableWidth) {
@@ -117,7 +117,7 @@ class _MaleEverydayReviewAppState extends State<MaleEverydayReviewApp> {
                       ),
                       const SizedBox(height: 8),
                       const Text(
-                        'Everyday and robes are live · Woodland is a fit candidate',
+                        'Woodland v2 fit approved · Account rollout in verification',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white70),
                       ),

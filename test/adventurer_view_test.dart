@@ -123,8 +123,9 @@ void main() {
         (body: 'male', slug: slug, classLocked: false, label: 'Equip'),
       (body: 'neutral', slug: 'everyday-adventurer-outfit', classLocked: false, label: 'Equip'),
       (body: 'neutral', slug: 'woodland-scout-outfit', classLocked: false, label: 'Equip'),
-      (body: 'male', slug: 'woodland-scout-outfit', classLocked: false, label: 'Fit unavailable'),
+      (body: 'male', slug: 'woodland-scout-outfit', classLocked: false, label: 'Equip'),
       (body: 'female', slug: 'woodland-scout-outfit', classLocked: true, label: 'Class restricted'),
+      (body: 'male', slug: 'woodland-scout-outfit', classLocked: true, label: 'Class restricted'),
     ]) {
       await tester.pumpWidget(const SizedBox.shrink());
       String? equipped;
@@ -149,11 +150,6 @@ void main() {
         expect(equipped, 'outfit');
       } else {
         expect(equipped, isNull);
-        if (scenario.label == 'Fit unavailable') {
-          expect(find.text(scenario.slug == 'woodland-scout-outfit'
-              ? 'Available for female and gender-neutral bodies.'
-              : 'Available for female and gender-neutral bodies.'), findsOneWidget);
-        }
       }
       expect(tester.takeException(), isNull);
     }

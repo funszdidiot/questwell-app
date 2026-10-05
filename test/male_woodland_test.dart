@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -8,9 +9,103 @@ import '../lib/preview/male_everyday_review.dart';
 import '../lib/widgets/questwell_annotated_grimoire.dart';
 import '../lib/widgets/questwell_male_paper_doll.dart';
 import '../lib/widgets/questwell_male_woodland.dart';
+import '../lib/widgets/questwell_pixel_art.dart';
+import 'support/male_robe_layers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  for (final size in [const Size(240, 320), const Size(480, 640)]) {
+    testWidgets('shared Woodland pixels match the approved review at $size', (tester) async {
+      await tester.binding.setSurfaceSize(const Size(800, 900));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final capture = GlobalKey();
+      Future<List<int>> pixels(Widget art, Color background) async {
+        await tester.pumpWidget(MaterialApp(home: Center(child: RepaintBoundary(
+          key: capture, child: SizedBox.fromSize(size: size,
+            child: ColoredBox(color: background, child: art)),
+        ))));
+        // pumpAndSettle does not guarantee completion of engine image decoding.
+        // Both compositions must contain decoded assets before raster capture.
+        await tester.runAsync(() => Future.wait([
+          for (final path in [QuestwellMalePaperDoll.baseAsset,
+              QuestwellMaleWoodland.outfitAsset, QuestwellAnnotatedGrimoire.asset])
+            precacheImage(AssetImage(path), capture.currentContext!),
+        ]));
+        await tester.pumpAndSettle();
+        return (await tester.runAsync(() async {
+          final boundary = capture.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+          final image = await boundary.toImage(pixelRatio: 1);
+          try {
+            final data = (await image.toByteData(format: ui.ImageByteFormat.rawRgba))!;
+            return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes).toList();
+          } finally {
+            image.dispose();
+          }
+        }))!;
+      }
+      for (final background in [Colors.white, const Color(0xff17202a)]) {
+        for (final grimoire in [false, true]) {
+          final approved = await pixels(Stack(fit: StackFit.expand, children: [
+            const QuestwellMaleWoodland(),
+            if (grimoire) const QuestwellAnnotatedGrimoire(bodyType: 'male'),
+          ]), background);
+          final shared = await pixels(QuestwellLayeredAdventurerArt(
+            archetype: 'scout', avatarBodyType: 'male', equippedSlugs: {
+              'chest': 'woodland-scout-outfit',
+              if (grimoire) 'hands': 'annotated-grimoire',
+            },
+          ), background);
+          expect(shared.length, approved.length);
+          expect([for (var i = 0; i < shared.length; i++)
+            if (shared[i] != approved[i]) i].length, 0,
+            reason: 'Approved pixels at $size on $background; belt grimoire: $grimoire');
+          expect(tester.takeException(), isNull);
+        }
+      }
+    });
+  }
+
+  testWidgets('male Woodland equip, body review, class change and reload retain v3', (tester) async {
+    Future<void> render({String archetype = 'scout', String? chest,
+        Set<String>? reviewLayers}) async {
+      await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
+        width: 240, height: 320, child: QuestwellLayeredAdventurerArt(
+          archetype: archetype, avatarBodyType: 'male',
+          equippedSlugs: {if (chest != null) 'chest': chest},
+          previewWoodlandLayers: reviewLayers,
+        ),
+      ))));
+      await tester.pumpAndSettle();
+      final body = find.image(const AssetImage(QuestwellMalePaperDoll.baseAsset)).first;
+      expect(tester.getSize(body), const Size(240, 320));
+      expect(find.ancestor(of: body, matching: find.byType(ClipPath)), findsNothing);
+      expect(tester.takeException(), isNull);
+    }
+    List<String> paths() => tester.widgetList<Image>(find.byType(Image))
+        .map((image) => (image.image as AssetImage).assetName).toList();
+    const woodland = [QuestwellMalePaperDoll.baseAsset,
+      QuestwellMaleWoodland.outfitAsset, QuestwellMalePaperDoll.baseAsset];
+    await render();
+    expect(paths(), maleRobeLayers('scout'));
+    await render(chest: 'woodland-scout-outfit');
+    expect(paths(), woodland);
+    await tester.pumpWidget(const SizedBox());
+    await render(chest: 'woodland-scout-outfit');
+    expect(paths(), woodland);
+    await render(reviewLayers: {});
+    expect(paths(), [QuestwellMalePaperDoll.baseAsset, QuestwellMalePaperDoll.baseAsset]);
+    await render(reviewLayers: {'outfit'});
+    expect(paths(), woodland);
+    await render(chest: 'everyday-adventurer-outfit');
+    expect(paths(), [QuestwellMalePaperDoll.baseAsset,
+      QuestwellMalePaperDoll.everydayAsset, QuestwellMalePaperDoll.baseAsset]);
+    // The server removes Scout-only equipment when the class changes.
+    for (final archetype in QuestwellMalePaperDoll.classLabels.keys) {
+      await render(archetype: archetype);
+      expect(paths(), maleRobeLayers(archetype));
+    }
+  });
 
   test('Woodland covers the locked shorts, legs and feet and clears both hands', () async {
     Future<List<int>> alpha(String asset) async {
