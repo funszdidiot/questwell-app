@@ -20,7 +20,7 @@ void main() {
       await tester.tap(find.text('Open')); await tester.pumpAndSettle();
       expect(find.byType(RadioListTile<String>), findsNWidgets(slug == 'hearth-fern' ? 3 : 2));
       if (slug == 'walnut-bookshelf') {
-        expect(find.text('Left wall'), findsOneWidget);
+        expect(find.text('Back left'), findsOneWidget);
         expect(find.textContaining('updated placement choices'), findsOneWidget);
         await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
         expect(result?.slot, 'left');
@@ -36,7 +36,7 @@ void main() {
       expect(tester.takeException(), isNull);
     }
   });
-  testWidgets('Warding Lantern offers left, right, and foreground placements', (tester) async {
+  testWidgets('Warding Lantern inherits the two pedestal-light placements', (tester) async {
     GoogleFonts.config.allowRuntimeFetching = false;
     await tester.binding.setSurfaceSize(const Size(390, 1100));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -49,13 +49,13 @@ void main() {
           equippedSlugs: const {}, occupants: const {});
       })))));
     await tester.tap(find.text('Open warding')); await tester.pumpAndSettle();
-    expect(find.byType(RadioListTile<String>), findsNWidgets(3));
-    expect(find.text('Left wall'), findsOneWidget);
-    expect(find.text('Right wall'), findsOneWidget);
-    expect(find.text('Foreground'), findsOneWidget);
-    await tester.tap(find.text('Foreground')); await tester.pumpAndSettle();
+    expect(find.byType(RadioListTile<String>), findsNWidgets(2));
+    expect(find.text('Back left'), findsOneWidget);
+    expect(find.text('Back right'), findsOneWidget);
+    expect(find.text('Foreground'), findsNothing);
+    await tester.tap(find.text('Back right')); await tester.pumpAndSettle();
     await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
-    expect(result?.slot, 'front');
+    expect(result?.slot, 'right');
     expect(result?.expectedOccupant, isNull);
     expect(tester.takeException(), isNull);
   });
@@ -73,7 +73,7 @@ void main() {
       })))));
     await tester.tap(find.text('Open')); await tester.pumpAndSettle();
     expect(find.text('Replaces Walnut Bookshelf'), findsOneWidget);
-    await tester.tap(find.text('Near the window')); await tester.pumpAndSettle();
+    await tester.tap(find.text('Back right')); await tester.pumpAndSettle();
     await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
     expect(find.text('Replace Walnut Bookshelf?'), findsOneWidget);
     await tester.tap(find.text('Keep current item')); await tester.pumpAndSettle();
@@ -81,7 +81,7 @@ void main() {
     await tester.tap(find.text('Cancel')); await tester.pumpAndSettle();
     expect(result, isNull);
     await tester.tap(find.text('Open')); await tester.pumpAndSettle();
-    await tester.tap(find.text('Near the window')); await tester.pumpAndSettle();
+    await tester.tap(find.text('Back right')); await tester.pumpAndSettle();
     await tester.tap(find.text('Save placement')); await tester.pumpAndSettle();
     await tester.tap(find.text('Replace item')); await tester.pumpAndSettle();
     expect(result?.slot, 'right'); expect(result?.expectedOccupant, 'shelf');
