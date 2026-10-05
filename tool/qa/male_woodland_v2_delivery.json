@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-05",
+  "revision": "ae72f23b0386420e28282021133378f17385d546",
+  "productionStatus": "DEV DEPLOYED",
+  "artStatus": "candidate_not_founder_locked",
+  "founderApproval": null,
+  "reviewUrl": "https://funszdidiot.github.io/questwell-app/?review=male-woodland",
+  "workflowRun": 37342883393,
+  "workflowConclusion": "success",
+  "flutterTests": 387,
+  "previewNodeTests": 12,
+  "backendHarness": {
+    "workflowRun": 37342882902,
+    "conclusion": "success",
+    "nodeGuardTests": 19,
+    "isolatedFixtureAssertions": 10,
+    "isolatedApplicationSmokeAssertions": 4
+  },
+  "analyzer": "passed configured gate with existing warnings",
+  "build": "passed",
+  "deploy": "passed",
+  "deliveredVersion": "ae72f23b0386420e28282021133378f17385d546",
+  "deliveredAssets": [
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v2.webp",
+      "sha256": "bc923c9b5043950e617ad81b5b4caed7448846ccc4536e4fcc56ad90725c8ed8",
+      "matches": true
+    },
+    {
+      "path": "assets/images/questwell_annotated_grimoire_v1.webp",
+      "sha256": "c7d933a8adb7456b332409d76f05ff17bfaa6c70944179a54ddd20ed7c2fecc3",
+      "matches": true
+    }
+  ],
+  "runtimeInspection": {
+    "bodyOutfitRobeWoodlandTransitions": "PASS: actual browser states and screenshots",
+    "grimoire": "PASS: belt-mounted book rendered with both hands clear; reload restored accessory off",
+    "enlargedLightDark": "PASS: exact delivered outfit inspected at native and enlarged scale",
+    "reload": "PASS: Woodland v2 restored at native size with Scout selected and accessory off",
+    "phoneWidths": "320 and 390 pixels passed in Flutter widget tests; browser screenshots at 1363 pixels",
+    "marketEligibility": "Existing passing market/equipment widget tests preserve female/neutral Scout support and reject male equipping; no browser purchase or account write performed",
+    "accountPersistence": "Not exercised: isolated fit-review state only"
+  },
+  "independentDeliveredVisualReview": {
+    "reviewer": "/root/woodland_runtime_review",
+    "result": "PASS",
+    "blockingDefects": [],
+    "findings": [
+      "Shoulders, short sleeves and cuff ends follow the locked body without inflated elbows, skin gaps or filler patches.",
+      "Hands remain clear and continuous; intentional arm-to-torso spaces remain open.",
+      "Neckline, vest, belt, crotch and trouser seams connect coherently.",
+      "Boots face outward, cover the original feet and sit evenly.",
+      "Light and dark runtime composites visibly match the exported artwork."
+    ],
+    "limitation": "Enlarged runtime viewport clips boot bottoms; complete boots inspected in native runtime and enlarged exported composites. Visual QA does not imply founder approval."
+  },
+  "screenshots": [
+    "docs/qa/male-woodland-v2-native-ae72f23.jpg",
+    "docs/qa/male-woodland-v2-enlarged-ae72f23.jpg",
+    "docs/qa/male-woodland-v2-grimoire-ae72f23.jpg"
+  ],
+  "notVerified": [
+    "Physical iOS/Safari",
+    "Real-account male Woodland purchase or equipping",
+    "Real-user saved-loadout persistence"
+  ],
+  "scope": "Verification and evidence only; v2 was already deployed. No artwork, body, renderer, catalog, economy, backend or account changes."
+}
