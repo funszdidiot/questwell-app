@@ -63,6 +63,12 @@ GREEN verification is pending. Added post-fix coverage also includes privileged
 synthetic legacy-row seeding, SQL privilege assertions, and injected ledger and
 balance failures to verify transactional rollback. No P0 closure or release claim.
 
+First fix run `37345250356` stopped before applying the migration because CLI
+`db query --file` rejects multiple prepared statements. The runner now copies
+only this exact proposal beside the verified baseline and uses the installed,
+help-verified `migration up --local`. It does not copy the root migration chain.
+The follow-up also inventories security advisors using verified CLI flags.
+
 Official references checked October 5, 2026: Supabase database functions, RLS,
 triggers and column privileges; PostgreSQL 17 GRANT and explicit row locking.
 Supabase CLI 2.119.0 is the existing checksum-pinned CI version.

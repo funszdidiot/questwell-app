@@ -40,7 +40,7 @@ function run(args, timeout = 120000) {
 const version = run(['--version']).trim();
 if (version !== '2.119.0') throw new Error(`Unexpected Supabase CLI version: ${version}`);
 console.log(`Supabase CLI ${version}; temporary local fixture stack only.`);
-for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['db', 'lint', '--help'], ['stop', '--help']]) {
+for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['db', 'lint', '--help'], ['db', 'advisors', '--help'], ['migration', 'up', '--help'], ['stop', '--help']]) {
   run(args); // Installed-version help verifies the command surface on the runner.
 }
 
@@ -108,10 +108,14 @@ try {
   }
   // Apply exactly the reviewed proposal AFTER proving the observed baseline.
   // Never replay the incomplete root chain or contact a linked/remote project.
-  run(['db', 'query', '--local', '--file', resolve(source, '../../supabase/migrations/20261005165421_task_reward_authority.sql')]);
+  const rewardMigration = '20261005165421_task_reward_authority.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', rewardMigration), join(workdir, 'supabase/migrations', rewardMigration));
+  run(['migration', 'up', '--local']);
   run(['db', 'query', '--local', '--file', join(source, 'task-reward-contract.sql')]);
   console.log('Task reward SQL mapping, column privileges and RLS assertions passed.');
   console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
+  console.log('Security advisor inventory after R01; inherited findings remain release blockers:');
+  console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
   const rewardTests = phase => {
     const rewards = spawnSync(process.execPath, [join(source, 'task-rewards.mjs')], {
       input: JSON.stringify({status, phase}), env, encoding: 'utf8', timeout: 120000,
