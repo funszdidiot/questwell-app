@@ -97,6 +97,20 @@ availability.status=scheduled does **not** imply:
 - economy approval;
 - founder visual approval.
 
+### Validate the manifest before art integration
+
+During planning, validate structure even when candidate assets do not exist yet:
+
+    node tool/validate_seasonal_release_manifest.cjs <manifest.json> --structure-only
+
+Once bundle assets exist, run full preflight:
+
+    node tool/validate_seasonal_release_manifest.cjs <manifest.json>
+
+Full preflight additionally checks bundle asset existence and PNG/WebP headers.
+
+Do not apply candidate catalog metadata to Supabase when the manifest fails preflight.
+
 ## Phase 3 — Family/template assignment
 
 ### Wearables
