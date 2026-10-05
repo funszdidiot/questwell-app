@@ -29,6 +29,11 @@ class QuestwellLegacyChestFoundation extends StatelessWidget {
   static String suitAsset(String body) =>
       'assets/images/questwell/avatar/business_suit_${body}_v1.webp';
 
+  static String harvestAsset(String body) {
+    final version = body == 'female' ? 'v4' : 'v3';
+    return 'assets/images/questwell/avatar/harvest_coat_${body}_$version.webp';
+  }
+
   static String _identity(String body) => switch (body) {
         'male' => QuestwellMalePaperDoll.identityAsset,
         'neutral' => QuestwellNeutralPaperDoll.identityAsset,

@@ -39,7 +39,10 @@ import 'preview/scarf_fit_review.dart';
 void main() {
   if (Uri.base.queryParameters['review'] == 'legacy-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(const LegacyWardrobeReviewApp());
+    runApp(LegacyWardrobeReviewApp(
+      initialBody: Uri.base.queryParameters['body'] ?? 'male',
+      focusGarment: Uri.base.queryParameters['garment'],
+    ));
   } else if (Uri.base.queryParameters['review'] == 'male-woodland') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const MaleEverydayReviewApp(initialWoodland: true));

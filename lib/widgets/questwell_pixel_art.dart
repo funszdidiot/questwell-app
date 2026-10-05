@@ -262,7 +262,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final classOverlay = woodland ? null : modular
         ? (scoutLayers!.contains('robe') ? fittedRobeAsset('robe') : null)
         : harvestCoat
-        ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v3.webp'
+        ? QuestwellLegacyChestFoundation.harvestAsset(harvestBody)
         : legacyChest ? null
         : chest == 'starter-business-suit' ? null : _classOverlayAsset;
     final rearRevision = archetype == 'wanderer' ? 'short_v1' : 'v1';

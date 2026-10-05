@@ -1,0 +1,45 @@
+{
+  "source": {
+    "path": "tool/art_assets/harvest_female_v4/coat_source_05.png",
+    "sha256": "f5c4feb8c3037037ee1aa1cfbdbd7bb3a1d70565eea1b41fe85041b5dff744f6"
+  },
+  "uniformResizeWidth": 122,
+  "offset": [
+    57,
+    51
+  ],
+  "outputs": [
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_female_v4.webp",
+      "sha256": "c28eb3586ae3c914b2c8813161184c88885d9c37f2490ddc59ab9684d76ae09c"
+    },
+    {
+      "path": "tool/art_assets/harvest_female_v4/before_light.jpg",
+      "sha256": "b3545caae606d6dff08cb9056c07ac0166e96eb325b450f9bed3b8a4a59f70ab"
+    },
+    {
+      "path": "tool/art_assets/harvest_female_v4/before_dark.jpg",
+      "sha256": "dafde4cfdff3e23cd21e4a005b2566b82b8f31d1d51cbcb04d09e1134d1d0113"
+    },
+    {
+      "path": "tool/art_assets/harvest_female_v4/after_light.jpg",
+      "sha256": "5036f3e353523817007f5601506c257fb61c0093d172beb9ef0151aa78578621"
+    },
+    {
+      "path": "tool/art_assets/harvest_female_v4/after_dark.jpg",
+      "sha256": "fab8ebe1e6cb68dd01b88315552131c5a902dcca982d0097c779642c35afba9e"
+    }
+  ],
+  "status": "independent_export_visual_qa_passed_runtime_pending",
+  "body": "female",
+  "scope": "Midnight Harvest Coat overall size and sleeve/cuff fit only; no other garments or bodies.",
+  "founderLock": false,
+  "method": "Built-in ImageGen complete garment source, one uniform normalization, one full-canvas placement; no per-part warps or body edits.",
+  "independentReview": {
+    "reviewer": "female_coat_fit_review",
+    "result": "PASS for female coat size/sleeve stage",
+    "evidence": "Actual native export and enlarged light/dark composites. Both left outer-arm and right inner-elbow leaks fixed; slimmer sleeves, cuffs at wrists, intact hands/thumbs, natural waist/hips, even shorter tails, four leaf ornaments retained.",
+    "notApproval": true
+  },
+  "runtime": "pending"
+}

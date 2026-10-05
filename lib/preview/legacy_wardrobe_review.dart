@@ -3,14 +3,18 @@ import '../widgets/questwell_pixel_art.dart';
 
 /// Account-free fit audit using the same renderer as Hearth and inventory.
 class LegacyWardrobeReviewApp extends StatefulWidget {
-  const LegacyWardrobeReviewApp({super.key});
+  const LegacyWardrobeReviewApp({super.key, this.initialBody = 'male', this.focusGarment});
+  final String initialBody;
+  final String? focusGarment;
 
   @override
   State<LegacyWardrobeReviewApp> createState() => _LegacyWardrobeReviewAppState();
 }
 
 class _LegacyWardrobeReviewAppState extends State<LegacyWardrobeReviewApp> {
-  String body = 'male', archetype = 'scout';
+  late String body = const ['female', 'neutral'].contains(widget.initialBody)
+      ? widget.initialBody : 'male';
+  String archetype = 'scout';
   bool light = false, enlarged = false, equipped = true;
   static const garments = {
     'Class robe': null,
@@ -50,7 +54,11 @@ class _LegacyWardrobeReviewAppState extends State<LegacyWardrobeReviewApp> {
         LayoutBuilder(builder: (context, constraints) {
           final width = (enlarged ? 480.0 : 240.0).clamp(0.0, constraints.maxWidth).toDouble();
           return Wrap(spacing: 16, runSpacing: 16, children: [
-            for (final entry in garments.entries) SizedBox(width: width, child: Column(children: [
+            for (final entry in garments.entries.where((entry) =>
+                !garments.containsValue(widget.focusGarment) ||
+                widget.focusGarment == null || entry.value == null ||
+                entry.value == widget.focusGarment))
+              SizedBox(width: width, child: Column(children: [
               Text(entry.key, style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               ColoredBox(color: light ? const Color(0xFFF4EDDF) : const Color(0xFF18252C),

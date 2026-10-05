@@ -1,5 +1,7 @@
 # Legacy fit repair — 2026-10-04 America/Chicago
 
+**Current correction:** Tanya rejected the sleeves and overall size after this delivery. Earlier broad visual PASS and completion claims below are superseded. These remain historical technical/neckline records, not acceptance of garment fit. Work is reopened by garment and body, starting with female Harvest Coat size/sleeves; see [FEMALE_HARVEST_FIT_V4.md](FEMALE_HARVEST_FIT_V4.md). Other coat, cloak and mantle fits remain unfinished.
+
 Status: **DEV DEPLOYED**, verified `339cc4955bf944bdc42c025fd91cebfd84d16d92`, workflow `37260882702`. Scoped visual repair; no new founder lock.
 
 Scope: Business Suit, Midnight Harvest Coat, Moss-Green Cloak and Hearthguard Mantle on locked male v3, female v1 and neutral v4. User explicitly requested female and neutral checks.

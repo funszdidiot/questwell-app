@@ -1636,6 +1636,15 @@
           "sha256": "4ae8d74f777b96f7b93926c3a653590a3c0493ebbf4324202fab0e8c6f16934c"
         }
       ]
+    },
+    "harvest_female_v4": {
+      "scope": "Female-only Harvest Coat size and sleeve correction; not founder-locked. Other legacy fits remain open.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_female_v4.webp",
+          "sha256": "c28eb3586ae3c914b2c8813161184c88885d9c37f2490ddc59ab9684d76ae09c"
+        }
+      ]
     }
   },
   "approved_layers": {
