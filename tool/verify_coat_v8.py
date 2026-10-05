@@ -19,6 +19,10 @@ for body,version in [('female','v1'),('male','v3'),('neutral','v4')]:
         entry=ref[key]
         assert hashlib.sha256(Path(entry['path']).read_bytes()).hexdigest()==entry['sha256']
     base=rgba(ROOT/f'base/paper_doll_{body}_{version}.webp')
+    if body=='male':
+        identity=rgba(ROOT/f'base/paper_doll_{body}_identity_{version}.webp')
+        visible=(base[:74,:,3]>0)|(identity[:74,:,3]>0)
+        assert np.array_equal(base[:74][visible],identity[:74][visible]), 'Original head pixels differ'
     old=rgba(ROOT/f'harvest_coat_{body}_v6.webp')
     coat=rgba(ROOT/f'harvest_coat_{body}_v8.webp')
     assert coat.shape==(320,240,4)

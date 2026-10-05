@@ -303,7 +303,8 @@ void main() {
         await render(chest: chest);
         final paths = assets(tester);
         expect(paths, contains(QuestwellMalePaperDoll.baseAsset));
-        expect(paths, contains(QuestwellMalePaperDoll.identityAsset));
+        expect(paths.where((p) => p == QuestwellMalePaperDoll.baseAsset).length, greaterThan(1),
+            reason: 'Foreground head samples the exact original body pixels');
         if (chest == 'starter-business-suit') {
           expect(paths, contains('assets/images/questwell/avatar/business_suit_male_v1.webp'));
         } else {

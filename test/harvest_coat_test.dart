@@ -9,6 +9,27 @@ import '../lib/widgets/questwell_legacy_chest.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test('legacy male head duplicate preserves the locked visible identity pixels', () async {
+    Future<ui.Image> decode(String asset) async {
+      final data = await rootBundle.load(asset);
+      final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes,data.lengthInBytes));
+      final image = (await codec.getNextFrame()).image;
+      codec.dispose();
+      return image;
+    }
+    final body = await decode(QuestwellMalePaperDoll.baseAsset);
+    final identity = await decode(QuestwellMalePaperDoll.identityAsset);
+    final b = (await body.toByteData())!;
+    final i = (await identity.toByteData())!;
+    for (var pixel=0; pixel<240*74; pixel++) {
+      if (b.getUint8(pixel*4+3)>0 || i.getUint8(pixel*4+3)>0) {
+        expect(b.getUint32(pixel*4), i.getUint32(pixel*4), reason:'Original head RGBA must match');
+      }
+    }
+    final clip = const LegacyMaleIdentityClipper().getClip(const Size(480,640));
+    expect(clip.getBounds(), const Rect.fromLTRB(0,0,480,148));
+    body.dispose(); identity.dispose();
+  });
   for (final body in ['female','male','neutral']) {
     final asset='assets/images/questwell/avatar/harvest_coat_${body}_v8.webp';
     final rearAsset='assets/images/questwell/avatar/harvest_coat_rear_${body}_v8.webp';
@@ -61,7 +82,6 @@ void main() {
             expect(images, containsAll([
               QuestwellMalePaperDoll.baseAsset,
               QuestwellMalePaperDoll.everydayAsset,
-              QuestwellMalePaperDoll.identityAsset,
             ]));
           }
           expect(find.byType(QuestwellScholarCuffs),findsNothing);

@@ -199,12 +199,12 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     return null;
   }
 
-  Widget _assetLayer(String asset, {Widget? fallback, FilterQuality filterQuality = FilterQuality.high}) {
+  Widget _assetLayer(String asset, {Widget? fallback}) {
     return Image.asset(
       asset,
       fit: BoxFit.contain,
       alignment: Alignment.bottomCenter,
-      filterQuality: filterQuality,
+      filterQuality: FilterQuality.high,
       gaplessPlayback: true,
       errorBuilder: (_, error, ___) {
         if (Uri.base.queryParameters['review'] == 'hearth') {
@@ -366,8 +366,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
                   child: _assetLayer(QuestwellNeutralPaperDoll.identityAsset))
               : _assetLayer(QuestwellNeutralPaperDoll.identityAsset)
           else if (paperDollMale && (!legacyChest || harvestCoat))
-            _assetLayer(QuestwellMalePaperDoll.identityAsset,
-                filterQuality: legacyChest ? FilterQuality.low : FilterQuality.high)
+            legacyChest ? const QuestwellLegacyMaleIdentity()
+                : _assetLayer(QuestwellMalePaperDoll.identityAsset)
           else if (modular) ClipPath(clipper: classOverlay != null
               ? ScoutWardrobeClipper(body, 'identityHead')
               : CleanBaseClipper(body, 'identity'),
@@ -388,8 +388,8 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ClipPath(clipper: QuestwellCloakHairClipper(body),
                 child: _assetLayer(QuestwellNeutralPaperDoll.identityAsset))
             else if (paperDollMale)
-              _assetLayer(QuestwellMalePaperDoll.identityAsset,
-                filterQuality: legacyChest ? FilterQuality.low : FilterQuality.high)
+              legacyChest ? const QuestwellLegacyMaleIdentity()
+                : _assetLayer(QuestwellMalePaperDoll.identityAsset)
             else if (paperDollFemale)
               _assetLayer(QuestwellScoutWardrobeFoundation.femaleIdentityAsset),
           ],

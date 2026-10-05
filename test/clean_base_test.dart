@@ -224,7 +224,7 @@ void main() {
               ? QuestwellNeutralPaperDoll.baseAsset
               : QuestwellScoutWardrobeFoundation.femaleBaseAsset;
       final lockedIdentity = body == 'male'
-          ? QuestwellMalePaperDoll.identityAsset
+          ? QuestwellMalePaperDoll.baseAsset
           : body == 'neutral'
               ? QuestwellNeutralPaperDoll.identityAsset
               : QuestwellScoutWardrobeFoundation.femaleIdentityAsset;
@@ -289,7 +289,7 @@ void main() {
                     ? QuestwellNeutralPaperDoll.baseAsset
                     : QuestwellScoutWardrobeFoundation.femaleBaseAsset;
             final lockedIdentity = body == 'male'
-                ? QuestwellMalePaperDoll.identityAsset
+                ? QuestwellMalePaperDoll.baseAsset
                 : body == 'neutral'
                     ? QuestwellNeutralPaperDoll.identityAsset
                     : QuestwellScoutWardrobeFoundation.femaleIdentityAsset;

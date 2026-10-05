@@ -84,3 +84,18 @@ coat and cloak, absent from an exact local layer composite. Investigating
 identity sampling at its transparent cutoff; scoped bilinear sampling in legacy
 chest states is under QA. No body, identity or accepted cloth bytes are changed.
 Do not close runtime QA until the delivered follow-up is checked.
+
+Sample Market evidence: female Scholar, 390px layout, Harvest Coat search;
+try-on showed v8, sample purchase650→470, Owned→Equip→In use, preview Unequip
+returned Owned with470 unchanged. These are in-memory review fixtures, not
+a real-account purchase or persistence claim. Catalog eligibility and equipment
+policy were unchanged; existing all-body/class restoration regressions passed.
+
+Sampling follow-up `0a4814f`, workflow37329335033, passed the full386Flutter +
+12Node gate and31delivery hashes, but the neckline line remained. Bilinear
+sampling is therefore reverted. The next rendering correction samples the
+exact original head rows0..73 from the complete locked body before clipping the
+foreground duplicate. Every visible RGBA pixel in this region equals the locked
+identity export; the source files and primary full body stay unchanged. This
+is a rendering correction, not replacement anatomy. Actual runtime verification
+remains pending.

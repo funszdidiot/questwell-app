@@ -39,9 +39,7 @@ class QuestwellLegacyChestFoundation extends StatelessWidget {
         asset,
         fit: BoxFit.contain,
         alignment: Alignment.bottomCenter,
-        // Bilinear sampling avoids cubic ringing at the fixed identity cutoff.
-        filterQuality: body == 'male' && asset == _identity(body)
-            ? FilterQuality.low : FilterQuality.high,
+        filterQuality: FilterQuality.high,
         gaplessPlayback: true,
       );
 
@@ -78,7 +76,8 @@ class QuestwellLegacyChestFoundation extends StatelessWidget {
       children: [
         businessSuit ? _baseOnly() : _everydayFoundation(),
         if (businessSuit) _image(suitAsset(body)),
-        _image(_identity(body)),
+        if (body == 'male') const QuestwellLegacyMaleIdentity()
+        else _image(_identity(body)),
       ],
     );
   }
@@ -121,4 +120,32 @@ class HarvestCoatHandsClipper extends CustomClipper<Path> {
   }
   @override
   bool shouldReclip(covariant HarvestCoatHandsClipper oldClipper) => oldClipper.body != body;
+}
+
+/// Exact original visible identity pixels sampled from the full locked image.
+/// The separate identity export has the same visible rows0..73. Sampling the
+/// complete image before clipping avoids its encoded transparent cutoff edge.
+/// The primary full body remains an unclipped sibling below the garments.
+class QuestwellLegacyMaleIdentity extends StatelessWidget {
+  const QuestwellLegacyMaleIdentity({super.key});
+  @override
+  Widget build(BuildContext context) => ClipPath(
+    clipper: const LegacyMaleIdentityClipper(),
+    child: Image.asset(QuestwellMalePaperDoll.baseAsset,
+      fit: BoxFit.contain, alignment: Alignment.bottomCenter,
+      filterQuality: FilterQuality.high, gaplessPlayback: true),
+  );
+}
+
+class LegacyMaleIdentityClipper extends CustomClipper<Path> {
+  const LegacyMaleIdentityClipper();
+  @override
+  Path getClip(Size size) {
+    final scale = math.min(size.width / 240, size.height / 320);
+    return (Path()..addRect(const Rect.fromLTRB(0,0,240,74)))
+      .transform((Matrix4.identity()..scale(scale,scale)).storage)
+      .shift(Offset((size.width-240*scale)/2,size.height-320*scale));
+  }
+  @override
+  bool shouldReclip(covariant LegacyMaleIdentityClipper oldClipper) => false;
 }
