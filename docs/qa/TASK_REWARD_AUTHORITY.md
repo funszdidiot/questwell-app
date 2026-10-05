@@ -8,8 +8,8 @@ Base: ae72f23b0386420e28282021133378f17385d546, preserving concurrent avatar wor
 
 - Existing REST create/edit requests and `complete_task(p_task_id uuid)` response
   shape remain compatible. No new public schema or client API is introduced.
-- Server computes rewards from difficulty: 1 = 10 XP/5 coins, 2 = 20/10,
-  3 = 35/18, 4 = 60/30. Caller reward amounts are ignored.
+- Server computes rewards on insert, difficulty/reward edits and completion:
+  1 = 10 XP/5 coins, 2 = 20/10, 3 = 35/18, 4 = 60/30. Caller reward amounts are ignored.
 - Only open quests complete. Completion locks the owned quest and updates its
   state, reward ledger and account balance in one transaction. Duplicate calls
   retain the existing error contract and never pay again.
@@ -94,6 +94,15 @@ blocked unrelated restore/title/pin updates. Two focused regressions are added
 before the correction: restore then repair null/out-of-range legacy difficulty,
 and pinning a valid quest while clearing an invalid legacy pinned row. They must
 also prove that invalid difficulty never pays before a legitimate edit repairs it.
+
+Reproduced at `96676d2`, backend run `37347334515`, job `111889105380`:
+`Task rewards: 18 passed; 2 failed (regressions).` Restore returned HTTP 400 /
+SQLSTATE 22023, and the pin operation failed, exactly as the review predicted.
+The correction limits recalculation to inserts and changed difficulty/reward
+fields. Status/title/pin updates retain their state/ownership protections and can
+recover legacy rows; every completion still validates difficulty independently.
+No historical rows or balances are rewritten. The expanded suite has 20 reward
+cases plus 2 forced rollback cases; green evidence is available in PR checks.
 
 First fix run `37345250356` stopped before applying the migration because CLI
 `db query --file` rejects multiple prepared statements. The runner now copies

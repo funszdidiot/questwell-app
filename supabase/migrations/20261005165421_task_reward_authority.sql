@@ -39,8 +39,15 @@ begin
       raise exception 'Complete quests through complete_task' using errcode = '42501';
     end if;
   end if;
-  select v.xp, v.coins into new.xp_value, new.coin_value
-    from private.task_reward_values(new.friction_level) v;
+  -- Legacy rows must remain restorable/pinnable so the owner can repair their
+  -- difficulty. Unrelated edits cannot pay; complete_task always validates again.
+  if tg_op = 'INSERT'
+    or new.friction_level is distinct from old.friction_level
+    or new.xp_value is distinct from old.xp_value
+    or new.coin_value is distinct from old.coin_value then
+    select v.xp, v.coins into new.xp_value, new.coin_value
+      from private.task_reward_values(new.friction_level) v;
+  end if;
   return new;
 end;
 $function$;
