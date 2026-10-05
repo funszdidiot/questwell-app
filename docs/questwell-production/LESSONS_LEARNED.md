@@ -2,6 +2,14 @@
 
 These are process controls derived from failures encountered during avatar production.
 
+**Coat wrist continuity — 2026-10-05:** a correctly drawn cuff cavity can still
+look disconnected when the original-hand foreground region starts below it.
+Inspect the uninterrupted skin contour from inside the opening to the fingers;
+reject floating skin tabs, horizontal cutoffs and dark bands across exposed
+wrists. Fit the duplicate original-pixel depth boundary to each opening while
+retaining the complete underlying body. Native gallery QA missed this defect;
+inspect enlarged wrists in the actual Hearth as well.
+
 **Standing founder direction — 2026-10-05:** cloaks, capes, robes and mantles
 must fall naturally. Broad triangular flare is not a shortcut for arm/hand
 coverage: it makes the avatar appear artificially wide. Preserve shoulder

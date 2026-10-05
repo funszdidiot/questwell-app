@@ -105,9 +105,11 @@ class HarvestCoatHandsClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final regions = switch (body) {
-      'female' => const [Rect.fromLTRB(66,173,85,193), Rect.fromLTRB(156,173,174,193)],
-      'male' => const [Rect.fromLTRB(58,180,85,201), Rect.fromLTRB(155,180,183,201)],
-      _ => const [Rect.fromLTRB(67,180,88,201), Rect.fromLTRB(156,180,178,201)],
+      // Start inside the cuff opening, avoiding an isolated wrist tab and
+      // square hand cutoff. The complete original body remains underneath.
+      'female' => const [Rect.fromLTRB(66,169,85,193), Rect.fromLTRB(156,169,174,193)],
+      'male' => const [Rect.fromLTRB(58,175,85,201), Rect.fromLTRB(155,175,183,201)],
+      _ => const [Rect.fromLTRB(67,175,88,201), Rect.fromLTRB(156,175,178,201)],
     };
     final path = Path();
     for (final region in regions) { path.addRect(region); }

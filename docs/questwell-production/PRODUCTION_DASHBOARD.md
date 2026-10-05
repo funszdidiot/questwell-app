@@ -2,6 +2,11 @@
 
 ## Active garment correction — 2026-10-05 America/Chicago
 
+**Coat cuffs: QA — founder correction.** Tanya accepted cloak/mantle v4 and
+reported disconnected wrist joins on all three coats. Preserve accepted cloth.
+Correcting original-hand foreground depth at the cuff openings; no body or art
+bytes change. Earlier all-nine QA is superseded for coat wrists. No founder blocker.
+
 **DEV DEPLOYED.** Tanya requested narrower male coat elbows, wrapping wider cuffs,
 no cloak/mantle inner flaps, proper rear layers and natural shoulder drape. She
 then rejected excessive cloak/mantle flare. All six were redrawn to hang

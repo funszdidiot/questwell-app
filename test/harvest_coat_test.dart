@@ -24,6 +24,14 @@ void main() {
       expect(hands.contains(const Offset(75,185)), isTrue);
       expect(hands.contains(const Offset(165,185)), isTrue);
       expect(hands.contains(const Offset(120,185)), isFalse, reason:'Restore hands only, never trouser strips');
+      final wristY = body == 'female' ? 169.0 : 176.0;
+      final wristXs = body == 'male' ? [68.0,172.0] : body == 'female' ? [76.0,162.0] : [76.0,167.0];
+      for (final x in wristXs) {
+        expect(hands.contains(Offset(x,wristY)),isTrue,
+            reason:'Original wrist must continue through the cuff to the hand');
+        expect(hands.contains(Offset(x,wristY-3)),isFalse,
+            reason:'Do not put forearm skin over the sleeve');
+      }
       expect(alpha(110,250),0,reason:'Keep trousers visible');
       for (final x in [115,120,125]) {
         for (final y in [180,190,200]) {

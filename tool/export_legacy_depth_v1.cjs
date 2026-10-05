@@ -100,7 +100,7 @@ async function save(buffer,name) { fs.writeFileSync(dir+name+'.png',buffer); ret
     if(body==='neutral')for(let y=74;y<320;y++)for(let x=108;x<140;x++)identity.data[(y*240+x)*4+3]=0;
     const layers=[...(rear?[{input:rear}]:[]),{input:bodyPath},...garments.map(input=>({input})),{input:front}];
     if(family==='coat'){
-      const regions={female:[[66,173,85,193],[156,173,174,193]],male:[[58,180,85,201],[155,180,183,201]],neutral:[[67,180,88,201],[156,180,178,201]]}[body];
+      const regions={female:[[66,169,85,193],[156,169,174,193]],male:[[58,175,85,201],[155,175,183,201]],neutral:[[67,175,88,201],[156,175,178,201]]}[body];
       const hands=await raw(bodyPath);
       for(let y=0;y<320;y++)for(let x=0;x<240;x++)if(!regions.some(([l,t,r,b])=>x>=l&&x<r&&y>=t&&y<b))hands.data[(y*240+x)*4+3]=0;
       layers.push({input:await sharp(hands.data,{raw:hands.info}).png().toBuffer()});

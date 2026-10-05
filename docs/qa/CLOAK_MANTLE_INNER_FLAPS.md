@@ -1,5 +1,16 @@
 # Cloak and mantle inner-flap removal
 
+## Founder correction after delivered review
+
+2026-10-05: Tanya accepted the cloak and mantle appearance but rejected wrist
+connections on all three coats. This supersedes the earlier all-nine visual
+pass for the coat cuffs. Cloak/mantle v4 artwork and registration are preserved.
+Coat cuff repair: **QA**. The original-hand foreground contour began below the
+cuff, exposing disconnected wrist tabs and a square hand cutoff. Extend that
+duplicate original-pixel contour to inside each cuff opening (female y169,
+male/neutral y175); do not change any body or garment bytes. Export composites
+and actual renderer use matching boundaries. Full CI and runtime checks follow.
+
 Status: **DEV DEPLOYED** — 2026-10-05. Runtime `e46a42bf8c14debd2ad338c12228f16da39f46ca`, workflow `37312732888` passed analysis, 386 Flutter tests, 8 Node tests, asset verification, build and deployment. Analyzer retains 45 nonfatal baseline findings.
 
 Delivered version and all 31 garment/body/identity/Everyday hashes match (`tool/qa/legacy_depth_delivery.json`). Actual shared-renderer gallery checked all nine fits and all three bodies' unequip-to-Guardian-robe restoration. Independent review of delivered screenshots passed all nine. Male sample Market coat preview, purchase, equip and unequip checked; fixture coins only, no account persistence claim. Existing catalog/class eligibility and equipment policy are unchanged and covered by regression tests.
