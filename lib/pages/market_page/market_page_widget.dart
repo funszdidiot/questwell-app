@@ -70,7 +70,7 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
     setState(() => _busyCosmeticId = cosmetic.id);
 
     try {
-      if (cosmetic.category == 'room' || QuestwellWallArt.isSide(cosmetic.slug)) {
+      if (cosmetic.category == 'room' || cosmetic.category == 'wall_art') {
         final data = await QuestwellCosmeticService.load();
         if (!mounted) return;
         final equipped = data.cosmetics.where((i) => i.equipped).toList();
@@ -79,7 +79,11 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
           archetype: data.profile.adventurerArchetype, bodyType: data.profile.avatarBodyType,
           equippedSlugs: {for (final i in equipped) i.renderKey: i.slug},
           occupants: {for (final i in equipped.where((i) => i.category == cosmetic.category))
-            i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)});
+            i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)},
+          placementChoices: cosmetic.hearthPlacements.isEmpty
+              ? null
+              : {for (final option in cosmetic.hearthPlacements)
+                  option.slot: option.label});
         if (pick == null) return;
         await QuestwellCosmeticService.place(cosmetic.id, pick.slot, pick.expectedOccupant);
       } else {
