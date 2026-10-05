@@ -8,6 +8,7 @@ import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import '../services/questwell_equipment_policy.dart';
 import '../services/questwell_loadout_model.dart';
+import '../services/questwell_cosmetic_models.dart';
 import 'questwell_body_fit_labels.dart';
 
 class AdventurerInventoryItem {
@@ -16,12 +17,14 @@ class AdventurerInventoryItem {
     required this.equipped, required this.classLocked, required this.shop,
     this.archetype, this.roomSlot, this.milestoneLevel, this.unlockedAt, this.source,
     this.collectionKey, this.editionType = 'standard',
-    this.hearthPlacements = const [], this.hearthProfileKey});
+    this.hearthPlacements = const [], this.hearthProfileKey,
+    this.hearthRenderSpec});
   final String id, name, slug, category, description;
   final String? archetype, roomSlot;
   final int? milestoneLevel;
   final DateTime? unlockedAt;
   final String? source, collectionKey, hearthProfileKey;
+  final QuestwellHearthRenderSpec? hearthRenderSpec;
   final String editionType;
   final List<MapEntry<String, String>> hearthPlacements;
   String get renderKey => QuestwellLoadoutModel.renderKey(
@@ -127,6 +130,11 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
                 for (final item in widget.items)
                   if (item.hearthProfileKey != null)
                     item.slug: item.hearthProfileKey!,
+              },
+              hearthRenderBySlug: {
+                for (final item in widget.items)
+                  if (item.hearthRenderSpec != null)
+                    item.slug: item.hearthRenderSpec!,
               },
             ),
           ],
@@ -285,6 +293,11 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       hearthProfilesBySlug: {
         for (final i in widget.items)
           if (i.hearthProfileKey != null) i.slug: i.hearthProfileKey!,
+      },
+      hearthRenderSpec: item.hearthRenderSpec,
+      hearthRenderBySlug: {
+        for (final i in widget.items)
+          if (i.hearthRenderSpec != null) i.slug: i.hearthRenderSpec!,
       });
     if (pick != null && mounted) await widget.onPlace?.call(item.id, pick.slot, pick.expectedOccupant);
   }
