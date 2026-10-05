@@ -49,13 +49,16 @@ class QuestwellCosmeticService {
           .single(),
       SupaFlow.client
           .from('cosmetics')
-          .select('id,slug,name,category,rarity,description,price,premium,asset_key,required_archetype,unlock_method,milestone_level,collection_key,edition_type,availability_start,availability_end')
+          .select('id,slug,name,category,rarity,description,price,premium,asset_key,required_archetype,unlock_method,milestone_level,collection_key,edition_type,availability_start,availability_end,hearth_profile_key')
           .eq('active', true)
           .order('price'),
       SupaFlow.client
           .from('user_cosmetics')
           .select('cosmetic_id,equipped,room_slot,unlocked_at,source')
           .eq('user_id', uid),
+      SupaFlow.client
+          .from('hearth_profile_slots')
+          .select('profile_key,slot_key,placement_label,sort_order'),
     ]));
 
     final profile =
@@ -70,6 +73,22 @@ class QuestwellCosmeticService {
       ownedById[row['cosmetic_id']?.toString() ?? ''] = row['equipped'] == true;
     }
 
+    final placementRows = List<Map<String, dynamic>>.from(
+      (responses[3] as List).map((row) => Map<String, dynamic>.from(row as Map)),
+    );
+    final placementsByProfile =
+        <String, List<QuestwellHearthPlacementOption>>{};
+    for (final row in placementRows) {
+      final profile = row['profile_key']?.toString();
+      if (profile == null || profile.isEmpty) continue;
+      placementsByProfile
+          .putIfAbsent(profile, () => <QuestwellHearthPlacementOption>[])
+          .add(QuestwellHearthPlacementOption.fromJson(row));
+    }
+    for (final placements in placementsByProfile.values) {
+      placements.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+    }
+
     final cosmetics = List<Map<String, dynamic>>.from(
       (responses[1] as List).map((row) => Map<String, dynamic>.from(row as Map)),
     )
@@ -81,6 +100,10 @@ class QuestwellCosmeticService {
             roomSlot: ownedRows.where((owned) => owned['cosmetic_id'] == row['id']).map((owned) => owned['room_slot']?.toString()).firstOrNull,
             unlockedAt: DateTime.tryParse(ownedRows.where((owned) => owned['cosmetic_id'] == row['id']).map((owned) => owned['unlocked_at']?.toString()).firstOrNull ?? ''),
             source: ownedRows.where((owned) => owned['cosmetic_id'] == row['id']).map((owned) => owned['source']?.toString()).firstOrNull,
+            hearthPlacements: placementsByProfile[
+                  row['hearth_profile_key']?.toString()
+                ] ??
+                const [],
           ),
         )
         .where((item) => !QuestwellEquipmentPolicy.isRetired(item.slug))
