@@ -9,11 +9,13 @@ void main() {
 
     final autumn = QuestwellHearthLayout.bounds(
       slug: 'autumn-ember-lantern',
+      profileKey: 'pedestal_light',
       slot: 'right',
       scene: scene,
     );
     final warding = QuestwellHearthLayout.bounds(
       slug: 'warding-lantern',
+      profileKey: 'pedestal_light',
       slot: 'right',
       scene: scene,
     );
@@ -23,16 +25,19 @@ void main() {
 
     final shelf = QuestwellHearthLayout.bounds(
       slug: 'walnut-bookshelf',
+      profileKey: 'large_furniture',
       slot: 'left',
       scene: scene,
     );
     final workbench = QuestwellHearthLayout.bounds(
       slug: 'copper-potion-workbench',
+      profileKey: 'large_furniture',
       slot: 'left',
       scene: scene,
     );
     final harvest = QuestwellHearthLayout.bounds(
       slug: 'harvest-apothecary-display',
+      profileKey: 'large_furniture',
       slot: 'left',
       scene: scene,
     );
@@ -41,10 +46,10 @@ void main() {
     expect(workbench.height, closeTo(harvest.height, .01));
     expect(
       shelf.top + shelf.height *
-          QuestwellHearthLayout.profile('walnut-bookshelf')!.visibleBase,
+          QuestwellHearthLayout.assetSpec('walnut-bookshelf')!.visibleBase,
       closeTo(
         workbench.top + workbench.height *
-            QuestwellHearthLayout.profile('copper-potion-workbench')!.visibleBase,
+            QuestwellHearthLayout.assetSpec('copper-potion-workbench')!.visibleBase,
         .01,
       ),
     );
@@ -52,13 +57,36 @@ void main() {
 
   test('pedestal lights share one placement vocabulary', () {
     expect(
-      QuestwellHearthLayout.choicesFor('autumn-ember-lantern'),
+      QuestwellHearthLayout.fallbackChoices('autumn-ember-lantern'),
       const {'left': 'Back left', 'right': 'Back right'},
     );
     expect(
-      QuestwellHearthLayout.choicesFor('warding-lantern'),
+      QuestwellHearthLayout.fallbackChoices('warding-lantern'),
       const {'left': 'Back left', 'right': 'Back right'},
     );
+  });
+
+  test('backend profile overrides local slug fallback for geometry', () {
+    const scene = Size(390, 420);
+    final resolved = QuestwellHearthLayout.resolvedProfile(
+      'warding-lantern',
+      'large_furniture',
+    );
+    expect(resolved, 'large_furniture');
+
+    final asFurniture = QuestwellHearthLayout.bounds(
+      slug: 'warding-lantern',
+      profileKey: resolved!,
+      slot: 'right',
+      scene: scene,
+    );
+    final asLight = QuestwellHearthLayout.bounds(
+      slug: 'warding-lantern',
+      profileKey: 'pedestal_light',
+      slot: 'right',
+      scene: scene,
+    );
+    expect(asFurniture.height, isNot(closeTo(asLight.height, .01)));
   });
 
   testWidgets('room picker prefers backend placement choices', (tester) async {
