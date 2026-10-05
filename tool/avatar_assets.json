@@ -1746,6 +1746,58 @@
       ],
       "development_status": "DEV DEPLOYED",
       "verified_revision": "4b6be2bb4fff866f4314b5a57025d7ca7883f007"
+    },
+    "male_woodland_v2": {
+      "art_revision": "male-woodland-v2",
+      "status": "independent_export_QA_passed_not_locked",
+      "body_types": [
+        "male"
+      ],
+      "layer_order": [
+        "body",
+        "outfit",
+        "original_head"
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/male_woodland_v2_fit_reference.json",
+          "sha256": "443932c4a12983f638aa5f0277109fef1072569618ed62aff0d9cf6fb410c39b"
+        },
+        {
+          "path": "tool/export_male_woodland_v2.cjs",
+          "sha256": "8282d68539359c972801891f5012d85efe36e61a91dd93c51961911cf4bfb8e8"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v2/outfit_source.png",
+          "sha256": "a803a7ba97558cd7b1a78d0ed270e7e42cf409701440370b01974ecd9be74df1"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v2/registration.json",
+          "sha256": "658087cc257bf4d2c935ef1e4758a53724bc1fbd44d5d49e11ca1b3b6063d3cb"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v2/provenance.json",
+          "sha256": "975100cfceb1e8452cb47fde4df2fb010340c5c44e507aeda1bb6e9428c91b53"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v2/prompt.txt",
+          "sha256": "0a379fa334e16c78c0eec598f55923fe9fc8fdea8ceb5d739624879b40992ff3"
+        },
+        {
+          "path": "tool/qa/male_woodland_v2_export_review.json",
+          "sha256": "8dc10c6a34c1226e0311d3d1a933fdab24a63830d7bed560e9d58ec26e33c910"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v2.webp",
+          "sha256": "bc923c9b5043950e617ad81b5b4caed7448846ccc4536e4fcc56ad90725c8ed8"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v2/outfit_registered.webp",
+          "sha256": "bc923c9b5043950e617ad81b5b4caed7448846ccc4536e4fcc56ad90725c8ed8"
+        }
+      ]
     }
   },
   "approved_layers": {

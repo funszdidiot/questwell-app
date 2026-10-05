@@ -1,0 +1,25 @@
+{
+  "generator": "built-in image_gen",
+  "date": "2026-10-05",
+  "timezone": "America/Chicago",
+  "intent": "Founder-requested sleeve/overall-fit revision; one complete male outfit",
+  "source": {
+    "path": "tool/art_assets/male_woodland_v2/outfit_source.png",
+    "sha256": "a803a7ba97558cd7b1a78d0ed270e7e42cf409701440370b01974ecd9be74df1"
+  },
+  "prompt": {
+    "path": "tool/art_assets/male_woodland_v2/prompt.txt",
+    "sha256": "0a379fa334e16c78c0eec598f55923fe9fc8fdea8ceb5d739624879b40992ff3"
+  },
+  "references": [
+    "assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v1.webp",
+    "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+    "tool/art_assets/male_woodland_v1/full_light.png"
+  ],
+  "status": "QA_CANDIDATE_NOT_LOCKED",
+  "exporter": {
+    "path": "tool/export_male_woodland_v2.cjs",
+    "sha256": "8282d68539359c972801891f5012d85efe36e61a91dd93c51961911cf4bfb8e8"
+  },
+  "firstRegistration": "Rejected: exposed shoulders and 13 lower coverage pixels; coherent field corrected, no patches or body edits."
+}

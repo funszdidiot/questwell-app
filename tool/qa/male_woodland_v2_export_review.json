@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "scope": "Independent native/enlarged/light/dark exported garment fit; not founder lock or deployment completion",
+  "reviewer": "/root/legacy_depth_visual_qa",
+  "date": "2026-10-05",
+  "inputs": [
+    "tool/art_assets/male_woodland_v2/outfit_source.png",
+    "tool/art_assets/male_woodland_v2/outfit_registered.webp",
+    "tool/art_assets/male_woodland_v2/native_composite.png",
+    "tool/art_assets/male_woodland_v2/full_light.png",
+    "tool/art_assets/male_woodland_v2/full_dark.png",
+    "tool/art_assets/male_woodland_v1/native_composite.png"
+  ],
+  "findings": [
+    "Shoulders and rolled sleeves sit naturally with reduced projecting tabs and rolls.",
+    "No unintended upper-arm leaks above cuffs; original forearms/hands remain complete.",
+    "Waist, hip, crotch and inner-leg joins remain continuous without fragments.",
+    "Boots have correct outward orientation and contain full feet, heels and soles.",
+    "Breast panels have botanical embroidery, no breast pockets.",
+    "Disconnected source speck is absent from cleaned export."
+  ],
+  "coveragePixels": 6111,
+  "handPixels": 872,
+  "uncoveredTestedPixels": 0,
+  "obscuredTestedHandPixels": 0,
+  "founderLock": false
+}

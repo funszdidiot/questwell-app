@@ -8,7 +8,7 @@ class QuestwellMaleWoodland extends StatelessWidget {
   const QuestwellMaleWoodland({super.key});
 
   static const outfitAsset =
-      'assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v1.webp';
+      'assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v2.webp';
 
   @override
   Widget build(BuildContext context) => Stack(

@@ -1,5 +1,14 @@
 # Questwell Production Dashboard
 
+## Male Woodland sleeve and size correction — 2026-10-05
+
+**QA.** Founder rejection of sleeve/overall fit supersedes the earlier v1 visual
+PASS. Version2 is a complete outfit redraw fitted with one continuous garment
+registration over immutable male v3. No body changes, independent component
+assembly, clothing patches or account eligibility expansion. Local shorts/leg/foot
+coverage and hand clearance pass; independent visual review and full development
+integration are in progress. No founder blocker; candidate remains NOT LOCKED.
+
 ## Male neckline renderer — 2026-10-05
 
 **DEV DEPLOYED / technically verified.** Shared original-head sampling now
