@@ -21,7 +21,7 @@ class QuestwellHearthDecor {
     ? const {'mantel': 'On the fireplace mantel', 'bookshelf_top': 'On the bookcase',
       'left': 'Back left pedestal', 'right': 'Back right pedestal',
       'front': 'Front left pedestal'}
-    : QuestwellHearthLayout.choicesFor(slug) ?? switch (slug) {
+    : QuestwellHearthLayout.fallbackChoices(slug) ?? switch (slug) {
     'woodland-cottage' || 'midnight-harvest' || 'enchanted-library' || 'midnight-observatory' || 'alchemists-workshop' || 'astral-sanctuary' || 'emberglass-conservatory' => const {'setting': 'Hearth setting'},
     'emerald-wayfarer-rug' => const {'floor': 'Beneath the adventurer'},
     'rainy-window' => const {'window': 'Window alcove'},
@@ -33,20 +33,38 @@ class QuestwellHearthDecor {
     QuestwellReadingChair.slug => const {'front': 'Left floor', 'right': 'Right floor'},
     _ => const {'left': 'Beside the fireplace', 'right': 'Near the window', 'front': 'Foreground'},
   };
-  static double floorDepth(String slug, String slot) {
-    if (QuestwellHearthLayout.profile(slug) != null) {
-      return QuestwellHearthLayout.floorDepthFor(slug, slot);
+  static double floorDepth(
+    String slug,
+    String slot, {
+    String? profileKey,
+  }) {
+    final resolved = QuestwellHearthLayout.resolvedProfile(slug, profileKey);
+    if (resolved != null) {
+      return QuestwellHearthLayout.floorDepthFor(resolved, slot);
     }
     return QuestwellMasteryRelic.supports(slug)
         ? (slot == 'front' ? .89 : .68)
         : .86;
   }
 
-  static List<String> backToFront(Map<String, String> equipment) {
+  static List<String> backToFront(
+    Map<String, String> equipment, {
+    Map<String, String> profileBySlug = const {},
+  }) {
     String slug(String slot) => equipment['room:$slot'] ??
       (slot == 'right' ? equipment['room'] : null) ?? '';
     return ['left', 'right', 'front', 'side']..sort((a, b) {
-      final depth = floorDepth(slug(a), a).compareTo(floorDepth(slug(b), b));
+      final aSlug = slug(a);
+      final bSlug = slug(b);
+      final depth = floorDepth(
+        aSlug,
+        a,
+        profileKey: profileBySlug[aSlug],
+      ).compareTo(floorDepth(
+        bSlug,
+        b,
+        profileKey: profileBySlug[bSlug],
+      ));
       return depth != 0 ? depth : ['left', 'right', 'front', 'side'].indexOf(a)
         .compareTo(['left', 'right', 'front', 'side'].indexOf(b));
     });
@@ -89,12 +107,19 @@ class QuestwellHearthDecor {
   }
 
   static Rect bounds({
-    required String slug, required String slot, required Size scene,
+    required String slug,
+    required String slot,
+    required Size scene,
     Map<String, String> equipment = const {},
+    String? profileKey,
   }) {
-    if (QuestwellHearthLayout.profile(slug) != null) {
+    final resolvedProfile =
+        QuestwellHearthLayout.resolvedProfile(slug, profileKey);
+    if (resolvedProfile != null &&
+        QuestwellHearthLayout.assetSpec(slug) != null) {
       return QuestwellHearthLayout.bounds(
         slug: slug,
+        profileKey: resolvedProfile,
         slot: slot,
         scene: scene,
         equipment: equipment,
@@ -134,7 +159,7 @@ class QuestwellHearthDecor {
     final roomSide = math.max(scene.width, scene.height);
     final floor = relic && !front
       ? roomSide * .68 + (scene.height - roomSide) * .52
-      : scene.height * floorDepth(slug, slot);
+      : scene.height * floorDepth(slug, slot, profileKey: profileKey);
     return Rect.fromLTWH(center - width / 2, floor - height * (shelf ? 1200 / 1284 : 1), width, height);
   }
 
@@ -200,14 +225,25 @@ class QuestwellHearthDecor {
       ]));
   }
 
-  static Positioned positioned({required String slug, required String slot, required Size scene,
-    Map<String, String> equipment = const {}}) {
+  static Positioned positioned({
+    required String slug,
+    required String slot,
+    required Size scene,
+    Map<String, String> equipment = const {},
+    String? profileKey,
+  }) {
     final relic = QuestwellMasteryRelic.supports(slug);
     final shelf = slug == QuestwellBookshelf.slug;
     final fern = slug == QuestwellFern.slug;
     final table = slug == QuestwellReadingTable.slug;
     final chair = slug == QuestwellReadingChair.slug;
-    final rect = bounds(slug: slug, slot: slot, scene: scene, equipment: equipment);
+    final rect = bounds(
+      slug: slug,
+      slot: slot,
+      scene: scene,
+      equipment: equipment,
+      profileKey: profileKey,
+    );
     final art = slug == QuestwellAutumnLantern.slug ? const QuestwellAutumnLantern()
       : slug == QuestwellWardingLantern.slug ? const QuestwellWardingLantern()
       : slug == QuestwellHarvestDisplay.slug ? const QuestwellHarvestDisplay()
