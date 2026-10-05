@@ -153,7 +153,7 @@ abstract final class QuestwellHearthLayout {
           ? scene.width * .98 - width / 2
           : scene.width * .14 + width / 2,
       'pedestal_light' => scene.width * (slot == 'left' ? .22 : .80),
-      'side_table' => scene.width * (chairOnLeft ? .15 : .85),
+      'side_table' => scene.width * (chairOnLeft ? .18 : .82),
       'seating' => scene.width *
           (slot == 'right'
               ? (hasTable ? .64 : .73)
