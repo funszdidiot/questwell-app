@@ -70,3 +70,17 @@ Independent local review: PASS on native and 3× exports, light and dark.
 Female front `369b7d58837e`, male `5bdcd73f78f8`, neutral `654d3fde86ac`.
 Resolved square openings, painted forearm, floating cuff line, pale undershirt
 seam and male cuff endpoint notch. This is not founder approval or runtime QA.
+
+## Delivered fit verification and sampling follow-up
+
+Runtime `9f65041`, workflow `37326943014`: 386 Flutter and 12 Node tests,
+analysis, locked dependencies, build and deployment passed. All31 delivered
+asset hashes matched. Actual shared renderer/Hearth, wear/remove/restoration,
+belt grimoire and sample Market preview/purchase/equip/unequip were verified.
+All3 delivered enlarged coat fits passed independent visual QA.
+
+Enlarged runtime review caught a separate straight line below the male chin on
+coat and cloak, absent from an exact local layer composite. Investigating
+identity sampling at its transparent cutoff; scoped bilinear sampling in legacy
+chest states is under QA. No body, identity or accepted cloth bytes are changed.
+Do not close runtime QA until the delivered follow-up is checked.

@@ -39,7 +39,9 @@ class QuestwellLegacyChestFoundation extends StatelessWidget {
         asset,
         fit: BoxFit.contain,
         alignment: Alignment.bottomCenter,
-        filterQuality: FilterQuality.high,
+        // Bilinear sampling avoids cubic ringing at the fixed identity cutoff.
+        filterQuality: body == 'male' && asset == _identity(body)
+            ? FilterQuality.low : FilterQuality.high,
         gaplessPlayback: true,
       );
 

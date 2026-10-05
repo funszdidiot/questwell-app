@@ -2,7 +2,7 @@
 
 ## Active garment correction — 2026-10-05 America/Chicago
 
-**Coats: QA / local visual repair passed.** Tanya rejected inner-arm
+**Coats: DEV DEPLOYING / local visual repair passed.** Tanya rejected inner-arm
 skin slivers or compensating fabric on all three coats and still rejects the
 female cuffs. This newer finding supersedes the coat visual PASS below; technical
 deployment is historical evidence only. Accepted cloak/mantle v4 are preserved.

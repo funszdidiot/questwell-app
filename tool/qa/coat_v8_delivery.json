@@ -1,0 +1,163 @@
+{
+  "revision": "9f65041ec826d4456533eadfbb34707061989464",
+  "status": "PASS",
+  "asset_count": 31,
+  "assets": [
+    {
+      "path": "assets/images/questwell/avatar/moss_cloak_female_v4.webp",
+      "sha256": "5d43798ec33434203e63855534099c1e399010c788e70cb1cc6a214fa77d5101",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/moss_cloak_rear_female_v4.webp",
+      "sha256": "83236b662cf58677426bf5ec15224b4eff4b0cf683811cfccbf6f596f3b7a073",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/hearthguard_mantle_female_v4.webp",
+      "sha256": "b93caeef8f64279a8803f92c60fb83d5f67a4dc4decf38c7420cd22d66bab84e",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_female_v4.webp",
+      "sha256": "a6415b1464d0071dcc1d1748a863bc3f91ceb0cd1a3d6f6ec2898671545f567d",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_female_v8.webp",
+      "sha256": "369b7d58837eb41bfe756ec35ce424ad84ee94083da250f0206859f610245802",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_rear_female_v8.webp",
+      "sha256": "4fa49828a57cb040079a35292e1432e5ee0cd95d6a49d0f85b0ae045867b62ef",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/moss_cloak_male_v4.webp",
+      "sha256": "9988742119d8eb624b93b6dfd8d34796fc6304819348473d6190eed9ae8e3ef7",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/moss_cloak_rear_male_v4.webp",
+      "sha256": "4bf72693537fd9d6844f044d63011a87272134c93c8e04d51200d7b057eb16a5",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/hearthguard_mantle_male_v4.webp",
+      "sha256": "2906f249885fa0575fbc5d99e24c4d32b6983318fbd27ed4f552f0485076a469",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_male_v4.webp",
+      "sha256": "b2e528fc8b981818e7c6a19652f1d80eef10ed8c4c8f9e634eaaf762e161afda",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_male_v8.webp",
+      "sha256": "5bdcd73f78f84ccdcbadc2921c522f1d17131ea67175d04bd154c48f5b0af9b7",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_rear_male_v8.webp",
+      "sha256": "b7dee6024788bc7f91b55b29fd71f117355789a910e063bf0bd59c5a9e8c3417",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/moss_cloak_neutral_v4.webp",
+      "sha256": "aa172a40ef120c9cd47ebc69aae5dd57198378f7c5d132f748dfa3ec24d453db",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/moss_cloak_rear_neutral_v4.webp",
+      "sha256": "ef49ef653dafa60122074fee24a35a67b62aa0fcf4836e044a50156b38527144",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/hearthguard_mantle_neutral_v4.webp",
+      "sha256": "9aa6d521ce73c1847df80d62c0ec18caacd612de23ebdd2abc438a35cba2142f",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_neutral_v4.webp",
+      "sha256": "f6d3325e7f92822fdb3debf76f9c2c30b0a2d0a6fcc669f3d9d6b7755f3f986e",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_neutral_v8.webp",
+      "sha256": "654d3fde86ac321a74688f76873e9b3968423a1cf812845f762f4d4d796259f8",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_rear_neutral_v8.webp",
+      "sha256": "5a48199a9f28b559e523f3f80e563571a8b3e2eb52372a6da6f3410342d91c14",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_female_v1.webp",
+      "sha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp",
+      "sha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+      "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+      "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_outfit_male_v2.webp",
+      "sha256": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/scout_boots_female_v6.webp",
+      "sha256": "7b2fb6260c25d162582a672d8c0427da3a4ea0634d5423abc1b3fa959fd54ce3",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/scout_trousers_female_v6.webp",
+      "sha256": "14d57926eeeea3b56451a4b6af1fc86022c74b673bd1be8870c8e388afe1fd8f",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/scout_top_female_v6.webp",
+      "sha256": "07bbd9864164f7944750fc2f0beffb30d643407e0d72f0f3328802a2baee5a5a",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_boots_neutral_v3.webp",
+      "sha256": "12ed127e63ba1548f39ebc65ed1cb9385d99cbe9bb0f16ce056295c72cb68130",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_trousers_neutral_v3.webp",
+      "sha256": "c08a045e586befc45cb0dbfcf6cec72121b47195e4f06ee8fb525aff27caa865",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/everyday_top_neutral_v3.webp",
+      "sha256": "4c5a4c4e36bffa1c43948a4d3b2805510e7f13abe16415d5ae49e0be4283d25c",
+      "matched": true
+    }
+  ],
+  "scope": "Delivered bytes only; see QA record for actual UI verification."
+}

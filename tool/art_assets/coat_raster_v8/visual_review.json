@@ -1,0 +1,42 @@
+{
+  "scope": "independent_local_export_review_not_founder_approval",
+  "status": "PASS",
+  "reviewer": "legacy_depth_visual_qa",
+  "views": [
+    "native light",
+    "native dark",
+    "3x light",
+    "3x dark"
+  ],
+  "findings": {
+    "female": "Curved wool cuffs meet continuous original wrists; connected lower sleeve folds and thumbs intact.",
+    "male": "Underarm and cuff joins flow continuously; tapered elbow preserved.",
+    "neutral": "Pale undershirt bleed removed; natural intentional arm gaps retained."
+  },
+  "assets": [
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_female_v8.webp",
+      "sha256": "369b7d58837eb41bfe756ec35ce424ad84ee94083da250f0206859f610245802"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_rear_female_v8.webp",
+      "sha256": "4fa49828a57cb040079a35292e1432e5ee0cd95d6a49d0f85b0ae045867b62ef"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_male_v8.webp",
+      "sha256": "5bdcd73f78f84ccdcbadc2921c522f1d17131ea67175d04bd154c48f5b0af9b7"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_rear_male_v8.webp",
+      "sha256": "b7dee6024788bc7f91b55b29fd71f117355789a910e063bf0bd59c5a9e8c3417"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_neutral_v8.webp",
+      "sha256": "654d3fde86ac321a74688f76873e9b3968423a1cf812845f762f4d4d796259f8"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_rear_neutral_v8.webp",
+      "sha256": "5a48199a9f28b559e523f3f80e563571a8b3e2eb52372a6da6f3410342d91c14"
+    }
+  ]
+}
