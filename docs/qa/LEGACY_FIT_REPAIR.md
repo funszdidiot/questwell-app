@@ -28,3 +28,14 @@ Runtime review: https://funszdidiot.github.io/questwell-app/?review=legacy-wardr
 ![Female final runtime](legacy-female-final.jpg)
 ![Neutral final runtime](legacy-neutral-final.jpg)
 ![Male final runtime](legacy-male-final.jpg)
+
+
+## Neck-overlap regression follow-up
+
+The continuation audit independently observed the mantle band at `588994d` (see `mantle-neckline-before-588994d.jpg`) and verified twelve delivered garment/body/identity hashes in `tool/qa/legacy_refit_delivery_588994d.json`. Concurrent repair `339cc49` and its completed runtime evidence above are preserved.
+
+PR #13 additionally unions the head and body-specific neck foreground contours. Appending opposite-winding subpaths can cancel their overlap under the nonzero fill rule; an explicit union preserves continuous coverage without altering the existing contours or any artwork. The original full body remains an unclipped sibling beneath the garments. A new regression checks the observed chin/neck band for all three bodies at native, enlarged, tall and wide render dimensions.
+
+The proposal passed workflow `37261189106`: 388 Flutter tests (including the new continuity regression), 8 Node tests, asset verification, the configured analyzer gate and release web build. Analysis has 45 nonfatal warnings/information findings; this is not warning-free. Post-merge delivery verification remains pending for this follow-up. Baseline visual acceptance and account/persistence limits above are unchanged.
+
+Flutter remains pinned to 3.44.6 in CI. Existing CustomClipper/ClipPath contracts and Path.combine(PathOperation.union, ...) were verified in official Flutter API documentation. No dependency was added or upgraded.

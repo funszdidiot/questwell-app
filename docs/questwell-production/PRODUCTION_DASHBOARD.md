@@ -106,3 +106,6 @@ Suit rendering no longer samples historical full-body Business Suit images. Harv
 
 
 Legacy repair delivery evidence: [LEGACY_FIT_REPAIR.md](../qa/LEGACY_FIT_REPAIR.md). The same shared renderer is used by Hearth, Adventurer, inventory and Market. Browser tests used in-memory sample inventory; no real account writes or new real-user refresh persistence test were performed. Existing persistence code and account policy are unchanged and prior RPC evidence remains scoped to its recorded migration. Development fit verification is complete; founder visual acceptance remains separate and is not requested as a routine blocker.
+
+
+Neck-overlap regression follow-up (PR #13): preserve the delivered `339cc49` body-specific contours and original identity restoration while explicitly unioning the head/neck foreground region. The proposal passed 388 Flutter + 8 Node tests and the web build. No artwork or account behavior changes. Follow-up delivery verification is pending; existing legacy-fit completion evidence above remains valid.

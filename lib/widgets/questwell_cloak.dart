@@ -70,9 +70,10 @@ class QuestwellCloakForegroundClipper extends CustomClipper<Path> {
     final scale=math.min(size.width/240,size.height/320);
     final left=(size.width-240*scale)/2, top=size.height-320*scale;
     final female=body=='female';
-    final path=Path()..addRect(const Rect.fromLTRB(0,0,240,73));
     // Restore the actual skin contour down into the collar opening. Never
     // restore a horizontal strip of the shirt or cut the neck off at the jaw.
+    final head = Path()..addRect(const Rect.fromLTRB(0,0,240,73));
+    final path = Path();
     if (body == 'neutral') {
       path.moveTo(112,73);
       path.lineTo(111,80);
@@ -93,7 +94,10 @@ class QuestwellCloakForegroundClipper extends CustomClipper<Path> {
       path.lineTo(132,71);
     }
     path.close();
-    return path.transform((Matrix4.identity()..scale(scale,scale)).storage)
+    // Union preserves both contours regardless of winding. Appending the
+    // opposite-winding neck to the head cuts a hole through their overlap.
+    return Path.combine(PathOperation.union, head, path)
+      .transform((Matrix4.identity()..scale(scale,scale)).storage)
       .shift(Offset(left,top));
   }
   @override
