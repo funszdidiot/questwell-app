@@ -471,7 +471,9 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 milestoneLevel: item.milestoneLevel, unlockedAt: item.unlockedAt, source: item.source,
                 description: item.description, owned: item.owned, equipped: item.equipped,
                 archetype: item.requiredArchetype, shop: item.unlockMethod == 'shop',
-                collectionKey: item.collectionKey, editionType: item.editionType,
+                collectionKey: item.collectionKey,
+                editionType: item.editionType,
+                hearthProfileKey: item.hearthProfileKey,
                 hearthPlacements: [
                   for (final option in item.hearthPlacements)
                     MapEntry(option.slot, option.label),
