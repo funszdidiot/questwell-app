@@ -56,7 +56,7 @@ class _Issue6DecorReviewAppState extends State<Issue6DecorReviewApp> {
                       ),
                       DropdownButton<String>(
                         value: lanternSlot,
-                        items: const ['left', 'right', 'front']
+                        items: const ['left', 'right']
                             .map((value) => DropdownMenuItem(
                                   value: value,
                                   child: Text('Lantern: $value'),
@@ -100,8 +100,7 @@ class _Issue6DecorReviewAppState extends State<Issue6DecorReviewApp> {
                           'room:left': 'walnut-bookshelf',
                         if (showLantern)
                           'room:$lanternSlot': QuestwellWardingLantern.slug,
-                        if (lanternSlot != 'front')
-                          'room:front': 'burgundy-reading-chair',
+                        'room:front': 'burgundy-reading-chair',
                         'room:side': 'walnut-reading-table',
                       },
                     ),
