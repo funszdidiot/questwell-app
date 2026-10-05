@@ -35,6 +35,31 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      # Characterize the existing resolver before committing its exact output.
+      # This temporary capture is replaced by strict enforcement in this PR.
+      - name: Capture dependency resolution for review
+        shell: bash
+        run: |
+          mkdir -p .dart_tool/questwell-dependency-evidence
+          cp pubspec.lock .dart_tool/questwell-dependency-evidence/pubspec.lock
+          flutter --version --machine > .dart_tool/questwell-dependency-evidence/flutter-version.json
+          flutter pub get --help
+          flutter pub deps --json > .dart_tool/questwell-dependency-evidence/dependencies.json
+          sha256sum pubspec.yaml pubspec.lock
+          git diff --exit-code -- pubspec.yaml
+
+      - name: Preserve the generated dependency evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: questwell-dependency-baseline
+          path: .dart_tool/questwell-dependency-evidence/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Require the application lockfile in version control
+        run: git ls-files --error-unmatch pubspec.lock
+
       - name: Analyze
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
