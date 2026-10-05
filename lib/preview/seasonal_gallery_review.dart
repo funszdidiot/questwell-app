@@ -10,9 +10,11 @@ class QuestwellSeasonalGalleryReviewApp extends StatelessWidget {
   const QuestwellSeasonalGalleryReviewApp({
     super.key,
     this.manifestAsset = 'assets/jsons/seasonal_review_fixture.json',
+    this.initialSlug,
   });
 
   final String manifestAsset;
+  final String? initialSlug;
 
   @override
   Widget build(BuildContext context) => MaterialApp(
@@ -24,7 +26,10 @@ class QuestwellSeasonalGalleryReviewApp extends StatelessWidget {
           colorSchemeSeed: const Color(0xFF9F8157),
           scaffoldBackgroundColor: const Color(0xFF15100F),
         ),
-        home: _SeasonalGalleryScreen(manifestAsset: manifestAsset),
+        home: _SeasonalGalleryScreen(
+          manifestAsset: manifestAsset,
+          initialSlug: initialSlug,
+        ),
       );
 }
 
@@ -178,8 +183,12 @@ class _SeasonalReleaseItem {
 }
 
 class _SeasonalGalleryScreen extends StatefulWidget {
-  const _SeasonalGalleryScreen({required this.manifestAsset});
+  const _SeasonalGalleryScreen({
+    required this.manifestAsset,
+    this.initialSlug,
+  });
   final String manifestAsset;
+  final String? initialSlug;
 
   @override
   State<_SeasonalGalleryScreen> createState() => _SeasonalGalleryScreenState();
@@ -196,6 +205,12 @@ class _SeasonalGalleryScreenState extends State<_SeasonalGalleryScreen> {
   bool _showAvatar = true;
   bool _compareBenchmark = true;
   final Map<String, String> _slotBySlug = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedSlug = widget.initialSlug;
+  }
 
   double get _sceneWidth => switch (_viewport) {
         'compact' => 320,
