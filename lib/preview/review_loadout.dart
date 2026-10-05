@@ -1,4 +1,5 @@
 import '../services/questwell_equipment_policy.dart';
+import '../services/questwell_loadout_model.dart';
 
 /// Shared, account-free state across the mobile preview's screens.
 class QuestwellReviewLoadout {
@@ -43,7 +44,10 @@ class QuestwellReviewLoadout {
   }
   Map<String, String> get equipment => {
     for (final entry in roomSlots.entries)
-      '${catalog[entry.key]?.$1 ?? "room"}:${entry.value}': catalog[entry.key]?.$2 ?? entry.key,
+      if (catalog[entry.key] case final item?)
+        (item.$1 == 'wall_art'
+            ? QuestwellLoadoutModel.wallArtRenderKey(entry.value)
+            : QuestwellLoadoutModel.roomRenderKey(entry.value)): item.$2,
     for (final id in {...otherEquipped, if (glasses) 'a', if (satchel) 's'})
       if (catalog[id] case final item?) item.$1: item.$2,
   };
