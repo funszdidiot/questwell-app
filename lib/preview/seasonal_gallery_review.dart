@@ -307,6 +307,7 @@ class _SeasonalGalleryScreenState extends State<_SeasonalGalleryScreen> {
             const Text('Body'),
             for (final body in const ['female', 'neutral', 'male'])
               ChoiceChip(
+                key: ValueKey('seasonal-body-$body'),
                 label: Text(body),
                 selected: _body == body,
                 onSelected: (_) => setState(() => _body = body),
@@ -380,6 +381,7 @@ class _SeasonalGalleryScreenState extends State<_SeasonalGalleryScreen> {
             children: [
               for (final item in manifest.items)
                 ChoiceChip(
+                  key: ValueKey('seasonal-item-${item.slug}'),
                   label: Text(item.name),
                   selected: item.slug == selected.slug,
                   onSelected: (_) => setState(() {
