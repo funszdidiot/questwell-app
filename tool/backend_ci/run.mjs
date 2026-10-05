@@ -178,7 +178,9 @@ try {
       run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_boss_reward_failure;`]);
     }
   }
-  edge = spawn(cli, ['functions', 'serve', 'delete-account', '--no-verify-jwt', '--workdir', workdir, '--agent', 'no'], {
+  // Serve both copied functions: the historical negative control and R03.
+  // Do not filter to delete-account while probing its baseline sibling.
+  edge = spawn(cli, ['functions', 'serve', '--no-verify-jwt', '--workdir', workdir, '--agent', 'no'], {
     env, stdio: ['ignore', 'ignore', 'ignore'],
   });
   // The function verifies Auth itself; no tokens or Edge request payloads are logged.
