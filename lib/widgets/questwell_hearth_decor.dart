@@ -14,6 +14,8 @@ import 'questwell_first_journey.dart';
 import 'questwell_starlit_orrery.dart';
 import 'questwell_warding_lantern.dart';
 import 'questwell_hearth_layout.dart';
+import 'questwell_hearth_catalog_sprite.dart';
+import '../services/questwell_cosmetic_models.dart';
 
 /// Authored furniture proportions and floor anchors shared by every Hearth view.
 class QuestwellHearthDecor {
@@ -112,17 +114,19 @@ class QuestwellHearthDecor {
     required Size scene,
     Map<String, String> equipment = const {},
     String? profileKey,
+    QuestwellHearthRenderSpec? renderSpec,
   }) {
     final resolvedProfile =
         QuestwellHearthLayout.resolvedProfile(slug, profileKey);
     if (resolvedProfile != null &&
-        QuestwellHearthLayout.assetSpec(slug) != null) {
+        (renderSpec != null || QuestwellHearthLayout.assetSpec(slug) != null)) {
       return QuestwellHearthLayout.bounds(
         slug: slug,
         profileKey: resolvedProfile,
         slot: slot,
         scene: scene,
         equipment: equipment,
+        renderSpec: renderSpec,
       );
     }
     if (slug == QuestwellAutumnLantern.slug) return QuestwellAutumnLantern.bounds(scene, slot);
@@ -231,6 +235,7 @@ class QuestwellHearthDecor {
     required Size scene,
     Map<String, String> equipment = const {},
     String? profileKey,
+    QuestwellHearthRenderSpec? renderSpec,
   }) {
     final relic = QuestwellMasteryRelic.supports(slug);
     final shelf = slug == QuestwellBookshelf.slug;
@@ -243,8 +248,11 @@ class QuestwellHearthDecor {
       scene: scene,
       equipment: equipment,
       profileKey: profileKey,
+      renderSpec: renderSpec,
     );
-    final art = slug == QuestwellAutumnLantern.slug ? const QuestwellAutumnLantern()
+    final art = renderSpec?.renderKind == 'static_sprite'
+      ? QuestwellHearthCatalogSprite(spec: renderSpec!)
+      : slug == QuestwellAutumnLantern.slug ? const QuestwellAutumnLantern()
       : slug == QuestwellWardingLantern.slug ? const QuestwellWardingLantern()
       : slug == QuestwellHarvestDisplay.slug ? const QuestwellHarvestDisplay()
       : slug == QuestwellPotionWorkbench.slug ? const QuestwellPotionWorkbench()
@@ -262,11 +270,15 @@ class QuestwellHearthDecor {
         key: ValueKey('hearth-$slug-facing'),
         // The authored pedestal faces left. Mirror left-side placements so
         // its front panel faces the room center; right-side art stays unmirrored.
-        flipX: (chair || relic) && slot != 'right',
+        flipX: ((profileKey == 'seating') || chair || relic) && slot != 'right',
         child: Stack(fit: StackFit.expand, children: [
           IgnorePointer(child: CustomPaint(
             key: ValueKey('hearth-$slug-contact-shadow'),
-            painter: QuestwellContactShadowPainter(slug))),
+            painter: QuestwellContactShadowPainter(
+              slug,
+              shadowProfile: renderSpec?.shadowProfile,
+              visibleBase: renderSpec?.visibleBase ?? 1,
+            ))),
           art,
         ]),
       ),
