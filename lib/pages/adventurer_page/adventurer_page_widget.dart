@@ -474,6 +474,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 collectionKey: item.collectionKey,
                 editionType: item.editionType,
                 hearthProfileKey: item.hearthProfileKey,
+                hearthRenderSpec: item.hearthRenderSpec,
                 hearthPlacements: [
                   for (final option in item.hearthPlacements)
                     MapEntry(option.slot, option.label),
