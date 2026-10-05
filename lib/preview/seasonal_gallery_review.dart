@@ -74,9 +74,8 @@ class _SeasonalReleaseManifest {
       activationStatus:
           approval['activation_status']?.toString() ?? 'not_authorized',
       items: rawItems
-          .whereType<Map>()
           .map((raw) => _SeasonalReleaseItem.fromJson(
-                Map<String, dynamic>.from(raw),
+                Map<String, dynamic>.from(raw as Map),
               ))
           .toList(growable: false),
     );
