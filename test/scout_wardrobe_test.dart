@@ -293,7 +293,7 @@ void main() {
       expect(assets(tester), maleRobeLayers(archetype));
       // Unsupported/stale entries return to the v3 class stack. Approved legacy
       // chest items keep their garment while using v3 as the only foundation.
-      for (final chest in ['woodland-scout-outfit', 'unknown-outfit']) {
+      for (final chest in ['unknown-outfit']) {
         await render(chest: chest);
         expect(assets(tester), maleRobeLayers(archetype));
         expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset).first), bounds);

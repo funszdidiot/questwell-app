@@ -26,20 +26,20 @@ void main(){
     }
     expect(QuestwellEquipmentPolicy.conflicts('starter-business-suit','chest','brass-lantern','hands'),isFalse);
   });
-  test('production eligibility enables approved Everyday and enables approved neutral Woodland', () {
+  test('approved Everyday and Woodland support all three bodies', () {
     for (final body in ['female', 'neutral', 'male']) {
       expect(QuestwellEquipmentPolicy.supportsBody('everyday-adventurer-outfit', body), isTrue);
-      expect(QuestwellEquipmentPolicy.supportsBody('woodland-scout-outfit', body), body != 'male');
+      expect(QuestwellEquipmentPolicy.supportsBody('woodland-scout-outfit', body), isTrue);
     }
     final woodland = items.firstWhere((item) => item.slug == 'woodland-scout-outfit');
     expect(woodland.requiredArchetype, 'scout');
     expect(woodland.collectionKey, 'woodland-scout');
     expect(items.firstWhere((item) => item.slug == 'everyday-adventurer-outfit').requiredArchetype, isNull);
   });
-  testWidgets('Woodland body restrictions show available fits and block unsupported equip', (tester) async {
+  testWidgets('approved Woodland enables Market equip for all three Scout bodies', (tester) async {
     final outfit=items.firstWhere((i)=>i.slug=='woodland-scout-outfit').copyWith(owned:true);
     for(final body in ['male','neutral','female']) {
-      expect(QuestwellEquipmentPolicy.supportsBody(outfit.slug,body),body!='male');
+      expect(QuestwellEquipmentPolicy.supportsBody(outfit.slug,body),isTrue);
       await tester.pumpWidget(MaterialApp(builder:(context,child)=>MediaQuery(
         data:MediaQuery.of(context).copyWith(disableAnimations:true),child:child!),home:Scaffold(body:QuestwellMarketView(
         key:ValueKey(body),data:QuestwellCosmeticsSnapshot(profile:QuestwellProfile(
@@ -47,18 +47,10 @@ void main(){
           adventurerArchetype:'scout',avatarBodyType:body),cosmetics:[outfit]),
         onPurchase:(_)async{},onEquip:(_)async{},onUnequip:(_)async{},onRefresh:()async{}))));
       await tester.pumpAndSettle();
-      if(body=='male') {
-        final button=find.widgetWithText(FilledButton,'Fit unavailable');
-        await tester.dragUntilVisible(button,find.byType(ListView),const Offset(0,-180),maxIteration:20);
-        await tester.pumpAndSettle();
-        expect(tester.widget<FilledButton>(button).onPressed,isNull);
-        expect(find.text('Available for female and gender-neutral bodies.'),findsOneWidget);
-      }else{
-        final button=find.widgetWithText(FilledButton,'Equip');
-        await tester.dragUntilVisible(button.hitTestable(),find.byType(ListView),const Offset(0,-180),maxIteration:20);
-        await tester.pumpAndSettle();
-        expect(tester.widget<FilledButton>(button).onPressed,isNotNull);
-      }
+      final button=find.widgetWithText(FilledButton,'Equip');
+      await tester.dragUntilVisible(button.hitTestable(),find.byType(ListView),const Offset(0,-180),maxIteration:20);
+      await tester.pumpAndSettle();
+      expect(tester.widget<FilledButton>(button).onPressed,isNotNull);
       expect(tester.takeException(),isNull);
     }
   });

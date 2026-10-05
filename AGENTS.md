@@ -57,3 +57,13 @@ Historical `candidate` naming does not reopen approval. Verified development
 review: `ae72f23`, documented in `docs/qa/MALE_WOODLAND_V2.md`. Male account rollout
 remains queued; the current shared renderer and equipment policy still gate it.
 Do not report account equipping as delivered based on this art approval record.
+
+## Male Woodland integration continuation — 2026-10-05
+
+Tanya's subsequent “Keep going” continues the approved male Woodland inventory
+and equip integration. The exact locked v2 overlay is now wired into the proposed
+shared renderer and body-fit policy, with an unchanged public API and a scoped
+forward migration. QA: `docs/qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md`. Preserve the
+G3 live-database deployment hold in `supabase/README.md`; do not publish enabled
+client capability against the still-gated live backend. Art remains LOCKED;
+isolated CI readiness and delivered account support must be reported separately.

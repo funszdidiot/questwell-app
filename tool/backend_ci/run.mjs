@@ -139,6 +139,31 @@ try {
       run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_reward_failure;`]);
     }
   }
+  // Male Woodland uses the same RPCs; prove that only its private fit definition
+  // changes, with every other function, policy, grant and table left intact.
+  run(['db', 'query', '--local', '--file', join(source, 'woodland-fixture.sql')]);
+  const woodlandBefore = readCatalog();
+  const woodlandMigration = '20261005175137_male_woodland_approved_rollout.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', woodlandMigration), join(workdir, 'supabase/migrations', woodlandMigration));
+  run(['migration', 'up', '--local']);
+  const predicate = woodlandBefore.functions.find(f => f.schema === 'private' && f.name === 'cosmetic_supports_body');
+  assert.ok(predicate);
+  const previousDefinition = predicate.definition;
+  predicate.definition = previousDefinition.replace(
+    "when p_slug='woodland-scout-outfit' then coalesce(p_body_type in ('female','neutral'),false)",
+    "when p_slug='woodland-scout-outfit' then coalesce(p_body_type in ('female','neutral','male'),false)");
+  assert.notEqual(predicate.definition, previousDefinition);
+  assertCatalogMatches(woodlandBefore, readCatalog());
+  run(['db', 'query', '--local', '--file', join(source, 'woodland-contract.sql')]);
+  console.log('Woodland fit contract passed; all other schema/ACL/RLS/API definitions unchanged.');
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
+  const woodlandTests = spawnSync(process.execPath, [join(source, 'woodland.mjs')], {
+    input: JSON.stringify(status), env, encoding: 'utf8', timeout: 120000,
+    maxBuffer: 1024 * 1024,
+  });
+  if (woodlandTests.stdout) console.log(redact(woodlandTests.stdout));
+  if (woodlandTests.stderr) console.error(redact(woodlandTests.stderr));
+  if (woodlandTests.status !== 0) throw new Error('Woodland account integration failed');
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   if (attemptedStart) {

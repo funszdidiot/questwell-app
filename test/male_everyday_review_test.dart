@@ -18,7 +18,7 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(find.text('Male wardrobe fit review'), findsOneWidget);
       expect(
-          find.text('Everyday and robes are live · Woodland is a fit candidate'),
+          find.text('Woodland v2 fit approved · Account rollout in verification'),
           findsOneWidget);
       expect(find.byType(QuestwellMalePaperDoll), findsNWidgets(2));
 
