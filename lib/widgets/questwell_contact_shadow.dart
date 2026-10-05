@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 /// Contact points follow the visible feet inside each transparent art canvas.
 /// Paint behind the item, and mirror with its artwork when its facing changes.
 class QuestwellContactShadowPainter extends CustomPainter {
-  const QuestwellContactShadowPainter(this.subject);
+  const QuestwellContactShadowPainter(this.subject, {this.shadowProfile, this.visibleBase = 1});
 
   final String subject;
+  final String? shadowProfile;
+  final double visibleBase;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -27,7 +29,28 @@ class QuestwellContactShadowPainter extends CustomPainter {
       canvas.restore();
     }
 
-    switch (subject) {
+    switch (shadowProfile ?? subject) {
+      case 'seating':
+        oval(.53, .865, .70, .12, alpha: 22);
+        oval(.20, .882, .16, .040);
+        oval(.685, .943, .17, .040);
+        oval(.845, .827, .13, .032, alpha: 52);
+        oval(.445, .793, .11, .028, alpha: 44);
+      case 'side_table':
+        oval(.50, .83, .78, .14, alpha: 18);
+        oval(.189, .807, .16, .030);
+        oval(.470, .942, .19, .036);
+        oval(.810, .813, .16, .030);
+        oval(.555, .715, .12, .025, alpha: 44);
+      case 'wide_plinth':
+        oval(.50, visibleBase, .84, .035, alpha: 72);
+      case 'pedestal':
+        oval(.50, visibleBase, .36, .025, alpha: 72);
+      case 'plant':
+        oval(.51, .908, .41, .065, alpha: 36);
+        oval(.51, .906, .32, .025, alpha: 58);
+      case 'none':
+        break;
       case 'burgundy-reading-chair':
         oval(.53, .865, .70, .12, alpha: 22);
         oval(.20, .882, .16, .040);
@@ -73,5 +96,7 @@ class QuestwellContactShadowPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant QuestwellContactShadowPainter oldDelegate) =>
-      oldDelegate.subject != subject;
+      oldDelegate.subject != subject ||
+      oldDelegate.shadowProfile != shadowProfile ||
+      oldDelegate.visibleBase != visibleBase;
 }
