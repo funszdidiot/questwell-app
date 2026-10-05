@@ -183,7 +183,7 @@ void main() {
     await tester.ensureVisible(equipButton);
     await tester.tap(equipButton);
     await tester.pumpAndSettle();
-    if (gear.type == QuestwellBookshelf) {
+    if (gear.type == QuestwellBookshelf || gear.type == QuestwellWallArt) {
       await tester.tap(find.text('Save placement'));
       await tester.pumpAndSettle();
     }
