@@ -14,7 +14,7 @@ registration exposed shoulders and 13 lower pixels and was rejected. The final
 continuous field adds shoulder ease, .75px inner-calf ease and 1.8px heel extension.
 
 Source/registration: tool/export_male_woodland_v2.cjs.
-Canonical candidate record: tool/male_woodland_v2_fit_reference.json.
+Canonical locked fit record: tool/male_woodland_v2_fit_reference.json.
 Versioned app asset: assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v2.webp.
 Historical v1 files/references remain unchanged.
 
@@ -26,7 +26,7 @@ inner-leg contours, correct outward footwear and full heel/sole coverage.
 Reviewed source, exact export, native and enlarged light/dark composites against v1.
 Existing coverage predicate: 6,111 opaque body pixels covered at alpha>=250;
 872 hand pixels clear at alpha<=2. Locked body/identity/Everyday hash checks pass.
-No founder lock is inferred; new fit remains a candidate.
+The local QA was completed before founder acceptance; Tanya’s later approval is recorded below.
 
 ## Integration
 
@@ -41,7 +41,7 @@ exact revision; it did not redraw or change the outfit.
 
 ## Delivered verification — 2026-10-05
 
-Production: **DEV DEPLOYED / technically verified**. Art: **candidate, NOT LOCKED**.
+At verification, production was **DEV DEPLOYED / technically verified** and art was a candidate. The subsequent founder acceptance below locks this exact fit.
 
 - Preview workflow `37342883393` passed the asset-integrity, locked-dependency,
   analyzer, Flutter, build and deployment gates. The analyzer still reports
@@ -60,7 +60,7 @@ Production: **DEV DEPLOYED / technically verified**. Art: **candidate, NOT LOCKE
   blocking defects in shoulders, sleeve/cuff ends, hands, neckline, seams,
   proportions or boots. Complete soles are visible in the native runtime capture;
   the enlarged runtime viewport clips the boot bottoms, so enlarged export
-  composites were also inspected. This visual QA does not record founder approval.
+  composites were also inspected. The visual QA itself did not establish approval; Tanya’s subsequent acceptance is recorded below.
 - Existing passing widget regressions cover body/class eligibility, guarded
   equipment and route restoration at 320, 390 and 1363 pixels. The scoped candidate
   makes no account, catalog, economy or saved-loadout writes.
@@ -73,9 +73,26 @@ Review: https://funszdidiot.github.io/questwell-app/?review=male-woodland
 
 Physical iOS/Safari, real-account purchase/equip and real-user persistence were not
 verified in this candidate-only continuation. Male Woodland remains unavailable
-for account equipping; female/neutral Scout support remains unchanged. No founder
-lock or account rollout is inferred from this QA.
+for account equipping; female/neutral Scout support remains unchanged. Founder acceptance is recorded below; account rollout is not inferred from QA.
 
 This documentation follow-up changes evidence and dashboard status only. Revert
 its commit to roll it back; no app, asset, schema or data rollback is required.
 Historical v1 remains preserved for provenance, not accepted as the current fit.
+
+
+## Founder acceptance — 2026-10-05 America/Chicago
+
+Tanya responded **“It’s good”** to the verified v2 screenshot and development
+review. Male Woodland v2 is now **LOCKED** at
+`tool/male_woodland_v2_fit_reference.json`, retaining the exact approved asset
+SHA-256 `bc923c9b5043950e617ad81b5b4caed7448846ccc4536e4fcc56ad90725c8ed8`.
+No artwork or renderer bytes changed when recording the approval. Preserve its
+single-overlay silhouette, sleeves/cuff openings, hand clearance, waist/hip/leg
+contours, footwear, alpha and registration on locked male v3. Historical candidate
+naming and the earlier v1 reference do not reopen this approval.
+
+Remaining integration: route male Woodland through the shared avatar renderer,
+update supported-body policy and catalog description consistently with the server
+contract, then verify Scout-only equip/unequip, purchase, ownership and saved-loadout
+restoration. Current account support remains female + neutral Scouts. The approval
+record does not claim that this remaining rollout has been completed.

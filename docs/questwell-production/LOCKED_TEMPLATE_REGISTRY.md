@@ -17,7 +17,7 @@ This file tells automation what may be reused without reopening design.
 | Everyday outfit | Neutral | LOCKED | DEV DEPLOYED — approved Everyday/five-class-robe scope (`4cfef7f`) | `tool/neutral_everyday_fit_reference.json` + `docs/art/NEUTRAL_EVERYDAY_V3_CANDIDATE.md` | Founder locked v3 on 2026-10-03. Preserve existing approved components and order; do not retroactively regenerate them. |
 | Woodland Scout outfit | Female | LOCKED | Existing integration; unchanged this session | `docs/art/FEMALE_FIT_STANDARD.md` | Unified female v11. |
 | Woodland Scout outfit | Neutral | LOCKED | DEV DEPLOYED — approved account rollout (`9ce9b92`) | `tool/neutral_woodland_fit_reference.json` | Tanya approved the neutral outfits and requested push on 2026-10-04. Exact v3 asset preserved. |
-| Woodland Scout outfit | Male | CANDIDATE — NOT LOCKED | DEV DEPLOYED — fixed-body review (`0330c3b`); account rollout remains queued | `tool/male_woodland_fit_reference.json` + `docs/art/MALE_WOODLAND_V1.md` | One coherent overlay on immutable v3; 367 Flutter + 8 Node checks, five delivered hashes, browser transitions/reload, grimoire and Market gating verified. Art remains a candidate; no account capability promotion or new template lock. |
+| Woodland Scout outfit | Male | LOCKED | DEV DEPLOYED — verified v2 review (`ae72f23`); account rollout queued | `tool/male_woodland_v2_fit_reference.json` + `docs/qa/MALE_WOODLAND_V2.md` | Tanya approved “It’s good” on 2026-10-05 after the v2 runtime review. Exact single-overlay fit on immutable male v3; sleeves, hands, seams and boots locked. Historical v1 and `candidate` filenames do not reopen approval. Male account equipping remains unavailable until the separate integration is delivered. |
 | Grimoire equipment | All supported bodies | LOCKED METHOD | Runtime compatibility checked per supported fit | `docs/art/NEUTRAL_CLASS_ROBES_V1.md` | Belt-mounted; preserve hands. |
 | Pathfinder boots | All | RETIRED | Must remain absent from catalog/renderers | equipment policy | Preserve ownership history. Never reintroduce without founder decision. |
 
@@ -62,3 +62,22 @@ Lesson: alpha-only thumb checks can pass while an opaque trouser layer still cov
 ## Latest neutral approval and rollout — 2026-10-04
 
 Tanya: **“The neutral outfits are good- push them.”** Neutral Woodland v3 is now founder-approved and LOCKED at `tool/neutral_woodland_fit_reference.json`. This newer instruction explicitly authorizes its development app and account eligibility rollout for female and neutral Scouts; male Woodland remains unavailable. Earlier female-only and neutral-candidate statements are historical and superseded for this scope. Existing neutral Everyday and all five class robes remain locked. Exact artwork and bodies are unchanged. Rollout status: **DEV DEPLOYED / LOCKED**, verified at `9ce9b92` (workflow `37236299144`, 373 Flutter + 8 Node tests, ten delivered asset hashes, live neutral Market purchase/equip/unequip). Evidence: `docs/qa/NEUTRAL_OUTFIT_ROLLOUT.md`.
+
+
+## Male Woodland v2 founder approval — 2026-10-05 America/Chicago
+
+Tanya: **“It’s good”**, responding to the delivered male Woodland v2 fit review.
+The exact outfit SHA-256 is
+`bc923c9b5043950e617ad81b5b4caed7448846ccc4536e4fcc56ad90725c8ed8`.
+`tool/male_woodland_v2_fit_reference.json` is now the canonical locked template;
+the earlier v1 reference remains historical. Preserve all geometry, alpha,
+registration, sleeve/cuff openings, hand clearance, seams and footwear. Keep
+male v3 body, identity and Everyday v2 unchanged. The historical `candidate_v2`
+asset filename is retained to avoid runtime churn; it does not indicate pending
+art approval.
+
+Development review was technically verified at `ae72f23` before this acceptance.
+Male account integration remains queued: the shared avatar renderer and equipment
+policy still exclude male Woodland. Approval is recorded separately from account
+rollout and PR merge status. No further aesthetic approval is needed for this
+exact fit.

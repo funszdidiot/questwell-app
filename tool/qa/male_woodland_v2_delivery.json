@@ -2,8 +2,14 @@
   "date": "2026-10-05",
   "revision": "ae72f23b0386420e28282021133378f17385d546",
   "productionStatus": "DEV DEPLOYED",
-  "artStatus": "candidate_not_founder_locked",
-  "founderApproval": null,
+  "founderApproval": {
+    "date": "2026-10-05",
+    "timezone": "America/Chicago",
+    "quote": "It’s good",
+    "scope": "Male Woodland Scout v2 shown in the verified development review and native screenshot",
+    "reviewedRevision": "ae72f23b0386420e28282021133378f17385d546",
+    "outfitSha256": "bc923c9b5043950e617ad81b5b4caed7448846ccc4536e4fcc56ad90725c8ed8"
+  },
   "reviewUrl": "https://funszdidiot.github.io/questwell-app/?review=male-woodland",
   "workflowRun": 37342883393,
   "workflowConclusion": "success",
@@ -79,5 +85,8 @@
     "Real-account male Woodland purchase or equipping",
     "Real-user saved-loadout persistence"
   ],
-  "scope": "Verification and evidence only; v2 was already deployed. No artwork, body, renderer, catalog, economy, backend or account changes."
+  "scope": "Verification and subsequent founder-approval record only; v2 was already deployed. No artwork, body, renderer, catalog, economy, backend or account changes.",
+  "artStatusAtVerification": "candidate_not_founder_locked",
+  "artStatus": "LOCKED",
+  "accountRollout": "QUEUED; current account support remains female and neutral Scouts"
 }
