@@ -69,10 +69,16 @@ void main() {
     ));
     await pumpReview(tester);
 
-    expect(find.text('Fixture Solstice Scholar Robe'), findsWidgets);
+    expect(
+      find.text('Fixture Solstice Scholar Robe', skipOffstage: false),
+      findsWidgets,
+    );
 
     final vertical = find.byType(Scrollable).first;
-    final baseline = find.textContaining('Locked body baseline');
+    final baseline = find.textContaining(
+      'Locked body baseline',
+      skipOffstage: false,
+    );
     await tester.scrollUntilVisible(
       baseline,
       280,
@@ -91,7 +97,10 @@ void main() {
       findsOneWidget,
     );
 
-    final female = find.byKey(const ValueKey('seasonal-body-female'));
+    final female = find.byKey(
+      const ValueKey('seasonal-body-female'),
+      skipOffstage: false,
+    );
     await tester.scrollUntilVisible(
       female,
       -280,
