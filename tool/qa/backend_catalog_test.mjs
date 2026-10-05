@@ -4,6 +4,12 @@ import {readFileSync} from 'node:fs';
 import {assertCatalogMatches} from '../backend_ci/catalog.mjs';
 
 const observed = JSON.parse(readFileSync(new URL('../backend_ci/observed_catalog.json', import.meta.url)));
+test('every captured function grant retains its complete callable signature', () => {
+  const signatures = new Set(observed.functions.map(f => `${f.schema}.${f.name}(${f.identity_arguments})`));
+  for (const grant of observed.grants.filter(g => g.kind === 'function')) {
+    assert.ok(signatures.has(`${grant.schema}.${grant.name}`), 'Grant signature must match an observed function without name-type truncation');
+  }
+});
 test('catalog comparison accepts reordered equivalent metadata', () => {
   const same = structuredClone(observed);
   for (const rows of Object.values(same)) rows.reverse();

@@ -40,7 +40,7 @@ function run(args, timeout = 120000) {
 const version = run(['--version']).trim();
 if (version !== '2.119.0') throw new Error(`Unexpected Supabase CLI version: ${version}`);
 console.log(`Supabase CLI ${version}; temporary local fixture stack only.`);
-for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['stop', '--help']]) {
+for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['db', 'lint', '--help'], ['stop', '--help']]) {
   run(args); // Installed-version help verifies the command surface on the runner.
 }
 
@@ -84,6 +84,9 @@ try {
   };
   assertCatalogMatches(expected, readCatalog());
   console.log('Observed application baseline rebuilt; all recorded catalog sections match.');
+  // Inventory inherited source findings; this is a reconstruction, not a lint-clean claim.
+  console.log('Observed-source SQL lint inventory (warnings/errors remain release findings):');
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'none']));
   // Real negative control, on the disposable application's table only.
   run(['db', 'query', '--local', 'alter table public.tasks disable row level security;']);
   try {

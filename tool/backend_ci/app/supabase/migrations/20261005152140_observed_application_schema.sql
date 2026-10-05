@@ -1743,11 +1743,11 @@ grant EXECUTE on function "private"."complete_task"(p_task_id uuid) to "service_
 
 grant EXECUTE on function "private"."cosmetic_supports_body"(p_slug text, p_body_type text) to "postgres";
 
-grant EXECUTE on function "private"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp in to "authenticated";
+grant EXECUTE on function "private"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp integer, p_reward_coins integer, p_boss_type text) to "authenticated";
 
-grant EXECUTE on function "private"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp in to "postgres";
+grant EXECUTE on function "private"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp integer, p_reward_coins integer, p_boss_type text) to "postgres";
 
-grant EXECUTE on function "private"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp in to "service_role";
+grant EXECUTE on function "private"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp integer, p_reward_coins integer, p_boss_type text) to "service_role";
 
 grant EXECUTE on function "private"."equip_cosmetic"(p_cosmetic_id uuid) to "authenticated";
 
@@ -1755,15 +1755,15 @@ grant EXECUTE on function "private"."equip_cosmetic"(p_cosmetic_id uuid) to "pos
 
 grant EXECUTE on function "private"."equip_cosmetic"(p_cosmetic_id uuid) to "service_role";
 
-grant EXECUTE on function "private"."equip_cosmetic_loadout"(p_cosmetic_id uuid, p_expected_conflict  to "authenticated";
+grant EXECUTE on function "private"."equip_cosmetic_loadout"(p_cosmetic_id uuid, p_expected_conflict uuid) to "authenticated";
 
-grant EXECUTE on function "private"."equip_cosmetic_loadout"(p_cosmetic_id uuid, p_expected_conflict  to "postgres";
+grant EXECUTE on function "private"."equip_cosmetic_loadout"(p_cosmetic_id uuid, p_expected_conflict uuid) to "postgres";
 
 grant EXECUTE on function "private"."level_for_xp"(p_xp bigint) to "postgres";
 
-grant EXECUTE on function "private"."place_hearth_cosmetic"(p_cosmetic_id uuid, p_slot text, p_expect to "authenticated";
+grant EXECUTE on function "private"."place_hearth_cosmetic"(p_cosmetic_id uuid, p_slot text, p_expected_occupant uuid) to "authenticated";
 
-grant EXECUTE on function "private"."place_hearth_cosmetic"(p_cosmetic_id uuid, p_slot text, p_expect to "postgres";
+grant EXECUTE on function "private"."place_hearth_cosmetic"(p_cosmetic_id uuid, p_slot text, p_expected_occupant uuid) to "postgres";
 
 grant EXECUTE on function "private"."protect_level_xp_offset"() to "postgres";
 
@@ -1817,11 +1817,11 @@ grant EXECUTE on function "public"."complete_task"(p_task_id uuid) to "postgres"
 
 grant EXECUTE on function "public"."complete_task"(p_task_id uuid) to "service_role";
 
-grant EXECUTE on function "public"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp in to "authenticated";
+grant EXECUTE on function "public"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp integer, p_reward_coins integer, p_boss_type text) to "authenticated";
 
-grant EXECUTE on function "public"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp in to "postgres";
+grant EXECUTE on function "public"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp integer, p_reward_coins integer, p_boss_type text) to "postgres";
 
-grant EXECUTE on function "public"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp in to "service_role";
+grant EXECUTE on function "public"."create_boss_battle"(p_title text, p_steps text[], p_reward_xp integer, p_reward_coins integer, p_boss_type text) to "service_role";
 
 grant EXECUTE on function "public"."enforce_collection_archetype"() to "postgres";
 
@@ -1833,21 +1833,21 @@ grant EXECUTE on function "public"."equip_cosmetic"(p_cosmetic_id uuid) to "post
 
 grant EXECUTE on function "public"."equip_cosmetic"(p_cosmetic_id uuid) to "service_role";
 
-grant EXECUTE on function "public"."equip_cosmetic_loadout"(p_cosmetic_id uuid, p_expected_conflict  to "authenticated";
+grant EXECUTE on function "public"."equip_cosmetic_loadout"(p_cosmetic_id uuid, p_expected_conflict uuid) to "authenticated";
 
-grant EXECUTE on function "public"."equip_cosmetic_loadout"(p_cosmetic_id uuid, p_expected_conflict  to "postgres";
+grant EXECUTE on function "public"."equip_cosmetic_loadout"(p_cosmetic_id uuid, p_expected_conflict uuid) to "postgres";
 
-grant EXECUTE on function "public"."equip_cosmetic_loadout"(p_cosmetic_id uuid, p_expected_conflict  to "service_role";
+grant EXECUTE on function "public"."equip_cosmetic_loadout"(p_cosmetic_id uuid, p_expected_conflict uuid) to "service_role";
 
 grant EXECUTE on function "public"."handle_new_user"() to "postgres";
 
 grant EXECUTE on function "public"."handle_new_user"() to "service_role";
 
-grant EXECUTE on function "public"."place_hearth_cosmetic"(p_cosmetic_id uuid, p_slot text, p_expect to "authenticated";
+grant EXECUTE on function "public"."place_hearth_cosmetic"(p_cosmetic_id uuid, p_slot text, p_expected_occupant uuid) to "authenticated";
 
-grant EXECUTE on function "public"."place_hearth_cosmetic"(p_cosmetic_id uuid, p_slot text, p_expect to "postgres";
+grant EXECUTE on function "public"."place_hearth_cosmetic"(p_cosmetic_id uuid, p_slot text, p_expected_occupant uuid) to "postgres";
 
-grant EXECUTE on function "public"."place_hearth_cosmetic"(p_cosmetic_id uuid, p_slot text, p_expect to "service_role";
+grant EXECUTE on function "public"."place_hearth_cosmetic"(p_cosmetic_id uuid, p_slot text, p_expected_occupant uuid) to "service_role";
 
 grant EXECUTE on function "public"."purchase_cosmetic"(p_cosmetic_id uuid) to "authenticated";
 

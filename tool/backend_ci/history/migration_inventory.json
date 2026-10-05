@@ -1,0 +1,470 @@
+{
+  "localCount": 23,
+  "remoteCount": 48,
+  "inventory": [
+    {
+      "name": "actionable_beta_feedback_queue",
+      "local_version": null,
+      "remote_version": "20261003183034",
+      "local_sha256": null,
+      "remote_sha256": "1a903da145038704f0553ceccfb3a60a2d82b2e88863f0bdbd373bf74d9326ab",
+      "comparison": "remote only"
+    },
+    {
+      "name": "activate_class_mastery_hearth_relics",
+      "local_version": null,
+      "remote_version": "20261001204532",
+      "local_sha256": null,
+      "remote_sha256": "b39e9cf9bab3f460387cc758c1683084f6c3515a649c4c236b3a718dc6a018fd",
+      "comparison": "remote only"
+    },
+    {
+      "name": "add_avatar_body_type",
+      "local_version": null,
+      "remote_version": "20260928215944",
+      "local_sha256": null,
+      "remote_sha256": "b4b356d22d275c852bbd34fcdea0016c310d252ae1573ade61c22c2ef0c1d1b7",
+      "comparison": "remote only"
+    },
+    {
+      "name": "add_set_avatar_body_type_rpc",
+      "local_version": null,
+      "remote_version": "20260928225130",
+      "local_sha256": null,
+      "remote_sha256": "236f4e912693ef7af78eb3cbb2de8d4594974df2e298230d80838b1afaed4c94",
+      "comparison": "remote only"
+    },
+    {
+      "name": "add_unequip_cosmetic_rpc",
+      "local_version": null,
+      "remote_version": "20260927161508",
+      "local_sha256": null,
+      "remote_sha256": "f49d991ef16e1f583b5025849f994429707bdbd3870592d95ead0cbcc704f3c7",
+      "comparison": "remote only"
+    },
+    {
+      "name": "allow_auth_account_deletion_without_trophy_relayout",
+      "local_version": null,
+      "remote_version": "20261002004352",
+      "local_sha256": null,
+      "remote_sha256": "5ab9a3aa92dff9f99653ca438792a8ca60f7d92ad874644b0a87270d22738aaa",
+      "comparison": "remote only"
+    },
+    {
+      "name": "allow_class_relic_front_left_pedestal",
+      "local_version": null,
+      "remote_version": "20261001205351",
+      "local_sha256": null,
+      "remote_sha256": "db3cb9b63c6ba0038b70d11933bb66013bebbc0e74cffeabd62e854889c6f51b",
+      "comparison": "remote only"
+    },
+    {
+      "name": "approved_wardrobe_body_support",
+      "local_version": "20261004035017",
+      "remote_version": "20261004035017",
+      "local_sha256": "fb89a32d849d1cd1b6a24dad18c7392a2094f729a9845123037628cfda6cb6a4",
+      "remote_sha256": "fb89a32d849d1cd1b6a24dad18c7392a2094f729a9845123037628cfda6cb6a4",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "autumn_ember_lantern_market",
+      "local_version": "20261003004307",
+      "remote_version": null,
+      "local_sha256": "e45330778fb2aa908017581061e0fe87379f51a596c00b15beee0ca9979cf515",
+      "remote_sha256": null,
+      "comparison": "local only"
+    },
+    {
+      "name": "beta_feedback_multiple_screenshots",
+      "local_version": null,
+      "remote_version": "20261003182944",
+      "local_sha256": null,
+      "remote_sha256": "5216f381d1b3964c5fc1782c99ead99f44fcde3cdc5769f31ad6b838ab5c9cff",
+      "comparison": "remote only"
+    },
+    {
+      "name": "beta_feedback_screenshot_attachments",
+      "local_version": null,
+      "remote_version": "20261003182414",
+      "local_sha256": null,
+      "remote_sha256": "85a01ebbf9586e0959295fb416f47b847be8f350be1cc7f500b2f7027410df32",
+      "comparison": "remote only"
+    },
+    {
+      "name": "boss_battles_foundation",
+      "local_version": null,
+      "remote_version": "20260927163816",
+      "local_sha256": null,
+      "remote_sha256": "343eae7ad6dee84bb2fffb63421623b79515728280c3b9f8702bf5d8886dc084",
+      "comparison": "remote only"
+    },
+    {
+      "name": "class_locked_cosmetics",
+      "local_version": null,
+      "remote_version": "20260927171533",
+      "local_sha256": null,
+      "remote_sha256": "a75a5940fd575ffcc60587f0932087a735b66a2d7206fd0441cb4fdaf359d49e",
+      "comparison": "remote only"
+    },
+    {
+      "name": "class_mastery_rewards",
+      "local_version": null,
+      "remote_version": "20260927172022",
+      "local_sha256": null,
+      "remote_sha256": "4686e5fd9f9e9ba91dd87c1ef8cee3cdbb855717097cf3b1589c6efd8ac22b0b",
+      "comparison": "remote only"
+    },
+    {
+      "name": "copper_potion_workbench_market",
+      "local_version": "20261002221545",
+      "remote_version": null,
+      "local_sha256": "a5d218c280c7495f69f6b0b61a9bbef148eb46c6f8f7fd334a1f0ed104a431d5",
+      "remote_sha256": null,
+      "comparison": "local only"
+    },
+    {
+      "name": "cosmetic_collections_and_editions",
+      "local_version": null,
+      "remote_version": "20261003213709",
+      "local_sha256": null,
+      "remote_sha256": "3b112c18d00e1744e39f842077ce41c5b164d502fd2f37b2abf54bee9a5a0c8c",
+      "comparison": "remote only"
+    },
+    {
+      "name": "emerald_wayfarer_rug",
+      "local_version": "20261002130617",
+      "remote_version": "20261002131724",
+      "local_sha256": "5be5f99a7c70850f91067670c086b8a3912e91e26d0e367b33b10ae2fcd4ea01",
+      "remote_sha256": "5be5f99a7c70850f91067670c086b8a3912e91e26d0e367b33b10ae2fcd4ea01",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "enchanted_library_market",
+      "local_version": "20261002203554",
+      "remote_version": null,
+      "local_sha256": "ecbb3d8a49faa60fee7db1d749ac4e89a6784887cd2142ecab5b406ad2a2d49c",
+      "remote_sha256": null,
+      "comparison": "local only"
+    },
+    {
+      "name": "enforce_boss_victory_cap_and_level_unlocks",
+      "local_version": null,
+      "remote_version": "20261001223118",
+      "local_sha256": null,
+      "remote_sha256": "ff0e4b136c8edfba9fd6741c0f5dffe98b879d207b6bf36360f32dedfb09a0b4",
+      "comparison": "remote only"
+    },
+    {
+      "name": "expand_avatar_equipment_slots_v2",
+      "local_version": null,
+      "remote_version": "20260928164032",
+      "local_sha256": null,
+      "remote_sha256": "d4c293e944c3b52b28f12afbcf767ed43b0cb85e6f99a8cb3670763c26ca3d4b",
+      "comparison": "remote only"
+    },
+    {
+      "name": "female_paper_doll_wardrobe",
+      "local_version": "20261003061842",
+      "remote_version": "20261003061842",
+      "local_sha256": "ca1385ecd55ac77fd76a7e823c6470f6c5fe2b231ffbb6da1de6b14d90c7ca27",
+      "remote_sha256": "ca1385ecd55ac77fd76a7e823c6470f6c5fe2b231ffbb6da1de6b14d90c7ca27",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "first_journey_milestone",
+      "local_version": "20260930224627",
+      "remote_version": "20260930224627",
+      "local_sha256": "570422b742268eeb56b8564a7c02d745310a55499f1477e6f00ee6c16667b526",
+      "remote_sha256": "570422b742268eeb56b8564a7c02d745310a55499f1477e6f00ee6c16667b526",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "four_hearth_settings",
+      "local_version": "20261002205209",
+      "remote_version": null,
+      "local_sha256": "a737fecde324485cbb313bff56c9a5fceb1c745a1cbf6e7d5296ddddc1d296ff",
+      "remote_sha256": null,
+      "comparison": "local only"
+    },
+    {
+      "name": "generic_wall_art_registry",
+      "local_version": null,
+      "remote_version": "20261005010743",
+      "local_sha256": null,
+      "remote_sha256": "a1fc419abd7c2a56fb779b17012624e49d412b25b8579f46d1c195dbd77fdb9b",
+      "comparison": "remote only"
+    },
+    {
+      "name": "gentle_xp_curve",
+      "local_version": "20260930222423",
+      "remote_version": "20260930222423",
+      "local_sha256": "9d4cc2817bc4d44606ee89c804cdd53e7f7b1e058b585e100116d0123409bdff",
+      "remote_sha256": "9d4cc2817bc4d44606ee89c804cdd53e7f7b1e058b585e100116d0123409bdff",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "harden_boss_step_completion",
+      "local_version": null,
+      "remote_version": "20260927174256",
+      "local_sha256": null,
+      "remote_sha256": "f9b3df377632da482d4b4074465640aa7673325c38348c393ca6dbdf7a615017",
+      "comparison": "remote only"
+    },
+    {
+      "name": "harvest_apothecary_display_market",
+      "local_version": "20261003000637",
+      "remote_version": null,
+      "local_sha256": "3d4db35b8c8be62061eb03bcee7796aa6fa3c3aa4d3288b9839094da81b629a0",
+      "remote_sha256": null,
+      "comparison": "local only"
+    },
+    {
+      "name": "hearth_layout_contract",
+      "local_version": "20261004235800",
+      "remote_version": "20261005000645",
+      "local_sha256": "7d04661833ea5fdc566b65e1201e52eb268ee282274bf5cdef3ed6b3b3a039a0",
+      "remote_sha256": "7d04661833ea5fdc566b65e1201e52eb268ee282274bf5cdef3ed6b3b3a039a0",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "hearth_reading_table_side_spot",
+      "local_version": null,
+      "remote_version": "20260930201950",
+      "local_sha256": null,
+      "remote_sha256": "11460edc52395617201c4398a62c545d3bf3584046e8400ecc12b8f0ee0f610c",
+      "comparison": "remote only"
+    },
+    {
+      "name": "hearth_render_registry",
+      "local_version": "20261005003100",
+      "remote_version": "20261005003452",
+      "local_sha256": "2305bb9bf80deadafad44121d6df9336cb348b539cf8e6f91a43d43f306c6a23",
+      "remote_sha256": "2305bb9bf80deadafad44121d6df9336cb348b539cf8e6f91a43d43f306c6a23",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "hearth_settings_market",
+      "local_version": "20261002195043",
+      "remote_version": null,
+      "local_sha256": "b3acf8277654d8187ffb159872d52131902dc49a2dbbbd063cebead6825c74b7",
+      "remote_sha256": null,
+      "comparison": "local only"
+    },
+    {
+      "name": "hearth_side_wall_art",
+      "local_version": null,
+      "remote_version": "20260930211710",
+      "local_sha256": null,
+      "remote_sha256": "b6172de5ef428e715871155fd7b155c83bc392e2db46e9aeb8ff556777168b5e",
+      "comparison": "remote only"
+    },
+    {
+      "name": "hearth_three_saved_spots",
+      "local_version": null,
+      "remote_version": "20260930162131",
+      "local_sha256": null,
+      "remote_sha256": "318737d3e3113a83f977196312118c1b05727ce7ea95f919d2f7b0c0ef068f99",
+      "comparison": "remote only"
+    },
+    {
+      "name": "hearth_wall_art_category",
+      "local_version": null,
+      "remote_version": "20260930204233",
+      "local_sha256": null,
+      "remote_sha256": "64a07f7b842e01f172ff3c475e3d2a6c74cb23efa873b00e69210b8dc2a2be60",
+      "comparison": "remote only"
+    },
+    {
+      "name": "hold_warding_lantern_wayfarer_rug_for_art_rebuild",
+      "local_version": null,
+      "remote_version": "20261003221322",
+      "local_sha256": null,
+      "remote_sha256": "cb3224f1668776daf08fce3538303decc5a2ba43f7000ec923a485806bd37977",
+      "comparison": "remote only"
+    },
+    {
+      "name": "isolate_privileged_gameplay_rpcs",
+      "local_version": null,
+      "remote_version": "20260928230206",
+      "local_sha256": null,
+      "remote_sha256": "9d60937b850044bde2679173a6d402b120ce00f16fd5a69f91480cceb0fd10d3",
+      "comparison": "remote only"
+    },
+    {
+      "name": "lock_down_auth_trigger_function",
+      "local_version": null,
+      "remote_version": "20260927040111",
+      "local_sha256": null,
+      "remote_sha256": "d821635d075b4303c3ecb69acc9049345374456bfd87de2a1579497ee3ad0ea4",
+      "comparison": "remote only"
+    },
+    {
+      "name": "male_robe_everyday_app_rollout",
+      "local_version": "20261004163513",
+      "remote_version": "20261004163513",
+      "local_sha256": "dda1e0eabb25bf8db949fd4ae67b9627b1fb2df13cc2e0191ac4b309e9edbf99",
+      "remote_sha256": "adf3d41420e0ae50c55debe512950c74dbcde38da035349fbc64c2fca01f3f0f",
+      "comparison": "SQL bytes differ; semantic reconciliation required"
+    },
+    {
+      "name": "male_wardrobe_keep_legacy_availability",
+      "local_version": "20261004164110",
+      "remote_version": "20261004164110",
+      "local_sha256": "53cd66d5b9e3302cb8fba37b3f425a96e2f809af1868b65debd6805224b0f878",
+      "remote_sha256": "53cd66d5b9e3302cb8fba37b3f425a96e2f809af1868b65debd6805224b0f878",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "market_equipment_window",
+      "local_version": "20261001004459",
+      "remote_version": "20261001004539",
+      "local_sha256": "96a8a879b9e6fadc8449d75df89c6302112d1407918cc4f9bb0caa956567ac2c",
+      "remote_sha256": "446abdd7996b8dbf72d712c014544fbb0b278db8c54d3d49a43f158c19b44d09",
+      "comparison": "only surrounding whitespace differs"
+    },
+    {
+      "name": "midnight_harvest_coat_market",
+      "local_version": "20261002232430",
+      "remote_version": null,
+      "local_sha256": "87d7085d72c5a0ec103344f93140242e0730e8630d4df12a59ccb36e79de81d4",
+      "remote_sha256": null,
+      "comparison": "local only"
+    },
+    {
+      "name": "milestone_roadmap_chronicle",
+      "local_version": "20260930231037",
+      "remote_version": "20260930231037",
+      "local_sha256": "8af35c8586f052181dce10d63400c7b3899e149858b583ac5eb5d6252007934c",
+      "remote_sha256": "8af35c8586f052181dce10d63400c7b3899e149858b583ac5eb5d6252007934c",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "neutral_woodland_approved_rollout",
+      "local_version": "20261004212323",
+      "remote_version": "20261004212445",
+      "local_sha256": "f0e9a2c25aa5737f25bedbdf25862c7621560be8e33ee81dacf3d771928dd2f9",
+      "remote_sha256": "f0e9a2c25aa5737f25bedbdf25862c7621560be8e33ee81dacf3d771928dd2f9",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "office_themed_boss_archetypes",
+      "local_version": null,
+      "remote_version": "20260927163912",
+      "local_sha256": null,
+      "remote_sha256": "4a8ef91d495381dde5f66dff0361b51093e189f4b57a034cda5d8f83a9a3f1c1",
+      "comparison": "remote only"
+    },
+    {
+      "name": "persistent_pinned_quest",
+      "local_version": null,
+      "remote_version": "20261003212827",
+      "local_sha256": null,
+      "remote_sha256": "d1a1f3b35bef0a82cd899b66d11698b43f40fee587e13dace73743e9c798ae91",
+      "comparison": "remote only"
+    },
+    {
+      "name": "profile_sync_and_atomic_task_completion",
+      "local_version": null,
+      "remote_version": "20260927040055",
+      "local_sha256": null,
+      "remote_sha256": "d34dde09e5e5664635a8a6eeca10aca0715f7807fac8d9d3ab5210f991a2ba1d",
+      "comparison": "remote only"
+    },
+    {
+      "name": "pumpkin_sprite_market",
+      "local_version": "20261002224627",
+      "remote_version": null,
+      "local_sha256": "7d91f41c8dc816eb31696b8ebd3a88f09a0668d3d9ccb84c4933c281aff7e9fe",
+      "remote_sha256": null,
+      "comparison": "local only"
+    },
+    {
+      "name": "questwell_adventurer_archetype",
+      "local_version": null,
+      "remote_version": "20260927170440",
+      "local_sha256": null,
+      "remote_sha256": "e4b6ff5b443fe52301dfb58b882feb586ed7c90cb842f646e91bf587b6abb42c",
+      "comparison": "remote only"
+    },
+    {
+      "name": "questwell_beta_feedback",
+      "local_version": "20261002033649",
+      "remote_version": null,
+      "local_sha256": "802b8857d55203e4a23132aa8ebffb6e43d2062bb7907273f015879780f7caca",
+      "remote_sha256": null,
+      "comparison": "local only"
+    },
+    {
+      "name": "questwell_business_suit_starter_outfit",
+      "local_version": null,
+      "remote_version": "20260927132648",
+      "local_sha256": null,
+      "remote_sha256": "0f49548401586940c27e1f04cdf46d1ff1f824ef19e363645d7f8b78ceac89cc",
+      "comparison": "remote only"
+    },
+    {
+      "name": "questwell_onboarding_state",
+      "local_version": null,
+      "remote_version": "20260927170042",
+      "local_sha256": null,
+      "remote_sha256": "b94471fb5fc924640e091932ddc0ae801289206ac890b35bd3106e2e7c4be3e3",
+      "comparison": "remote only"
+    },
+    {
+      "name": "questwell_secure_economy_foundation",
+      "local_version": null,
+      "remote_version": "20260927044951",
+      "local_sha256": null,
+      "remote_sha256": "60c575ac7d461d7fc354304e5a4fc1f737a9224efe2366b060f8306cd5058250",
+      "comparison": "remote only"
+    },
+    {
+      "name": "remove_legacy_boss_creation_rpc",
+      "local_version": null,
+      "remote_version": "20260927171804",
+      "local_sha256": null,
+      "remote_sha256": "935471c2d64dfe8c9d4546e004fafbd1c294fae44f18d5dbdf9eb9525a8ec718",
+      "comparison": "remote only"
+    },
+    {
+      "name": "restrict_gameplay_rpc_anonymous_access",
+      "local_version": null,
+      "remote_version": "20260928230125",
+      "local_sha256": null,
+      "remote_sha256": "361558357ac302b64caeeb482daf664a29f8fcd1f7fa7c3ce6c161be66e1a24c",
+      "comparison": "remote only"
+    },
+    {
+      "name": "return_all_unsupported_hearth_collectibles",
+      "local_version": null,
+      "remote_version": "20261001211351",
+      "local_sha256": null,
+      "remote_sha256": "1139d4561a4a8e1043ada6a5598fb8a81deebac43da1bc4dafb82e75235aaae2",
+      "comparison": "remote only"
+    },
+    {
+      "name": "serialize_cosmetic_purchase",
+      "local_version": "20261002105548",
+      "remote_version": null,
+      "local_sha256": "c0164a8aba73b6264e3989c7859cf14471394747285215487e124c59016f6b73",
+      "remote_sha256": null,
+      "comparison": "local only"
+    },
+    {
+      "name": "starlit_orrery_milestone",
+      "local_version": "20260930233919",
+      "remote_version": "20260930233919",
+      "local_sha256": "fc18c26740828da2fbfebc2c756d6544f454e0f3f138602993cc45d011076172",
+      "remote_sha256": "fc18c26740828da2fbfebc2c756d6544f454e0f3f138602993cc45d011076172",
+      "comparison": "byte-identical"
+    },
+    {
+      "name": "woodland_scout_collection_scout_only",
+      "local_version": null,
+      "remote_version": "20261003220623",
+      "local_sha256": null,
+      "remote_sha256": "0daabf3c8a34a27413f6f9f7566efc7c5be0aa1a32f00cc8efb2c2fd967b578c",
+      "comparison": "remote only"
+    }
+  ]
+}

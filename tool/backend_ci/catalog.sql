@@ -62,7 +62,7 @@ select jsonb_build_object(
     where not t.tgisinternal and (n.nspname in ('public','private') or pn.nspname in ('public','private'))
   ) x), '[]'::jsonb),
   'grants', coalesce((select jsonb_agg(to_jsonb(x) order by kind, schema, name, column_name, grantee, privilege) from (
-    select 'schema' as kind, n.nspname as schema, n.nspname as name, null::text as column_name,
+    select 'schema' as kind, n.nspname as schema, n.nspname::text as name, null::text as column_name,
       case when a.grantee=0 then 'PUBLIC' else a.grantee::regrole::text end as grantee,
       a.grantor::regrole::text as grantor, a.privilege_type as privilege, a.is_grantable
     from pg_namespace n cross join lateral aclexplode(coalesce(n.nspacl, acldefault('n', n.nspowner))) a
@@ -82,7 +82,7 @@ select jsonb_build_object(
     join pg_attribute at on at.attrelid=c.oid cross join lateral aclexplode(at.attacl) a
     where n.nspname in ('public','private') and at.attnum>0 and not at.attisdropped
     union all
-    select 'function', n.nspname, p.proname || '(' || pg_get_function_identity_arguments(p.oid) || ')', null,
+    select 'function', n.nspname, p.proname::text || '(' || pg_get_function_identity_arguments(p.oid) || ')', null,
       case when a.grantee=0 then 'PUBLIC' else a.grantee::regrole::text end,
       a.grantor::regrole::text, a.privilege_type, a.is_grantable
     from pg_proc p join pg_namespace n on n.oid=p.pronamespace
