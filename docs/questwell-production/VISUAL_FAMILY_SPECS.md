@@ -320,6 +320,75 @@ Stop for founder review when:
 - the item changes the room's functional layout;
 - a special interactive/animated renderer is required and no locked system exists.
 
+## Wearable family rules
+
+Seasonal wearables use the paper-doll methodology governed by LOCKED_TEMPLATE_REGISTRY.md.
+
+The registry, not this document, decides which body/template versions are currently locked.
+
+### Same-body invariant
+
+For every supported body:
+- the locked avatar body/identity remains unchanged;
+- clothing fits the body;
+- the body is never altered to make clothing fit;
+- equip, unequip, class change and reload must restore the same underlying body.
+
+### Body-specific production
+
+Female, male and neutral are independently fitted production targets.
+
+Do not:
+- stretch one body's clothing onto another body;
+- use anatomy changes to hide garment gaps;
+- split a previously locked coherent outfit into independent fragments without reopening the template.
+
+### Seasonal derivatives
+
+A seasonal derivative may normally change:
+- palette;
+- fabric/material appearance;
+- trim;
+- embroidery;
+- motif;
+- small non-structural ornament.
+
+It may not silently change:
+- silhouette;
+- sleeve/cuff geometry;
+- neckline/shoulder fit;
+- waist/hip geometry;
+- crotch/inseam coverage;
+- heel/sole coverage;
+- rear-panel ordering;
+- equipment interaction.
+
+Any such change is a template change and requires the appropriate founder gate.
+
+### High-risk seams
+
+Every wearable derivative must inspect:
+- neck and shoulders;
+- both cuffs and hand edges;
+- underarms;
+- waist and hips;
+- crotch/inseam;
+- inner legs;
+- heels/soles;
+- rear/front layering;
+- translucent backing beside hands;
+- restoration after unequip.
+
+### Accessories
+
+Accessories may layer around the locked body but must not:
+- replace hands to carry an item;
+- distort anatomy;
+- require body clipping;
+- reintroduce retired equipment patterns.
+
+A genuinely new equipment interaction is a system/template decision, not a routine seasonal reskin.
+
 ## Release acceptance
 
 A family-compliant item is not automatically approved.
