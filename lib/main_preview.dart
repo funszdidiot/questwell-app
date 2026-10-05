@@ -115,6 +115,7 @@ void main() {
         '.json';
     runApp(QuestwellSeasonalGalleryReviewApp(
       manifestAsset: manifestAsset,
+      initialSlug: Uri.base.queryParameters['item'],
     ));
   } else if (Uri.base.queryParameters['review'] == 'mastery') {
     WidgetsFlutterBinding.ensureInitialized();
