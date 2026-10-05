@@ -131,13 +131,21 @@ await check('real Auth cascade failure after file removal can be retried without
   ok(await removeAccount(a));
   denied(await request(`/auth/v1/admin/users/${a.id}`,admin));
 });
-await check('concurrent deletion requests have one confirmed result and preserve a bystander', async () => {
+await check('concurrent deletion requests converge on complete cleanup and preserve a bystander', async () => {
   const a=await signup(),b=await signup();
   ok(await upload(a,'concurrent.png'));ok(await upload(b,'concurrent-keep.png'));
   const results=await Promise.all([removeAccount(a),removeAccount(a)]);
-  assert.equal(results.filter(r=>r.status===200).length,1);
+  // Both requests can verify Auth before either deletion commits. A successful
+  // response confirms the final state; it is not an exclusive-winner receipt.
+  assert.ok(results.some(r=>r.status===200));
+  for (const r of results.filter(r=>r.status===200)) assert.deepEqual(r.data,{deleted:true});
   assert.ok(results.every(r=>[200,401,503].includes(r.status)));
   denied(await request(`/auth/v1/admin/users/${a.id}`,admin));
+  assert.deepEqual(await owned(a),[]);
+  denied(await request(`/storage/v1/object/authenticated/beta-feedback/${a.id}/concurrent.png`,admin));
+  denied(await upload(a,'after-concurrent.png'));
+  ok(await removeAccount(a),401);
+  ok(await request(`/auth/v1/admin/users/${b.id}`,admin));
   ok(await request(`/storage/v1/object/authenticated/beta-feedback/${b.id}/concurrent-keep.png`,b));
 });
 console.log(`Account deletion: ${checks} passed; ${failures} failed (real Edge/Auth/Storage).`);

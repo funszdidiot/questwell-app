@@ -49,6 +49,12 @@ repeat request, with no further deletion. The app never retries this mutation
 automatically. Local auth, pinned-quest preferences and feedback drafts clear
 only after the existing confirmed-success flow.
 
+Concurrent requests can both verify the user before deletion commits and both
+report success. Success confirms completed cleanup, not exclusive ownership of
+the operation. The concurrency regression requires no remaining owned files or
+Auth account, blocked stale-token uploads, a 401 for a subsequent request, and
+an unaffected bystander account and file.
+
 ## Verification and rollout limits
 
 Node tests cover request authorization, cleanup ordering, bounded work, malformed
