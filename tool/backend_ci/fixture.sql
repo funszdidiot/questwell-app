@@ -1,4 +1,7 @@
 -- Harness-only schema. This is NOT a Questwell baseline or app migration.
+-- CLI 2.119.0 db query prepares a single statement, including with --file.
+do $fixture$
+begin
 create schema ci_guard;
 revoke all on schema ci_guard from public, anon, authenticated;
 create table ci_guard.marker (name text primary key);
@@ -20,3 +23,5 @@ create policy ci_owner_only on public.ci_owner_probe
   using ((select auth.uid()) = owner_id)
   with check ((select auth.uid()) = owner_id);
 notify pgrst, 'reload schema';
+end;
+$fixture$;

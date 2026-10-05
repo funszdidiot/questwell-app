@@ -75,6 +75,21 @@ control disables RLS on **that synthetic fixture only**, proves that the same
 isolation assertion detects the leak, restores RLS, then repeats the check.
 Consult the PR's exact-head CI run for executed results; design is not proof.
 
+First integration attempt, run 37325367335 at head 8846afc828b23c0f2bb175290390ee0a69a40e81:
+CLI startup, loopback validation and local reset succeeded, but fixture loading
+failed before Auth/REST tests:
+
+    failed to execute query: error: cannot insert multiple commands into a prepared statement
+
+CLI 2.119.0 prepares one SQL statement even with --file. The fixture and guarded
+mutations now each use a single transactional DO block; no SQL splitter or
+ignored error is used. The failed run's finally cleanup completed. This failure
+is not an app defect or passing integration evidence.
+
+The hosted runner also warned that checkout v4 targets the deprecated Node 20
+action runtime and is being executed under Node 24. Existing workflow action
+upgrades remain the separate C08 concern; this PR does not silently bump them.
+
 `db reset --local --no-seed` rebuilds the **harness**, not the Questwell schema.
 The first root app migration locks public.users, but the repository lacks its
 prior creation/baseline. QW-04 stays open. App migrations, actual task/boss

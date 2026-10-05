@@ -56,17 +56,17 @@ try {
     end if;
   end $$;`]);
   run(['db', 'query', '--local', '--file', resolve(source, 'fixture.sql')]);
-  const marker = `do $$ begin
+  const executeSql = sql => run(['db', 'query', '--local', `do $ci$ begin
     if not exists (select 1 from ci_guard.marker where name = 'questwell-disposable-ci') then
       raise exception 'Disposable fixture marker is missing';
     end if;
-  end $$;`;
-  const executeSql = sql => run(['db', 'query', '--local', marker + sql]);
-  executeSql(`do $$ begin
+    ${sql}
+  end $ci$;`]);
+  executeSql(`
     if not (select relrowsecurity from pg_class where oid = 'public.ci_owner_probe'::regclass) then
       raise exception 'Fixture RLS is not enabled';
     end if;
-  end $$;`);
+  `);
   console.log('Clean harness reset and fixture RLS catalog check passed.');
   await smoke(status, executeSql);
   console.log('APP MIGRATION REPLAY: NOT RUN. QW-04 remains open; this is not an app-schema release gate.');
