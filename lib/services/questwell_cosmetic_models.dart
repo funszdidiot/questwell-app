@@ -60,6 +60,52 @@ class QuestwellHearthPlacementOption {
       );
 }
 
+class QuestwellHearthRenderSpec {
+  const QuestwellHearthRenderSpec({
+    required this.renderKind,
+    required this.assetSource,
+    required this.assetPath,
+    required this.canvasWidth,
+    required this.canvasHeight,
+    required this.visibleBase,
+    this.shadowProfile,
+    this.effectProfile,
+    this.filterMode = 'pixel',
+    this.assetRevision = 1,
+    this.minClientBuild,
+  });
+
+  final String renderKind;
+  final String assetSource;
+  final String assetPath;
+  final int canvasWidth;
+  final int canvasHeight;
+  final double visibleBase;
+  final String? shadowProfile;
+  final String? effectProfile;
+  final String filterMode;
+  final int assetRevision;
+  final int? minClientBuild;
+
+  double get aspectRatio => canvasWidth / canvasHeight;
+  bool get pixelated => filterMode == 'pixel';
+
+  factory QuestwellHearthRenderSpec.fromJson(Map<String, dynamic> json) =>
+      QuestwellHearthRenderSpec(
+        renderKind: json['render_kind']?.toString() ?? 'static_sprite',
+        assetSource: json['asset_source']?.toString() ?? 'bundle',
+        assetPath: json['asset_path']?.toString() ?? '',
+        canvasWidth: (json['canvas_width'] as num?)?.toInt() ?? 1,
+        canvasHeight: (json['canvas_height'] as num?)?.toInt() ?? 1,
+        visibleBase: (json['visible_base'] as num?)?.toDouble() ?? 1,
+        shadowProfile: json['shadow_profile']?.toString(),
+        effectProfile: json['effect_profile']?.toString(),
+        filterMode: json['filter_mode']?.toString() ?? 'pixel',
+        assetRevision: (json['asset_revision'] as num?)?.toInt() ?? 1,
+        minClientBuild: (json['min_client_build'] as num?)?.toInt(),
+      );
+}
+
 class QuestwellCosmetic {
   const QuestwellCosmetic({
     required this.id,
@@ -85,6 +131,7 @@ class QuestwellCosmetic {
     this.availabilityEnd,
     this.hearthProfileKey,
     this.hearthPlacements = const [],
+    this.hearthRenderSpec,
   });
 
   final String id;
@@ -109,6 +156,7 @@ class QuestwellCosmetic {
   final DateTime? availabilityStart, availabilityEnd;
   final String? hearthProfileKey;
   final List<QuestwellHearthPlacementOption> hearthPlacements;
+  final QuestwellHearthRenderSpec? hearthRenderSpec;
   bool get specialEdition => editionType != 'standard';
   String get renderKey => QuestwellLoadoutModel.renderKey(
     category: category,
@@ -143,6 +191,7 @@ class QuestwellCosmetic {
       availabilityEnd: availabilityEnd,
       hearthProfileKey: hearthProfileKey,
       hearthPlacements: hearthPlacements,
+      hearthRenderSpec: hearthRenderSpec,
     );
   }
 
@@ -154,6 +203,7 @@ class QuestwellCosmetic {
     DateTime? unlockedAt,
     String? source,
     List<QuestwellHearthPlacementOption> hearthPlacements = const [],
+    QuestwellHearthRenderSpec? hearthRenderSpec,
   }) {
     return QuestwellCosmetic(
       id: json['id']?.toString() ?? '',
@@ -179,6 +229,7 @@ class QuestwellCosmetic {
       availabilityEnd: DateTime.tryParse(json['availability_end']?.toString() ?? ''),
       hearthProfileKey: json['hearth_profile_key']?.toString(),
       hearthPlacements: hearthPlacements,
+      hearthRenderSpec: hearthRenderSpec,
     );
   }
 }
