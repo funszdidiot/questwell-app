@@ -676,34 +676,39 @@ class _SeasonalGalleryScreenState extends State<_SeasonalGalleryScreen> {
               (item) => item.slug == _selectedSlug,
               orElse: () => manifest.items.first,
             );
-            return ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                Text(
-                  manifest.displayName,
-                  style: Theme.of(context).textTheme.headlineMedium,
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      manifest.displayName,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Collection ${manifest.collectionKey} • account-free development review',
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'Nothing on this screen activates, purchases, grants, or locks an item.',
+                    ),
+                    const SizedBox(height: 14),
+                    _itemSelector(manifest, selected),
+                    _reviewControls(selected),
+                    _itemMetadata(manifest, selected),
+                    const SizedBox(height: 4),
+                    if (selected.isHearth)
+                      _hearthReview(selected)
+                    else if (selected.isWearable)
+                      _wearableReview(selected)
+                    else
+                      _unsupportedReview(selected),
+                    const SizedBox(height: 32),
+                  ],
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  'Collection ${manifest.collectionKey} • account-free development review',
-                ),
-                const SizedBox(height: 4),
-                const Text(
-                  'Nothing on this screen activates, purchases, grants, or locks an item.',
-                ),
-                const SizedBox(height: 14),
-                _itemSelector(manifest, selected),
-                _reviewControls(selected),
-                _itemMetadata(manifest, selected),
-                const SizedBox(height: 4),
-                if (selected.isHearth)
-                  _hearthReview(selected)
-                else if (selected.isWearable)
-                  _wearableReview(selected)
-                else
-                  _unsupportedReview(selected),
-                const SizedBox(height: 32),
-              ],
+              ),
             );
           },
         ),
