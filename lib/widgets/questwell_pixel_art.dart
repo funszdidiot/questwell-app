@@ -995,6 +995,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
     this.archetype = 'wanderer',
     this.avatarBodyType = 'neutral',
     this.equippedSlugs = const {},
+    this.hearthProfileBySlug = const {},
     this.showRelic = false,
     this.showAvatar = true,
   });
@@ -1005,6 +1006,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   final String archetype;
   final String avatarBodyType;
   final Map<String, String> equippedSlugs;
+  final Map<String, String> hearthProfileBySlug;
   final bool showRelic;
   final bool showAvatar;
 
@@ -1158,12 +1160,18 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               if (equippedSlugs['room:window'] == 'rainy-window')
                 const Positioned.fill(key: ValueKey('hearth-rainy-window-bounds'),
                   child: QuestwellRainyWindow()),
-              for (final slot in QuestwellHearthDecor.backToFront(equippedSlugs))
+              for (final slot in QuestwellHearthDecor.backToFront(
+                equippedSlugs,
+                profileBySlug: hearthProfileBySlug,
+              ))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
                   if (slug == QuestwellAutumnLantern.slug || slug == 'warding-lantern' || slug == QuestwellHarvestDisplay.slug || slug == QuestwellPotionWorkbench.slug || QuestwellMasteryRelic.supports(slug) || slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
                     QuestwellHearthDecor.positioned(
-                      slug: slug, slot: slot, equipment: equippedSlugs,
+                      slug: slug,
+                      slot: slot,
+                      equipment: equippedSlugs,
                       scene: Size(sceneWidth, sceneHeight),
+                      profileKey: hearthProfileBySlug[slug],
                     ),
               for (final surface in ['mantel', 'bookshelf_top'])
                 if ((QuestwellMilestoneReward.isTrophy(equippedSlugs['room:$surface']) ||
