@@ -27,7 +27,7 @@ const allowed = {
   archetype: new Set([null,'scholar','scout','alchemist','guardian','wanderer']),
   unlock: new Set(['shop','class_mastery','level_milestone']),
   hearthProfile: new Set(['large_furniture','pedestal_light','seating','plant','side_table','trophy_surface','relic_display','floor_rug','window_feature','hearth_setting','wall_art_side','wall_art_center']),
-  renderKind: new Set(['static_sprite','floor_sprite']),
+  renderKind: new Set(['static_sprite','floor_sprite','wall_art_sprite']),
   assetSource: new Set(['bundle','network']),
   shadow: new Set([null,'wide_plinth','pedestal','seating','side_table','plant','none']),
   effect: new Set([null,'ward_glow','warm_glow']),
@@ -208,6 +208,49 @@ for (const [index, item] of (manifest.items || []).entries()) {
             fail(prefix + '.hearth.render.asset_path does not exist: ' + render.asset_path);
           } else if (!checkImageHeader(abs)) {
             fail(prefix + '.hearth.render.asset_path is not a decodable PNG/WebP header: ' + render.asset_path);
+          }
+        }
+      }
+    }
+  }
+
+  if (item.wearable !== null && item.wearable !== undefined) {
+    if (!object(item.wearable)) {
+      fail(prefix + '.wearable must be an object or null');
+    } else {
+      const wearable = item.wearable;
+      if (wearable.render_mode !== undefined &&
+          wearable.render_mode !== null &&
+          wearable.render_mode !== 'full_canvas_overlay') {
+        fail(prefix + '.wearable.render_mode is unsupported');
+      }
+      const supportedBodies = Array.isArray(wearable.supported_bodies)
+        ? wearable.supported_bodies
+        : [];
+      const assetsByBody = object(wearable.assets_by_body)
+        ? wearable.assets_by_body
+        : {};
+      if (supportedBodies.length && !Object.keys(assetsByBody).length) {
+        fail(prefix + '.wearable.assets_by_body is required for wearable review assets');
+      }
+      for (const body of supportedBodies) {
+        if (!['female','neutral','male'].includes(body)) {
+          fail(prefix + '.wearable.supported_bodies contains unsupported body: ' + body);
+          continue;
+        }
+        const asset = assetsByBody[body];
+        if (typeof asset !== 'string' || !asset) {
+          fail(prefix + '.wearable.assets_by_body.' + body + ' is required');
+          continue;
+        }
+        if (!structureOnly) {
+          const abs = path.resolve(root, asset);
+          if (!abs.startsWith(root + path.sep)) {
+            fail(prefix + '.wearable asset escapes repository root: ' + asset);
+          } else if (!fs.existsSync(abs)) {
+            fail(prefix + '.wearable asset does not exist: ' + asset);
+          } else if (!checkImageHeader(abs)) {
+            fail(prefix + '.wearable asset is not a PNG/WebP: ' + asset);
           }
         }
       }
