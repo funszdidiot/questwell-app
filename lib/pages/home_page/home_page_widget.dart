@@ -440,6 +440,12 @@ const SizedBox(height: 2),
                           if (item.hearthProfileKey != null)
                             item.slug: item.hearthProfileKey!,
                       },
+                      hearthRenderBySlug: {
+                        for (final item in data?.cosmetics ??
+                            const <QuestwellCosmetic>[])
+                          if (item.hearthRenderSpec != null)
+                            item.slug: item.hearthRenderSpec!,
+                      },
                     );
                   },
                 ),
