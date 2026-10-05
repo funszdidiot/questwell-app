@@ -150,9 +150,11 @@ await check('concurrent deletion requests converge on complete cleanup and prese
   ok(await request(`/auth/v1/admin/users/${b.id}`,admin));
   ok(await request(`/storage/v1/object/authenticated/beta-feedback/${b.id}/concurrent-keep.png`,b));
 });
-await check('deletion drains an in-flight Storage transaction before removing Auth', async () => {
+for (const phase of ['probe', 'commit']) {
+await check(`deletion coordinates the in-flight Storage ${phase} before removing Auth`, async () => {
   const a = await signup();
-  const uploading = upload(a, 'race-inflight.png');
+  const name = `race-inflight-${phase}.png`;
+  const uploading = upload(a, name);
   const paused = async () => {
     const r = await request('/rest/v1/rpc/ci_storage_upload_paused', admin, 'POST', {});
     ok(r); return r.data === true;
@@ -175,8 +177,9 @@ await check('deletion drains an in-flight Storage transaction before removing Au
   ok(deleted); assert.deepEqual(deleted.data, {deleted: true});
   denied(await request(`/auth/v1/admin/users/${a.id}`, admin));
   assert.deepEqual(await owned(a), []);
-  denied(await request(`/storage/v1/object/authenticated/beta-feedback/${a.id}/race-inflight.png`, admin));
+  denied(await request(`/storage/v1/object/authenticated/beta-feedback/${a.id}/${name}`, admin));
   denied(await upload(a, 'after-race.png'));
 });
+}
 console.log(`Account deletion: ${checks} passed; ${failures} failed (real Edge/Auth/Storage).`);
 if (failures) process.exitCode = 1;

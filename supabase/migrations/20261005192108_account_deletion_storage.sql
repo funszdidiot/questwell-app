@@ -66,14 +66,28 @@ $function$;
 revoke all on function public.begin_account_deletion(uuid) from public, anon, authenticated;
 grant execute on function public.begin_account_deletion(uuid) to service_role;
 
--- Hold the caller's session row until each Storage write transaction commits.
--- Auth's session DELETE must wait for these locks before revocation completes;
--- cleanup therefore sees uploads that passed authorization before revocation.
--- A writer arriving after revocation cannot acquire a matching session row.
+-- Storage probes permission as the caller, then commits as service_role.
+-- Coordinate BOTH phases by object owner, including privileged final writes.
+-- Ownerless service assets remain independent of account deletion.
 create function private.lock_storage_write_session()
 returns trigger language plpgsql security definer set search_path = ''
 as $function$
+declare object_owner uuid;
 begin
+  if nullif(new.owner_id, '') is not null then
+    object_owner := new.owner_id::uuid;
+    perform pg_catalog.pg_advisory_xact_lock_shared(
+      pg_catalog.hashtextextended(object_owner::text, 24003));
+    if exists (select 1 from private.account_deletion_fences where user_id = object_owner) then
+      raise exception 'Account deletion in progress' using errcode = '42501';
+    end if;
+    -- The fence cascades away with Auth. Reject late commits even after that
+    -- cascade, and hold the owner row until this write commits.
+    perform 1 from auth.users u where u.id = object_owner for key share;
+    if not found then
+      raise exception 'Storage owner no longer exists' using errcode = '42501';
+    end if;
+  end if;
   if (select auth.jwt())->>'role' = 'service_role' then return new; end if;
   if (select auth.uid()) is null then
     raise exception 'Active Storage session required' using errcode = '42501';

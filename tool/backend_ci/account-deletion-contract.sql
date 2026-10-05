@@ -56,7 +56,8 @@ execute $ddl$
 create function public.ci_pause_storage_upload() returns trigger
 language plpgsql set search_path = '' as $function$
 begin
-  if new.name like '%/race-inflight.png' then
+  if (new.name like '%/race-inflight-probe.png' and new.version = '1')
+      or (new.name like '%/race-inflight-commit.png' and new.version <> '1') then
     perform pg_catalog.pg_advisory_xact_lock(73424, 1);
     perform pg_catalog.pg_sleep(3);
   end if;

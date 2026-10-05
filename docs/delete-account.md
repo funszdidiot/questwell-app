@@ -57,15 +57,20 @@ an unaffected bystander account and file.
 
 ## Verification and rollout limits
 
-In-flight uploads are coordinated with deletion. Each authenticated Storage
-INSERT/UPDATE holds a shared per-user transaction lock and validates its session.
+In-flight uploads are coordinated with deletion. Each user-owned Storage
+INSERT/UPDATE holds a shared per-owner transaction lock and verifies that the
+Auth owner still exists. This includes Storage's privileged final commit after
+its separate user permission probe; service-role JWTs must not bypass this guard.
+Authenticated writes also validate and lock their session. Ownerless service
+assets remain unaffected.
 The service-only deletion-start RPC takes the exclusive lock, waiting for prior
 writes to finish, and persists a private deletion fence. Subsequent uploads are
 denied even from newly signed-in sessions. The fence cascades away with Auth;
 after partial failure it remains until an explicit deletion retry succeeds.
 The existing request timeout bounds lock waits and returns unconfirmed failure.
-The disposable regression pauses a real Storage transaction after INSERT,
-observes its lock marker and requires deletion to wait before confirming cleanup.
+The disposable regressions separately pause the permission probe and privileged
+final INSERT, observe their lock markers and require deletion to wait before
+confirming cleanup. A late final commit after deletion must fail its owner check.
 No Storage metadata is directly inserted or deleted by this test.
 
 Node tests cover request authorization, cleanup ordering, bounded work, malformed
@@ -105,11 +110,12 @@ policy, hosted impact review, native/device checks and release gates remain open
 - [Deleting object bytes through the API](https://supabase.com/docs/guides/storage/management/delete-objects)
 - [Read-only Storage metadata](https://supabase.com/docs/guides/storage/schema/design)
 - [Managed-schema restrictions](https://supabase.com/changelog/34270-restricting-access-on-auth-storage-and-realtime-schemas-on-april-21-2025)
+- [Storage uploader: permission probe and privileged completion](https://github.com/supabase/storage/blob/master/src/storage/uploader.ts)
 
 The managed-schema restriction notice prohibits custom indexes, despite the
 Storage design page's general index recommendation. The pinned local stack
 confirmed this restriction. No schema object is added inside managed `auth` or
-`storage` beyond the supported Storage RLS policy. Inventory-query performance
+`storage` beyond supported Storage RLS policies and a write trigger. Inventory-query performance
 at realistic object counts remains a rollout gate; do not alter managed-table
 ownership or elevate the migration role to add an index.
 The published 2.57.4 package manifest pins Auth JS 2.71.1 and Storage JS
