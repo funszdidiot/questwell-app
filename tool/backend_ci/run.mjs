@@ -1,9 +1,12 @@
 import {spawnSync} from 'node:child_process';
-import {copyFileSync, cpSync, mkdirSync, mkdtempSync, realpathSync} from 'node:fs';
+import assert from 'node:assert/strict';
+import {copyFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {assertDisposableCi, assertLocalStatus} from './guard.mjs';
 import {smoke} from './smoke.mjs';
+import {appSmoke} from './app-smoke.mjs';
+import {assertCatalogMatches} from './catalog.mjs';
 
 assertDisposableCi(process.env);
 if (process.argv.includes('--preflight')) {
@@ -69,11 +72,29 @@ try {
   `);
   console.log('Clean harness reset and fixture RLS catalog check passed.');
   await smoke(status, executeSql);
-  // Characterization: prove whether the repository's application history can rebuild.
-  cpSync(resolve(source, '../../supabase/migrations'), join(workdir, 'supabase/migrations'), {recursive: true});
-  console.log('Replaying the committed Questwell migrations on the disposable database.');
+  // The legacy root chain's failing CI evidence remains documented; it is not deployable.
+  // This separately named baseline reproduces an observed schema, not invented prehistory.
+  cpSync(resolve(source, 'app/supabase/migrations'), join(workdir, 'supabase/migrations'), {recursive: true});
   run(['db', 'reset', '--local', '--no-seed'], 5 * 60 * 1000);
-  console.log('Committed Questwell migration replay passed.');
+  const expected = JSON.parse(readFileSync(join(source, 'observed_catalog.json'), 'utf8'));
+  const readCatalog = () => {
+    const result = JSON.parse(run(['db', 'query', '--local', '-o', 'json', '--file', join(source, 'catalog.sql')]));
+    assert.ok(Array.isArray(result) && result.length === 1 && result[0].catalog, 'Expected one catalog result');
+    return result[0].catalog;
+  };
+  assertCatalogMatches(expected, readCatalog());
+  console.log('Observed application baseline rebuilt; all recorded catalog sections match.');
+  // Real negative control, on the disposable application's table only.
+  run(['db', 'query', '--local', 'alter table public.tasks disable row level security;']);
+  try {
+    assert.throws(() => assertCatalogMatches(expected, readCatalog()), /Catalog mismatch: tables/);
+  } finally {
+    run(['db', 'query', '--local', 'alter table public.tasks enable row level security;']);
+  }
+  assertCatalogMatches(expected, readCatalog());
+  console.log('Catalog negative control detected disabled application RLS and verified restoration.');
+  await appSmoke(status);
+  console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   if (attemptedStart) {
     // Exact new workdir and explicit local project only; never --all or --linked.

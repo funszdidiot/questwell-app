@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   isolated-fixture:
-    name: Isolated fixture infrastructure (not app RLS)
+    name: Isolated application schema and smoke tests
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
@@ -29,7 +29,7 @@ jobs:
 
       - name: Test isolation guards and reject remote credentials
         run: |
-          node --test tool/qa/backend_ci_guard_test.mjs
+          node --test tool/qa/backend_ci_guard_test.mjs tool/qa/backend_catalog_test.mjs
           node tool/backend_ci/run.mjs --preflight
 
       - name: Install checksum-pinned Supabase CLI
@@ -45,7 +45,7 @@ jobs:
           tar --no-same-owner -xzf "$RUNNER_TEMP/questwell-cli/archive.tar.gz" \
             -C "$RUNNER_TEMP/questwell-cli" supabase
 
-      - name: Reset disposable harness and test real Auth and REST
+      - name: Reset disposable database, compare schema and test Auth and REST
         env:
           QUESTWELL_CLI_BIN: ${{ runner.temp }}/questwell-cli/supabase
         run: node tool/backend_ci/run.mjs

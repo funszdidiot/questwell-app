@@ -62,3 +62,9 @@ arm-to-torso air space while covering the arm; broad connecting fabric is not a
 repair. Inspect the entire connected sleeve, curved front cuff hem, rear cavity
 and original-hand depth together. A skin window crossed by a separate horizontal
 rim remains a visual defect even when hands are continuous and tests pass.
+
+Enlarged runtime QA may expose an identity-layer boundary absent from source
+composites. Preserve the locked files and complete primary body while diagnosing
+the renderer. Sampling changes are hypotheses until verified in the delivered
+app; revert ineffective changes. Any alternative source for a foreground head
+duplicate must match every visible approved identity pixel and its registration.
