@@ -6,6 +6,15 @@ import '../lib/widgets/questwell_hearth_catalog_sprite.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 import '../lib/widgets/questwell_wall_art.dart';
 
+Future<void> pumpReview(WidgetTester tester) async {
+  // Hearth ambience intentionally schedules ongoing frames. Pump a bounded
+  // number of frames so manifest/assets resolve without waiting for animation
+  // to become idle.
+  for (var i = 0; i < 6; i++) {
+    await tester.pump(const Duration(milliseconds: 80));
+  }
+}
+
 void main() {
   testWidgets('seasonal gallery loads manifest and reviews Hearth candidates',
       (tester) async {
@@ -13,7 +22,7 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp());
-    await tester.pumpAndSettle();
+    await pumpReview(tester);
 
     expect(find.text('Seasonal Review System'), findsOneWidget);
     expect(find.text('Fixture Solstice Ward Lantern'), findsWidgets);
@@ -22,7 +31,7 @@ void main() {
     expect(tester.takeException(), isNull);
 
     await tester.tap(find.text('Fixture Winter Fern Study').first);
-    await tester.pumpAndSettle();
+    await pumpReview(tester);
 
     expect(find.byType(QuestwellWallArt), findsWidgets);
     expect(
@@ -38,10 +47,10 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp());
-    await tester.pumpAndSettle();
+    await pumpReview(tester);
 
     await tester.tap(find.text('Fixture Solstice Scholar Robe').first);
-    await tester.pumpAndSettle();
+    await pumpReview(tester);
 
     expect(find.textContaining('Locked body baseline'), findsOneWidget);
     expect(
@@ -54,7 +63,7 @@ void main() {
     );
 
     await tester.tap(find.text('female').first);
-    await tester.pumpAndSettle();
+    await pumpReview(tester);
 
     expect(
       find.byWidgetPredicate((widget) =>
