@@ -34,7 +34,7 @@ function run(args, timeout = 120000) {
     console.error(redact((result.stderr || '') + (result.stdout || '')).slice(-14000));
     throw new Error(`Supabase ${args.slice(0, 2).join(' ')} failed: exit ${result.status}, ${result.error?.code || 'command error'}`);
   }
-  if (args[0] === 'db' && args[1] === 'lint' && result.stderr) console.log(redact(result.stderr));
+  if (args[0] === 'db' && ['lint', 'advisors'].includes(args[1]) && result.stderr) console.log(redact(result.stderr));
   return result.stdout;
 }
 const version = run(['--version']).trim();

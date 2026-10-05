@@ -59,9 +59,33 @@ a ledger lookup index and the existing completion function's replacement.
 An existing paid ledger entry also blocks a row reopened before hardening.
 No client/API type shape changes or additional package dependencies are needed.
 
-GREEN verification is pending. Added post-fix coverage also includes privileged
-synthetic legacy-row seeding, SQL privilege assertions, and injected ledger and
-balance failures to verify transactional rollback. No P0 closure or release claim.
+GREEN backend verification: head `b3d1823a0afc77f75f5d39d6bceb7974b0f07445`,
+run `37345718575`, job `111883662635`, SUCCESS. The observed schema matched before
+the proposal was applied. All 19 harness/catalog Node tests, 10 fixture checks,
+4 real-app smoke checks, SQL mapping/column-privilege/RLS assertions and 20 reward
+checks passed. The actual new migration was applied by the migration runner;
+post-change SQL lint reported no schema errors. Raw reward output:
+
+```text
+Task rewards: 18 passed; 0 failed (regressions).
+Task rewards: 1 passed; 0 failed (rollback).
+Verified rollback after forced reward_events write failure.
+Task rewards: 1 passed; 0 failed (rollback).
+Verified rollback after forced users write failure.
+Disposed the isolated harness containers/volumes and synthetic accounts/data.
+```
+
+The full 31 existing Node tests and asset-integrity verification also passed
+locally. CI runs the Flutter suite, analyzer inventory and web build on the PR;
+their current results remain in its checks. Advisor stderr is explicitly retained
+alongside stdout so an empty stdout cannot be misreported as a clean security
+inventory. No hosted database or real-account test was performed.
+
+R01 is verified in the disposable target, not deployed to live accounts. Before
+rollout, reconcile migration history, inventory invalid legacy difficulties and
+review the precise grant changes/lock impact with Tanya. Account deletion,
+Storage, boss payout authority, native/device QA and the wider audit remain open.
+No P0 closure for the live app or release approval is implied.
 
 First fix run `37345250356` stopped before applying the migration because CLI
 `db query --file` rejects multiple prepared statements. The runner now copies
