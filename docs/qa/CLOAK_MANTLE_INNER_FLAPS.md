@@ -1,6 +1,10 @@
 # Cloak and mantle inner-flap removal
 
-Status: **QA** — 2026-10-05 America/Chicago. Development push authorized; CI and delivered-runtime checks pending.
+Status: **DEV DEPLOYED** — 2026-10-05. Runtime `e46a42bf8c14debd2ad338c12228f16da39f46ca`, workflow `37312732888` passed analysis, 386 Flutter tests, 8 Node tests, asset verification, build and deployment. Analyzer retains 45 nonfatal baseline findings.
+
+Delivered version and all 31 garment/body/identity/Everyday hashes match (`tool/qa/legacy_depth_delivery.json`). Actual shared-renderer gallery checked all nine fits and all three bodies' unequip-to-Guardian-robe restoration. Independent review of delivered screenshots passed all nine. Male sample Market coat preview, purchase, equip and unequip checked; fixture coins only, no account persistence claim. Existing catalog/class eligibility and equipment policy are unchanged and covered by regression tests.
+
+Evidence: `natural-drape-male-live.jpg`, `natural-drape-female-live.jpg`, `natural-drape-neutral-live.jpg`. No founder lock inferred; no founder blocker.
 
 Tanya requested removal of the unwanted hanging inner flaps from the cloak and mantle. Scope: all six body-specific Moss-Green Cloak and Hearthguard Mantle fits. Preserve outer cloth, embroidery, collars, registration and arm/hand coverage. The central front opening must not contain extra lining tongues or doubled inner hems.
 

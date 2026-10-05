@@ -2,14 +2,16 @@
 
 ## Active garment correction — 2026-10-05 America/Chicago
 
-**QA.** Tanya requested narrower male coat elbows, wrapping wider cuffs,
+**DEV DEPLOYED.** Tanya requested narrower male coat elbows, wrapping wider cuffs,
 no cloak/mantle inner flaps, proper rear layers and natural shoulder drape. She
-then rejected excessive cloak/mantle flare. All six are being redrawn to hang
+then rejected excessive cloak/mantle flare. All six were redrawn to hang
 mostly downward; the standing natural-drape rule is recorded for future cloaks,
-capes, robes and mantles. All nine final composites passed independent local QA;
-technical depth/coverage, frozen hashes, 8 Node tests and seasonal checks pass.
-Mandatory remote Flutter/build gates and delivered-runtime verification are
-pending. The previous DEV DEPLOYED row
+capes, robes and mantles. Runtime `e46a42b`, workflow `37312732888`: 386 Flutter
+and 8 Node tests, analysis/assets/build/deploy passed. All 31 delivered hashes
+match. All nine actual renderer fits passed independent delivered visual QA;
+all three bodies restore class robes on unequip. Male sample Market coat
+preview/purchase/equip/unequip verified. See `../qa/CLOAK_MANTLE_INNER_FLAPS.md`.
+The previous DEV DEPLOYED row
 below records the historical baseline, not acceptance of the latest correction.
 No locked body/Everyday/robe asset changes and no founder blocker.
 
