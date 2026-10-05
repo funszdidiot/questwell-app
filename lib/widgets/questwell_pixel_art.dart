@@ -1038,6 +1038,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
           final sceneHeight = constraints.maxHeight;
           final compact = sceneWidth < 430;
           final roomSetting = setting ?? QuestwellHearthSetting.fromSlug(equippedSlugs['room:setting']);
+          final floorSlug = equippedSlugs['room:floor'];
 
           // Keep the authored 3:4 canvas ratio, so BoxFit.contain cannot
           // silently shrink the character inside a narrow mobile rectangle.
@@ -1117,7 +1118,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               ),
               Positioned.fill(
                 key: const ValueKey('hearth-woven-rug'),
-                child: (equippedSlugs['room:floor'] case final floorSlug?)
+                child: floorSlug != null
                     ? (hearthRenderBySlug[floorSlug]?.renderKind == 'floor_sprite'
                         ? QuestwellHearthFloorSprite(
                             spec: hearthRenderBySlug[floorSlug]!,
