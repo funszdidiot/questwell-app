@@ -40,7 +40,7 @@ function run(args, timeout = 120000) {
 const version = run(['--version']).trim();
 if (version !== '2.119.0') throw new Error(`Unexpected Supabase CLI version: ${version}`);
 console.log(`Supabase CLI ${version}; temporary local fixture stack only.`);
-for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['db', 'lint', '--help'], ['db', 'advisors', '--help'], ['migration', 'up', '--help'], ['stop', '--help']]) {
+for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['db', 'lint', '--help'], ['db', 'advisors', '--help'], ['migration', 'up', '--help'], ['migration', 'list', '--help'], ['stop', '--help']]) {
   run(args); // Installed-version help verifies the command surface on the runner.
 }
 
@@ -139,6 +139,13 @@ try {
       run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_reward_failure;`]);
     }
   }
+  const bossMigration = '20261005183917_boss_reward_authority.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', bossMigration), join(workdir, 'supabase/migrations', bossMigration));
+  run(['migration', 'up', '--local']);
+  console.log(run(['migration', 'list', '--local']));
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
+  console.log('Security advisor inventory after R02; this is not a live security certification:');
+  console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
   const bossTests = phase => {
     const bosses = spawnSync(process.execPath, [join(source, 'boss-rewards.mjs')], {
       input: JSON.stringify({status, phase}), env, encoding: 'utf8', timeout: 120000,
