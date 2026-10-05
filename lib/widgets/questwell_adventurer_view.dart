@@ -16,12 +16,12 @@ class AdventurerInventoryItem {
     required this.equipped, required this.classLocked, required this.shop,
     this.archetype, this.roomSlot, this.milestoneLevel, this.unlockedAt, this.source,
     this.collectionKey, this.editionType = 'standard',
-    this.hearthPlacements = const []});
+    this.hearthPlacements = const [], this.hearthProfileKey});
   final String id, name, slug, category, description;
   final String? archetype, roomSlot;
   final int? milestoneLevel;
   final DateTime? unlockedAt;
-  final String? source, collectionKey;
+  final String? source, collectionKey, hearthProfileKey;
   final String editionType;
   final List<MapEntry<String, String>> hearthPlacements;
   String get renderKey => QuestwellLoadoutModel.renderKey(
@@ -115,9 +115,20 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
             const SizedBox(height: 16),
             _heading('YOUR HEARTH'),
             const SizedBox(height: 8),
-            QuestwellHearthPixelScene(height: 260, archetype: widget.archetype,
-              avatarBodyType: widget.bodyType, showRelic: widget.mastered,
-              equippedSlugs: {for (final item in equipped) item.renderKey: item.slug}),
+            QuestwellHearthPixelScene(
+              height: 260,
+              archetype: widget.archetype,
+              avatarBodyType: widget.bodyType,
+              showRelic: widget.mastered,
+              equippedSlugs: {
+                for (final item in equipped) item.renderKey: item.slug,
+              },
+              hearthProfileBySlug: {
+                for (final item in widget.items)
+                  if (item.hearthProfileKey != null)
+                    item.slug: item.hearthProfileKey!,
+              },
+            ),
           ],
           const SizedBox(height: 10),
           _heading(_label(widget.archetype)),
@@ -269,7 +280,12 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)},
       placementChoices: item.hearthPlacements.isEmpty
           ? null
-          : {for (final choice in item.hearthPlacements) choice.key: choice.value});
+          : {for (final choice in item.hearthPlacements) choice.key: choice.value},
+      hearthProfileKey: item.hearthProfileKey,
+      hearthProfilesBySlug: {
+        for (final i in widget.items)
+          if (i.hearthProfileKey != null) i.slug: i.hearthProfileKey!,
+      });
     if (pick != null && mounted) await widget.onPlace?.call(item.id, pick.slot, pick.expectedOccupant);
   }
 
