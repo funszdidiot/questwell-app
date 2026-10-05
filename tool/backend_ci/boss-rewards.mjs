@@ -19,8 +19,9 @@ const request = async (path, owner, method = 'GET', body, headers = {}) => {
 };
 const ok = (r, code = 200) => assert.equal(r.status, code,
   `Expected HTTP ${code}, received ${r.status} (${r.data?.code ?? 'no code'})`);
-const denied = r => assert.ok([400, 401, 403].includes(r.status),
+const denied = r => assert.ok([400, 401, 403, 409].includes(r.status),
   `Expected rejection, received HTTP ${r.status}`);
+const deniedOrNoRows = r => r.status === 200 ? assert.deepEqual(r.data, []) : denied(r);
 const admin = {token: status.SERVICE_ROLE_KEY}; // Disposable fixtures only.
 const signup = async () => {
   const r = await request('/auth/v1/signup', null, 'POST', {
@@ -153,14 +154,16 @@ if (phase === 'rollback') {
       denied(await request('/rest/v1/boss_battles', caller, 'POST', {
         user_id: owner.id, title: 'Forged', reward_xp: 999999, reward_coins: 999999,
       }));
-      denied(await request(`/rest/v1/boss_battles?id=eq.${boss.id}`, caller, 'PATCH',
+      deniedOrNoRows(await request(`/rest/v1/boss_battles?id=eq.${boss.id}`, caller, 'PATCH',
         {reward_coins: 999999, status: 'completed', user_id: randomUUID()}));
-      denied(await request(`/rest/v1/boss_steps?id=eq.${boss.steps[0].id}`, caller, 'PATCH', {completed: true}));
+      deniedOrNoRows(await request(`/rest/v1/boss_steps?id=eq.${boss.steps[0].id}`, caller, 'PATCH', {completed: true}));
       denied(await request('/rest/v1/reward_events', caller, 'POST', {
         user_id: owner.id, event_type: 'boss_battle_completed', xp_amount: 999999, coin_amount: 999999,
       }));
     }
-    assert.equal((await readBoss(owner, boss.id)).status, 'open');
+    const row = await readBoss(owner, boss.id);
+    assert.equal(row.status, 'open'); assert.equal(row.reward_coins, 50); assert.equal(row.user_id, owner.id);
+    assert.ok((await steps(owner, boss.id)).every(s => !s.completed));
     await balance(owner, 0, 0); await ledger(owner, []);
   });
   await check('anonymous RPCs fail and the private schema is not exposed over REST', async () => {
