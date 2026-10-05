@@ -262,8 +262,17 @@ class QuestwellHearthDecor {
       : table ? const QuestwellReadingTable()
       : const QuestwellReadingChair();
     return Positioned(
-      key: ValueKey(slug == QuestwellAutumnLantern.slug ? 'hearth-autumn-lantern-bounds' : slug == QuestwellWardingLantern.slug ? 'hearth-warding-lantern-bounds' : slug == QuestwellHarvestDisplay.slug ? 'hearth-harvest-display-bounds' : slug == QuestwellPotionWorkbench.slug ? 'hearth-workbench-bounds' : relic ? 'hearth-$slug-bounds' : shelf ? 'hearth-bookshelf-bounds'
-        : fern ? 'hearth-fern-bounds' : table ? 'hearth-table-bounds' : 'hearth-chair-bounds'),
+      key: ValueKey(renderSpec != null
+        ? 'hearth-$slug-bounds'
+        : slug == QuestwellAutumnLantern.slug ? 'hearth-autumn-lantern-bounds'
+        : slug == QuestwellWardingLantern.slug ? 'hearth-warding-lantern-bounds'
+        : slug == QuestwellHarvestDisplay.slug ? 'hearth-harvest-display-bounds'
+        : slug == QuestwellPotionWorkbench.slug ? 'hearth-workbench-bounds'
+        : relic ? 'hearth-$slug-bounds'
+        : shelf ? 'hearth-bookshelf-bounds'
+        : fern ? 'hearth-fern-bounds'
+        : table ? 'hearth-table-bounds'
+        : 'hearth-chair-bounds'),
       left: rect.left, top: rect.top,
       width: rect.width, height: rect.height,
       child: Transform.flip(
