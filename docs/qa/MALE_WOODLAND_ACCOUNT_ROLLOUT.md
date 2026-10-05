@@ -101,11 +101,13 @@ account runtime and physical-device QA remain behind the gate below.
 `supabase/README.md` documents the unresolved G3 database-history/deployment hold.
 Do not apply this migration manually, replay/reset the incomplete history, or
 publish the enabled client against a backend that still rejects the male fit.
-This PR is reviewable independently. The scoped forward path is now tested and
-ready, but workflow `37360094077` is **BLOCKED** by the missing repository Actions
-secret documented in the forward-deployment runbook. The scoped migration must
-be applied through CI and the delivered account behavior verified before release.
-Physical iOS/Safari remains unverified. Artwork approval is complete and unchanged.
+The scoped migration succeeded through CI at tested revision `76e2242`, workflow
+`37360094077`, retry job `111981993154`, remote version `20261005212048`.
+Full postconditions and independent read-only fit/history/description checks pass.
+PR #22 remains draft while the combined development revision is checked. Its merge
+requires Tanya's instruction under FIX_PLAN.md and may publish the development
+preview. Delivered account behavior and physical iOS/Safari remain unverified.
+Artwork approval is complete and unchanged.
 
 API checks: [Supabase migrations](https://supabase.com/docs/guides/deployment/database-migrations),
 [database testing](https://supabase.com/docs/guides/database/testing),

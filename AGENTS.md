@@ -74,3 +74,15 @@ in `docs/qa/MALE_WOODLAND_FORWARD_DEPLOYMENT.md`. Preserve existing history and
 stop on drift; this does not authorize replay/repair, other pending migrations,
 new credentials or `flutterflow` promotion. Keep client integration gated until
 the database result is verified. The broader G3 history hold remains in force.
+
+## Verified male Woodland database deployment — 2026-10-05
+
+Tanya separately approved the scoped 24-hour deployment token and its GitHub
+Actions storage. Workflow `37360094077` retry job `111981993154` applied the
+unchanged tested `76e2242` payload at 21:20:48 UTC as remote migration
+`20261005212048`. All guarded postconditions passed; independent read-only checks
+confirm male support, 49 total history entries and exactly one Woodland record.
+The earlier credential blocker is resolved. Other live migrations and history
+repair remain gated. Preserve the tested deployment branch. PR #22 still needs
+fresh combined-revision checks, its own founder merge approval under FIX_PLAN.md
+and delivered runtime verification. No `flutterflow` promotion is authorized.

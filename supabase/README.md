@@ -40,3 +40,15 @@ Do not assume that server-assigned version equals the source filename timestamp.
 See [the scoped deployment runbook](../docs/qa/MALE_WOODLAND_FORWARD_DEPLOYMENT.md)
 for the tested payload, credential gate, drift/timeout handling and client gate.
 This single-change path does **not** make the incomplete root chain deployable.
+
+## Verified male Woodland database deployment — 2026-10-05
+
+Tanya separately approved the scoped 24-hour deployment token and its GitHub
+Actions storage. Workflow `37360094077` retry job `111981993154` applied the
+unchanged tested `76e2242` payload at 21:20:48 UTC as remote migration
+`20261005212048`. All guarded postconditions passed; independent read-only checks
+confirm male support, 49 total history entries and exactly one Woodland record.
+The earlier credential blocker is resolved. Other live migrations and history
+repair remain gated. Preserve the tested deployment branch. PR #22 still needs
+fresh combined-revision checks, its own founder merge approval under FIX_PLAN.md
+and delivered runtime verification. No `flutterflow` promotion is authorized.

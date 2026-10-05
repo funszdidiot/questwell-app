@@ -1,8 +1,8 @@
 # Male Woodland: reviewed forward deployment
 
-Status: **QA complete; execution BLOCKED by a missing repository Actions secret.**
-No live write performed. Workflow `37360094077` stopped at the credential check,
-before any GitHub check-API or Supabase request.
+Status: **Database deployment VERIFIED; client merge and delivered runtime pending.**
+Workflow `37360094077`, retry apply job `111981993154`, succeeded at 21:20:48 UTC
+on October 5. Remote migration version: `20261005212048`.
 Authorization: Tanya's “Next” on 2026-10-05 continues the explicitly proposed
 database deployment step for the approved male Woodland inventory/equip rollout.
 The artwork stays LOCKED and byte-identical. PR #22 keeps the enabled client
@@ -36,14 +36,24 @@ exact revision; documentation-only follow-ups do not change that tested payload.
   unchanged historical rows, original fit definition, unchanged catalog row and
   no male rollout history record.
 
-**Required setup:** add a suitable Supabase Management API token as
-`QUESTWELL_WOODLAND_MIGRATION_TOKEN` directly in
-[repository Actions secrets](https://github.com/funszdidiot/questwell-app/settings/secrets/actions).
-The connected GitHub tools cannot manage repository secrets. Do not substitute a
-manual SQL/MCP migration for the required CI path. After setup, explicitly rerun
-the failed apply job of `37360094077` at the existing tested revision. It will
-reconcile current state before any write. No new art approval or repeat database
-scope approval is needed. Keep PR #22 draft until its database result is verified.
+**Completed setup and execution:** Tanya explicitly approved creation and GitHub
+storage of the scoped token. It is restricted to Project Momentum, Database Read
+and Migrations Read-write, with a 24-hour expiry. The secret was saved without
+exposing its value. The existing failed job was retried at the unchanged tested
+revision, not replaced by a manual migration.
+
+The retry returned `result: applied`, source hash
+`55f21d28dd1ad427de09ab87327d96e61e767be53bd727b7ffdc9ab5c9c249cb`,
+and remote version `20261005212048`. Its complete protected-schema, history,
+fit and catalog postconditions passed. Independent read-only verification confirms
+male fit support, exactly 49 migration entries (48 prior plus this one), one
+matching rollout record and the three-body description. No real-account fixture
+was used. Earlier missing-secret results above are historical.
+
+PR #22 is being reconciled with development revision `dc9e48c`, preserving both
+Woodland and R02 boss tests. Its new combined revision needs fresh CI and review,
+then Tanya's separate development merge approval under FIX_PLAN.md. The preview
+and delivered account runtime remain unverified. No production promotion occurs.
 
 ## Exact scope
 
@@ -61,8 +71,7 @@ scope approval is needed. Keep PR #22 draft until its database result is verifie
 This is a forward change against the observed live schema. It does not reconcile
 or replay the incomplete historical chain. The separately gated R01 migration
 remains unapplied live and is not a dependency or implicit catch-up. There are no
-dependency changes, real-user fixtures, client API/type changes or credential
-creation in this scope. Production promotion and `flutterflow` remain gated.
+dependency changes, real-user fixtures, client API/type changes in the SQL scope. Credential creation was separately approved. Production promotion and `flutterflow` remain gated.
 
 ## Precondition and transaction safeguards
 
@@ -105,8 +114,7 @@ permissions `database_read` and `database_migrations_write`, where supported).
 Use the narrowest project/resource scope available. A public anon key, service
 role JWT or database password is not this token. Configure it in GitHub Actions
 secrets; never place a token in source, logs or chat. GitHub's built-in job token
-needs only `contents: read` and `checks: read`. No secret-management operation is
-part of this change.
+needs only `contents: read` and `checks: read`. The approved credential setup is recorded above.
 
 Both API operations are fixed to `https://api.supabase.com` and the project above.
 Metadata requests explicitly set `read_only: true`; migration submission uses
