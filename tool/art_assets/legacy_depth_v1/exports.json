@@ -1,0 +1,263 @@
+{
+  "status": "BUILDING",
+  "records": [
+    {
+      "family": "cloak",
+      "body": "female",
+      "source": "tool/art_assets/legacy_depth_v1/cloak_female_front_source.webp",
+      "source_sha256": "f809db20b6c88eaa9ad23b2f7e3d555df13cc790714b41463b4f71b4566fd000",
+      "registration": {
+        "width": 180,
+        "height": 239,
+        "left": 30,
+        "top": 64
+      },
+      "front_sha256": "785f0574be930841858611a1ca0ade61c5119d5e75a906412bc357fbf94a88a8",
+      "rear_sha256": "7cb451db6934a21118850bdb5a2e0c15258713668d86a30b594e87090ec4231f",
+      "runtime": {
+        "front": {
+          "path": "assets/images/questwell/avatar/moss_cloak_female_v4.webp",
+          "sha256": "5d43798ec33434203e63855534099c1e399010c788e70cb1cc6a214fa77d5101"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/moss_cloak_rear_female_v4.webp",
+          "sha256": "83236b662cf58677426bf5ec15224b4eff4b0cf683811cfccbf6f596f3b7a073"
+        }
+      }
+    },
+    {
+      "family": "mantle",
+      "body": "female",
+      "source": "tool/art_assets/legacy_depth_v1/mantle_female_front_source.webp",
+      "source_sha256": "1c72327af35acbe874d495c67a96b0add4af76c495a9fde3d6b543a645f871be",
+      "registration": {
+        "width": 190,
+        "height": 254,
+        "left": 25,
+        "top": 56
+      },
+      "front_sha256": "358d7ae4c4bfe275953c4b70b4cbc5d95586c9886ae9ebb815a9cfd730dcbad5",
+      "rear_sha256": "5fc6164bdb01b7c491d4d01b31b2e74a5d9c66fa8ab8673b982a66092c66b2f8",
+      "runtime": {
+        "front": {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_female_v4.webp",
+          "sha256": "b93caeef8f64279a8803f92c60fb83d5f67a4dc4decf38c7420cd22d66bab84e"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_female_v4.webp",
+          "sha256": "a6415b1464d0071dcc1d1748a863bc3f91ceb0cd1a3d6f6ec2898671545f567d"
+        }
+      }
+    },
+    {
+      "family": "coat",
+      "body": "female",
+      "source": "tool/art_assets/legacy_depth_v1/cuff_female_source.webp",
+      "source_sha256": "41ece406085ab797815d6992c3a44a2f89011da8d57ccbd15164508c5dfda396",
+      "registration": {
+        "width": 150,
+        "height": 200,
+        "left": 38,
+        "top": 36
+      },
+      "cuffWindows": [
+        [
+          72.8,
+          167.3,
+          4.5,
+          1.5
+        ],
+        [
+          162.9,
+          166.5,
+          4.6,
+          1.6
+        ]
+      ],
+      "front_sha256": "d88b57994aedc4cf38cbd2a8711da2c0025716de5fdfac409788cd63119c8a4c",
+      "rear_sha256": "1f52103816d3756c59cc801b1dd2398189e46748faedf82b9257e811f0a679f4",
+      "runtime": {
+        "front": {
+          "path": "assets/images/questwell/avatar/harvest_coat_female_v6.webp",
+          "sha256": "06e739e0d3593f4fd1021e7900baf44f1608765300198d87164401d87b67a00a"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_female_v6.webp",
+          "sha256": "d94bdd3a99cf8aa9cda656a8ae524aafbc40de12a42f235a26836cf14c156d00"
+        }
+      }
+    },
+    {
+      "family": "cloak",
+      "body": "male",
+      "source": "tool/art_assets/legacy_depth_v1/cloak_male_front_source.webp",
+      "source_sha256": "25264f1fe741ae6961546bfa11d706bdb898d26f60c33f012160a1aa283ffd60",
+      "registration": {
+        "width": 198,
+        "height": 264,
+        "left": 19,
+        "top": 53
+      },
+      "front_sha256": "279585c5bde2b2e25f6dade5f082e71f05ce5d43b7bec761f764e62e9c226b93",
+      "rear_sha256": "ba61a01596858affbdefb8425ed10e7ec65fda6e44d33435d1e0e580120deaba",
+      "runtime": {
+        "front": {
+          "path": "assets/images/questwell/avatar/moss_cloak_male_v4.webp",
+          "sha256": "9988742119d8eb624b93b6dfd8d34796fc6304819348473d6190eed9ae8e3ef7"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/moss_cloak_rear_male_v4.webp",
+          "sha256": "4bf72693537fd9d6844f044d63011a87272134c93c8e04d51200d7b057eb16a5"
+        }
+      }
+    },
+    {
+      "family": "mantle",
+      "body": "male",
+      "source": "tool/art_assets/legacy_depth_v1/mantle_male_front_source.webp",
+      "source_sha256": "f74e15ed1f70936bf45a5b767726e893434ba916b4fb4cd3b86b850a2637a06b",
+      "registration": {
+        "width": 192,
+        "height": 255,
+        "left": 22,
+        "top": 59
+      },
+      "front_sha256": "166affb7699befbc51c930ddf20c80714bc2d3c80f83ce7e6c43a8bad7a7d299",
+      "rear_sha256": "a09b55dbef6db25d2831671bc3cec34bcfab0f230ceb0ae084f16cd6aac5bf25",
+      "runtime": {
+        "front": {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_male_v4.webp",
+          "sha256": "2906f249885fa0575fbc5d99e24c4d32b6983318fbd27ed4f552f0485076a469"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_male_v4.webp",
+          "sha256": "b2e528fc8b981818e7c6a19652f1d80eef10ed8c4c8f9e634eaaf762e161afda"
+        }
+      }
+    },
+    {
+      "family": "coat",
+      "body": "male",
+      "source": "tool/art_assets/legacy_depth_v1/cuff_male_source.webp",
+      "source_sha256": "fc219ca5a5cd392ae5fac1dded1edb2a7eeef3be281e2f0c15820243ff2d6373",
+      "registration": {
+        "width": 139,
+        "height": 185,
+        "left": 48,
+        "top": 51
+      },
+      "cuffWindows": [
+        [
+          68.2,
+          173.8,
+          9.3,
+          2.7
+        ],
+        [
+          172.6,
+          173.7,
+          9.7,
+          2.7
+        ]
+      ],
+      "front_sha256": "98acb18aefbfc8065e3e882677086b5c4b72624556ec427b6689d4cdae28eb20",
+      "rear_sha256": "314ceda6cbf1ea5b12e2696f419c3a3ed6ba5ea46fbdc213bbdd11cd1da5a5de",
+      "runtime": {
+        "front": {
+          "path": "assets/images/questwell/avatar/harvest_coat_male_v6.webp",
+          "sha256": "a952b8a510311d3ccea1e69fd227bf1c38bf4c76e80b76766efade7181991c48"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_male_v6.webp",
+          "sha256": "b7dee6024788bc7f91b55b29fd71f117355789a910e063bf0bd59c5a9e8c3417"
+        }
+      }
+    },
+    {
+      "family": "cloak",
+      "body": "neutral",
+      "source": "tool/art_assets/legacy_depth_v1/cloak_neutral_front_source.webp",
+      "source_sha256": "237433839152c1645b04b3c6cba7cdeb20f94b83b83ccd9a2c8086cc347cbd74",
+      "registration": {
+        "width": 190,
+        "height": 254,
+        "left": 23,
+        "top": 52
+      },
+      "front_sha256": "bdeb2e0e0d1658eb1d314c6181a69aaf92afd4c79b85ae3a8dd4ac77608d9183",
+      "rear_sha256": "3bfd359b282e5158fb3b981413632c932550214c03ab89cbb96be03d7123493e",
+      "runtime": {
+        "front": {
+          "path": "assets/images/questwell/avatar/moss_cloak_neutral_v4.webp",
+          "sha256": "aa172a40ef120c9cd47ebc69aae5dd57198378f7c5d132f748dfa3ec24d453db"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/moss_cloak_rear_neutral_v4.webp",
+          "sha256": "ef49ef653dafa60122074fee24a35a67b62aa0fcf4836e044a50156b38527144"
+        }
+      }
+    },
+    {
+      "family": "mantle",
+      "body": "neutral",
+      "source": "tool/art_assets/legacy_depth_v1/mantle_neutral_front_source.webp",
+      "source_sha256": "549421b29a5632ed0763690f519287f55d3c5e4f45724b8ce9761d002d42ecea",
+      "registration": {
+        "width": 180,
+        "height": 240,
+        "left": 33,
+        "top": 61
+      },
+      "front_sha256": "c6e7a38a2df7892fe28cb7e4ad3b01d251961cd17e97e7ba34b2438f978f6fe3",
+      "rear_sha256": "89701e9b13661db3fd6914e4c930e8c10f955677c6b6b3daeed78cd57c5b258f",
+      "runtime": {
+        "front": {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_neutral_v4.webp",
+          "sha256": "9aa6d521ce73c1847df80d62c0ec18caacd612de23ebdd2abc438a35cba2142f"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_neutral_v4.webp",
+          "sha256": "f6d3325e7f92822fdb3debf76f9c2c30b0a2d0a6fcc669f3d9d6b7755f3f986e"
+        }
+      }
+    },
+    {
+      "family": "coat",
+      "body": "neutral",
+      "source": "tool/art_assets/legacy_depth_v1/cuff_neutral_source.webp",
+      "source_sha256": "957795c8307693b8b5f2b28541ea658826501890bc0ed59c0c10615c240189e0",
+      "registration": {
+        "width": 177,
+        "height": 236,
+        "left": 28,
+        "top": 13
+      },
+      "cuffWindows": [
+        [
+          75.7,
+          174.7,
+          6.5,
+          2.4
+        ],
+        [
+          167.2,
+          174.9,
+          6.5,
+          2.4
+        ]
+      ],
+      "front_sha256": "7d7605080c54e4e3cef88f219f60635eee8b62ce0d8e27ed91c5262e88979f0f",
+      "rear_sha256": "e1b9374d15e31bda6f87b3e7d95c8e6cced4dfe0a8332371efa40da813ce652d",
+      "runtime": {
+        "front": {
+          "path": "assets/images/questwell/avatar/harvest_coat_neutral_v6.webp",
+          "sha256": "18a9f1439475d74eb04ee501fab0a4b0cae7e104ed5756edb9c94dd4246261e8"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_neutral_v6.webp",
+          "sha256": "5a48199a9f28b559e523f3f80e563571a8b3e2eb52372a6da6f3410342d91c14"
+        }
+      }
+    }
+  ]
+}

@@ -10,7 +10,8 @@ import '../lib/widgets/questwell_legacy_chest.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   for (final body in ['female','male','neutral']) {
-    final asset='assets/images/questwell/avatar/harvest_coat_${body}_v4.webp';
+    final asset='assets/images/questwell/avatar/harvest_coat_${body}_v6.webp';
+    final rearAsset='assets/images/questwell/avatar/harvest_coat_rear_${body}_v6.webp';
     test('$body Harvest coat retains the authored canvas and clear hands/legs',()async{
       final data=await rootBundle.load(asset);
       final codec=await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes,data.lengthInBytes));
@@ -41,6 +42,9 @@ void main() {
           await tester.pumpAndSettle();
           final images=tester.widgetList<Image>(find.byType(Image)).map((w)=>(w.image as AssetImage).assetName).toList();
           expect(images,contains(asset));
+          expect(images,contains(rearAsset));
+          expect(images.indexOf(rearAsset),lessThan(images.indexOf(asset)),
+              reason:'Cuff cavity cloth belongs behind the wrist, not on top of it');
           final handLayers = tester.widgetList<ClipPath>(find.byType(ClipPath))
               .where((widget) => widget.clipper is HarvestCoatHandsClipper);
           expect(handLayers.length, 1, reason:'Original hands remain in front of side panels');

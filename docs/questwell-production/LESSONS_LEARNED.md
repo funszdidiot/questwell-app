@@ -2,6 +2,16 @@
 
 These are process controls derived from failures encountered during avatar production.
 
+**Standing founder direction — 2026-10-05:** cloaks, capes, robes and mantles
+must fall naturally. Broad triangular flare is not a shortcut for arm/hand
+coverage: it makes the avatar appear artificially wide. Preserve shoulder
+contact, let cloth hang predominantly downward, use modest hem ease, and check
+the silhouette on each complete locked body. Existing locked robe templates
+remain immutable unless a scoped revision is explicitly requested. The male
+coat correction also establishes that cuff width belongs at the wrist opening,
+not as a ballooned elbow; cavity cloth belongs behind the wrist and the finishing
+lip in front. Passing coverage tests alone does not establish either fit.
+
 1. **Lock the body before clothing.** Changing anatomy while fitting garments creates cascading drift.
 2. **Fit bodies independently.** Female, male and neutral proportions require separate garment registration.
 3. **Concept quality does not guarantee production fit.** Always inspect the actual runtime composite.

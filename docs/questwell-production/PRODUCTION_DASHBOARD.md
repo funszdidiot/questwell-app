@@ -1,5 +1,18 @@
 # Questwell Production Dashboard
 
+## Active garment correction — 2026-10-05 America/Chicago
+
+**QA.** Tanya requested narrower male coat elbows, wrapping wider cuffs,
+no cloak/mantle inner flaps, proper rear layers and natural shoulder drape. She
+then rejected excessive cloak/mantle flare. All six are being redrawn to hang
+mostly downward; the standing natural-drape rule is recorded for future cloaks,
+capes, robes and mantles. All nine final composites passed independent local QA;
+technical depth/coverage, frozen hashes, 8 Node tests and seasonal checks pass.
+Mandatory remote Flutter/build gates and delivered-runtime verification are
+pending. The previous DEV DEPLOYED row
+below records the historical baseline, not acceptance of the latest correction.
+No locked body/Everyday/robe asset changes and no founder blocker.
+
 Continued **2026-10-04 (America/Chicago)**. Approved neutral outfits are **DEV DEPLOYED / LOCKED** at `9ce9b92`: full gate, account eligibility, live Market purchase/equip/unequip and ten delivered hashes verified. See `../qa/NEUTRAL_OUTFIT_ROLLOUT.md`. The shared male robe/Everyday integration and newer sleeve/thumb correction are **DEV DEPLOYED** at `958aaaf`: workflow `37229645601`, 373 Flutter + 8 Node tests, analysis/assets/build/deploy and all 23 delivered asset hashes passed. All five classes were visually checked in the shared Adventurer renderer; Everyday inventory equip → Hearth → unequip → restored robe and sample Market purchase/equip passed. No founder action is needed. Locked body, identity and Everyday bytes remain unchanged. This is a recorded snapshot, not a background-worker claim.
 
 ## Production lifecycle

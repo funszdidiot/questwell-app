@@ -1636,6 +1636,84 @@
           "sha256": "4ae8d74f777b96f7b93926c3a653590a3c0493ebbf4324202fab0e8c6f16934c"
         }
       ]
+    },
+    "legacy_natural_drape_v1": {
+      "visual_approval": "active_founder_requested_repair_not_locked",
+      "description": "Body-specific natural drape and clean openings; rear cloak/mantle cloth and coat cuff cavities behind complete locked bodies. No account policy changes.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_female_v4.webp",
+          "sha256": "5d43798ec33434203e63855534099c1e399010c788e70cb1cc6a214fa77d5101"
+        },
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_rear_female_v4.webp",
+          "sha256": "83236b662cf58677426bf5ec15224b4eff4b0cf683811cfccbf6f596f3b7a073"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_female_v4.webp",
+          "sha256": "b93caeef8f64279a8803f92c60fb83d5f67a4dc4decf38c7420cd22d66bab84e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_female_v4.webp",
+          "sha256": "a6415b1464d0071dcc1d1748a863bc3f91ceb0cd1a3d6f6ec2898671545f567d"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_female_v6.webp",
+          "sha256": "06e739e0d3593f4fd1021e7900baf44f1608765300198d87164401d87b67a00a"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_female_v6.webp",
+          "sha256": "d94bdd3a99cf8aa9cda656a8ae524aafbc40de12a42f235a26836cf14c156d00"
+        },
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_male_v4.webp",
+          "sha256": "9988742119d8eb624b93b6dfd8d34796fc6304819348473d6190eed9ae8e3ef7"
+        },
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_rear_male_v4.webp",
+          "sha256": "4bf72693537fd9d6844f044d63011a87272134c93c8e04d51200d7b057eb16a5"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_male_v4.webp",
+          "sha256": "2906f249885fa0575fbc5d99e24c4d32b6983318fbd27ed4f552f0485076a469"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_male_v4.webp",
+          "sha256": "b2e528fc8b981818e7c6a19652f1d80eef10ed8c4c8f9e634eaaf762e161afda"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_male_v6.webp",
+          "sha256": "a952b8a510311d3ccea1e69fd227bf1c38bf4c76e80b76766efade7181991c48"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_male_v6.webp",
+          "sha256": "b7dee6024788bc7f91b55b29fd71f117355789a910e063bf0bd59c5a9e8c3417"
+        },
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_neutral_v4.webp",
+          "sha256": "aa172a40ef120c9cd47ebc69aae5dd57198378f7c5d132f748dfa3ec24d453db"
+        },
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_rear_neutral_v4.webp",
+          "sha256": "ef49ef653dafa60122074fee24a35a67b62aa0fcf4836e044a50156b38527144"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_neutral_v4.webp",
+          "sha256": "9aa6d521ce73c1847df80d62c0ec18caacd612de23ebdd2abc438a35cba2142f"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_neutral_v4.webp",
+          "sha256": "f6d3325e7f92822fdb3debf76f9c2c30b0a2d0a6fcc669f3d9d6b7755f3f986e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_neutral_v6.webp",
+          "sha256": "18a9f1439475d74eb04ee501fab0a4b0cae7e104ed5756edb9c94dd4246261e8"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_neutral_v6.webp",
+          "sha256": "5a48199a9f28b559e523f3f80e563571a8b3e2eb52372a6da6f3410342d91c14"
+        }
+      ]
     }
   },
   "approved_layers": {

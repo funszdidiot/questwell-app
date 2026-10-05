@@ -32,6 +32,18 @@ The current autonomous-development instruction authorizes approved development i
 
 ## Consistent outfit families
 
+### Natural drape — founder direction, 2026-10-05 America/Chicago
+
+Cloaks, capes, robes and mantles must fall naturally under gravity from their
+body-specific shoulder support. Avoid tent-like triangular flare, stiff wings,
+ballooned volume or broad hems that artificially widen the avatar. Use mostly
+downward folds, modest hem ease and natural contact over covered arms. Do not
+fix drape by shrinking shoulders, hiding hands with a body mask or changing the
+locked body. Tanya explicitly rejected the broad cloak/mantle candidates on
+2026-10-05; their replacement must be reviewed on all three bodies. This
+standing direction governs new builds and authorized repairs, not unilateral
+changes to existing locked robe templates.
+
 For each body and garment family, establish and review one foundational fit. Once accepted, freeze the silhouette, neck opening, shoulder fit, sleeve and cuff openings, waist/hip allowance, hem, registration and front/back layer masks. Reuse those measurements for that family's color, pattern, embroidery and decorative variants. Other body types require their own fitted templates. A structural garment change requires a new fit review; decorative variety must never drive a body edit.
 
 Check the complete unclothed foundation first, then everyday clothing, then the additional garment. View the neck, shoulders, wrists, waist and feet at normal scale and enlarged. Pixel hashes establish preservation; they cannot establish a natural visual connection. Neutral robe v11 supersedes the rejected cuff iterations and is the approved template. Do not reuse v6–v10 as geometry references for new class robes.

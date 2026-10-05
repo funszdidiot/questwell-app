@@ -3,19 +3,21 @@ import 'package:flutter/material.dart';
 
 /// Individually fitted full-canvas cloth covers the complete locked paper doll.
 class QuestwellCloak extends StatelessWidget {
-  const QuestwellCloak({super.key, required this.slug, required this.bodyType});
+  const QuestwellCloak({super.key, required this.slug, required this.bodyType,
+    this.rear = false});
   final String slug;
   final String bodyType;
+  final bool rear;
   static bool supports(String? slug) =>
       slug == 'moss-green-cloak' || slug == 'hearthguard-mantle';
-  static String asset(String slug, String body) {
+  static String asset(String slug, String body, {bool rear = false}) {
     final fittedBody = const {'male', 'female'}.contains(body) ? body : 'neutral';
     final family = slug == 'hearthguard-mantle' ? 'hearthguard_mantle' : 'moss_cloak';
-    return 'assets/images/questwell/avatar/${family}_${fittedBody}_v3.webp';
+    return 'assets/images/questwell/avatar/${family}_${rear ? 'rear_' : ''}${fittedBody}_v4.webp';
   }
   @override
   Widget build(BuildContext context) => IgnorePointer(child: ExcludeSemantics(
-    child: Image.asset(asset(slug, bodyType), fit: BoxFit.contain,
+    child: Image.asset(asset(slug, bodyType, rear: rear), fit: BoxFit.contain,
       alignment: Alignment.bottomCenter, filterQuality: FilterQuality.high,
       gaplessPlayback: true),
   ));
