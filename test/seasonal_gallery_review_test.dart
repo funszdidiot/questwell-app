@@ -18,6 +18,17 @@ Future<void> pumpReview(WidgetTester tester) async {
 Future<void> pumpUntilFound(
   WidgetTester tester,
   Finder finder, {
+  int attempts = 20,
+}) async {
+  for (var i = 0; i < attempts && finder.evaluate().isEmpty; i++) {
+    await tester.pump(const Duration(milliseconds: 80));
+  }
+  expect(finder, findsOneWidget);
+}
+
+Future<void> pumpUntilFound(
+  WidgetTester tester,
+  Finder finder, {
   int maxFrames = 30,
 }) async {
   for (var i = 0; i < maxFrames; i++) {
@@ -42,7 +53,11 @@ void main() {
     expect(find.byType(QuestwellHearthCatalogSprite), findsOneWidget);
     expect(tester.takeException(), isNull);
 
-    await tester.tap(find.text('Fixture Winter Fern Study').first);
+    final fern = find.byKey(
+      const ValueKey('seasonal-item-fixture-winter-fern-study'),
+    );
+    await pumpUntilFound(tester, fern);
+    await tester.tap(fern);
     await pumpReview(tester);
 
     expect(find.byType(QuestwellWallArt), findsWidgets);
