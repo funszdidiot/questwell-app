@@ -91,3 +91,8 @@ All five male robe defaults and approved Everyday now use the actual shared app 
 ## Latest neutral approval and rollout — 2026-10-04
 
 Tanya: **“The neutral outfits are good- push them.”** Neutral Woodland v3 is now founder-approved and LOCKED at `tool/neutral_woodland_fit_reference.json`. This newer instruction explicitly authorizes its development app and account eligibility rollout for female and neutral Scouts; male Woodland remains unavailable. Earlier female-only and neutral-candidate statements are historical and superseded for this scope. Existing neutral Everyday and all five class robes remain locked. Exact artwork and bodies are unchanged. Rollout status: **DEV DEPLOYED / LOCKED**, verified at `9ce9b92` (workflow `37236299144`, 373 Flutter + 8 Node tests, ten delivered asset hashes, live neutral Market purchase/equip/unequip). Evidence: `docs/qa/NEUTRAL_OUTFIT_ROLLOUT.md`.
+
+
+## Legacy wardrobe visual audit — 2026-10-04 America/Chicago
+
+BUILDING: add `?review=legacy-wardrobe`, an account-free comparison of the actual shared renderer for all three locked bodies, every class, and the four retained legacy chest garments. Native/enlarged, light/dark and equipment-removal controls expose fit and restoration issues without changing assets or account policy. This is a QA surface, not a new garment approval. Delivered runtime inspection follows the full development gate.
