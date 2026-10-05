@@ -47,7 +47,9 @@ class QuestwellReviewLoadout {
       if (catalog[entry.key] case final item?)
         (item.$1 == 'wall_art'
             ? QuestwellLoadoutModel.wallArtRenderKey(entry.value)
-            : QuestwellLoadoutModel.roomRenderKey(entry.value)): item.$2,
+            : QuestwellLoadoutModel.roomRenderKey(entry.value)): item.$2
+      else
+        QuestwellLoadoutModel.roomRenderKey(entry.value): entry.key,
     for (final id in {...otherEquipped, if (glasses) 'a', if (satchel) 's'})
       if (catalog[id] case final item?) item.$1: item.$2,
   };
