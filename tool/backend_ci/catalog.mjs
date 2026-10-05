@@ -18,7 +18,10 @@ export function assertCatalogMatches(expected, actual) {
     if (JSON.stringify(want) !== JSON.stringify(got)) {
       const missing = want.filter(row => !got.includes(row)).length;
       const extra = got.filter(row => !want.includes(row)).length;
-      throw new Error(`Catalog mismatch: ${section} (${missing} missing/changed, ${extra} unexpected/changed)`);
+      const detail = section === 'constraints'
+        ? `\n${JSON.stringify({missing: want.filter(row => !got.includes(row)).slice(0, 5).map(JSON.parse), unexpected: got.filter(row => !want.includes(row)).slice(0, 5).map(JSON.parse)})}`
+        : '';
+      throw new Error(`Catalog mismatch: ${section} (${missing} missing/changed, ${extra} unexpected/changed)${detail}`);
     }
   }
 }
