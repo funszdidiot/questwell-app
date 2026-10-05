@@ -35,7 +35,7 @@ async function appSmoke(status) {
   await check('two owners create actual tasks and cannot read each other', async () => {
     for (const owner of [a,b]) {
       const r = await request('/rest/v1/tasks', owner.token, 'POST', {
-        user_id: owner.id, title: 'Synthetic baseline quest', status: 'open', xp_value: 10, coin_value: 5,
+        user_id: owner.id, title: 'Synthetic baseline quest', status: 'open', friction_level: 1, xp_value: 10, coin_value: 5,
       });
       ok(r, 201); assert.equal(r.data.length, 1);
       if (owner === a) taskA = r.data[0].id; else taskB = r.data[0].id;

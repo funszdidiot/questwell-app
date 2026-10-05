@@ -34,13 +34,13 @@ function run(args, timeout = 120000) {
     console.error(redact((result.stderr || '') + (result.stdout || '')).slice(-14000));
     throw new Error(`Supabase ${args.slice(0, 2).join(' ')} failed: exit ${result.status}, ${result.error?.code || 'command error'}`);
   }
-  if (args[0] === 'db' && args[1] === 'lint' && result.stderr) console.log(redact(result.stderr));
+  if (args[0] === 'db' && ['lint', 'advisors'].includes(args[1]) && result.stderr) console.log(redact(result.stderr));
   return result.stdout;
 }
 const version = run(['--version']).trim();
 if (version !== '2.119.0') throw new Error(`Unexpected Supabase CLI version: ${version}`);
 console.log(`Supabase CLI ${version}; temporary local fixture stack only.`);
-for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['db', 'lint', '--help'], ['stop', '--help']]) {
+for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['db', 'lint', '--help'], ['db', 'advisors', '--help'], ['migration', 'up', '--help'], ['stop', '--help']]) {
   run(args); // Installed-version help verifies the command surface on the runner.
 }
 
@@ -105,6 +105,39 @@ try {
   if (app.status !== 0) {
     if (app.stderr) console.error(redact(app.stderr));
     throw new Error(`Application smoke failed: exit ${app.status}, ${app.error?.code || 'test error'}`);
+  }
+  // Apply exactly the reviewed proposal AFTER proving the observed baseline.
+  // Never replay the incomplete root chain or contact a linked/remote project.
+  const rewardMigration = '20261005165421_task_reward_authority.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', rewardMigration), join(workdir, 'supabase/migrations', rewardMigration));
+  run(['migration', 'up', '--local']);
+  run(['db', 'query', '--local', '--file', join(source, 'task-reward-contract.sql')]);
+  console.log('Task reward SQL mapping, column privileges and RLS assertions passed.');
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
+  console.log('Security advisor inventory after R01; inherited findings remain release blockers:');
+  console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
+  const rewardTests = phase => {
+    const rewards = spawnSync(process.execPath, [join(source, 'task-rewards.mjs')], {
+      input: JSON.stringify({status, phase}), env, encoding: 'utf8', timeout: 120000,
+      maxBuffer: 1024 * 1024,
+    });
+    if (rewards.stdout) console.log(redact(rewards.stdout));
+    if (rewards.stderr) console.error(redact(rewards.stderr));
+    if (rewards.status !== 0) throw new Error(`Task reward ${phase} failed`);
+  };
+  rewardTests('regressions');
+  // Each real downstream failure must roll back all three completion writes.
+  for (const [table, expression] of [
+    ['reward_events', "event_type is distinct from 'task_completed'"],
+    ['users', 'total_xp = 0'],
+  ]) {
+    run(['db', 'query', '--local', `alter table public.${table} add constraint ci_reward_failure check (${expression}) not valid;`]);
+    try {
+      rewardTests('rollback');
+      console.log(`Verified rollback after forced ${table} write failure.`);
+    } finally {
+      run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_reward_failure;`]);
+    }
   }
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
