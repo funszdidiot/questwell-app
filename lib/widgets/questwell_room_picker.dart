@@ -30,12 +30,16 @@ class _RoomPicker extends StatefulWidget {
   final String name, id, slug, archetype, bodyType;
   final Map<String, String> equippedSlugs;
   final Map<String, RoomOccupant> occupants;
+  final Map<String, String>? placementChoices;
   final String? currentSlot;
   @override
   State<_RoomPicker> createState() => _RoomPickerState();
 }
 class _RoomPickerState extends State<_RoomPicker> {
-  late final labels = Map<String, String>.from(QuestwellHearthDecor.choices(widget.slug))
+  late final labels = Map<String, String>.from(
+      widget.placementChoices?.isNotEmpty == true
+          ? widget.placementChoices!
+          : QuestwellHearthDecor.choices(widget.slug))
     ..removeWhere((slot, _) => slot == 'bookshelf_top' &&
       widget.equippedSlugs['room:left'] != 'walnut-bookshelf' &&
       widget.equippedSlugs['room:right'] != 'walnut-bookshelf');
