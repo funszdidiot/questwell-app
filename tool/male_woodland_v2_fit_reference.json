@@ -1,5 +1,5 @@
 {
-  "status": "development_candidate_independent_export_qa_passed_not_founder_locked",
+  "status": "LOCKED",
   "revision": "male-woodland-v2",
   "bodyType": "male",
   "family": "woodland-scout",
@@ -64,6 +64,18 @@
   },
   "sourceDesign": "Male Woodland v1 design retained; built-in image edit uses locked male v3 fit reference. No female/neutral pixels reused.",
   "review": "tool/qa/male_woodland_v2_export_review.json",
-  "accountEligibility": "Female and neutral Scout account support unchanged; male remains isolated fit candidate.",
-  "founderApproval": null
+  "accountEligibility": "Female and neutral Scout account support unchanged; male art is approved, account rollout remains queued.",
+  "founderApproval": {
+    "date": "2026-10-05",
+    "timezone": "America/Chicago",
+    "quote": "It’s good",
+    "scope": "Male Woodland Scout v2 shown in the verified development review and native screenshot",
+    "reviewedRevision": "ae72f23b0386420e28282021133378f17385d546",
+    "outfitSha256": "bc923c9b5043950e617ad81b5b4caed7448846ccc4536e4fcc56ad90725c8ed8"
+  },
+  "geometryLock": "Preserve the exact single-overlay silhouette, alpha, neck and shoulder fit, sleeve/cuff openings, hand clearance, waist/hip/crotch/leg contours, boot/heel coverage and runtime registration. Fit to the unchanged male v3 body; decorative variants inherit this geometry.",
+  "integrationStatus": {
+    "developmentReview": "DEV DEPLOYED at ae72f23",
+    "accountRollout": "QUEUED"
+  }
 }

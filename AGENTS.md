@@ -45,3 +45,15 @@ Tanya: **“The neutral outfits are good- push them.”** Neutral Woodland v3 is
 ## Individual legacy garment correction — 2026-10-05
 
 Tanya rejected the mantle, cloak and coat shapes and reaffirmed locked paper-doll bodies and individual garment fits. Her “Yes” confirms cloak/mantle conceal arms and hands completely; Harvest Coat leaves hands exposed. Rebuild each family for male/female/neutral independently. Technical coverage and deployment alone do not establish visual quality. Avoid broad shared transforms, ballooned sleeves and distorted motifs. Preserve complete primary bodies, original hands/identity and existing availability. No new founder lock is inferred from independent QA. Current replacement fits: `tool/art_assets/legacy_refit_v2/fits.json`; integration evidence: `docs/qa/LEGACY_INDIVIDUAL_REFIT.md`.
+
+
+## Latest male Woodland approval — 2026-10-05 America/Chicago
+
+Tanya approved the exact delivered male Woodland v2 with **“It’s good”**.
+`tool/male_woodland_v2_fit_reference.json` is LOCKED and supersedes the historical
+v1 candidate reference. Preserve the single-overlay geometry, alpha, registration,
+sleeve/cuff openings, hand clearance, seams and boots on immutable male v3.
+Historical `candidate` naming does not reopen approval. Verified development
+review: `ae72f23`, documented in `docs/qa/MALE_WOODLAND_V2.md`. Male account rollout
+remains queued; the current shared renderer and equipment policy still gate it.
+Do not report account equipping as delivered based on this art approval record.
