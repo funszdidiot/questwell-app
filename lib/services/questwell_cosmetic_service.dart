@@ -59,6 +59,9 @@ class QuestwellCosmeticService {
       SupaFlow.client
           .from('hearth_profile_slots')
           .select('profile_key,slot_key,placement_label,sort_order'),
+      SupaFlow.client
+          .from('hearth_render_registry')
+          .select('cosmetic_id,render_kind,asset_source,asset_path,canvas_width,canvas_height,visible_base,shadow_profile,effect_profile,filter_mode,asset_revision,min_client_build'),
     ]));
 
     final profile =
@@ -89,6 +92,15 @@ class QuestwellCosmeticService {
       placements.sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
     }
 
+    final renderByCosmeticId = <String, QuestwellHearthRenderSpec>{};
+    for (final raw in (responses[4] as List)) {
+      final row = Map<String, dynamic>.from(raw as Map);
+      final cosmeticId = row['cosmetic_id']?.toString();
+      if (cosmeticId == null || cosmeticId.isEmpty) continue;
+      renderByCosmeticId[cosmeticId] =
+          QuestwellHearthRenderSpec.fromJson(row);
+    }
+
     final cosmetics = List<Map<String, dynamic>>.from(
       (responses[1] as List).map((row) => Map<String, dynamic>.from(row as Map)),
     )
@@ -104,6 +116,8 @@ class QuestwellCosmeticService {
                   row['hearth_profile_key']?.toString()
                 ] ??
                 const [],
+            hearthRenderSpec:
+                renderByCosmeticId[row['id']?.toString() ?? ''],
           ),
         )
         .where((item) => !QuestwellEquipmentPolicy.isRetired(item.slug))
