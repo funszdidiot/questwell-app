@@ -20,8 +20,8 @@ $function$;
 revoke all on function public.account_deletion_objects(uuid) from public, anon, authenticated;
 grant execute on function public.account_deletion_objects(uuid) to service_role;
 
--- Custom indexes are supported; never mutate Storage metadata directly.
-create index questwell_storage_owner_cleanup_idx on storage.objects (owner_id, bucket_id, name);
+-- Managed Storage tables prohibit application-created indexes. Keep their
+-- ownership and privileges intact; assess inventory query cost before rollout.
 
 -- Sign-out only revokes sessions, not already-issued JWTs. Check the session on
 -- authenticated Storage operations so cleanup cannot be undone with an old JWT.

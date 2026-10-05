@@ -86,10 +86,15 @@ policy, hosted impact review, native/device checks and release gates remain open
 - [Session revocation and access tokens](https://supabase.com/docs/guides/auth/sessions)
 - [Storage ownership (`owner_id`; `owner` is deprecated)](https://supabase.com/docs/guides/storage/security/ownership)
 - [Deleting object bytes through the API](https://supabase.com/docs/guides/storage/management/delete-objects)
-- [Read-only Storage metadata and custom indexes](https://supabase.com/docs/guides/storage/schema/design)
+- [Read-only Storage metadata](https://supabase.com/docs/guides/storage/schema/design)
+- [Managed-schema restrictions](https://supabase.com/changelog/34270-restricting-access-on-auth-storage-and-realtime-schemas-on-april-21-2025)
 
-The current changelog was checked. No schema object is added inside managed
-`auth` or `storage` beyond supported Storage RLS policies and a custom index.
+The managed-schema restriction notice prohibits custom indexes, despite the
+Storage design page's general index recommendation. The pinned local stack
+confirmed this restriction. No schema object is added inside managed `auth` or
+`storage` beyond the supported Storage RLS policy. Inventory-query performance
+at realistic object counts remains a rollout gate; do not alter managed-table
+ownership or elevate the migration role to add an index.
 The published 2.57.4 package manifest pins Auth JS 2.71.1 and Storage JS
 2.12.1. No SDK upgrade, new package, live Auth policy setting or object
 reassignment is included.
