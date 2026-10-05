@@ -15,6 +15,18 @@ Future<void> pumpReview(WidgetTester tester) async {
   }
 }
 
+Future<void> pumpUntilFound(
+  WidgetTester tester,
+  Finder finder, {
+  int maxFrames = 30,
+}) async {
+  for (var i = 0; i < maxFrames; i++) {
+    await tester.pump(const Duration(milliseconds: 80));
+    if (finder.evaluate().isNotEmpty) return;
+  }
+  expect(finder, findsWidgets);
+}
+
 void main() {
   testWidgets('seasonal gallery loads manifest and reviews Hearth candidates',
       (tester) async {
@@ -47,12 +59,15 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp());
-    await pumpReview(tester);
+    final scholar = find.text('Fixture Solstice Scholar Robe');
+    await pumpUntilFound(tester, scholar);
+    expect(tester.takeException(), isNull);
 
-    await tester.tap(find.text('Fixture Solstice Scholar Robe').first);
-    await pumpReview(tester);
+    await tester.tap(scholar.first);
+    final baseline = find.textContaining('Locked body baseline');
+    await pumpUntilFound(tester, baseline);
 
-    expect(find.textContaining('Locked body baseline'), findsOneWidget);
+    expect(baseline, findsOneWidget);
     expect(
       find.byWidgetPredicate((widget) =>
           widget is Image &&
@@ -62,7 +77,9 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(find.text('female').first);
+    final female = find.text('female');
+    await pumpUntilFound(tester, female);
+    await tester.tap(female.first);
     await pumpReview(tester);
 
     expect(
