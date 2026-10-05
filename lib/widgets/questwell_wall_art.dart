@@ -4,13 +4,14 @@ import '../services/questwell_cosmetic_models.dart';
 
 /// Center and side paintings remain independent of floor decor.
 class QuestwellWallArt extends StatelessWidget {
-  const QuestwellWallArt({super.key, this.artSlug = slug, this.renderSpec});
+  const QuestwellWallArt({super.key, this.artSlug = slug, this.renderSpec, this.wallSlot});
   static const slug = 'moonlit-woodland';
   static const fern = 'fern-study';
   static const celestial = 'celestial-study';
   static bool isSide(String value) => value == fern || value == celestial;
   final String artSlug;
   final QuestwellHearthRenderSpec? renderSpec;
+  final String? wallSlot;
 
   // A restrained room-light grade: 7% less saturation, slightly lower
   // brightness, and warmer highlights. Preserve the source alpha exactly.
@@ -28,7 +29,10 @@ class QuestwellWallArt extends StatelessWidget {
     return Semantics(
       label: '$name painting hanging on the Hearth wall', image: true,
       child: IgnorePointer(child: LayoutBuilder(builder: (context, constraints) {
-        final scale = ((isSide(artSlug)
+        final sideArt = wallSlot != null
+            ? wallSlot != 'wall_center'
+            : isSide(artSlug);
+        final scale = ((sideArt
           ? constraints.maxHeight / 64 : constraints.maxWidth / 80))
           .clamp(.6, 2.0).toDouble();
         Widget artwork() {
