@@ -1253,11 +1253,11 @@ alter table "public"."beta_feedback" add constraint "beta_feedback_action_state_
 
 alter table "public"."beta_feedback" add constraint "beta_feedback_action_summary_check" CHECK ((char_length(action_summary) <= 500));
 
-alter table "public"."beta_feedback" add constraint "beta_feedback_attachment_path_safe" CHECK (((attachment_path IS NULL) OR (((char_length(attachment_path) >= 1) AND (char_length(attachment_path) <= 500)) AND (attachment_path !~ '(^|/)\.\.(/|$)'::text))));
+alter table "public"."beta_feedback" add constraint "beta_feedback_attachment_path_safe" CHECK (attachment_path is null or (char_length(attachment_path) between 1 and 500 and attachment_path !~ '(^|/)\.\.(/|$)'));
 
 alter table "public"."beta_feedback" add constraint "beta_feedback_attachment_paths_limit" CHECK ((cardinality(attachment_paths) <= 5));
 
-alter table "public"."beta_feedback" add constraint "beta_feedback_build_check" CHECK ((((char_length(build) >= 1) AND (char_length(build) <= 64)) AND (build ~ '^[A-Za-z0-9._-]+$'::text)));
+alter table "public"."beta_feedback" add constraint "beta_feedback_build_check" CHECK (char_length(build) between 1 and 64 and build ~ '^[A-Za-z0-9._-]+$');
 
 alter table "public"."beta_feedback" add constraint "beta_feedback_category_check" CHECK ((category = ANY (ARRAY['bug'::text, 'confusing'::text, 'idea'::text, 'positive'::text])));
 
@@ -1271,7 +1271,7 @@ alter table "public"."beta_feedback" add constraint "beta_feedback_message_check
 
 alter table "public"."beta_feedback" add constraint "beta_feedback_pkey" PRIMARY KEY (id);
 
-alter table "public"."beta_feedback" add constraint "beta_feedback_platform_check" CHECK ((((char_length(platform) >= 1) AND (char_length(platform) <= 64)) AND (platform ~ '^[A-Za-z0-9._-]+$'::text)));
+alter table "public"."beta_feedback" add constraint "beta_feedback_platform_check" CHECK (char_length(platform) between 1 and 64 and platform ~ '^[A-Za-z0-9._-]+$');
 
 alter table "public"."beta_feedback" add constraint "beta_feedback_priority_check" CHECK ((priority = ANY (ARRAY['low'::text, 'normal'::text, 'high'::text, 'critical'::text])));
 

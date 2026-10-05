@@ -76,6 +76,13 @@ fixed it. Re-reading the source changed only grant identity strings; no source
 privileges changed. The test now requires every function grant to match a full
 observed function signature. The baseline retains the exact intended grants.
 
+The next replay created the schema but detected three constraint-definition
+differences (runs 37333731068 / 37334295851). Re-parsing deparsed BETWEEN checks
+flattened nested AND groups. The original BETWEEN spelling is available in
+the committed beta-feedback migration (build/platform) and recovered remote
+20261003182414 (attachment path). Those three original expressions are used in
+the reconstruction. No comparison exception or ignored constraint was added.
+
 ## Verification contract
 
 Every relevant PR/push runs the checksum-pinned CLI on a new runner:
@@ -97,7 +104,8 @@ Every relevant PR/push runs the checksum-pinned CLI on a new runner:
 
 Consult PR #19's final head and linked run logs for executed results. The contract
 above describes what the job enforces; it is not proof before a green run.
-The existing Flutter job still tolerates 45 analyzer issues and excludes the
+The updated development branch's Flutter job tolerates 46 analyzer issues (16
+warnings, 30 infos) and excludes the
 placeholder widget test. Neither restriction is removed or hidden here.
 
 ## Migration reconciliation
