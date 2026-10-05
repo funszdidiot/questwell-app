@@ -310,7 +310,7 @@ void main() {
           expect(paths, contains(QuestwellMalePaperDoll.everydayAsset));
         }
         if (chest == 'midnight-harvest-coat') {
-          expect(paths, contains('assets/images/questwell/avatar/harvest_coat_male_v3.webp'));
+          expect(paths, contains('assets/images/questwell/avatar/harvest_coat_male_v4.webp'));
         }
         expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset).first), bounds);
       }

@@ -54,3 +54,9 @@ Official API references checked for the existing Flutter 3.44.6 workflow: https:
 ![Verified female wardrobe](legacy-female-neckline-9d47ee6.jpg)
 ![Verified neutral wardrobe](legacy-neutral-neckline-9d47ee6.jpg)
 ![Verified male wardrobe](legacy-male-neckline-9d47ee6.jpg)
+
+## Superseding founder correction — 2026-10-05
+
+Tanya rejected the mantle, cloak and coat shapes despite prior technical and visual QA. Replacement status is BUILDING. Each of these three garments needs its own direct fit for each locked body. Cloak and mantle must conceal arms and hands; Harvest Coat must leave hands exposed (confirmed “Yes”). Business Suit was not included in this rejection. No pending founder clarification blocks this work.
+
+Coverage alone is insufficient: broad transforms and corrective warps can create ballooned sleeves, distorted motifs and unnatural drape. Review natural garment construction as well as coverage. Keep complete original bodies byte-for-byte unchanged and visible underneath; never clip anatomy to solve clothing. Historical deployment evidence below/above does not establish visual acceptance of the rejected fits.

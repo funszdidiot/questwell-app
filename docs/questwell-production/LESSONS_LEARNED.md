@@ -28,3 +28,10 @@ These are process controls derived from failures encountered during avatar produ
 ### Legacy fits on locked bodies — 2026-10-04 America/Chicago
 
 A historical full-body suit image cannot be made a reliable garment by coarse head/hand cuts: it can leak old anatomy and miss the current feet/inner legs. Use a coherent garment-only overlay registered independently to each locked body. Closed cloaks must cover the full arms with cloth; never restore a historical body-hiding mask. Satchel foreground-arm restoration must stay disabled under closed cloth. A generic head crop can cut the newer neutral jaw even when body hashes pass. Keep the exact complete identity above the collar and fit neck-only foreground contours per body; inspect the actual enlarged renderer. Garment registration can distort embroidered motifs even after coverage passes—review surface shapes again after every contour adjustment.
+
+
+## Superseding founder correction — 2026-10-05
+
+Tanya rejected the mantle, cloak and coat shapes despite prior technical and visual QA. Replacement status is BUILDING. Each of these three garments needs its own direct fit for each locked body. Cloak and mantle must conceal arms and hands; Harvest Coat must leave hands exposed (confirmed “Yes”). Business Suit was not included in this rejection. No pending founder clarification blocks this work.
+
+Coverage alone is insufficient: broad transforms and corrective warps can create ballooned sleeves, distorted motifs and unnatural drape. Review natural garment construction as well as coverage. Keep complete original bodies byte-for-byte unchanged and visible underneath; never clip anatomy to solve clothing. Historical deployment evidence below/above does not establish visual acceptance of the rejected fits.

@@ -96,3 +96,25 @@ class HarvestEverydayGarmentClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant HarvestEverydayGarmentClipper oldClipper) => false;
 }
+
+/// Foreground duplicate of the original hands, at unchanged body registration.
+/// The primary body stays complete below the coat; this only establishes depth.
+class HarvestCoatHandsClipper extends CustomClipper<Path> {
+  const HarvestCoatHandsClipper(this.body);
+  final String body;
+  @override
+  Path getClip(Size size) {
+    final regions = switch (body) {
+      'female' => const [Rect.fromLTRB(66,173,85,193), Rect.fromLTRB(156,173,174,193)],
+      'male' => const [Rect.fromLTRB(58,180,85,201), Rect.fromLTRB(155,180,183,201)],
+      _ => const [Rect.fromLTRB(67,180,88,201), Rect.fromLTRB(156,180,178,201)],
+    };
+    final path = Path();
+    for (final region in regions) { path.addRect(region); }
+    final scale = math.min(size.width / 240, size.height / 320);
+    return path.transform((Matrix4.identity()..scale(scale,scale)).storage)
+      .shift(Offset((size.width - 240 * scale) / 2, size.height - 320 * scale));
+  }
+  @override
+  bool shouldReclip(covariant HarvestCoatHandsClipper oldClipper) => oldClipper.body != body;
+}

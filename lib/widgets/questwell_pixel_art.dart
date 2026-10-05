@@ -262,7 +262,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     final classOverlay = woodland ? null : modular
         ? (scoutLayers!.contains('robe') ? fittedRobeAsset('robe') : null)
         : harvestCoat
-        ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v3.webp'
+        ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v4.webp'
         : legacyChest ? null
         : chest == 'starter-business-suit' ? null : _classOverlayAsset;
     final rearRevision = archetype == 'wanderer' ? 'short_v1' : 'v1';
@@ -300,14 +300,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
 
     Widget baseImage() => foundation();
 
-    Widget baseLayer() {
-      if (paperDollNeutral || paperDollMale) return baseImage();
-      if (!paperDollFemale && QuestwellCloak.supports(equippedSlugs['chest'])) {
-        return ClipPath(
-            clipper: QuestwellClosedCloakBodyClipper(body), child: baseImage());
-      }
-      return baseImage();
-    }
+    Widget baseLayer() => baseImage();
 
     return RepaintBoundary(
       child: Stack(
@@ -319,8 +312,6 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           if (classOverlay != null && !harvestCoat && !modular)
             classLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
           QuestwellCatalogEquipment(equipment: equippedSlugs, body: body, rear: true),
-          if (QuestwellCloak.supports(equippedSlugs['chest']))
-            QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body, rear: true),
           if (modular || legacyChest)
             baseLayer()
           else if (harvestCoat)
@@ -355,13 +346,21 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           else
             baseLayer(),
           if (classOverlay != null) classLayer(classOverlay),
+          if (harvestCoat)
+            ClipPath(clipper: HarvestCoatHandsClipper(body),
+              child: _assetLayer(body == 'male' ? QuestwellMalePaperDoll.baseAsset
+                : body == 'female' ? QuestwellScoutWardrobeFoundation.femaleBaseAsset
+                : QuestwellNeutralPaperDoll.baseAsset)),
           // This overlay contains only the fixed base's head/hair pixels.
           // It restores hair in front of collars without rebuilding anatomy.
-          if (paperDollFemale && !legacyChest)
+          if (paperDollFemale && (!legacyChest || harvestCoat))
             _assetLayer(QuestwellScoutWardrobeFoundation.femaleIdentityAsset)
-          else if (paperDollNeutral && !legacyChest)
-            _assetLayer(QuestwellNeutralPaperDoll.identityAsset)
-          else if (paperDollMale && !legacyChest)
+          else if (paperDollNeutral && (!legacyChest || harvestCoat))
+            harvestCoat
+              ? ClipPath(clipper: QuestwellCloakHairClipper(body),
+                  child: _assetLayer(QuestwellNeutralPaperDoll.identityAsset))
+              : _assetLayer(QuestwellNeutralPaperDoll.identityAsset)
+          else if (paperDollMale && (!legacyChest || harvestCoat))
             _assetLayer(QuestwellMalePaperDoll.identityAsset)
           else if (modular) ClipPath(clipper: classOverlay != null
               ? ScoutWardrobeClipper(body, 'identityHead')
@@ -377,14 +376,11 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             QuestwellEmeraldScarf(bodyType: body),
           if (QuestwellCloak.supports(equippedSlugs['chest'])) ...[
             QuestwellCloak(slug: equippedSlugs['chest']!, bodyType: body),
-            QuestwellCloakForeground(body: body, children: [
-              baseLayer(),
-              if (classOverlay != null) classLayer(classOverlay),
-            ]),
-            // Original complete identity stays in front of the raised collar.
-            // A historical generic head crop must not cut the v4 jaw or hair.
+            // Restore original hair above cloth, without repainting a square
+            // neutral neck over the collar. The complete body stays underneath.
             if (paperDollNeutral)
-              _assetLayer(QuestwellNeutralPaperDoll.identityAsset)
+              ClipPath(clipper: QuestwellCloakHairClipper(body),
+                child: _assetLayer(QuestwellNeutralPaperDoll.identityAsset))
             else if (paperDollMale)
               _assetLayer(QuestwellMalePaperDoll.identityAsset)
             else if (paperDollFemale)

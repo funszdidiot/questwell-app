@@ -1,5 +1,5 @@
 {
-  "status": "DEV DEPLOYED \u2014 scoped repair, not a new founder lock",
+  "status": "SUPERSEDED: coat/cloak/mantle fits founder-rejected; replacement BUILDING",
   "canvas": [
     240,
     320
@@ -142,5 +142,17 @@
       }
     ],
     "scope": "Shared renderer, all three bodies/four garments; native/light/dark/enlarged checks, neutral Guardian equip removal/restoration, Market female suit equip/unequip and neutral Harvest purchase/equip/unequip. Original identities and individual neck contours restored over closed cloak collar. Account fixture only; no real-user persistence retest or writes."
+  },
+  "historical_deployment_status": "DEV DEPLOYED \u2014 scoped repair, not a new founder lock",
+  "founder_correction": {
+    "date": "2026-10-05",
+    "scope": [
+      "Midnight Harvest Coat",
+      "Moss-Green Cloak",
+      "Hearthguard Mantle"
+    ],
+    "instruction": "Fit each garment individually to each locked paper doll. Cloak/mantle conceal arms and hands; coat leaves hands exposed. Do not alter bodies.",
+    "business_suit": "Outside this rejection",
+    "blocker": false
   }
 }

@@ -40,3 +40,8 @@ Lesson: alpha-only thumb checks can pass while an opaque trouser layer still cov
 ## Latest neutral approval and rollout — 2026-10-04
 
 Tanya: **“The neutral outfits are good- push them.”** Neutral Woodland v3 is now founder-approved and LOCKED at `tool/neutral_woodland_fit_reference.json`. This newer instruction explicitly authorizes its development app and account eligibility rollout for female and neutral Scouts; male Woodland remains unavailable. Earlier female-only and neutral-candidate statements are historical and superseded for this scope. Existing neutral Everyday and all five class robes remain locked. Exact artwork and bodies are unchanged. Rollout status: **DEV DEPLOYED / LOCKED**, verified at `9ce9b92` (workflow `37236299144`, 373 Flutter + 8 Node tests, ten delivered asset hashes, live neutral Market purchase/equip/unequip). Evidence: `docs/qa/NEUTRAL_OUTFIT_ROLLOUT.md`.
+
+
+## Individual legacy garment correction — 2026-10-05
+
+Tanya rejected the mantle, cloak and coat shapes and reaffirmed locked paper-doll bodies and individual garment fits. Her “Yes” confirms cloak/mantle conceal arms and hands completely; Harvest Coat leaves hands exposed. Rebuild each family for male/female/neutral independently. Technical coverage and deployment alone do not establish visual quality. Avoid broad shared transforms, ballooned sleeves and distorted motifs. Preserve complete primary bodies, original hands/identity and existing availability. No new founder lock is inferred from independent QA. Current replacement fits: `tool/art_assets/legacy_refit_v2/fits.json`; integration evidence: `docs/qa/LEGACY_INDIVIDUAL_REFIT.md`.
