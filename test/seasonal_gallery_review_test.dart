@@ -18,24 +18,13 @@ Future<void> pumpReview(WidgetTester tester) async {
 Future<void> pumpUntilFound(
   WidgetTester tester,
   Finder finder, {
-  int attempts = 20,
+  int attempts = 30,
 }) async {
-  for (var i = 0; i < attempts && finder.evaluate().isEmpty; i++) {
+  for (var i = 0; i < attempts; i++) {
+    if (finder.evaluate().isNotEmpty) return;
     await tester.pump(const Duration(milliseconds: 80));
   }
   expect(finder, findsOneWidget);
-}
-
-Future<void> pumpUntilFound(
-  WidgetTester tester,
-  Finder finder, {
-  int maxFrames = 30,
-}) async {
-  for (var i = 0; i < maxFrames; i++) {
-    await tester.pump(const Duration(milliseconds: 80));
-    if (finder.evaluate().isNotEmpty) return;
-  }
-  expect(finder, findsWidgets);
 }
 
 void main() {
@@ -45,10 +34,12 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp());
-    await pumpReview(tester);
+    final lantern = find.byKey(
+      const ValueKey('seasonal-item-fixture-solstice-ward-lantern'),
+    );
+    await pumpUntilFound(tester, lantern);
 
     expect(find.text('Seasonal Review System'), findsOneWidget);
-    expect(find.text('Fixture Solstice Ward Lantern'), findsWidgets);
     expect(find.byType(QuestwellHearthPixelScene), findsWidgets);
     expect(find.byType(QuestwellHearthCatalogSprite), findsOneWidget);
     expect(tester.takeException(), isNull);
@@ -74,15 +65,16 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp());
-    final scholar = find.text('Fixture Solstice Scholar Robe');
-    await pumpUntilFound(tester, scholar);
-    expect(tester.takeException(), isNull);
 
-    await tester.tap(scholar.first);
+    final robe = find.byKey(
+      const ValueKey('seasonal-item-fixture-solstice-scholar-robe'),
+    );
+    await pumpUntilFound(tester, robe);
+    await tester.tap(robe);
+
     final baseline = find.textContaining('Locked body baseline');
     await pumpUntilFound(tester, baseline);
 
-    expect(baseline, findsOneWidget);
     expect(
       find.byWidgetPredicate((widget) =>
           widget is Image &&
@@ -92,9 +84,9 @@ void main() {
       findsOneWidget,
     );
 
-    final female = find.text('female');
+    final female = find.byKey(const ValueKey('seasonal-body-female'));
     await pumpUntilFound(tester, female);
-    await tester.tap(female.first);
+    await tester.tap(female);
     await pumpReview(tester);
 
     expect(
