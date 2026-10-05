@@ -41,6 +41,25 @@ class QuestwellProfile {
   }
 }
 
+class QuestwellHearthPlacementOption {
+  const QuestwellHearthPlacementOption({
+    required this.slot,
+    required this.label,
+    required this.sortOrder,
+  });
+
+  final String slot;
+  final String label;
+  final int sortOrder;
+
+  factory QuestwellHearthPlacementOption.fromJson(Map<String, dynamic> json) =>
+      QuestwellHearthPlacementOption(
+        slot: json['slot_key']?.toString() ?? '',
+        label: json['placement_label']?.toString() ?? '',
+        sortOrder: (json['sort_order'] as num?)?.toInt() ?? 0,
+      );
+}
+
 class QuestwellCosmetic {
   const QuestwellCosmetic({
     required this.id,
@@ -64,6 +83,8 @@ class QuestwellCosmetic {
     this.editionType = 'standard',
     this.availabilityStart,
     this.availabilityEnd,
+    this.hearthProfileKey,
+    this.hearthPlacements = const [],
   });
 
   final String id;
@@ -86,6 +107,8 @@ class QuestwellCosmetic {
   final String? collectionKey;
   final String editionType;
   final DateTime? availabilityStart, availabilityEnd;
+  final String? hearthProfileKey;
+  final List<QuestwellHearthPlacementOption> hearthPlacements;
   bool get specialEdition => editionType != 'standard';
   String get renderKey => QuestwellLoadoutModel.renderKey(
     category: category,
@@ -118,6 +141,8 @@ class QuestwellCosmetic {
       editionType: editionType,
       availabilityStart: availabilityStart,
       availabilityEnd: availabilityEnd,
+      hearthProfileKey: hearthProfileKey,
+      hearthPlacements: hearthPlacements,
     );
   }
 
@@ -128,6 +153,7 @@ class QuestwellCosmetic {
     String? roomSlot,
     DateTime? unlockedAt,
     String? source,
+    List<QuestwellHearthPlacementOption> hearthPlacements = const [],
   }) {
     return QuestwellCosmetic(
       id: json['id']?.toString() ?? '',
@@ -151,6 +177,8 @@ class QuestwellCosmetic {
       editionType: json['edition_type']?.toString() ?? 'standard',
       availabilityStart: DateTime.tryParse(json['availability_start']?.toString() ?? ''),
       availabilityEnd: DateTime.tryParse(json['availability_end']?.toString() ?? ''),
+      hearthProfileKey: json['hearth_profile_key']?.toString(),
+      hearthPlacements: hearthPlacements,
     );
   }
 }
