@@ -1,0 +1,50 @@
+{
+  "status": "DEV DEPLOYED",
+  "revision": "9d47ee66e2c3d7c94b390136b7b2736970cfa0ec",
+  "pull_request": 13,
+  "workflow_run": 37261924230,
+  "review_url": "https://funszdidiot.github.io/questwell-app/?review=legacy-wardrobe",
+  "flutter_version": "3.44.6",
+  "flutter_tests_passed": 388,
+  "node_tests_passed": 8,
+  "analyzer_nonfatal_findings": 45,
+  "build_and_deploy": "success",
+  "version_and_loaded_browser_bundle": "matched",
+  "artwork_changes": false,
+  "runtime_checks": [
+    "male/female/neutral native legacy garments",
+    "neutral enlarged mantle neckline",
+    "light/dark background",
+    "neutral Guardian class change",
+    "garments off restores same-body Guardian defaults",
+    "garments on restores legacy outfits",
+    "reload and exact loaded bundle",
+    "male Woodland remains candidate review"
+  ],
+  "not_retested": [
+    "real-account login/refresh persistence",
+    "native Safari/device"
+  ],
+  "screenshots": [
+    {
+      "path": "docs/qa/legacy-female-neckline-9d47ee6.jpg",
+      "sha256": "5d286aa1c5136d4ab679f32fcc23bfd6136edd16bcde1aea02da0d7204a0531b"
+    },
+    {
+      "path": "docs/qa/legacy-male-neckline-9d47ee6.jpg",
+      "sha256": "9ee8b4853e1206815804db70d72693ebb752e9f092f894f413d22afe316dc1c8"
+    },
+    {
+      "path": "docs/qa/legacy-neutral-neckline-9d47ee6.jpg",
+      "sha256": "474787a20ea6366f2126183fd4555e4cb5a02bae69cab6e7b454136769467136"
+    },
+    {
+      "path": "docs/qa/legacy-neutral-restored-9d47ee6.jpg",
+      "sha256": "7dbd5aee65e4e6756156f6d0dcd51bbe88bebf0bb212568c76c0c79e482c0eec"
+    },
+    {
+      "path": "docs/qa/mantle-neutral-detail-9d47ee6.jpg",
+      "sha256": "481c1961822b5d64154b592bb8762d80710a3054cb9a42eb8835676b446e1827"
+    }
+  ]
+}
