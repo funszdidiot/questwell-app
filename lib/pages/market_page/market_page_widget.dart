@@ -83,7 +83,13 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
           placementChoices: cosmetic.hearthPlacements.isEmpty
               ? null
               : {for (final option in cosmetic.hearthPlacements)
-                  option.slot: option.label});
+                  option.slot: option.label},
+          hearthProfileKey: cosmetic.hearthProfileKey,
+          hearthProfilesBySlug: {
+            for (final item in data.cosmetics)
+              if (item.hearthProfileKey != null)
+                item.slug: item.hearthProfileKey!,
+          });
         if (pick == null) return;
         await QuestwellCosmeticService.place(cosmetic.id, pick.slot, pick.expectedOccupant);
       } else {
