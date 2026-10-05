@@ -115,10 +115,10 @@ void main() {
         expect(front, greaterThan(foundation));
         final assets=tester.widgetList<Image>(find.byType(Image)).map((i)=>i.image).whereType<AssetImage>().map((i)=>i.assetName).toList();
         if (body == 'male') {
+          expect(find.byType(QuestwellLegacyMaleIdentity), findsWidgets);
           expect(assets, containsAll([
             QuestwellMalePaperDoll.baseAsset,
             QuestwellMalePaperDoll.everydayAsset,
-            QuestwellMalePaperDoll.identityAsset,
           ]));
           expect(assets.any((a)=>a.contains('/classes/$archetype/')), isFalse);
         } else {
