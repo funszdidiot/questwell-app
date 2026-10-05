@@ -1,0 +1,158 @@
+{
+  "status": "DEV DEPLOYED",
+  "revision": "0546cb4dbf188f0eb7c55298710d6f35765e50e1",
+  "workflow_run": 37266712857,
+  "served_version": {
+    "revision": "0546cb4dbf188f0eb7c55298710d6f35765e50e1"
+  },
+  "assets": [
+    {
+      "path": "assets/images/questwell/avatar/moss_cloak_female_v3.webp",
+      "sha256": "b2fd6b0e830978482e67e9b4a6a4db35dfadd30584502958d821f0db1914c80a",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/moss_cloak_male_v3.webp",
+      "sha256": "20ecb1968abbbaba4517da29e9bd38ce5cdeb1d01ceae6a3dbfc47929892f0ca",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/moss_cloak_neutral_v3.webp",
+      "sha256": "95f87b15b2dfeba016d13227e38570d7a720310c7a6e07a397976cf85c76e5dd",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/hearthguard_mantle_female_v3.webp",
+      "sha256": "3d94781d746ff75cd259fbdeefe32d5035967dd226f57b49e49aac7171cc96d9",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/hearthguard_mantle_male_v3.webp",
+      "sha256": "fc82f28315283d7117dda45140916181b3f93026990350dea74504ca270756c0",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/hearthguard_mantle_neutral_v3.webp",
+      "sha256": "5bb393d40ff6af8cb9a802ac7219a1747b63710c410f6c55569efecd2b09b14b",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_female_v4.webp",
+      "sha256": "2969270592cebbe5c3da09752f10b0369b3eb4a10a4e38424d8897945e33b956",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_male_v4.webp",
+      "sha256": "a00da96cdb042787e2c282dbcc7303a44d07e906a520b24e58a5ef197b244b20",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_neutral_v4.webp",
+      "sha256": "8a79b0add3f8518ecc70c1d4f768d88dc07d8f178850a2c78ddddbed42f9232a",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_female_v1.webp",
+      "sha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp",
+      "sha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+      "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "matched": true
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+      "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "matched": true
+    }
+  ],
+  "flutter_tests_passed": 385,
+  "node_tests_passed": 8,
+  "analyzer_nonfatal_findings": 45,
+  "build_and_deploy": "success",
+  "loaded_browser_bundle": "0546cb4dbf188f0eb7c55298710d6f35765e50e1",
+  "independent_runtime_visual_qa": "PASS: nine native light/dark fits; enlarged female coat/cloak/mantle",
+  "runtime_checks": [
+    "All nine actual shared-renderer fits on light and dark backgrounds",
+    "Guardian class change and garment removal restores identical class robes for all three bodies",
+    "Enlarged female coat/cloak/mantle",
+    "Market female mantle: Scholar blocked, Guardian allowed, sample buy 160 coins, equip, preview, unequip",
+    "Primary locked bodies remain unclipped; original coat hands above side panels",
+    "Male Harvest Coat catalog available to every class at 180 coins; individual fit preview verified"
+  ],
+  "limitations": [
+    "Browser Market uses in-memory sample inventory; no real-account writes or new login/refresh persistence test",
+    "Native Safari/device testing not repeated"
+  ],
+  "founder_lock": false,
+  "screenshots": [
+    {
+      "path": "docs/qa/individual-female-dark-0546cb4.jpg",
+      "sha256": "eda517a738a4a0766ca311a1dd6c17d1e21310940dbb97dfe397d11d9227d5fb"
+    },
+    {
+      "path": "docs/qa/individual-female-enlarged-coat-cloak-0546cb4.jpg",
+      "sha256": "5c47a66fedde39585a3b9c21b0703612d56380b9e62f9353650ce710a526856f"
+    },
+    {
+      "path": "docs/qa/individual-female-enlarged-mantle-0546cb4.jpg",
+      "sha256": "758eb9c90c913c2b3dd62aaffd4f46b9a5eca6d4002deeab8f4bd483258a953a"
+    },
+    {
+      "path": "docs/qa/individual-female-light-0546cb4.jpg",
+      "sha256": "c69c2655c3e8ce38e75df659c87b4ea70a2f5391231d9ac2ac4a0d1aba44a397"
+    },
+    {
+      "path": "docs/qa/individual-female-restored-0546cb4.jpg",
+      "sha256": "c4b36e20d3869d9fc95c53493449a917b51c47794294ec5b45c6d7d126de2d9a"
+    },
+    {
+      "path": "docs/qa/individual-male-coat-market-0546cb4.jpg",
+      "sha256": "9170f686d335efeb1f85ae7992ef4b5d2d9e80e0d31586abf44fd0bf2f89ab4c"
+    },
+    {
+      "path": "docs/qa/individual-male-dark-0546cb4.jpg",
+      "sha256": "9563aa3a333d86266425d007772887a950aa0db2fb1e076c7837faf62c47d2cb"
+    },
+    {
+      "path": "docs/qa/individual-male-light-0546cb4.jpg",
+      "sha256": "a71ae01fd7f26d9f7bb47f823b8b1a58143636553062b09ba6814f4bf366a18f"
+    },
+    {
+      "path": "docs/qa/individual-male-restored-0546cb4.jpg",
+      "sha256": "504081d17d6e2cf44e57deef232bd946ca9a856189dadc874e6d44189215be46"
+    },
+    {
+      "path": "docs/qa/individual-mantle-market-equipped-0546cb4.jpg",
+      "sha256": "9256f314c1c65794b573050933b005f4cb1d4d47b0b960e38cc6503a82a53391"
+    },
+    {
+      "path": "docs/qa/individual-neutral-dark-0546cb4.jpg",
+      "sha256": "0a34a38444fef1a4c4ba405bece30d8494f09e1e4d62267e2f48124abcf7c5ae"
+    },
+    {
+      "path": "docs/qa/individual-neutral-light-0546cb4.jpg",
+      "sha256": "b4a19a32a12513b01575dfb75f6d852596825e2a1e77aca36d2f435a4e794110"
+    },
+    {
+      "path": "docs/qa/individual-neutral-restored-0546cb4.jpg",
+      "sha256": "c3057d78998a19c510a678cabecd5ebb66337637d3565dfb04e9c1db65dae7ac"
+    }
+  ]
+}

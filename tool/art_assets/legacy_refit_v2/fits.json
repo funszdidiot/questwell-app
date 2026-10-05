@@ -1,5 +1,5 @@
 {
-  "status": "QA passed for all nine source composites; DEV DEPLOYING; runtime pending; no founder lock",
+  "status": "DEV DEPLOYED at 0546cb4; source and delivered runtime QA passed; no founder lock",
   "method": "Individual coherent sources. Uniform whole-canvas registration only; no local warps or anatomy changes.",
   "fits": [
     {
@@ -10,7 +10,7 @@
       "height": 256,
       "left": 24,
       "top": 51,
-      "qa": "Independent native/enlarged light/dark visual QA PASS; runtime pending",
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
       "sha256": {
         "cloak_female_aline_source.png": "f6f9dbcd2d3f92d0be315484471009d79dac0b1c8792803a179d86780e50ca11",
         "cloak_female_registered.png": "c77c3b79bc52125e57b307971aa1605aae37c3cc64e0dd7505e2d83b5442e2d2",
@@ -28,7 +28,7 @@
       "height": 263,
       "left": 21,
       "top": 53,
-      "qa": "Independent native/enlarged light/dark visual QA PASS; runtime pending",
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
       "sha256": {
         "cloak_male_calm_source.png": "c72dff05b5394e407b54aafad4b3d25f6769a1805191bca0ac9ce3b65031ab78",
         "cloak_male_registered.png": "5e78bef9a696a9984171c4fed73f2abba69faff4b6418e468843344db6420fec",
@@ -46,7 +46,7 @@
       "height": 272,
       "left": 18,
       "top": 43,
-      "qa": "Independent native/enlarged light/dark visual QA PASS; runtime pending",
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
       "sha256": {
         "cloak_neutral_shoulders_source.png": "0800864cb0afb3cea0b6b167d66d8abcf1346a5145fe7f71b47e97c8c13653e2",
         "cloak_neutral_registered.png": "b350f4f19fde897e90535e3960335ac24b648d1181fd9b7bb3a55d5a8057103a",
@@ -64,7 +64,7 @@
       "height": 288,
       "left": 12,
       "top": 27,
-      "qa": "Independent native/enlarged light/dark visual QA PASS; runtime pending",
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
       "sha256": {
         "mantle_female_source.png": "c76b3ac13fff4582c7973bf88b03aee0f9917aa04735086bf574e05cb7b3c619",
         "mantle_female_registered.png": "2b04bce6952e1ca95406ef2f907d62bb209a2b9add7ed9d961e3f9a2824848c0",
@@ -82,7 +82,7 @@
       "height": 256,
       "left": 21,
       "top": 55,
-      "qa": "Independent native/enlarged light/dark visual QA PASS; runtime pending",
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
       "sha256": {
         "mantle_male_coverage_source.png": "ab5ca6ce11ef7d4caf635d7904c9a4316c2bc62511c899690089cf08a14235ab",
         "mantle_male_registered.png": "53122a37558428a6dc0d0e6f91bd6779524d64fd7c631fe152fd69a165770aa7",
@@ -100,7 +100,7 @@
       "height": 267,
       "left": 23,
       "top": 43,
-      "qa": "Independent native/enlarged light/dark visual QA PASS; runtime pending",
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
       "sha256": {
         "mantle_neutral_source.png": "90a82b6858cbd7e8c79b2a5e124cd08ea7c7c30f84e47d21fb836418efd14f59",
         "mantle_neutral_registered.png": "af20b8211a8b70e3efd2d433b1a4e256fc231891c6a915df43293da4387e492d",
@@ -118,7 +118,7 @@
       "height": 235,
       "left": 24,
       "top": 23,
-      "qa": "Independent native/enlarged light/dark visual QA PASS; runtime pending",
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
       "sha256": {
         "coat_female_inner_source.png": "6771a45f59989198e839405e5c33f3f1488554b0b30c9b347328fe58da826c1b",
         "coat_female_registered.png": "74a2c8a40a7e995c8ce65a1d0984f74789c48d9b88fb952d7f236e3fd3017f21",
@@ -136,7 +136,7 @@
       "height": 224,
       "left": 31,
       "top": 28,
-      "qa": "Independent native/enlarged light/dark visual QA PASS; runtime pending",
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
       "sha256": {
         "coat_male_inner_source.png": "4f31d304c86f6f907be85e314991dda88457f9e721645989934555ddfdab9e48",
         "coat_male_registered.png": "a7af24abc7d3f5cff615db69324e02d42e25c08214f75dd86776ee2886a9f1ac",
@@ -154,7 +154,7 @@
       "height": 237,
       "left": 28,
       "top": 12,
-      "qa": "Independent native/enlarged light/dark visual QA PASS; runtime pending",
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
       "sha256": {
         "coat_neutral_left_source.png": "9a212794d76ff4f53efa6a205acc5c9de7c927741654273ddb9b15e46ca857d0",
         "coat_neutral_registered.png": "2c7a48705d1df6c8c3c05323421c0c072bd5fa9f30ded32d7021972a64664b20",
@@ -175,5 +175,6 @@
       "coat": "Fit one coherent burgundy Harvest Coat with moss waistcoat/lapels, ivory collar, oak-leaf clasps and hip pockets per locked body. Natural shoulders/sleeves and wrist cuffs; intact hands exposed. Repair whole connected sleeve/waist regions, no patches, no anatomy in output."
     },
     "iterations": "Rejected sources remain local historical candidates; only selected sources below govern reproducible exports. No local warps, perspective transforms, body changes or mixed garment components."
-  }
+  },
+  "delivery_evidence": "tool/qa/individual_refit_delivery_0546cb4.json"
 }

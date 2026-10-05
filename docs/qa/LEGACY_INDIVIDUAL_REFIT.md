@@ -1,6 +1,6 @@
 # Individual legacy garment refits — 2026-10-05
 
-Status: **DEV DEPLOYING**. All nine source composites pass independent visual QA; full CI and actual delivered runtime verification remain pending. No new founder lock.
+Status: **DEV DEPLOYED** at `0546cb4dbf188f0eb7c55298710d6f35765e50e1`. All nine fits passed independent source and delivered-runtime visual QA. No new founder lock.
 
 Tanya rejected the earlier mantle/cloak/coat shapes despite their technical QA. She confirmed cloak and mantle conceal arms and hands; coat leaves hands exposed. Business Suit is outside this rejection.
 
@@ -19,6 +19,15 @@ Independent QA rejected intermediate skin rails, pinched waists, bulged cape sid
 - Added full-arm/hand cloth-coverage checks for all six closed garments, individual body asset selection and no runtime garment transforms.
 - Coat checks retain original head/leg/open-front behavior, class replacement/restoration and exact original hand depth.
 - Catalog, body eligibility, class policy, ownership, prices and equipment availability are unchanged. Pathfinder remains retired; belt grimoire behavior is preserved.
-- Full Flutter analysis/tests, build, delivery hashes and actual app appearance/equip/unequip remain pending.
+- Workflow `37266712857` passed 385 Flutter tests, 8 Node tests, asset and seasonal checks, configured analysis, release build and development deployment. Analysis reports 45 nonfatal findings.
+- Served version and browser-loaded bundle match `0546cb4`; all 15 delivered garment/body/identity hashes match.
+- Actual browser review passed all nine fits on light/dark backgrounds, enlarged female coat/cloak/mantle, Guardian class switching and same-body class-robe restoration for all three bodies. Independent delivered visual review passed.
+- Sample Market verified female mantle Scholar restriction → Guardian eligibility → purchase for 160 sample coins → equip → rendered preview → unequip. Male Harvest Coat remains available to every class at 180 coins and renders its individual fit through the catalog preview.
+- Browser inventory is in-memory. No real-account writes or new real-user login/refresh persistence test were performed; existing persistence/policy code is unchanged. Native Safari/device testing was not repeated.
+- Exact hashes, screenshots and scope are recorded in `tool/qa/individual_refit_delivery_0546cb4.json`.
 
 Historical `LEGACY_FIT_REPAIR.md` evidence remains intact. Its successful deployment does not override Tanya's rejection of those garment shapes.
+
+![Delivered female fits](individual-female-light-0546cb4.jpg)
+![Delivered male fits](individual-male-light-0546cb4.jpg)
+![Delivered neutral fits](individual-neutral-light-0546cb4.jpg)
