@@ -83,6 +83,14 @@ the committed beta-feedback migration (build/platform) and recovered remote
 20261003182414 (attachment path). Those three original expressions are used in
 the reconstruction. No comparison exception or ignored constraint was added.
 
+Run 37335051973 then passed every recorded catalog section and the real RLS
+negative control. Its first subsequent signup failed with UND_ERR_SOCKET after
+the reset restarted the API: the same Node process retained pre-reset HTTP
+connections. The app smoke now runs in a fresh child process with local status
+passed through stdin, never arguments/files/logs. No signup/write retry was
+added; a remaining failure still fails the job. SQL lint's stderr is retained
+so its real diagnostics are visible even when stdout is empty.
+
 ## Verification contract
 
 Every relevant PR/push runs the checksum-pinned CLI on a new runner:

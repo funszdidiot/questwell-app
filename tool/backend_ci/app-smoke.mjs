@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
-import {localRequest} from './guard.mjs';
+import {readFileSync} from 'node:fs';
+import {assertDisposableCi, assertLocalStatus, localRequest} from './guard.mjs';
 
 // Characterizes a narrow real-app path; does not certify all app authorization.
-export async function appSmoke(status) {
+async function appSmoke(status) {
   const request = async (path, token, method = 'GET', body) => {
     const response = await localRequest(status, path, {
       method,
@@ -64,3 +65,10 @@ export async function appSmoke(status) {
   });
   console.log(`Application baseline: ${checks} integration checks passed; reward-tampering/deletion/Storage coverage remains open.`);
 }
+
+// A fresh process cannot reuse HTTP sockets from before the database/API reset.
+// Local credentials arrive only through stdin, never argv, files or CI logs.
+assertDisposableCi(process.env);
+const status = JSON.parse(readFileSync(0, 'utf8'));
+assertLocalStatus(status);
+await appSmoke(status);

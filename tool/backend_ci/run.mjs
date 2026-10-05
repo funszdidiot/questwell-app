@@ -5,7 +5,6 @@ import {join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {assertDisposableCi, assertLocalStatus} from './guard.mjs';
 import {smoke} from './smoke.mjs';
-import {appSmoke} from './app-smoke.mjs';
 import {assertCatalogMatches} from './catalog.mjs';
 
 assertDisposableCi(process.env);
@@ -35,6 +34,7 @@ function run(args, timeout = 120000) {
     console.error(redact((result.stderr || '') + (result.stdout || '')).slice(-14000));
     throw new Error(`Supabase ${args.slice(0, 2).join(' ')} failed: exit ${result.status}, ${result.error?.code || 'command error'}`);
   }
+  if (args[0] === 'db' && args[1] === 'lint' && result.stderr) console.log(redact(result.stderr));
   return result.stdout;
 }
 const version = run(['--version']).trim();
@@ -96,7 +96,16 @@ try {
   }
   assertCatalogMatches(expected, readCatalog());
   console.log('Catalog negative control detected disabled application RLS and verified restoration.');
-  await appSmoke(status);
+  // Reset restarts the API. Use a fresh HTTP client process, without retrying writes.
+  const app = spawnSync(process.execPath, [join(source, 'app-smoke.mjs')], {
+    input: JSON.stringify(status), env, encoding: 'utf8', timeout: 120000,
+    maxBuffer: 1024 * 1024,
+  });
+  if (app.stdout) console.log(redact(app.stdout));
+  if (app.status !== 0) {
+    if (app.stderr) console.error(redact(app.stderr));
+    throw new Error(`Application smoke failed: exit ${app.status}, ${app.error?.code || 'test error'}`);
+  }
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   if (attemptedStart) {
