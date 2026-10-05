@@ -434,6 +434,12 @@ const SizedBox(height: 2),
                         for (final item in equipped)
                           item.renderKey: item.slug,
                       },
+                      hearthProfileBySlug: {
+                        for (final item in data?.cosmetics ??
+                            const <QuestwellCosmetic>[])
+                          if (item.hearthProfileKey != null)
+                            item.slug: item.hearthProfileKey!,
+                      },
                     );
                   },
                 ),
