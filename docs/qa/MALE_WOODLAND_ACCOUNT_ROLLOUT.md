@@ -1,14 +1,18 @@
 # Approved male Woodland account integration
 
-Status: **QA complete; live account rollout BLOCKED by the existing G3 deployment hold.**
+Status: **QA complete; live rollout BLOCKED by the missing CI migration secret.**
 Art: **LOCKED**, founder approval “It’s good”, 2026-10-05 America/Chicago.
 The subsequent “Keep going” continues the inventory/equip integration.
 No asset bytes or locked fit geometry change.
 
 Tanya's subsequent “Next” authorizes work on the scoped database deployment
-step. Its forward-only CI path is being validated in
+step. Its forward-only CI path passed the actual SQL rollback tests and all eight
+account scenarios before and after R01. The tested deployment at `76e2242` stopped
+before any HTTP call because `QUESTWELL_WOODLAND_MIGRATION_TOKEN` is absent from
+repository Actions secrets. See
 [`MALE_WOODLAND_FORWARD_DEPLOYMENT.md`](MALE_WOODLAND_FORWARD_DEPLOYMENT.md).
-The broader history hold and client gate remain until that operation is verified.
+The broader history hold remains; the client gate stays closed until the scoped
+operation is successfully executed and verified.
 
 ## Behavior and API contract
 
@@ -97,9 +101,10 @@ account runtime and physical-device QA remain behind the gate below.
 `supabase/README.md` documents the unresolved G3 database-history/deployment hold.
 Do not apply this migration manually, replay/reset the incomplete history, or
 publish the enabled client against a backend that still rejects the male fit.
-This PR is reviewable independently; account rollout remains **BLOCKED** until
-the separately reviewed G3 forward-migration path is available, the scoped
-migration is applied through CI, and delivered account behavior is verified.
+This PR is reviewable independently. The scoped forward path is now tested and
+ready, but workflow `37360094077` is **BLOCKED** by the missing repository Actions
+secret documented in the forward-deployment runbook. The scoped migration must
+be applied through CI and the delivered account behavior verified before release.
 Physical iOS/Safari remains unverified. Artwork approval is complete and unchanged.
 
 API checks: [Supabase migrations](https://supabase.com/docs/guides/deployment/database-migrations),

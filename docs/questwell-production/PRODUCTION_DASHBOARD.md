@@ -2,17 +2,21 @@
 
 ## Male Woodland account integration — 2026-10-05
 
-**QA complete; live rollout BLOCKED by the existing G3 database deployment hold.**
+**QA complete; live rollout BLOCKED by the missing CI migration secret.**
 The approved male v2 fit is wired into the proposed shared renderer, Market and
 inventory eligibility. The forward migration preserves the 120-coin Scout-only
 contract and all existing ownership. At `2ff8056`, 390 Flutter tests, 31 Node checks,
 release build and all 8 Woodland Auth/RPC/persistence scenarios pass. Shared pixels
 match the approved review. No live account capability or artwork change is claimed.
 See `../qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md` and draft PR #22.
-Tanya's “Next” authorizes the scoped database step. Its guarded forward-only CI
-path is BUILDING and undergoing failure/rollback tests; see
-`../qa/MALE_WOODLAND_FORWARD_DEPLOYMENT.md`. The enabled client remains unmerged
-until that operation succeeds. Existing art approval remains LOCKED.
+Tanya's “Next” authorizes the scoped database step. At `76e2242`, the guarded
+forward CI path passed real SQL refusal/rollback tests and all eight account
+scenarios before and after R01, plus the full Flutter/build gate. Deployment run
+`37360094077` stopped before any HTTP call because repository Actions secret
+`QUESTWELL_WOODLAND_MIGRATION_TOKEN` is missing. Add it through GitHub Actions
+secrets, then resume the existing failed job. The connected tools cannot manage
+secrets. See `../qa/MALE_WOODLAND_FORWARD_DEPLOYMENT.md`. The enabled client remains
+unmerged until the database operation succeeds. Art remains LOCKED.
 
 ## Male Woodland sleeve and size correction — 2026-10-05
 
@@ -93,7 +97,7 @@ Use **BLOCKED** only when the affected work cannot proceed. Active visual develo
 | 1 | Male robes in the actual app / coherent male wardrobe rollout | DEV DEPLOYED | Body v3, Everyday v2 and historical robe v3 remain locked | Non-restrictive migration is deployed: all male defaults and legacy chest states retain locked v3; Business Suit, Midnight Harvest Coat, Moss Green Cloak and Hearthguard Mantle remain available. Workflow `37218307696` passed asset verification, analyzer, full Flutter regressions, preview build and deployment. Supabase migration `20261004164110` preserves legacy availability and male Everyday support with no price, balance, class-rule or ownership change. |
 | 1 | Neutral Everyday and class-robe runtime/persistence audit | DEV DEPLOYED | Body v4, everyday v3 and robe v11 locked | All five robes rendered; 390px Adventurer/Hearth equip/unequip and Market fixture flows passed. Applied migration `20261004035017` passed deployed synthetic public-RPC tests with zero retained fixtures/security findings. Browser fixtures were in-memory; no real-user login/refresh/account writes were tested. Legacy chest migration is separate. |
 | 1 | Approved neutral outfits rollout | DEV DEPLOYED | LOCKED | Verified `9ce9b92`: full gate, ten delivered hashes, live neutral purchase/equip/unequip and rolled-back account RPCs. Price 120 and Scout rule preserved. |
-| 1 | Male Woodland Scout outfit v2 | DEV DEPLOYED review; account integration QA, live rollout BLOCKED (G3) | LOCKED — founder approved 2026-10-05 | Verified runtime `ae72f23`, workflow `37342883393`: 387 Flutter + 12 preview Node checks, full gate, five delivered hashes, transitions, enlarged light/dark, grimoire, reload and independent visual QA passed. Male account equipping remains unavailable. See `../qa/MALE_WOODLAND_V2.md`; v1 evidence is historical. |
+| 1 | Male Woodland Scout outfit v2 | DEV DEPLOYED review; account QA complete, live rollout BLOCKED (CI secret) | LOCKED — founder approved 2026-10-05 | Verified review `ae72f23`; integration/forward-deployment checks green at `76e2242`: 390 Flutter tests, real SQL rollback controls and eight account scenarios before/after R01. Apply run `37360094077` stopped before HTTP because `QUESTWELL_WOODLAND_MIGRATION_TOKEN` is absent. Male account equipping remains unavailable. See `../qa/MALE_WOODLAND_FORWARD_DEPLOYMENT.md`. |
 | 1 | Harvest Coat, Moss-Green Cloak and Hearthguard Mantle — individual body refits | DEV DEPLOYED | Nine scoped candidates; no new lock | Founder-rejected widened fits superseded by nine independently drawn fits. Native/enlarged light/dark independent QA passed. Complete bodies preserved; cloak/mantle conceal arms/hands, coat restores exact original hands above side panels. Verified `0546cb4`, workflow `37266712857`: 385 Flutter + 8 Node tests, build/deploy, 15 delivered hashes, independent runtime visual QA and sample Market equip/unequip passed. No founder blocker. See `../qa/LEGACY_INDIVIDUAL_REFIT.md`. |
 | 1 | Accepted male robe v3 fixed-body review integration | DEV DEPLOYED | Robe v3 LOCKED — accepted cuff finish verified | Recovered exact `16facaf` handoff and independent source QA. Body, everyday, identity and all four robe masks preserved. Delivered `31dfebe`, workflow `37177492039`: 355 Flutter + 8 Node tests, analysis/assets/build/deploy passed. All seven delivered hashes, clothing transitions, enlargement, reload and independent delivered-image QA passed. |
 | 1 | Male class robe surfaces and thumb-gap repair (art-review routes only) | DEV DEPLOYED | Historical v3/foreground locked; requested rear repair is not a new lock | Repaired `7cc9030`, run `37181630492`: 363 Flutter + 8 Node tests, assets/analyzer/build/deploy, 28 delivered hashes, actual all-five gallery/controls/class switch/reload and independent delivered visual QA passed. Bodies, hands, foreground and class designs unchanged. Male Woodland is now DEV DEPLOYED as a separate outfit candidate (`0330c3b`). |

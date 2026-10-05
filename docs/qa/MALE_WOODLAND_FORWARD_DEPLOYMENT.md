@@ -1,10 +1,49 @@
 # Male Woodland: reviewed forward deployment
 
-Status: **BUILDING / CI verification pending. No live write performed.**
+Status: **QA complete; execution BLOCKED by a missing repository Actions secret.**
+No live write performed. Workflow `37360094077` stopped at the credential check,
+before any GitHub check-API or Supabase request.
 Authorization: Tanya's “Next” on 2026-10-05 continues the explicitly proposed
 database deployment step for the approved male Woodland inventory/equip rollout.
 The artwork stays LOCKED and byte-identical. PR #22 keeps the enabled client
 unmerged until the database step succeeds and is verified.
+
+## Executed evidence and exact next action
+
+Tested source revision: `76e2242bcc749feb667db05f9888029fda2b8285`, tree
+`e4e20a5c3979781b7e7c91ba389ce412af2f665b`. The deployment branch points to this
+exact revision; documentation-only follow-ups do not change that tested payload.
+
+- [Flutter/build 37359506496](https://github.com/funszdidiot/questwell-app/actions/runs/37359506496),
+  job `111930263227`: **SUCCESS**, 390 Flutter tests, 12 Node checks, locked assets
+  and dependencies, existing analyzer gate (46 inherited warnings/infos), release
+  web build. No artwork, dependency or client code changed in this database step.
+- [Backend 37359506568](https://github.com/funszdidiot/questwell-app/actions/runs/37359506568),
+  job `111930266573`: **SUCCESS**, actual precondition refusal and full rollback
+  after forced postcondition failure, exact SQL success and repeated-SQL refusal.
+  All eight Woodland Auth/RPC/persistence checks pass on the pre-R01 baseline and
+  again after R01. Existing fixture/app smoke, 19 Node guards, 20 reward and two
+  forced reward rollback checks pass. Other schema/ACL/RLS/API definitions match;
+  post-change SQL lint reports no errors. The local stack/data were disposed.
+- [Deployment guards 37359506621](https://github.com/funszdidiot/questwell-app/actions/runs/37359506621):
+  **SUCCESS**, all 15 failure-path tests and offline source/payload verification.
+- [Deployment attempt 37360094077](https://github.com/funszdidiot/questwell-app/actions/runs/37360094077):
+  guard job `111932243752` **SUCCESS**; apply job `111932390198` stopped with
+  `Missing QUESTWELL_WOODLAND_MIGRATION_TOKEN repository Actions secret`.
+  The failure occurs before the first HTTP call; there is no remote version or
+  successful database deployment to report.
+- Read-only predeployment recheck matched the entire approved manifest: 48
+  unchanged historical rows, original fit definition, unchanged catalog row and
+  no male rollout history record.
+
+**Required setup:** add a suitable Supabase Management API token as
+`QUESTWELL_WOODLAND_MIGRATION_TOKEN` directly in
+[repository Actions secrets](https://github.com/funszdidiot/questwell-app/settings/secrets/actions).
+The connected GitHub tools cannot manage repository secrets. Do not substitute a
+manual SQL/MCP migration for the required CI path. After setup, explicitly rerun
+the failed apply job of `37360094077` at the existing tested revision. It will
+reconcile current state before any write. No new art approval or repeat database
+scope approval is needed. Keep PR #22 draft until its database result is verified.
 
 ## Exact scope
 
