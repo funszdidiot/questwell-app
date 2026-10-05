@@ -1,203 +1,187 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-/// Slot-first layout contract for the Questwell Hearth.
+/// Visual geometry for backend-defined Hearth layout profiles.
 ///
-/// Artwork fits the space; individual items do not invent their own scale or
-/// coordinates. This keeps seasonal/limited releases visually interchangeable
-/// while preserving the current Hearth composition.
-enum QuestwellHearthDecorFamily {
-  largeFurniture,
-  pedestalLight,
-  seating,
-  plant,
-  sideTable,
-  relicPedestal,
-}
-
-class QuestwellHearthProfile {
-  const QuestwellHearthProfile({
-    required this.family,
-    required this.allowedSlots,
+/// Supabase owns semantic placement (hearth_profile_key and allowed slots).
+/// Flutter owns only the visual envelope for each profile plus per-asset canvas
+/// metadata. Live account flows must pass the backend profile key; the local
+/// slug fallback exists only for previews/tests and legacy fixtures.
+class QuestwellHearthAssetSpec {
+  const QuestwellHearthAssetSpec({
     required this.aspectRatio,
     this.visibleBase = 1.0,
   });
 
-  final QuestwellHearthDecorFamily family;
-  final Set<String> allowedSlots;
-
-  /// Authored canvas width / height. The slot owns visual height; aspect ratio
-  /// only determines the contained width.
+  /// Authored canvas width / height.
   final double aspectRatio;
 
   /// Fractional source-row position of the visible ground-contact edge.
-  /// Transparent padding below the artwork must not move the item off its slot.
   final double visibleBase;
 }
 
 abstract final class QuestwellHearthLayout {
-  /// Stable family registry. New décor must join an existing family unless a
-  /// genuinely new Hearth-space behavior is founder-approved.
-  static const profiles = <String, QuestwellHearthProfile>{
-    'walnut-bookshelf': QuestwellHearthProfile(
-      family: QuestwellHearthDecorFamily.largeFurniture,
-      allowedSlots: {'left', 'right'},
+  /// Artwork metadata only. This does NOT decide where an item may be placed.
+  static const assetSpecs = <String, QuestwellHearthAssetSpec>{
+    'walnut-bookshelf': QuestwellHearthAssetSpec(
       aspectRatio: 1225 / 1284,
       visibleBase: 1200 / 1284,
     ),
-    'copper-potion-workbench': QuestwellHearthProfile(
-      family: QuestwellHearthDecorFamily.largeFurniture,
-      allowedSlots: {'left', 'right'},
+    'copper-potion-workbench': QuestwellHearthAssetSpec(
       aspectRatio: 1341 / 1173,
       visibleBase: 1119 / 1173,
     ),
-    'harvest-apothecary-display': QuestwellHearthProfile(
-      family: QuestwellHearthDecorFamily.largeFurniture,
-      allowedSlots: {'left', 'right'},
+    'harvest-apothecary-display': QuestwellHearthAssetSpec(
       aspectRatio: 1312 / 1199,
       visibleBase: 1095 / 1199,
     ),
-    'autumn-ember-lantern': QuestwellHearthProfile(
-      family: QuestwellHearthDecorFamily.pedestalLight,
-      allowedSlots: {'left', 'right'},
+    'autumn-ember-lantern': QuestwellHearthAssetSpec(
       aspectRatio: 935 / 1681 * 1.55,
       visibleBase: 1605 / 1681,
     ),
-    'warding-lantern': QuestwellHearthProfile(
-      family: QuestwellHearthDecorFamily.pedestalLight,
-      allowedSlots: {'left', 'right'},
+    'warding-lantern': QuestwellHearthAssetSpec(
       aspectRatio: 960 / 1680,
       visibleBase: .965,
     ),
-    'burgundy-reading-chair': QuestwellHearthProfile(
-      family: QuestwellHearthDecorFamily.seating,
-      allowedSlots: {'front', 'right'},
+    'burgundy-reading-chair': QuestwellHearthAssetSpec(
       aspectRatio: 1312 / 1199,
     ),
-    'hearth-fern': QuestwellHearthProfile(
-      family: QuestwellHearthDecorFamily.plant,
-      allowedSlots: {'left', 'right', 'front'},
+    'hearth-fern': QuestwellHearthAssetSpec(
       aspectRatio: 1244 / 1264,
     ),
-    'walnut-reading-table': QuestwellHearthProfile(
-      family: QuestwellHearthDecorFamily.sideTable,
-      allowedSlots: {'side'},
+    'walnut-reading-table': QuestwellHearthAssetSpec(
       aspectRatio: 1213 / 1296,
     ),
   };
 
-  static QuestwellHearthProfile? profile(String slug) => profiles[slug];
+  /// Compatibility only for review routes/tests that do not load Supabase.
+  /// Production account flows pass hearth_profile_key from the backend.
+  static const fallbackProfileBySlug = <String, String>{
+    'walnut-bookshelf': 'large_furniture',
+    'copper-potion-workbench': 'large_furniture',
+    'harvest-apothecary-display': 'large_furniture',
+    'autumn-ember-lantern': 'pedestal_light',
+    'warding-lantern': 'pedestal_light',
+    'burgundy-reading-chair': 'seating',
+    'hearth-fern': 'plant',
+    'walnut-reading-table': 'side_table',
+    'scholar-seal': 'relic_display',
+    'scout-compass': 'relic_display',
+    'alchemist-phial': 'relic_display',
+    'guardian-crest': 'relic_display',
+    'wanderer-star-map': 'relic_display',
+  };
 
-  static Map<String, String>? choicesFor(String slug) {
-    final profile = profiles[slug];
+  static String? resolvedProfile(String slug, [String? backendProfile]) =>
+      backendProfile ?? fallbackProfileBySlug[slug];
+
+  static QuestwellHearthAssetSpec? assetSpec(String slug) => assetSpecs[slug];
+
+  static Map<String, String>? fallbackChoices(String slug) {
+    final profile = fallbackProfileBySlug[slug];
     if (profile == null) return null;
-
-    final order = switch (profile.family) {
-      QuestwellHearthDecorFamily.sideTable => const ['side'],
-      QuestwellHearthDecorFamily.seating => const ['front', 'right'],
-      _ => const ['left', 'right', 'front'],
-    };
-
-    const labels = {
-      'left': 'Back left',
-      'right': 'Back right',
-      'front': 'Foreground',
-      'side': 'Beside the chair',
-    };
-    return {
-      for (final slot in order)
-        if (profile.allowedSlots.contains(slot)) slot: labels[slot]!,
-    };
-  }
-
-  static double floorDepthFor(String slug, String slot) {
-    final family = profiles[slug]?.family;
-    return switch (family) {
-      QuestwellHearthDecorFamily.largeFurniture => .69,
-      QuestwellHearthDecorFamily.pedestalLight => .72,
-      QuestwellHearthDecorFamily.sideTable => .89,
-      QuestwellHearthDecorFamily.relicPedestal => slot == 'front' ? .89 : .68,
-      QuestwellHearthDecorFamily.plant => slot == 'front' ? .86 : .70,
-      QuestwellHearthDecorFamily.seating => .86,
-      _ => .86,
+    return switch (profile) {
+      'large_furniture' || 'pedestal_light' =>
+        const {'left': 'Back left', 'right': 'Back right'},
+      'seating' => const {'front': 'Left floor', 'right': 'Right floor'},
+      'plant' => const {
+          'left': 'Back left',
+          'right': 'Back right',
+          'front': 'Foreground',
+        },
+      'side_table' => const {'side': 'Beside the chair'},
+      'relic_display' => const {
+          'mantel': 'On the fireplace mantel',
+          'bookshelf_top': 'On the bookcase',
+          'left': 'Back left pedestal',
+          'right': 'Back right pedestal',
+          'front': 'Front left pedestal',
+        },
+      _ => null,
     };
   }
 
-  /// Canonical slot envelope. Items of the same family receive the same visual
-  /// height and floor anchor in the same space.
+  static double floorDepthFor(String profileKey, String slot) => switch (profileKey) {
+        'large_furniture' => .69,
+        'pedestal_light' => .72,
+        'side_table' => .89,
+        'relic_display' => slot == 'front' ? .89 : .68,
+        'plant' => slot == 'front' ? .86 : .70,
+        'seating' => .86,
+        _ => .86,
+      };
+
+  /// Canonical slot envelope. Same backend profile + same slot = same visual
+  /// height, ground line and depth. Aspect ratio only changes contained width.
   static Rect bounds({
     required String slug,
+    required String profileKey,
     required String slot,
     required Size scene,
     Map<String, String> equipment = const {},
   }) {
-    final p = profiles[slug];
-    if (p == null) return Rect.zero;
+    final spec = assetSpecs[slug];
+    if (spec == null) return Rect.zero;
 
     final avatarHeight =
         math.min(scene.height * .76, scene.width * .62 * 4 / 3);
 
-    final heightFactor = switch (p.family) {
-      QuestwellHearthDecorFamily.largeFurniture => .59,
-      QuestwellHearthDecorFamily.pedestalLight => .52,
-      QuestwellHearthDecorFamily.seating => .62,
-      QuestwellHearthDecorFamily.plant => slot == 'front' ? .43 : .40,
-      QuestwellHearthDecorFamily.sideTable => .49,
-      QuestwellHearthDecorFamily.relicPedestal =>
-        slot == 'front' ? .49 : .40,
+    final heightFactor = switch (profileKey) {
+      'large_furniture' => .59,
+      'pedestal_light' => .52,
+      'seating' => .62,
+      'plant' => slot == 'front' ? .43 : .40,
+      'side_table' => .49,
+      'relic_display' => slot == 'front' ? .49 : .40,
+      _ => .40,
     };
 
-    final maxWidthFactor = switch (p.family) {
-      QuestwellHearthDecorFamily.largeFurniture => .44,
-      QuestwellHearthDecorFamily.pedestalLight => .45,
-      QuestwellHearthDecorFamily.seating => .50,
-      QuestwellHearthDecorFamily.plant => .30,
-      QuestwellHearthDecorFamily.sideTable => .28,
-      QuestwellHearthDecorFamily.relicPedestal => .23,
+    final maxWidthFactor = switch (profileKey) {
+      'large_furniture' => .44,
+      'pedestal_light' => .45,
+      'seating' => .50,
+      'plant' => .30,
+      'side_table' => .28,
+      'relic_display' => .23,
+      _ => .30,
     };
 
-    var height = math.min(
+    final height = math.min(
       avatarHeight * heightFactor,
-      scene.width * maxWidthFactor / p.aspectRatio,
+      scene.width * maxWidthFactor / spec.aspectRatio,
     );
-    final width = height * p.aspectRatio;
+    final width = height * spec.aspectRatio;
 
     final hasTable = equipment['room:side'] == 'walnut-reading-table';
     final chairOnLeft =
         equipment['room:front'] == 'burgundy-reading-chair' ||
         equipment['room:left'] == 'burgundy-reading-chair';
 
-    final center = switch (p.family) {
-      QuestwellHearthDecorFamily.largeFurniture =>
-        slot == 'right'
+    final center = switch (profileKey) {
+      'large_furniture' => slot == 'right'
           ? scene.width * .98 - width / 2
           : scene.width * .14 + width / 2,
-      QuestwellHearthDecorFamily.pedestalLight =>
-        scene.width * (slot == 'left' ? .22 : .80),
-      QuestwellHearthDecorFamily.sideTable =>
-        scene.width * (chairOnLeft ? .15 : .85),
-      QuestwellHearthDecorFamily.seating =>
-        scene.width *
-            (slot == 'right'
-                ? (hasTable ? .64 : .73)
-                : (hasTable ? .36 : .27)),
-      QuestwellHearthDecorFamily.plant =>
-        scene.width *
-            (slot == 'front' ? .20 : slot == 'left' ? .28 : .81),
-      QuestwellHearthDecorFamily.relicPedestal =>
-        scene.width *
-            (slot == 'front' ? .18 : slot == 'left' ? .24 : .81),
+      'pedestal_light' => scene.width * (slot == 'left' ? .22 : .80),
+      'side_table' => scene.width * (chairOnLeft ? .15 : .85),
+      'seating' => scene.width *
+          (slot == 'right'
+              ? (hasTable ? .64 : .73)
+              : (hasTable ? .36 : .27)),
+      'plant' => scene.width *
+          (slot == 'front' ? .20 : slot == 'left' ? .28 : .81),
+      'relic_display' => scene.width *
+          (slot == 'front' ? .18 : slot == 'left' ? .24 : .81),
+      _ => scene.width * .50,
     };
 
     final roomSide = math.max(scene.width, scene.height);
-    final floor = p.family == QuestwellHearthDecorFamily.relicPedestal &&
-            slot != 'front'
+    final floor = profileKey == 'relic_display' && slot != 'front'
         ? roomSide * .68 + (scene.height - roomSide) * .52
-        : scene.height * floorDepthFor(slug, slot);
+        : scene.height * floorDepthFor(profileKey, slot);
 
     return Rect.fromLTWH(
       center - width / 2,
-      floor - height * p.visibleBase,
+      floor - height * spec.visibleBase,
       width,
       height,
     );
