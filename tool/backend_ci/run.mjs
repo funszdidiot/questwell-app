@@ -106,6 +106,13 @@ try {
     if (app.stderr) console.error(redact(app.stderr));
     throw new Error(`Application smoke failed: exit ${app.status}, ${app.error?.code || 'test error'}`);
   }
+  const rewards = spawnSync(process.execPath, [join(source, 'task-rewards.mjs')], {
+    input: JSON.stringify({status}), env, encoding: 'utf8', timeout: 120000,
+    maxBuffer: 1024 * 1024,
+  });
+  if (rewards.stdout) console.log(redact(rewards.stdout));
+  if (rewards.stderr) console.error(redact(rewards.stderr));
+  if (rewards.status !== 0) throw new Error('Task reward regressions failed');
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   if (attemptedStart) {
