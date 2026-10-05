@@ -116,7 +116,11 @@ class QuestwellHearthDecor {
       left: rect.left,
       width: rect.width,
       height: rect.height,
-      child: QuestwellWallArt(artSlug: slug, renderSpec: renderSpec),
+      child: QuestwellWallArt(
+        artSlug: slug,
+        renderSpec: renderSpec,
+        wallSlot: side,
+      ),
     );
   }
 
