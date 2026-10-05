@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import '../services/questwell_cosmetic_models.dart';
 
 /// Visual geometry for backend-defined Hearth layout profiles.
 ///
@@ -119,9 +120,12 @@ abstract final class QuestwellHearthLayout {
     required String slot,
     required Size scene,
     Map<String, String> equipment = const {},
+    QuestwellHearthRenderSpec? renderSpec,
   }) {
-    final spec = assetSpecs[slug];
-    if (spec == null) return Rect.zero;
+    final fallback = assetSpecs[slug];
+    final aspectRatio = renderSpec?.aspectRatio ?? fallback?.aspectRatio;
+    final visibleBase = renderSpec?.visibleBase ?? fallback?.visibleBase;
+    if (aspectRatio == null || visibleBase == null) return Rect.zero;
 
     final avatarHeight =
         math.min(scene.height * .76, scene.width * .62 * 4 / 3);
@@ -141,7 +145,7 @@ abstract final class QuestwellHearthLayout {
     // Artwork must be authored to the family's envelope instead of forcing the
     // room to compensate for an oversized sprite.
     final height = avatarHeight * heightFactor;
-    final width = height * spec.aspectRatio;
+    final width = height * aspectRatio;
 
     final hasTable = equipment['room:side'] == 'walnut-reading-table';
     final chairOnLeft =
@@ -172,7 +176,7 @@ abstract final class QuestwellHearthLayout {
 
     return Rect.fromLTWH(
       center - width / 2,
-      floor - height * spec.visibleBase,
+      floor - height * visibleBase,
       width,
       height,
     );
