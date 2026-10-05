@@ -68,3 +68,9 @@ composites. Preserve the locked files and complete primary body while diagnosing
 the renderer. Sampling changes are hypotheses until verified in the delivered
 app; revert ineffective changes. Any alternative source for a foreground head
 duplicate must match every visible approved identity pixel and its registration.
+
+The male neckline correction now uses one shared original-head renderer across
+Everyday, all robes and legacy garments. Regression checks must distinguish the
+unclipped primary body from a foreground duplicate of identical head pixels.
+Counting image paths alone mistakes intentional depth layering for body replacement.
+The same-body invariant still forbids clipping or refitting the primary body.

@@ -2,11 +2,18 @@
 
 ## Male neckline renderer — 2026-10-05
 
-**QA.** Extending the verified legacy head renderer to all male robe and Everyday
-states. Uses original locked body head pixels at unchanged registration; primary
-body remains whole and unclipped. All artwork and eligibility remain unchanged.
-Pending full CI, development deployment and actual five-class / Everyday runtime QA.
-No founder blocker and no new art lock.
+**DEV DEPLOYED / technically verified.** Shared original-head sampling now
+removes the rectangular neckline from male Everyday and all five robe states,
+matching the verified legacy renderer. Full primary body remains unclipped;
+all asset bytes, eligibility and equipment policy are unchanged. Runtime
+`9da7205`, workflow `37334631348`: 387 Flutter + 12 Node tests and mandatory
+asset/analyzer/dependency/build/deploy gates passed. All 23 delivered male hashes
+match. Actual native/enlarged/light/dark, class/equipment transitions, sample
+Market purchase/equip/unequip and independent visual QA passed. No founder
+blocker or new art lock. See `../qa/MALE_IDENTITY_SAMPLING.md`.
+
+Tanya's October 5 “Better!” is recorded as positive fit feedback; the existing
+body/garment locks remain authoritative.
 
 ## Active garment correction — 2026-10-05 America/Chicago
 
