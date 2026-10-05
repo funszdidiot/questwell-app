@@ -34,6 +34,9 @@ Founder visual approval locks geometry. Later color/pattern/detail variants inhe
 - `LOCKED_TEMPLATE_REGISTRY.md`
 - `AGENT_OPERATING_RULES.md`
 - `SEASONAL_RELEASE_PLAYBOOK.md`
+- `SEASONAL_RELEASE_MANIFEST.schema.json`
+- `SEASONAL_RELEASE_MANIFEST.example.yaml`
+- `VISUAL_FAMILY_SPECS.md`
 - `VISUAL_QA_CHECKLIST.md`
 - `LESSONS_LEARNED.md`
 
