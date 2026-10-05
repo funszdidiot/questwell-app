@@ -61,7 +61,7 @@ void main() {
 
   testWidgets('seasonal gallery reviews body-specific wearable assets',
       (tester) async {
-    await tester.binding.setSurfaceSize(const Size(900, 1000));
+    await tester.binding.setSurfaceSize(const Size(900, 1800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp(
