@@ -1,4 +1,7 @@
 -- Synthetic catalog and historical ownership, ONLY in the guarded CI stack.
+-- db query --file accepts one prepared statement; keep the fixture atomic.
+do $fixture$
+begin
 insert into public.cosmetics(id,slug,name,category,rarity,description,price,
   required_archetype,collection_key)
 values
@@ -12,3 +15,5 @@ update public.users set adventurer_archetype='scout',avatar_body_type='neutral',
 where id='10000000-0000-4000-8000-000000000091';
 insert into public.user_cosmetics(user_id,cosmetic_id,source,equipped)
 values ('10000000-0000-4000-8000-000000000091','10000000-0000-4000-8000-000000000001','shop',true);
+end;
+$fixture$;
