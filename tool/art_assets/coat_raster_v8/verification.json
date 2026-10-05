@@ -1,0 +1,20 @@
+[
+  {
+    "body": "female",
+    "changed_pixels": 2568,
+    "opaque_foundation_samples": 1147,
+    "status": "PASS"
+  },
+  {
+    "body": "male",
+    "changed_pixels": 3619,
+    "opaque_foundation_samples": 2632,
+    "status": "PASS"
+  },
+  {
+    "body": "neutral",
+    "changed_pixels": 3036,
+    "opaque_foundation_samples": 2038,
+    "status": "PASS"
+  }
+]

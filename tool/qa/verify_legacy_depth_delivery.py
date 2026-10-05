@@ -24,6 +24,7 @@ def main():
     assert version['revision'] == args.revision, version
     manifest = json.loads((ROOT / 'tool/art_assets/legacy_depth_v1/exports.json').read_text())
     paths = [asset['path'] for fit in manifest['records'] for asset in fit['runtime'].values()]
+    paths = [p.replace('_v6.webp', '_v8.webp') if '/harvest_coat_' in p else p for p in paths]
     for body, version in [('female', 'v1'), ('male', 'v3'), ('neutral', 'v4')]:
         paths += [f'assets/images/questwell/avatar/base/paper_doll_{body}_{version}.webp',
                   f'assets/images/questwell/avatar/base/paper_doll_{body}_identity_{version}.webp']

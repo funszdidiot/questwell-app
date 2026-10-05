@@ -241,7 +241,7 @@ void main() {
       expect(images, containsAll([
         lockedBase,
         lockedIdentity,
-        'assets/images/questwell/avatar/harvest_coat_${body}_v6.webp',
+        'assets/images/questwell/avatar/harvest_coat_${body}_v8.webp',
       ]));
       if (body == 'male') {
         expect(images, contains(QuestwellMalePaperDoll.everydayAsset));

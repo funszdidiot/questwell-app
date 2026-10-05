@@ -1,6 +1,6 @@
 # Coat underarm and female cuff correction
 
-2026-10-05 America/Chicago — BUILDING; no replacement passed QA or shipped.
+2026-10-05 America/Chicago — QA; local repair passed independent visual review, development delivery pending.
 
 Founder finding: all three coats have exposed skin or compensating fabric
 between sleeves and inner arms; female cuffs remain unnatural. No shoddy patches,
@@ -43,10 +43,30 @@ no patches or seam fragments, intact original fingers/thumbs, natural cuff wrap,
 native/enlarged light/dark independent review, then actual Hearth verification.
 Tests and asset hashes cannot substitute for these visual checks.
 
-## Tool limitation / next decision
+## Authorized direct repair
 
-The available generative editor has not delivered the required local precision
-after repeated attempts. Its instruction requires explicit user direction before
-switching to another image-editing method. Ask for direct raster editing of the
-existing complete sleeve/underarm/cuff regions, with no anatomy modifications or
-patch strips. This is a method decision, not acceptance of a failed candidate.
+Tanya answered “Yes” to direct raster editing of the complete sleeve and cuff
+regions. The method decision is resolved; no founder blocker remains. Current
+v8 candidates are BUILDING and have not been integrated or deployed. Review
+continuous cloth contours, natural underarm air space and wrist depth before
+integration. Preserve all locked foundations and accepted cloak/mantle assets.
+
+## Current direct-raster candidate
+
+`tool/paint_coat_v8.py` produces registered v8 fronts and cuff backs. Complete
+inner-sleeve contours preserve natural air spaces while covering the fixed arms.
+The female correction carries the connected sleeve folds into wrist-centered
+cuffs, with a shallow curved front hem and cavity behind the original wrist.
+The foreground copy contains original hands only; the primary body is intact.
+
+Rejected intermediate passes included a flat painted forearm, square underarm
+cutouts and skin visible above a crossing cuff line. They were not integrated.
+Opacity inspection also caught pale undershirt bleed missed by skin-only tests.
+`tool/verify_coat_v8.py` checks locked foundations, change scope, opaque coverage
+over both skin and undershirt, and preservation of intentional underarm space.
+Independent visual review and runtime verification remain required.
+
+Independent local review: PASS on native and 3× exports, light and dark.
+Female front `369b7d58837e`, male `5bdcd73f78f8`, neutral `654d3fde86ac`.
+Resolved square openings, painted forearm, floating cuff line, pale undershirt
+seam and male cuff endpoint notch. This is not founder approval or runtime QA.

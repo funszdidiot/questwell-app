@@ -10,8 +10,8 @@ import '../lib/widgets/questwell_legacy_chest.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   for (final body in ['female','male','neutral']) {
-    final asset='assets/images/questwell/avatar/harvest_coat_${body}_v6.webp';
-    final rearAsset='assets/images/questwell/avatar/harvest_coat_rear_${body}_v6.webp';
+    final asset='assets/images/questwell/avatar/harvest_coat_${body}_v8.webp';
+    final rearAsset='assets/images/questwell/avatar/harvest_coat_rear_${body}_v8.webp';
     test('$body Harvest coat retains the authored canvas and clear hands/legs',()async{
       final data=await rootBundle.load(asset);
       final codec=await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes,data.lengthInBytes));
@@ -24,7 +24,7 @@ void main() {
       expect(hands.contains(const Offset(75,185)), isTrue);
       expect(hands.contains(const Offset(165,185)), isTrue);
       expect(hands.contains(const Offset(120,185)), isFalse, reason:'Restore hands only, never trouser strips');
-      final wristY = body == 'female' ? 169.0 : 176.0;
+      final wristY = body == 'female' ? 173.0 : 176.0;
       final wristXs = body == 'male' ? [68.0,172.0] : body == 'female' ? [76.0,162.0] : [76.0,167.0];
       for (final x in wristXs) {
         expect(hands.contains(Offset(x,wristY)),isTrue,

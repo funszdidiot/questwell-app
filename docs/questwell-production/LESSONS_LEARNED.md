@@ -53,3 +53,12 @@ A historical full-body suit image cannot be made a reliable garment by coarse he
 Tanya rejected the mantle, cloak and coat shapes despite prior technical and visual QA. Replacement status is BUILDING. Each of these three garments needs its own direct fit for each locked body. Cloak and mantle must conceal arms and hands; Harvest Coat must leave hands exposed (confirmed “Yes”). Business Suit was not included in this rejection. No pending founder clarification blocks this work.
 
 Coverage alone is insufficient: broad transforms and corrective warps can create ballooned sleeves, distorted motifs and unnatural drape. Review natural garment construction as well as coverage. Keep complete original bodies byte-for-byte unchanged and visible underneath; never clip anatomy to solve clothing. Historical deployment evidence below/above does not establish visual acceptance of the rejected fits.
+
+## Coat underarm and wrist correction — 2026-10-05
+
+Coverage checks must include pale foundation clothing as well as skin: partially
+transparent wool can show the locked undershirt through a seam. Preserve natural
+arm-to-torso air space while covering the arm; broad connecting fabric is not a
+repair. Inspect the entire connected sleeve, curved front cuff hem, rear cavity
+and original-hand depth together. A skin window crossed by a separate horizontal
+rim remains a visual defect even when hands are continuous and tests pass.
