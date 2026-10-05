@@ -22,6 +22,7 @@ const workdir = mkdtempSync(join(runnerTemp, 'questwell-backend-'));
 mkdirSync(join(workdir, 'supabase'));
 copyFileSync(join(source, 'supabase/config.toml'), join(workdir, 'supabase/config.toml'));
 cpSync(resolve(source, '../../supabase/functions/delete-account'), join(workdir, 'supabase/functions/delete-account'), {recursive: true});
+cpSync(join(source, 'baseline-delete-account'), join(workdir, 'supabase/functions/delete-account-before-r03'), {recursive: true});
 // Never copy root supabase/.temp, environment files, live keys or a linked-project ID.
 const env = {...process.env, SUPABASE_TELEMETRY_DISABLED: '1', DO_NOT_TRACK: '1'};
 const redact = value => value
@@ -181,6 +182,20 @@ try {
     env, stdio: ['ignore', 'ignore', 'ignore'],
   });
   // The function verifies Auth itself; no tokens or Edge request payloads are logged.
+  const baselineDeletion = spawnSync(process.execPath, [join(source, 'account-deletion-baseline.mjs')], {
+    input: JSON.stringify(status), env, encoding: 'utf8', timeout: 120000, maxBuffer: 1024 * 1024,
+  });
+  if (baselineDeletion.stdout) console.log(redact(baselineDeletion.stdout));
+  if (baselineDeletion.stderr) console.error(redact(baselineDeletion.stderr));
+  if (baselineDeletion.status !== 0) throw new Error('Account deletion baseline negative control failed');
+  const deletionMigration = '20261005192108_account_deletion_storage.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', deletionMigration), join(workdir, 'supabase/migrations', deletionMigration));
+  run(['migration', 'up', '--local']);
+  run(['db', 'query', '--local', '--file', join(source, 'account-deletion-contract.sql')]);
+  console.log('Deletion inventory grants and restrictive Storage session policy assertions passed.');
+  console.log(run(['migration', 'list', '--local']));
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
+  console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
   const deletion = spawnSync(process.execPath, [join(source, 'account-deletion.mjs')], {
     input: JSON.stringify(status), env, encoding: 'utf8', timeout: 180000, maxBuffer: 1024 * 1024,
   });

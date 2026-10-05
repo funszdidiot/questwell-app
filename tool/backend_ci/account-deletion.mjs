@@ -26,6 +26,14 @@ const signup = async () => {
 };
 const upload = (owner, name) => request(`/storage/v1/object/beta-feedback/${owner.id}/${name}`, owner,
   'POST', 'synthetic image bytes', {'content-type': 'image/png'});
+const login = async owner => {
+  const r = await request('/auth/v1/token?grant_type=password', null, 'POST', {email: owner.email, password: owner.password});
+  ok(r); return {...owner, token: r.data.access_token, refresh: r.data.refresh_token};
+};
+const owned = async owner => {
+  const r = await request('/rest/v1/rpc/account_deletion_objects', admin, 'POST', {p_user_id: owner.id});
+  ok(r); return r.data;
+};
 const removeAccount = (owner, body = {confirmation: 'DELETE'}) =>
   request('/functions/v1/delete-account', owner, 'POST', body);
 let checks = 0, failures = 0;
@@ -46,6 +54,11 @@ await check('actual Edge Function denies unauthenticated, invalid and wrong-targ
   ok(await removeAccount(a, {confirmation: 'DELETE', user_id: b.id}), 400);
   ok(await request(`/auth/v1/admin/users/${b.id}`, admin));
 });
+await check('only the service role can enumerate owned Storage metadata', async () => {
+  const a = await signup();
+  for (const caller of [null, a]) denied(await request('/rest/v1/rpc/account_deletion_objects', caller, 'POST', {p_user_id: a.id}));
+  assert.deepEqual(await owned(a), []);
+});
 await check('account without files deletes and repeated requests cannot claim success', async () => {
   const a = await signup();
   ok(await request('/rest/v1/tasks', a, 'POST', {user_id: a.id, title: 'Synthetic deletion task', friction_level: 1}), 201);
@@ -65,8 +78,33 @@ await check('more than one page of nested owned files is removed and another own
       upload(a, `nested/${String(start + i).padStart(3, '0')}.png`)));
     for (const r of results) ok(r);
   }
+  ok(await request('/storage/v1/bucket', admin, 'POST', {id: 'ci-deletion-secondary', name: 'ci-deletion-secondary', public: false}));
+  const path = `unrelated/${randomUUID()}/owned.png`;
+  ok(await request(`/storage/v1/object/ci-deletion-secondary/${path}`, a, 'POST', 'synthetic bytes', {'content-type':'image/png'}));
+  ok(await request(`/storage/v1/object/beta-feedback/${a.id}/shared.png`, admin, 'POST', 'shared bytes', {'content-type':'image/png'}));
+  const page = await owned(a); assert.equal(page.length, 100); assert.ok(page.every(o=>o.owner_id===a.id));
+  // Seed each existing account cascade using actual application endpoints.
+  const task = await request('/rest/v1/tasks', a, 'POST', {user_id:a.id,title:'Cascade task',friction_level:1}, {Prefer:'return=representation'});
+  ok(task,201); ok(await request('/rest/v1/rpc/complete_task', a, 'POST', {p_task_id:task.data[0].id}));
+  ok(await request('/rest/v1/rpc/create_boss_battle', a, 'POST', {p_title:'Cascade boss',p_steps:['One','Two']}));
+  ok(await request('/rest/v1/beta_feedback', a, 'POST', {id:randomUUID(),user_id:a.id,category:'bug',goal:'Synthetic',message:'Synthetic deletion check',screen:'Other',build:'ci',platform:'web'}),201);
+  ok(await request('/rest/v1/progression_events', admin, 'POST', {user_id:a.id,kind:'level_up',event_key:'ci',title:'Synthetic level',level:2,source:'ci'}),201);
+  const cosmetic = randomUUID();
+  ok(await request('/rest/v1/cosmetics',admin,'POST',{id:cosmetic,slug:`ci-${cosmetic}`,name:'Synthetic cosmetic',category:'outfit',rarity:'common',price:0}),201);
+  ok(await request('/rest/v1/user_cosmetics',admin,'POST',{user_id:a.id,cosmetic_id:cosmetic,source:'starter',equipped:false}),201);
+  for (const table of ['tasks','boss_battles','boss_steps','beta_feedback','progression_events','reward_events','user_cosmetics']) {
+    const rows=await request(`/rest/v1/${table}?user_id=eq.${a.id}&select=*`,admin);ok(rows);assert.ok(rows.data.length>0,`Missing ${table} cascade fixture`);
+  }
   const r = await removeAccount(a); ok(r); assert.deepEqual(r.data, {deleted: true});
   denied(await request(`/auth/v1/admin/users/${a.id}`, admin));
+  assert.deepEqual(await owned(a),[]);
+  for (const [table,field] of [['users','id'],...['tasks','boss_battles','boss_steps','beta_feedback','progression_events','reward_events','user_cosmetics'].map(t=>[t,'user_id'])]) {
+    const rows=await request(`/rest/v1/${table}?${field}=eq.${a.id}&select=*`,admin);ok(rows);assert.deepEqual(rows.data,[],`${table} did not cascade`);
+  }
+  ok(await request(`/rest/v1/cosmetics?id=eq.${cosmetic}&select=id`,admin));
+  ok(await request(`/storage/v1/object/authenticated/beta-feedback/${a.id}/shared.png`,admin));
+  denied(await request(`/storage/v1/object/authenticated/ci-deletion-secondary/${path}`,admin));
+  denied(await request('/auth/v1/token?grant_type=refresh_token',null,'POST',{refresh_token:a.refresh}));
   const list = await request('/storage/v1/object/list/beta-feedback', admin, 'POST', {prefix: `${a.id}/nested`, limit: 1000});
   ok(list); assert.deepEqual(list.data, []);
   ok(await request(`/storage/v1/object/authenticated/beta-feedback/${b.id}/keep.png`, b));
@@ -77,6 +115,30 @@ await check('a revoked session cannot upload new files with its still-unexpired 
   ok(await upload(a, 'before.png'));
   ok(await request('/auth/v1/logout?scope=global', a, 'POST'), 204);
   denied(await upload(a, 'after-revoke.png'));
+});
+await check('real Auth cascade failure after file removal can be retried without claiming success', async () => {
+  let a = await signup();
+  ok(await upload(a,'retry.png'));
+  ok(await request(`/rest/v1/users?id=eq.${a.id}`,admin,'PATCH',{total_xp:987654}),204);
+  const first=await removeAccount(a);ok(first,503);
+  assert.equal(first.data.deleted,undefined);assert.equal(JSON.stringify(first.data).includes('Synthetic Auth'),false);
+  assert.deepEqual(await owned(a),[]);
+  ok(await request(`/auth/v1/admin/users/${a.id}`,admin));
+  denied(await upload(a,'revoked.png'));
+  denied(await request('/auth/v1/token?grant_type=refresh_token',null,'POST',{refresh_token:a.refresh}));
+  ok(await request(`/rest/v1/users?id=eq.${a.id}`,admin,'PATCH',{total_xp:0}),204);
+  a=await login(a);
+  ok(await removeAccount(a));
+  denied(await request(`/auth/v1/admin/users/${a.id}`,admin));
+});
+await check('concurrent deletion requests have one confirmed result and preserve a bystander', async () => {
+  const a=await signup(),b=await signup();
+  ok(await upload(a,'concurrent.png'));ok(await upload(b,'concurrent-keep.png'));
+  const results=await Promise.all([removeAccount(a),removeAccount(a)]);
+  assert.equal(results.filter(r=>r.status===200).length,1);
+  assert.ok(results.every(r=>[200,401,503].includes(r.status)));
+  denied(await request(`/auth/v1/admin/users/${a.id}`,admin));
+  ok(await request(`/storage/v1/object/authenticated/beta-feedback/${b.id}/concurrent-keep.png`,b));
 });
 console.log(`Account deletion: ${checks} passed; ${failures} failed (real Edge/Auth/Storage).`);
 if (failures) process.exitCode = 1;

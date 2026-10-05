@@ -35,14 +35,29 @@ void main() {
     expect(done,1); expect(find.text('Hang up your boots?'),findsNothing);
     expect(tester.takeException(),isNull);
   });
+  testWidgets('partial cleanup error can close without reporting deletion', (tester) async {
+    var done = 0;
+    await mount(tester, () async { throw StateError('storage interrupted'); }, () { done++; });
+    await tester.enterText(find.byType(TextField), 'DELETE');
+    await tester.pump();
+    await tester.tap(find.text('Permanently delete'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Some files may already be deleted.'), findsOneWidget);
+    expect(done, 0);
+    await tester.tap(find.text('Close'));
+    await tester.pumpAndSettle();
+    expect(find.text('Hang up your boots?'), findsNothing);
+    expect(done, 0);
+    expect(tester.takeException(), isNull);
+  });
   testWidgets('server failure never shows successful deletion', (tester) async {
     var done=false;
     await mount(tester, () async { throw StateError('offline'); }, () { done=true; });
     await tester.enterText(find.byType(TextField), 'DELETE'); await tester.pump();
     await tester.tap(find.text('Permanently delete')); await tester.pumpAndSettle();
     expect(done,isFalse);
-    expect(find.text('Deletion was not confirmed. Check your connection and sign in again before retrying.'),findsOneWidget);
-    expect(find.text('Keep my account'),findsOneWidget);
+    expect(find.text('Deletion was not confirmed. Some files may already be deleted. Check your connection and sign in again before retrying.'),findsOneWidget);
+    expect(find.text('Close'),findsOneWidget);
     expect(tester.takeException(),isNull);
   });
 }

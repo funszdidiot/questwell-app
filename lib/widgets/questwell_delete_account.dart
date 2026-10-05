@@ -52,7 +52,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
       if (mounted) Navigator.of(context).pop(true);
     } catch (_) {
       if (mounted) setState(() {
-        _error = 'Deletion was not confirmed. Check your connection and sign in again before retrying.';
+        _error = 'Deletion was not confirmed. Some files may already be deleted. Check your connection and sign in again before retrying.';
         _busy = false;
       });
     }
@@ -69,7 +69,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
           const Text('Preview only. No real account will be deleted.'),
           const SizedBox(height: 12),
         ],
-        const Text('This permanently deletes your account, quests, boss battles, Chronicle history, XP, coins, and collected cosmetics. No reloads or resurrection spells here. This cannot be undone.'),
+        const Text('This permanently deletes your account, quests, boss battles, Chronicle history, feedback, uploaded files, XP, coins, and collected cosmetics. No reloads or resurrection spells here. This cannot be undone.'),
         const SizedBox(height: 16),
         TextField(controller: _confirmation, enabled: !_busy,
           autocorrect: false, enableSuggestions: false,
@@ -84,7 +84,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
       ]),
       actions: [
         TextButton(onPressed: _busy ? null : () => Navigator.of(context).pop(false),
-          child: const Text('Keep my account')),
+          child: Text(_error == null ? 'Keep my account' : 'Close')),
         FilledButton(
           onPressed: !_busy && _confirmation.text == 'DELETE' ? _delete : null,
           style: FilledButton.styleFrom(backgroundColor: const Color(0xFF9E352E)),
