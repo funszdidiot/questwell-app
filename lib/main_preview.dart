@@ -107,7 +107,16 @@ void main() {
     WidgetsFlutterBinding.ensureInitialized();
     final requested = Uri.base.queryParameters['collection'] ??
         'seasonal-review-fixture';
-    final safeCollection = RegExp(r'^[a-z0-9-]+  } else if (Uri.base.queryParameters['review'] == 'mastery') {
+    final safeCollection = RegExp(r'^[a-z0-9-]+$').hasMatch(requested)
+        ? requested
+        : 'seasonal-review-fixture';
+    final manifestAsset = 'assets/jsons/' +
+        safeCollection.replaceAll('-', '_') +
+        '.json';
+    runApp(QuestwellSeasonalGalleryReviewApp(
+      manifestAsset: manifestAsset,
+    ));
+  } else if (Uri.base.queryParameters['review'] == 'mastery') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'Adventurer', masteryPreview: true)));
   } else if (Uri.base.queryParameters['review'] == 'new-quest') {
