@@ -64,16 +64,9 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(900, 1000));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
-    await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp());
-
-    final robe = find.byKey(
-      const ValueKey('seasonal-item-fixture-solstice-scholar-robe'),
-      skipOffstage: false,
-    );
-    await pumpUntilFound(tester, robe);
-    await tester.ensureVisible(robe);
-    await tester.pump();
-    await tester.tap(robe);
+    await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp(
+      initialSlug: 'fixture-solstice-scholar-robe',
+    ));
 
     final baseline = find.textContaining('Locked body baseline');
     await pumpUntilFound(tester, baseline);
