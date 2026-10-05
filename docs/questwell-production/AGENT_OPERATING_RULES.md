@@ -71,7 +71,7 @@ Seasonal/limited work follows:
 
 Template/family inheritance is the default. Ordinary Hearth décor should use an existing backend `hearth_profile_key`, generic render kind, shadow/effect profile and canonical family geometry rather than adding slug-specific placement/scale logic.
 
-The agent may autonomously prepare manifests, candidate art, development metadata, preflight checks, review galleries, technical fixes and archive operations already defined by an approved release rule.
+The agent may autonomously prepare manifests, candidate art, development metadata, preflight checks, review galleries, technical fixes and archive operations already defined by an approved release rule. Run `tool/validate_seasonal_release_manifest.cjs` before applying seasonal/limited catalog metadata; use `--structure-only` only while candidate bundle assets are intentionally absent.
 
 The agent must not infer launch authorization from a completed manifest, availability date, visual approval or successful CI run. Pricing/economy approval and activation/launch approval remain separate founder/product gates. Novel wearable silhouettes, new Hearth families, new canonical room spaces and material room-layout changes require a founder decision before scaling the release.
 
