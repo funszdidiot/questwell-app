@@ -1,5 +1,5 @@
 {
-  "status": "QA \u2014 repair candidate, not a new founder lock",
+  "status": "DEV DEPLOYED \u2014 scoped repair, not a new founder lock",
   "canvas": [
     240,
     320
@@ -115,5 +115,32 @@
     "status": "PASS \u2014 suits and coats all three bodies; cloak/mantle arm coverage/drape PASS; runtime neckline pending",
     "reviewer": "legacy_suit_visual_qa",
     "scope": "Light/dark exported composites, coverage, cuffs, feet, hand clearance, motifs. Female shoulder/armpit and neutral arm/cuff defects corrected and independently rechecked. Male sleeve fullness is styling, not a remaining coverage failure. Not founder approval."
+  },
+  "deliveredRuntimeQA": {
+    "status": "PASS",
+    "revision": "339cc4955bf944bdc42c025fd91cebfd84d16d92",
+    "workflow": 37260882702,
+    "flutterTests": 387,
+    "nodeTests": 8,
+    "reviewer": "legacy_suit_visual_qa",
+    "screenshots": [
+      {
+        "path": "docs/qa/legacy-male-final.jpg",
+        "sha256": "b9664f4d00495efce56caaecf4d985aa02ab6f74b63e3097f608cf6a816af2eb"
+      },
+      {
+        "path": "docs/qa/legacy-female-final.jpg",
+        "sha256": "42cbc4f245a2f5e4f8ebb055752a5e6f3880d8cbee662327f1dcb37815e2777f"
+      },
+      {
+        "path": "docs/qa/legacy-neutral-final.jpg",
+        "sha256": "14f6ae16d38a71b3ea932f65f42c9fbfd7c79c08cf414744c4415a3f1291d7d9"
+      },
+      {
+        "path": "docs/qa/legacy-neutral-mantle-neck-fixed.jpg",
+        "sha256": "dcbdd25166e7379ecb373f4592a30a815b779bd2b2a89a742438e31a1e9fba92"
+      }
+    ],
+    "scope": "Shared renderer, all three bodies/four garments; native/light/dark/enlarged checks, neutral Guardian equip removal/restoration, Market female suit equip/unequip and neutral Harvest purchase/equip/unequip. Original identities and individual neck contours restored over closed cloak collar. Account fixture only; no real-user persistence retest or writes."
   }
 }
