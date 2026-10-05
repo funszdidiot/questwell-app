@@ -61,16 +61,27 @@ void main() {
 
   testWidgets('seasonal gallery reviews body-specific wearable assets',
       (tester) async {
-    await tester.binding.setSurfaceSize(const Size(900, 1800));
+    await tester.binding.setSurfaceSize(const Size(900, 1000));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp(
       initialSlug: 'fixture-solstice-scholar-robe',
     ));
+    await pumpReview(tester);
 
+    expect(find.text('Fixture Solstice Scholar Robe'), findsWidgets);
+
+    final vertical = find.byType(Scrollable).first;
     final baseline = find.textContaining('Locked body baseline');
-    await pumpUntilFound(tester, baseline);
+    await tester.scrollUntilVisible(
+      baseline,
+      280,
+      scrollable: vertical,
+      maxScrolls: 20,
+    );
+    await pumpReview(tester);
 
+    expect(baseline, findsOneWidget);
     expect(
       find.byWidgetPredicate((widget) =>
           widget is Image &&
@@ -80,14 +91,22 @@ void main() {
       findsOneWidget,
     );
 
-    final female = find.byKey(
-      const ValueKey('seasonal-body-female'),
-      skipOffstage: false,
+    final female = find.byKey(const ValueKey('seasonal-body-female'));
+    await tester.scrollUntilVisible(
+      female,
+      -280,
+      scrollable: vertical,
+      maxScrolls: 20,
     );
-    await pumpUntilFound(tester, female);
-    await tester.ensureVisible(female);
-    await tester.pump();
     await tester.tap(female);
+    await pumpReview(tester);
+
+    await tester.scrollUntilVisible(
+      baseline,
+      280,
+      scrollable: vertical,
+      maxScrolls: 20,
+    );
     await pumpReview(tester);
 
     expect(
@@ -99,5 +118,4 @@ void main() {
       findsOneWidget,
     );
     expect(tester.takeException(), isNull);
-  });
-}
+  });}
