@@ -44,7 +44,24 @@ as a purported safe rollback. This change cannot retroactively repair abuse.
 
 ## Evidence
 
-Implementation and runtime verification pending. No P0 closure or release claim.
+Baseline RED: head `369309b93325262b9d333add850b9ed61284d51e`, backend run
+`37344553355`, job `111879734464`, failed for the six intended security cases:
+forged insert rewards, forged edit rewards, invalid difficulty, forged completion,
+reopening completed history, and deletion/ID reuse. Ten legitimate behavior cases
+passed. The captured catalog matched first; all 10 fixture and 4 application smoke
+checks passed. Raw test summary: `Task rewards: 10 passed; 6 failed (regressions).`
+The disposable stack and synthetic data were removed successfully.
+
+Implementation now proposes the migration created with verified CLI 2.119.0:
+`supabase/migrations/20261005165421_task_reward_authority.sql`. It adds one pure
+private reward mapping, an invoker write guard, narrow client column grants,
+a ledger lookup index and the existing completion function's replacement.
+An existing paid ledger entry also blocks a row reopened before hardening.
+No client/API type shape changes or additional package dependencies are needed.
+
+GREEN verification is pending. Added post-fix coverage also includes privileged
+synthetic legacy-row seeding, SQL privilege assertions, and injected ledger and
+balance failures to verify transactional rollback. No P0 closure or release claim.
 
 Official references checked October 5, 2026: Supabase database functions, RLS,
 triggers and column privileges; PostgreSQL 17 GRANT and explicit row locking.

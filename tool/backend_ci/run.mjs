@@ -106,13 +106,35 @@ try {
     if (app.stderr) console.error(redact(app.stderr));
     throw new Error(`Application smoke failed: exit ${app.status}, ${app.error?.code || 'test error'}`);
   }
-  const rewards = spawnSync(process.execPath, [join(source, 'task-rewards.mjs')], {
-    input: JSON.stringify({status}), env, encoding: 'utf8', timeout: 120000,
-    maxBuffer: 1024 * 1024,
-  });
-  if (rewards.stdout) console.log(redact(rewards.stdout));
-  if (rewards.stderr) console.error(redact(rewards.stderr));
-  if (rewards.status !== 0) throw new Error('Task reward regressions failed');
+  // Apply exactly the reviewed proposal AFTER proving the observed baseline.
+  // Never replay the incomplete root chain or contact a linked/remote project.
+  run(['db', 'query', '--local', '--file', resolve(source, '../../supabase/migrations/20261005165421_task_reward_authority.sql')]);
+  run(['db', 'query', '--local', '--file', join(source, 'task-reward-contract.sql')]);
+  console.log('Task reward SQL mapping, column privileges and RLS assertions passed.');
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
+  const rewardTests = phase => {
+    const rewards = spawnSync(process.execPath, [join(source, 'task-rewards.mjs')], {
+      input: JSON.stringify({status, phase}), env, encoding: 'utf8', timeout: 120000,
+      maxBuffer: 1024 * 1024,
+    });
+    if (rewards.stdout) console.log(redact(rewards.stdout));
+    if (rewards.stderr) console.error(redact(rewards.stderr));
+    if (rewards.status !== 0) throw new Error(`Task reward ${phase} failed`);
+  };
+  rewardTests('regressions');
+  // Each real downstream failure must roll back all three completion writes.
+  for (const [table, expression] of [
+    ['reward_events', "event_type is distinct from 'task_completed'"],
+    ['users', 'total_xp = 0'],
+  ]) {
+    run(['db', 'query', '--local', `alter table public.${table} add constraint ci_reward_failure check (${expression}) not valid;`]);
+    try {
+      rewardTests('rollback');
+      console.log(`Verified rollback after forced ${table} write failure.`);
+    } finally {
+      run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_reward_failure;`]);
+    }
+  }
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   if (attemptedStart) {

@@ -84,6 +84,21 @@ if (phase === 'rollback') {
     assert.equal(edited.title, 'Edited synthetic quest'); assert.equal(edited.xp_value, 35); assert.equal(edited.coin_value, 18);
     ok(await complete(owner, task)); await balance(owner, 35, 18);
   });
+  await check('older forged reward columns cannot control the completion payout', async () => {
+    const owner = await signup();
+    // Only the disposable stack's server key seeds a pre-fix compromised row.
+    const task = await create({id:owner.id,token:status.SERVICE_ROLE_KEY},
+      {friction_level:2,xp_value:999999,coin_value:999999});
+    assert.equal(task.xp_value,999999);
+    ok(await complete(owner,task)); await balance(owner,20,10);
+    await ledger(owner,task,[{xp_amount:20,coin_amount:10}]);
+  });
+  await check('a historical paid quest reopened before hardening cannot pay again', async () => {
+    const owner = await signup(), task = await create(owner); ok(await complete(owner,task));
+    ok(await patch({id:owner.id,token:status.SERVICE_ROLE_KEY},task,{status:'open'}));
+    denied(await complete(owner,task)); await balance(owner,10,5);
+    await ledger(owner,task,[{xp_amount:10,coin_amount:5}]);
+  });
   await check('invalid difficulty cannot be inserted or edited', async () => {
     const owner = await signup(), task = await create(owner);
     for (const friction of [null,0,-1,5]) {
