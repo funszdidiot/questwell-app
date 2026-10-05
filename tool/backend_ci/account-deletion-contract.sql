@@ -22,6 +22,10 @@ begin
   if (select count(*) from pg_policy where polrelid = 'storage.objects'::regclass and polpermissive) <> 3 then
     raise exception 'Existing Storage ownership policies changed';
   end if;
+  if not exists (select 1 from pg_trigger where tgrelid = 'storage.objects'::regclass
+      and tgname = 'questwell_storage_write_session' and tgenabled = 'O') then
+    raise exception 'Storage write/session coordination is missing';
+  end if;
 -- Failure injection on app-owned rows only, in the disposable fixture only.
 -- A test clears the flag through REST and retries after the real Auth failure.
 execute $ddl$
@@ -45,5 +49,34 @@ execute $ddl$
 create policy ci_secondary_upload on storage.objects as permissive for insert to authenticated
 with check (bucket_id = 'ci-deletion-secondary' and owner_id = (select auth.uid())::text);
 $ddl$;
+
+-- Hold one real Storage API transaction open after its INSERT. The advisory
+-- marker is visible before commit, so the HTTP test never guesses when to race.
+execute $ddl$
+create function public.ci_pause_storage_upload() returns trigger
+language plpgsql set search_path = '' as $function$
+begin
+  if new.name like '%/race-inflight.png' then
+    perform pg_catalog.pg_advisory_xact_lock(73424, 1);
+    perform pg_catalog.pg_sleep(3);
+  end if;
+  return new;
+end;
+$function$;
+$ddl$;
+execute 'revoke all on function public.ci_pause_storage_upload() from public, anon, authenticated';
+execute $ddl$
+create trigger ci_pause_storage_upload after insert on storage.objects
+for each row execute function public.ci_pause_storage_upload();
+$ddl$;
+execute $ddl$
+create function public.ci_storage_upload_paused() returns boolean
+language sql volatile security invoker set search_path = '' as $function$
+  select exists (select 1 from pg_catalog.pg_locks
+    where locktype = 'advisory' and classid = 73424 and objid = 1 and granted);
+$function$;
+$ddl$;
+execute 'revoke all on function public.ci_storage_upload_paused() from public, anon, authenticated';
+execute 'grant execute on function public.ci_storage_upload_paused() to service_role';
 end;
 $check$;

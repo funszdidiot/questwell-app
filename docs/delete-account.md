@@ -57,6 +57,17 @@ an unaffected bystander account and file.
 
 ## Verification and rollout limits
 
+In-flight uploads are coordinated with deletion. Each authenticated Storage
+INSERT/UPDATE holds a shared per-user transaction lock and validates its session.
+The service-only deletion-start RPC takes the exclusive lock, waiting for prior
+writes to finish, and persists a private deletion fence. Subsequent uploads are
+denied even from newly signed-in sessions. The fence cascades away with Auth;
+after partial failure it remains until an explicit deletion retry succeeds.
+The existing request timeout bounds lock waits and returns unconfirmed failure.
+The disposable regression pauses a real Storage transaction after INSERT,
+observes its lock marker and requires deletion to wait before confirming cleanup.
+No Storage metadata is directly inserted or deleted by this test.
+
 Node tests cover request authorization, cleanup ordering, bounded work, malformed
 inventory, another owner's inventory, partial Storage failures, retries, and
 revocation/Auth failures. Flutter tests cover confirmation, cancellation,

@@ -57,6 +57,7 @@ await check('actual Edge Function denies unauthenticated, invalid and wrong-targ
 await check('only the service role can enumerate owned Storage metadata', async () => {
   const a = await signup();
   for (const caller of [null, a]) denied(await request('/rest/v1/rpc/account_deletion_objects', caller, 'POST', {p_user_id: a.id}));
+  for (const caller of [null, a]) denied(await request('/rest/v1/rpc/begin_account_deletion', caller, 'POST', {p_user_id: a.id}));
   assert.deepEqual(await owned(a), []);
 });
 await check('account without files deletes and repeated requests cannot claim success', async () => {
@@ -128,6 +129,7 @@ await check('real Auth cascade failure after file removal can be retried without
   denied(await request('/auth/v1/token?grant_type=refresh_token',null,'POST',{refresh_token:a.refresh}));
   ok(await request(`/rest/v1/users?id=eq.${a.id}`,admin,'PATCH',{total_xp:0}),204);
   a=await login(a);
+  denied(await upload(a,'fresh-session-after-partial-delete.png'));
   ok(await removeAccount(a));
   denied(await request(`/auth/v1/admin/users/${a.id}`,admin));
 });
@@ -147,6 +149,34 @@ await check('concurrent deletion requests converge on complete cleanup and prese
   ok(await removeAccount(a),401);
   ok(await request(`/auth/v1/admin/users/${b.id}`,admin));
   ok(await request(`/storage/v1/object/authenticated/beta-feedback/${b.id}/concurrent-keep.png`,b));
+});
+await check('deletion drains an in-flight Storage transaction before removing Auth', async () => {
+  const a = await signup();
+  const uploading = upload(a, 'race-inflight.png');
+  const paused = async () => {
+    const r = await request('/rest/v1/rpc/ci_storage_upload_paused', admin, 'POST', {});
+    ok(r); return r.data === true;
+  };
+  let observed = false;
+  for (let attempt = 0; attempt < 50; attempt++) {
+    if (await paused()) { observed = true; break; }
+    await new Promise(resolve => setTimeout(resolve, 50));
+  }
+  assert.ok(observed, 'Real Storage upload never reached the held transaction');
+  let settled = false;
+  const deleting = removeAccount(a).then(r => { settled = true; return r; });
+  await new Promise(resolve => setTimeout(resolve, 250));
+  assert.equal(await paused(), true, 'Upload must still be held while deletion waits');
+  assert.equal(settled, false, 'Deletion returned before the in-flight transaction drained');
+  const [uploaded, deleted] = await Promise.all([uploading, deleting]);
+  // Storage may roll back a permission-probe transaction and reject its later
+  // write after revocation. Either committed cleanup or denied upload is safe.
+  assert.ok([200, 400, 401, 403].includes(uploaded.status), `Unexpected upload status ${uploaded.status}`);
+  ok(deleted); assert.deepEqual(deleted.data, {deleted: true});
+  denied(await request(`/auth/v1/admin/users/${a.id}`, admin));
+  assert.deepEqual(await owned(a), []);
+  denied(await request(`/storage/v1/object/authenticated/beta-feedback/${a.id}/race-inflight.png`, admin));
+  denied(await upload(a, 'after-race.png'));
 });
 console.log(`Account deletion: ${checks} passed; ${failures} failed (real Edge/Auth/Storage).`);
 if (failures) process.exitCode = 1;

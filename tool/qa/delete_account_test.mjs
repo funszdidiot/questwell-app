@@ -18,6 +18,7 @@ test('only verified owner can be deleted; sessions revoke first', async () => {
   const calls=[];
   const handler=createDeleteAccountHandler({
     verifyUser:async(token)=>{assert.equal(token,'fixture-token'); return {id:'verified-owner'};},
+    beginDeletion:async(id)=>{calls.push('fence:'+id);},
     revokeSessions:async()=>{calls.push('revoke');},
     listOwnedObjects:async()=>[],
     deleteUser:async(id)=>{calls.push('delete:'+id);},
@@ -25,7 +26,17 @@ test('only verified owner can be deleted; sessions revoke first', async () => {
   const response=await handler(request());
   assert.equal(response.status,200);
   assert.deepEqual(await response.json(),{deleted:true});
-  assert.deepEqual(calls,['revoke','delete:verified-owner']);
+  assert.deepEqual(calls,['fence:verified-owner','revoke','delete:verified-owner']);
+});
+test('failed upload fence stops revocation and deletion',async()=>{
+  let mutated=false;
+  const response=await createDeleteAccountHandler({
+    verifyUser:async()=>({id:'owner'}),
+    beginDeletion:async()=>{throw Error('private lock timeout');},
+    revokeSessions:async()=>{mutated=true;},deleteUser:async()=>{mutated=true;}
+  })(request());
+  assert.equal(response.status,503);assert.equal(mutated,false);
+  assert.equal((await response.text()).includes('private lock'),false);
 });
 test('invalid or deleted user never reaches deletion',async()=>{
   let called=false;
@@ -39,6 +50,7 @@ test('revocation failure stops deletion and server failures never claim success'
   const response=await createDeleteAccountHandler({
     verifyUser:async()=>({id:'owner'}),
     revokeSessions:async()=>{throw Error('private diagnostic');},
+    beginDeletion:async()=>{},
     deleteUser:async()=>{called=true;}
   })(request());
   assert.equal(response.status,503); assert.equal(called,false);
@@ -51,17 +63,18 @@ test('cleans owned pages after revocation and before deleting the verified accou
   const handler=createDeleteAccountHandler({
     verifyUser:async()=>({id:'owner'}),
     revokeSessions:async()=>{calls.push('revoke');},
+    beginDeletion:async()=>{calls.push('fence');},
     listOwnedObjects:async(id)=>{assert.equal(id,'owner'); calls.push('list'); return pages++ < 2 ? [{bucket_id:'bucket',name:`nested/${pages}.png`,owner_id:id}] : [];},
     removeOwnedObjects:async(id,bucket,names)=>{assert.equal(id,'owner'); assert.equal(bucket,'bucket'); calls.push('remove:'+names[0]);},
     deleteUser:async(id)=>{calls.push('delete:'+id);},
   });
   assert.equal((await handler(request())).status,200);
-  assert.deepEqual(calls,['revoke','list','remove:nested/1.png','list','remove:nested/2.png','list','delete:owner']);
+  assert.deepEqual(calls,['fence','revoke','list','remove:nested/1.png','list','remove:nested/2.png','list','delete:owner']);
 });
 test('partial Storage failure preserves Auth and a fresh retry resumes the first remaining page',async()=>{
   let files=['a.png','b.png'], removed=[], deletes=0, failure=true;
   const handler=createDeleteAccountHandler({
-    verifyUser:async()=>({id:'owner'}), revokeSessions:async()=>{},
+    verifyUser:async()=>({id:'owner'}), beginDeletion:async()=>{}, revokeSessions:async()=>{},
     listOwnedObjects:async()=>files.slice(0,1).map(name=>({bucket_id:'bucket',name,owner_id:'owner'})),
     removeOwnedObjects:async(id,bucket,names)=>{
       if(names[0]==='b.png'&&failure)throw Error('private bucket contents and token');
@@ -79,7 +92,7 @@ test('partial Storage failure preserves Auth and a fresh retry resumes the first
 test('cleanup is bounded and never deletes Auth when files remain',async()=>{
   let lists=0, removals=0, deletes=0;
   const handler=createDeleteAccountHandler({
-    verifyUser:async()=>({id:'owner'}), revokeSessions:async()=>{},
+    verifyUser:async()=>({id:'owner'}), beginDeletion:async()=>{}, revokeSessions:async()=>{},
     listOwnedObjects:async()=>{lists++;return [{bucket_id:'bucket',name:`${lists}.png`,owner_id:'owner'}];},
     removeOwnedObjects:async()=>{removals++;}, deleteUser:async()=>{deletes++;},
   });
@@ -90,14 +103,14 @@ test('untrusted inventory or a different owner fails closed before removal',asyn
   for(const rows of [null, [{bucket_id:'bucket',name:'victim.png',owner_id:'victim'}],
     [{bucket_id:'bucket',name:'',owner_id:'owner'}], Array.from({length:101},(_,i)=>({bucket_id:'bucket',name:`${i}`,owner_id:'owner'}))]){
     let writes=0;
-    const handler=createDeleteAccountHandler({verifyUser:async()=>({id:'owner'}),revokeSessions:async()=>{},
+    const handler=createDeleteAccountHandler({verifyUser:async()=>({id:'owner'}),beginDeletion:async()=>{},revokeSessions:async()=>{},
       listOwnedObjects:async()=>rows,removeOwnedObjects:async()=>{writes++;},deleteUser:async()=>{writes++;}});
     assert.equal((await handler(request())).status,503);assert.equal(writes,0);
   }
 });
 test('an Auth failure after cleanup remains an unconfirmed deletion',async()=>{
   let count=0;
-  const handler=createDeleteAccountHandler({verifyUser:async()=>({id:'owner'}),revokeSessions:async()=>{},
+  const handler=createDeleteAccountHandler({verifyUser:async()=>({id:'owner'}),beginDeletion:async()=>{},revokeSessions:async()=>{},
     listOwnedObjects:async()=>count++ ? [] : [{bucket_id:'bucket',name:'a.png',owner_id:'owner'}],
     removeOwnedObjects:async()=>{},deleteUser:async()=>{throw Error('private Auth diagnostic');}});
   const response=await handler(request()); assert.equal(response.status,503);

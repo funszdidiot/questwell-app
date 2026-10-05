@@ -23,6 +23,8 @@ export function createDeleteAccountHandler(backend) {
     try {
       const user = await backend.verifyUser(token);
       if (!user?.id) return reply(401, {error: 'Sign in required'});
+      // Drain in-flight writes and fence new sessions before cleanup starts.
+      await backend.beginDeletion(user.id);
       // Revoke first. Storage's restrictive session policy then blocks old JWTs.
       await backend.revokeSessions(token);
       // Re-read the first remaining page: advancing an offset while deleting

@@ -14,6 +14,10 @@ Deno.serve(async (req) => {
       const { data, error } = await admin.auth.getUser(token);
       return error ? null : data.user;
     },
+    async beginDeletion(id: string) {
+      const { error } = await admin.rpc("begin_account_deletion", { p_user_id: id });
+      if (error) throw error;
+    },
     async revokeSessions(token: string) {
       const { error } = await admin.auth.admin.signOut(token, "global");
       if (error) throw error;
