@@ -68,8 +68,11 @@ void main() {
 
     final robe = find.byKey(
       const ValueKey('seasonal-item-fixture-solstice-scholar-robe'),
+      skipOffstage: false,
     );
     await pumpUntilFound(tester, robe);
+    await tester.ensureVisible(robe);
+    await tester.pump();
     await tester.tap(robe);
 
     final baseline = find.textContaining('Locked body baseline');
@@ -84,8 +87,13 @@ void main() {
       findsOneWidget,
     );
 
-    final female = find.byKey(const ValueKey('seasonal-body-female'));
+    final female = find.byKey(
+      const ValueKey('seasonal-body-female'),
+      skipOffstage: false,
+    );
     await pumpUntilFound(tester, female);
+    await tester.ensureVisible(female);
+    await tester.pump();
     await tester.tap(female);
     await pumpReview(tester);
 
