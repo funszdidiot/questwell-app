@@ -1,4 +1,4 @@
-import {spawnSync} from 'node:child_process';
+import {spawn, spawnSync} from 'node:child_process';
 import assert from 'node:assert/strict';
 import {copyFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync} from 'node:fs';
 import {join, resolve} from 'node:path';
@@ -21,6 +21,7 @@ const source = fileURLToPath(new URL('.', import.meta.url));
 const workdir = mkdtempSync(join(runnerTemp, 'questwell-backend-'));
 mkdirSync(join(workdir, 'supabase'));
 copyFileSync(join(source, 'supabase/config.toml'), join(workdir, 'supabase/config.toml'));
+cpSync(resolve(source, '../../supabase/functions/delete-account'), join(workdir, 'supabase/functions/delete-account'), {recursive: true});
 // Never copy root supabase/.temp, environment files, live keys or a linked-project ID.
 const env = {...process.env, SUPABASE_TELEMETRY_DISABLED: '1', DO_NOT_TRACK: '1'};
 const redact = value => value
@@ -40,11 +41,12 @@ function run(args, timeout = 120000) {
 const version = run(['--version']).trim();
 if (version !== '2.119.0') throw new Error(`Unexpected Supabase CLI version: ${version}`);
 console.log(`Supabase CLI ${version}; temporary local fixture stack only.`);
-for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['db', 'lint', '--help'], ['db', 'advisors', '--help'], ['migration', 'up', '--help'], ['migration', 'list', '--help'], ['stop', '--help']]) {
+for (const args of [['start', '--help'], ['db', 'reset', '--help'], ['db', 'query', '--help'], ['db', 'lint', '--help'], ['db', 'advisors', '--help'], ['migration', 'up', '--help'], ['migration', 'list', '--help'], ['functions', 'serve', '--help'], ['stop', '--help']]) {
   run(args); // Installed-version help verifies the command surface on the runner.
 }
 
 let attemptedStart = false;
+let edge;
 try {
   attemptedStart = true;
   run(['start'], 15 * 60 * 1000);
@@ -175,8 +177,19 @@ try {
       run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_boss_reward_failure;`]);
     }
   }
+  edge = spawn(cli, ['functions', 'serve', 'delete-account', '--no-verify-jwt', '--workdir', workdir, '--agent', 'no'], {
+    env, stdio: ['ignore', 'ignore', 'ignore'],
+  });
+  // The function verifies Auth itself; no tokens or Edge request payloads are logged.
+  const deletion = spawnSync(process.execPath, [join(source, 'account-deletion.mjs')], {
+    input: JSON.stringify(status), env, encoding: 'utf8', timeout: 180000, maxBuffer: 1024 * 1024,
+  });
+  if (deletion.stdout) console.log(redact(deletion.stdout));
+  if (deletion.stderr) console.error(redact(deletion.stderr));
+  if (deletion.status !== 0) throw new Error('Account deletion Edge/Auth/Storage regressions failed');
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
+  edge?.kill();
   if (attemptedStart) {
     // Exact new workdir and explicit local project only; never --all or --linked.
     run(['stop', '--project-id', 'questwell-disposable-ci', '--no-backup'], 120000);
