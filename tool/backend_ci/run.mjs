@@ -1,5 +1,5 @@
 import {spawnSync} from 'node:child_process';
-import {copyFileSync, mkdirSync, mkdtempSync, realpathSync} from 'node:fs';
+import {copyFileSync, cpSync, mkdirSync, mkdtempSync, realpathSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {assertDisposableCi, assertLocalStatus} from './guard.mjs';
@@ -69,7 +69,11 @@ try {
   `);
   console.log('Clean harness reset and fixture RLS catalog check passed.');
   await smoke(status, executeSql);
-  console.log('APP MIGRATION REPLAY: NOT RUN. QW-04 remains open; this is not an app-schema release gate.');
+  // Characterization: prove whether the repository's application history can rebuild.
+  cpSync(resolve(source, '../../supabase/migrations'), join(workdir, 'supabase/migrations'), {recursive: true});
+  console.log('Replaying the committed Questwell migrations on the disposable database.');
+  run(['db', 'reset', '--local', '--no-seed'], 5 * 60 * 1000);
+  console.log('Committed Questwell migration replay passed.');
 } finally {
   if (attemptedStart) {
     // Exact new workdir and explicit local project only; never --all or --linked.
