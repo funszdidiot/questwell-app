@@ -45,7 +45,7 @@ abstract final class QuestwellHearthLayout {
       aspectRatio: 1225 / 1284,
       visibleBase: 1200 / 1284,
     ),
-    'potion-workbench': QuestwellHearthProfile(
+    'copper-potion-workbench': QuestwellHearthProfile(
       family: QuestwellHearthDecorFamily.largeFurniture,
       allowedSlots: {'left', 'right'},
       aspectRatio: 1341 / 1173,
@@ -113,7 +113,7 @@ abstract final class QuestwellHearthLayout {
   static double floorDepthFor(String slug, String slot) {
     final family = profiles[slug]?.family;
     return switch (family) {
-      QuestwellHearthDecorFamily.largeFurniture => .70,
+      QuestwellHearthDecorFamily.largeFurniture => .69,
       QuestwellHearthDecorFamily.pedestalLight => .72,
       QuestwellHearthDecorFamily.sideTable => .89,
       QuestwellHearthDecorFamily.relicPedestal => slot == 'front' ? .89 : .68,
@@ -138,7 +138,7 @@ abstract final class QuestwellHearthLayout {
         math.min(scene.height * .76, scene.width * .62 * 4 / 3);
 
     final heightFactor = switch (p.family) {
-      QuestwellHearthDecorFamily.largeFurniture => .60,
+      QuestwellHearthDecorFamily.largeFurniture => .59,
       QuestwellHearthDecorFamily.pedestalLight => .52,
       QuestwellHearthDecorFamily.seating => .62,
       QuestwellHearthDecorFamily.plant => slot == 'front' ? .43 : .40,
@@ -149,7 +149,7 @@ abstract final class QuestwellHearthLayout {
 
     final maxWidthFactor = switch (p.family) {
       QuestwellHearthDecorFamily.largeFurniture => .44,
-      QuestwellHearthDecorFamily.pedestalLight => .31,
+      QuestwellHearthDecorFamily.pedestalLight => .45,
       QuestwellHearthDecorFamily.seating => .50,
       QuestwellHearthDecorFamily.plant => .30,
       QuestwellHearthDecorFamily.sideTable => .28,
@@ -160,12 +160,6 @@ abstract final class QuestwellHearthLayout {
       avatarHeight * heightFactor,
       scene.width * maxWidthFactor / p.aspectRatio,
     );
-    if (p.family == QuestwellHearthDecorFamily.largeFurniture &&
-        slug == 'walnut-bookshelf') {
-      // Preserve the approved bookcase's current visual breathing room while
-      // keeping it inside the shared large-furniture envelope.
-      height *= .94;
-    }
     final width = height * p.aspectRatio;
 
     final hasTable = equipment['room:side'] == 'walnut-reading-table';
@@ -177,7 +171,7 @@ abstract final class QuestwellHearthLayout {
       QuestwellHearthDecorFamily.largeFurniture =>
         slot == 'right'
           ? scene.width * .98 - width / 2
-          : scene.width * .16 + width / 2,
+          : scene.width * .14 + width / 2,
       QuestwellHearthDecorFamily.pedestalLight =>
         scene.width * (slot == 'left' ? .22 : .80),
       QuestwellHearthDecorFamily.sideTable =>
