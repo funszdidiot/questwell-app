@@ -15,23 +15,57 @@ class RoomPlacement {
   final String? expectedOccupant;
 }
 Future<RoomPlacement?> showRoomPicker(BuildContext context, {
-  required String name, required String id, required String slug,
-  required String archetype, required String bodyType,
+  required String name,
+  required String id,
+  required String slug,
+  required String archetype,
+  required String bodyType,
   required Map<String, String> equippedSlugs,
-  required Map<String, RoomOccupant> occupants, String? currentSlot,
-}) => showDialog<RoomPlacement>(context: context, builder: (_) => _RoomPicker(
-  name: name, id: id, slug: slug, archetype: archetype, bodyType: bodyType,
-  equippedSlugs: equippedSlugs, occupants: occupants, currentSlot: currentSlot));
+  required Map<String, RoomOccupant> occupants,
+  Map<String, String>? placementChoices,
+  Map<String, String> hearthProfilesBySlug = const {},
+  String? hearthProfileKey,
+  String? currentSlot,
+}) => showDialog<RoomPlacement>(
+  context: context,
+  builder: (_) => _RoomPicker(
+    name: name,
+    id: id,
+    slug: slug,
+    archetype: archetype,
+    bodyType: bodyType,
+    equippedSlugs: equippedSlugs,
+    occupants: occupants,
+    placementChoices: placementChoices,
+    hearthProfilesBySlug: hearthProfilesBySlug,
+    hearthProfileKey: hearthProfileKey,
+    currentSlot: currentSlot,
+  ),
+);
 
 class _RoomPicker extends StatefulWidget {
-  const _RoomPicker({required this.name, required this.id, required this.slug,
-    required this.archetype, required this.bodyType, required this.equippedSlugs,
-    required this.occupants, this.currentSlot});
+  const _RoomPicker({
+    required this.name,
+    required this.id,
+    required this.slug,
+    required this.archetype,
+    required this.bodyType,
+    required this.equippedSlugs,
+    required this.occupants,
+    required this.hearthProfilesBySlug,
+    this.placementChoices,
+    this.hearthProfileKey,
+    this.currentSlot,
+  });
+
   final String name, id, slug, archetype, bodyType;
   final Map<String, String> equippedSlugs;
   final Map<String, RoomOccupant> occupants;
   final Map<String, String>? placementChoices;
+  final Map<String, String> hearthProfilesBySlug;
+  final String? hearthProfileKey;
   final String? currentSlot;
+
   @override
   State<_RoomPicker> createState() => _RoomPickerState();
 }
@@ -96,8 +130,17 @@ class _RoomPickerState extends State<_RoomPicker> {
               child: Text('This item now has updated placement choices. Choose a new spot and save to move it.'),
             ),
             const SizedBox(height: 12),
-            QuestwellHearthPixelScene(height: QuestwellMasteryRelic.supports(widget.slug) ? 260 : 310, archetype: widget.archetype,
-              avatarBodyType: widget.bodyType, equippedSlugs: preview),
+            QuestwellHearthPixelScene(
+              height: QuestwellMasteryRelic.supports(widget.slug) ? 260 : 310,
+              archetype: widget.archetype,
+              avatarBodyType: widget.bodyType,
+              equippedSlugs: preview,
+              hearthProfileBySlug: {
+                ...widget.hearthProfilesBySlug,
+                if (widget.hearthProfileKey != null)
+                  widget.slug: widget.hearthProfileKey!,
+              },
+            ),
             const SizedBox(height: 12),
             for (final entry in labels.entries)
               RadioListTile<String>(contentPadding: const EdgeInsets.symmetric(horizontal: 8),
