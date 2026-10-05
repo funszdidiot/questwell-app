@@ -1,18 +1,36 @@
 # Approved male Woodland account integration
 
-Status: **QA complete; live rollout BLOCKED by the missing CI migration secret.**
+Status: **DEV DEPLOYED; hosted-account/iPhone acceptance pending.**
 Art: **LOCKED**, founder approval “It’s good”, 2026-10-05 America/Chicago.
-The subsequent “Keep going” continues the inventory/equip integration.
-No asset bytes or locked fit geometry change.
+No asset bytes or locked fit geometry changed.
 
-Tanya's subsequent “Next” authorizes work on the scoped database deployment
-step. Its forward-only CI path passed the actual SQL rollback tests and all eight
-account scenarios before and after R01. The tested deployment at `76e2242` stopped
-before any HTTP call because `QUESTWELL_WOODLAND_MIGRATION_TOKEN` is absent from
-repository Actions secrets. See
-[`MALE_WOODLAND_FORWARD_DEPLOYMENT.md`](MALE_WOODLAND_FORWARD_DEPLOYMENT.md).
-The broader history hold remains; the client gate stays closed until the scoped
-operation is successfully executed and verified.
+## Verified development delivery — October 5, 2026
+
+Tanya approved PR #22's development merge with “Yes”. The expected-head guarded
+merge produced `fad777787697376a063d5b6a35d2ffc464f2567a` on `questwell-dev`.
+Preview workflow `37376148332` passed quality, build and deployment; backend
+workflow `37376148039` passed. Post-merge results: 390 Flutter tests, 31 Node tests,
+15 prior exact-head deployment guards, eight Woodland Auth/RPC/persistence checks
+before R01 and eight after, 22 task and 21 boss reward/rollback checks. The 46
+inherited analyzer findings and generated placeholder-test exclusion remain.
+
+The served version JSON returned HTTP 200 and the exact merge SHA. Delivered male
+body, identity, Everyday and Woodland files match all four locked SHA-256 hashes.
+The browser sample Market at `?review=market&body=male&class=scout` rendered the
+approved fit, purchased for 120 sample coins (650 → 530), equipped as “In use”,
+and unequipped back to “Owned” without another debit or loss of ownership.
+Sample UI state is in-memory; reload persistence is established by isolated Auth
+integration tests, not by this sample. No real account was modified by browser QA.
+
+The live database migration `20261005212048` was already verified through guarded
+CI and independent metadata reads: male support, exactly one matching rollout,
+48 unchanged historical records and unchanged protected schema. This does not
+apply R01/R02 or reconcile the incomplete migration history.
+
+**Remaining:** signed-in hosted-account and physical iPhone/Safari acceptance.
+Tanya was given equip → reload → unequip instructions; no result has been
+reported. Do not mark these checks passed or infer production promotion.
+Screenshot evidence: `questwell-male-woodland-deployed-1791236181537.jpg`.
 
 ## Behavior and API contract
 
@@ -85,7 +103,7 @@ Green implementation head: `2ff805685ed4e3a2858a78624449f738c4849b1a`,
   the fixture is now one atomic `DO` block. Initial pixel captures did not await
   image decoding; explicit precaching fixes the test setup without changing the
   renderer or relaxing pixel equality. Both corrections passed the runs above.
-- Read-only live check on 2026-10-05 confirms male Woodland support is still
+- Historical predeployment read-only check on 2026-10-05 found male Woodland support
   `false`; Woodland remains active at 120 coins, Scout-only, standard shop edition.
   No live account or schema writes occurred.
 - The separate approval record #21 is merged and its dashboard is delivered at
@@ -96,18 +114,12 @@ Green implementation head: `2ff805685ed4e3a2858a78624449f738c4849b1a`,
 The source/rendering and isolated account contract are verified. Actual delivered
 account runtime and physical-device QA remain behind the gate below.
 
-## Deployment gate
+## Remaining acceptance boundary
 
-`supabase/README.md` documents the unresolved G3 database-history/deployment hold.
-Do not apply this migration manually, replay/reset the incomplete history, or
-publish the enabled client against a backend that still rejects the male fit.
-The scoped migration succeeded through CI at tested revision `76e2242`, workflow
-`37360094077`, retry job `111981993154`, remote version `20261005212048`.
-Full postconditions and independent read-only fit/history/description checks pass.
-PR #22 remains draft while the combined development revision is checked. Its merge
-requires Tanya's instruction under FIX_PLAN.md and may publish the development
-preview. Delivered account behavior and physical iOS/Safari remain unverified.
-Artwork approval is complete and unchanged.
+The scoped database and approved development client have both been deployed and
+verified as recorded above. The broader G3 history hold remains. No manual replay,
+reset, history repair, unrelated hosted migration or production promotion is
+included. Signed-in hosted-account and physical iPhone/Safari checks remain open.
 
 API checks: [Supabase migrations](https://supabase.com/docs/guides/deployment/database-migrations),
 [database testing](https://supabase.com/docs/guides/database/testing),

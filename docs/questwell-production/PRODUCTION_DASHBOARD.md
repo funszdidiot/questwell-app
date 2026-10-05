@@ -2,18 +2,16 @@
 
 ## Male Woodland account integration — 2026-10-05
 
-**Database deployment VERIFIED; client integration in QA.**
-The approved male v2 fit is wired into proposed shared rendering, Market and
-inventory. Deployment workflow `37360094077`, retry job `111981993154`, applied
-the exact tested SQL at `76e2242` and verified all postconditions. Remote version
-`20261005212048`; independent read-only verification confirms male support and
-49 history entries with exactly one Woodland rollout. Price, Scout requirement,
-ownership, other recorded schema and all locked artwork remain unchanged.
-The project-scoped 24-hour token was separately approved and saved in Actions.
-PR #22 remains draft while its combined development revision passes fresh checks.
-The client merge requires Tanya's instruction under FIX_PLAN.md; that merge may
-publish the development preview. Delivered account runtime and device QA remain
-pending. See `../qa/MALE_WOODLAND_FORWARD_DEPLOYMENT.md`.
+**DEV DEPLOYED; signed-in account/iPhone acceptance pending.**
+PR #22 merged with Tanya's approval as `fad7777`. Preview workflow `37376148332`
+and backend workflow `37376148039` passed. The served revision and four locked
+asset hashes match. Sample Market purchase (650 → 530 coins), equip and unequip
+passed. All 390 Flutter tests and isolated Woodland account/persistence checks
+passed. The database migration `20261005212048` is verified. Price, Scout-only
+eligibility, ownership and locked artwork remain unchanged.
+The sample is in-memory; no signed-in hosted account or physical iPhone test has
+been reported. See `../qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md`. Broader release and
+G3 history holds remain separate.
 
 ## Male Woodland sleeve and size correction — 2026-10-05
 
@@ -25,7 +23,7 @@ passed 19 additional Node guards and 14 isolated fixture/application assertions.
 Five delivered hashes match. Actual Body/Everyday/robe/Woodland transitions,
 light/dark/enlarged review, belt grimoire and route reload passed, followed by
 independent delivered visual QA. One continuous outfit overlay; original body and
-hands retained. Tanya approved “It’s good” on 2026-10-05: art/template is now LOCKED. Male account equipping remains unavailable until the separate integration is delivered.
+hands retained. Tanya approved “It’s good” on 2026-10-05: art/template is now LOCKED. The later account-integration delivery is recorded above.
 Physical iOS/Safari and real-user persistence were not tested. No founder blocker.
 Evidence: `../qa/MALE_WOODLAND_V2.md` and `../../tool/qa/male_woodland_v2_delivery.json`.
 
@@ -94,7 +92,7 @@ Use **BLOCKED** only when the affected work cannot proceed. Active visual develo
 | 1 | Male robes in the actual app / coherent male wardrobe rollout | DEV DEPLOYED | Body v3, Everyday v2 and historical robe v3 remain locked | Non-restrictive migration is deployed: all male defaults and legacy chest states retain locked v3; Business Suit, Midnight Harvest Coat, Moss Green Cloak and Hearthguard Mantle remain available. Workflow `37218307696` passed asset verification, analyzer, full Flutter regressions, preview build and deployment. Supabase migration `20261004164110` preserves legacy availability and male Everyday support with no price, balance, class-rule or ownership change. |
 | 1 | Neutral Everyday and class-robe runtime/persistence audit | DEV DEPLOYED | Body v4, everyday v3 and robe v11 locked | All five robes rendered; 390px Adventurer/Hearth equip/unequip and Market fixture flows passed. Applied migration `20261004035017` passed deployed synthetic public-RPC tests with zero retained fixtures/security findings. Browser fixtures were in-memory; no real-user login/refresh/account writes were tested. Legacy chest migration is separate. |
 | 1 | Approved neutral outfits rollout | DEV DEPLOYED | LOCKED | Verified `9ce9b92`: full gate, ten delivered hashes, live neutral purchase/equip/unequip and rolled-back account RPCs. Price 120 and Scout rule preserved. |
-| 1 | Male Woodland Scout outfit v2 | QA — database verified; client merge/runtime pending | LOCKED — founder approved 2026-10-05 | CI `37360094077` applied remote version `20261005212048` and verified postconditions. PR #22 combined revision needs fresh checks and its own merge approval. |
+| 1 | Male Woodland Scout outfit v2 | DEV DEPLOYED; hosted-account/iPhone acceptance pending | LOCKED — founder approved 2026-10-05 | PR #22 merge `fad7777`; verified build, locked assets, sample buy/equip/unequip and isolated account persistence. Live migration `20261005212048` verified. |
 | 1 | Harvest Coat, Moss-Green Cloak and Hearthguard Mantle — individual body refits | DEV DEPLOYED | Nine scoped candidates; no new lock | Founder-rejected widened fits superseded by nine independently drawn fits. Native/enlarged light/dark independent QA passed. Complete bodies preserved; cloak/mantle conceal arms/hands, coat restores exact original hands above side panels. Verified `0546cb4`, workflow `37266712857`: 385 Flutter + 8 Node tests, build/deploy, 15 delivered hashes, independent runtime visual QA and sample Market equip/unequip passed. No founder blocker. See `../qa/LEGACY_INDIVIDUAL_REFIT.md`. |
 | 1 | Accepted male robe v3 fixed-body review integration | DEV DEPLOYED | Robe v3 LOCKED — accepted cuff finish verified | Recovered exact `16facaf` handoff and independent source QA. Body, everyday, identity and all four robe masks preserved. Delivered `31dfebe`, workflow `37177492039`: 355 Flutter + 8 Node tests, analysis/assets/build/deploy passed. All seven delivered hashes, clothing transitions, enlargement, reload and independent delivered-image QA passed. |
 | 1 | Male class robe surfaces and thumb-gap repair (art-review routes only) | DEV DEPLOYED | Historical v3/foreground locked; requested rear repair is not a new lock | Repaired `7cc9030`, run `37181630492`: 363 Flutter + 8 Node tests, assets/analyzer/build/deploy, 28 delivered hashes, actual all-five gallery/controls/class switch/reload and independent delivered visual QA passed. Bodies, hands, foreground and class designs unchanged. Male Woodland is now DEV DEPLOYED as a separate outfit candidate (`0330c3b`). |

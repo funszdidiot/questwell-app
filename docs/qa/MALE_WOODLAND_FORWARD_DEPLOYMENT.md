@@ -1,12 +1,11 @@
 # Male Woodland: reviewed forward deployment
 
-Status: **Database deployment VERIFIED; client merge and delivered runtime pending.**
+Status: **Database and development client deployed; hosted-account/iPhone acceptance pending.**
 Workflow `37360094077`, retry apply job `111981993154`, succeeded at 21:20:48 UTC
 on October 5. Remote migration version: `20261005212048`.
 Authorization: Tanya's “Next” on 2026-10-05 continues the explicitly proposed
 database deployment step for the approved male Woodland inventory/equip rollout.
-The artwork stays LOCKED and byte-identical. PR #22 keeps the enabled client
-unmerged until the database step succeeds and is verified.
+The artwork stays LOCKED and byte-identical. PR #22 was subsequently merged after database verification and Tanya’s approval.
 
 ## Executed evidence and exact next action
 
@@ -50,10 +49,33 @@ male fit support, exactly 49 migration entries (48 prior plus this one), one
 matching rollout record and the three-body description. No real-account fixture
 was used. Earlier missing-secret results above are historical.
 
-PR #22 is being reconciled with development revision `dc9e48c`, preserving both
-Woodland and R02 boss tests. Its new combined revision needs fresh CI and review,
-then Tanya's separate development merge approval under FIX_PLAN.md. The preview
-and delivered account runtime remain unverified. No production promotion occurs.
+## Verified development delivery — October 5, 2026
+
+Tanya approved PR #22's development merge with “Yes”. The expected-head guarded
+merge produced `fad777787697376a063d5b6a35d2ffc464f2567a` on `questwell-dev`.
+Preview workflow `37376148332` passed quality, build and deployment; backend
+workflow `37376148039` passed. Post-merge results: 390 Flutter tests, 31 Node tests,
+15 prior exact-head deployment guards, eight Woodland Auth/RPC/persistence checks
+before R01 and eight after, 22 task and 21 boss reward/rollback checks. The 46
+inherited analyzer findings and generated placeholder-test exclusion remain.
+
+The served version JSON returned HTTP 200 and the exact merge SHA. Delivered male
+body, identity, Everyday and Woodland files match all four locked SHA-256 hashes.
+The browser sample Market at `?review=market&body=male&class=scout` rendered the
+approved fit, purchased for 120 sample coins (650 → 530), equipped as “In use”,
+and unequipped back to “Owned” without another debit or loss of ownership.
+Sample UI state is in-memory; reload persistence is established by isolated Auth
+integration tests, not by this sample. No real account was modified by browser QA.
+
+The live database migration `20261005212048` was already verified through guarded
+CI and independent metadata reads: male support, exactly one matching rollout,
+48 unchanged historical records and unchanged protected schema. This does not
+apply R01/R02 or reconcile the incomplete migration history.
+
+**Remaining:** signed-in hosted-account and physical iPhone/Safari acceptance.
+Tanya was given equip → reload → unequip instructions; no result has been
+reported. Do not mark these checks passed or infer production promotion.
+Screenshot evidence: `questwell-male-woodland-deployed-1791236181537.jpg`.
 
 ## Exact scope
 
