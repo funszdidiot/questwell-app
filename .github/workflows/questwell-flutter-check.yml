@@ -32,33 +32,23 @@ jobs:
           flutter-version: '3.44.6'
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
-
-      # Characterize the existing resolver before committing its exact output.
-      # This temporary capture is replaced by strict enforcement in this PR.
-      - name: Capture dependency resolution for review
+      - name: Install locked dependencies
         shell: bash
         run: |
-          mkdir -p .dart_tool/questwell-dependency-evidence
-          cp pubspec.lock .dart_tool/questwell-dependency-evidence/pubspec.lock
-          flutter --version --machine > .dart_tool/questwell-dependency-evidence/flutter-version.json
-          flutter pub get --help
-          flutter pub deps --json > .dart_tool/questwell-dependency-evidence/dependencies.json
-          sha256sum pubspec.yaml pubspec.lock
-          git diff --exit-code -- pubspec.yaml
+          git ls-files --error-unmatch pubspec.lock
+          flutter pub get --enforce-lockfile
+          git diff --exit-code -- pubspec.yaml pubspec.lock
+          sha256sum pubspec.lock
 
-      - name: Preserve the generated dependency evidence
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
-        with:
-          name: questwell-dependency-baseline
-          path: .dart_tool/questwell-dependency-evidence/
-          include-hidden-files: true
-          if-no-files-found: error
-          retention-days: 3
-
-      - name: Require the application lockfile in version control
-        run: git ls-files --error-unmatch pubspec.lock
+      - name: Verify locked resolution with an empty package cache
+        shell: bash
+        env:
+          PUB_CACHE: ${{ runner.temp }}/questwell-empty-pub-cache
+        run: |
+          test ! -e "$PUB_CACHE"
+          flutter pub get --enforce-lockfile
+          git diff --exit-code -- pubspec.yaml pubspec.lock
+          sha256sum pubspec.lock
 
       - name: Analyze
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
@@ -76,3 +66,6 @@ jobs:
       - name: Build proposed development app without deploying
         if: github.event_name == 'pull_request' && github.base_ref == 'questwell-dev'
         run: flutter build web --release --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA"
+
+      - name: Verify checks and builds preserved dependency inputs
+        run: git diff --exit-code -- pubspec.yaml pubspec.lock
