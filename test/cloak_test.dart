@@ -50,6 +50,31 @@ void main() {
       expect(path.contains(const Offset(90,250)),isFalse,reason:'Keep lower cloak over outfit');
     }
   });
+  test('Closed cloak preserves a continuous neck from chin to collar', () {
+    for (final body in ['female', 'male', 'neutral']) {
+      for (final size in [
+        const Size(240, 320),
+        const Size(480, 640),
+        const Size(390, 640),
+        const Size(480, 320),
+      ]) {
+        final scale = size.width / 240 < size.height / 320
+            ? size.width / 240 : size.height / 320;
+        final origin = Offset((size.width - 240 * scale) / 2,
+            size.height - 320 * scale);
+        final path = QuestwellCloakForegroundClipper(body).getClip(size);
+        // Pixel centers across the observed chin/neck band, plus the intact
+        // skin immediately above and below it, must all remain foreground.
+        for (var y = 68; y <= 79; y++) {
+          for (var x = 116; x <= 123; x++) {
+            final point = origin + Offset((x + .5) * scale, (y + .5) * scale);
+            expect(path.contains(point), isTrue,
+                reason: '$body at $size must not expose cloth through neck ($x,$y)');
+          }
+        }
+      }
+    }
+  });
   test('Cloaks occlude class collar, sleeves, hands and epaulettes while keeping torso', () {
     for (final body in ['female','male','neutral']) {
       final path = QuestwellCloakUnderlayerClipper(body).getClip(const Size(240,320));

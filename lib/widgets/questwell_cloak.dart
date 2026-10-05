@@ -70,16 +70,23 @@ class QuestwellCloakForegroundClipper extends CustomClipper<Path> {
     final scale=math.min(size.width/240,size.height/320);
     final left=(size.width-240*scale)/2, top=size.height-320*scale;
     final female=body=='female';
-    final path=Path()..addRect(const Rect.fromLTRB(0,0,240,73));
     // Restore the actual skin contour down into the collar opening. Never
     // restore a horizontal strip of the shirt or cut the neck off at the jaw.
     final neckLeft = female ? 111.0 : 109.0;
     final neckRight = female ? 127.0 : 129.0;
-    path.moveTo(neckLeft,70);
-    path.lineTo(neckLeft,76);
-    path.quadraticBezierTo(neckLeft+1,80,120,female ? 83 : 84);
-    path.quadraticBezierTo(neckRight-1,80,neckRight,75);
-    path.lineTo(neckRight,70);path.close();
+    // One continuous contour prevents opposite-winding head/neck subpaths
+    // from cancelling their overlap and exposing the mantle as a dark band.
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(240, 0)
+      ..lineTo(240, 73)
+      ..lineTo(neckRight, 73)
+      ..lineTo(neckRight, 75)
+      ..quadraticBezierTo(neckRight - 1, 80, 120, female ? 83 : 84)
+      ..quadraticBezierTo(neckLeft + 1, 80, neckLeft, 76)
+      ..lineTo(neckLeft, 73)
+      ..lineTo(0, 73)
+      ..close();
     return path.transform((Matrix4.identity()..scale(scale,scale)).storage)
       .shift(Offset(left,top));
   }
