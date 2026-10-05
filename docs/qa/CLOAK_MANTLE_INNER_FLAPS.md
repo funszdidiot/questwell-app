@@ -1,5 +1,10 @@
 # Cloak and mantle inner-flap removal
 
+**Superseded for coats:** Tanya subsequently rejected all three inner-arm joins
+and the female cuffs. See `COAT_UNDERARM_REBUILD.md`. The delivered checks below
+are historical technical evidence, not current coat visual acceptance. Accepted
+cloak/mantle artwork remains preserved.
+
 ## Founder correction after delivered review
 
 2026-10-05: Tanya accepted the cloak and mantle appearance but rejected wrist

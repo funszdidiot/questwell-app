@@ -2,6 +2,16 @@
 
 ## Active garment correction — 2026-10-05 America/Chicago
 
+**Coats: BUILDING / editing-method decision needed.** Tanya rejected inner-arm
+skin slivers or compensating fabric on all three coats and still rejects the
+female cuffs. This newer finding supersedes the coat visual PASS below; technical
+deployment is historical evidence only. Accepted cloak/mantle v4 are preserved.
+Repeated image-generation edits failed exact sleeve registration or introduced
+unrequested cuff details. No replacement candidate was integrated or deployed.
+Next: request explicit direction for precise direct raster editing of complete
+sleeve/underarm/cuff regions, preserving locked bodies and avoiding patches.
+See `../qa/COAT_UNDERARM_REBUILD.md`. This does not block other approved work.
+
 **Coat cuffs: DEV DEPLOYED — founder correction.** Tanya accepted cloak/mantle v4 and
 reported disconnected wrist joins on all three coats. Preserve accepted cloth.
 Corrected original-hand foreground depth at the cuff openings; no body or art
