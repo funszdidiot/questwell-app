@@ -472,6 +472,10 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 description: item.description, owned: item.owned, equipped: item.equipped,
                 archetype: item.requiredArchetype, shop: item.unlockMethod == 'shop',
                 collectionKey: item.collectionKey, editionType: item.editionType,
+                hearthPlacements: [
+                  for (final option in item.hearthPlacements)
+                    MapEntry(option.slot, option.label),
+                ],
                 classLocked: _classLocked(item, data.profile.adventurerArchetype),
               )).toList(),
             ),
