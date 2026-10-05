@@ -131,6 +131,31 @@ if (phase === 'rollback') {
     ok(await patch(owner, task, {status:'set_aside'})); denied(await complete(owner, task));
     ok(await patch(owner, task, {status:'open'})); ok(await complete(owner, task)); await balance(owner,10,5);
   });
+  await check('legacy invalid difficulty can be restored and repaired without a payout', async () => {
+    for (const friction of [null,5]) {
+      const owner = await signup();
+      const task = await create({id:owner.id,token:status.SERVICE_ROLE_KEY},
+        {status:'set_aside',friction_level:friction});
+      ok(await patch(owner,task,{status:'open'}));
+      ok(await patch(owner,task,{title:'Recovered legacy quest'}));
+      denied(await complete(owner,task)); await balance(owner,0,0); await ledger(owner,task,[]);
+      ok(await patch(owner,task,{friction_level:2}));
+      ok(await complete(owner,task)); await balance(owner,20,10);
+      await ledger(owner,task,[{xp_amount:20,coin_amount:10}]);
+    }
+  });
+  await check('an invalid legacy pinned row cannot block pinning a valid quest', async () => {
+    const owner = await signup();
+    const legacy = await create({id:owner.id,token:status.SERVICE_ROLE_KEY},
+      {friction_level:null,pinned_at:new Date().toISOString()});
+    const task = await create(owner);
+    const pinned = await request('/rest/v1/rpc/set_pinned_quest',owner,'POST',{p_task_id:task.id});
+    assert.ok([200,204].includes(pinned.status));
+    assert.equal((await readTask(owner,legacy)).pinned_at,null);
+    assert.ok((await readTask(owner,task)).pinned_at);
+    denied(await complete(owner,legacy)); await balance(owner,0,0);
+    ok(await complete(owner,task)); await balance(owner,10,5);
+  });
   await check('Chronicle repeat creates a fresh open quest without an immediate payout', async () => {
     const owner = await signup(), task = await create(owner); ok(await complete(owner,task));
     const original = await readTask(owner,task);

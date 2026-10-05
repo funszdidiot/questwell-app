@@ -87,6 +87,14 @@ review the precise grant changes/lock impact with Tanya. Account deletion,
 Storage, boss payout authority, native/device QA and the wider audit remain open.
 No P0 closure for the live app or release approval is implied.
 
+## Review follow-up
+
+Automatic review of `fe28083` identified that invalid legacy difficulty also
+blocked unrelated restore/title/pin updates. Two focused regressions are added
+before the correction: restore then repair null/out-of-range legacy difficulty,
+and pinning a valid quest while clearing an invalid legacy pinned row. They must
+also prove that invalid difficulty never pays before a legitimate edit repairs it.
+
 First fix run `37345250356` stopped before applying the migration because CLI
 `db query --file` rejects multiple prepared statements. The runner now copies
 only this exact proposal beside the verified baseline and uses the installed,
