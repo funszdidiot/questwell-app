@@ -331,6 +331,34 @@
                 "string",
                 "null"
               ]
+            },
+            "render_mode": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                null,
+                "full_canvas_overlay"
+              ]
+            },
+            "assets_by_body": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "female": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "neutral": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "male": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
             }
           }
         },
@@ -460,7 +488,8 @@
         "render_kind": {
           "enum": [
             "static_sprite",
-            "floor_sprite"
+            "floor_sprite",
+            "wall_art_sprite"
           ]
         },
         "asset_source": {
