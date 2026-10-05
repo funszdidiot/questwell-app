@@ -42,6 +42,8 @@ import 'questwell_item_icon.dart';
 import 'questwell_first_journey.dart';
 import 'questwell_starlit_orrery.dart';
 import 'questwell_catalog_equipment.dart';
+import 'questwell_hearth_catalog_sprite.dart';
+import '../services/questwell_cosmetic_models.dart';
 import 'questwell_familiar.dart';
 import 'questwell_cloak.dart';
 
@@ -996,6 +998,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
     this.avatarBodyType = 'neutral',
     this.equippedSlugs = const {},
     this.hearthProfileBySlug = const {},
+    this.hearthRenderBySlug = const {},
     this.showRelic = false,
     this.showAvatar = true,
   });
@@ -1007,6 +1010,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   final String avatarBodyType;
   final Map<String, String> equippedSlugs;
   final Map<String, String> hearthProfileBySlug;
+  final Map<String, QuestwellHearthRenderSpec> hearthRenderBySlug;
   final bool showRelic;
   final bool showAvatar;
 
@@ -1113,9 +1117,16 @@ class QuestwellHearthPixelScene extends StatelessWidget {
               ),
               Positioned.fill(
                 key: const ValueKey('hearth-woven-rug'),
-                child: QuestwellWovenRug(
-                  emerald: equippedSlugs['room:floor'] == QuestwellWovenRugPainter.slug,
-                ),
+                child: (equippedSlugs['room:floor'] case final floorSlug?)
+                    ? (hearthRenderBySlug[floorSlug]?.renderKind == 'floor_sprite'
+                        ? QuestwellHearthFloorSprite(
+                            spec: hearthRenderBySlug[floorSlug]!,
+                          )
+                        : QuestwellWovenRug(
+                            emerald:
+                                floorSlug == QuestwellWovenRugPainter.slug,
+                          ))
+                    : const QuestwellWovenRug(emerald: false),
               ),
               Positioned.fill(
                 child: IgnorePointer(
@@ -1165,13 +1176,23 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                 profileBySlug: hearthProfileBySlug,
               ))
                 if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
-                  if (slug == QuestwellAutumnLantern.slug || slug == 'warding-lantern' || slug == QuestwellHarvestDisplay.slug || slug == QuestwellPotionWorkbench.slug || QuestwellMasteryRelic.supports(slug) || slug == QuestwellBookshelf.slug || slug == QuestwellFern.slug || slug == QuestwellReadingChair.slug || slug == QuestwellReadingTable.slug)
+                  if (hearthRenderBySlug[slug]?.renderKind == 'static_sprite' ||
+                      slug == QuestwellAutumnLantern.slug ||
+                      QuestwellMasteryRelic.supports(slug) ||
+                      slug == QuestwellBookshelf.slug ||
+                      slug == QuestwellFern.slug ||
+                      slug == QuestwellReadingChair.slug ||
+                      slug == QuestwellReadingTable.slug ||
+                      slug == QuestwellHarvestDisplay.slug ||
+                      slug == QuestwellPotionWorkbench.slug ||
+                      slug == 'warding-lantern')
                     QuestwellHearthDecor.positioned(
                       slug: slug,
                       slot: slot,
                       equipment: equippedSlugs,
                       scene: Size(sceneWidth, sceneHeight),
                       profileKey: hearthProfileBySlug[slug],
+                      renderSpec: hearthRenderBySlug[slug],
                     ),
               for (final surface in ['mantel', 'bookshelf_top'])
                 if ((QuestwellMilestoneReward.isTrophy(equippedSlugs['room:$surface']) ||
