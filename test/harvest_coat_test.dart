@@ -26,7 +26,7 @@ void main() {
         expect(b.getUint32(pixel*4), i.getUint32(pixel*4), reason:'Original head RGBA must match');
       }
     }
-    final clip = const LegacyMaleIdentityClipper().getClip(const Size(480,640));
+    final clip = const MaleIdentityClipper().getClip(const Size(480,640));
     expect(clip.getBounds(), const Rect.fromLTRB(0,0,480,148));
     body.dispose(); identity.dispose();
   });

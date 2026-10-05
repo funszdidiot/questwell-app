@@ -104,7 +104,7 @@ void main() {
           QuestwellMalePaperDoll.baseAsset,
           QuestwellMalePaperDoll.everydayAsset,
           QuestwellMalePaperDoll.robeAsset(entry.key, 'front'),
-          QuestwellMalePaperDoll.identityAsset,
+          QuestwellMalePaperDoll.baseAsset,
           QuestwellMalePaperDoll.robeAsset(entry.key, 'collar'),
           QuestwellMalePaperDoll.robeAsset(entry.key, 'cuffs'),
         ]);
@@ -116,7 +116,7 @@ void main() {
         await tester.tap(find.widgetWithText(ChoiceChip, 'Outfit'));
         await tester.pumpAndSettle();
         expect(layers(), [QuestwellMalePaperDoll.baseAsset,
-          QuestwellMalePaperDoll.everydayAsset, QuestwellMalePaperDoll.identityAsset]);
+          QuestwellMalePaperDoll.everydayAsset, QuestwellMalePaperDoll.baseAsset]);
         await tester.tap(find.widgetWithText(ChoiceChip, 'Robe'));
         await tester.pumpAndSettle();
         expect(layers().first, QuestwellMalePaperDoll.robeAsset(entry.key, 'rear'));
@@ -128,7 +128,7 @@ void main() {
         initialRobe: true, initialArchetype: 'guardian'));
       await tester.pumpAndSettle();
       expect(layers().first, QuestwellMalePaperDoll.robeAsset('guardian', 'rear'));
-      expect(find.image(const AssetImage(QuestwellMalePaperDoll.baseAsset)), findsNWidgets(2));
+      expect(find.image(const AssetImage(QuestwellMalePaperDoll.baseAsset)), findsNWidgets(4));
     });
 
     testWidgets('male lineup wraps without overflow at $width', (tester) async {
@@ -140,7 +140,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
       expect(find.byType(QuestwellMalePaperDoll), findsNWidgets(5));
-      expect(find.image(const AssetImage(QuestwellMalePaperDoll.baseAsset)), findsNWidgets(5));
+      expect(find.image(const AssetImage(QuestwellMalePaperDoll.baseAsset)), findsNWidgets(10));
       for (final label in QuestwellMalePaperDoll.classLabels.values) {
         expect(find.text(label), findsOneWidget);
       }

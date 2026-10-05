@@ -28,7 +28,7 @@ void main() {
       const dressed = [
         QuestwellMalePaperDoll.baseAsset,
         QuestwellMalePaperDoll.everydayAsset,
-        QuestwellMalePaperDoll.identityAsset,
+        QuestwellMalePaperDoll.baseAsset,
       ];
       expect(assets(), [...dressed, ...dressed]);
       final bodyImage = find.image(const AssetImage(QuestwellMalePaperDoll.baseAsset));

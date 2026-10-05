@@ -283,12 +283,12 @@ void main() {
           matching: find.byType(ClipPath)), findsNothing);
       }
       await render();
-      final bounds = tester.getRect(asset(QuestwellMalePaperDoll.baseAsset));
+      final bounds = tester.getRect(asset(QuestwellMalePaperDoll.baseAsset).first);
       expect(assets(tester), maleRobeLayers(archetype));
       await render(chest: 'everyday-adventurer-outfit');
       expect(assets(tester), [QuestwellMalePaperDoll.baseAsset,
-        QuestwellMalePaperDoll.everydayAsset, QuestwellMalePaperDoll.identityAsset]);
-      expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset)), bounds);
+        QuestwellMalePaperDoll.everydayAsset, QuestwellMalePaperDoll.baseAsset]);
+      expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset).first), bounds);
       await render();
       expect(assets(tester), maleRobeLayers(archetype));
       // Unsupported/stale entries return to the v3 class stack. Approved legacy

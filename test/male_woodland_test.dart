@@ -65,13 +65,13 @@ void main() {
       List<String> assets() => tester.widgetList<Image>(find.byType(Image))
           .map((image) => (image.image as AssetImage).assetName).toList();
       const woodland = [QuestwellMalePaperDoll.baseAsset,
-        QuestwellMaleWoodland.outfitAsset, QuestwellMalePaperDoll.identityAsset];
+        QuestwellMaleWoodland.outfitAsset, QuestwellMalePaperDoll.baseAsset];
       expect(assets(), [...woodland, ...woodland]);
       for (final stage in ['Body only', 'Outfit', 'Robe', 'Woodland']) {
         await tester.tap(find.widgetWithText(ChoiceChip, stage));
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
-        expect(body, findsNWidgets(2));
+        expect(body, findsNWidgets(stage == 'Body only' ? 2 : 4));
         expect(tester.getRect(body.first), bounds);
       }
       expect(assets(), [...woodland, ...woodland]);

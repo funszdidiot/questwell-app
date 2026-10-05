@@ -1,5 +1,13 @@
 # Questwell Production Dashboard
 
+## Male neckline renderer — 2026-10-05
+
+**QA.** Extending the verified legacy head renderer to all male robe and Everyday
+states. Uses original locked body head pixels at unchanged registration; primary
+body remains whole and unclipped. All artwork and eligibility remain unchanged.
+Pending full CI, development deployment and actual five-class / Everyday runtime QA.
+No founder blocker and no new art lock.
+
 ## Active garment correction — 2026-10-05 America/Chicago
 
 **Coats: DEV DEPLOYED / repair technically verified.** All three Harvest Coat v8

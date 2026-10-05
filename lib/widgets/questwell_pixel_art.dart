@@ -366,8 +366,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
                   child: _assetLayer(QuestwellNeutralPaperDoll.identityAsset))
               : _assetLayer(QuestwellNeutralPaperDoll.identityAsset)
           else if (paperDollMale && (!legacyChest || harvestCoat))
-            legacyChest ? const QuestwellLegacyMaleIdentity()
-                : _assetLayer(QuestwellMalePaperDoll.identityAsset)
+            const QuestwellMaleIdentity()
           else if (modular) ClipPath(clipper: classOverlay != null
               ? ScoutWardrobeClipper(body, 'identityHead')
               : CleanBaseClipper(body, 'identity'),
@@ -388,8 +387,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               ClipPath(clipper: QuestwellCloakHairClipper(body),
                 child: _assetLayer(QuestwellNeutralPaperDoll.identityAsset))
             else if (paperDollMale)
-              legacyChest ? const QuestwellLegacyMaleIdentity()
-                : _assetLayer(QuestwellMalePaperDoll.identityAsset)
+              const QuestwellMaleIdentity()
             else if (paperDollFemale)
               _assetLayer(QuestwellScoutWardrobeFoundation.femaleIdentityAsset),
           ],

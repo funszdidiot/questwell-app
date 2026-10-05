@@ -47,7 +47,7 @@ void main() {
           .toList();
       const body = QuestwellMalePaperDoll.baseAsset;
       const outfit = QuestwellMalePaperDoll.everydayAsset;
-      const identity = QuestwellMalePaperDoll.identityAsset;
+      const identity = QuestwellMalePaperDoll.baseAsset;
       const robe = [
         QuestwellMalePaperDoll.robeRearAsset,
         body,
@@ -75,8 +75,8 @@ void main() {
       expect(layers(), robe);
       for (final clip in tester.widgetList<ClipPath>(find.descendant(
           of: find.byType(QuestwellMalePaperDoll), matching: find.byType(ClipPath)))) {
-        expect(clip.clipper, isA<MaleRobeUnderlayClipper>());
-        expect((clip.child! as Image).image, const AssetImage(outfit));
+        expect(clip.clipper, anyOf(isA<MaleRobeUnderlayClipper>(), isA<MaleIdentityClipper>()));
+        expect((clip.child! as Image).image, AssetImage(clip.clipper is MaleIdentityClipper ? body : outfit));
       }
       expect(find.ancestor(of: bodyImage.first, matching: find.byType(ClipPath)), findsNothing);
       for (final type in [ClipRect, Transform, ColorFiltered]) {

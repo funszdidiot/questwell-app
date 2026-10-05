@@ -17,7 +17,6 @@ class QuestwellMaleWoodland extends StatelessWidget {
           for (final asset in [
             QuestwellMalePaperDoll.baseAsset,
             outfitAsset,
-            QuestwellMalePaperDoll.identityAsset,
           ])
             Image.asset(
               asset,
@@ -26,6 +25,7 @@ class QuestwellMaleWoodland extends StatelessWidget {
               filterQuality: FilterQuality.high,
               gaplessPlayback: true,
             ),
+          const QuestwellMaleIdentity(),
         ],
       );
 }

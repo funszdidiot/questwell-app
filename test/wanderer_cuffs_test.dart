@@ -74,7 +74,7 @@ void main() {
           expect(images.any((path) => path.contains('wanderer_coat_male_short_')), isFalse);
         } else if (body == 'male') {
           expect(images, contains(QuestwellMalePaperDoll.baseAsset));
-          expect(find.byType(QuestwellLegacyMaleIdentity), findsWidgets);
+          expect(find.byType(QuestwellMaleIdentity), findsWidgets);
           expect(images.any((path) => path.contains('wanderer_coat_male_short_')), isFalse);
           expect(images, isNot(contains(QuestwellMalePaperDoll.robeAsset('wanderer', 'front'))));
         } else if (body == 'female' && chest == null) {

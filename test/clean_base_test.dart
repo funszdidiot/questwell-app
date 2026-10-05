@@ -210,7 +210,7 @@ void main() {
         expect(defaultImages, containsAll([
           QuestwellMalePaperDoll.baseAsset,
           QuestwellMalePaperDoll.everydayAsset,
-          QuestwellMalePaperDoll.identityAsset,
+          QuestwellMalePaperDoll.baseAsset,
         ]));
       }
       await render({'chest':'starter-business-suit'});
