@@ -123,6 +123,10 @@ void main() {
       find.text('Room preview unavailable for this item.'),
       findsOneWidget,
     );
+    final message = tester.widget<Text>(
+      find.text('Room preview unavailable for this item.'),
+    );
+    expect(message.style?.color, const Color(0xFFF1E4C9));
     expect(find.byType(QuestwellHearthPixelScene), findsNothing);
     expect(tester.takeException(), isNull);
   });
