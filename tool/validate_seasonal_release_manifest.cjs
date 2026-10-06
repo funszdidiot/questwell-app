@@ -190,6 +190,10 @@ for (const [index, item] of (manifest.items || []).entries()) {
         if (typeof render.visible_base !== 'number' || render.visible_base <= 0 || render.visible_base > 1) fail(prefix + '.hearth.render.visible_base must be in (0,1]');
         if (!Number.isInteger(render.asset_revision) || render.asset_revision < 1) fail(prefix + '.hearth.render.asset_revision must be >= 1');
 
+        const wallProfile = ['wall_art_side','wall_art_center'].includes(item.hearth.profile_key);
+        if (wallProfile !== (render.render_kind === 'wall_art_sprite')) {
+          fail(prefix + ' wall_art profiles and wall_art_sprite must be paired');
+        }
         if (render.render_kind === 'floor_sprite' && item.hearth.profile_key !== 'floor_rug') {
           warn(prefix + ' uses floor_sprite outside floor_rug profile');
         }
@@ -225,9 +229,18 @@ for (const [index, item] of (manifest.items || []).entries()) {
       const supportedBodies = Array.isArray(wearable.supported_bodies)
         ? wearable.supported_bodies
         : [];
+      if (!Array.isArray(wearable.supported_bodies) || !supportedBodies.length ||
+          new Set(supportedBodies).size !== supportedBodies.length) {
+        fail(prefix + '.wearable.supported_bodies must be a nonempty unique array');
+      }
       const assetsByBody = object(wearable.assets_by_body)
         ? wearable.assets_by_body
         : {};
+      for (const body of Object.keys(assetsByBody)) {
+        if (!supportedBodies.includes(body)) {
+          fail(prefix + '.wearable.assets_by_body contains undeclared body: ' + body);
+        }
+      }
       if (supportedBodies.length && !Object.keys(assetsByBody).length) {
         fail(prefix + '.wearable.assets_by_body is required for wearable review assets');
       }

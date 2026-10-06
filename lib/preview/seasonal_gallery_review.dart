@@ -111,7 +111,7 @@ class _SeasonalWearableSpec {
         ? (json['supported_bodies'] as List)
               .map((value) => value.toString())
               .toSet()
-        : assets.keys.toSet();
+        : <String>{};
     return _SeasonalWearableSpec(
       templateId: json['template_id']?.toString(),
       renderMode: json['render_mode']?.toString(),
