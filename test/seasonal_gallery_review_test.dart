@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../lib/preview/seasonal_gallery_review.dart';
@@ -38,6 +39,9 @@ Future<void> pumpUntilFound(
 }
 
 void main() {
+  // Do not carry a cached asset Future between separate fake-async test zones.
+  setUp(() => rootBundle.evict('assets/jsons/seasonal_review_fixture.json'));
+
   testWidgets('seasonal gallery loads manifest and reviews Hearth candidates', (
     tester,
   ) async {
