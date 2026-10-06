@@ -315,6 +315,41 @@ try {
     }
   }
   onboardingTests('regressions');
+  const bossCreationTests = phase => {
+    const result = spawnSync(process.execPath, [join(source, 'boss-creation.mjs')], {
+      input: JSON.stringify({status, phase}), env, encoding: 'utf8', timeout: 120000,
+      maxBuffer: 1024 * 1024,
+    });
+    if (result.stdout) console.log(redact(result.stdout));
+    if (result.stderr) console.error(redact(result.stderr));
+    if (result.status !== 0) throw new Error(`Boss creation ${phase} failed`);
+  };
+  bossCreationTests('baseline');
+  const bossCreationMigration = '20261006022803_retry_safe_boss_creation.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', bossCreationMigration), join(workdir, 'supabase/migrations', bossCreationMigration));
+  run(['migration', 'up', '--local']);
+  run(['db', 'query', '--local', '--file', join(source, 'boss-creation-contract.sql')]);
+  console.log(run(['migration', 'list', '--local']));
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
+  console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
+  for (const [table, expression] of [
+    ['boss_battles', "title <> 'Synthetic retry boss'"],
+    ['boss_steps', "title <> 'Second synthetic step'"],
+  ]) {
+    run(['db', 'query', '--local', `alter table public.${table} add constraint ci_boss_creation_failure check (${expression}) not valid;`]);
+    try {
+      bossCreationTests('rollback');
+      run(['db', 'query', '--local', `do $$ begin
+        if exists (select 1 from private.boss_creation_requests) then
+          raise exception 'Failed boss creation left a private receipt';
+        end if;
+      end $$;`]);
+      console.log(`PASS boss creation: ${table} failure rolls back boss, steps and receipt`);
+    } finally {
+      run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_boss_creation_failure;`]);
+    }
+  }
+  bossCreationTests('regressions');
   run(['db', 'query', '--local', '--file', join(source, 'boss-concurrency-fixture.sql')]);
   const concurrency = spawnSync(process.execPath, [join(source, 'boss-concurrency.mjs')], {
     input: JSON.stringify({status, phase: 'characterization'}), env, encoding: 'utf8',
