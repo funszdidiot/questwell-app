@@ -1,10 +1,7 @@
-import '/widgets/questwell_account_settings.dart';
-import '/services/questwell_account_service.dart';
+import '/pages/account_settings_page/account_settings_page_widget.dart';
 import '/widgets/questwell_app_navigation.dart';
 import '/widgets/questwell_equipment_swap.dart';
-import '/auth/supabase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/auth_page/auth_page_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_cosmetic_service.dart';
 import '/widgets/questwell_pixel_art.dart';
@@ -30,7 +27,6 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
   bool _savingArchetype = false;
   bool _savingBodyType = false;
   bool _claimingMastery = false;
-  bool _signingOut = false;
   String? _avatarBodyOverride;
 
   @override
@@ -314,22 +310,6 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
         cosmetic.requiredArchetype != currentArchetype;
   }
 
-  Future<void> _signOut() async {
-    if (_signingOut) return;
-    setState(() => _signingOut = true);
-    try {
-      await authManager.signOut();
-      if (!mounted) return;
-      GoRouter.of(context).clearRedirectLocation();
-      context.goNamed(AuthPageWidget.routeName);
-    } catch (_) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not sign out. Please try again.')),
-      );
-    } finally {
-      if (mounted) setState(() => _signingOut = false);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -342,20 +322,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
         backgroundColor: const Color(0xFF111827),
         actions: [
           TextButton.icon(
-            onPressed: _signingOut ? null : () => Navigator.of(context).push<void>(
-              MaterialPageRoute<void>(
-                builder: (_) => QuestwellAccountSettings(
-                  onSignOut: _signOut,
-                  onDelete: QuestwellAccountService.deleteAccount,
-                  onDeleted: () async {
-                    await QuestwellAccountService.clearLocalAccount();
-                    if (!mounted) return;
-                    GoRouter.of(context).clearRedirectLocation();
-                    context.goNamed(AuthPageWidget.routeName);
-                  },
-                ),
-              ),
-            ),
+            onPressed: () => context.pushNamed(AccountSettingsPageWidget.routeName),
             icon: const Icon(Icons.settings_outlined, size: 20),
             label: const Text('Account settings'),
             style: TextButton.styleFrom(

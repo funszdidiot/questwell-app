@@ -28,8 +28,9 @@ roll out.” It does not authorize changing auth, deletion safeguards or rollout
 - `test/account_settings_test.dart`: narrow-screen/2x text, opening and back,
   pending sign-out exclusion and deletion cancellation.
 
-The existing `_signOut` callback, auth manager, account service and
-`questwell_delete_account.dart` stay unchanged. The same deletion callback and
+The existing `_signOut` callback moves to the route owner without changing its
+logic. The auth manager, account service and `questwell_delete_account.dart`
+stay unchanged. The same deletion callback and
 post-deletion cleanup/navigation are passed through. Typed DELETE, pending and
 failure handling remain in the original confirmation dialog. Merely opening
 settings does not call either account operation. No real account operation is
@@ -57,16 +58,27 @@ and settle the lazy list before locating/tapping its lower controls; those were
 test-fixture failures, not deletion defects. The auth implementation, deletion
 widget and service match the base byte-for-byte.
 
-Current Flutter documentation verified Navigator.push, MaterialPageRoute and
-AppBar; the installed pinned GoRouter source verifies the navigation APIs.
+The installed pinned GoRouter 12.1.3 source verifies named push, route
+information serialization and restoration; the AppBar uses the existing Flutter
+API. The raw Navigator route was replaced following AI review.
 Local release web build passed (`isolated_test`, `lib/main_preview.dart`):
 `Compiling ... 49.9s` and `✓ Built build/web`. It was not uploaded or served. Initial hosted CI passed on `2ee3e24599da5ea0a0442d04f128cd5d9d4d78f7`.
 Fresh CI and AI review are required on the head incorporating PRs #39 and #41.
-The refreshed merge is conflict-free; the account UI implementation is unchanged.
+The refreshed merge is conflict-free. AI review identified the unregistered
+Navigator route as a web history/refresh defect. The correction registers
+`/account` through the existing GoRouter configuration and opens it by name.
+A route owner now holds the existing account callbacks; the presentation widget
+remains reusable. Direct URL entry provides a Back action to Adventurer.
+The route follows the existing Adventurer routing policy; auth services and
+backend authorization are unchanged. Local focused tests: **12 passed**,
+including production route registration, serialized browser Back/Forward
+restoration, direct URL restoration, and successful simulated operation routing.
+The account suite is also added to the existing Chrome CI step. Fresh CI and
+AI review of this correction remain required.
 An additional offline screenshot attempt could not complete because the existing
 font setup does not bundle Roboto-Bold. No visual acceptance is inferred from
 that attempt; normal application font loading was not changed. No real sign-out, user deletion, hosted persistence,
-physical iOS/Android, browser-history, screen-reader or founder visual acceptance
+physical iOS/Android, signed-in hosted browser-history, screen-reader or founder visual acceptance
 is claimed. No RLS, Edge Function or live-account changes were made.
 
 ## Rollout protection and rollback

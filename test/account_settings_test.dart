@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:go_router/go_router.dart';
+import 'package:project_momentum/flutter_flow/nav/nav.dart';
+import 'package:project_momentum/pages/account_settings_page/account_settings_page_widget.dart';
 import 'package:project_momentum/widgets/questwell_account_settings.dart';
 
 void main() {
@@ -158,6 +159,108 @@ void main() {
     expect(find.byType(QuestwellAccountSettings), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+  test('production router registers the account settings URL', () {
+    final router = createRouter(AppStateNotifier.instance);
+    addTearDown(router.dispose);
+    final match =
+        router.configuration.findMatch(AccountSettingsPageWidget.routePath);
+    expect(match.isError, isFalse);
+    expect((match.last.route as GoRoute).name, AccountSettingsPageWidget.routeName);
+  });
+
+  GoRouter settingsRouter({String initialLocation = '/adventurer'}) => GoRouter(
+        initialLocation: initialLocation,
+        routes: [
+          GoRoute(
+            path: '/adventurer',
+            name: 'AdventurerPage',
+            builder: (context, state) => Scaffold(
+                body: TextButton(
+              onPressed: () =>
+                  context.pushNamed(AccountSettingsPageWidget.routeName),
+              child: const Text('Account settings'),
+            )),
+          ),
+          GoRoute(
+            path: AccountSettingsPageWidget.routePath,
+            name: AccountSettingsPageWidget.routeName,
+            builder: (context, state) => QuestwellAccountSettings(
+              onSignOut: () async {},
+              onDelete: () async {},
+              onDeleted: () {},
+              onBack: () {
+                if (context.canPop()) {
+                  context.pop();
+                } else {
+                  context.goNamed('AdventurerPage');
+                }
+              },
+            ),
+          ),
+        ],
+      );
+
+  testWidgets(
+      'settings URL participates in browser back and forward restoration',
+      (tester) async {
+    final previousOption = GoRouter.optionURLReflectsImperativeAPIs;
+    GoRouter.optionURLReflectsImperativeAPIs = true;
+    addTearDown(
+        () => GoRouter.optionURLReflectsImperativeAPIs = previousOption);
+    final router = settingsRouter();
+    addTearDown(router.dispose);
+    await tester.pumpWidget(
+        MaterialApp.router(theme: ThemeData.dark(), routerConfig: router));
+    await tester.pumpAndSettle();
+    final adventurerLocation =
+        router.routeInformationParser.restoreRouteInformation(
+      router.routerDelegate.currentConfiguration,
+    )!;
+    await tester.tap(find.text('Account settings'));
+    await tester.pumpAndSettle();
+    final settingsLocation =
+        router.routeInformationParser.restoreRouteInformation(
+      router.routerDelegate.currentConfiguration,
+    )!;
+    expect(settingsLocation.uri.path, AccountSettingsPageWidget.routePath);
+    expect(find.byType(QuestwellAccountSettings), findsOneWidget);
+
+    // Feed the same serialized route information returned by browser history.
+    await router.routeInformationProvider
+        .didPushRouteInformation(adventurerLocation);
+    await tester.pumpAndSettle();
+    expect(find.byType(QuestwellAccountSettings), findsNothing);
+    expect(router.routeInformationProvider.value.uri.path, '/adventurer');
+    await router.routeInformationProvider
+        .didPushRouteInformation(settingsLocation);
+    await tester.pumpAndSettle();
+    expect(find.byType(QuestwellAccountSettings), findsOneWidget);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    expect(find.text('Account settings'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+      'direct settings URL restores after refresh and provides a way back',
+      (tester) async {
+    final router =
+        settingsRouter(initialLocation: AccountSettingsPageWidget.routePath);
+    addTearDown(router.dispose);
+    await tester.pumpWidget(
+        MaterialApp.router(theme: ThemeData.dark(), routerConfig: router));
+    await tester.pumpAndSettle();
+    expect(find.byType(QuestwellAccountSettings), findsOneWidget);
+    expect(router.routeInformationProvider.value.uri.path,
+        AccountSettingsPageWidget.routePath);
+    expect(router.canPop(), isFalse);
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+    expect(find.text('Account settings'), findsOneWidget);
+    expect(find.byType(QuestwellAccountSettings), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   for (final delete in [false, true]) {
     testWidgets(
       'account navigation removes settings after ${delete ? 'deletion' : 'sign-out'}',
@@ -170,21 +273,23 @@ void main() {
               builder: (context, state) => Scaffold(
                 body: TextButton(
                   child: const Text('Account settings'),
-                  onPressed: () => Navigator.of(context).push<void>(
-                    MaterialPageRoute<void>(
-                      builder: (_) => QuestwellAccountSettings(
-                        onSignOut: () async {
-                          operations++;
-                          context.goNamed('signed-out');
-                        },
-                        onDelete: () async {
-                          operations++;
-                        },
-                        onDeleted: () => context.goNamed('signed-out'),
-                      ),
-                    ),
-                  ),
+                  onPressed: () =>
+                      context.pushNamed(AccountSettingsPageWidget.routeName),
                 ),
+              ),
+            ),
+            GoRoute(
+              path: AccountSettingsPageWidget.routePath,
+              name: AccountSettingsPageWidget.routeName,
+              builder: (context, state) => QuestwellAccountSettings(
+                onSignOut: () async {
+                  operations++;
+                  context.goNamed('signed-out');
+                },
+                onDelete: () async {
+                  operations++;
+                },
+                onDeleted: () => context.goNamed('signed-out'),
               ),
             ),
             GoRoute(
