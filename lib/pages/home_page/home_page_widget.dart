@@ -710,7 +710,7 @@ const SizedBox(height: 2),
                     return Column(
                       children: [
                         for (var index = 0; index < visibleTasks.length; index++) ...[
-                          _QuestCard(
+                          QuestwellHomeQuestCard(
                             task: visibleTasks[index],
                             frictionLabel: _frictionLabel(visibleTasks[index].frictionLevel),
                             completing: _completingTask,
@@ -764,8 +764,8 @@ const SizedBox(height: 2),
 }
 
 
-class _QuestCard extends StatelessWidget {
-  const _QuestCard({
+class QuestwellHomeQuestCard extends StatelessWidget {
+  const QuestwellHomeQuestCard({
     required this.task,
     required this.frictionLabel,
     required this.completing,
