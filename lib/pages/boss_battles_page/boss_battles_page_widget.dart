@@ -319,6 +319,17 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                               }
                               if (context.mounted) {
                                 Navigator.of(context).pop(battleId);
+                              } else if (mounted) {
+                                // Back/swipe may close the form before a confirmed write.
+                                setState(() {
+                                  _createdBattleId = battleId;
+                                  _refresh();
+                                });
+                                try {
+                                  await _future;
+                                } catch (_) {
+                                  // The board retains its visible refresh error.
+                                }
                               }
                             } catch (error) {
                               uncertain = error is QuestwellNetworkException;
