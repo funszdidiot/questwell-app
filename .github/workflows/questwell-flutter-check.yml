@@ -16,9 +16,18 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+
+      - name: Install locked workflow validation tools
+        run: |
+          npm ci --ignore-scripts --prefix tool/ci
+          git diff --exit-code -- tool/ci/package.json tool/ci/package-lock.json
+      - name: Enforce workflow supply-chain policy
+        run: |
+          node --test tool/qa/workflow_security_test.cjs
+          node tool/ci/workflow-security.cjs
 
       - name: Verify approved and candidate class assets
         run: python3 tool/verify_avatar_assets.py
@@ -35,10 +44,9 @@ jobs:
 
 
       - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+        uses: ./.github/actions/flutter
         with:
           flutter-version: '3.44.6'
-          cache: true
 
       - name: Install locked dependencies
         shell: bash
@@ -84,14 +92,13 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout without shared test build state
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - name: Set up pinned Flutter
-        uses: subosito/flutter-action@v2
+        uses: ./.github/actions/flutter
         with:
           flutter-version: '3.44.6'
-          cache: true
       - name: Install locked dependencies
         run: flutter pub get --enforce-lockfile
       - name: Test coverage report failure detection
@@ -113,7 +120,7 @@ jobs:
           cat coverage/critical-paths.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Retain coverage evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: critical-client-coverage-${{ github.sha }}
           path: |
@@ -135,14 +142,13 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout without stored credentials
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - name: Set up pinned Flutter
-        uses: subosito/flutter-action@v2
+        uses: ./.github/actions/flutter
         with:
           flutter-version: '3.44.6'
-          cache: true
       - name: Record native toolchain
         run: |
           xcodebuild -version
