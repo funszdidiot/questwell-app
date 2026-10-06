@@ -279,6 +279,42 @@ try {
     run(['db', 'query', '--local', 'alter table public.tasks drop constraint ci_creation_failure;']);
   }
   creationTests('regressions');
+  const onboardingTests = phase => {
+    const result = spawnSync(process.execPath, [join(source, 'onboarding.mjs')], {
+      input: JSON.stringify({status, phase}), env, encoding: 'utf8', timeout: 120000,
+      maxBuffer: 1024 * 1024,
+    });
+    if (result.stdout) console.log(redact(result.stdout));
+    if (result.stderr) console.error(redact(result.stderr));
+    if (result.status !== 0) throw new Error(`Onboarding ${phase} failed`);
+  };
+  onboardingTests('baseline');
+  const onboardingMigration = '20261006013437_atomic_starter_onboarding.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', onboardingMigration), join(workdir, 'supabase/migrations', onboardingMigration));
+  run(['migration', 'up', '--local']);
+  run(['db', 'query', '--local', '--file', join(source, 'onboarding-contract.sql')]);
+  console.log(run(['migration', 'list', '--local']));
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
+  console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
+  // Exercise failure before and after task insertion; neither may strand setup.
+  for (const [table, expression] of [
+    ['tasks', "title <> 'Reply to one email'"],
+    ['users', 'not onboarding_completed'],
+  ]) {
+    run(['db', 'query', '--local', `alter table public.${table} add constraint ci_onboarding_failure check (${expression}) not valid;`]);
+    try {
+      onboardingTests('rollback');
+      run(['db', 'query', '--local', `do $$ begin
+        if exists (select 1 from private.onboarding_results) then
+          raise exception 'Failed onboarding left a private receipt';
+        end if;
+      end $$;`]);
+      console.log(`PASS onboarding: ${table} failure rolls back task, receipt and profile together`);
+    } finally {
+      run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_onboarding_failure;`]);
+    }
+  }
+  onboardingTests('regressions');
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();

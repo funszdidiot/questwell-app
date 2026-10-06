@@ -9,6 +9,8 @@ import '/services/questwell_task_service.dart';
 import '/services/questwell_progression.dart';
 import '/services/questwell_milestone_service.dart';
 import '/services/questwell_cosmetic_service.dart';
+import '/services/questwell_onboarding_session.dart';
+import '/widgets/questwell_onboarding_panel.dart';
 import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_next_reward.dart';
@@ -37,7 +39,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   bool _campfireMode = false;
   bool _changingEnergyMode = false;
   bool _onboardingCompleted = true;
-  bool _creatingStarterQuest = false;
+  QuestwellOnboardingSession? _onboardingSession;
   late Future<QuestwellCosmeticsSnapshot> _homeSnapshotFuture;
   late Future<ChronicleSnapshot> _momentumFuture;
 
@@ -76,68 +78,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     });
   }
 
-  Future<void> _finishOnboarding() async {
-    try {
-      await QuestwellCosmeticService.completeOnboarding();
-      if (!mounted) return;
-      setState(() {
-        _onboardingCompleted = true;
-        _loadHomeData();
-      });
-    } catch (_) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Could not finish setup. Please try again.'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+  Future<QuestwellOnboardingResult> _finishOnboarding(String? starterKey) {
+    if (_onboardingSession?.ownerId != currentUserUid) {
+      _onboardingSession = QuestwellCosmeticService.newOnboardingSession();
     }
+    final session = _onboardingSession ??=
+        QuestwellCosmeticService.newOnboardingSession();
+    return session.finish(starterKey);
   }
 
-  Future<void> _startWithQuest({
-    required String title,
-    required int friction,
-    required int xp,
-    required int coins,
-  }) async {
-    if (_creatingStarterQuest) return;
-    setState(() => _creatingStarterQuest = true);
-
-    try {
-      await TasksTable().insert({
-        'user_id': currentUserUid,
-        'title': title,
-        'friction_level': friction,
-        'xp_value': xp,
-        'coin_value': coins,
-        'status': 'open',
-      });
-      await QuestwellCosmeticService.completeOnboarding();
-
-      if (!mounted) return;
-      setState(() {
-        _onboardingCompleted = true;
-        _loadHomeData();
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('First quest added. Your adventure has started.'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-    } catch (_) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Could not add that starter quest. Please try again.'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-    } finally {
-      if (mounted) setState(() => _creatingStarterQuest = false);
-    }
+  void _onboardingFinished() {
+    if (!mounted) return;
+    setState(() {
+      _onboardingCompleted = true;
+      _loadHomeData();
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Setup complete. Your quest board is ready.'),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   Future<void> _setCampfireMode(bool enabled) async {
@@ -546,89 +507,10 @@ const SizedBox(height: 2),
                 ),
                 if (!_onboardingCompleted) ...[
                   const SizedBox(height: 18),
-                  QuestwellRetroPanel(
-                    padding: const EdgeInsets.all(16),
-                    accent: const Color(0xFFF1C75B),
-                    background: const Color(0xFF1A1714),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.auto_awesome, color: theme.primary),
-                            const SizedBox(width: 9),
-                            Expanded(
-                              child: Text(
-                                'Welcome to Questwell',
-                                style: theme.titleLarge.override(
-                                  font: GoogleFonts.pressStart2p(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  fontSize: 11,
-                                  lineHeight: 1.5,
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 7),
-                        Text(
-                          'Pick one tiny real-life win. Completing it earns your first XP and coins.',
-                          style: theme.bodyMedium.override(
-                            font: GoogleFonts.roboto(),
-                            color: theme.secondaryText,
-                            letterSpacing: 0,
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: [
-                            OutlinedButton(
-                              onPressed: _creatingStarterQuest
-                                  ? null
-                                  : () => _startWithQuest(
-                                        title: 'Reply to one email',
-                                        friction: 1,
-                                        xp: 10,
-                                        coins: 5,
-                                      ),
-                              child: const Text('Reply to one email'),
-                            ),
-                            OutlinedButton(
-                              onPressed: _creatingStarterQuest
-                                  ? null
-                                  : () => _startWithQuest(
-                                        title: 'Clear five desktop files',
-                                        friction: 1,
-                                        xp: 10,
-                                        coins: 5,
-                                      ),
-                              child: const Text('Clear five files'),
-                            ),
-                            OutlinedButton(
-                              onPressed: _creatingStarterQuest
-                                  ? null
-                                  : () => _startWithQuest(
-                                        title: 'Do the thing I keep avoiding',
-                                        friction: 3,
-                                        xp: 35,
-                                        coins: 18,
-                                      ),
-                              child: const Text('Do the avoided thing'),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        TextButton(
-                          onPressed:
-                              _creatingStarterQuest ? null : _finishOnboarding,
-                          child: const Text('I already know what I want to do'),
-                        ),
-                      ],
-                    ),
+                  QuestwellOnboardingPanel(
+                    key: ValueKey('onboarding-$currentUserUid'),
+                    finish: _finishOnboarding,
+                    onCompleted: _onboardingFinished,
                   ),
                 ],
                 const SizedBox(height: 18),
@@ -934,4 +816,3 @@ class _RewardChip extends StatelessWidget {
     );
   }
 }
-
