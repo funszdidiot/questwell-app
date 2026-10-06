@@ -52,7 +52,7 @@ class QuestwellBossService {
       stepsByBoss[bossId]!.add(QuestwellBossStep.fromJson(row));
     }
 
-    return battleRows
+    final battles = battleRows
         .map(
           (row) => QuestwellBossBattle.fromJson(
             row,
@@ -60,6 +60,8 @@ class QuestwellBossService {
           ),
         )
         .toList();
+    _creationRecovery.acknowledge(battles.map((battle) => battle.id));
+    return battles;
   }
 
   static Future<String> createBattle({

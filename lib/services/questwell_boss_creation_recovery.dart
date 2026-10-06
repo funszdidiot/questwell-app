@@ -4,6 +4,17 @@ import '/backend/supabase/questwell_network.dart';
 /// This is session-local protection; durable server idempotency is still needed.
 class QuestwellBossCreationRecovery {
   final _requests = <String, Future<String>>{};
+  final _confirmed = <String, String>{};
+
+  void acknowledge(Iterable<String> visibleBattleIds) {
+    final visible = visibleBattleIds.toSet();
+    for (final key in _confirmed.keys.toList()) {
+      if (visible.contains(_confirmed[key])) {
+        _requests.remove(key);
+        _confirmed.remove(key);
+      }
+    }
+  }
 
   Future<String> create({
     required String key,
@@ -11,7 +22,13 @@ class QuestwellBossCreationRecovery {
     required bool Function(Object) rejected,
     Future<String> Function(Future<String>)? wait,
   }) async {
-    final request = _requests.putIfAbsent(key, () => Future<String>.sync(send));
+    final request = _requests.putIfAbsent(
+      key,
+      () => Future<String>.sync(send).then((result) {
+        if (result.trim().isNotEmpty) _confirmed[key] = result;
+        return result;
+      }),
+    );
     try {
       final result = await (wait != null
           ? wait(request)
@@ -21,7 +38,7 @@ class QuestwellBossCreationRecovery {
           'The server did not confirm your battle. Check your battles before trying again.',
         );
       }
-      if (identical(_requests[key], request)) _requests.remove(key);
+      // Retain success until a list read observes this specific battle.
       return result;
     } catch (error) {
       // Only a definite server rejection permits another write. A lost response

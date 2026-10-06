@@ -81,4 +81,21 @@ void main() {
     pending.complete('A-battle');
     expect(await first, 'A-battle');
   });
+  test(
+    'success remains reusable until a read observes its specific battle',
+    () async {
+      final recovery = QuestwellBossCreationRecovery();
+      var writes = 0;
+      Future<String> send() async => 'battle-${++writes}';
+      Future<String> create() =>
+          recovery.create(key: 'A/draft', send: send, rejected: (_) => false);
+      expect(await create(), 'battle-1');
+      recovery.acknowledge(['unrelated-battle']);
+      expect(await create(), 'battle-1');
+      expect(writes, 1);
+      recovery.acknowledge(['battle-1']);
+      expect(await create(), 'battle-2');
+      expect(writes, 2);
+    },
+  );
 }
