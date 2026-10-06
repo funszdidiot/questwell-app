@@ -60,6 +60,8 @@ Future<void> openPreview(
       ),
     ),
   );
+  await tester.ensureVisible(find.text('Preview').first);
+  await tester.pump();
   await tester.tap(find.text('Preview').first);
   await tester.pump();
   await tester.pump(const Duration(milliseconds: 400));
