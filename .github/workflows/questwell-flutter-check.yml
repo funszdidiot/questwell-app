@@ -52,8 +52,11 @@ jobs:
           git diff --exit-code -- pubspec.yaml pubspec.lock
           sha256sum pubspec.lock
 
-      - name: Analyze
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+      - name: Test quality gate failure detection
+        run: python3 -m unittest discover -s tool/qa -p quality_gate_test.py -v
+
+      - name: Enforce analyzer and formatting baseline
+        run: python3 tool/quality_gate.py
 
       - name: Run complete Flutter regression suite
         run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
