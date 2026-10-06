@@ -59,7 +59,7 @@ List<Map<String, dynamic>> page(
   final q = request.url.queryParameters;
   expect(q['user_id'], 'eq.owner-a');
   expect(q['status'], 'eq.open');
-  expect(q['order'], 'created_at.desc,id.desc');
+  expect(q['order'], 'created_at.desc.nullslast,id.desc.nullslast');
   expect(q.containsKey('offset'), isFalse);
   var eligible = rows;
   if (q['or'] != null) {
