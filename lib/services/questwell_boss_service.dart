@@ -71,18 +71,7 @@ class QuestwellBossService {
     if (uid == null) throw StateError('Authentication required.');
     return _creationRecovery.create(
       key: jsonEncode([uid, title, steps, bossType]),
-      rejected: (error) =>
-          error is PostgrestException &&
-          const {
-            'P0001',
-            '42501',
-            '23502',
-            '23514',
-            '22023',
-            'PGRST301',
-            'PGRST302',
-            'PGRST303',
-          }.contains(error.code),
+      rejected: (error) => error is PostgrestException,
       send: () async {
         final response = await SupaFlow.client.rpc(
           'create_boss_battle',
