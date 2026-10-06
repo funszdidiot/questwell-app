@@ -168,4 +168,23 @@ void main() {
       findsOneWidget,
     );
   });
+  testWidgets('closing a pending form safely ignores a late failure', (
+    tester,
+  ) async {
+    final pending = Completer<String>();
+    await open(
+      tester,
+      ({required title, required steps, bossType = 'inbox_hydra'}) =>
+          pending.future,
+    );
+    await fill(tester, 2);
+    await tester.tap(find.text('Start Boss Battle'));
+    await tester.pump();
+    Navigator.of(tester.element(find.byType(BottomSheet))).pop();
+    await tester.pumpAndSettle();
+    pending.completeError(StateError('late failure'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.byType(BottomSheet), findsNothing);
+  });
 }

@@ -161,12 +161,14 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
     var bossType = 'inbox_hydra';
     var submitting = false;
     String? errorMessage;
+    ModalRoute<dynamic>? creationRoute;
 
     final created = await showModalBottomSheet<String>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
       builder: (sheetContext) {
+        creationRoute = ModalRoute.of(sheetContext);
         final theme = FlutterFlowTheme.of(sheetContext);
         return StatefulBuilder(
           builder: (context, setSheetState) => Padding(
@@ -320,6 +322,9 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       },
     );
 
+    // The pop result arrives before the sheet finishes its exit animation.
+    // Keep controllers alive until its overlay entries have been removed.
+    await creationRoute?.completed;
     titleController.dispose();
     for (final controller in stepControllers) {
       controller.dispose();
