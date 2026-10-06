@@ -58,6 +58,9 @@ jobs:
       - name: Run complete Flutter regression suite
         run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
 
+      - name: Verify open quest paging in Chrome
+        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --platform chrome test/open_task_list_test.dart
+
       - name: Build proposed development app without deploying
         if: github.event_name == 'pull_request' && github.base_ref == 'questwell-dev'
         run: flutter build web --release --dart-define=QUESTWELL_ENVIRONMENT=live_beta --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA"

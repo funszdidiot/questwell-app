@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/index.dart';
 import '/services/questwell_boss_service.dart';
 import '/services/questwell_task_service.dart';
+import '/services/questwell_open_task_list.dart';
 import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_quest_card.dart';
 import 'package:flutter/material.dart';
@@ -51,13 +52,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
   }
 
   void _refresh() {
-    _tasksFuture = TasksTable().queryRows(
-      queryFn: (q) => q
-          .eqOrNull('user_id', currentUserUid)
-          .eqOrNull('status', 'open')
-          .order('created_at', ascending: false),
-      limit: 50,
-    );
+    _tasksFuture = QuestwellOpenTaskList.loadCurrent();
     _bossFuture = QuestwellBossService.loadBattles();
   }
 
