@@ -247,6 +247,38 @@ try {
   if (deletion.stdout) console.log(redact(deletion.stdout));
   if (deletion.stderr) console.error(redact(deletion.stderr));
   if (deletion.status !== 0) throw new Error('Account deletion Edge/Auth/Storage regressions failed');
+  const creationTests = phase => {
+    const result = spawnSync(process.execPath, [join(source, 'task-creation.mjs')], {
+      input: JSON.stringify({status, phase}), env, encoding: 'utf8', timeout: 120000,
+      maxBuffer: 1024 * 1024,
+    });
+    if (result.stdout) console.log(redact(result.stdout));
+    if (result.stderr) console.error(redact(result.stderr));
+    if (result.status !== 0) throw new Error(`Task creation ${phase} failed`);
+  };
+  // Characterize the existing REST insert before installing the new boundary.
+  creationTests('baseline');
+  const creationMigration = '20261006005610_retry_safe_task_creation.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', creationMigration), join(workdir, 'supabase/migrations', creationMigration));
+  run(['migration', 'up', '--local']);
+  run(['db', 'query', '--local', '--file', join(source, 'task-creation-contract.sql')]);
+  console.log(run(['migration', 'list', '--local']));
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
+  console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
+  // A failure after receipt insertion must roll back that receipt too.
+  run(['db', 'query', '--local', "alter table public.tasks add constraint ci_creation_failure check (title <> 'Synthetic retry quest') not valid;"]);
+  try {
+    creationTests('rollback');
+    run(['db', 'query', '--local', `do $$ begin
+      if exists (select 1 from private.task_creation_requests) then
+        raise exception 'Failed task creation left a receipt';
+      end if;
+    end $$;`]);
+    console.log('PASS creation: downstream failure rolls back its private receipt');
+  } finally {
+    run(['db', 'query', '--local', 'alter table public.tasks drop constraint ci_creation_failure;']);
+  }
+  creationTests('regressions');
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();

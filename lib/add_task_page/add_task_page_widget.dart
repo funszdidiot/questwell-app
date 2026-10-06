@@ -1,5 +1,5 @@
-import '/auth/supabase_auth/auth_util.dart';
-import '/backend/supabase/supabase.dart';
+import '/services/questwell_task_creation.dart';
+import '/services/questwell_task_service.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_quest_card.dart';
@@ -12,7 +12,9 @@ export 'add_task_page_model.dart';
 class AddTaskPageWidget extends StatefulWidget {
   const AddTaskPageWidget({super.key, this.onCreate, this.onClose,
     this.editing = false, this.initialTitle = '', this.initialFriction = 0,
-    this.initialXp = 0, this.initialCoins = 0, this.onFinished});
+    this.initialXp = 0, this.initialCoins = 0, this.onFinished, this.creation});
+  /// Injectable submission boundary for transport tests; previews use onCreate.
+  final QuestwellTaskCreation? creation;
   /// Optional in-memory persistence for the development preview and tests.
   final Future<void> Function(String title, int friction, int xp, int coins)? onCreate;
   final VoidCallback? onClose;
@@ -33,6 +35,9 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _saving = false;
   String? _feedback;
+  QuestwellTaskCreation? _creation;
+  bool get _unconfirmed => _creation?.started ?? false;
+  bool get _fieldsLocked => _saving || _unconfirmed;
 
   @override
   void initState() {
@@ -73,29 +78,42 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
     }
 
     if (_saving) return;
-    setState(() { _saving = true; _feedback = null; });
+    setState(() {
+      _saving = true;
+      _feedback = null;
+    });
 
     try {
       if (widget.onCreate != null) {
-        await widget.onCreate!(title, _model.selectedFriction, _model.selectedXp, _model.selectedCoins);
+        await widget.onCreate!(
+          title,
+          _model.selectedFriction,
+          _model.selectedXp,
+          _model.selectedCoins,
+        );
       } else {
-      if (widget.editing) throw StateError('An edit requires a save handler.');
-      await TasksTable().insert({
-        'user_id': currentUserUid,
-        'title': title,
-        'friction_level': _model.selectedFriction,
-        'xp_value': _model.selectedXp,
-        'coin_value': _model.selectedCoins,
-        'status': 'open',
-      });
+        if (widget.editing) {
+          throw StateError('An edit requires a save handler.');
+        }
+        _creation ??= widget.creation ?? QuestwellTaskService.newCreation();
+        await _creation!.save(title, _model.selectedFriction);
       }
 
       if (mounted) _close(posted: true);
+    } on QuestwellCreationAccountChanged {
+      if (!mounted) return;
+      setState(
+        () => _feedback = 'Your account changed. Return to the quest board before posting another quest.',
+      );
     } catch (_) {
       if (!mounted) return;
-      setState(() => _feedback = widget.editing
-        ? 'Could not save changes. Try again, or return to the board to refresh this quest.'
-        : 'Could not add this quest. Please try again.');
+      setState(
+        () => _feedback = widget.editing
+            ? 'Could not save changes. Try again, or return to the board to refresh this quest.'
+            : _unconfirmed
+            ? 'Posting was not confirmed. Retry this same quest, or return to the board to check. Your quest may already be there.'
+            : 'Could not add this quest. Please try again.',
+      );
     } finally {
       if (mounted) setState(() => _saving = false);
     }
@@ -124,11 +142,13 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
     if (!_hasDraft) return true;
     return await showDialog<bool>(context: context, builder: (dialogContext) => AlertDialog(
       scrollable: true,
-      title: Text(widget.editing ? 'Discard quest changes?' : 'Leave this quest draft?'),
-      content: Text(widget.editing ? 'Your changes have not been saved.' : 'Your quest has not been posted yet.'),
+      title: Text(widget.editing ? 'Discard quest changes?' : _unconfirmed ? 'Check the quest board?' : 'Leave this quest draft?'),
+      content: Text(widget.editing ? 'Your changes have not been saved.' : _unconfirmed
+        ? 'Your quest may already be posted. Check the board before creating it again.'
+        : 'Your quest has not been posted yet.'),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('Keep editing')),
-        TextButton(onPressed: () => Navigator.pop(dialogContext, true), child: Text(widget.editing ? 'Discard changes' : 'Discard draft')),
+        TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: Text(_unconfirmed ? 'Keep draft' : 'Keep editing')),
+        TextButton(onPressed: () => Navigator.pop(dialogContext, true), child: Text(widget.editing ? 'Discard changes' : _unconfirmed ? 'Check board' : 'Discard draft')),
       ],
     )) == true;
   }
@@ -193,7 +213,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                 TextFormField(
                   controller: _model.taskTitleFieldTextController,
                   focusNode: _model.taskTitleFieldFocusNode,
-                  enabled: !_saving, minLines: 1, maxLines: 3,
+                  enabled: !_fieldsLocked, minLines: 1, maxLines: 3,
                   textCapitalization: TextCapitalization.sentences,
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
@@ -231,7 +251,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                 ]) SizedBox(width: width, child: _FrictionChoice(
                   selected: _model.selectedFriction == choice.$1,
                   title: choice.$2, subtitle: choice.$3, xp: choice.$4, coins: choice.$5, icon: choice.$6,
-                  onTap: _saving ? null : () => _selectFriction(choice.$1, choice.$4, choice.$5))),
+                  onTap: _fieldsLocked ? null : () => _selectFriction(choice.$1, choice.$4, choice.$5))),
               ]);
             }),
             const SizedBox(height: 22),
