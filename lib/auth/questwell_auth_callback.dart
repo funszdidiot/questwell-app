@@ -1,3 +1,5 @@
+import 'package:project_momentum/config/questwell_environment.dart';
+
 /// Captured before Supabase consumes the callback fragment during startup.
 /// Stores flags only; never retains tokens or server-provided error text.
 class QuestwellAuthCallback {
@@ -6,8 +8,7 @@ class QuestwellAuthCallback {
 
   static bool get needsAuthScreen => recovering || linkFailed;
 
-  static const appUrl = String.fromEnvironment('QUESTWELL_AUTH_RETURN_URL',
-      defaultValue: 'https://funszdidiot.github.io/questwell-app/');
+  static String get appUrl => QuestwellEnvironment.current.authReturnUrl;
   static String get recoveryUrl => Uri.parse(appUrl)
       .replace(queryParameters: {'recovery': 'true'}).toString();
 
