@@ -33,8 +33,11 @@ page failures and recovery. A specific microsecond/UUID-order case runs in both
 VM and Chrome. CI runs the full Flutter suite, targeted Chrome regression and
 release web compilation. Validation results are recorded in PR #34 and FIX_PLAN.
 
-Initial draft commit cb9edb4b014d2402b67cb2d1647e2666d54fdce9 retains the historical
-single-page loader and asserts 135 tasks, providing a failing negative control.
+Initial draft cb9edb4b014d2402b67cb2d1647e2666d54fdce9 failed because its HTTP
+fixture omitted response.request, required by pinned PostgREST. That failure is
+not accepted as truncation evidence. The corrected suite retains an explicit
+historical-query control: the real limit(50) query returns only 50 of 135 tasks
+and omits the oldest pin, while the new loader returns all 135.
 
 No database migrations, dependencies, rewards, art or production changes.
 Boss-list pagination and authoritative totals are separate C10/C11 work.

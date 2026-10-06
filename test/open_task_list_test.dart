@@ -31,7 +31,15 @@ QuestwellOpenTaskList loader(
   Future<http.Response> Function(http.Request) handle, {
   String? Function()? owner,
 }) {
-  final client = MockClient(handle);
+  final client = MockClient((request) async {
+    final result = await handle(request);
+    return http.Response.bytes(
+      result.bodyBytes,
+      result.statusCode,
+      headers: result.headers,
+      request: request,
+    );
+  });
   addTearDown(client.close);
   return QuestwellOpenTaskList(
     database: PostgrestClient(
@@ -74,6 +82,33 @@ List<Map<String, dynamic>> page(
 }
 
 void main() {
+  test('historical single-page query reproduces 50 of 135 quests', () async {
+    final rows = List.generate(135, (i) => task(135 - i));
+    final client = MockClient(
+      (r) async => http.Response(
+        jsonEncode(
+          rows.take(int.parse(r.url.queryParameters['limit']!)).toList(),
+        ),
+        200,
+        headers: {'content-type': 'application/json'},
+        request: r,
+      ),
+    );
+    addTearDown(client.close);
+    final db = PostgrestClient(
+      'https://fixture.invalid/rest/v1',
+      httpClient: client,
+    );
+    final truncated = await db
+        .from('tasks')
+        .select()
+        .eq('user_id', 'owner-a')
+        .eq('status', 'open')
+        .order('created_at', ascending: false)
+        .limit(50);
+    expect(truncated, hasLength(50));
+    expect(truncated.any((r) => r['pinned_at'] != null), isFalse);
+  });
   for (final tied in [false, true]) {
     test(
       'all 135 quests and old pin survive capped pages; tied=$tied',
