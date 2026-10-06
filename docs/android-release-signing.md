@@ -7,10 +7,14 @@ dependency, signing identity or keystore changes are included.
 
 The source regression failed against merge `0318773` because its release build
 selected `signingConfigs.debug`. It passes with `signingConfigs.release`.
-The native CI job builds the simulated preview in debug mode, then runs Android
-Gradle's real `validateSigningRelease` task without `android/key.properties`.
-Only the specific missing release `storeFile` failure satisfies that negative
-control; unrelated build or tooling failures do not count as a pass.
+The native CI job builds the simulated preview in debug mode, then invokes
+`flutter build apk --release` without `android/key.properties`. An explicit
+`preReleaseBuild` dependency requires all four signing properties and an existing
+keystore file. Only its specific missing-credentials failure satisfies the
+negative control; unrelated build or tooling failures do not count as a pass.
+The first native run built the debug APK successfully but showed that the
+assumed AGP `validateSigningRelease` task was absent. The explicit guard avoids
+depending on AGP creating that task for an incomplete signing configuration.
 
 ## Remaining native gates
 

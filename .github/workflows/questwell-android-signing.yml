@@ -39,16 +39,15 @@ jobs:
       - name: Release signing must reject absent credentials
         shell: bash
         run: |
-          cd android
           set +e
-          ./gradlew :app:validateSigningRelease --console=plain > "$RUNNER_TEMP/signing-validation.log" 2>&1
+          flutter build apk --release --target lib/main_preview.dart > "$RUNNER_TEMP/signing-validation.log" 2>&1
           result=$?
           set -e
           if [ "$result" -eq 0 ]; then
             echo 'Release signing unexpectedly accepted missing credentials'
             exit 1
           fi
-          if ! grep -E 'SigningConfig.*release.*missing required property.*storeFile' "$RUNNER_TEMP/signing-validation.log"; then
+          if ! grep -F 'Questwell release signing requires complete private android/key.properties credentials.' "$RUNNER_TEMP/signing-validation.log"; then
             cat "$RUNNER_TEMP/signing-validation.log"
             echo 'Failure was not the expected missing release keystore'
             exit 1
