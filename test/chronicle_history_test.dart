@@ -11,21 +11,21 @@ final now = DateTime(2026, 10, 6, 12);
 final stamp = now.toUtc().toIso8601String();
 const scopes = ['quests', 'bosses', 'milestones', 'aside'];
 Map<String, dynamic> row(String scope, int n) => {
-  'id': id(n),
-  'user_id': 'owner-a',
-  'title': '$scope $n',
-  'status': scope == 'aside' ? 'set_aside' : 'completed',
-  'created_at': stamp,
-  'completed_at': stamp,
-  'occurred_at': stamp,
-  'xp_value': 10,
-  'coin_value': 5,
-  'reward_xp': 25,
-  'reward_coins': 50,
-  'kind': 'level_up',
-  'level': n,
-  'source': 'level_progression',
-};
+      'id': id(n),
+      'user_id': 'owner-a',
+      'title': '$scope $n',
+      'status': scope == 'aside' ? 'set_aside' : 'completed',
+      'created_at': stamp,
+      'completed_at': stamp,
+      'occurred_at': stamp,
+      'xp_value': 10,
+      'coin_value': 5,
+      'reward_xp': 25,
+      'reward_coins': 50,
+      'kind': 'level_up',
+      'level': n,
+      'source': 'level_progression',
+    };
 String scopeOf(http.Request r) {
   if (r.url.path.endsWith('boss_battles')) return 'bosses';
   if (r.url.path.endsWith('progression_events')) return 'milestones';
@@ -33,13 +33,23 @@ String scopeOf(http.Request r) {
 }
 
 http.Response response(Object rows, {int status = 200}) => http.Response(
-  jsonEncode(rows),
-  status,
-  headers: {'content-type': 'application/json'},
-);
-PostgrestClient database(Future<http.Response> Function(http.Request) handle) {
+      jsonEncode(rows),
+      status,
+      headers: {'content-type': 'application/json'},
+    );
+PostgrestClient database(Future<http.Response> Function(http.Request) handle,
+    {List<int> totals = const [35, 55, 2, 1]}) {
   final client = MockClient((request) async {
-    final result = await handle(request);
+    final result = request.url.path.endsWith('/rpc/chronicle_totals')
+        ? response({
+            'owner_id': 'owner-a',
+            'week_start': jsonDecode(request.body)['p_week_start'],
+            'total_xp_earned': totals[0].toString(),
+            'total_coins_earned': totals[1].toString(),
+            'week_wins': totals[2].toString(),
+            'bosses_defeated': totals[3].toString(),
+          })
+        : await handle(request);
     return http.Response.bytes(
       result.bodyBytes,
       result.statusCode,
@@ -54,11 +64,13 @@ PostgrestClient database(Future<http.Response> Function(http.Request) handle) {
 Future<ChronicleSnapshot> load(
   Future<http.Response> Function(http.Request) handle, {
   String? Function()? owner,
-}) => QuestwellChronicleService.load(
-  database: database(handle),
-  currentOwner: owner ?? () => 'owner-a',
-  now: now,
-);
+  List<int> totals = const [35, 55, 2, 1],
+}) =>
+    QuestwellChronicleService.load(
+      database: database(handle, totals: totals),
+      currentOwner: owner ?? () => 'owner-a',
+      now: now,
+    );
 List<Map<String, dynamic>> page(
   http.Request r,
   List<Map<String, dynamic>> rows, {
@@ -76,15 +88,14 @@ List<Map<String, dynamic>> page(
   }
   final cursor = q['id'];
   if (cursor != null) expect(cursor.startsWith('gt.'), isTrue);
-  final sorted =
-      rows
-          .where(
-            (r) =>
-                cursor == null ||
-                (r['id'] as String).compareTo(cursor.substring(3)) > 0,
-          )
-          .toList()
-        ..sort((a, b) => (a['id'] as String).compareTo(b['id'] as String));
+  final sorted = rows
+      .where(
+        (r) =>
+            cursor == null ||
+            (r['id'] as String).compareTo(cursor.substring(3)) > 0,
+      )
+      .toList()
+    ..sort((a, b) => (a['id'] as String).compareTo(b['id'] as String));
   final limit = int.parse(q['limit']!);
   return sorted.take(limit < cap ? limit : cap).toList();
 }
@@ -113,12 +124,11 @@ void main() {
           .eq('user_id', 'owner-a')
           .eq('status', 'completed')
           .order('completed_at', ascending: false);
-      final xp =
-          quests.fold<int>(0, (v, r) => v + (r['xp_value'] as int)) +
+      final xp = quests.fold<int>(0, (v, r) => v + (r['xp_value'] as int)) +
           bosses.fold<int>(0, (v, r) => v + (r['reward_xp'] as int));
       final coins =
           quests.fold<int>(0, (v, r) => v + (r['coin_value'] as int)) +
-          bosses.fold<int>(0, (v, r) => v + (r['reward_coins'] as int));
+              bosses.fold<int>(0, (v, r) => v + (r['reward_coins'] as int));
       expect(xp, 1750);
       expect(xp, isNot(4525));
       expect(coins, 2750);
@@ -147,7 +157,7 @@ void main() {
             cap: caps[scope]!,
           ),
         );
-      });
+      }, totals: [4525, 7025, 262, 127]);
       expect(data.wins, hasLength(492));
       expect(data.totalXpEarned, 4525);
       expect(data.totalCoinsEarned, 7025);
@@ -178,6 +188,7 @@ void main() {
                 : [],
           ),
         ),
+        totals: [20, 10, 1, 0],
       );
       expect(data.totalXpEarned, 20);
       expect(data.totalCoinsEarned, 10);
@@ -186,7 +197,7 @@ void main() {
     },
   );
   test('empty history gives zero totals', () async {
-    final data = await load((_) async => response([]));
+    final data = await load((_) async => response([]), totals: [0, 0, 0, 0]);
     expect(data.wins, isEmpty);
     expect(data.totalXpEarned, 0);
     expect(data.totalCoinsEarned, 0);
@@ -206,9 +217,9 @@ void main() {
       if (scopeOf(r) != 'quests') return response([]);
       if (++calls == 2) rows.removeAt(0);
       return response(page(r, rows));
-    });
+    }, totals: [790, 395, 79, 0]);
     expect(data.wins, hasLength(80));
-    expect(data.totalXpEarned, 800);
+    expect(data.totalXpEarned, 790);
   });
   for (final scope in scopes) {
     test('account change during $scope discards whole snapshot', () async {
@@ -271,10 +282,10 @@ void main() {
           return response(page(r, [row(scopeOf(r), 1)]));
         });
         Future<ChronicleSnapshot> request() => QuestwellChronicleService.load(
-          database: db,
-          currentOwner: () => 'owner-a',
-          now: now,
-        );
+              database: db,
+              currentOwner: () => 'owner-a',
+              now: now,
+            );
         await expectLater(request(), throwsA(isA<PostgrestException>()));
         fail = false;
         final data = await request();

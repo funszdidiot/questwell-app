@@ -1,6 +1,54 @@
 import '/backend/supabase/supabase.dart';
 import '/backend/supabase/questwell_network.dart';
 
+DateTime _chronicleWeekStart(DateTime now) {
+  final today = now.toLocal();
+  return DateTime(today.year, today.month, today.day)
+      .subtract(Duration(days: today.weekday - 1));
+}
+
+List<ChronicleWin> _sortedChronicleWins(List<ChronicleWin> entries) =>
+    List<ChronicleWin>.from(entries)
+      ..sort((a, b) {
+        final date = b.completedAt.compareTo(a.completedAt);
+        return date != 0 ? date : a.kind.compareTo(b.kind);
+      });
+
+class _ChronicleTotals {
+  _ChronicleTotals(Object? response, String owner, DateTime weekStart) {
+    if (response is! Map || response['owner_id'] != owner) {
+      throw StateError('Chronicle totals could not be verified. Try again.');
+    }
+    final boundary = response['week_start'];
+    final parsed = boundary is String ? DateTime.tryParse(boundary) : null;
+    if (parsed == null ||
+        !parsed.isUtc ||
+        !parsed.isAtSameMomentAs(weekStart)) {
+      throw StateError('Chronicle week could not be verified. Try again.');
+    }
+    int integer(String field, {bool count = false}) {
+      final raw = response[field];
+      if (raw is! String || !RegExp(r'^(0|-?[1-9][0-9]*)$').hasMatch(raw)) {
+        throw StateError('Chronicle totals could not be verified. Try again.');
+      }
+      final value = BigInt.tryParse(raw);
+      // Match native and browser behavior; never round an aggregate silently.
+      final safe = BigInt.parse('9007199254740991');
+      if (value == null || value.abs() > safe || (count && value.isNegative)) {
+        throw StateError('Chronicle totals are outside the supported range.');
+      }
+      return value.toInt();
+    }
+
+    xp = integer('total_xp_earned');
+    coins = integer('total_coins_earned');
+    weekWins = integer('week_wins', count: true);
+    bosses = integer('bosses_defeated', count: true);
+  }
+
+  late final int xp, coins, weekWins, bosses;
+}
+
 class ChronicleWin {
   const ChronicleWin({
     required this.kind,
@@ -56,18 +104,9 @@ class ChronicleSnapshot {
     List<ChronicleWin> entries, {
     DateTime? now,
   }) {
-    final wins = List<ChronicleWin>.from(entries)
-      ..sort((a, b) {
-        final date = b.completedAt.compareTo(a.completedAt);
-        return date != 0 ? date : a.kind.compareTo(b.kind);
-      });
+    final wins = _sortedChronicleWins(entries);
     final activities = wins.where((win) => win.isActivity);
-    final today = (now ?? DateTime.now()).toLocal();
-    final startOfWeek = DateTime(
-      today.year,
-      today.month,
-      today.day,
-    ).subtract(Duration(days: today.weekday - 1));
+    final startOfWeek = _chronicleWeekStart(now ?? DateTime.now());
     return ChronicleSnapshot(
       wins: wins,
       totalXpEarned: activities.fold<int>(0, (total, win) => total + win.xp),
@@ -124,6 +163,7 @@ class QuestwellChronicleService {
     if (uid == null || uid.isEmpty)
       throw StateError('Authentication required.');
     final db = database ?? SupaFlow.client.rest;
+    final weekStart = _chronicleWeekStart(now ?? DateTime.now());
     final uuid = RegExp(
       r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
     );
@@ -245,6 +285,20 @@ class QuestwellChronicleService {
     for (final row in progression) {
       wins.add(ChronicleWin.fromProgression(row));
     }
-    return ChronicleSnapshot.fromWins(wins, now: now);
+    final response = await QuestwellNetwork.read(() {
+      checkOwner();
+      return db.rpc('chronicle_totals', params: {
+        'p_week_start': weekStart.toUtc().toIso8601String(),
+      });
+    });
+    checkOwner();
+    final totals = _ChronicleTotals(response, uid, weekStart);
+    return ChronicleSnapshot(
+      wins: _sortedChronicleWins(wins),
+      totalXpEarned: totals.xp,
+      totalCoinsEarned: totals.coins,
+      weekWins: totals.weekWins,
+      bossesDefeated: totals.bosses,
+    );
   }
 }
