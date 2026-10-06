@@ -1,0 +1,34 @@
+name: Pinned Flutter with pinned caches
+description: Reviewed local installer with no upstream composite action resolution.
+inputs:
+  flutter-version:
+    required: true
+    description: Exact reviewed Flutter release
+runs:
+  using: composite
+  steps:
+    - name: Resolve SDK paths
+      id: paths
+      shell: bash
+      env:
+        QUESTWELL_FLUTTER_VERSION: ${{ inputs.flutter-version }}
+      run: |
+        [[ "$QUESTWELL_FLUTTER_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+        bash "$GITHUB_ACTION_PATH/setup.sh" -p -n "$QUESTWELL_FLUTTER_VERSION" -a "$RUNNER_ARCH" stable
+    - name: Cache SDK
+      uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+      with:
+        path: ${{ steps.paths.outputs.CACHE-PATH }}
+        key: questwell-flutter-${{ runner.os }}-${{ runner.arch }}-${{ inputs.flutter-version }}-v1
+    - name: Cache locked packages
+      uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
+      with:
+        path: ${{ steps.paths.outputs.PUB-CACHE-PATH }}
+        key: questwell-pub-${{ runner.os }}-${{ runner.arch }}-${{ inputs.flutter-version }}-${{ hashFiles('pubspec.lock') }}-v1
+    - name: Install SDK
+      shell: bash
+      env:
+        QUESTWELL_FLUTTER_VERSION: ${{ inputs.flutter-version }}
+        QUESTWELL_FLUTTER_CACHE: ${{ steps.paths.outputs.CACHE-PATH }}
+        QUESTWELL_PUB_CACHE: ${{ steps.paths.outputs.PUB-CACHE-PATH }}
+      run: bash "$GITHUB_ACTION_PATH/setup.sh" -n "$QUESTWELL_FLUTTER_VERSION" -a "$RUNNER_ARCH" -c "$QUESTWELL_FLUTTER_CACHE" -d "$QUESTWELL_PUB_CACHE" stable

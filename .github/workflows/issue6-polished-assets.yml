@@ -1,55 +1,35 @@
-name: Issue 6 Polished Assets
+name: issue6-polished-assets review proposal
 
 on:
-  push:
-    branches:
-      - questwell-dev
-    paths:
-      - tool/generate_issue6_polished_assets.cjs
-      - .github/workflows/issue6-polished-assets.yml
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  generate:
-    runs-on: ubuntu-latest
+  propose:
+    if: github.ref == 'refs/heads/questwell-dev'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: questwell-dev
-          fetch-depth: 0
-
-      - uses: actions/setup-node@v4
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: 22
-
-      - name: Install image dependency outside repository
-        run: |
-          mkdir -p "$RUNNER_TEMP/issue6-assets"
-          npm install --prefix "$RUNNER_TEMP/issue6-assets" --no-save --ignore-scripts=false sharp
-
-      - name: Generate polished decor assets
+          node-version: '22'
+      - name: Install locked tools without lifecycle scripts
+        run: npm ci --ignore-scripts --prefix tool/ci
+      - name: Generate isolated review proposal
         env:
-          NODE_PATH: ${{ runner.temp }}/issue6-assets/node_modules
+          NODE_PATH: ${{ github.workspace }}/tool/ci/node_modules
         run: node tool/generate_issue6_polished_assets.cjs
-
-      - name: Verify generated files
-        run: |
-          set -euo pipefail
-          test -f assets/images/questwell/hearth/warding_lantern_v2.webp
-          test -f assets/images/questwell/hearth/emerald_wayfarer_rug_v2.webp
-
-      - name: Commit generated assets
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "questwell-production-agent"
-          git config user.email "actions@users.noreply.github.com"
-          git add assets/images/questwell/hearth/warding_lantern_v2.webp                   assets/images/questwell/hearth/emerald_wayfarer_rug_v2.webp
-          if git diff --cached --quiet; then
-            echo "Assets already current."
-            exit 0
-          fi
-          git commit -m "Generate polished Issue 6 decor assets"
-          git push origin HEAD:questwell-dev
+      - name: Package only the expected changes for PR review
+        run: node tool/ci/asset-proposal.cjs issue6-polished-assets
+      - name: Retain proposal for reviewed PR intake
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: issue6-polished-assets-${{ github.sha }}
+          path: ${{ runner.temp }}/questwell-asset-proposal
+          retention-days: 7
+          if-no-files-found: error
