@@ -1,0 +1,251 @@
+{
+  "schema_version": "questwell.seasonal-release/v1",
+  "release_id": "seasonal-review-fixture",
+  "display_name": "Seasonal Review System",
+  "release_type": "founder_beta",
+  "collection_key": "seasonal-review-fixture",
+  "theme": {
+    "summary": "Internal account-free fixture proving collection review, generic Hearth rendering, wall art, responsive scale and benchmark comparison.",
+    "palette": [
+      "evergreen",
+      "aged brass",
+      "walnut",
+      "deep burgundy"
+    ],
+    "materials": [
+      "brass",
+      "wood",
+      "woven textile",
+      "framed art"
+    ],
+    "motifs": [
+      "warding",
+      "wayfinding",
+      "woodland study"
+    ]
+  },
+  "availability": {
+    "status": "planned",
+    "starts_at": null,
+    "ends_at": null,
+    "ownership_persists_after_archive": true
+  },
+  "approval": {
+    "brief_status": "approved",
+    "visual_status": "candidate",
+    "economy_status": "not_required",
+    "activation_status": "not_authorized",
+    "founder_decision_ref": null
+  },
+  "items": [
+    {
+      "slug": "fixture-solstice-ward-lantern",
+      "name": "Fixture Solstice Ward Lantern",
+      "category": "room",
+      "rarity": "rare",
+      "description": "Fictional seasonal slug using the current Warding Lantern candidate art to prove data-driven rendering.",
+      "price": 0,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "pedestal_light",
+      "asset_state": "candidate",
+      "hearth": {
+        "profile_key": "pedestal_light",
+        "render": {
+          "render_kind": "static_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/warding_lantern_v3_64bit.webp",
+          "canvas_width": 960,
+          "canvas_height": 1680,
+          "visible_base": 0.965,
+          "shadow_profile": "pedestal",
+          "effect_profile": "ward_glow",
+          "filter_mode": "pixel",
+          "asset_revision": 3,
+          "min_client_build": null
+        }
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Questwell review fixture",
+        "version": 1,
+        "method": "registry proof",
+        "source_art_ref": "warding-lantern-v3-candidate"
+      },
+      "qa": {
+        "preflight": "pass",
+        "runtime": "not_run",
+        "visual": "not_run"
+      }
+    },
+    {
+      "slug": "fixture-solstice-wayfarer-rug",
+      "name": "Fixture Solstice Wayfarer Rug",
+      "category": "room",
+      "rarity": "uncommon",
+      "description": "Fictional seasonal slug using the current Wayfarer Rug candidate art to prove floor-family rendering.",
+      "price": 0,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "floor_rug",
+      "asset_state": "candidate",
+      "hearth": {
+        "profile_key": "floor_rug",
+        "render": {
+          "render_kind": "floor_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/emerald_wayfarer_rug_v3_64bit.webp",
+          "canvas_width": 384,
+          "canvas_height": 256,
+          "visible_base": 1,
+          "shadow_profile": "none",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 3,
+          "min_client_build": null
+        }
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Questwell review fixture",
+        "version": 1,
+        "method": "registry proof",
+        "source_art_ref": "emerald-wayfarer-rug-v3-candidate"
+      },
+      "qa": {
+        "preflight": "pass",
+        "runtime": "not_run",
+        "visual": "not_run"
+      }
+    },
+    {
+      "slug": "fixture-winter-fern-study",
+      "name": "Fixture Winter Fern Study",
+      "category": "wall_art",
+      "rarity": "uncommon",
+      "description": "Fictional side-wall seasonal slug using an existing framed study to prove generic wall-art routing.",
+      "price": 0,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "wall_art_side",
+      "asset_state": "candidate",
+      "hearth": {
+        "profile_key": "wall_art_side",
+        "render": {
+          "render_kind": "wall_art_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/fern_study.webp",
+          "canvas_width": 957,
+          "canvas_height": 1644,
+          "visible_base": 1,
+          "shadow_profile": "none",
+          "effect_profile": null,
+          "filter_mode": "smooth",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Questwell review fixture",
+        "version": 1,
+        "method": "registry proof",
+        "source_art_ref": "fern-study-existing-reference"
+      },
+      "qa": {
+        "preflight": "pass",
+        "runtime": "not_run",
+        "visual": "not_run"
+      }
+    },
+    {
+      "slug": "fixture-moonlit-centerpiece",
+      "name": "Fixture Moonlit Centerpiece",
+      "category": "wall_art",
+      "rarity": "rare",
+      "description": "Fictional center-wall seasonal slug using the existing Moonlit Woodland art to prove generic center-wall routing.",
+      "price": 0,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "wall_art_center",
+      "asset_state": "candidate",
+      "hearth": {
+        "profile_key": "wall_art_center",
+        "render": {
+          "render_kind": "wall_art_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/moonlit_woodland.webp",
+          "canvas_width": 1400,
+          "canvas_height": 1000,
+          "visible_base": 1,
+          "shadow_profile": "none",
+          "effect_profile": null,
+          "filter_mode": "smooth",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Questwell review fixture",
+        "version": 1,
+        "method": "registry proof",
+        "source_art_ref": "moonlit-woodland-existing-reference"
+      },
+      "qa": {
+        "preflight": "pass",
+        "runtime": "not_run",
+        "visual": "not_run"
+      }
+    },
+    {
+      "slug": "fixture-solstice-scout-outfit",
+      "name": "Fixture Solstice Scout Outfit",
+      "category": "outfit",
+      "rarity": "rare",
+      "description": "Fictional single-overlay outfit review using the approved Woodland body-specific assets.",
+      "price": 0,
+      "premium": false,
+      "required_archetype": "scout",
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "woodland_scout",
+      "asset_state": "candidate",
+      "hearth": null,
+      "wearable": {
+        "template_id": "woodland-scout-body-specific",
+        "supported_bodies": [
+          "female",
+          "neutral",
+          "male"
+        ],
+        "fit_reference": "Locked body-specific Woodland Scout outfit templates",
+        "render_mode": "single_overlay_outfit",
+        "assets_by_body": {
+          "female": "assets/images/questwell/avatar/woodland_scout_unified_female_v11.webp",
+          "neutral": "assets/images/questwell/avatar/woodland_scout_unified_neutral_v3.webp",
+          "male": "assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v2.webp"
+        }
+      },
+      "provenance": {
+        "source": "Questwell review fixture",
+        "version": 1,
+        "method": "locked-template derivative proof",
+        "source_art_ref": "approved-body-specific-woodland-outfits"
+      },
+      "qa": {
+        "preflight": "pass",
+        "runtime": "not_run",
+        "visual": "not_run"
+      }
+    }
+  ]
+}

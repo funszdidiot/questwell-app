@@ -100,12 +100,28 @@ class QuestwellHearthDecor {
       width: sideWidth, height: sideHeight);
   }
 
-  static Positioned wallArtPositioned({required String slug, required String side,
-    required Size scene, bool library = false}) {
+  static Positioned wallArtPositioned({
+    required String slug,
+    required String side,
+    required Size scene,
+    bool library = false,
+    QuestwellHearthRenderSpec? renderSpec,
+  }) {
     final rect = wallArtBounds(scene, side, library: library);
-    return Positioned(key: ValueKey(side == 'wall_center' ? 'hearth-wall-art-bounds' : 'hearth-$side-art-bounds'),
-      top: rect.top, left: rect.left, width: rect.width, height: rect.height,
-      child: QuestwellWallArt(artSlug: slug));
+    return Positioned(
+      key: ValueKey(side == 'wall_center'
+          ? 'hearth-wall-art-bounds'
+          : 'hearth-$side-art-bounds'),
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+      child: QuestwellWallArt(
+        artSlug: slug,
+        renderSpec: renderSpec,
+        wallSlot: side,
+      ),
+    );
   }
 
   static Rect bounds({

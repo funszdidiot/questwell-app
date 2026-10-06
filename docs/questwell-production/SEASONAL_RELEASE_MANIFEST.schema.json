@@ -331,8 +331,37 @@
                 "string",
                 "null"
               ]
+            },
+            "render_mode": {
+              "type": "string",
+              "enum": [
+                "single_overlay_outfit"
+              ]
+            },
+            "assets_by_body": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "female": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "neutral": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "male": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
             }
-          }
+          },
+          "required": [
+            "render_mode",
+            "supported_bodies",
+            "assets_by_body"
+          ]
         },
         "provenance": {
           "type": "object",
@@ -460,7 +489,8 @@
         "render_kind": {
           "enum": [
             "static_sprite",
-            "floor_sprite"
+            "floor_sprite",
+            "wall_art_sprite"
           ]
         },
         "asset_source": {

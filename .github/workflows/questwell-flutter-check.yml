@@ -24,6 +24,8 @@ jobs:
         run: |
           node -e "JSON.parse(require('node:fs').readFileSync('docs/questwell-production/SEASONAL_RELEASE_MANIFEST.schema.json','utf8'))"
           node tool/validate_seasonal_release_manifest.cjs docs/questwell-production/SEASONAL_RELEASE_MANIFEST.example.json --structure-only
+          node tool/validate_seasonal_release_manifest.cjs assets/jsons/seasonal_review_fixture.json
+          node --test tool/qa/seasonal_manifest_test.cjs
 
 
       - name: Set up Flutter

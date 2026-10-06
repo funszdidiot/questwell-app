@@ -258,6 +258,39 @@ Each collection should have one internal review surface capable of:
 
 The gallery must not activate the items or grant ownership merely to make them visible.
 
+### Universal development gallery
+
+The development preview entry point is:
+
+`?review=seasonal-gallery&collection=<release-id>`
+
+The collection ID is restricted to lowercase kebab-case and maps to:
+
+`assets/jsons/<release-id-with-underscores>.json`
+
+Example:
+
+`?review=seasonal-gallery&collection=seasonal-review-fixture`
+
+loads:
+
+`assets/jsons/seasonal_review_fixture.json`
+
+The gallery supports:
+- item selection across one manifest;
+- female / neutral / male body switching;
+- class switching;
+- avatar/body show-hide;
+- compact / standard / wide Hearth widths;
+- valid canonical placement choices for Hearth families;
+- locked-family benchmark comparison where a benchmark exists;
+- data-driven static décor, floor rugs and wall art;
+- body-specific single-overlay outfit assets on the locked runtime foundations and identity layers;
+- explicit rejection of layered robes/cloaks: use their dedicated runtime compositor/review route until layered manifests are supported;
+- visible manifest approval/QA state.
+
+The review surface is account-free and must never mutate catalog, ownership, economy or activation state.
+
 ## Phase 8 — Founder gates
 
 ### Visual approval

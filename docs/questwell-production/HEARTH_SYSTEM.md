@@ -30,6 +30,17 @@ Tables:
 
 Every `room` or `wall_art` cosmetic is required by database constraint to have a layout profile.
 
+### Generic render registry
+
+`public.hearth_render_registry` supplies ordinary asset/render metadata without making Flutter know the cosmetic slug. Supported generic kinds now include:
+- `static_sprite`
+- `floor_sprite`
+- `wall_art_sprite`
+
+The registry carries asset source/path, authored canvas metadata, visible contact edge, shadow/effect profile, filter mode, revision and optional minimum client build.
+
+Wall-art slot geometry remains canonical and profile-driven; the artwork path itself is data.
+
 ### Flutter owns visual geometry
 
 Flutter is the authority for:

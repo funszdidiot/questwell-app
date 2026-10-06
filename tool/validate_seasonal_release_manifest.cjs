@@ -27,7 +27,7 @@ const allowed = {
   archetype: new Set([null,'scholar','scout','alchemist','guardian','wanderer']),
   unlock: new Set(['shop','class_mastery','level_milestone']),
   hearthProfile: new Set(['large_furniture','pedestal_light','seating','plant','side_table','trophy_surface','relic_display','floor_rug','window_feature','hearth_setting','wall_art_side','wall_art_center']),
-  renderKind: new Set(['static_sprite','floor_sprite']),
+  renderKind: new Set(['static_sprite','floor_sprite','wall_art_sprite']),
   assetSource: new Set(['bundle','network']),
   shadow: new Set([null,'wide_plinth','pedestal','seating','side_table','plant','none']),
   effect: new Set([null,'ward_glow','warm_glow']),
@@ -190,6 +190,10 @@ for (const [index, item] of (manifest.items || []).entries()) {
         if (typeof render.visible_base !== 'number' || render.visible_base <= 0 || render.visible_base > 1) fail(prefix + '.hearth.render.visible_base must be in (0,1]');
         if (!Number.isInteger(render.asset_revision) || render.asset_revision < 1) fail(prefix + '.hearth.render.asset_revision must be >= 1');
 
+        const wallProfile = ['wall_art_side','wall_art_center'].includes(item.hearth.profile_key);
+        if (wallProfile !== (render.render_kind === 'wall_art_sprite')) {
+          fail(prefix + ' wall_art profiles and wall_art_sprite must be paired');
+        }
         if (render.render_kind === 'floor_sprite' && item.hearth.profile_key !== 'floor_rug') {
           warn(prefix + ' uses floor_sprite outside floor_rug profile');
         }
@@ -208,6 +212,56 @@ for (const [index, item] of (manifest.items || []).entries()) {
             fail(prefix + '.hearth.render.asset_path does not exist: ' + render.asset_path);
           } else if (!checkImageHeader(abs)) {
             fail(prefix + '.hearth.render.asset_path is not a decodable PNG/WebP header: ' + render.asset_path);
+          }
+        }
+      }
+    }
+  }
+
+  if (item.wearable !== null && item.wearable !== undefined) {
+    if (!object(item.wearable)) {
+      fail(prefix + '.wearable must be an object or null');
+    } else {
+      const wearable = item.wearable;
+      if (wearable.render_mode !== 'single_overlay_outfit') {
+        fail(prefix + '.wearable.render_mode is unsupported');
+      }
+      const supportedBodies = Array.isArray(wearable.supported_bodies)
+        ? wearable.supported_bodies
+        : [];
+      if (!Array.isArray(wearable.supported_bodies) || !supportedBodies.length ||
+          new Set(supportedBodies).size !== supportedBodies.length) {
+        fail(prefix + '.wearable.supported_bodies must be a nonempty unique array');
+      }
+      const assetsByBody = object(wearable.assets_by_body)
+        ? wearable.assets_by_body
+        : {};
+      for (const body of Object.keys(assetsByBody)) {
+        if (!supportedBodies.includes(body)) {
+          fail(prefix + '.wearable.assets_by_body contains undeclared body: ' + body);
+        }
+      }
+      if (supportedBodies.length && !Object.keys(assetsByBody).length) {
+        fail(prefix + '.wearable.assets_by_body is required for wearable review assets');
+      }
+      for (const body of supportedBodies) {
+        if (!['female','neutral','male'].includes(body)) {
+          fail(prefix + '.wearable.supported_bodies contains unsupported body: ' + body);
+          continue;
+        }
+        const asset = assetsByBody[body];
+        if (typeof asset !== 'string' || !asset) {
+          fail(prefix + '.wearable.assets_by_body.' + body + ' is required');
+          continue;
+        }
+        if (!structureOnly) {
+          const abs = path.resolve(root, asset);
+          if (!abs.startsWith(root + path.sep)) {
+            fail(prefix + '.wearable asset escapes repository root: ' + asset);
+          } else if (!fs.existsSync(abs)) {
+            fail(prefix + '.wearable asset does not exist: ' + asset);
+          } else if (!checkImageHeader(abs)) {
+            fail(prefix + '.wearable asset is not a PNG/WebP: ' + asset);
           }
         }
       }

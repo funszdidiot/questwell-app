@@ -13,6 +13,7 @@ import 'preview/hearth_settings_review.dart';
 import 'preview/wanderer_cuff_review.dart';
 import 'preview/rug_review.dart';
 import 'preview/issue6_decor_review.dart';
+import 'preview/seasonal_gallery_review.dart';
 import 'package:flutter/material.dart';
 import 'preview/mobile_review.dart';
 import 'preview/expedition_review.dart';
@@ -106,6 +107,20 @@ void main() {
   } else if (Uri.base.queryParameters['review'] == 'issue6-decor') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const Issue6DecorReviewApp()));
+  } else if (Uri.base.queryParameters['review'] == 'seasonal-gallery') {
+    WidgetsFlutterBinding.ensureInitialized();
+    final requested = Uri.base.queryParameters['collection'] ??
+        'seasonal-review-fixture';
+    final safeCollection = RegExp(r'^[a-z0-9-]+$').hasMatch(requested)
+        ? requested
+        : 'seasonal-review-fixture';
+    final manifestAsset = 'assets/jsons/' +
+        safeCollection.replaceAll('-', '_') +
+        '.json';
+    runApp(QuestwellSeasonalGalleryReviewApp(
+      manifestAsset: manifestAsset,
+      initialSlug: Uri.base.queryParameters['item'],
+    ));
   } else if (Uri.base.queryParameters['review'] == 'mastery') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'Adventurer', masteryPreview: true)));

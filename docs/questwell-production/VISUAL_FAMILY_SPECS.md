@@ -204,7 +204,7 @@ The Emerald Wayfarer Rug is not a benchmark until founder-approved.
 
 **Backend profile:** `wall_art_side`  
 **Slots:** `wall_left`, `wall_right`  
-**System:** wall-art renderer
+**Render kind:** `wall_art_sprite` through the generic Hearth render registry
 
 Generic-room envelope:
 - side height: min(0.195 × scene height, 0.12 × scene width / 0.58);
@@ -222,7 +222,7 @@ Art requirements:
 
 **Backend profile:** `wall_art_center`  
 **Slot:** `wall_center`  
-**System:** wall-art renderer
+**Render kind:** `wall_art_sprite` through the generic Hearth render registry
 
 Generic-room envelope:
 - width: min(0.17 × scene height × 1.4, 0.21 × scene width);

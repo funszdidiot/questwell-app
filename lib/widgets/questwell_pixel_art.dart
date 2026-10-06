@@ -1175,16 +1175,27 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                   ),
                 ),
               ),
-              if (equippedSlugs['wall_art'] == QuestwellWallArt.slug)
-                QuestwellHearthDecor.wallArtPositioned(
-                  slug: QuestwellWallArt.slug, side: 'wall_center', scene: Size(sceneWidth, sceneHeight),
-                  library: roomSetting.compactGallery),
+              if (equippedSlugs['wall_art'] case final String art)
+                if (hearthRenderBySlug[art]?.renderKind == 'wall_art_sprite' ||
+                    art == QuestwellWallArt.slug)
+                  QuestwellHearthDecor.wallArtPositioned(
+                    slug: art,
+                    side: 'wall_center',
+                    scene: Size(sceneWidth, sceneHeight),
+                    library: roomSetting.compactGallery,
+                    renderSpec: hearthRenderBySlug[art],
+                  ),
               for (final side in ['wall_left', 'wall_right'])
                 if (equippedSlugs['wall_art:$side'] case final String art)
-                  if (QuestwellWallArt.isSide(art))
+                  if (hearthRenderBySlug[art]?.renderKind == 'wall_art_sprite' ||
+                      QuestwellWallArt.isSide(art))
                     QuestwellHearthDecor.wallArtPositioned(
-                      slug: art, side: side, scene: Size(sceneWidth, sceneHeight),
-                      library: roomSetting.compactGallery),
+                      slug: art,
+                      side: side,
+                      scene: Size(sceneWidth, sceneHeight),
+                      library: roomSetting.compactGallery,
+                      renderSpec: hearthRenderBySlug[art],
+                    ),
               if (equippedSlugs['room:window'] == 'rainy-window')
                 const Positioned.fill(key: ValueKey('hearth-rainy-window-bounds'),
                   child: QuestwellRainyWindow()),
