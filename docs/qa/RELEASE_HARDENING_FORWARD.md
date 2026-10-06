@@ -30,8 +30,12 @@ reviewed bounded Storage cleanup, session revocation and final Auth deletion.
 ## Guard and rehearsal
 
 `render-hardening.mjs` is offline only and accepts no target/state overrides.
-It verifies Edge/source/catalog-query bytes and emits one atomic DO statement.
-The statement obtains a deployment advisory lock and bounded table locks, checks
+It verifies Edge/source/catalog-query bytes and emits a transaction-local timeout
+configuration followed by one atomic DO statement. A migration-recording API
+must execute them in the same transaction; there are no embedded commits.
+The timeout is armed before DO starts, with a real cancellation test in CI.
+The statement obtains a deployment advisory lock and bounded table locks,
+including migration history to exclude concurrent history writers, then checks
 the entire observed application schema/configuration fingerprint and exact
 historical migration digest/count, then applies the seven unchanged SQL bodies.
 A wrong post-schema fingerprint raises and rolls back every change. Schema cache
@@ -39,12 +43,16 @@ reload is notified only after the postcondition passes. Repeat application is
 refused. There is no automatic mutation retry after an uncertain outcome.
 
 The approved disposable GitHub Actions harness first runs the existing individual
-migration tests. It then retains only the reconstructed baseline and the already-
+migration tests, removes named synthetic failure helpers and the empty test-only
+Storage bucket before taking the final schema fingerprint, then retains only
+the reconstructed baseline and the already-
 live Woodland migration, resets synthetic data, and requires exact live-schema
 parity. It exercises a bad precondition, forced postcondition rollback, the full
 bundle, full catalog equivalence with the individually tested schema, unchanged
 fixture history and repeat refusal. Real Auth/REST creation, onboarding and boss
-regressions run against the resulting bundle. The harness does not register a
+regressions and actual Edge/Auth/Storage deletion tests run against the resulting
+bundle. An Edge-first test before R03 verifies HTTP 503 while the account, exact
+object bytes and refreshable original session survive. The harness does not register a
 fake Management API migration row or claim hosted deployment evidence.
 
 ## Execution order after separate approval

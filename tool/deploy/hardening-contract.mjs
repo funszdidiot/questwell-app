@@ -43,14 +43,15 @@ export function guardedPayload(sources, catalogSql, expected) {
   const sourceDigest=sha256(JSON.stringify(expected.migrations));
   return `-- questwell-hardening-source-sha256:${sourceDigest}
 -- Exactly seven reviewed forward changes. No history replay/reset/repair.
+set local statement_timeout = '20s';
 do $questwell_hardening$
 declare observed jsonb;
 begin
   perform pg_catalog.set_config('lock_timeout','3s',true);
-  perform pg_catalog.set_config('statement_timeout','20s',true);
   perform pg_catalog.pg_advisory_xact_lock(784310052027::bigint);
   lock table public.tasks, public.boss_battles, public.boss_steps,
-    public.users, public.reward_events, storage.objects in share row exclusive mode;
+    public.users, public.reward_events, storage.objects,
+    supabase_migrations.schema_migrations in share row exclusive mode;
   execute $hardening_state$${query}$hardening_state$ into observed;
   if observed is distinct from ${quote(JSON.stringify(before))}::jsonb then
     raise exception 'Hardening precondition drift; no change applied';

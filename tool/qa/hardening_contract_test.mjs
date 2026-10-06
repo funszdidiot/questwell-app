@@ -13,6 +13,8 @@ test('reviewed source renders one atomic statement without replaying transaction
   assert.equal((sql.match(/^commit;/gm)||[]).length,0);
   assert.ok(sql.includes('Hardening precondition drift'));
   assert.ok(sql.includes('Hardening postcondition failed'));
+  assert.ok(sql.indexOf("set local statement_timeout = '20s';")<sql.indexOf('do $questwell_hardening$'));
+  assert.ok(sql.includes('supabase_migrations.schema_migrations in share row exclusive mode'));
 });
 test('changed source bytes are refused',()=>{
   const changed=sources.map(s=>({...s})); changed[0].sql+='\n';

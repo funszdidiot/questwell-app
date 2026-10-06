@@ -234,6 +234,12 @@ try {
   if (baselineDeletion.stdout) console.log(redact(baselineDeletion.stdout));
   if (baselineDeletion.stderr) console.error(redact(baselineDeletion.stderr));
   if (baselineDeletion.status !== 0) throw new Error('Account deletion baseline negative control failed');
+  const edgeFirst=spawnSync(process.execPath,[join(source,'account-deletion-edge-first.mjs')],{
+    input:JSON.stringify(status),env,encoding:'utf8',timeout:120000,maxBuffer:1024*1024,
+  });
+  if(edgeFirst.stdout)console.log(redact(edgeFirst.stdout));
+  if(edgeFirst.stderr)console.error(redact(edgeFirst.stderr));
+  if(edgeFirst.status!==0)throw new Error('Edge-first fail-closed rollout rehearsal failed');
   const deletionMigration = '20261005192108_account_deletion_storage.sql';
   copyFileSync(resolve(source, '../../supabase/migrations', deletionMigration), join(workdir, 'supabase/migrations', deletionMigration));
   run(['migration', 'up', '--local']);
@@ -242,12 +248,23 @@ try {
   console.log(run(['migration', 'list', '--local']));
   console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
   console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
-  const deletion = spawnSync(process.execPath, [join(source, 'account-deletion.mjs')], {
-    input: JSON.stringify(status), env, encoding: 'utf8', timeout: 180000, maxBuffer: 1024 * 1024,
-  });
-  if (deletion.stdout) console.log(redact(deletion.stdout));
-  if (deletion.stderr) console.error(redact(deletion.stderr));
-  if (deletion.status !== 0) throw new Error('Account deletion Edge/Auth/Storage regressions failed');
+  const deletionTests = () => {
+    const deletion = spawnSync(process.execPath, [join(source, 'account-deletion.mjs')], {
+      input: JSON.stringify(status), env, encoding: 'utf8', timeout: 180000, maxBuffer: 1024 * 1024,
+    });
+    if (deletion.stdout) console.log(redact(deletion.stdout));
+    if (deletion.stderr) console.error(redact(deletion.stderr));
+    if (deletion.status !== 0) throw new Error('Account deletion Edge/Auth/Storage regressions failed');
+  };
+  deletionTests();
+  run(['db','query','--local', `do $$ begin
+    drop trigger ci_account_delete_failure on public.users;
+    drop trigger ci_pause_storage_upload on storage.objects;
+    drop policy ci_secondary_upload on storage.objects;
+    drop function public.ci_account_delete_failure();
+    drop function public.ci_pause_storage_upload();
+    drop function public.ci_storage_upload_paused();
+  end $$;`]);
   const creationTests = phase => {
     const result = spawnSync(process.execPath, [join(source, 'task-creation.mjs')], {
       input: JSON.stringify({status, phase}), env, encoding: 'utf8', timeout: 120000,
@@ -400,6 +417,7 @@ try {
   onboardingTests('regressions');
   bossCreationTests('regressions');
   bossTests('regressions');
+  deletionTests();
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();

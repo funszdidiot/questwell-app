@@ -29,6 +29,12 @@ export function exerciseHardeningForward({source,workdir,run,expectSqlFailure,re
   const expected={...approved,...before,after_schema_sha256:afterHash};
   const payloadFile=join(workdir,'hardening-guarded.sql');
   const writePayload=m=>writeFileSync(payloadFile,guardedPayload(sources,catalogSql,m));
+  // Prove the timer is armed before DO starts, rather than setting it inside DO.
+  writeFileSync(payloadFile,guardedPayload(sources,catalogSql,expected)
+    .replace("set local statement_timeout = '20s';","set local statement_timeout = '100ms';")
+    .replace('declare observed jsonb;\nbegin','declare observed jsonb;\nbegin\n  perform pg_catalog.pg_sleep(1);'));
+  expectSqlFailure(payloadFile,'statement timeout');
+  assert.deepEqual(readState(),before,'Timeout must leave no effects');
   writePayload({...expected,schema_sha256:'0'.repeat(64)});
   expectSqlFailure(payloadFile,'Hardening precondition drift');
   assert.deepEqual(readState(),before,'Drift must leave no effects');
@@ -44,7 +50,7 @@ export function exerciseHardeningForward({source,workdir,run,expectSqlFailure,re
     const literal=JSON.stringify(sequentialCatalog).replaceAll("'","''");
     const diagnostic=guardedPayload(sources,catalogSql,expected).replace(
       "raise exception 'Hardening postcondition failed; transaction rolled back';",
-      `declare actual jsonb; differences jsonb; begin
+      ()=>`declare actual jsonb; differences jsonb; begin
         execute $diagnostic_catalog$${catalogSql}$diagnostic_catalog$ into actual;
         select jsonb_object_agg(e.key,jsonb_build_object(
           'expected_only',(select jsonb_agg(v) from (select value v from jsonb_array_elements(e.value) except select value from jsonb_array_elements(actual->e.key)) d),
