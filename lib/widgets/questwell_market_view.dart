@@ -77,8 +77,9 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
           Text('${title(item.rarity)} · ${title(item.category.replaceAll('_',' '))}',style:QuestwellTypography.body(color:gold)),
           const SizedBox(height:16),
           if(room(item) && roomPreview == null)
-            const Padding(padding: EdgeInsets.all(24),
-              child: Text('Room preview unavailable for this item.'))
+            Padding(padding: const EdgeInsets.all(24),
+              child: Text('Room preview unavailable for this item.',
+                style: QuestwellTypography.body(color:cream)))
           else if(room(item))QuestwellHearthPixelScene(height:265,archetype:widget.data.profile.adventurerArchetype,
             avatarBodyType:widget.data.profile.avatarBodyType,equippedSlugs:roomPreview!,
             hearthProfileBySlug: {for(final i in widget.data.cosmetics)
