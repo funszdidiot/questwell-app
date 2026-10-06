@@ -1,5 +1,10 @@
 begin;
 
+-- Recovery checks include completed/deleted quest history; existing partial
+-- open-task indexes cannot serve these owner lookups.
+create index tasks_onboarding_owner_idx on public.tasks(user_id);
+create index reward_events_onboarding_owner_idx on public.reward_events(user_id);
+
 -- One durable onboarding decision per account, including skip. Retain the
 -- receipt if its quest is deleted; remove it when its Auth owner is deleted.
 create table private.onboarding_results (
