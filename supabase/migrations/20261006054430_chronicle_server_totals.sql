@@ -4,6 +4,13 @@ begin;
 set local lock_timeout = '3s';
 set local statement_timeout = '20s';
 
+-- Bound reads to one owner's completed history, including when other accounts
+-- accumulate large histories. Additive partial indexes; no reward/data rewrite.
+create index tasks_chronicle_owner_idx on public.tasks (user_id)
+  where status = 'completed';
+create index bosses_chronicle_owner_idx on public.boss_battles (user_id)
+  where status = 'completed';
+
 create function public.chronicle_totals(p_week_start timestamptz)
 returns jsonb
 language plpgsql stable security invoker set search_path = ''

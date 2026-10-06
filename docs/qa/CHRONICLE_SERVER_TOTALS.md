@@ -25,7 +25,9 @@ Client integration and activation follow verified backend deployment.
 
 - Isolated backend harness applies this migration **after** the pinned seven-change
   hardening rehearsal; its original before/after hashes remain unchanged.
-- Catalog comparison permits only the new function and its execution grants.
+- Catalog comparison permits only the new function, its execution grants, and
+  two partial completed-history indexes keyed by owner. SQL checks verify index
+  validity, predicates and query usability (not a production load benchmark).
 - SQL contract checks STABLE, invoker security, empty search path, and grants.
 - Real local Auth/REST tests cover empty accounts, two-owner isolation, anonymous
   and service-role denial, invalid parameters, 1,205 quests + 1,107 bosses beyond
@@ -43,7 +45,12 @@ Target after separate founder approval: ProjectMomentum beta
 `bdzcazkyypopbanbjnud`. Apply this **one** additive migration only, after verifying
 current schema/history and absence of this function, from the reviewed revision.
 Do not push/reset/replay the root migration chain or repair migration history.
-Do not modify Edge functions, auth, tables, existing grants or historical data.
+The same migration adds `tasks_chronicle_owner_idx` and
+`bosses_chronicle_owner_idx`. These are ordinary transactional index builds,
+subject to the migration's 3-second lock / 20-second statement timeouts; inspect
+row counts and approve a suitable beta window before applying. Timeout means
+stop and review, never disable guards or retry automatically. No Edge functions,
+auth, existing grants, table definitions or historical rows change.
 Verify exact function definition, ACL, security/volatility and unchanged schema
 outside this addition after applying; record remote migration history and hash.
 
