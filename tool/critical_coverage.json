@@ -1,0 +1,20 @@
+{
+  "Rewards": [
+    "lib/services/questwell_task_service.dart",
+    "lib/services/questwell_boss_service.dart"
+  ],
+  "Purchases": [
+    "lib/services/questwell_cosmetic_service.dart",
+    "lib/services/questwell_purchase_recovery.dart"
+  ],
+  "Account deletion": [
+    "lib/services/questwell_account_service.dart"
+  ],
+  "Recovery": [
+    "lib/backend/supabase/questwell_network.dart",
+    "lib/services/questwell_auth_service.dart",
+    "lib/services/questwell_boss_creation_recovery.dart",
+    "lib/startup/questwell_bootstrap.dart",
+    "lib/startup/questwell_startup.dart"
+  ]
+}

@@ -1,13 +1,7 @@
 name: Questwell Android signing
 
 on:
-  pull_request:
-    branches: [questwell-dev, flutterflow]
-    paths:
-      - 'android/**'
-      - 'pubspec.*'
-      - 'tool/qa/android_signing_test.mjs'
-      - '.github/workflows/questwell-android-signing.yml'
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -34,13 +28,13 @@ jobs:
           test ! -e android/key.properties
           node --test tool/qa/android_signing_test.mjs
           flutter pub get --enforce-lockfile
-      - name: Build the simulated preview in debug mode
-        run: flutter build apk --debug --target lib/main_preview.dart
+      - name: Compile Android app without release credentials
+        run: flutter build apk --debug --target lib/main.dart --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
       - name: Release signing must reject absent credentials
         shell: bash
         run: |
           set +e
-          flutter build apk --release --target lib/main_preview.dart > "$RUNNER_TEMP/signing-validation.log" 2>&1
+          flutter build apk --release --target lib/main.dart --dart-define=QUESTWELL_ENVIRONMENT=isolated_test > "$RUNNER_TEMP/signing-validation.log" 2>&1
           result=$?
           set -e
           if [ "$result" -eq 0 ]; then
