@@ -1,0 +1,227 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
+import 'package:project_momentum/widgets/questwell_account_settings.dart';
+
+void main() {
+  GoogleFonts.config.allowRuntimeFetching = false;
+
+  Future<void> mount(
+    WidgetTester tester, {
+    required Future<void> Function() signOut,
+    required Future<void> Function() delete,
+    VoidCallback? deleted,
+  }) async {
+    await tester.binding.setSurfaceSize(const Size(320, 700));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(),
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(2)),
+          child: child!,
+        ),
+        home: Builder(
+          builder: (context) => Scaffold(
+            body: TextButton(
+              onPressed: () => Navigator.of(context).push<void>(
+                MaterialPageRoute<void>(
+                  builder: (_) => QuestwellAccountSettings(
+                    onSignOut: signOut,
+                    onDelete: delete,
+                    onDeleted: deleted ?? () {},
+                  ),
+                ),
+              ),
+              child: const Text('Account settings'),
+            ),
+          ),
+        ),
+      ),
+    );
+    // Opening settings itself must not perform either account operation.
+    await tester.tap(find.text('Account settings'));
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets(
+    'settings separates account actions, supports large text and returns safely',
+    (tester) async {
+      var signOuts = 0;
+      var deletions = 0;
+      await mount(
+        tester,
+        signOut: () async {
+          signOuts++;
+        },
+        delete: () async {
+          deletions++;
+        },
+      );
+      expect(find.byType(QuestwellAccountSettings), findsOneWidget);
+      final signOut = find.widgetWithText(OutlinedButton, 'Sign out');
+      await tester.ensureVisible(signOut);
+      expect(tester.getSize(signOut).height, greaterThanOrEqualTo(48));
+      await tester.scrollUntilVisible(
+        find.text('Delete account'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(find.text('Permanent deletion'), findsOneWidget);
+      expect(signOuts, 0);
+      expect(deletions, 0);
+      expect(tester.takeException(), isNull);
+      await tester.pageBack();
+      await tester.pumpAndSettle();
+      expect(find.text('Account settings'), findsOneWidget);
+      expect(find.text('Delete account'), findsNothing);
+      expect(signOuts, 0);
+      expect(deletions, 0);
+    },
+  );
+
+  testWidgets('pending sign-out prevents repeated sign-out and deletion', (
+    tester,
+  ) async {
+    final pending = Completer<void>();
+    var signOuts = 0;
+    var deletions = 0;
+    await mount(
+      tester,
+      signOut: () {
+        signOuts++;
+        return pending.future;
+      },
+      delete: () async {
+        deletions++;
+      },
+    );
+    final signOut = find.widgetWithText(OutlinedButton, 'Sign out');
+    await tester.ensureVisible(signOut);
+    await tester.tap(signOut);
+    await tester.pump();
+    final busy = find.widgetWithText(OutlinedButton, 'Signing out…');
+    expect(tester.widget<OutlinedButton>(busy).onPressed, isNull);
+    await tester.scrollUntilVisible(
+      find.text('Delete account'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    final deletion = find.widgetWithText(TextButton, 'Delete account');
+    expect(tester.widget<TextButton>(deletion).onPressed, isNull);
+    expect(signOuts, 1);
+    expect(deletions, 0);
+    pending.complete();
+    await tester.pumpAndSettle();
+    expect(tester.widget<TextButton>(deletion).onPressed, isNotNull);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('opening and cancelling deletion preserves the account', (
+    tester,
+  ) async {
+    var deletions = 0;
+    await mount(
+      tester,
+      signOut: () async {},
+      delete: () async {
+        deletions++;
+      },
+    );
+    await tester.scrollUntilVisible(
+      find.text('Delete account'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete account'));
+    await tester.pumpAndSettle();
+    expect(find.text('Hang up your boots?'), findsOneWidget);
+    expect(
+      tester
+          .widget<FilledButton>(
+            find.widgetWithText(FilledButton, 'Permanently delete'),
+          )
+          .onPressed,
+      isNull,
+    );
+    await tester.ensureVisible(find.text('Keep my account'));
+    await tester.tap(find.text('Keep my account'));
+    await tester.pumpAndSettle();
+    expect(deletions, 0);
+    expect(find.text('Hang up your boots?'), findsNothing);
+    expect(find.byType(QuestwellAccountSettings), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+  for (final delete in [false, true]) {
+    testWidgets(
+      'account navigation removes settings after ${delete ? 'deletion' : 'sign-out'}',
+      (tester) async {
+        var operations = 0;
+        final router = GoRouter(
+          routes: [
+            GoRoute(
+              path: '/',
+              builder: (context, state) => Scaffold(
+                body: TextButton(
+                  child: const Text('Account settings'),
+                  onPressed: () => Navigator.of(context).push<void>(
+                    MaterialPageRoute<void>(
+                      builder: (_) => QuestwellAccountSettings(
+                        onSignOut: () async {
+                          operations++;
+                          context.goNamed('signed-out');
+                        },
+                        onDelete: () async {
+                          operations++;
+                        },
+                        onDeleted: () => context.goNamed('signed-out'),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            GoRoute(
+              path: '/signed-out',
+              name: 'signed-out',
+              builder: (_, state) =>
+                  const Scaffold(body: Text('Signed out destination')),
+            ),
+          ],
+        );
+        addTearDown(router.dispose);
+        await tester.pumpWidget(
+          MaterialApp.router(theme: ThemeData.dark(), routerConfig: router),
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Account settings'));
+        await tester.pumpAndSettle();
+        if (delete) {
+          await tester.scrollUntilVisible(
+            find.text('Delete account'),
+            200,
+            scrollable: find.byType(Scrollable).first,
+          );
+          await tester.tap(find.text('Delete account'));
+          await tester.pumpAndSettle();
+          await tester.enterText(find.byType(TextField), 'DELETE');
+          await tester.pump();
+          await tester.tap(find.text('Permanently delete'));
+        } else {
+          await tester.tap(find.widgetWithText(OutlinedButton, 'Sign out'));
+        }
+        await tester.pumpAndSettle();
+        expect(operations, 1);
+        expect(find.text('Signed out destination'), findsOneWidget);
+        expect(find.byType(QuestwellAccountSettings), findsNothing);
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+}

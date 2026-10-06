@@ -1,4 +1,4 @@
-import '/widgets/questwell_delete_account.dart';
+import '/widgets/questwell_account_settings.dart';
 import '/services/questwell_account_service.dart';
 import '/widgets/questwell_app_navigation.dart';
 import '/widgets/questwell_equipment_swap.dart';
@@ -337,30 +337,37 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
 
     return Scaffold(
       backgroundColor: const Color(0xFF111827),
-      bottomNavigationBar: Column(mainAxisSize: MainAxisSize.min, children: [
-        SafeArea(top: false, bottom: false, child: Padding(
-        padding: const EdgeInsets.fromLTRB(18, 8, 18, 12),
-        child: OutlinedButton(
-          onPressed: _signingOut ? null : _signOut,
-          style: OutlinedButton.styleFrom(
-            foregroundColor: const Color(0xFFF2D9A0),
-            side: const BorderSide(color: Color(0xFF9E7546)),
-            minimumSize: const Size.fromHeight(48),
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
-          child: Text(_signingOut ? 'Signing out…' : 'Sign out',
-            style: GoogleFonts.roboto(fontSize: 15, fontWeight: FontWeight.w700)),
-        ),
-      )),
-        QuestwellDeleteAccountButton(enabled: !_signingOut,
-          onDelete: QuestwellAccountService.deleteAccount,
-          onDeleted: () async {
-            await QuestwellAccountService.clearLocalAccount();
-            if (!mounted) return;
-            GoRouter.of(context).clearRedirectLocation();
-            context.goNamed(AuthPageWidget.routeName);
-          }),
-        const QuestwellAppNavigation(current: QuestwellDestination.adventurer),
-      ]),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xFF111827),
+        actions: [
+          TextButton.icon(
+            onPressed: _signingOut ? null : () => Navigator.of(context).push<void>(
+              MaterialPageRoute<void>(
+                builder: (_) => QuestwellAccountSettings(
+                  onSignOut: _signOut,
+                  onDelete: QuestwellAccountService.deleteAccount,
+                  onDeleted: () async {
+                    await QuestwellAccountService.clearLocalAccount();
+                    if (!mounted) return;
+                    GoRouter.of(context).clearRedirectLocation();
+                    context.goNamed(AuthPageWidget.routeName);
+                  },
+                ),
+              ),
+            ),
+            icon: const Icon(Icons.settings_outlined, size: 20),
+            label: const Text('Account settings'),
+            style: TextButton.styleFrom(
+              foregroundColor: const Color(0xFFF2D9A0),
+              minimumSize: const Size(48, 48),
+              textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700),
+            ),
+          ),
+          const SizedBox(width: 12),
+        ],
+      ),
+      bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.adventurer),
       body: SafeArea(
         top: true,
         child: FutureBuilder<QuestwellCosmeticsSnapshot>(
