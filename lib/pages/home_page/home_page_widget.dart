@@ -3,7 +3,6 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import '/services/questwell_task_service.dart';
 import '/services/questwell_open_task_list.dart';
@@ -16,6 +15,7 @@ import '/services/questwell_chronicle_service.dart';
 import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_next_reward.dart';
 import '/widgets/questwell_home_sections.dart';
+import '/widgets/questwell_typography.dart';
 import '/widgets/questwell_home_overview.dart';
 import '/widgets/questwell_campfire_background.dart';
 import 'package:flutter/material.dart';
@@ -343,6 +343,138 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
+    final openTasks = QuestwellOpenTaskList.loadCurrent();
+
+    final overview = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        FutureBuilder<QuestwellCosmeticsSnapshot>(
+          future: _homeSnapshotFuture,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return QuestwellRetroPanel(
+                padding: const EdgeInsets.all(14),
+                accent: const Color(0xFFE87947),
+                background: const Color(0xFF1A1512),
+                child: Row(
+                  children: [
+                    Icon(Icons.cloud_off_outlined, color: theme.primary),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'The Hearth could not refresh right now.',
+                        style: theme.bodyMedium.override(
+                          font: GoogleFonts.roboto(),
+                          letterSpacing: 0,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () => setState(_loadHomeData),
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            if (!snapshot.hasData) {
+              return const QuestwellRetroPanel(
+                padding: EdgeInsets.all(20),
+                accent: Color(0xFF8E6B35),
+                child: SizedBox(
+                  height: 64,
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              );
+            }
+
+            final data = snapshot.data!;
+            final profile = data.profile;
+            final equipped = data.cosmetics
+                .where((item) => item.equipped)
+                .toList();
+            final classMastered = data.cosmetics.any(
+              (item) =>
+                  item.requiredArchetype == profile.adventurerArchetype &&
+                  item.unlockMethod == 'class_mastery' &&
+                  item.owned,
+            );
+            final xpIntoLevel = profile.xpIntoLevel;
+
+            return QuestwellHomeCharacter(
+              archetype: profile.adventurerArchetype,
+              className: _archetypeLabel(profile.adventurerArchetype),
+              level: profile.level,
+              xp: xpIntoLevel,
+              coins: profile.coinBalance,
+              mastered: classMastered,
+              equippedNames: equipped
+                  .where(
+                    (item) =>
+                        item.category != 'room' && item.category != 'wall_art',
+                  )
+                  .map((item) => item.name)
+                  .toList(),
+              decorNames: equipped
+                  .where(
+                    (item) =>
+                        item.category == 'room' || item.category == 'wall_art',
+                  )
+                  .map((item) => item.name)
+                  .toList(),
+              collection: const [],
+              nextReward: QuestwellNextReward(cosmetics: data.cosmetics),
+              onCustomize: () async {
+                await context.pushNamed(AdventurerPageWidget.routeName);
+                if (mounted) setState(_loadHomeData);
+              },
+              onMarket: () async {
+                await context.pushNamed(MarketPageWidget.routeName);
+                if (mounted) setState(_loadHomeData);
+              },
+            );
+          },
+        ),
+        const SizedBox(height: 18),
+        FutureBuilder<ChronicleSnapshot>(
+          future: _momentumFuture,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const SizedBox.shrink();
+            }
+
+            final momentum = snapshot.data!;
+            return QuestwellHomeMomentum(
+              wins: momentum.weekWins,
+              bosses: momentum.bossesDefeated,
+              onOpen: () async {
+                await context.pushNamed(ChroniclePageWidget.routeName);
+                if (mounted) setState(_loadHomeData);
+              },
+            );
+          },
+        ),
+      ],
+    );
+
+    Widget focusLayout(
+      Widget nextWin, {
+      List<Widget> remainingQuests = const [],
+      bool emphasizeAddQuest = false,
+    }) => QuestwellHomeFocusLayout(
+      nextWin: nextWin,
+      overview: overview,
+      remainingQuests: remainingQuests,
+      emphasizeAddQuest: emphasizeAddQuest,
+      onOpen: (destination) async {
+        final route = destination == 'quests'
+            ? QuestBoardPageWidget.routeName
+            : ExpeditionPageWidget.routeName;
+        await context.pushNamed(route);
+        if (mounted) setState(_loadHomeData);
+      },
+    );
 
     return GestureDetector(
       onTap: () {
@@ -350,7 +482,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
-        bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.hearth),
+        bottomNavigationBar: const QuestwellAppNavigation(
+          current: QuestwellDestination.hearth,
+        ),
         key: scaffoldKey,
         backgroundColor: const Color(0xFF111827),
         body: QuestwellCampfireBackground(
@@ -358,280 +492,198 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           child: SafeArea(
             top: true,
             child: SingleChildScrollView(
-            padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const QuestwellHomeHeader(),
-const SizedBox(height: 2),
-                const QuestwellPixelDivider(
-                  accent: Color(0xFFD6A84B),
-                ),
-                const SizedBox(height: 6),
-                FutureBuilder<QuestwellCosmeticsSnapshot>(
-                  future: _homeSnapshotFuture,
-                  builder: (context, snapshot) {
-                    final data = snapshot.data;
-                    final archetype =
-                        data?.profile.adventurerArchetype ?? 'wanderer';
-                    final equipped = data?.cosmetics
-                            .where((item) => item.equipped)
-                            .toList() ??
-                        const <QuestwellCosmetic>[];
-                    final mastered = data?.cosmetics.any(
-                          (item) =>
-                              item.requiredArchetype == archetype &&
-                              item.unlockMethod == 'class_mastery' &&
-                              item.owned,
-                        ) ??
-                        false;
-                    final compact =
-                        MediaQuery.sizeOf(context).width < 430;
-                    return QuestwellHearthPixelScene(
-                      height: compact ? 342 : 392,
-                      archetype: archetype,
-                      avatarBodyType: data?.profile.avatarBodyType ?? 'neutral',
-                      showRelic: mastered,
-                      equippedSlugs: {
-                        for (final item in equipped)
-                          item.renderKey: item.slug,
-                      },
-                      hearthProfileBySlug: {
-                        for (final item in data?.cosmetics ??
-                            const <QuestwellCosmetic>[])
-                          if (item.hearthProfileKey != null)
-                            item.slug: item.hearthProfileKey!,
-                      },
-                      hearthRenderBySlug: {
-                        for (final item in data?.cosmetics ??
-                            const <QuestwellCosmetic>[])
-                          if (item.hearthRenderSpec != null)
-                            item.slug: item.hearthRenderSpec!,
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(height: 16),
-                FutureBuilder<QuestwellCosmeticsSnapshot>(
-                  future: _homeSnapshotFuture,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return QuestwellRetroPanel(
-                        padding: const EdgeInsets.all(14),
-                        accent: const Color(0xFFE87947),
-                        background: const Color(0xFF1A1512),
-                        child: Row(
-                          children: [
-                            Icon(Icons.cloud_off_outlined, color: theme.primary),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                'The Hearth could not refresh right now.',
-                                style: theme.bodyMedium.override(
-                                  font: GoogleFonts.roboto(),
-                                  letterSpacing: 0,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () => setState(_loadHomeData),
-                              child: const Text('Retry'),
-                            ),
-                          ],
-                        ),
+              padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const QuestwellHomeHeader(),
+                  const SizedBox(height: 2),
+                  const QuestwellPixelDivider(accent: Color(0xFFD6A84B)),
+                  const SizedBox(height: 6),
+                  FutureBuilder<QuestwellCosmeticsSnapshot>(
+                    future: _homeSnapshotFuture,
+                    builder: (context, snapshot) {
+                      final data = snapshot.data;
+                      final archetype =
+                          data?.profile.adventurerArchetype ?? 'wanderer';
+                      final equipped =
+                          data?.cosmetics
+                              .where((item) => item.equipped)
+                              .toList() ??
+                          const <QuestwellCosmetic>[];
+                      final mastered =
+                          data?.cosmetics.any(
+                            (item) =>
+                                item.requiredArchetype == archetype &&
+                                item.unlockMethod == 'class_mastery' &&
+                                item.owned,
+                          ) ??
+                          false;
+                      final compact = MediaQuery.sizeOf(context).width < 430;
+                      return QuestwellHearthPixelScene(
+                        height: compact ? 342 : 392,
+                        archetype: archetype,
+                        avatarBodyType:
+                            data?.profile.avatarBodyType ?? 'neutral',
+                        showRelic: mastered,
+                        equippedSlugs: {
+                          for (final item in equipped)
+                            item.renderKey: item.slug,
+                        },
+                        hearthProfileBySlug: {
+                          for (final item
+                              in data?.cosmetics ?? const <QuestwellCosmetic>[])
+                            if (item.hearthProfileKey != null)
+                              item.slug: item.hearthProfileKey!,
+                        },
+                        hearthRenderBySlug: {
+                          for (final item
+                              in data?.cosmetics ?? const <QuestwellCosmetic>[])
+                            if (item.hearthRenderSpec != null)
+                              item.slug: item.hearthRenderSpec!,
+                        },
                       );
-                    }
-
-                    if (!snapshot.hasData) {
-                      return const QuestwellRetroPanel(
-                        padding: EdgeInsets.all(20),
-                        accent: Color(0xFF8E6B35),
-                        child: SizedBox(
-                          height: 64,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                      );
-                    }
-
-                    final data = snapshot.data!;
-                    final profile = data.profile;
-                    final equipped =
-                        data.cosmetics.where((item) => item.equipped).toList();
-                    final classMastered = data.cosmetics.any(
-                      (item) =>
-                          item.requiredArchetype ==
-                              profile.adventurerArchetype &&
-                          item.unlockMethod == 'class_mastery' &&
-                          item.owned,
-                    );
-                    final xpIntoLevel = profile.xpIntoLevel;
-
-                    return QuestwellHomeCharacter(
-                      archetype: profile.adventurerArchetype,
-                      className: _archetypeLabel(profile.adventurerArchetype),
-                      level: profile.level, xp: xpIntoLevel, coins: profile.coinBalance,
-                      mastered: classMastered,
-                      equippedNames: equipped.where((item) => item.category != 'room' && item.category != 'wall_art').map((item) => item.name).toList(),
-                      decorNames: equipped.where((item) => item.category == 'room' || item.category == 'wall_art').map((item) => item.name).toList(),
-                      collection: const [],
-                      nextReward: QuestwellNextReward(cosmetics: data.cosmetics),
-                      onCustomize: () async {
-                        await context.pushNamed(AdventurerPageWidget.routeName);
-                        if (mounted) setState(_loadHomeData);
-                      },
-                      onMarket: () async {
-                        await context.pushNamed(MarketPageWidget.routeName);
-                        if (mounted) setState(_loadHomeData);
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(height: 18),
-                FutureBuilder<ChronicleSnapshot>(
-                  future: _momentumFuture,
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const SizedBox.shrink();
-                    }
-
-                    final momentum = snapshot.data!;
-                    return QuestwellHomeMomentum(
-                      wins: momentum.weekWins, bosses: momentum.bossesDefeated,
-                      onOpen: () async {
-                        await context.pushNamed(ChroniclePageWidget.routeName);
-                        if (mounted) setState(_loadHomeData);
-                      },
-                    );
-                  },
-                ),
-                if (!_onboardingCompleted) ...[
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  if (!_onboardingCompleted) ...[
+                    const SizedBox(height: 18),
+                    QuestwellOnboardingPanel(
+                      key: ValueKey('onboarding-$currentUserUid'),
+                      finish: _finishOnboarding,
+                      onCompleted: _onboardingFinished,
+                    ),
+                  ],
                   const SizedBox(height: 18),
-                  QuestwellOnboardingPanel(
-                    key: ValueKey('onboarding-$currentUserUid'),
-                    finish: _finishOnboarding,
-                    onCompleted: _onboardingFinished,
+                  QuestwellHomeCampfireControl(
+                    active: _campfireMode,
+                    onChanged: _changingEnergyMode ? null : _setCampfireMode,
                   ),
-                ],
-                const SizedBox(height: 18),
-                QuestwellHomeCampfireControl(active: _campfireMode,
-                  onChanged: _changingEnergyMode ? null : _setCampfireMode),
-                const SizedBox(height: 24),
-                Text(
-                  _campfireMode ? 'ONE SMALL WIN' : 'YOUR NEXT WIN',
-                  style: theme.titleLarge.override(
-                    font: GoogleFonts.pressStart2p(
-                      fontWeight: FontWeight.w700,
-                    ),
-                    fontSize: 15,
-                    color: const Color(0xFFF2D9A0),
-                    letterSpacing: 0.4,
-                  ),
-                ),
-                if (_campfireMode) ...[
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 24),
                   Text(
-                    'No catching up. No penalty. Just the next thing.',
-                    style: theme.bodyMedium.override(
-                      font: GoogleFonts.roboto(),
-                      color: theme.secondaryText,
-                      letterSpacing: 0,
+                    _campfireMode ? 'ONE SMALL WIN' : 'YOUR NEXT WIN',
+                    style: theme.titleLarge.override(
+                      font: GoogleFonts.pressStart2p(
+                        fontWeight: FontWeight.w700,
+                      ),
+                      fontSize: 15,
+                      color: const Color(0xFFF2D9A0),
+                      letterSpacing: 0.4,
                     ),
                   ),
-                ],
-                const SizedBox(height: 12),
-                FutureBuilder<List<TasksRow>>(
-                  future: QuestwellOpenTaskList.loadCurrent(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return QuestwellRetroPanel(
-                        padding: const EdgeInsets.all(14),
-                        accent: const Color(0xFFE87947),
-                        background: const Color(0xFF1A1512),
-                        child: Row(
-                          children: [
-                            Icon(Icons.cloud_off_outlined, color: theme.primary),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                'The Quest Board could not refresh right now.',
-                                style: theme.bodyMedium.override(
-                                  font: GoogleFonts.roboto(),
-                                  letterSpacing: 0,
+                  if (_campfireMode) ...[
+                    const SizedBox(height: 5),
+                    Text(
+                      'No catching up. No penalty. Just the next thing.',
+                      style: theme.bodyMedium.override(
+                        font: GoogleFonts.roboto(),
+                        color: theme.secondaryText,
+                        letterSpacing: 0,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 12),
+                  FutureBuilder<List<TasksRow>>(
+                    future: openTasks,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return focusLayout(
+                          QuestwellRetroPanel(
+                            padding: const EdgeInsets.all(14),
+                            accent: const Color(0xFFE87947),
+                            background: const Color(0xFF1A1512),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.cloud_off_outlined,
+                                  color: theme.primary,
                                 ),
-                              ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Text(
+                                    'The Quest Board could not refresh right now.',
+                                    style: theme.bodyMedium.override(
+                                      font: GoogleFonts.roboto(),
+                                      letterSpacing: 0,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    }
+                          ),
+                        );
+                      }
 
-                    if (!snapshot.hasData) {
-                      return const Padding(
-                        padding: EdgeInsets.all(28),
-                        child: Center(child: CircularProgressIndicator()),
-                      );
-                    }
+                      if (!snapshot.hasData) {
+                        return focusLayout(
+                          const Padding(
+                            padding: EdgeInsets.all(28),
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
+                        );
+                      }
 
-                    final tasks = snapshot.data!;
-                    final visibleTasks = QuestwellTaskService.visibleHomeTasks(
-                      tasks,
-                      campfireMode: _campfireMode,
-                    );
+                      final tasks = snapshot.data!;
+                      final visibleTasks =
+                          QuestwellTaskService.visibleHomeTasks(
+                            tasks,
+                            campfireMode: _campfireMode,
+                          );
 
-                    if (visibleTasks.isEmpty) {
-                      return const QuestwellHomeEmptyBoard();
-                    }
+                      if (visibleTasks.isEmpty) {
+                        return focusLayout(
+                          const QuestwellHomeEmptyBoard(),
+                          emphasizeAddQuest: true,
+                        );
+                      }
 
-                    return Column(
-                      children: [
-                        for (var index = 0; index < visibleTasks.length; index++) ...[
+                      QuestwellHomeQuestCard card(int index) =>
                           QuestwellHomeQuestCard(
                             task: visibleTasks[index],
-                            frictionLabel: _frictionLabel(visibleTasks[index].frictionLevel),
+                            frictionLabel: _frictionLabel(
+                              visibleTasks[index].frictionLevel,
+                            ),
                             completing: _completingTask,
                             featured: index == 0,
-                            onComplete: () => _completeTask(visibleTasks[index]),
-                          ),
-                          if (index != visibleTasks.length - 1)
+                            onComplete: () =>
+                                _completeTask(visibleTasks[index]),
+                          );
+                      return focusLayout(
+                        card(0),
+                        remainingQuests: [
+                          for (
+                            var index = 1;
+                            index < visibleTasks.length;
+                            index++
+                          ) ...[
+                            card(index),
+                            if (index != visibleTasks.length - 1)
+                              const SizedBox(height: 10),
+                          ],
+                          if (tasks.length > visibleTasks.length) ...[
                             const SizedBox(height: 10),
+                            Text(
+                              _campfireMode
+                                  ? 'One gentle quest at a time. Your other quests are safe on the board.'
+                                  : 'More quests are waiting on your board.',
+                              style: theme.bodyMedium,
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await context.pushNamed(
+                                  QuestBoardPageWidget.routeName,
+                                );
+                                if (mounted) setState(_loadHomeData);
+                              },
+                              child: const Text('View all quests'),
+                            ),
+                          ],
                         ],
-                        if (tasks.length > visibleTasks.length) ...[
-                          const SizedBox(height: 10),
-                          Text(
-                            _campfireMode
-                                ? 'One gentle quest at a time. Your other quests are safe on the board.'
-                                : 'More quests are waiting on your board.',
-                            style: theme.bodyMedium,
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              await context.pushNamed(QuestBoardPageWidget.routeName);
-                              if (mounted) setState(_loadHomeData);
-                            },
-                            child: const Text('View all quests'),
-                          ),
-                        ],
-                      ],
-                    );
-                  },
-                ),
-                const SizedBox(height: 14),
-                QuestwellHomeActions(onOpen: (destination) async {
-                  final route = switch (destination) {
-                    'quests' => QuestBoardPageWidget.routeName,
-                    'expedition' => ExpeditionPageWidget.routeName,
-                    'boss' => BossBattlesPageWidget.routeName,
-                    'chronicle' => ChroniclePageWidget.routeName,
-                    'adventurer' => AdventurerPageWidget.routeName,
-                    _ => MarketPageWidget.routeName,
-                  };
-                  await context.pushNamed(route);
-                  if (mounted) setState(_loadHomeData);
-                }),
-              ],
-            ),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -639,7 +691,6 @@ const SizedBox(height: 2),
     );
   }
 }
-
 
 class QuestwellHomeQuestCard extends StatelessWidget {
   const QuestwellHomeQuestCard({
@@ -663,9 +714,7 @@ class QuestwellHomeQuestCard extends StatelessWidget {
 
     return QuestwellRetroPanel(
       padding: EdgeInsets.all(featured ? 18 : 14),
-      accent: featured
-          ? const Color(0xFFF1C75B)
-          : const Color(0xFF8E6B35),
+      accent: featured ? const Color(0xFFF1C75B) : const Color(0xFF8E6B35),
       background: const Color(0xFF15141B),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -674,17 +723,26 @@ class QuestwellHomeQuestCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Text(
-                'NEXT UP',
+                task.pinnedAt != null ? 'PINNED · NEXT UP' : 'NEXT UP',
                 style: theme.labelSmall.override(
-                  font: GoogleFonts.pressStart2p(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  font: GoogleFonts.pressStart2p(fontWeight: FontWeight.w700),
                   fontSize: 8,
                   color: const Color(0xFFF1C75B),
                   letterSpacing: 1.0,
                 ),
               ),
             ),
+          Text(
+            (task.title?.trim().isNotEmpty ?? false)
+                ? task.title!
+                : 'Untitled quest',
+            style: (featured ? theme.titleLarge : theme.titleMedium).override(
+              font: GoogleFonts.roboto(fontWeight: FontWeight.w800),
+              color: featured ? const Color(0xFFF2E7CE) : theme.primaryText,
+              letterSpacing: 0,
+            ),
+          ),
+          const SizedBox(height: 8),
           Row(
             children: [
               QuestwellFrictionPixelBadge(
@@ -705,16 +763,6 @@ class QuestwellHomeQuestCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          Text(
-            (task.title?.trim().isNotEmpty ?? false)
-                ? task.title!
-                : 'Untitled quest',
-            style: (featured ? theme.titleLarge : theme.titleMedium).override(
-              font: GoogleFonts.roboto(fontWeight: FontWeight.w800),
-              color: featured ? const Color(0xFFF2E7CE) : theme.primaryText,
-              letterSpacing: 0,
-            ),
-          ),
           if (task.notes?.trim().isNotEmpty ?? false) ...[
             const SizedBox(height: 8),
             Text(
@@ -742,23 +790,55 @@ class QuestwellHomeQuestCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 14),
-          FFButtonWidget(
-            onPressed: completing ? null : onComplete,
-            text: completing ? 'COMPLETING...' : 'COMPLETE QUEST',
-            options: FFButtonOptions(
-              width: double.infinity,
-              height: featured ? 48 : 44,
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 0),
-              color: featured ? theme.primary : theme.primaryBackground,
-              textStyle: theme.titleSmall.override(
-                font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
-                color: featured ? Colors.white : theme.primaryText,
-                letterSpacing: 0,
-              ),
-              elevation: 0,
-              borderSide: featured ? null : BorderSide(color: theme.alternate),
-              borderRadius: BorderRadius.circular(2),
-            ),
+          SizedBox(
+            width: double.infinity,
+            child: featured
+                ? FilledButton(
+                    onPressed: completing ? null : onComplete,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: theme.primary,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size.fromHeight(48),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      textStyle: QuestwellTypography.body(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    child: Text(
+                      completing ? 'Completing…' : 'Complete quest',
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                : OutlinedButton(
+                    onPressed: completing ? null : onComplete,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: theme.primaryText,
+                      minimumSize: const Size.fromHeight(48),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      textStyle: QuestwellTypography.body(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      side: BorderSide(color: theme.alternate),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    child: Text(
+                      completing ? 'Completing…' : 'Complete quest',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
           ),
         ],
       ),
@@ -797,7 +877,7 @@ class _RewardChip extends StatelessWidget {
                   ? const QuestwellCurrencyPixelIcon(kind: 'xp', size: 17)
                   : Icon(icon, size: 16, color: theme.primary),
           const SizedBox(width: 6),
-          Text(
+          Flexible(child: Text(
             label,
             style: theme.labelMedium.override(
               font: GoogleFonts.roboto(
@@ -805,7 +885,7 @@ class _RewardChip extends StatelessWidget {
               ),
               letterSpacing: 0,
             ),
-          ),
+          )),
         ],
       ),
     );
