@@ -8,12 +8,27 @@ import '/widgets/questwell_boss_board.dart';
 import '/widgets/questwell_boss_picker.dart';
 import '/models/questwell_boss_unlocks.dart';
 import '/pages/home_page/home_page_widget.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BossBattlesPageWidget extends StatefulWidget {
-  const BossBattlesPageWidget({super.key});
+  const BossBattlesPageWidget({
+    super.key,
+    this.loadBattles = QuestwellBossService.loadBattles,
+    this.loadAppearance = QuestwellCosmeticService.load,
+    this.createBattle = QuestwellBossService.createBattle,
+  });
+
+  final Future<List<QuestwellBossBattle>> Function() loadBattles;
+  final Future<QuestwellCosmeticsSnapshot> Function() loadAppearance;
+  final Future<String> Function({
+    required String title,
+    required List<String> steps,
+    String bossType,
+  })
+  createBattle;
 
   static String routeName = 'BossBattlesPage';
   static String routePath = '/boss-battles';
@@ -37,12 +52,12 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
   }
 
   void _refresh() {
-    _future = QuestwellBossService.loadBattles();
+    _future = widget.loadBattles();
   }
 
   Future<void> _loadCampfireMode() async {
     try {
-      final data = await QuestwellCosmeticService.load();
+      final data = await widget.loadAppearance();
       if (!mounted) return;
       setState(() {
         _campfireMode = data.profile.campfireMode;
@@ -71,11 +86,21 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       if (result.bossCompleted) {
         await _loadCampfireMode();
         if (!mounted) return;
-        final previousLevel = QuestwellProgression.levelForXp(result.totalXp - result.xpAwarded,
-          legacyOffset: profile.levelXpOffset);
-        final newLevel = QuestwellProgression.levelForXp(result.totalXp, legacyOffset: profile.levelXpOffset);
-        if (await showQuestwellMilestones(context, previousLevel: previousLevel, level: newLevel,
-            xpAwarded: result.xpAwarded, coinsAwarded: result.coinsAwarded)) {
+        final previousLevel = QuestwellProgression.levelForXp(
+          result.totalXp - result.xpAwarded,
+          legacyOffset: profile.levelXpOffset,
+        );
+        final newLevel = QuestwellProgression.levelForXp(
+          result.totalXp,
+          legacyOffset: profile.levelXpOffset,
+        );
+        if (await showQuestwellMilestones(
+          context,
+          previousLevel: previousLevel,
+          level: newLevel,
+          xpAwarded: result.xpAwarded,
+          coinsAwarded: result.coinsAwarded,
+        )) {
           if (mounted) setState(_refresh);
           return;
         }
@@ -85,14 +110,26 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
           builder: (dialogContext) => Dialog(
             backgroundColor: const Color(0xFF101923),
             shape: const RoundedRectangleBorder(),
-            child: SingleChildScrollView(child: Padding(padding: const EdgeInsets.all(16),
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                QuestwellBossVictoryPanel(bossName: _bossName(battle.bossType),
-                  xp: result.xpAwarded, coins: result.coinsAwarded),
-                const SizedBox(height: 12),
-                TextButton(onPressed: () => Navigator.of(dialogContext).pop(),
-                  child: const Text('Return to battles')),
-              ]))),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    QuestwellBossVictoryPanel(
+                      bossName: _bossName(battle.bossType),
+                      xp: result.xpAwarded,
+                      coins: result.coinsAwarded,
+                    ),
+                    const SizedBox(height: 12),
+                    TextButton(
+                      onPressed: () => Navigator.of(dialogContext).pop(),
+                      child: const Text('Return to battles'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         );
       }
@@ -143,9 +180,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   Text(
                     'Summon a Boss Battle',
                     style: theme.titleLarge.override(
-                      font: GoogleFonts.roboto(
-                        fontWeight: FontWeight.w700,
-                      ),
+                      font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
                       letterSpacing: 0,
                     ),
                   ),
@@ -167,19 +202,23 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     ),
                   ),
                   const SizedBox(height: 14),
-                  QuestwellBossUnlockProgress(level: level,
-                    totalXp: profile?.totalXp ?? 0, offset: profile?.levelXpOffset ?? 0,
-                    known: profile != null),
+                  QuestwellBossUnlockProgress(
+                    level: level,
+                    totalXp: profile?.totalXp ?? 0,
+                    offset: profile?.levelXpOffset ?? 0,
+                    known: profile != null,
+                  ),
                   const SizedBox(height: 12),
-                  QuestwellBossPicker(value: bossType, level: level,
-                    onChanged: (value) => setSheetState(() => bossType = value)),
+                  QuestwellBossPicker(
+                    value: bossType,
+                    level: level,
+                    onChanged: (value) => setSheetState(() => bossType = value),
+                  ),
                   const SizedBox(height: 18),
                   Text(
                     'Attack plan',
                     style: theme.titleMedium.override(
-                      font: GoogleFonts.roboto(
-                        fontWeight: FontWeight.w700,
-                      ),
+                      font: GoogleFonts.roboto(fontWeight: FontWeight.w700),
                       letterSpacing: 0,
                     ),
                   ),
@@ -187,9 +226,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   for (var i = 0; i < stepControllers.length; i++) ...[
                     TextField(
                       controller: stepControllers[i],
-                      decoration: InputDecoration(
-                        labelText: 'Step ${i + 1}',
-                      ),
+                      decoration: InputDecoration(labelText: 'Step ${i + 1}'),
                     ),
                     if (i != stepControllers.length - 1)
                       const SizedBox(height: 10),
@@ -222,9 +259,10 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                         return;
                       }
 
-                      if (!QuestwellBossUnlocks.available(bossType, level)) return;
+                      if (!QuestwellBossUnlocks.available(bossType, level))
+                        return;
                       try {
-                        final battleId = await QuestwellBossService.createBattle(
+                        final battleId = await widget.createBattle(
                           title: title,
                           steps: steps,
                           bossType: bossType,
@@ -269,36 +307,46 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.bosses),
+    bottomNavigationBar: const QuestwellAppNavigation(
+      current: QuestwellDestination.bosses,
+    ),
     backgroundColor: const Color(0xFF111827),
-    body: SafeArea(child: FutureBuilder<List<QuestwellBossBattle>>(
-      future: _future,
-      builder: (context, snapshot) => QuestwellBossBoard(
-        battles: snapshot.data ?? const [],
-        initialBattleId: _createdBattleId,
-        unlockProgress: QuestwellBossUnlockProgress(
-          level: _appearance?.profile.level ?? 1,
-          totalXp: _appearance?.profile.totalXp ?? 0,
-          offset: _appearance?.profile.levelXpOffset ?? 0,
-          known: _appearance != null),
-        loading: !snapshot.hasData && !snapshot.hasError,
-        failed: snapshot.hasError,
-        busyStepId: _busyStepId,
-        campfire: _campfireMode,
-        archetype: _appearance?.profile.adventurerArchetype ?? 'wanderer',
-        body: _appearance?.profile.avatarBodyType ?? 'neutral',
-        equipment: {for (final item in _appearance?.cosmetics ?? <QuestwellCosmetic>[])
-          if (item.equipped) item.renderKey: item.slug},
-        onHome: () => context.goNamed(HomePageWidget.routeName),
-        onCreate: _showCreateBattle,
-        onAttack: _completeStep,
-        onRetry: () => setState(_refresh),
-        onRefresh: () async {
-          setState(_refresh);
-          try { await Future.wait([_future, _loadCampfireMode()]); }
-          catch (_) { /* FutureBuilder displays the retry state. */ }
-        },
+    body: SafeArea(
+      child: FutureBuilder<List<QuestwellBossBattle>>(
+        future: _future,
+        builder: (context, snapshot) => QuestwellBossBoard(
+          battles: snapshot.data ?? const [],
+          initialBattleId: _createdBattleId,
+          unlockProgress: QuestwellBossUnlockProgress(
+            level: _appearance?.profile.level ?? 1,
+            totalXp: _appearance?.profile.totalXp ?? 0,
+            offset: _appearance?.profile.levelXpOffset ?? 0,
+            known: _appearance != null,
+          ),
+          loading: !snapshot.hasData && !snapshot.hasError,
+          failed: snapshot.hasError,
+          busyStepId: _busyStepId,
+          campfire: _campfireMode,
+          archetype: _appearance?.profile.adventurerArchetype ?? 'wanderer',
+          body: _appearance?.profile.avatarBodyType ?? 'neutral',
+          equipment: {
+            for (final item in _appearance?.cosmetics ?? <QuestwellCosmetic>[])
+              if (item.equipped) item.renderKey: item.slug,
+          },
+          onHome: () => context.goNamed(HomePageWidget.routeName),
+          onCreate: _showCreateBattle,
+          onAttack: _completeStep,
+          onRetry: () => setState(_refresh),
+          onRefresh: () async {
+            setState(_refresh);
+            try {
+              await Future.wait([_future, _loadCampfireMode()]);
+            } catch (_) {
+              /* FutureBuilder displays the retry state. */
+            }
+          },
+        ),
       ),
-    )),
+    ),
   );
 }
