@@ -440,6 +440,32 @@ try {
   bossCreationTests('regressions');
   bossTests('regressions');
   deletionTests();
+  // C11b is deliberately after the pinned seven-change forward rehearsal.
+  // Never change its historical schema hashes to accommodate a new proposal.
+  const chronicleBefore = readCatalog();
+  const chronicleMigration = '20261006054430_chronicle_server_totals.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', chronicleMigration), join(workdir, 'supabase/migrations', chronicleMigration));
+  run(['migration', 'up', '--local']);
+  const chronicleAfter = readCatalog();
+  const addedChronicle = chronicleAfter.functions.filter(f => f.schema === 'public' && f.name === 'chronicle_totals');
+  assert.equal(addedChronicle.length, 1);
+  assert.equal(chronicleBefore.functions.filter(f => f.schema === 'public' && f.name === 'chronicle_totals').length, 0);
+  chronicleAfter.functions = chronicleAfter.functions.filter(f => !(f.schema === 'public' && f.name === 'chronicle_totals'));
+  chronicleAfter.grants = chronicleAfter.grants.filter(g => !(g.schema === 'public' && g.name.startsWith('chronicle_totals(')));
+  for (const name of ['tasks_chronicle_owner_idx','bosses_chronicle_owner_idx']) {
+    assert.equal(chronicleBefore.indexes.filter(i => i.name === name).length, 0);
+    assert.equal(chronicleAfter.indexes.filter(i => i.schema === 'public' && i.name === name && i.valid && i.ready).length, 1);
+    chronicleAfter.indexes = chronicleAfter.indexes.filter(i => !(i.schema === 'public' && i.name === name));
+  }
+  assertCatalogMatches(chronicleBefore, chronicleAfter);
+  run(['db','query','--local','--file',join(source,'chronicle-totals-contract.sql')]);
+  const chronicleResult = spawnSync(process.execPath, [join(source, 'chronicle-totals.mjs')], {
+    input: JSON.stringify({status}), env, encoding:'utf8', timeout:120000, maxBuffer:1024*1024,
+  });
+  if (chronicleResult.stdout) console.log(redact(chronicleResult.stdout));
+  if (chronicleResult.stderr) console.error(redact(chronicleResult.stderr));
+  assert.equal(chronicleResult.status, 0, 'Chronicle Auth/REST scenarios failed');
+  console.log(run(['db','lint','--local','--schema','public,private','--level','warning','--fail-on','error']));
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();
