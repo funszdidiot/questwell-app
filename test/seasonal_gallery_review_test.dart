@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../lib/preview/seasonal_gallery_review.dart';
@@ -23,9 +22,19 @@ Future<void> pumpUntilFound(
 }) async {
   for (var i = 0; i < attempts; i++) {
     if (finder.evaluate().isNotEmpty) return;
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 20)),
+    );
     await tester.pump(const Duration(milliseconds: 80));
   }
-  expect(finder, findsOneWidget);
+  expect(
+    finder,
+    findsOneWidget,
+    reason: tester
+        .widgetList<Text>(find.byType(Text))
+        .map((t) => t.data)
+        .join(' | '),
+  );
 }
 
 void main() {
@@ -35,9 +44,6 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(1200, 1000));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
-    await tester.runAsync(
-      () => rootBundle.loadString('assets/jsons/seasonal_review_fixture.json'),
-    );
     await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp());
     final lantern = find.byKey(
       const ValueKey('seasonal-item-fixture-solstice-ward-lantern'),
