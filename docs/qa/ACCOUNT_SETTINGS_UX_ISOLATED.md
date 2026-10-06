@@ -73,7 +73,7 @@ Navigator route as a web history/refresh defect. The correction registers
 A route owner now holds the existing account callbacks; the presentation widget
 remains reusable. Direct URL entry provides a Back action to Adventurer.
 The route follows the existing Adventurer routing policy; auth services and
-backend authorization are unchanged. Local focused tests: **15 passed**,
+backend authorization are unchanged. Local focused tests: **17 passed**,
 including production route registration, serialized browser Back/Forward
 restoration, direct URL restoration, and successful simulated operation routing.
 A second AI finding identified disposal during pending sign-out or deletion
@@ -81,7 +81,12 @@ cleanup. The correction keeps completion attached to the app router, and cleanup
 runs even if settings is removed while the delete request is pending. Three new
 regressions exercise browser Back during sign-out, deletion and local cleanup
 using the actual route owner with injected account-free callbacks.
-The account suite is also added to the existing Chrome CI step. Fresh CI and
+A third review found that successful remote deletion could be stranded by a
+local preference-cleanup failure. Account-exit navigation now runs in `finally`
+after remote success. Two additional tests verify cleanup failure both while
+settings remains open and after browser Back; both end on Auth with cleanup
+attempted once. Remote deletion failure still uses the existing dialog error
+path. The account suite is also added to the existing Chrome CI step. Fresh CI and
 AI review of this correction remain required.
 An additional offline screenshot attempt could not complete because the existing
 font setup does not bundle Roboto-Bold. No visual acceptance is inferred from

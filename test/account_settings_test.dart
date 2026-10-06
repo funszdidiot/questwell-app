@@ -262,84 +262,96 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  for (final pendingStage in ['sign-out', 'deletion', 'cleanup']) {
-    testWidgets(
-        'account exit completes after browser Back during $pendingStage',
-        (tester) async {
-      final pending = Completer<void>();
-      var signOuts = 0;
-      var deletions = 0;
-      var cleanups = 0;
-      final router = GoRouter(initialLocation: '/adventurer', routes: [
-        GoRoute(
-            path: '/adventurer',
-            builder: (context, state) => Scaffold(
-                  body: TextButton(
-                    onPressed: () =>
-                        context.pushNamed(AccountSettingsPageWidget.routeName),
-                    child: const Text('Account settings'),
-                  ),
-                )),
-        GoRoute(
-          path: AccountSettingsPageWidget.routePath,
-          name: AccountSettingsPageWidget.routeName,
-          builder: (_, state) => AccountSettingsPageWidget(
-            signOut: () async {
-              signOuts++;
-              await pending.future;
-            },
-            deleteAccount: () async {
-              deletions++;
-              if (pendingStage == 'deletion') await pending.future;
-            },
-            clearLocalAccount: () async {
-              cleanups++;
-              if (pendingStage == 'cleanup') await pending.future;
-            },
+  for (final pendingStage in [
+    'sign-out',
+    'deletion',
+    'cleanup',
+    'cleanup failure'
+  ]) {
+    for (final leaveSettings
+        in pendingStage == 'cleanup failure' ? [false, true] : [true]) {
+      testWidgets(
+          'account exit completes during $pendingStage with Back=$leaveSettings',
+          (tester) async {
+        final pending = Completer<void>();
+        var signOuts = 0;
+        var deletions = 0;
+        var cleanups = 0;
+        final router = GoRouter(initialLocation: '/adventurer', routes: [
+          GoRoute(
+              path: '/adventurer',
+              builder: (context, state) => Scaffold(
+                    body: TextButton(
+                      onPressed: () => context
+                          .pushNamed(AccountSettingsPageWidget.routeName),
+                      child: const Text('Account settings'),
+                    ),
+                  )),
+          GoRoute(
+            path: AccountSettingsPageWidget.routePath,
+            name: AccountSettingsPageWidget.routeName,
+            builder: (_, state) => AccountSettingsPageWidget(
+              signOut: () async {
+                signOuts++;
+                await pending.future;
+              },
+              deleteAccount: () async {
+                deletions++;
+                if (pendingStage == 'deletion') await pending.future;
+              },
+              clearLocalAccount: () async {
+                cleanups++;
+                if (pendingStage.startsWith('cleanup')) await pending.future;
+                if (pendingStage == 'cleanup failure')
+                  throw StateError('Preferences removal failed');
+              },
+            ),
           ),
-        ),
-        GoRoute(
-            path: '/authPage',
-            name: 'AuthPage',
-            builder: (_, state) =>
-                const Scaffold(body: Text('Signed out destination'))),
-      ]);
-      addTearDown(router.dispose);
-      await tester.pumpWidget(
-          MaterialApp.router(theme: ThemeData.dark(), routerConfig: router));
-      await tester.pumpAndSettle();
-      final previousLocation =
-          router.routeInformationParser.restoreRouteInformation(
-        router.routerDelegate.currentConfiguration,
-      )!;
-      await tester.tap(find.text('Account settings'));
-      await tester.pumpAndSettle();
-      if (pendingStage == 'sign-out') {
-        await tester.tap(find.widgetWithText(OutlinedButton, 'Sign out'));
-      } else {
-        await tester.scrollUntilVisible(find.text('Delete account'), 200,
-            scrollable: find.byType(Scrollable).first);
+          GoRoute(
+              path: '/authPage',
+              name: 'AuthPage',
+              builder: (_, state) =>
+                  const Scaffold(body: Text('Signed out destination'))),
+        ]);
+        addTearDown(router.dispose);
+        await tester.pumpWidget(
+            MaterialApp.router(theme: ThemeData.dark(), routerConfig: router));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Delete account'));
+        final previousLocation =
+            router.routeInformationParser.restoreRouteInformation(
+          router.routerDelegate.currentConfiguration,
+        )!;
+        await tester.tap(find.text('Account settings'));
         await tester.pumpAndSettle();
-        await tester.enterText(find.byType(TextField), 'DELETE');
-        await tester.pump();
-        await tester.tap(find.text('Permanently delete'));
-      }
-      await tester.pumpAndSettle();
-      expect(pendingStage == 'sign-out' ? signOuts : deletions, 1);
-      await router.routeInformationProvider
-          .didPushRouteInformation(previousLocation);
-      await tester.pumpAndSettle();
-      expect(find.byType(AccountSettingsPageWidget), findsNothing);
-      expect(find.text('Account settings'), findsOneWidget);
-      pending.complete();
-      await tester.pumpAndSettle();
-      expect(find.text('Signed out destination'), findsOneWidget);
-      expect(cleanups, pendingStage == 'sign-out' ? 0 : 1);
-      expect(router.routeInformationProvider.value.uri.path, '/authPage');
-      expect(tester.takeException(), isNull);
-    });
+        if (pendingStage == 'sign-out') {
+          await tester.tap(find.widgetWithText(OutlinedButton, 'Sign out'));
+        } else {
+          await tester.scrollUntilVisible(find.text('Delete account'), 200,
+              scrollable: find.byType(Scrollable).first);
+          await tester.pumpAndSettle();
+          await tester.tap(find.text('Delete account'));
+          await tester.pumpAndSettle();
+          await tester.enterText(find.byType(TextField), 'DELETE');
+          await tester.pump();
+          await tester.tap(find.text('Permanently delete'));
+        }
+        await tester.pumpAndSettle();
+        expect(pendingStage == 'sign-out' ? signOuts : deletions, 1);
+        if (leaveSettings) {
+          await router.routeInformationProvider
+              .didPushRouteInformation(previousLocation);
+          await tester.pumpAndSettle();
+          expect(find.byType(AccountSettingsPageWidget), findsNothing);
+          expect(find.text('Account settings'), findsOneWidget);
+        }
+        pending.complete();
+        await tester.pumpAndSettle();
+        expect(find.text('Signed out destination'), findsOneWidget);
+        expect(cleanups, pendingStage == 'sign-out' ? 0 : 1);
+        expect(router.routeInformationProvider.value.uri.path, '/authPage');
+        expect(tester.takeException(), isNull);
+      });
+    }
   }
 
   for (final delete in [false, true]) {

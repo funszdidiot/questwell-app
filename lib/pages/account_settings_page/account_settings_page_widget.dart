@@ -61,8 +61,13 @@ class _AccountSettingsPageWidgetState extends State<AccountSettingsPageWidget> {
     final clearLocalAccount = widget.clearLocalAccount;
     await widget.deleteAccount();
     // Cleanup belongs to the operation, not the dialog's mounted callback.
-    await clearLocalAccount();
-    _finishAccountExit(router);
+    try {
+      await clearLocalAccount();
+    } finally {
+      // Remote deletion succeeded: a local cleanup failure must not strand the
+      // deleted account in the app or invite a second deletion attempt.
+      _finishAccountExit(router);
+    }
   }
 
   @override
