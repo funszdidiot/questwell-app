@@ -2,9 +2,45 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
 import 'package:project_momentum/backend/supabase/questwell_network.dart';
 
 void main() {
+  test('read retries one browser transport failure', () async {
+    var calls = 0;
+    final result = await QuestwellNetwork.read(() async {
+      if (++calls == 1) throw http.ClientException('Failed to fetch');
+      return 'ok';
+    });
+    expect(result, 'ok');
+    expect(calls, 2);
+  });
+
+  test('repeated browser failure is bounded and retains original cause',
+      () async {
+    var calls = 0;
+    final failure = http.ClientException('Failed to fetch');
+    await expectLater(QuestwellNetwork.read<String>(() async {
+      calls++;
+      throw failure;
+    }),
+        throwsA(isA<QuestwellNetworkException>()
+            .having((e) => e.cause, 'cause', same(failure))));
+    expect(calls, 2);
+  });
+
+  test('browser write failure is normalized but never retried', () async {
+    var calls = 0;
+    final failure = http.ClientException('Failed to fetch');
+    await expectLater(QuestwellNetwork.write<void>(() async {
+      calls++;
+      throw failure;
+    }),
+        throwsA(isA<QuestwellNetworkException>()
+            .having((e) => e.cause, 'cause', same(failure))));
+    expect(calls, 1);
+  });
+
   test('read retries one transient socket failure', () async {
     var calls = 0;
     final result = await QuestwellNetwork.read(() async {

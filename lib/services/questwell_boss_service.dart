@@ -66,12 +66,18 @@ class QuestwellBossService {
   }
 
   static Future<BossStepCompletionResult> completeStep(String stepId) async {
+    final owner = SupaFlow.client.auth.currentUser?.id;
+    if (owner == null) throw StateError('Authentication required.');
     final response = await QuestwellNetwork.write(
       () => SupaFlow.client.rpc(
         'complete_boss_step',
         params: {'p_step_id': stepId},
       ),
     );
+
+    if (SupaFlow.client.auth.currentUser?.id != owner) {
+      throw StateError('Reward account changed.');
+    }
 
     if (response is! List || response.isEmpty) {
       throw StateError('No boss step result returned.');

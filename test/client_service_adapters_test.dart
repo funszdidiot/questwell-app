@@ -124,6 +124,17 @@ void main() {
         expect(SupaFlow.client.auth.currentUser!.id, owner);
       });
     }
+    test('browser deletion disconnect is normalized without resending',
+        () async {
+      final failure = http.ClientException('Failed to fetch');
+      respond = (_) async => throw failure;
+      await expectLater(
+          QuestwellAccountService.deleteAccount(),
+          throwsA(isA<QuestwellNetworkException>()
+              .having((e) => e.cause, 'cause', same(failure))));
+      expect(requests, hasLength(1));
+      expect(SupaFlow.client.auth.currentUser!.id, owner);
+    });
     test('non-200 success status is not deletion confirmation', () async {
       respond = (_) async => json({'deleted': true}, status: 202);
       await expectLater(
@@ -215,6 +226,55 @@ void main() {
         expect(body(requests.single),
             boss ? {'p_step_id': 'step-id'} : {'p_task_id': 'quest-id'});
       });
+      test('$label browser disconnect is normalized without resending',
+          () async {
+        final failure = http.ClientException('Failed to fetch');
+        respond = (_) async => throw failure;
+        await expectLater(
+            complete(),
+            throwsA(isA<QuestwellNetworkException>()
+                .having((e) => e.cause, 'cause', same(failure))));
+        expect(requests, hasLength(1));
+      });
+      test('$label signed out never sends a reward mutation', () async {
+        await signOut();
+        await expectLater(complete(), throwsStateError);
+        expect(requests, isEmpty);
+      });
+      for (final logout in [false, true]) {
+        test(
+            '$label discards old-owner rewards after ${logout ? 'logout' : 'account switch'}',
+            () async {
+          final entered = Completer<void>();
+          final reply = Completer<http.Response>();
+          respond = (_) {
+            entered.complete();
+            return reply.future;
+          };
+          final result = complete();
+          final check = expectLater(result, throwsStateError);
+          await entered.future;
+          if (logout) {
+            respond = (_) async => json({});
+            await SupaFlow.client.auth.signOut(scope: SignOutScope.local);
+          } else {
+            await session(other);
+          }
+          reply.complete(json([
+            {
+              'task_id': 'quest-id',
+              'boss_completed': true,
+              'xp_awarded': 13,
+              'coins_awarded': 7,
+              'total_xp': 213,
+              'coin_balance': 87
+            }
+          ]));
+          await check;
+          expect(requests.where((r) => r.url.path.contains('/rpc/')),
+              hasLength(1));
+        });
+      }
       test('$label repeated completion respects zero server award', () async {
         respond = (_) async => json([
               {
@@ -363,6 +423,19 @@ void main() {
       expect(requests.single.url.path, '/rest/v1/rpc/purchase_cosmetic');
       expect(body(requests.single), {'p_cosmetic_id': 'cosmetic-id'});
       expect(notifications, 1);
+    });
+    test('browser purchase failure reconciles once without replaying mutation',
+        () async {
+      final failure = http.ClientException('Failed to fetch');
+      respond = (r) async {
+        if (r.method == 'POST') throw failure;
+        return json([]);
+      };
+      await expectLater(
+          QuestwellCosmeticService.purchase('item'),
+          throwsA(isA<QuestwellNetworkException>()
+              .having((e) => e.cause, 'cause', same(failure))));
+      expect(requests.map((r) => r.method), ['POST', 'GET']);
     });
     test('signed out purchase never sends or reconciles', () async {
       await signOut();

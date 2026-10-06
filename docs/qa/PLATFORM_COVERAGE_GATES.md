@@ -27,7 +27,7 @@ The unsigned iOS output is compile evidence, not an installable release artifact
 
 `tool/critical_coverage.json` explicitly maps client source files to rewards,
 purchases, account deletion and recovery. The complete existing Flutter suite remains an unchanged mandatory regression
-step. A separate fresh `ubuntu-24.04` job runs a 114-test focused suite using `--coverage --branch-coverage
+step. A separate fresh `ubuntu-24.04` job runs a 127-test focused suite using `--coverage --branch-coverage
 --concurrency=1` across open quests, boss lists, boss creation recovery, purchase
 recovery, deletion UI, authentication, network handling, startup and direct client
 service adapters. It does not
@@ -96,23 +96,35 @@ Initial focused measurement (client service files, not backend assertions):
 
 These gaps are real: UI tests with injected callbacks and backend integration
 assertions do not establish execution coverage of the client service adapters.
-The next increment adds 42 direct client adapter tests using the real services and
+The next increment adds 52 direct client adapter tests and three network tests using the real services and
 pinned Supabase SDK with a synthetic session and an intercepted HTTP boundary.
-No production service, dependency, schema, account or art changes are needed.
+AI review exposed two pre-existing service defects. Browser transport failures
+(`http.ClientException` from the pinned http 1.4.0 BrowserClient) bypassed network
+normalization, and quest/boss completion could return old-account rewards after
+a session switch. Thirteen added regression cases failed against the original
+services, then passed after fixes: normalize browser transport failures with one
+bounded read retry and no mutation replay; capture/recheck the reward owner and
+reject signed-out completions. The full adapter and network test files now also
+run in Chrome. No dependency, schema, live-account or art changes are needed.
+Formatting the touched network/task services removes their two legacy format
+allowances; the 46-diagnostic analyzer baseline is unchanged.
 The adapter tests exercise deletion confirmation, failure and owner-local cleanup;
 server-authoritative quest/boss rewards and no automatic replay after disconnect;
 creation receipts retained across explicit retries; purchase reconciliation in
 ownership-then-balance order; failure notification behavior, queue recovery and
 account switches while queued or during each purchase response stage.
 
-Local focused measurement after this increment (114 passing tests):
+Local focused measurement after the reviewed fixes (127 passing tests):
 
 | Area | Lines | Branch entries |
 | --- | --- | --- |
-| Rewards | 66/84 (78.57%) | 24/37 (64.86%) |
+| Rewards | 74/98 (75.51%) | 28/41 (68.29%) |
 | Purchases | 34/155 (21.94%) | 17/69 (24.64%) |
 | Account deletion | 12/13 (92.31%) | 6/7 (85.71%) |
-| Recovery | 93/120 (77.50%) | 52/72 (72.22%) |
+| Recovery | 99/126 (78.57%) | 55/75 (73.33%) |
+
+Added guards and required formatting change the measured source denominators;
+these counts are not percentages of an unchanged source snapshot.
 
 The one uncovered deletion line/branch entry is its private unused constructor,
 not proof of complete deletion behavior coverage. The Purchases group includes

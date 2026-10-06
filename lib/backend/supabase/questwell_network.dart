@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:http/http.dart' as http;
+
 /// Stable failure type for backend connectivity problems.
 ///
 /// UI code can catch [QuestwellNetworkException] and show a retry/offline state
@@ -46,6 +48,16 @@ class QuestwellNetwork {
           'Questwell appears to be offline. Check your connection and try again.',
           cause: error,
         );
+      } on http.ClientException catch (error) {
+        // BrowserClient reports fetch/network failures as ClientException.
+        if (attempt == 0) {
+          await Future<void>.delayed(const Duration(milliseconds: 350));
+          continue;
+        }
+        throw QuestwellNetworkException(
+          'Questwell could not contact the server. Please try again.',
+          cause: error,
+        );
       } on HttpException catch (error) {
         throw QuestwellNetworkException(
           'Questwell could not contact the server. Please try again.',
@@ -53,7 +65,8 @@ class QuestwellNetwork {
         );
       }
     }
-    throw const QuestwellNetworkException('Questwell could not reach the server.');
+    throw const QuestwellNetworkException(
+        'Questwell could not reach the server.');
   }
 
   /// Runs a mutation once with a bounded wait.
@@ -71,6 +84,12 @@ class QuestwellNetwork {
     } on SocketException catch (error) {
       throw QuestwellNetworkException(
         'Questwell appears to be offline. Your change was not confirmed.',
+        cause: error,
+      );
+    } on http.ClientException catch (error) {
+      // The server may have committed before the browser lost the response.
+      throw QuestwellNetworkException(
+        'Questwell could not contact the server. Your change was not confirmed.',
         cause: error,
       );
     } on HttpException catch (error) {
