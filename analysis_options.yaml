@@ -5,3 +5,12 @@ analyzer:
   exclude:
     - lib/custom_code/**
     - lib/flutter_flow/custom_functions.dart
+
+# Small correctness-focused policy. New findings are fatal in quality_gate.py;
+# existing diagnostics are enumerated individually, never globally suppressed.
+linter:
+  rules:
+    - valid_regexps
+    - hash_and_equals
+    - collection_methods_unrelated_type
+    - unrelated_type_equality_checks
