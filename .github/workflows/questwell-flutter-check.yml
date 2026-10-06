@@ -55,15 +55,8 @@ jobs:
       - name: Analyze
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
 
-      - name: Run all substantive Flutter regressions
-        shell: bash
-        run: |
-          # This generated counter placeholder has no assertion and does not
-          # initialize the application's backend. Every real regression is
-          # discovered automatically, including future tests in subdirectories.
-          mapfile -d '' tests < <(find test -type f -name '*_test.dart' ! -path 'test/widget_test.dart' -print0)
-          test "${#tests[@]}" -gt 0
-          flutter test "${tests[@]}"
+      - name: Run complete Flutter regression suite
+        run: flutter test
 
       - name: Build proposed development app without deploying
         if: github.event_name == 'pull_request' && github.base_ref == 'questwell-dev'
