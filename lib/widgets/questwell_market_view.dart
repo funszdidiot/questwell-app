@@ -4,7 +4,7 @@ import '../services/questwell_equipment_policy.dart';
 import '../services/questwell_loadout_model.dart';
 import 'questwell_body_fit_labels.dart';
 import 'questwell_pixel_art.dart';
-import 'questwell_hearth_decor.dart';
+import 'questwell_market_preview.dart';
 import 'questwell_typography.dart';
 import 'questwell_market_shopfront.dart';
 import 'questwell_market_motion.dart';
@@ -65,17 +65,10 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     if(confirmed==true&&mounted)await widget.onPurchase(i);
   }
   Map<String,String> preview(QuestwellCosmetic item) {
-    final result={for(final i in widget.data.cosmetics.where((i)=>i.equipped))i.renderKey:i.slug};
-    if(item.category=='room') {
-      result.removeWhere((key,value)=>value==item.slug);
-      final slot=QuestwellHearthDecor.choices(item.slug).keys.firstWhere((s)=>s!='bookshelf_top',orElse:()=> 'right');
-      result[QuestwellLoadoutModel.roomRenderKey(slot)]=item.slug;
-    }else if(item.category=='wall_art'){
-      result[QuestwellLoadoutModel.wallArtRenderKey(item.slug=='moonlit-woodland'?'wall_center':'wall_left')]=item.slug;
-    }else {result[item.category]=item.slug;}
-    return result;
+    return QuestwellMarketPreview.equipment(widget.data, item) ?? const {};
   }
   Future<void> details(QuestwellCosmetic item) async {
+    final roomPreview = room(item) ? QuestwellMarketPreview.equipment(widget.data, item) : null;
     final result=await showModalBottomSheet<String>(context:context,isScrollControlled:true,
       backgroundColor:const Color(0xFF182B2E),showDragHandle:true,
       builder:(ctx)=>SafeArea(child:ConstrainedBox(constraints:BoxConstraints(maxHeight:MediaQuery.sizeOf(ctx).height*.88),
@@ -83,8 +76,15 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
           Text(item.name,style:QuestwellTypography.body(fontSize:25,fontWeight:FontWeight.w700,color:cream)),
           Text('${title(item.rarity)} · ${title(item.category.replaceAll('_',' '))}',style:QuestwellTypography.body(color:gold)),
           const SizedBox(height:16),
-          if(room(item))QuestwellHearthPixelScene(height:265,archetype:widget.data.profile.adventurerArchetype,
-            avatarBodyType:widget.data.profile.avatarBodyType,equippedSlugs:preview(item))
+          if(room(item) && roomPreview == null)
+            const Padding(padding: EdgeInsets.all(24),
+              child: Text('Room preview unavailable for this item.'))
+          else if(room(item))QuestwellHearthPixelScene(height:265,archetype:widget.data.profile.adventurerArchetype,
+            avatarBodyType:widget.data.profile.avatarBodyType,equippedSlugs:roomPreview!,
+            hearthProfileBySlug: {for(final i in widget.data.cosmetics)
+              if(i.hearthProfileKey != null) i.slug: i.hearthProfileKey!},
+            hearthRenderBySlug: {for(final i in widget.data.cosmetics)
+              if(i.hearthRenderSpec != null) i.slug: i.hearthRenderSpec!})
           else SizedBox(height:265,child:QuestwellLayeredAdventurerArt(
             archetype:item.requiredArchetype??widget.data.profile.adventurerArchetype,
             avatarBodyType:QuestwellBodyFitLabels.previewBody(item.slug,widget.data.profile.avatarBodyType),equippedSlugs:preview(item))),

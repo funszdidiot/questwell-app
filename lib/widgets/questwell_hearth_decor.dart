@@ -19,7 +19,7 @@ import '../services/questwell_cosmetic_models.dart';
 
 /// Authored furniture proportions and floor anchors shared by every Hearth view.
 class QuestwellHearthDecor {
-  static Map<String, String> choices(String slug) => QuestwellMasteryRelic.supports(slug)
+  static Map<String, String> choices(String slug, {bool knownOnly = false}) => QuestwellMasteryRelic.supports(slug)
     ? const {'mantel': 'On the fireplace mantel', 'bookshelf_top': 'On the bookcase',
       'left': 'Back left pedestal', 'right': 'Back right pedestal',
       'front': 'Front left pedestal'}
@@ -33,7 +33,7 @@ class QuestwellHearthDecor {
     QuestwellWardingLantern.slug => const {'left': 'Left wall', 'right': 'Right wall', 'front': 'Foreground'},
     QuestwellBookshelf.slug || QuestwellPotionWorkbench.slug || QuestwellHarvestDisplay.slug || QuestwellAutumnLantern.slug => const {'left': 'Left wall', 'right': 'Right wall'},
     QuestwellReadingChair.slug => const {'front': 'Left floor', 'right': 'Right floor'},
-    _ => const {'left': 'Beside the fireplace', 'right': 'Near the window', 'front': 'Foreground'},
+    _ => knownOnly ? const {} : const {'left': 'Beside the fireplace', 'right': 'Near the window', 'front': 'Foreground'},
   };
   static double floorDepth(
     String slug,
