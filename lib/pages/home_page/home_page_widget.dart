@@ -710,7 +710,7 @@ const SizedBox(height: 2),
                     return Column(
                       children: [
                         for (var index = 0; index < visibleTasks.length; index++) ...[
-                          _QuestCard(
+                          QuestwellHomeQuestCard(
                             task: visibleTasks[index],
                             frictionLabel: _frictionLabel(visibleTasks[index].frictionLevel),
                             completing: _completingTask,
@@ -764,8 +764,9 @@ const SizedBox(height: 2),
 }
 
 
-class _QuestCard extends StatelessWidget {
-  const _QuestCard({
+class QuestwellHomeQuestCard extends StatelessWidget {
+  const QuestwellHomeQuestCard({
+    super.key,
     required this.task,
     required this.frictionLabel,
     required this.completing,
@@ -837,6 +838,17 @@ class _QuestCard extends StatelessWidget {
               letterSpacing: 0,
             ),
           ),
+          if (task.notes?.trim().isNotEmpty ?? false) ...[
+            const SizedBox(height: 8),
+            Text(
+              task.notes!.trim(),
+              style: theme.bodyMedium.override(
+                font: GoogleFonts.roboto(),
+                color: theme.secondaryText,
+                letterSpacing: 0,
+              ),
+            ),
+          ],
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
