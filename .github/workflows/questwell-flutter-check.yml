@@ -69,7 +69,7 @@ jobs:
         run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
 
       - name: Verify paging and account navigation in Chrome
-        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --platform chrome test/open_task_list_test.dart test/boss_list_test.dart test/account_settings_test.dart test/chronicle_history_test.dart test/chronicle_server_totals_test.dart test/client_service_adapters_test.dart test/questwell_network_test.dart
+        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --platform chrome test/open_task_list_test.dart test/boss_list_test.dart test/account_settings_test.dart test/chronicle_history_test.dart test/chronicle_server_totals_test.dart test/client_service_adapters_test.dart test/auth_catalog_adapters_test.dart test/questwell_network_test.dart
 
       - name: Build proposed development app without deploying
         if: github.event_name == 'pull_request'
@@ -105,7 +105,7 @@ jobs:
           test/boss_creation_recovery_test.dart test/purchase_recovery_test.dart
           test/delete_account_test.dart test/auth_flow_test.dart
           test/questwell_network_test.dart test/startup_bootstrap_test.dart
-          test/widget_test.dart test/client_service_adapters_test.dart
+          test/widget_test.dart test/client_service_adapters_test.dart test/auth_catalog_adapters_test.dart
 
       - name: Report critical client coverage
         run: |

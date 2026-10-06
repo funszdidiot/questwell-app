@@ -248,14 +248,6 @@
       "WARNING",
       "STATIC_WARNING",
       "UNNECESSARY_NON_NULL_ASSERTION",
-      "lib/services/questwell_cosmetic_service.dart",
-      "The '!' will have no effect because the receiver can't be null.",
-      1
-    ],
-    [
-      "WARNING",
-      "STATIC_WARNING",
-      "UNNECESSARY_NON_NULL_ASSERTION",
       "lib/widgets/questwell_pixel_art.dart",
       "The '!' will have no effect because the receiver can't be null.",
       1
@@ -406,7 +398,6 @@
     "lib/services/questwell_account_service.dart": "cc98324a0793f06a1ba5b60c1db1a8f4107ae6900e0c01f8de8f155da9f8f245",
     "lib/services/questwell_auth_service.dart": "7ed3427c78c0843983d7a41b0e4cae7469a85feb0becb6b2027761626524a872",
     "lib/services/questwell_cosmetic_models.dart": "62b77c455dc4b9eaa0db32ca78a412a1bb64dd45fc822a19959307a9562d700d",
-    "lib/services/questwell_cosmetic_service.dart": "55f358f2449761b4fdffb71b0af79b8a5ce97445b263b401d3da8c361355a8f9",
     "lib/services/questwell_equipment_policy.dart": "bee9ca15682ff3d67e640049cd2c335e0c89a169ae96d6e7bbb06e1bde219adb",
     "lib/services/questwell_feedback_draft.dart": "af6004e6ee9c3f05326866564f16757358f91e004e7a2a2fd9f09e28b0583995",
     "lib/services/questwell_feedback_service.dart": "4da61cbfc4fabb1dc748ed92d8a5ec95a4eeee98b7f227277aad5526ad262d16",

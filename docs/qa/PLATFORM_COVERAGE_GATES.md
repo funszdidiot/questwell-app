@@ -27,7 +27,7 @@ The unsigned iOS output is compile evidence, not an installable release artifact
 
 `tool/critical_coverage.json` explicitly maps client source files to rewards,
 purchases, account deletion and recovery. The complete existing Flutter suite remains an unchanged mandatory regression
-step. A separate fresh `ubuntu-24.04` job runs a 127-test focused suite using `--coverage --branch-coverage
+step. A separate fresh `ubuntu-24.04` job runs a 178-test focused suite using `--coverage --branch-coverage
 --concurrency=1` across open quests, boss lists, boss creation recovery, purchase
 recovery, deletion UI, authentication, network handling, startup and direct client
 service adapters. It does not
@@ -65,7 +65,7 @@ flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --coverage --bran
   test/open_task_list_test.dart test/boss_list_test.dart test/boss_creation_recovery_test.dart \
   test/purchase_recovery_test.dart test/delete_account_test.dart test/auth_flow_test.dart \
   test/questwell_network_test.dart test/startup_bootstrap_test.dart test/widget_test.dart \
-  test/client_service_adapters_test.dart
+  test/client_service_adapters_test.dart test/auth_catalog_adapters_test.dart
 python3 -m unittest discover -s tool/qa -p coverage_report_test.py -v
 python3 tool/critical_coverage.py coverage/lcov.info --flutter-lcov --output coverage/critical-paths
 ```
@@ -148,3 +148,40 @@ References checked 2026-10-06: [Flutter iOS release requirements](https://docs.f
 [GitHub reusable workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows).
 The pinned Flutter 3.44.6 CLI advertises `--coverage` and `--branch-coverage`;
 actual generated LCOV and native CI logs govern the evidence.
+
+## Auth, catalog and equipment follow-up — October 6, 2026
+
+51 additional direct SDK-boundary tests cover signup/signin, confirmation-required
+signup, reset callbacks/throttling, password-update rejection, browser auth errors,
+catalog joins and partial failures, owner changes, equipment/placement/preferences,
+onboarding and remaining reward status/list adapters. Synthetic fixtures intercept
+all HTTP traffic; no real email, account, economy, art or database writes occur.
+The new file joins both Chrome and the fresh-runner focused instrumentation job.
+
+Nine new cases reproduced pre-existing defects before the source fix: seven
+cosmetic mutations accepted a response after an account switch, a queued save's
+in-flight predecessor reported success, and catalog retry made new old-owner
+queries after a switch. The shared write boundary now rechecks ownership before
+notifying success; every catalog read attempt checks the captured owner. Server
+commits are not undone or replayed, and SDK/server authorization remains separate.
+One initial test-fixture assertion was corrected for the pinned SDK's null RPC
+body; that was not an application defect.
+
+Local focused suite: 178 tests pass. The analyzer/format gate passes with 45
+remaining diagnostics and 214 legacy formatting allowances. The touched cosmetic
+service is formatted, and its one redundant null assertion is removed; only those
+resolved baseline entries are deleted.
+
+| Focused area | Lines | Branch entries |
+| --- | --- | --- |
+| Rewards | 95/98 (96.94%) | 36/41 (87.80%) |
+| Purchases | 171/173 (98.84%) | 72/74 (97.30%) |
+| Account deletion | 12/13 (92.31%) | 6/7 (85.71%) |
+| Recovery | 117/126 (92.86%) | 66/75 (88.00%) |
+
+Source formatting and added guards change denominators. The direct auth service
+now has recorded execution coverage; these percentages do not prove every auth
+session race, transport timeout, malformed payload or concurrent catalog snapshot.
+Remaining report coordinates remain visible. No 100% target or percentage waiver
+is introduced. Native signed-release, hosted-account and tester acceptance remain
+required. Workflow IDs, AI review and delivery proof are recorded in PR/FIX_PLAN.
