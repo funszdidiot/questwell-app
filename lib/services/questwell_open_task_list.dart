@@ -1,5 +1,3 @@
-import 'package:postgrest/postgrest.dart';
-
 import '/backend/supabase/supabase.dart';
 import '/backend/supabase/questwell_network.dart';
 
@@ -40,7 +38,7 @@ class QuestwellOpenTaskList {
             .eq('user_id', owner)
             .eq('status', 'open');
         if (cursorTime != null) {
-          final time = cursorTime!;
+          final time = cursorTime;
           query = query.or(
             'created_at.lt.$time,and(created_at.eq.$time,id.lt.$cursorId)',
           );
@@ -80,7 +78,7 @@ class QuestwellOpenTaskList {
             BigInt.from(time.millisecondsSinceEpoch) * BigInt.from(1000) +
             BigInt.from(int.parse(fraction.substring(3)));
         if (cursorMicros != null &&
-            (micros > cursorMicros! ||
+            (micros > cursorMicros ||
                 (micros == cursorMicros && id.compareTo(cursorId!) >= 0))) {
           throw StateError('The quest list order changed. Try again.');
         }
