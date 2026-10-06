@@ -28,8 +28,10 @@ roll out.” It does not authorize changing auth, deletion safeguards or rollout
 - `test/account_settings_test.dart`: narrow-screen/2x text, opening and back,
   pending sign-out exclusion and deletion cancellation.
 
-The existing `_signOut` callback moves to the route owner without changing its
-logic. The auth manager, account service and `questwell_delete_account.dart`
+The existing sign-out service call moves to the route owner. Completion now
+uses the application router captured before awaiting, so leaving settings cannot
+suppress the final account-exit navigation. Deletion cleanup and navigation are
+part of the confirmed operation rather than a mounted-dialog callback. The auth manager, account service and `questwell_delete_account.dart`
 stay unchanged. The same deletion callback and
 post-deletion cleanup/navigation are passed through. Typed DELETE, pending and
 failure handling remain in the original confirmation dialog. Merely opening
@@ -55,8 +57,9 @@ controls, cancellation, and simulated successful sign-out/deletion navigating
 away from settings through the pinned GoRouter 12.1.3. Existing four deletion
 dialog tests also pass. Two initial fixture failures were corrected to scroll
 and settle the lazy list before locating/tapping its lower controls; those were
-test-fixture failures, not deletion defects. The auth implementation, deletion
-widget and service match the base byte-for-byte.
+test-fixture failures, not deletion defects. The auth manager, deletion
+widget and account service match the base byte-for-byte; only route-owned
+completion/navigation changed to address the review findings.
 
 The installed pinned GoRouter 12.1.3 source verifies named push, route
 information serialization and restoration; the AppBar uses the existing Flutter
@@ -70,9 +73,14 @@ Navigator route as a web history/refresh defect. The correction registers
 A route owner now holds the existing account callbacks; the presentation widget
 remains reusable. Direct URL entry provides a Back action to Adventurer.
 The route follows the existing Adventurer routing policy; auth services and
-backend authorization are unchanged. Local focused tests: **12 passed**,
+backend authorization are unchanged. Local focused tests: **15 passed**,
 including production route registration, serialized browser Back/Forward
 restoration, direct URL restoration, and successful simulated operation routing.
+A second AI finding identified disposal during pending sign-out or deletion
+cleanup. The correction keeps completion attached to the app router, and cleanup
+runs even if settings is removed while the delete request is pending. Three new
+regressions exercise browser Back during sign-out, deletion and local cleanup
+using the actual route owner with injected account-free callbacks.
 The account suite is also added to the existing Chrome CI step. Fresh CI and
 AI review of this correction remain required.
 An additional offline screenshot attempt could not complete because the existing
