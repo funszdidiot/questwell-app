@@ -324,7 +324,14 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                               uncertain = error is QuestwellNetworkException;
                               if (uncertain) _creationNeedsRefresh = true;
                               if (!context.mounted) {
-                                if (mounted && uncertain) setState(_refresh);
+                                if (mounted && uncertain) {
+                                  setState(_refresh);
+                                  try {
+                                    await _future;
+                                  } catch (_) {
+                                    // The board shows its retry state; creation stays locked.
+                                  }
+                                }
                                 return;
                               }
                               setSheetState(() {
@@ -366,7 +373,14 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       controller.dispose();
     }
 
-    if (mounted && _creationNeedsRefresh) setState(_refresh);
+    if (mounted && _creationNeedsRefresh) {
+      setState(_refresh);
+      try {
+        await _future;
+      } catch (_) {
+        // The board shows its retry state; creation stays locked.
+      }
+    }
     if (created != null && created.isNotEmpty && mounted) {
       setState(() {
         _createdBattleId = created;
