@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/index.dart';
 import '/services/questwell_task_service.dart';
+import '/services/questwell_open_task_list.dart';
 import '/services/questwell_progression.dart';
 import '/services/questwell_milestone_service.dart';
 import '/services/questwell_cosmetic_service.dart';
@@ -541,13 +542,7 @@ const SizedBox(height: 2),
                 ],
                 const SizedBox(height: 12),
                 FutureBuilder<List<TasksRow>>(
-                  future: TasksTable().queryRows(
-                    queryFn: (q) => q
-                        .eqOrNull('user_id', currentUserUid)
-                        .eqOrNull('status', 'open')
-                        .order('created_at', ascending: true),
-                    limit: 50,
-                  ),
+                  future: QuestwellOpenTaskList.loadCurrent(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return QuestwellRetroPanel(

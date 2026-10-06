@@ -65,6 +65,9 @@ jobs:
           test "${#tests[@]}" -gt 0
           flutter test "${tests[@]}"
 
+      - name: Verify open quest paging in Chrome
+        run: flutter test --platform chrome test/open_task_list_test.dart
+
       - name: Build proposed development app without deploying
         if: github.event_name == 'pull_request' && github.base_ref == 'questwell-dev'
         run: flutter build web --release --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA"
