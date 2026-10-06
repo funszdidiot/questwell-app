@@ -34,6 +34,10 @@ It verifies Edge/source/catalog-query bytes and emits a transaction-local timeou
 configuration followed by one atomic DO statement. A migration-recording API
 must execute them in the same transaction; there are no embedded commits.
 The timeout is armed before DO starts, with a real cancellation test in CI.
+The pinned CLI `db query` deliberately rejects multi-statement input; this
+payload's disposable rehearsal uses `psql -X --single-transaction` inside the
+fixed guarded local database container, with `ON_ERROR_STOP=1`. There is no
+remote connection or credential. Metadata-only single queries still use the CLI.
 The statement obtains a deployment advisory lock and bounded table locks,
 including migration history to exclude concurrent history writers, then checks
 the entire observed application schema/configuration fingerprint and exact

@@ -4,7 +4,7 @@ import {join,resolve,basename} from 'node:path';
 import {guardedPayload,stateQuery} from '../deploy/hardening-contract.mjs';
 import {assertCatalogMatches} from './catalog.mjs';
 
-export function exerciseHardeningForward({source,workdir,run,expectSqlFailure,readCatalog}) {
+export function exerciseHardeningForward({source,workdir,run,runPayload,readCatalog}) {
   const approved=JSON.parse(readFileSync(resolve(source,'../deploy/hardening-reviewed-state.json'),'utf8'));
   const catalogSql=readFileSync(join(source,'catalog.sql'),'utf8');
   const sources=approved.migrations.map(f=>({...f,sql:readFileSync(resolve(source,'../..',f.path),'utf8')}));
@@ -33,17 +33,17 @@ export function exerciseHardeningForward({source,workdir,run,expectSqlFailure,re
   writeFileSync(payloadFile,guardedPayload(sources,catalogSql,expected)
     .replace("set local statement_timeout = '20s';","set local statement_timeout = '100ms';")
     .replace('declare observed jsonb;\nbegin','declare observed jsonb;\nbegin\n  perform pg_catalog.pg_sleep(1);'));
-  expectSqlFailure(payloadFile,'statement timeout');
+  runPayload(payloadFile,'statement timeout');
   assert.deepEqual(readState(),before,'Timeout must leave no effects');
   writePayload({...expected,schema_sha256:'0'.repeat(64)});
-  expectSqlFailure(payloadFile,'Hardening precondition drift');
+  runPayload(payloadFile,'Hardening precondition drift');
   assert.deepEqual(readState(),before,'Drift must leave no effects');
   writePayload({...expected,after_schema_sha256:'0'.repeat(64)});
-  expectSqlFailure(payloadFile,'Hardening postcondition failed');
+  runPayload(payloadFile,'Hardening postcondition failed');
   assert.deepEqual(readState(),before,'All seven changes must roll back together');
   writePayload(expected);
   try {
-    run(['db','query','--local','--file',payloadFile]);
+    runPayload(payloadFile);
   } catch (error) {
     // Fixture-only diagnosis preserves the failing postcondition and rollback.
     // Report differing schema entries, never synthetic user rows or credentials.
@@ -59,14 +59,14 @@ export function exerciseHardeningForward({source,workdir,run,expectSqlFailure,re
         raise exception 'Hardening fixture schema difference: %',differences;
       end;`);
     writeFileSync(payloadFile,diagnostic);
-    try { run(['db','query','--local','--file',payloadFile]); } catch {}
+    try { runPayload(payloadFile); } catch {}
     assert.deepEqual(readState(),before,'Failed diagnostic must roll back');
     throw error;
   }
   const after=readState();
   assert.deepEqual(after,{...before,schema_sha256:afterHash},'Existing migration history must be unchanged');
   assertCatalogMatches(sequentialCatalog,readCatalog());
-  expectSqlFailure(payloadFile,'Hardening precondition drift');
+  runPayload(payloadFile,'Hardening precondition drift');
   assert.deepEqual(readState(),after,'Repeated application must not modify the database');
   console.log('Hardening bundle: live-schema parity, drift rejection, atomic rollback, exact sequential-schema match and repeat refusal passed.');
 }
