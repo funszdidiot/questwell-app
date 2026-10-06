@@ -35,6 +35,16 @@ class CoverageReportTest(unittest.TestCase):
         self.assertEqual(group['branches']['total'], 2)
         self.assertEqual(group['branches']['covered'], 2)
 
+    def test_pinned_flutter_dialect_requires_explicit_mode_and_rejects_partial_totals(self):
+        raw = FIXTURE.replace('BRF:2\n', '').replace('BRH:1\n', '')
+        with self.assertRaisesRegex(ValueError, 'Missing LCOV'):
+            coverage.parse_lcov(raw)
+        result = coverage.report(coverage.parse_lcov(raw, flutter_lcov=True), {'Rewards': ['lib/a.dart']})
+        self.assertEqual(result['groups']['Rewards']['branches']['percent'], 50.0)
+        for field in ('BRF:2\n', 'BRH:1\n'):
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'Missing LCOV'):
+                coverage.parse_lcov(FIXTURE.replace(field, ''), flutter_lcov=True)
+
     def test_separate_group_totals(self):
         other = FIXTURE.replace('lib/a.dart', 'lib/b.dart').replace('DA:2,0', 'DA:2,1').replace('LH:1', 'LH:2')
         result = coverage.report(coverage.parse_lcov(FIXTURE + other), {'Rewards': ['lib/a.dart'], 'Purchases': ['lib/b.dart']})
@@ -54,6 +64,8 @@ class CoverageReportTest(unittest.TestCase):
     def test_partial_or_invalid_records_fail(self):
         broken = ['', FIXTURE.replace('end_of_record', ''), FIXTURE.replace('LF:2', 'LF:3'),
                   FIXTURE.replace('BRH:1', 'BRH:2'), FIXTURE.replace('LH:1\n', ''),
+                  FIXTURE.replace('BRF:2\n', ''), FIXTURE.replace('BRH:1\n', ''),
+                  FIXTURE.replace('BRF:2\n', '').replace('BRH:1\n', ''),
                   FIXTURE.replace('DA:2,0', 'DA:1,0'), FIXTURE.replace('DA:2,0', 'DA:2,-1'),
                   FIXTURE.replace('SF:lib/a.dart', 'SF:../a.dart'),
                   FIXTURE.replace('SF:lib/a.dart', 'SF:/lib/a.dart'),

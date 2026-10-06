@@ -10,7 +10,7 @@ separate job/workflow on every PR and development push.
 
 | Check | Evidence produced | Does not establish |
 | --- | --- | --- |
-| `analyze` | Explicit analyzer/format baseline; complete Flutter suite with line/branch instrumentation; critical coverage report; Chrome regressions; web release compile on both PR targets | Device or hosted-account acceptance |
+| `analyze` | Explicit analyzer/format baseline; complete Flutter suite; separate focused line/branch coverage suite and report; Chrome regressions; web release compile on both PR targets | Device or hosted-account acceptance |
 | `android / signing` | Debug compile of `lib/main.dart` under `isolated_test`; release packaging must fail with the exact missing-signing-credentials error | Signed release AAB, store acceptance or install/upgrade |
 | `iOS unsigned release compile` | Release compile of `lib/main.dart` on `macos-15`, no codesigning, under `isolated_test`; toolchain versions in logs | Signed archive/IPA, Apple identity attestation or install/upgrade |
 | `Isolated application schema and smoke tests` | Existing disposable backend/Auth/REST/Edge/Storage assertions and cleanup | Hosted acceptance or numeric server coverage |
@@ -25,9 +25,12 @@ The unsigned iOS output is compile evidence, not an installable release artifact
 ## Coverage scope
 
 `tool/critical_coverage.json` explicitly maps client source files to rewards,
-purchases, account deletion and recovery. `flutter test --coverage
---branch-coverage` instruments the complete existing test suite; no tests are
-excluded. `tool/critical_coverage.py` reports each area's measured line and
+purchases, account deletion and recovery. The complete existing Flutter suite remains an unchanged mandatory regression
+step. A separate 72-test focused suite uses `--coverage --branch-coverage
+--concurrency=1` across open quests, boss lists, boss creation recovery, purchase
+recovery, deletion UI, authentication, network handling and startup. It does not
+claim whole-suite coverage, and no rendering tests are excluded from the full
+regression gate. `tool/critical_coverage.py` reports each area's measured line and
 branch numerator/denominator separately, with uncovered coordinates per file
 in JSON. This is client-code execution coverage, not behavior-path completeness.
 It does not infer SQL or Edge coverage from Dart tests or combine Chrome results.
@@ -35,7 +38,15 @@ It does not infer SQL or Edge coverage from Dart tests or combine Chrome results
 The reporter fails on missing selected source records, missing branch data,
 malformed/truncated LCOV, inconsistent totals and duplicate scope. Repeated
 valid source records merge by line/branch identity without inflating denominators.
-Zero instrumented branches show N/A rather than 100%. Six focused parser/report
+Zero instrumented branches show N/A rather than 100%.
+The pinned Flutter exporter uses Dart coverage 1.15.0, whose `formatter.dart`
+writes BRDA entries and no BRF/BRH totals. The explicit `--flutter-lcov` mode
+accepts omission of BOTH fields and derives counts from BRDA; a partial pair
+always fails. Strict/default LCOV requires both totals when branches exist.
+Supplied totals are always cross-checked. This cannot detect branch entries
+omitted by the producer from an otherwise well-formed record; it does not claim
+a source-independent branch census. AI review prompted strict pair validation
+and this documented, tested producer-specific compatibility rule. Seven focused parser/report
 tests exercise these failure cases. No arbitrary percentage threshold or claim
 of acceptable risk is introduced: use measured gaps to prioritize subsequent
 characterized tests. Native/device branches remain manual evidence requirements.
@@ -47,19 +58,39 @@ blocks its workflow; there is no continue-on-error or successful partial report.
 
 ```sh
 flutter pub get --enforce-lockfile
-flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --coverage --branch-coverage
+flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
+flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --coverage --branch-coverage --concurrency=1 \
+  test/open_task_list_test.dart test/boss_list_test.dart test/boss_creation_recovery_test.dart \
+  test/purchase_recovery_test.dart test/delete_account_test.dart test/auth_flow_test.dart \
+  test/questwell_network_test.dart test/startup_bootstrap_test.dart test/widget_test.dart
 python3 -m unittest discover -s tool/qa -p coverage_report_test.py -v
-python3 tool/critical_coverage.py coverage/lcov.info --output coverage/critical-paths
+python3 tool/critical_coverage.py coverage/lcov.info --flutter-lcov --output coverage/critical-paths
 ```
 
 ## Validation and remaining release gates
 
 The initial local instrumented full-suite run encountered Flutter tester
 segmentation faults in rendering tests. A single-file instrumented reproduction
-passed, but serial full-suite execution also failed; no root-cause or local
-full-suite success is claimed. Authoritative final-head GitHub checks must pass
-without suppressing these failures before merge; record results in the PR and
-FIX_PLAN. Both native jobs must actually run and pass, not merely exist in YAML.
+passed, but serial full-suite execution also failed; both crashed local attempts
+were stopped. No root-cause or local full-suite success is claimed. The separate
+focused instrumented suite then passed all 72 tests locally. The unchanged full
+regression suite plus focused instrumentation must both pass on the final GitHub
+head before merge. Record actual results in PR/FIX_PLAN. Both native jobs must
+actually run and pass, not merely exist in YAML.
+
+Initial focused measurement (client service files, not backend assertions):
+
+| Area | Lines | Branch entries |
+| --- | --- | --- |
+| Rewards | 15/84 (17.86%) | 5/37 (13.51%) |
+| Purchases | 4/155 (2.58%) | 6/69 (8.70%) |
+| Account deletion | 0/13 (0.00%) | 0/7 (0.00%) |
+| Recovery | 93/120 (77.50%) | 52/72 (72.22%) |
+
+These gaps are real: UI tests with injected callbacks and backend integration
+assertions do not establish execution coverage of the client service adapters.
+Prioritize direct client deletion, purchase and reward adapter tests next. Do not
+label the low numbers acceptable or waive release gates based on passing builds.
 
 C07b remains incomplete until selected signed release builds, install/upgrade,
 required hosted check settings and release critical-path acceptance are verified.

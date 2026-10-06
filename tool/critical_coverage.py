@@ -22,7 +22,7 @@ def source_path(value):
     return path.as_posix()
 
 
-def parse_lcov(text):
+def parse_lcov(text, *, flutter_lcov=False):
     records = {}
     current = None
     for line in text.splitlines():
@@ -40,8 +40,14 @@ def parse_lcov(text):
             for key, value in current['summary'].items():
                 if expected[key] != value:
                     raise ValueError('Inconsistent LCOV ' + key)
-            if not {'LF', 'LH'}.issubset(current['summary']):
-                raise ValueError('Missing LCOV line totals')
+            required = {'LF', 'LH'}
+            branch_totals = {'BRF', 'BRH'} & current['summary'].keys()
+            # Dart coverage 1.15.0 emits BRDA but omits BOTH branch totals.
+            # Only the explicit pinned-producer mode permits that exact dialect.
+            if branch_totals or (current['branches'] and not flutter_lcov):
+                required |= {'BRF', 'BRH'}
+            if not required.issubset(current['summary']):
+                raise ValueError('Missing LCOV line/branch totals')
             record = records.setdefault(current['path'], {'lines': {}, 'branches': {}})
             for kind in ('lines', 'branches'):
                 for key, hits in current[kind].items():
@@ -90,7 +96,7 @@ def metric(hits):
 def report(records, groups):
     if not isinstance(groups, dict) or not groups:
         raise ValueError('Empty coverage scope')
-    result = {'scope': 'Dart VM client tests only; not SQL, Edge, Chrome, native or device coverage', 'groups': {}}
+    result = {'scope': 'Focused Dart VM critical-client suite only; not full-suite, SQL, Edge, Chrome, native or device coverage', 'groups': {}}
     seen = set()
     for group, paths in groups.items():
         if not isinstance(group, str) or not group or not isinstance(paths, list) or not paths:
@@ -133,9 +139,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('lcov', type=Path)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--flutter-lcov', action='store_true',
+                        help='Accept pinned Flutter exporter omission of both BRF/BRH; derive totals from BRDA')
     args = parser.parse_args()
     groups = json.loads((ROOT / 'tool/critical_coverage.json').read_text())
-    result = report(parse_lcov(args.lcov.read_text()), groups)
+    result = report(parse_lcov(args.lcov.read_text(), flutter_lcov=args.flutter_lcov), groups)
+    result['lcov_dialect'] = 'Flutter: branch totals derived from BRDA' if args.flutter_lcov else 'LCOV: branch totals required'
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.with_suffix('.json').write_text(json.dumps(result, indent=2) + '\n')
     rendered = markdown(result)

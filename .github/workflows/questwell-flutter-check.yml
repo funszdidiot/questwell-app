@@ -67,11 +67,22 @@ jobs:
         run: python3 tool/quality_gate.py
 
       - name: Run complete Flutter regression suite
-        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --coverage --branch-coverage
+        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
+
+      - name: Measure critical client coverage separately
+        timeout-minutes: 10
+        run: >-
+          flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
+          --coverage --branch-coverage --concurrency=1
+          test/open_task_list_test.dart test/boss_list_test.dart
+          test/boss_creation_recovery_test.dart test/purchase_recovery_test.dart
+          test/delete_account_test.dart test/auth_flow_test.dart
+          test/questwell_network_test.dart test/startup_bootstrap_test.dart
+          test/widget_test.dart
 
       - name: Report critical client coverage
         run: |
-          python3 tool/critical_coverage.py coverage/lcov.info --output coverage/critical-paths
+          python3 tool/critical_coverage.py coverage/lcov.info --flutter-lcov --output coverage/critical-paths
           cat coverage/critical-paths.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Retain coverage evidence
