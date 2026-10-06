@@ -28,6 +28,27 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+// AGP may omit signing validation when the signing configuration is incomplete.
+// Refuse release packaging explicitly instead of allowing an unsigned artifact.
+def validateQuestwellReleaseSigning = tasks.register('validateQuestwellReleaseSigning') {
+    doLast {
+        def required = ['keyAlias', 'keyPassword', 'storeFile', 'storePassword']
+        if (!keystorePropertiesFile.isFile() || required.any {
+            !keystoreProperties.getProperty(it)?.trim()
+        }) {
+            throw new GradleException('Questwell release signing requires complete private android/key.properties credentials.')
+        }
+        if (!file(keystoreProperties.getProperty('storeFile')).isFile()) {
+            throw new GradleException('Questwell release signing requires an existing private keystore file.')
+        }
+    }
+}
+tasks.configureEach {
+    if (name == 'preReleaseBuild') {
+        dependsOn(validateQuestwellReleaseSigning)
+    }
+}
+
 android {
     namespace "com.mycompany.projectmomentum"
     compileSdkVersion 36
@@ -72,9 +93,7 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
