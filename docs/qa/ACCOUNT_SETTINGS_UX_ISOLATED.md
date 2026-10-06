@@ -1,6 +1,17 @@
 # Account controls — isolated UX candidate
 
-Status: QA; local branch `ux/account-controls`, not merged or deployed.
+Status: QA; PR #40, pending refreshed-base CI and AI review before merging.
+
+Tanya approved publication and then, on October 6, approved both UX merges
+conditional on AI review and approval. The protected beta rollout and C10b
+deployment finished before this integration began. PR #39 passed AI review
+without findings and merged as `fe9987734fcf2d2f4437cfa4d35d2a2813a493ba`.
+A concurrent Chronicle PR #41 merged as
+`7a370169152a69958e3ddc1da90390161a58d481`, directly descending from the
+Hearth merge and superseding its preview run. PR #40 incorporates that combined
+base and follows only after its development deployment is verified. This
+supersedes the historical publication and rollout holds below; it does not
+authorize production promotion or real account deletion.
 
 Tanya's October 5, 2026 feedback: the sign-out and delete-account buttons are
 not in a good spot. This continues the UX work under “do not disturb the current
@@ -49,8 +60,12 @@ widget and service match the base byte-for-byte.
 Current Flutter documentation verified Navigator.push, MaterialPageRoute and
 AppBar; the installed pinned GoRouter source verifies the navigation APIs.
 Local release web build passed (`isolated_test`, `lib/main_preview.dart`):
-`Compiling ... 49.9s` and `✓ Built build/web`. It was not uploaded or served. Hosted CI and AI review remain
-pending publication. No real sign-out, user deletion, hosted persistence,
+`Compiling ... 49.9s` and `✓ Built build/web`. It was not uploaded or served. Initial hosted CI passed on `2ee3e24599da5ea0a0442d04f128cd5d9d4d78f7`.
+Fresh CI and AI review are required on the head incorporating PRs #39 and #41.
+The refreshed merge is conflict-free; the account UI implementation is unchanged.
+An additional offline screenshot attempt could not complete because the existing
+font setup does not bundle Roboto-Bold. No visual acceptance is inferred from
+that attempt; normal application font loading was not changed. No real sign-out, user deletion, hosted persistence,
 physical iOS/Android, browser-history, screen-reader or founder visual acceptance
 is claimed. No RLS, Edge Function or live-account changes were made.
 
@@ -60,12 +75,15 @@ This branch is independent of the Hearth UX branch and begins from the same
 reviewed development revision b78a191f19ccc3c14e5bcb34bc3e3b949859962c.
 No modifications to auth services, migrations, Edge Functions, assets, prices,
 workflows, dependencies, deployment branches or the active rollout plan.
-The local branch is review-only. Publishing a draft was blocked by automatic
-approval review in this session for source-export authorization. Do not use a
-connector or another transport to bypass that rejection.
+Publishing a draft was initially blocked by automatic approval review for
+source-export authorization. Tanya explicitly approved publication afterward;
+the authenticated GitHub connector published the exact validated tree. That
+historical publication blocker is resolved.
 
-Before later integration: rebase on the completed rollout, run CI and AI review,
-verify signed-in navigation and device behavior, then merge only when consistent
-with Tanya's rollout instruction. Keep this as its own PR with no auto-merge.
+Integration sequence: merge the completed development base into this feature
+branch, run fresh CI and AI review, resolve findings, then merge under Tanya's
+conditional authorization. Keep this as its own PR with no auto-merge. Verify
+the deployed revision afterward. Signed-in and physical-device acceptance
+remain explicitly pending; simulated routing tests do not establish those results.
 Before integration, dropping this branch requires no live rollback. After a
 future merge, revert its UI commit; no database restore is involved.

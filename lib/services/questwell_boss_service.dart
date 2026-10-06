@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'questwell_boss_creation_recovery.dart';
+import 'questwell_boss_list.dart';
 import '/backend/supabase/supabase.dart';
 import '/backend/supabase/questwell_network.dart';
 
@@ -14,52 +15,10 @@ class QuestwellBossService {
   static String? currentOwner() => SupaFlow.client.auth.currentUser?.id;
 
   static Future<List<QuestwellBossBattle>> loadBattles() async {
-    final uid = SupaFlow.client.auth.currentUser?.id;
-    if (uid == null) throw StateError('Authentication required.');
-
-    final responses = await QuestwellNetwork.read(
-      () => Future.wait([
-        SupaFlow.client
-            .from('boss_battles')
-            .select(
-              'id,title,status,reward_xp,reward_coins,boss_type,created_at,completed_at',
-            )
-            .eq('user_id', uid)
-            .order('created_at', ascending: true),
-        SupaFlow.client
-            .from('boss_steps')
-            .select('id,boss_id,title,position,completed')
-            .eq('user_id', uid)
-            .order('position', ascending: true),
-      ]),
-    );
-
-    final battleRows = List<Map<String, dynamic>>.from(
-      (responses[0] as List).map(
-        (row) => Map<String, dynamic>.from(row as Map),
-      ),
-    );
-    final stepRows = List<Map<String, dynamic>>.from(
-      (responses[1] as List).map(
-        (row) => Map<String, dynamic>.from(row as Map),
-      ),
-    );
-
-    final stepsByBoss = <String, List<QuestwellBossStep>>{};
-    for (final row in stepRows) {
-      final bossId = row['boss_id']?.toString() ?? '';
-      stepsByBoss.putIfAbsent(bossId, () => []);
-      stepsByBoss[bossId]!.add(QuestwellBossStep.fromJson(row));
-    }
-
-    final battles = battleRows
-        .map(
-          (row) => QuestwellBossBattle.fromJson(
-            row,
-            stepsByBoss[row['id']?.toString() ?? ''] ?? const [],
-          ),
-        )
-        .toList();
+    final battles = await QuestwellBossList(
+      database: SupaFlow.client.rest,
+      currentOwner: currentOwner,
+    ).load();
     _creationRecovery.acknowledge(battles.map((battle) => battle.id));
     return battles;
   }
