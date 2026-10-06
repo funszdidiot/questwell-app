@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException;
-
 import 'questwell_boss_creation_recovery.dart';
 import '/backend/supabase/supabase.dart';
 import '/backend/supabase/questwell_network.dart';
