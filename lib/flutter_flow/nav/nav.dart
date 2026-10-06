@@ -1,5 +1,6 @@
 import 'dart:async';
 import '/auth/questwell_auth_callback.dart';
+import '/pages/account_settings_page/account_settings_page_widget.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -116,7 +117,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: AdventurerPageWidget.routeName,
           path: AdventurerPageWidget.routePath,
+          requireAuth: true,
           builder: (context, params) => AdventurerPageWidget(),
+        ),
+        FFRoute(
+          name: AccountSettingsPageWidget.routeName,
+          path: AccountSettingsPageWidget.routePath,
+          requireAuth: true,
+          builder: (context, params) => const AccountSettingsPageWidget(),
         ),
         FFRoute(
           name: BossBattlesPageWidget.routeName,
