@@ -24,11 +24,17 @@ class ChronicleWin {
   final int? level;
   bool get isActivity => kind == 'quest' || kind == 'boss';
 
-  factory ChronicleWin.fromProgression(Map<String, dynamic> row) => ChronicleWin(
-    kind: row['kind'].toString(), title: row['title'].toString(),
-    completedAt: DateTime.parse(row['occurred_at'].toString()), xp: 0, coins: 0,
-    cosmeticSlug: row['cosmetic_slug']?.toString(), source: row['source']?.toString(),
-    level: (row['level'] as num?)?.toInt());
+  factory ChronicleWin.fromProgression(Map<String, dynamic> row) =>
+      ChronicleWin(
+        kind: row['kind'].toString(),
+        title: row['title'].toString(),
+        completedAt: DateTime.parse(row['occurred_at'].toString()),
+        xp: 0,
+        coins: 0,
+        cosmeticSlug: row['cosmetic_slug']?.toString(),
+        source: row['source']?.toString(),
+        level: (row['level'] as num?)?.toInt(),
+      );
 }
 
 class ChronicleSnapshot {
@@ -46,21 +52,34 @@ class ChronicleSnapshot {
   final int weekWins;
   final int bossesDefeated;
 
-  factory ChronicleSnapshot.fromWins(List<ChronicleWin> entries, {DateTime? now}) {
+  factory ChronicleSnapshot.fromWins(
+    List<ChronicleWin> entries, {
+    DateTime? now,
+  }) {
     final wins = List<ChronicleWin>.from(entries)
-      ..sort((a,b) {
+      ..sort((a, b) {
         final date = b.completedAt.compareTo(a.completedAt);
         return date != 0 ? date : a.kind.compareTo(b.kind);
       });
     final activities = wins.where((win) => win.isActivity);
     final today = (now ?? DateTime.now()).toLocal();
-    final startOfWeek = DateTime(today.year, today.month, today.day)
-      .subtract(Duration(days: today.weekday - 1));
-    return ChronicleSnapshot(wins: wins,
+    final startOfWeek = DateTime(
+      today.year,
+      today.month,
+      today.day,
+    ).subtract(Duration(days: today.weekday - 1));
+    return ChronicleSnapshot(
+      wins: wins,
       totalXpEarned: activities.fold<int>(0, (total, win) => total + win.xp),
-      totalCoinsEarned: activities.fold<int>(0, (total, win) => total + win.coins),
-      weekWins: activities.where((win) => !win.completedAt.isBefore(startOfWeek)).length,
-      bossesDefeated: activities.where((win) => win.kind == 'boss').length);
+      totalCoinsEarned: activities.fold<int>(
+        0,
+        (total, win) => total + win.coins,
+      ),
+      weekWins: activities
+          .where((win) => !win.completedAt.isBefore(startOfWeek))
+          .length,
+      bossesDefeated: activities.where((win) => win.kind == 'boss').length,
+    );
   }
 }
 
@@ -71,12 +90,19 @@ class QuestwellChronicleService {
   static Future<void> repeatQuest(ChronicleWin win) async {
     final uid = SupaFlow.client.auth.currentUser?.id;
     if (uid == null || win.kind != 'quest' || win.taskId == null) {
-      throw StateError('A completed quest and signed-in adventurer are required.');
+      throw StateError(
+        'A completed quest and signed-in adventurer are required.',
+      );
     }
-    final originals = await TasksTable().queryRows(queryFn: (q) => q
-      .eqOrNull('id', win.taskId).eqOrNull('user_id', uid)
-      .eqOrNull('status', 'completed'), limit: 1);
-    if (originals.isEmpty) throw StateError('The original quest is unavailable.');
+    final originals = await TasksTable().queryRows(
+      queryFn: (q) => q
+          .eqOrNull('id', win.taskId)
+          .eqOrNull('user_id', uid)
+          .eqOrNull('status', 'completed'),
+      limit: 1,
+    );
+    if (originals.isEmpty)
+      throw StateError('The original quest is unavailable.');
     final original = originals.single;
     await TasksTable().insert({
       'user_id': uid,
@@ -88,46 +114,105 @@ class QuestwellChronicleService {
     });
   }
 
-  static Future<ChronicleSnapshot> load() async {
-    final uid = SupaFlow.client.auth.currentUser?.id;
-    if (uid == null) throw StateError('Authentication required.');
+  static Future<ChronicleSnapshot> load({
+    PostgrestClient? database,
+    String? Function()? currentOwner,
+    DateTime? now,
+  }) async {
+    final ownerOf = currentOwner ?? () => SupaFlow.client.auth.currentUser?.id;
+    final uid = ownerOf();
+    if (uid == null || uid.isEmpty)
+      throw StateError('Authentication required.');
+    final db = database ?? SupaFlow.client.rest;
+    final uuid = RegExp(
+      r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+    );
+    void checkOwner() {
+      if (ownerOf() != uid) {
+        throw StateError('Chronicle account changed. Reload your history.');
+      }
+    }
 
-    final responses = await QuestwellNetwork.read(() => Future.wait([
-      SupaFlow.client
-          .from('tasks')
-          .select('id,title,xp_value,coin_value,completed_at')
-          .eq('user_id', uid)
-          .eq('status', 'completed')
-          .order('completed_at', ascending: false),
-      SupaFlow.client
-          .from('boss_battles')
-          .select('id,title,reward_xp,reward_coins,completed_at,status')
-          .eq('user_id', uid)
-          .eq('status', 'completed')
-          .order('completed_at', ascending: false),
-      SupaFlow.client.from('progression_events')
-          .select('kind,title,level,cosmetic_slug,source,occurred_at')
-          .eq('user_id', uid)
-          .order('occurred_at', ascending: false),
-    ]));
+    Future<List<Map<String, dynamic>>> collect(
+      String table,
+      String fields,
+      String dateField, {
+      String? status,
+    }) async {
+      final result = <Map<String, dynamic>>[];
+      String? cursor;
+      // Immutable IDs avoid offset skips when earlier history is removed.
+      // Server caps can be smaller than our requested page size.
+      while (true) {
+        final rows = await QuestwellNetwork.read(() {
+          checkOwner();
+          var query = db.from(table).select(fields).eq('user_id', uid);
+          if (status != null) query = query.eq('status', status);
+          if (cursor != null) query = query.gt('id', cursor);
+          return query.order('id', ascending: true).limit(100);
+        });
+        checkOwner();
+        if (rows.isEmpty) return result;
+        for (final row in rows) {
+          final id = row['id'];
+          final date = row[dateField];
+          if (row['user_id'] != uid ||
+              (status != null && row['status'] != status) ||
+              id is! String ||
+              !uuid.hasMatch(id) ||
+              (cursor != null && id.compareTo(cursor) <= 0) ||
+              date is! String ||
+              DateTime.tryParse(date) == null) {
+            throw StateError(
+              'Chronicle history could not be verified. Try again.',
+            );
+          }
+          cursor = id;
+          result.add(row);
+        }
+      }
+    }
 
-    final aside = await QuestwellNetwork.read(() => SupaFlow.client.from('tasks')
-      .select('id,title,xp_value,coin_value,created_at')
-      .eq('user_id', uid).eq('status', 'set_aside').order('created_at', ascending: false));
+    // Publish totals only after every collection is complete. A failed page
+    // must never produce a plausible-looking partial lifetime total.
+    final quests = await collect(
+      'tasks',
+      'id,user_id,status,title,xp_value,coin_value,completed_at',
+      'completed_at',
+      status: 'completed',
+    );
+    final bosses = await collect(
+      'boss_battles',
+      'id,user_id,title,reward_xp,reward_coins,completed_at,status',
+      'completed_at',
+      status: 'completed',
+    );
+    final progression = await collect(
+      'progression_events',
+      'id,user_id,kind,title,level,cosmetic_slug,source,occurred_at',
+      'occurred_at',
+    );
+    final aside = await collect(
+      'tasks',
+      'id,user_id,status,title,xp_value,coin_value,created_at',
+      'created_at',
+      status: 'set_aside',
+    );
+    checkOwner();
     final wins = <ChronicleWin>[
-      for (final row in aside) ChronicleWin(
-        kind: 'set_aside', taskId: row['id']?.toString(),
-        title: row['title']?.toString() ?? 'Quest',
-        completedAt: DateTime.parse(row['created_at'].toString()),
-        xp: (row['xp_value'] as num?)?.toInt() ?? 0,
-        coins: (row['coin_value'] as num?)?.toInt() ?? 0,
-      ),
+      for (final row in aside)
+        ChronicleWin(
+          kind: 'set_aside',
+          taskId: row['id']?.toString(),
+          title: row['title']?.toString() ?? 'Quest',
+          completedAt: DateTime.parse(row['created_at'].toString()),
+          xp: (row['xp_value'] as num?)?.toInt() ?? 0,
+          coins: (row['coin_value'] as num?)?.toInt() ?? 0,
+        ),
     ];
 
-    for (final raw in responses[0] as List) {
-      final row = Map<String, dynamic>.from(raw as Map);
-      final completed = DateTime.tryParse(row['completed_at']?.toString() ?? '');
-      if (completed == null) continue;
+    for (final row in quests) {
+      final completed = DateTime.parse(row['completed_at'] as String);
       wins.add(
         ChronicleWin(
           kind: 'quest',
@@ -142,10 +227,8 @@ class QuestwellChronicleService {
       );
     }
 
-    for (final raw in responses[1] as List) {
-      final row = Map<String, dynamic>.from(raw as Map);
-      final completed = DateTime.tryParse(row['completed_at']?.toString() ?? '');
-      if (completed == null) continue;
+    for (final row in bosses) {
+      final completed = DateTime.parse(row['completed_at'] as String);
       wins.add(
         ChronicleWin(
           kind: 'boss',
@@ -159,9 +242,9 @@ class QuestwellChronicleService {
       );
     }
 
-    for (final raw in responses[2] as List) {
-      wins.add(ChronicleWin.fromProgression(Map<String, dynamic>.from(raw as Map)));
+    for (final row in progression) {
+      wins.add(ChronicleWin.fromProgression(row));
     }
-    return ChronicleSnapshot.fromWins(wins);
+    return ChronicleSnapshot.fromWins(wins, now: now);
   }
 }
