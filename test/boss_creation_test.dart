@@ -209,7 +209,10 @@ void main() {
         await fill(tester, 2);
         await tester.tap(find.text('Start Boss Battle'));
         await tester.pumpAndSettle();
-        final button = find.widgetWithText(FilledButton, 'Refresh required');
+        final button = find.ancestor(
+          of: find.text('Refresh required'),
+          matching: find.byWidgetPredicate((widget) => widget is FilledButton),
+        );
         expect(tester.widget<FilledButton>(button).onPressed, isNull);
         await tester.tap(button);
         expect(calls, 1);
