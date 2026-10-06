@@ -35,7 +35,7 @@ class QuestwellBossList {
         final rows = await QuestwellNetwork.read(() {
           checkOwner();
           var query = database.from(table).select(fields).eq('user_id', owner);
-          if (cursor != null) query = query.gt('id', cursor!);
+          if (cursor != null) query = query.gt('id', cursor);
           return query.order('id', ascending: true).limit(100);
         });
         checkOwner();
@@ -45,7 +45,7 @@ class QuestwellBossList {
           if (row['user_id'] != owner ||
               id is! String ||
               !_uuid.hasMatch(id) ||
-              (cursor != null && id.compareTo(cursor!) <= 0)) {
+              (cursor != null && id.compareTo(cursor) <= 0)) {
             throw StateError('The boss list could not be verified. Try again.');
           }
           cursor = id;

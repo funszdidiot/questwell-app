@@ -28,6 +28,12 @@ cursor appear on refresh; concurrent changes across the two collections can
 require refresh. This client-only fix does not claim snapshot consistency or
 solve C11 authoritative totals. Memory remains proportional to account size.
 
+Initial head `685f1e6` passed Flutter run `37416251909`, including the full
+suite, both Chrome paging suites and web build; AI review completed at 05:01:57
+UTC with no major issues. Two unnecessary null assertions were identified by
+the analyzer and removed in the follow-up. Its own exact-head checks/review are
+required; initial-head results do not substitute for final-head evidence.
+
 Validation status: source formatted with Flutter 3.44.6's Dart formatter;
 `git diff --check` passes and dependency inputs are unchanged. Local test execution
 is blocked by missing cached dependencies and unavailable package resolution;
