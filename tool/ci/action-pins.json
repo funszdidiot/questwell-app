@@ -23,23 +23,11 @@
     "type": "commit",
     "url": "https://api.github.com/repos/actions/upload-artifact/git/commits/ea165f8d65b6e75b540449e92b4886f43607fa02"
   },
-  "subosito/flutter-action": {
-    "tag": "v2",
-    "sha": "1a449444c387b1966244ae4d4f8c696479add0b2",
-    "type": "commit",
-    "url": "https://api.github.com/repos/subosito/flutter-action/git/commits/1a449444c387b1966244ae4d4f8c696479add0b2"
-  },
   "actions/configure-pages": {
     "tag": "v5",
     "sha": "983d7736d9b0ae728b81ab479565c72886d7745b",
     "type": "commit",
     "url": "https://api.github.com/repos/actions/configure-pages/git/commits/983d7736d9b0ae728b81ab479565c72886d7745b"
-  },
-  "actions/upload-pages-artifact": {
-    "tag": "v3",
-    "sha": "56afc609e74202658d3ffba0e8f6dda462b719fa",
-    "type": "commit",
-    "url": "https://api.github.com/repos/actions/upload-pages-artifact/git/commits/56afc609e74202658d3ffba0e8f6dda462b719fa"
   },
   "actions/deploy-pages": {
     "tag": "v4",

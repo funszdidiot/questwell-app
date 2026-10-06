@@ -1,5 +1,5 @@
 name: Pinned Flutter with pinned caches
-description: Preserve the SDK setup while bypassing mutable nested cache actions.
+description: Reviewed local installer with no upstream composite action resolution.
 inputs:
   flutter-version:
     required: true
@@ -9,12 +9,12 @@ runs:
   steps:
     - name: Resolve SDK paths
       id: paths
-      uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
-      with:
-        flutter-version: ${{ inputs.flutter-version }}
-        dry-run: true
-        cache: false
-        pub-cache: false
+      shell: bash
+      env:
+        QUESTWELL_FLUTTER_VERSION: ${{ inputs.flutter-version }}
+      run: |
+        [[ "$QUESTWELL_FLUTTER_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+        bash "$GITHUB_ACTION_PATH/setup.sh" -p -n "$QUESTWELL_FLUTTER_VERSION" -a "$RUNNER_ARCH" stable
     - name: Cache SDK
       uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
       with:
@@ -26,8 +26,9 @@ runs:
         path: ${{ steps.paths.outputs.PUB-CACHE-PATH }}
         key: questwell-pub-${{ runner.os }}-${{ runner.arch }}-${{ inputs.flutter-version }}-${{ hashFiles('pubspec.lock') }}-v1
     - name: Install SDK
-      uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
-      with:
-        flutter-version: ${{ inputs.flutter-version }}
-        cache: false
-        pub-cache: false
+      shell: bash
+      env:
+        QUESTWELL_FLUTTER_VERSION: ${{ inputs.flutter-version }}
+        QUESTWELL_FLUTTER_CACHE: ${{ steps.paths.outputs.CACHE-PATH }}
+        QUESTWELL_PUB_CACHE: ${{ steps.paths.outputs.PUB-CACHE-PATH }}
+      run: bash "$GITHUB_ACTION_PATH/setup.sh" -n "$QUESTWELL_FLUTTER_VERSION" -a "$RUNNER_ARCH" -c "$QUESTWELL_FLUTTER_CACHE" -d "$QUESTWELL_PUB_CACHE" stable
