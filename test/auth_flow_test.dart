@@ -85,7 +85,7 @@ void main() {
     expect(QuestwellAuthCallback.needsAuthScreen, isTrue);
     expect(Uri.parse(QuestwellAuthCallback.recoveryUrl).queryParameters['recovery'], 'true');
     expect(QuestwellAuthCallback.recoveryUrl,
-        'https://funszdidiot.github.io/questwell-app/?recovery=true');
+        'http://127.0.0.1:1/?recovery=true');
   });
 
   testWidgets('confirmation-required signup stays out of Hearth and clears password', (tester) async {
