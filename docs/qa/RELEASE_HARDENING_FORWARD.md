@@ -1,7 +1,8 @@
 # R01–C04 guarded live-beta rollout — preparation only
 
-Status: NOT AUTHORIZED / NOT READY TO EXECUTE. The first CI rehearsal must supply
-the post-schema fingerprint; the offline renderer refuses an incomplete manifest.
+Status: REHEARSED / NOT AUTHORIZED FOR LIVE EXECUTION. The post-schema fingerprint
+is now pinned from successful disposable rehearsal. Final manifest-revision CI
+and AI review, backup/recovery evidence and founder approval remain required.
 No live DDL, Edge deployment, user write or migration-history change has occurred.
 
 Read-only inspection on October 6, 2026 found the current client calls
@@ -86,3 +87,33 @@ Founder approval must name this beta project, these seven changes and the Edge
 replacement. It is separate from routine development merge approval in FIX_PLAN.
 Production promotion, native distribution, external beta expansion, data repair
 and launch remain excluded. This package alone cannot establish GO.
+
+## Rehearsal evidence
+
+Revision `a36c7e7b4f7334a584b6c9c1a7eb287ccac45f81`: backend run
+`37411270036`, job `112100007441` passed the timeout cancellation control,
+live-before-schema parity, drift refusal, forced all-change rollback, exact
+full-schema equivalence with the individually applied migrations, unchanged
+history and repeat refusal. Post-bundle real tests passed: 9 quest creation,
+11 onboarding, 10 boss creation, 19 boss reward and 9 Edge/Auth/Storage deletion
+cases. The Edge-first test preserved account, exact file bytes and original
+refreshable session while the deletion RPC was absent. Synthetic stack disposed.
+Flutter run `37411270042`, job `112100007518` passed 475 tests, 15 Chrome tests
+and web build. The 46 inherited analyzer notices remain. AI review reported no
+major issues on this revision. The next revision pins its proved post-schema
+hash; its own required CI and AI review must pass before development merge.
+
+Initial failures are retained as evidence: the combined-schema guard rejected
+synthetic deletion helpers/policy/bucket accidentally left in the reference
+catalog. Named fixture cleanup fixed that contamination without reducing catalog
+coverage. The pinned CLI rejects multi-statement queries; moving the transaction
+rehearsal to guarded local psql fixed that runner limitation. Neither failure
+was worked around by weakening a guard or changing the seven source migrations.
+
+The full reviewed post-schema SHA256 is
+`05e120cc8cd2c6e81cd29329ad033d90ae35bdbcebae967ffc282ab6b27da6cc`.
+The offline-rendered SQL payload SHA256 is
+`a3e227003e8501b672550f8aa2f8135feb41c84dfe70e5c9d8f9679a59569f28`.
+Live pre-schema and all 49 historical migration rows were rechecked unchanged
+at approximately 03:56 UTC on October 6, 2026. Recheck again immediately before
+any separately approved rollout; this observation is not a durable lease.

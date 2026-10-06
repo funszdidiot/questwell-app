@@ -1,7 +1,7 @@
 {
   "project": "bdzcazkyypopbanbjnud",
   "migration_name": "release_hardening_r01_c04",
-  "after_schema_sha256": null,
+  "after_schema_sha256": "05e120cc8cd2c6e81cd29329ad033d90ae35bdbcebae967ffc282ab6b27da6cc",
   "edge_slug": "delete-account",
   "edge_before_version": 1,
   "edge_verify_jwt": true,
