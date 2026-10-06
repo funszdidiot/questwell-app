@@ -33,20 +33,20 @@ class QuestwellTaskService {
   const QuestwellTaskService._();
 
   static QuestwellTaskCreation newCreation() => QuestwellTaskCreation(
-    requestId: const Uuid().v4(),
-    ownerId: SupaFlow.client.auth.currentUser?.id ?? '',
-    currentOwner: () => SupaFlow.client.auth.currentUser?.id ?? '',
-    send: (params) => QuestwellNetwork.write(() async {
-      final result = await SupaFlow.client.rpc(
-        'create_task_once',
-        params: params,
+        requestId: const Uuid().v4(),
+        ownerId: SupaFlow.client.auth.currentUser?.id ?? '',
+        currentOwner: () => SupaFlow.client.auth.currentUser?.id ?? '',
+        send: (params) => QuestwellNetwork.write(() async {
+          final result = await SupaFlow.client.rpc(
+            'create_task_once',
+            params: params,
+          );
+          if (result is! String || result.isEmpty) {
+            throw StateError('Quest creation was not confirmed.');
+          }
+          return result;
+        }),
       );
-      if (result is! String || result.isEmpty) {
-        throw StateError('Quest creation was not confirmed.');
-      }
-      return result;
-    }),
-  );
 
   static List<TasksRow> visibleHomeTasks(
     List<TasksRow> tasks, {
@@ -73,25 +73,39 @@ class QuestwellTaskService {
     return campfireTasks.take(1).toList();
   }
 
-  static Future<void> setAside(String taskId) => _changeStatus(taskId, 'open', 'set_aside');
-  static Future<void> restore(String taskId) => _changeStatus(taskId, 'set_aside', 'open');
+  static Future<void> setAside(String taskId) =>
+      _changeStatus(taskId, 'open', 'set_aside');
+  static Future<void> restore(String taskId) =>
+      _changeStatus(taskId, 'set_aside', 'open');
 
-  static Future<void> _changeStatus(String taskId, String from, String to) async {
+  static Future<void> _changeStatus(
+      String taskId, String from, String to) async {
     final uid = SupaFlow.client.auth.currentUser?.id;
     if (uid == null) throw StateError('Authentication required.');
-    final rows = await TasksTable().update(data: {'status': to},
-      matchingRows: (q) => q.eqOrNull('id', taskId)
-        .eqOrNull('user_id', uid).eqOrNull('status', from), returnRows: true);
-    if (rows.length != 1) throw StateError('This quest has changed. Refresh the board.');
+    final rows = await TasksTable().update(
+        data: {'status': to},
+        matchingRows: (q) => q
+            .eqOrNull('id', taskId)
+            .eqOrNull('user_id', uid)
+            .eqOrNull('status', from),
+        returnRows: true);
+    if (rows.length != 1)
+      throw StateError('This quest has changed. Refresh the board.');
   }
 
   static Future<QuestwellTaskCompletionResult> completeTask(
     String taskId,
   ) async {
+    final owner = SupaFlow.client.auth.currentUser?.id;
+    if (owner == null) throw StateError('Authentication required.');
     final response = await QuestwellNetwork.write(() => SupaFlow.client.rpc(
-      'complete_task',
-      params: {'p_task_id': taskId},
-    ));
+          'complete_task',
+          params: {'p_task_id': taskId},
+        ));
+
+    if (SupaFlow.client.auth.currentUser?.id != owner) {
+      throw StateError('Reward account changed.');
+    }
 
     if (response is! List || response.isEmpty) {
       throw StateError('Questwell did not receive a completion result.');
