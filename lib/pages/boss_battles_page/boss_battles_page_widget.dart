@@ -43,6 +43,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
   String? _busyStepId;
   String? _createdBattleId;
   bool _campfireMode = false;
+  bool _creationNeedsRefresh = false;
   QuestwellCosmeticsSnapshot? _appearance;
 
   @override
@@ -148,6 +149,24 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
   }
 
   Future<void> _showCreateBattle() async {
+    if (_creationNeedsRefresh) {
+      try {
+        setState(_refresh);
+        await _future;
+        if (!mounted) return;
+        _creationNeedsRefresh = false;
+      } catch (_) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Refresh your battles before starting another. Check your connection and try again.',
+            ),
+          ),
+        );
+        return;
+      }
+    }
     await _loadCampfireMode();
     if (!mounted) return;
     final profile = _appearance?.profile;
@@ -160,6 +179,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
     ];
     var bossType = 'inbox_hydra';
     var submitting = false;
+    var uncertain = false;
     String? errorMessage;
     ModalRoute<dynamic>? creationRoute;
 
@@ -256,10 +276,10 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     const SizedBox(height: 12),
                   ],
                   FilledButton.icon(
-                    onPressed: submitting
+                    onPressed: submitting || uncertain
                         ? null
                         : () async {
-                            if (submitting) return;
+                            if (submitting || uncertain) return;
                             final title = titleController.text.trim();
                             final steps = stepControllers
                                 .map((controller) => controller.text.trim())
@@ -301,7 +321,12 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                 Navigator.of(context).pop(battleId);
                               }
                             } catch (error) {
-                              if (!context.mounted) return;
+                              uncertain = error is QuestwellNetworkException;
+                              if (uncertain) _creationNeedsRefresh = true;
+                              if (!context.mounted) {
+                                if (mounted && uncertain) setState(_refresh);
+                                return;
+                              }
                               setSheetState(() {
                                 submitting = false;
                                 errorMessage =
@@ -312,8 +337,19 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                             }
                           },
                     icon: const Icon(Icons.sports_mma_outlined),
-                    label: Text(submitting ? 'Starting…' : 'Start Boss Battle'),
+                    label: Text(
+                      uncertain
+                          ? 'Refresh required'
+                          : submitting
+                          ? 'Starting…'
+                          : 'Start Boss Battle',
+                    ),
                   ),
+                  if (uncertain)
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Close and refresh'),
+                    ),
                 ],
               ),
             ),
@@ -330,6 +366,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       controller.dispose();
     }
 
+    if (mounted && _creationNeedsRefresh) setState(_refresh);
     if (created != null && created.isNotEmpty && mounted) {
       setState(() {
         _createdBattleId = created;

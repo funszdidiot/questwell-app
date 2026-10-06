@@ -18,15 +18,16 @@ void main() {
       required List<String> steps,
       String bossType,
     })
-    create,
-  ) async {
+    create, {
+    Future<List<QuestwellBossBattle>> Function()? load,
+  }) async {
     await tester.binding.setSurfaceSize(const Size(390, 1200));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(
       MaterialApp(
         theme: ThemeData.dark(),
         home: BossBattlesPageWidget(
-          loadBattles: () async => <QuestwellBossBattle>[],
+          loadBattles: load ?? () async => <QuestwellBossBattle>[],
           loadAppearance: () async => throw StateError('Profile unavailable'),
           createBattle: create,
         ),
@@ -187,4 +188,45 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.byType(BottomSheet), findsNothing);
   });
+  for (final blankResponse in [false, true]) {
+    testWidgets(
+      'uncertain creation locks submit and requires a successful refresh (blank=$blankResponse)',
+      (tester) async {
+        var calls = 0;
+        var refreshFails = false;
+        await open(
+          tester,
+          ({required title, required steps, bossType = 'inbox_hydra'}) async {
+            calls++;
+            if (blankResponse) return '';
+            throw const QuestwellNetworkException('Refresh before retrying.');
+          },
+          load: () async {
+            if (refreshFails) throw StateError('offline');
+            return <QuestwellBossBattle>[];
+          },
+        );
+        await fill(tester, 2);
+        await tester.tap(find.text('Start Boss Battle'));
+        await tester.pumpAndSettle();
+        final button = find.widgetWithText(FilledButton, 'Refresh required');
+        expect(tester.widget<FilledButton>(button).onPressed, isNull);
+        await tester.tap(button);
+        expect(calls, 1);
+        refreshFails = true;
+        await tester.ensureVisible(find.text('Close and refresh'));
+        await tester.tap(find.text('Close and refresh'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Start a battle'));
+        await tester.pumpAndSettle();
+        expect(find.byType(BottomSheet), findsNothing);
+        expect(calls, 1);
+        refreshFails = false;
+        await tester.tap(find.text('Start a battle'));
+        await tester.pumpAndSettle();
+        expect(find.text('Summon a Boss Battle'), findsOneWidget);
+        expect(calls, 1);
+      },
+    );
+  }
 }
