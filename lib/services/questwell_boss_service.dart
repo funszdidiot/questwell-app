@@ -11,6 +11,8 @@ class QuestwellBossService {
   const QuestwellBossService._();
   static final _creationRecovery = QuestwellBossCreationRecovery();
 
+  static String? currentOwner() => SupaFlow.client.auth.currentUser?.id;
+
   static Future<List<QuestwellBossBattle>> loadBattles() async {
     final uid = SupaFlow.client.auth.currentUser?.id;
     if (uid == null) throw StateError('Authentication required.');
@@ -66,24 +68,40 @@ class QuestwellBossService {
     required String title,
     required List<String> steps,
     String bossType = 'inbox_hydra',
+    String? expectedOwnerId,
+    String? requestId,
   }) async {
     final uid = SupaFlow.client.auth.currentUser?.id;
     if (uid == null) throw StateError('Authentication required.');
+    if (expectedOwnerId != null && expectedOwnerId != uid) {
+      throw StateError('Boss account changed.');
+    }
     return _creationRecovery.create(
-      key: jsonEncode([uid, title, steps, bossType]),
-      rejected: (error) => error is PostgrestException,
-      send: () async {
+      key: jsonEncode([uid, requestId, title, steps, bossType]),
+      requestId: requestId,
+      send: (requestId) async {
+        if (SupaFlow.client.auth.currentUser?.id != uid) {
+          throw StateError('Boss account changed.');
+        }
         final response = await SupaFlow.client.rpc(
-          'create_boss_battle',
+          'create_boss_once',
           params: {
+            'p_request_id': requestId,
+            'p_expected_user_id': uid,
             'p_title': title,
             'p_steps': steps,
-            'p_reward_xp': QuestwellBossRewards.victoryXp,
-            'p_reward_coins': QuestwellBossRewards.victoryCoins,
             'p_boss_type': bossType,
           },
         );
-        return response?.toString() ?? '';
+        if (SupaFlow.client.auth.currentUser?.id != uid) {
+          throw StateError('Boss account changed.');
+        }
+        if (response is! String) {
+          throw const QuestwellNetworkException(
+            'Your battle was not confirmed. Retry this draft or check your battles.',
+          );
+        }
+        return response;
       },
     );
   }

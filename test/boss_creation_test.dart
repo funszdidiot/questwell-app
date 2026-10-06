@@ -1,3 +1,5 @@
+import 'package:project_momentum/services/questwell_boss_creation_recovery.dart';
+
 import 'dart:async';
 
 import 'package:project_momentum/backend/supabase/questwell_network.dart';
@@ -17,9 +19,12 @@ void main() {
       required String title,
       required List<String> steps,
       String bossType,
+      String? expectedOwnerId,
+      String? requestId,
     })
     create, {
     Future<List<QuestwellBossBattle>> Function()? load,
+    String? Function()? currentOwner,
   }) async {
     await tester.binding.setSurfaceSize(const Size(390, 1200));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -27,6 +32,7 @@ void main() {
       MaterialApp(
         theme: ThemeData.dark(),
         home: BossBattlesPageWidget(
+          currentOwner: currentOwner ?? () => 'owner-a',
           loadBattles: load ?? () async => <QuestwellBossBattle>[],
           loadAppearance: () async => throw StateError('Profile unavailable'),
           createBattle: create,
@@ -63,6 +69,8 @@ void main() {
         required title,
         required steps,
         bossType = 'inbox_hydra',
+        expectedOwnerId,
+        requestId,
       }) async {
         calls++;
         expect(title, 'Test project');
@@ -86,6 +94,8 @@ void main() {
       required title,
       required steps,
       bossType = 'inbox_hydra',
+      expectedOwnerId,
+      requestId,
     }) {
       calls++;
       return pending.future;
@@ -104,6 +114,8 @@ void main() {
       required title,
       required steps,
       bossType = 'inbox_hydra',
+      expectedOwnerId,
+      requestId,
     }) async {
       throw StateError('private server details');
     });
@@ -122,29 +134,32 @@ void main() {
     expect(find.text('  Test project  '), findsOneWidget);
     expect(find.textContaining('private server details'), findsNothing);
   });
-  testWidgets('uncertain write keeps the refresh warning visible', (
-    tester,
-  ) async {
-    const warning =
-        'Your change may have been received; refresh before trying again.';
-    await open(tester, ({
-      required title,
-      required steps,
-      bossType = 'inbox_hydra',
-    }) async {
-      throw const QuestwellNetworkException(warning);
-    });
-    await fill(tester, 2);
-    await tester.tap(find.text('Start Boss Battle'));
-    await tester.pumpAndSettle();
-    expect(
-      find.descendant(
-        of: find.byType(BottomSheet),
-        matching: find.text(warning),
-      ),
-      findsOneWidget,
-    );
-  });
+  testWidgets(
+    'uncertain write explains safe retry without exposing transport details',
+    (tester) async {
+      const warning =
+          'Your change may have been received; refresh before trying again.';
+      await open(tester, ({
+        required title,
+        required steps,
+        bossType = 'inbox_hydra',
+        expectedOwnerId,
+        requestId,
+      }) async {
+        throw const QuestwellNetworkException(warning);
+      });
+      await fill(tester, 2);
+      await tester.tap(find.text('Start Boss Battle'));
+      await tester.pumpAndSettle();
+      expect(
+        find.descendant(
+          of: find.byType(BottomSheet),
+          matching: find.textContaining('Your battle may already exist.'),
+        ),
+        findsOneWidget,
+      );
+    },
+  );
   testWidgets('validation appears in the form without sending a request', (
     tester,
   ) async {
@@ -153,6 +168,8 @@ void main() {
       required title,
       required steps,
       bossType = 'inbox_hydra',
+      expectedOwnerId,
+      requestId,
     }) async {
       calls++;
       return 'created-battle';
@@ -175,8 +192,13 @@ void main() {
     final pending = Completer<String>();
     await open(
       tester,
-      ({required title, required steps, bossType = 'inbox_hydra'}) =>
-          pending.future,
+      ({
+        required title,
+        required steps,
+        bossType = 'inbox_hydra',
+        expectedOwnerId,
+        requestId,
+      }) => pending.future,
     );
     await fill(tester, 2);
     await tester.tap(find.text('Start Boss Battle'));
@@ -190,13 +212,19 @@ void main() {
   });
   for (final blankResponse in [false, true]) {
     testWidgets(
-      'uncertain creation locks submit and requires a successful refresh (blank=$blankResponse)',
+      'uncertain creation locks draft, permits retry, and checks board on exit (blank=$blankResponse)',
       (tester) async {
         var calls = 0;
         var refreshFails = false;
         await open(
           tester,
-          ({required title, required steps, bossType = 'inbox_hydra'}) async {
+          ({
+            required title,
+            required steps,
+            bossType = 'inbox_hydra',
+            expectedOwnerId,
+            requestId,
+          }) async {
             calls++;
             if (blankResponse) return '';
             throw const QuestwellNetworkException('Refresh before retrying.');
@@ -210,12 +238,17 @@ void main() {
         await tester.tap(find.text('Start Boss Battle'));
         await tester.pumpAndSettle();
         final button = find.ancestor(
-          of: find.text('Refresh required'),
+          of: find.text('Retry this battle'),
           matching: find.byWidgetPredicate((widget) => widget is FilledButton),
         );
-        expect(tester.widget<FilledButton>(button).onPressed, isNull);
+        expect(tester.widget<FilledButton>(button).onPressed, isNotNull);
+        expect(
+          tester.widget<TextField>(find.byType(TextField).first).enabled,
+          isFalse,
+        );
         await tester.tap(button);
-        expect(calls, 1);
+        await tester.pumpAndSettle();
+        expect(calls, 2);
         refreshFails = true;
         await tester.ensureVisible(find.text('Close and refresh'));
         await tester.tap(find.text('Close and refresh'));
@@ -223,12 +256,12 @@ void main() {
         await tester.tap(find.text('Start a battle'));
         await tester.pumpAndSettle();
         expect(find.byType(BottomSheet), findsNothing);
-        expect(calls, 1);
+        expect(calls, 2);
         refreshFails = false;
         await tester.tap(find.text('Start a battle'));
         await tester.pumpAndSettle();
         expect(find.text('Summon a Boss Battle'), findsOneWidget);
-        expect(calls, 1);
+        expect(calls, 2);
       },
     );
   }
@@ -239,8 +272,13 @@ void main() {
     var loads = 0;
     await open(
       tester,
-      ({required title, required steps, bossType = 'inbox_hydra'}) =>
-          pending.future,
+      ({
+        required title,
+        required steps,
+        bossType = 'inbox_hydra',
+        expectedOwnerId,
+        requestId,
+      }) => pending.future,
       load: () async {
         loads++;
         return <QuestwellBossBattle>[];
@@ -265,8 +303,13 @@ void main() {
     var loads = 0;
     await open(
       tester,
-      ({required title, required steps, bossType = 'inbox_hydra'}) =>
-          pending.future,
+      ({
+        required title,
+        required steps,
+        bossType = 'inbox_hydra',
+        expectedOwnerId,
+        requestId,
+      }) => pending.future,
       load: () async {
         loads++;
         return <QuestwellBossBattle>[];
@@ -282,5 +325,70 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.byType(BossBattlesPageWidget), findsOneWidget);
     expect(find.byType(BottomSheet), findsNothing);
+  });
+  testWidgets(
+    'lost response retries unchanged draft through real recovery boundary',
+    (tester) async {
+      final recovery = QuestwellBossCreationRecovery();
+      final ids = <String>[];
+      await open(tester, ({
+        required title,
+        required steps,
+        bossType = 'inbox_hydra',
+        expectedOwnerId,
+        requestId,
+      }) {
+        expect(expectedOwnerId, 'owner-a');
+        expect(title, 'Test project');
+        expect(steps, ['Attack 1', 'Attack 2']);
+        return recovery.create(
+          key: '$expectedOwnerId/$requestId/$title/$steps/$bossType',
+          requestId: requestId,
+          send: (id) async {
+            ids.add(id);
+            if (ids.length == 1)
+              throw const QuestwellNetworkException('lost response');
+            return 'saved-boss';
+          },
+        );
+      });
+      await fill(tester, 2);
+      await tester.tap(find.text('Start Boss Battle'));
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<TextField>(find.byType(TextField).first).enabled,
+        isFalse,
+      );
+      await tester.ensureVisible(find.text('Retry this battle'));
+      await tester.tap(find.text('Retry this battle'));
+      await tester.pumpAndSettle();
+      expect(ids.length, 2);
+      expect(ids[0], ids[1]);
+      expect(find.byType(BottomSheet), findsNothing);
+    },
+  );
+  testWidgets('account switch prevents submitting the previous owners draft', (
+    tester,
+  ) async {
+    var owner = 'owner-a', calls = 0;
+    await open(tester, ({
+      required title,
+      required steps,
+      bossType = 'inbox_hydra',
+      expectedOwnerId,
+      requestId,
+    }) async {
+      calls++;
+      return 'saved';
+    }, currentOwner: () => owner);
+    await fill(tester, 2);
+    owner = 'owner-b';
+    await tester.tap(find.text('Start Boss Battle'));
+    await tester.pumpAndSettle();
+    expect(calls, 0);
+    expect(
+      find.text('Your account changed. Close this draft and start again.'),
+      findsOneWidget,
+    );
   });
 }
