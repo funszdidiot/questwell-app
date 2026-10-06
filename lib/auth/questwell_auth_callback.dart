@@ -1,4 +1,4 @@
-import '/config/questwell_environment.dart';
+import 'package:project_momentum/config/questwell_environment.dart';
 
 /// Captured before Supabase consumes the callback fragment during startup.
 /// Stores flags only; never retains tokens or server-provided error text.

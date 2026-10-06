@@ -1,4 +1,4 @@
-import '/config/questwell_environment.dart';
+import 'package:project_momentum/config/questwell_environment.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide Provider;
 
 export 'database/database.dart';
