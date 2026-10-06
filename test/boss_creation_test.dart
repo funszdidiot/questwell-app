@@ -258,4 +258,29 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.byType(BottomSheet), findsNothing);
   });
+  testWidgets('success during the exit animation cannot pop the page twice', (
+    tester,
+  ) async {
+    final pending = Completer<String>();
+    var loads = 0;
+    await open(
+      tester,
+      ({required title, required steps, bossType = 'inbox_hydra'}) =>
+          pending.future,
+      load: () async {
+        loads++;
+        return <QuestwellBossBattle>[];
+      },
+    );
+    await fill(tester, 2);
+    await tester.tap(find.text('Start Boss Battle'));
+    await tester.pump();
+    Navigator.of(tester.element(find.byType(BottomSheet))).pop();
+    pending.complete('created-battle');
+    await tester.pumpAndSettle();
+    expect(loads, 2);
+    expect(tester.takeException(), isNull);
+    expect(find.byType(BossBattlesPageWidget), findsOneWidget);
+    expect(find.byType(BottomSheet), findsNothing);
+  });
 }

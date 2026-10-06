@@ -317,7 +317,8 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                   'The server did not confirm your battle. Close this form and refresh before trying again.',
                                 );
                               }
-                              if (context.mounted) {
+                              if (context.mounted &&
+                                  creationRoute?.isCurrent == true) {
                                 Navigator.of(context).pop(battleId);
                               } else if (mounted) {
                                 // Back/swipe may close the form before a confirmed write.
