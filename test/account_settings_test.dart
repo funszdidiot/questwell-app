@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_momentum/flutter_flow/nav/nav.dart';
+import 'package:project_momentum/auth/supabase_auth/supabase_user_provider.dart';
+import 'package:project_momentum/auth_page/auth_page_widget.dart';
 import 'package:project_momentum/pages/account_settings_page/account_settings_page_widget.dart';
 import 'package:project_momentum/widgets/questwell_account_settings.dart';
 
@@ -65,7 +67,10 @@ void main() {
       );
       expect(find.byType(QuestwellAccountSettings), findsOneWidget);
       final signOut = find.widgetWithText(OutlinedButton, 'Sign out');
-      await tester.ensureVisible(signOut);
+      await tester.scrollUntilVisible(signOut, 200,
+          scrollable: find.byType(Scrollable).first);
+      await tester.pumpAndSettle();
+      expect(signOut.hitTestable(), findsOneWidget);
       expect(tester.getSize(signOut).height, greaterThanOrEqualTo(48));
       await tester.scrollUntilVisible(
         find.text('Delete account'),
@@ -102,7 +107,10 @@ void main() {
       },
     );
     final signOut = find.widgetWithText(OutlinedButton, 'Sign out');
-    await tester.ensureVisible(signOut);
+    await tester.scrollUntilVisible(signOut, 200,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
+    expect(signOut.hitTestable(), findsOneWidget);
     await tester.tap(signOut);
     await tester.pump();
     final busy = find.widgetWithText(OutlinedButton, 'Signing out…');
@@ -167,6 +175,37 @@ void main() {
     expect(match.isError, isFalse);
     expect((match.last.route as GoRoute).name,
         AccountSettingsPageWidget.routeName);
+  });
+
+  testWidgets('production router rejects signed-out account history',
+      (tester) async {
+    final appState = AppStateNotifier.instance;
+    final previousUser = appState.user;
+    final previousSplash = appState.showSplashImage;
+    appState.user = ProjectMomentumSupabaseUser(null);
+    appState.showSplashImage = false;
+    appState.clearRedirectLocation();
+    addTearDown(() {
+      appState.user = previousUser;
+      appState.showSplashImage = previousSplash;
+      appState.clearRedirectLocation();
+    });
+    final router = createRouter(appState);
+    addTearDown(router.dispose);
+    await tester.pumpWidget(
+        MaterialApp.router(theme: ThemeData.dark(), routerConfig: router));
+    await tester.pumpAndSettle();
+    expect(find.byType(AuthPageWidget), findsOneWidget);
+    for (final path in [AccountSettingsPageWidget.routePath, '/adventurer']) {
+      await router.routeInformationProvider.didPushRouteInformation(
+        RouteInformation(uri: Uri.parse(path)),
+      );
+      await tester.pumpAndSettle();
+      expect(router.routeInformationProvider.value.uri.path, '/authPage');
+      expect(find.byType(AuthPageWidget), findsOneWidget);
+      expect(find.byType(AccountSettingsPageWidget), findsNothing);
+      expect(tester.takeException(), isNull);
+    }
   });
 
   GoRouter settingsRouter({String initialLocation = '/adventurer'}) => GoRouter(

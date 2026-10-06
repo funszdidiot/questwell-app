@@ -58,7 +58,7 @@ jobs:
       - name: Run complete Flutter regression suite
         run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
 
-      - name: Verify quest, boss and Chronicle paging in Chrome
+      - name: Verify paging and account navigation in Chrome
         run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --platform chrome test/open_task_list_test.dart test/boss_list_test.dart test/account_settings_test.dart test/chronicle_history_test.dart
 
       - name: Build proposed development app without deploying

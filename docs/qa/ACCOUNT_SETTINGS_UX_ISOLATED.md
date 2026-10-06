@@ -72,8 +72,9 @@ Navigator route as a web history/refresh defect. The correction registers
 `/account` through the existing GoRouter configuration and opens it by name.
 A route owner now holds the existing account callbacks; the presentation widget
 remains reusable. Direct URL entry provides a Back action to Adventurer.
-The route follows the existing Adventurer routing policy; auth services and
-backend authorization are unchanged. Local focused tests: **17 passed**,
+Settings and Adventurer now use the existing `requireAuth` route redirect, so
+signed-out browser history cannot reopen either account page. Auth services
+and backend authorization are unchanged. Local focused tests: **18 passed**,
 including production route registration, serialized browser Back/Forward
 restoration, direct URL restoration, and successful simulated operation routing.
 A second AI finding identified disposal during pending sign-out or deletion
@@ -86,8 +87,12 @@ local preference-cleanup failure. Account-exit navigation now runs in `finally`
 after remote success. Two additional tests verify cleanup failure both while
 settings remains open and after browser Back; both end on Auth with cleanup
 attempted once. Remote deletion failure still uses the existing dialog error
-path. The account suite is also added to the existing Chrome CI step. Fresh CI and
-AI review of this correction remain required.
+path. The account suite is also added to the existing Chrome CI step. The fourth AI finding identified signed-out history restoration; the route
+auth redirects above address it. A regression runs both historical URLs through
+the real production router while signed out and requires Auth. Chrome CI also
+caught a test tapping an offscreen button after `ensureVisible`; the fixture now
+scrolls, settles and asserts hit-testability before tapping, without weakening
+its pending-operation assertions. Fresh CI and AI review remain required.
 An additional offline screenshot attempt could not complete because the existing
 font setup does not bundle Roboto-Bold. No visual acceptance is inferred from
 that attempt; normal application font loading was not changed. No real sign-out, user deletion, hosted persistence,
