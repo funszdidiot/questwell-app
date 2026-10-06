@@ -115,7 +115,8 @@ void main() {
       await tap(tester, 'Back to quests');
       await tester.pumpAndSettle();
       expect(find.text('Check the quest board?'), findsOneWidget);
-      await tester.tap(find.text('Keep editing'));
+      expect(find.text('Check board'), findsOneWidget);
+      await tester.tap(find.text('Keep draft'));
       await tester.pumpAndSettle();
       await tap(tester, 'Post to Quest Board');
       await tester.pumpAndSettle();

@@ -92,8 +92,9 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
           _model.selectedCoins,
         );
       } else {
-        if (widget.editing)
+        if (widget.editing) {
           throw StateError('An edit requires a save handler.');
+        }
         _creation ??= widget.creation ?? QuestwellTaskService.newCreation();
         await _creation!.save(title, _model.selectedFriction);
       }
@@ -146,8 +147,8 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
         ? 'Your quest may already be posted. Check the board before creating it again.'
         : 'Your quest has not been posted yet.'),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: const Text('Keep editing')),
-        TextButton(onPressed: () => Navigator.pop(dialogContext, true), child: Text(widget.editing ? 'Discard changes' : 'Discard draft')),
+        TextButton(onPressed: () => Navigator.pop(dialogContext, false), child: Text(_unconfirmed ? 'Keep draft' : 'Keep editing')),
+        TextButton(onPressed: () => Navigator.pop(dialogContext, true), child: Text(widget.editing ? 'Discard changes' : _unconfirmed ? 'Check board' : 'Discard draft')),
       ],
     )) == true;
   }
