@@ -55,7 +55,7 @@ enable_signup = true
 enable_confirmations = false
 
 [edge_runtime]
-enabled = false
+enabled = true
 
 [analytics]
 enabled = false
