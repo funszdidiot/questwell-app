@@ -1,5 +1,9 @@
 import 'dart:async';
+
+import 'startup/questwell_bootstrap.dart';
+import 'startup/questwell_startup.dart';
 import 'auth/questwell_auth_callback.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,16 +16,23 @@ import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   GoRouter.optionURLReflectsImperativeAPIs = true;
   usePathUrlStrategy();
 
-  QuestwellAuthCallback.capture(Uri.base);
-  await SupaFlow.initialize();
-  await FlutterFlowTheme.initialize();
-
-  runApp(MyApp());
+  final bootstrap = QuestwellBootstrap(
+    captureCallback: () => QuestwellAuthCallback.capture(Uri.base),
+    initializeBackend: () async {
+      await SupaFlow.initialize();
+    },
+    initializePreferences: () async {
+      await FlutterFlowTheme.initialize();
+    },
+  );
+  runApp(
+    QuestwellStartup(initialize: bootstrap.run, appBuilder: (_) => MyApp()),
+  );
 }
 
 class MyApp extends StatefulWidget {
