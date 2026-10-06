@@ -1,0 +1,53 @@
+{
+  "project": "bdzcazkyypopbanbjnud",
+  "migration_name": "release_hardening_r01_c04",
+  "after_schema_sha256": "05e120cc8cd2c6e81cd29329ad033d90ae35bdbcebae967ffc282ab6b27da6cc",
+  "edge_slug": "delete-account",
+  "edge_before_version": 1,
+  "edge_verify_jwt": true,
+  "migrations": [
+    {
+      "path": "supabase/migrations/20261005165421_task_reward_authority.sql",
+      "sha256": "cdd532117dbe005065538f7aa0f910211351b4de71a5ad76ad537e878aeb417e"
+    },
+    {
+      "path": "supabase/migrations/20261005183917_boss_reward_authority.sql",
+      "sha256": "5b15c941df581afc3a753de1224643ab74b6fc634f7ceb9f21f3e266b405c691"
+    },
+    {
+      "path": "supabase/migrations/20261005192108_account_deletion_storage.sql",
+      "sha256": "63ef508ae24a0e7d01bddc0034b4565a9eb83b7ad4467cb92099e1adfd949cb7"
+    },
+    {
+      "path": "supabase/migrations/20261006005610_retry_safe_task_creation.sql",
+      "sha256": "57deef7601ebc9097a62a9d315186cc16103783e85665f8e5cbde5d2f1b35573"
+    },
+    {
+      "path": "supabase/migrations/20261006013437_atomic_starter_onboarding.sql",
+      "sha256": "bf491071dcdced7551b0f1dbb0486d0378460b5f684937e046493a2249e5b58c"
+    },
+    {
+      "path": "supabase/migrations/20261006022803_retry_safe_boss_creation.sql",
+      "sha256": "0ee6701276238863101bf3a9ff1511fde6376d7c585ddb88ad0a043a3f9c60a7"
+    },
+    {
+      "path": "supabase/migrations/20261006025302_serialize_boss_final_steps.sql",
+      "sha256": "11672d8211426311c5b46baf1ea3841089b488e7c3e67c424921f7a49a6fcdf8"
+    }
+  ],
+  "edge_files": [
+    {
+      "path": "supabase/functions/delete-account/index.ts",
+      "sha256": "a1986c64db627eb5a3524f82f46023d680e5834e94f292891e7ed72b97484125"
+    },
+    {
+      "path": "supabase/functions/delete-account/handler.mjs",
+      "sha256": "c5c98f57874d5ce1ca5e6b98434bcbf7fb92157dbe826aa1be088981ffa12d5a"
+    }
+  ],
+  "history_count": 49,
+  "schema_sha256": "4ee9cfe71fd3300d6698dc9baa947798d22d143897ca99ccc21c1754cc82d8fc",
+  "history_sha256": "40319fe65db598a7e41b70bdd652e63754e851176a1fb9627e08e534e9a25323",
+  "rollout_records": 0,
+  "catalog_sql_sha256": "a9a98f3066496014fac1d403f5c0104c2deafd365602a3a2fffe787cbd2b86ef"
+}

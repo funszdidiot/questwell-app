@@ -7,6 +7,7 @@ import {assertDisposableCi, assertLocalStatus} from './guard.mjs';
 import {smoke} from './smoke.mjs';
 import {assertCatalogMatches} from './catalog.mjs';
 import {exerciseWoodlandForward} from './woodland-forward.mjs';
+import {exerciseHardeningForward} from './hardening-forward.mjs';
 
 assertDisposableCi(process.env);
 if (process.argv.includes('--preflight')) {
@@ -47,6 +48,28 @@ function expectSqlFailure(file, expectedMessage) {
   assert.ok(result.status!==null && result.status!==0,'Negative SQL control unexpectedly succeeded or timed out');
   assert.ok(((result.stderr||'')+(result.stdout||'')).includes(expectedMessage),
     `Negative SQL control did not reach the expected assertion: ${expectedMessage}`);
+}
+// The pinned CLI's db query intentionally accepts one extended-protocol statement.
+// Rehearse the multi-statement timeout + DO payload using psql inside ONLY the
+// already-guarded disposable container, in one transaction, without remote credentials.
+function runHardeningPayload(file, expectedMessage) {
+  assertDisposableCi(process.env);
+  assert.ok(!env.DOCKER_HOST && !env.DOCKER_CONTEXT,'Remote Docker targets are forbidden');
+  const result=spawnSync('docker',['exec','-i','supabase_db_questwell-disposable-ci',
+    'psql','--host=/var/run/postgresql','--username=postgres','--dbname=postgres',
+    '--no-password','-X','--single-transaction',
+    '--set=ON_ERROR_STOP=1','--file=-'],{
+    input:readFileSync(file,'utf8'),env,encoding:'utf8',timeout:120000,maxBuffer:1024*1024,
+  });
+  const output=redact((result.stderr||'')+(result.stdout||''));
+  if(expectedMessage!==undefined){
+    assert.ok(result.status!==null && result.status!==0,'Payload negative control unexpectedly succeeded or timed out');
+    if(!output.includes(expectedMessage))console.error(output.slice(-14000));
+    assert.ok(output.includes(expectedMessage),`Payload negative control did not reach ${expectedMessage}`);
+  }else if(result.status!==0){
+    console.error(output.slice(-14000));
+    throw new Error('Disposable hardening transaction failed');
+  }
 }
 const version = run(['--version']).trim();
 if (version !== '2.119.0') throw new Error(`Unexpected Supabase CLI version: ${version}`);
@@ -233,6 +256,12 @@ try {
   if (baselineDeletion.stdout) console.log(redact(baselineDeletion.stdout));
   if (baselineDeletion.stderr) console.error(redact(baselineDeletion.stderr));
   if (baselineDeletion.status !== 0) throw new Error('Account deletion baseline negative control failed');
+  const edgeFirst=spawnSync(process.execPath,[join(source,'account-deletion-edge-first.mjs')],{
+    input:JSON.stringify(status),env,encoding:'utf8',timeout:120000,maxBuffer:1024*1024,
+  });
+  if(edgeFirst.stdout)console.log(redact(edgeFirst.stdout));
+  if(edgeFirst.stderr)console.error(redact(edgeFirst.stderr));
+  if(edgeFirst.status!==0)throw new Error('Edge-first fail-closed rollout rehearsal failed');
   const deletionMigration = '20261005192108_account_deletion_storage.sql';
   copyFileSync(resolve(source, '../../supabase/migrations', deletionMigration), join(workdir, 'supabase/migrations', deletionMigration));
   run(['migration', 'up', '--local']);
@@ -241,12 +270,23 @@ try {
   console.log(run(['migration', 'list', '--local']));
   console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
   console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
-  const deletion = spawnSync(process.execPath, [join(source, 'account-deletion.mjs')], {
-    input: JSON.stringify(status), env, encoding: 'utf8', timeout: 180000, maxBuffer: 1024 * 1024,
-  });
-  if (deletion.stdout) console.log(redact(deletion.stdout));
-  if (deletion.stderr) console.error(redact(deletion.stderr));
-  if (deletion.status !== 0) throw new Error('Account deletion Edge/Auth/Storage regressions failed');
+  const deletionTests = () => {
+    const deletion = spawnSync(process.execPath, [join(source, 'account-deletion.mjs')], {
+      input: JSON.stringify(status), env, encoding: 'utf8', timeout: 180000, maxBuffer: 1024 * 1024,
+    });
+    if (deletion.stdout) console.log(redact(deletion.stdout));
+    if (deletion.stderr) console.error(redact(deletion.stderr));
+    if (deletion.status !== 0) throw new Error('Account deletion Edge/Auth/Storage regressions failed');
+  };
+  deletionTests();
+  run(['db','query','--local', `do $$ begin
+    drop trigger ci_account_delete_failure on public.users;
+    drop trigger ci_pause_storage_upload on storage.objects;
+    drop policy ci_secondary_upload on storage.objects;
+    drop function public.ci_account_delete_failure();
+    drop function public.ci_pause_storage_upload();
+    drop function public.ci_storage_upload_paused();
+  end $$;`]);
   const creationTests = phase => {
     const result = spawnSync(process.execPath, [join(source, 'task-creation.mjs')], {
       input: JSON.stringify({status, phase}), env, encoding: 'utf8', timeout: 120000,
@@ -389,6 +429,17 @@ try {
   console.log(run(['migration', 'list', '--local']));
   console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
   console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
+  exerciseHardeningForward({source,workdir,run,runPayload:runHardeningPayload,readCatalog});
+  for (const contract of ['task-reward-contract.sql','boss-reward-contract.sql',
+    'account-deletion-contract.sql','task-creation-contract.sql',
+    'onboarding-contract.sql','boss-creation-contract.sql']) {
+    run(['db','query','--local','--file',join(source,contract)]);
+  }
+  creationTests('regressions');
+  onboardingTests('regressions');
+  bossCreationTests('regressions');
+  bossTests('regressions');
+  deletionTests();
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();

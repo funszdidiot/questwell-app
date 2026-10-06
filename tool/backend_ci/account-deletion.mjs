@@ -182,4 +182,7 @@ await check(`deletion coordinates the in-flight Storage ${phase} before removing
 });
 }
 console.log(`Account deletion: ${checks} passed; ${failures} failed (real Edge/Auth/Storage).`);
+// This test-only bucket is not part of the application schema fingerprint.
+// Storage refuses removal if unexpected objects remain; never empty it blindly.
+if (!failures) ok(await request('/storage/v1/bucket/ci-deletion-secondary', admin, 'DELETE'));
 if (failures) process.exitCode = 1;
