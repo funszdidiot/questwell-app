@@ -7,12 +7,18 @@ on:
       - questwell-dev
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Verify approved and candidate class assets
         run: python3 tool/verify_avatar_assets.py
@@ -53,20 +59,67 @@ jobs:
           sha256sum pubspec.lock
 
       - name: Test quality gate failure detection
-        run: python3 -m unittest discover -s tool/qa -p quality_gate_test.py -v
+        run: |
+          python3 -m unittest discover -s tool/qa -p quality_gate_test.py -v
+          python3 -m unittest discover -s tool/qa -p coverage_report_test.py -v
 
       - name: Enforce analyzer and formatting baseline
         run: python3 tool/quality_gate.py
 
       - name: Run complete Flutter regression suite
-        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
+        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --coverage --branch-coverage
+
+      - name: Report critical client coverage
+        run: |
+          python3 tool/critical_coverage.py coverage/lcov.info --output coverage/critical-paths
+          cat coverage/critical-paths.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Retain coverage evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: critical-client-coverage-${{ github.sha }}
+          path: |
+            coverage/lcov.info
+            coverage/critical-paths.json
+            coverage/critical-paths.md
+          if-no-files-found: error
+          retention-days: 7
 
       - name: Verify paging and account navigation in Chrome
         run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --platform chrome test/open_task_list_test.dart test/boss_list_test.dart test/account_settings_test.dart test/chronicle_history_test.dart test/chronicle_server_totals_test.dart
 
       - name: Build proposed development app without deploying
-        if: github.event_name == 'pull_request' && github.base_ref == 'questwell-dev'
+        if: github.event_name == 'pull_request'
         run: flutter build web --release --dart-define=QUESTWELL_ENVIRONMENT=live_beta --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA"
 
       - name: Verify checks and builds preserved dependency inputs
+        run: git diff --exit-code -- pubspec.yaml pubspec.lock
+
+  android:
+    uses: ./.github/workflows/questwell-android-signing.yml
+
+  ios:
+    name: iOS unsigned release compile
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - name: Checkout without stored credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Set up pinned Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.6'
+          cache: true
+      - name: Record native toolchain
+        run: |
+          xcodebuild -version
+          pod --version
+          flutter --version
+      - name: Install locked dependencies
+        run: flutter pub get --enforce-lockfile
+      - name: Compile iOS release without signing or distribution
+        run: flutter build ios --release --no-codesign --target lib/main.dart --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
+      - name: Preserve dependency inputs
         run: git diff --exit-code -- pubspec.yaml pubspec.lock
