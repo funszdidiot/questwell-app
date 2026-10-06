@@ -1,8 +1,11 @@
+import 'package:uuid/uuid.dart';
+
 import '/backend/supabase/questwell_network.dart';
 
-/// Retains an unconfirmed creation request across timeouts and page changes.
-/// This is session-local protection; durable server idempotency is still needed.
+/// Keeps a stable identity for each unconfirmed draft in this app session.
+/// The server receipt reconciles retries even when the response is lost.
 class QuestwellBossCreationRecovery {
+  final _identities = <String, String>{};
   final _requests = <String, Future<String>>{};
   final _confirmed = <String, String>{};
 
@@ -12,41 +15,38 @@ class QuestwellBossCreationRecovery {
       if (visible.contains(_confirmed[key])) {
         _requests.remove(key);
         _confirmed.remove(key);
+        _identities.remove(key);
       }
     }
   }
 
   Future<String> create({
     required String key,
-    required Future<String> Function() send,
-    required bool Function(Object) rejected,
+    required Future<String> Function(String requestId) send,
     Future<String> Function(Future<String>)? wait,
   }) async {
-    final request = _requests.putIfAbsent(
-      key,
-      () => Future<String>.sync(send).then((result) {
-        if (result.trim().isNotEmpty) _confirmed[key] = result;
-        return result;
-      }),
-    );
-    try {
-      final result = await (wait != null
-          ? wait(request)
-          : QuestwellNetwork.write(() => request));
+    final saved = _confirmed[key];
+    if (saved != null) return saved;
+    final id = _identities.putIfAbsent(key, () => const Uuid().v4());
+    final request = _requests.putIfAbsent(key, () async {
+      final result = await Future<String>.sync(() => send(id));
       if (result.trim().isEmpty) {
         throw const QuestwellNetworkException(
-          'The server did not confirm your battle. Check your battles before trying again.',
+          'Your battle was not confirmed. Retry this draft or check your battles.',
         );
       }
-      // Retain success until a list read observes this specific battle.
+      // An older completion must not overwrite a newly acknowledged draft.
+      if (_identities[key] == id) _confirmed[key] = result;
       return result;
-    } catch (error) {
-      // Only a definite server rejection permits another write. A lost response
-      // stays attached to its original request, even after a successful list read.
-      if (rejected(error) && identical(_requests[key], request)) {
-        _requests.remove(key);
-      }
-      rethrow;
+    });
+    try {
+      return await (wait != null
+          ? wait(request)
+          : QuestwellNetwork.write(() => request));
+    } finally {
+      // A timed-out request may never settle. Permit another transport with the
+      // same server identity; an older waiter must not remove a newer request.
+      if (identical(_requests[key], request)) _requests.remove(key);
     }
   }
 }

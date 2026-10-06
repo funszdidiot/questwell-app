@@ -20,14 +20,17 @@ class BossBattlesPageWidget extends StatefulWidget {
     this.loadBattles = QuestwellBossService.loadBattles,
     this.loadAppearance = QuestwellCosmeticService.load,
     this.createBattle = QuestwellBossService.createBattle,
+    this.currentOwner = QuestwellBossService.currentOwner,
   });
 
+  final String? Function() currentOwner;
   final Future<List<QuestwellBossBattle>> Function() loadBattles;
   final Future<QuestwellCosmeticsSnapshot> Function() loadAppearance;
   final Future<String> Function({
     required String title,
     required List<String> steps,
     String bossType,
+    String? expectedOwnerId,
   })
   createBattle;
 
@@ -149,6 +152,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
   }
 
   Future<void> _showCreateBattle() async {
+    final owner = widget.currentOwner();
     if (_creationNeedsRefresh) {
       try {
         setState(_refresh);
@@ -169,6 +173,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
     }
     await _loadCampfireMode();
     if (!mounted) return;
+    if (widget.currentOwner() != owner) return;
     final profile = _appearance?.profile;
     final level = profile?.level ?? 1;
     final titleController = TextEditingController();
@@ -180,6 +185,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
     var bossType = 'inbox_hydra';
     var submitting = false;
     var uncertain = false;
+    var accountChanged = false;
     String? errorMessage;
     ModalRoute<dynamic>? creationRoute;
 
@@ -221,6 +227,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   const SizedBox(height: 18),
                   TextField(
                     controller: titleController,
+                    enabled: !submitting && !uncertain,
                     decoration: const InputDecoration(
                       labelText: 'What are you taking down?',
                       hintText: 'Clear the quarterly email backlog',
@@ -237,7 +244,10 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   QuestwellBossPicker(
                     value: bossType,
                     level: level,
-                    onChanged: (value) => setSheetState(() => bossType = value),
+                    onChanged: (value) {
+                      if (!submitting && !uncertain)
+                        setSheetState(() => bossType = value);
+                    },
                   ),
                   const SizedBox(height: 18),
                   Text(
@@ -251,6 +261,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   for (var i = 0; i < stepControllers.length; i++) ...[
                     TextField(
                       controller: stepControllers[i],
+                      enabled: !submitting && !uncertain,
                       decoration: InputDecoration(labelText: 'Step ${i + 1}'),
                     ),
                     if (i != stepControllers.length - 1)
@@ -258,9 +269,11 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   ],
                   const SizedBox(height: 10),
                   OutlinedButton.icon(
-                    onPressed: () => setSheetState(() {
-                      stepControllers.add(TextEditingController());
-                    }),
+                    onPressed: submitting || uncertain
+                        ? null
+                        : () => setSheetState(() {
+                            stepControllers.add(TextEditingController());
+                          }),
                     icon: const Icon(Icons.add),
                     label: const Text('Add step'),
                   ),
@@ -276,10 +289,10 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     const SizedBox(height: 12),
                   ],
                   FilledButton.icon(
-                    onPressed: submitting || uncertain
+                    onPressed: submitting || accountChanged
                         ? null
                         : () async {
-                            if (submitting || uncertain) return;
+                            if (submitting || accountChanged) return;
                             final title = titleController.text.trim();
                             final steps = stepControllers
                                 .map((controller) => controller.text.trim())
@@ -307,14 +320,22 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                               errorMessage = null;
                             });
                             try {
+                              if (owner == null ||
+                                  widget.currentOwner() != owner) {
+                                throw StateError('Boss account changed.');
+                              }
                               final battleId = await widget.createBattle(
+                                expectedOwnerId: owner,
                                 title: title,
                                 steps: steps,
                                 bossType: bossType,
                               );
+                              if (widget.currentOwner() != owner) {
+                                throw StateError('Boss account changed.');
+                              }
                               if (battleId.trim().isEmpty) {
                                 throw const QuestwellNetworkException(
-                                  'The server did not confirm your battle. Close this form and refresh before trying again.',
+                                  'Your battle was not confirmed. Retry this draft or check your battles.',
                                 );
                               }
                               if (context.mounted &&
@@ -333,7 +354,10 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                 }
                               }
                             } catch (error) {
-                              uncertain = error is QuestwellNetworkException;
+                              accountChanged = widget.currentOwner() != owner;
+                              uncertain =
+                                  uncertain ||
+                                  error is QuestwellNetworkException;
                               if (uncertain) _creationNeedsRefresh = true;
                               if (!context.mounted) {
                                 if (mounted && uncertain) {
@@ -348,23 +372,26 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                               }
                               setSheetState(() {
                                 submitting = false;
-                                errorMessage =
-                                    error is QuestwellNetworkException
-                                    ? error.message
+                                errorMessage = accountChanged
+                                    ? 'Your account changed. Close this draft and start again.'
+                                    : error is QuestwellNetworkException
+                                    ? 'Your battle may already exist. Retry this unchanged draft safely, or close and check your battles.'
                                     : 'Could not start this Boss Battle. Your draft is saved here. Please try again.';
                               });
                             }
                           },
                     icon: const Icon(Icons.sports_mma_outlined),
                     label: Text(
-                      uncertain
-                          ? 'Refresh required'
+                      accountChanged
+                          ? 'Account changed'
+                          : uncertain
+                          ? 'Retry this battle'
                           : submitting
                           ? 'Starting…'
                           : 'Start Boss Battle',
                     ),
                   ),
-                  if (uncertain)
+                  if (uncertain || accountChanged)
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
                       child: const Text('Close and refresh'),
