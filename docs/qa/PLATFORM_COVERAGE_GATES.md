@@ -10,7 +10,8 @@ separate job/workflow on every PR and development push.
 
 | Check | Evidence produced | Does not establish |
 | --- | --- | --- |
-| `analyze` | Explicit analyzer/format baseline; complete Flutter suite; separate focused line/branch coverage suite and report; Chrome regressions; web release compile on both PR targets | Device or hosted-account acceptance |
+| `analyze` | Explicit analyzer/format baseline; complete Flutter suite; Chrome regressions; web release compile on both PR targets | Device or hosted-account acceptance |
+| `Critical client coverage` | Separate fresh-runner focused line/branch suite, validated report and artifact | Whole-suite or behavior-path completeness |
 | `android / signing` | Debug compile of `lib/main.dart` under `isolated_test`; release packaging must fail with the exact missing-signing-credentials error | Signed release AAB, store acceptance or install/upgrade |
 | `iOS unsigned release compile` | Release compile of `lib/main.dart` on `macos-15`, no codesigning, under `isolated_test`; toolchain versions in logs | Signed archive/IPA, Apple identity attestation or install/upgrade |
 | `Isolated application schema and smoke tests` | Existing disposable backend/Auth/REST/Edge/Storage assertions and cleanup | Hosted acceptance or numeric server coverage |
@@ -26,7 +27,7 @@ The unsigned iOS output is compile evidence, not an installable release artifact
 
 `tool/critical_coverage.json` explicitly maps client source files to rewards,
 purchases, account deletion and recovery. The complete existing Flutter suite remains an unchanged mandatory regression
-step. A separate 72-test focused suite uses `--coverage --branch-coverage
+step. A separate fresh `ubuntu-24.04` job runs a 72-test focused suite using `--coverage --branch-coverage
 --concurrency=1` across open quests, boss lists, boss creation recovery, purchase
 recovery, deletion UI, authentication, network handling and startup. It does not
 claim whole-suite coverage, and no rendering tests are excluded from the full
@@ -73,7 +74,11 @@ The initial local instrumented full-suite run encountered Flutter tester
 segmentation faults in rendering tests. A single-file instrumented reproduction
 passed, but serial full-suite execution also failed; both crashed local attempts
 were stopped. No root-cause or local full-suite success is claimed. The separate
-focused instrumented suite then passed all 72 tests locally. The unchanged full
+focused instrumented suite then passed all 72 tests locally. Its first CI attempt
+in the same job after the full regression suite stalled, so coverage now uses a
+fresh runner and checkout, with no shared test-build state. This is isolation,
+not a proven diagnosis of the runtime crash. All jobs remain mandatory for
+preview delivery, and branch instrumentation remains enabled. The unchanged full
 regression suite plus focused instrumentation must both pass on the final GitHub
 head before merge. Record actual results in PR/FIX_PLAN. Both native jobs must
 actually run and pass, not merely exist in YAML.
