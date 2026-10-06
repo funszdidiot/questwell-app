@@ -350,6 +350,45 @@ try {
     }
   }
   bossCreationTests('regressions');
+  run(['db', 'query', '--local', '--file', join(source, 'boss-concurrency-fixture.sql')]);
+  const concurrencyTests = phase => {
+    const result = spawnSync(process.execPath, [join(source, 'boss-concurrency.mjs')], {
+      input: JSON.stringify({status, phase}), env, encoding: 'utf8',
+      timeout: 120000, maxBuffer: 1024 * 1024,
+    });
+    if (result.stdout) console.log(redact(result.stdout));
+    if (result.stderr) console.error(redact(result.stderr));
+    if (result.status !== 0) throw new Error(`Boss final-step ${phase} failed`);
+  };
+  concurrencyTests('baseline');
+  const completionBefore = readCatalog();
+  const completionMigration = '20261006025302_serialize_boss_final_steps.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', completionMigration), join(workdir, 'supabase/migrations', completionMigration));
+  run(['migration', 'up', '--local']);
+  const completionAfter = readCatalog();
+  const previousCompletion = completionBefore.functions.find(f => f.schema === 'private' && f.name === 'complete_boss_step');
+  const nextCompletion = completionAfter.functions.find(f => f.schema === 'private' && f.name === 'complete_boss_step');
+  assert.ok(previousCompletion && nextCompletion);
+  assert.notEqual(previousCompletion.definition, nextCompletion.definition);
+  previousCompletion.definition = nextCompletion.definition;
+  assertCatalogMatches(completionBefore, completionAfter);
+  console.log('C04 changes only the private completion definition; signatures, grants, RLS and other schema objects match.');
+  concurrencyTests('regressions');
+  // Recheck actual authorization, legacy saved rewards, same-step concurrency,
+  // different-battle balance increments and atomic failures against the fix.
+  bossTests('regressions');
+  for (const [table, expression] of [
+    ['reward_events', "event_type is distinct from 'boss_battle_completed'"],
+    ['users', 'total_xp = 0'],
+  ]) {
+    run(['db', 'query', '--local', `alter table public.${table} add constraint ci_boss_reward_failure check (${expression}) not valid;`]);
+    try { bossTests('rollback'); }
+    finally { run(['db', 'query', '--local', `alter table public.${table} drop constraint ci_boss_reward_failure;`]); }
+  }
+  run(['db', 'query', '--local', 'do $$ begin drop function public.ci_complete_boss_step_held(uuid,integer); drop function public.ci_boss_completion_activity(); end $$;']);
+  console.log(run(['migration', 'list', '--local']));
+  console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
+  console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();
