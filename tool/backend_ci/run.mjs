@@ -315,6 +315,14 @@ try {
     }
   }
   onboardingTests('regressions');
+  run(['db', 'query', '--local', '--file', join(source, 'boss-concurrency-fixture.sql')]);
+  const concurrency = spawnSync(process.execPath, [join(source, 'boss-concurrency.mjs')], {
+    input: JSON.stringify({status, phase: 'characterization'}), env, encoding: 'utf8',
+    timeout: 120000, maxBuffer: 1024 * 1024,
+  });
+  if (concurrency.stdout) console.log(redact(concurrency.stdout));
+  if (concurrency.stderr) console.error(redact(concurrency.stderr));
+  if (concurrency.status !== 0) throw new Error('Boss final-step characterization failed');
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();
