@@ -22,7 +22,7 @@ void main() {
   });
 
   for (final archetype in QuestwellMalePaperDoll.classLabels.keys) {
-    testWidgets('$archetype only clips the hidden garment while wearing a robe', (tester) async {
+    testWidgets('$archetype preserves the full body and clips only foreground head or hidden garment', (tester) async {
       for (final everyday in [false, true, false]) {
         await tester.pumpWidget(MaterialApp(home: Center(child: SizedBox(
           width: 240, height: 320,
@@ -34,12 +34,18 @@ void main() {
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
         final body = find.image(const AssetImage(QuestwellMalePaperDoll.baseAsset));
-        expect(body, findsOneWidget);
-        expect(find.ancestor(of: body, matching: find.byType(ClipPath)), findsNothing);
+        expect(body, findsNWidgets(2));
+        expect(find.ancestor(of: body.first, matching: find.byType(ClipPath)), findsNothing);
         final garment = tester.widget<QuestwellMaleEverydayGarment>(
             find.byType(QuestwellMaleEverydayGarment));
         expect(garment.underRobe, !everyday);
-        final clips = tester.widgetList<ClipPath>(find.byType(ClipPath));
+        final identity = tester.widget<ClipPath>(find.descendant(
+            of: find.byType(QuestwellMaleIdentity), matching: find.byType(ClipPath)));
+        expect(identity.clipper, isA<MaleIdentityClipper>());
+        expect((identity.child! as Image).image,
+            const AssetImage(QuestwellMalePaperDoll.baseAsset));
+        final clips = tester.widgetList<ClipPath>(find.byType(ClipPath))
+            .where((clip) => clip != identity);
         expect(clips.length, everyday ? 0 : 1);
         for (final clip in clips) {
           expect(clip.clipper, isA<MaleRobeUnderlayClipper>());

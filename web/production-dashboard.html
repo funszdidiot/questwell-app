@@ -44,7 +44,7 @@
 </head>
 <body>
 <main>
-  <nav aria-label="Production navigation"><a href="./">Open development app</a><a href="./?review=male-woodland">Male Woodland Scout</a><a href="./?review=male-everyday">Male everyday review</a><a href="./?review=male-robe">Male robe detail</a><a href="./?review=male-robes">Male class robes</a><a href="./?review=neutral-robes">Neutral class robes</a><a href="./?review=neutral-scout">Neutral Woodland Scout</a></nav>
+  <nav aria-label="Production navigation"><a href="./?review=legacy-wardrobe">Legacy wardrobe fit audit</a><a href="./">Open development app</a><a href="./?review=male-woodland">Male Woodland Scout</a><a href="./?review=male-everyday">Male everyday review</a><a href="./?review=male-robe">Male robe detail</a><a href="./?review=male-robes">Male class robes</a><a href="./?review=neutral-robes">Neutral class robes</a><a href="./?review=neutral-scout">Neutral Woodland Scout</a></nav>
   <header>
     <p class="priority">QUESTWELL · FOUNDER WORKSPACE</p>
     <h1>Production dashboard</h1>
@@ -61,11 +61,47 @@
 
   <section class="flow" aria-labelledby="flow-title">
     <h2 id="flow-title">Production stages</h2>
-    <ol aria-label="Production lifecycle"><li>QUEUED</li><li>BUILDING</li><li>QA</li><li>DEV DEPLOYED</li><li>DEV DEPLOYED</li><li>TANYA REVIEW</li><li>LOCKED</li></ol>
+    <ol aria-label="Production lifecycle"><li>QUEUED</li><li>BUILDING</li><li>QA</li><li>DEV DEPLOYING</li><li>DEV DEPLOYED</li><li>TANYA REVIEW</li><li>LOCKED</li></ol>
     <p><strong>BLOCKED</strong> identifies a real impediment with a precise next action. An artwork's existing approval stays locked while its app integration moves through these stages.</p>
   </section>
 
   <section class="work" aria-label="Prioritized production work">
+    <article data-stage="DEV DEPLOYED" id="male-woodland-account">
+      <div class="meta"><span class="priority">PRIORITY 1 · WOODLAND INTEGRATION</span><span class="badge">DEV DEPLOYED</span></div>
+      <h2>Approved male Woodland: inventory and equip</h2>
+      <p>The approved outfit is delivered in development. Sample Market purchase, equip and unequip passed. Price, Scout requirement, ownership and locked artwork are unchanged.</p>
+      <p class="detail">Account persistence passed isolated tests. Signed-in account and iPhone checks are still pending: equip, reload, then unequip and confirm ownership remains.</p>
+    </article>
+    <article data-stage="DEV DEPLOYED" id="male-woodland-v2">
+      <div class="meta"><span class="priority">PRIORITY 1 · WOODLAND FIT CORRECTION</span><span class="badge deployed">DEV DEPLOYED</span></div>
+      <h2>Male Woodland: sleeves and overall fit</h2>
+      <p>The revised v2 outfit is verified in the <a href="./?review=male-woodland">male Woodland review</a> on locked male v3. Sleeves, hands, full foot coverage and outfit transitions passed delivered visual QA. One complete outfit overlay. Art/template LOCKED: Tanya approved “It’s good” on October 5. Development account integration is delivered; signed-in account and iPhone acceptance remain pending.</p>
+      <p class="detail">Verified ae72f23 · workflow 37342883393 · 387 Flutter tests · 12 preview Node checks · five delivered hashes. Light/dark and enlarged views, belt grimoire and reload passed. Backend harness: 19 Node checks and 14 isolated assertions. Physical iOS/Safari and real-user persistence were not tested. No founder blocker.</p>
+    </article>
+    <article data-stage="DEV DEPLOYED" id="male-identity-sampling">
+      <div class="meta"><span class="priority">PRIORITY 1 · MALE RENDERER CORRECTION</span><span class="badge deployed">DEV DEPLOYED</span></div>
+      <h2>Continuous neckline across male robes and Everyday</h2>
+      <p>One shared renderer uses the identical original head pixels. All five robes and Everyday retain the complete locked body, original hands and unchanged artwork.</p>
+      <p>Verified 9da7205 · workflow 37334631348: 387 Flutter + 12 Node checks, mandatory build/deploy gates and all 23 delivered male hashes passed. Actual native/enlarged light/dark views, class/equipment transitions, sample Market flow and independent visual QA passed. No founder blocker or new art lock.</p>
+    </article>
+    <article data-stage="DEV DEPLOYED" id="coat-underarm-rebuild">
+      <div class="meta"><span class="priority">PRIORITY 1 · COAT FIT REPAIR</span><span class="badge deployed">DEV DEPLOYED</span></div>
+      <h2>Continuous inner sleeves and curved female cuffs</h2>
+      <p>All three Harvest Coat v8 fits cover the fixed arms while retaining natural underarm gaps. Female cuffs wrap the original wrists. Locked bodies and accepted cloak/mantle artwork remain unchanged.</p>
+      <p>Verified 4b6be2b · workflow 37331784954: 387 Flutter + 12 Node checks, full build/deploy, 31 delivered hashes and independent actual native/enlarged/Hearth visual QA. Equip/removal, class restoration, belt grimoire and sample Market flow passed. The existing male legacy neckline artifact was also removed without changing artwork. No founder blocker or new art lock.</p>
+    </article>
+    <article data-stage="DEV DEPLOYED" id="coat-wrist-continuity">
+      <div class="meta"><span class="priority">PRIORITY 1 · COAT WRIST CORRECTION</span><span class="badge deployed">DEV DEPLOYED</span></div>
+      <h2>Continuous wrists through all three coat cuffs</h2>
+      <p>Tanya accepted the cloak and mantle; their artwork is preserved. Original wrist pixels now connect through all three coat cuff openings. Body and garment bytes remain unchanged. Runtime dc3e464, workflow 37314935274: 386 Flutter + 8 Node tests and full deployment passed. All 31 delivered hashes match; actual avatar/Hearth views, wear/remove and independent delivered visual review passed. No founder blocker or new lock.</p>
+    </article>
+    <article data-stage="DEV DEPLOYED" id="natural-drape-correction">
+      <div class="meta"><span class="priority">PRIORITY 1 · GARMENT CORRECTION DELIVERED</span><span class="badge deployed">DEV DEPLOYED</span></div>
+      <h2>Natural drape, rear cloth and wrapping cuffs</h2>
+      <p>October 5: narrower male coat elbows, wider wrapping wrist openings, no cloak/mantle inner flaps, and backing behind the complete avatar. All nine final body-specific fits passed independent local visual QA.</p>
+      <p>Tanya rejected excessive cloak/mantle flare. Revisions use mostly downward, gravity-hanging folds. This is now a standing standard for future cloaks, capes, robes and mantles; locked templates remain unchanged.</p>
+      <p class="detail">Runtime e46a42b, workflow 37312732888: 386 Flutter + 8 Node tests, analysis/assets/build/deploy passed; 31 delivered hashes match. All nine live fits passed independent visual QA. Three-body robe restoration and sample Market coat purchase/equip/unequip verified. No founder blocker or new lock. Prior deployment rows below are historical evidence.</p>
+    </article>
     <article data-stage="DEV DEPLOYED">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
       <h2>Development build verified</h2>
@@ -102,16 +138,16 @@
     </article>
     <article data-stage="DEV DEPLOYED">
       <div class="meta"><span class="priority">PRIORITY 1 · WOODLAND SCOUT</span><span class="badge deployed">DEV DEPLOYED</span></div>
-      <h2>Male Woodland Scout outfit delivered</h2>
+      <h2>Male Woodland v1: historical delivery</h2>
       <p class="lock">Art status: development candidate; not founder-locked.</p>
       <p>One coherent outfit is fitted to immutable male v3 and integrated into <a href="./?review=male-woodland">the male Woodland review</a>. Independent native/enlarged light/dark export QA passed, including intact hands and full shorts, leg and boot coverage.</p>
-      <p class="detail">Verified 0330c3b · 367 Flutter tests · 8 Node tests · five delivered hashes. Body/Everyday/robe/Woodland transitions, belt grimoire, enlarged light/dark views and reload passed in the actual app. Market correctly keeps male account equipping unavailable; female and neutral support is approved. No founder decision is needed now.</p>
+      <p class="detail">Historical evidence, superseded by the v2 fit above: 0330c3b · 367 Flutter tests · 8 Node tests · five delivered hashes. Body/Everyday/robe/Woodland transitions, belt grimoire, enlarged light/dark views and reload passed in the actual app. Market correctly keeps male account equipping unavailable; female and neutral support is approved. No founder decision is needed now.</p>
     </article>
-    <article data-stage="QA">
-      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge qa">QA</span></div>
-      <h2>Review the migrated legacy chest fits</h2>
-      <p>The concurrent legacy garment component now uses the locked female and neutral foundations as well as male v3. The regression gate verifies unclipped primary bodies and removal of older class coats.</p>
-      <p class="detail">Detailed delivered visual fit review remains separate. Catalog behavior and ownership stay unchanged; no founder blocker is requested.</p>
+    <article data-stage="DEV DEPLOYED">
+      <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>
+      <h2>Coat, cloak and mantle: nine individual fits</h2>
+      <p>Rebuilt separately for the locked male, female and neutral bodies. All nine pass independent source and delivered-runtime visual QA. Cloak and mantle conceal arms and hands; coat leaves the exact original hands exposed.</p>
+      <p class="detail">Verified 0546cb4 · 385 Flutter + 8 Node tests · 15 delivered hashes · build/deploy and sample Market equip/unequip passed. Shared stretching removed; complete locked bodies preserved. Previous widened fits were rejected. No new founder lock or founder blocker.</p>
     </article>
     <article data-stage="DEV DEPLOYED">
       <div class="meta"><span class="priority">PRIORITY 1 · AVATAR PIPELINE</span><span class="badge deployed">DEV DEPLOYED</span></div>

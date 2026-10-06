@@ -28,8 +28,9 @@ Future<void> pumpUntilFound(
 }
 
 void main() {
-  testWidgets('seasonal gallery loads manifest and reviews Hearth candidates',
-      (tester) async {
+  testWidgets('seasonal gallery loads manifest and reviews Hearth candidates', (
+    tester,
+  ) async {
     await tester.binding.setSurfaceSize(const Size(1200, 1000));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -59,18 +60,21 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('seasonal gallery reviews body-specific wearable assets',
-      (tester) async {
+  testWidgets('seasonal gallery reviews body-specific wearable assets', (
+    tester,
+  ) async {
     await tester.binding.setSurfaceSize(const Size(900, 1000));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
-    await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp(
-      initialSlug: 'fixture-solstice-scholar-robe',
-    ));
+    await tester.pumpWidget(
+      const QuestwellSeasonalGalleryReviewApp(
+        initialSlug: 'fixture-solstice-scout-outfit',
+      ),
+    );
     await pumpReview(tester);
 
     expect(
-      find.text('Fixture Solstice Scholar Robe', skipOffstage: false),
+      find.text('Fixture Solstice Scout Outfit', skipOffstage: false),
       findsWidgets,
     );
 
@@ -89,11 +93,12 @@ void main() {
 
     expect(baseline, findsOneWidget);
     expect(
-      find.byWidgetPredicate((widget) =>
-          widget is Image &&
-          widget.image is AssetImage &&
-          (widget.image as AssetImage).assetName ==
-              'assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_polish_v2.webp'),
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is Image &&
+            widget.image is AssetImage &&
+            (widget.image as AssetImage).assetName == 'assets/images/questwell/avatar/woodland_scout_unified_neutral_v3.webp',
+      ),
       findsOneWidget,
     );
 
@@ -119,12 +124,14 @@ void main() {
     await pumpReview(tester);
 
     expect(
-      find.byWidgetPredicate((widget) =>
-          widget is Image &&
-          widget.image is AssetImage &&
-          (widget.image as AssetImage).assetName ==
-              'assets/images/questwell/avatar/classes/scholar/scholar_robe_female_polish_v2.webp'),
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is Image &&
+            widget.image is AssetImage &&
+            (widget.image as AssetImage).assetName == 'assets/images/questwell/avatar/woodland_scout_unified_female_v11.webp',
+      ),
       findsOneWidget,
     );
     expect(tester.takeException(), isNull);
-  });}
+  });
+}

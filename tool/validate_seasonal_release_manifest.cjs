@@ -219,9 +219,7 @@ for (const [index, item] of (manifest.items || []).entries()) {
       fail(prefix + '.wearable must be an object or null');
     } else {
       const wearable = item.wearable;
-      if (wearable.render_mode !== undefined &&
-          wearable.render_mode !== null &&
-          wearable.render_mode !== 'full_canvas_overlay') {
+      if (wearable.render_mode !== 'single_overlay_outfit') {
         fail(prefix + '.wearable.render_mode is unsupported');
       }
       const supportedBodies = Array.isArray(wearable.supported_bodies)

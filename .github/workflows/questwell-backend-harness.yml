@@ -1,0 +1,51 @@
+name: Questwell Backend Harness
+
+on:
+  pull_request:
+    branches: [questwell-dev, flutterflow]
+  push:
+    branches: [questwell-dev]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-harness-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  isolated-fixture:
+    name: Isolated application schema and smoke tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      SUPABASE_TELEMETRY_DISABLED: '1'
+      DO_NOT_TRACK: '1'
+    steps:
+      - name: Checkout without stored credentials
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Test isolation guards and reject remote credentials
+        run: |
+          node --test tool/qa/backend_ci_guard_test.mjs tool/qa/backend_catalog_test.mjs
+          node tool/backend_ci/run.mjs --preflight
+
+      - name: Install checksum-pinned Supabase CLI
+        shell: bash
+        run: |
+          mkdir "$RUNNER_TEMP/questwell-cli"
+          curl --fail --location --retry 2 --max-time 120 \
+            --output "$RUNNER_TEMP/questwell-cli/archive.tar.gz" \
+            https://github.com/supabase/cli/releases/download/v2.119.0/supabase_2.119.0_linux_amd64.tar.gz
+          printf '%s  %s\n' \
+            bf1c3ae93be98533eb8a3105dbf4564bd0b2d9dc24690d8a920f980ef975c1b4 \
+            "$RUNNER_TEMP/questwell-cli/archive.tar.gz" | sha256sum --check --strict
+          tar --no-same-owner -xzf "$RUNNER_TEMP/questwell-cli/archive.tar.gz" \
+            -C "$RUNNER_TEMP/questwell-cli" supabase
+
+      - name: Reset disposable database, compare schema and test Auth and REST
+        env:
+          QUESTWELL_CLI_BIN: ${{ runner.temp }}/questwell-cli/supabase
+        run: node tool/backend_ci/run.mjs

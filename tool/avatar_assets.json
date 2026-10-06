@@ -1636,6 +1636,116 @@
           "sha256": "4ae8d74f777b96f7b93926c3a653590a3c0493ebbf4324202fab0e8c6f16934c"
         }
       ]
+    },
+    "legacy_natural_drape_v1": {
+      "visual_approval": "active_founder_requested_repair_not_locked",
+      "description": "Body-specific natural drape and clean openings; rear cloak/mantle cloth and coat cuff cavities behind complete locked bodies. No account policy changes.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_female_v4.webp",
+          "sha256": "5d43798ec33434203e63855534099c1e399010c788e70cb1cc6a214fa77d5101"
+        },
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_rear_female_v4.webp",
+          "sha256": "83236b662cf58677426bf5ec15224b4eff4b0cf683811cfccbf6f596f3b7a073"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_female_v4.webp",
+          "sha256": "b93caeef8f64279a8803f92c60fb83d5f67a4dc4decf38c7420cd22d66bab84e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_female_v4.webp",
+          "sha256": "a6415b1464d0071dcc1d1748a863bc3f91ceb0cd1a3d6f6ec2898671545f567d"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_female_v6.webp",
+          "sha256": "06e739e0d3593f4fd1021e7900baf44f1608765300198d87164401d87b67a00a"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_female_v6.webp",
+          "sha256": "d94bdd3a99cf8aa9cda656a8ae524aafbc40de12a42f235a26836cf14c156d00"
+        },
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_male_v4.webp",
+          "sha256": "9988742119d8eb624b93b6dfd8d34796fc6304819348473d6190eed9ae8e3ef7"
+        },
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_rear_male_v4.webp",
+          "sha256": "4bf72693537fd9d6844f044d63011a87272134c93c8e04d51200d7b057eb16a5"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_male_v4.webp",
+          "sha256": "2906f249885fa0575fbc5d99e24c4d32b6983318fbd27ed4f552f0485076a469"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_male_v4.webp",
+          "sha256": "b2e528fc8b981818e7c6a19652f1d80eef10ed8c4c8f9e634eaaf762e161afda"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_male_v6.webp",
+          "sha256": "a952b8a510311d3ccea1e69fd227bf1c38bf4c76e80b76766efade7181991c48"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_male_v6.webp",
+          "sha256": "b7dee6024788bc7f91b55b29fd71f117355789a910e063bf0bd59c5a9e8c3417"
+        },
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_neutral_v4.webp",
+          "sha256": "aa172a40ef120c9cd47ebc69aae5dd57198378f7c5d132f748dfa3ec24d453db"
+        },
+        {
+          "path": "assets/images/questwell/avatar/moss_cloak_rear_neutral_v4.webp",
+          "sha256": "ef49ef653dafa60122074fee24a35a67b62aa0fcf4836e044a50156b38527144"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_neutral_v4.webp",
+          "sha256": "9aa6d521ce73c1847df80d62c0ec18caacd612de23ebdd2abc438a35cba2142f"
+        },
+        {
+          "path": "assets/images/questwell/avatar/hearthguard_mantle_rear_neutral_v4.webp",
+          "sha256": "f6d3325e7f92822fdb3debf76f9c2c30b0a2d0a6fcc669f3d9d6b7755f3f986e"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_neutral_v6.webp",
+          "sha256": "18a9f1439475d74eb04ee501fab0a4b0cae7e104ed5756edb9c94dd4246261e8"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_neutral_v6.webp",
+          "sha256": "5a48199a9f28b559e523f3f80e563571a8b3e2eb52372a6da6f3410342d91c14"
+        }
+      ]
+    },
+    "harvest_coat_underarm_v8": {
+      "visual_approval": "independent_local_and_delivered_visual_QA_pass_no_founder_lock",
+      "description": "Founder-authorized direct raster repair of continuous inner sleeves and female curved cuffs. Locked bodies and accepted cloak/mantle unchanged.",
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_female_v8.webp",
+          "sha256": "369b7d58837eb41bfe756ec35ce424ad84ee94083da250f0206859f610245802"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_female_v8.webp",
+          "sha256": "4fa49828a57cb040079a35292e1432e5ee0cd95d6a49d0f85b0ae045867b62ef"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_male_v8.webp",
+          "sha256": "5bdcd73f78f84ccdcbadc2921c522f1d17131ea67175d04bd154c48f5b0af9b7"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_male_v8.webp",
+          "sha256": "b7dee6024788bc7f91b55b29fd71f117355789a910e063bf0bd59c5a9e8c3417"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_neutral_v8.webp",
+          "sha256": "654d3fde86ac321a74688f76873e9b3968423a1cf812845f762f4d4d796259f8"
+        },
+        {
+          "path": "assets/images/questwell/avatar/harvest_coat_rear_neutral_v8.webp",
+          "sha256": "5a48199a9f28b559e523f3f80e563571a8b3e2eb52372a6da6f3410342d91c14"
+        }
+      ],
+      "development_status": "DEV DEPLOYED",
+      "verified_revision": "4b6be2bb4fff866f4314b5a57025d7ca7883f007"
     }
   },
   "approved_layers": {
@@ -2312,6 +2422,64 @@
           "sha256": "273c2bdc8ba2b71cc83621b65dd8f85fa2ef95693a6c88048cf795624fe15539"
         }
       ]
+    },
+    "male_woodland_v2": {
+      "art_revision": "male-woodland-v2",
+      "status": "founder_approved_locked",
+      "body_types": [
+        "male"
+      ],
+      "layer_order": [
+        "body",
+        "outfit",
+        "original_head"
+      ],
+      "fit_inputs": [
+        {
+          "path": "tool/male_woodland_v2_fit_reference.json",
+          "sha256": "8a3ced3609882b8fafbcec5b0241c624f78fd97b053719db005dbba3a29b2877"
+        },
+        {
+          "path": "tool/export_male_woodland_v2.cjs",
+          "sha256": "8282d68539359c972801891f5012d85efe36e61a91dd93c51961911cf4bfb8e8"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v2/outfit_source.png",
+          "sha256": "a803a7ba97558cd7b1a78d0ed270e7e42cf409701440370b01974ecd9be74df1"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v2/registration.json",
+          "sha256": "658087cc257bf4d2c935ef1e4758a53724bc1fbd44d5d49e11ca1b3b6063d3cb"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v2/provenance.json",
+          "sha256": "975100cfceb1e8452cb47fde4df2fb010340c5c44e507aeda1bb6e9428c91b53"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v2/prompt.txt",
+          "sha256": "0a379fa334e16c78c0eec598f55923fe9fc8fdea8ceb5d739624879b40992ff3"
+        },
+        {
+          "path": "tool/qa/male_woodland_v2_export_review.json",
+          "sha256": "8dc10c6a34c1226e0311d3d1a933fdab24a63830d7bed560e9d58ec26e33c910"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v2.webp",
+          "sha256": "bc923c9b5043950e617ad81b5b4caed7448846ccc4536e4fcc56ad90725c8ed8"
+        },
+        {
+          "path": "tool/art_assets/male_woodland_v2/outfit_registered.webp",
+          "sha256": "bc923c9b5043950e617ad81b5b4caed7448846ccc4536e4fcc56ad90725c8ed8"
+        }
+      ],
+      "founder_approval": {
+        "date": "2026-10-05",
+        "timezone": "America/Chicago",
+        "quote": "It’s good",
+        "reviewed_revision": "ae72f23b0386420e28282021133378f17385d546"
+      }
     }
   }
 }

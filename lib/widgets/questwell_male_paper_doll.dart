@@ -73,7 +73,7 @@ class QuestwellMalePaperDoll extends StatelessWidget {
           if (showEveryday || showRobe) ...[
             QuestwellMaleEverydayGarment(underRobe: showRobe),
             if (showRobe) _layer(robeAsset(robeArchetype, 'front')),
-            _layer(identityAsset),
+            const QuestwellMaleIdentity(),
             if (showRobe) ...[
               _layer(robeAsset(robeArchetype, 'collar')),
               _layer(robeAsset(robeArchetype, 'cuffs')),
@@ -127,4 +127,32 @@ class MaleRobeUnderlayClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(covariant MaleRobeUnderlayClipper oldClipper) => false;
+}
+
+/// Exact original visible identity pixels sampled from the full locked image.
+/// The separate identity export has the same visible rows0..73. Sampling the
+/// complete image before clipping avoids its encoded transparent cutoff edge.
+/// The primary full body remains an unclipped sibling below the garments.
+class QuestwellMaleIdentity extends StatelessWidget {
+  const QuestwellMaleIdentity({super.key});
+  @override
+  Widget build(BuildContext context) => ClipPath(
+    clipper: const MaleIdentityClipper(),
+    child: Image.asset(QuestwellMalePaperDoll.baseAsset,
+      fit: BoxFit.contain, alignment: Alignment.bottomCenter,
+      filterQuality: FilterQuality.high, gaplessPlayback: true),
+  );
+}
+
+class MaleIdentityClipper extends CustomClipper<Path> {
+  const MaleIdentityClipper();
+  @override
+  Path getClip(Size size) {
+    final scale = math.min(size.width / 240, size.height / 320);
+    return (Path()..addRect(const Rect.fromLTRB(0,0,240,74)))
+      .transform((Matrix4.identity()..scale(scale,scale)).storage)
+      .shift(Offset((size.width-240*scale)/2,size.height-320*scale));
+  }
+  @override
+  bool shouldReclip(covariant MaleIdentityClipper oldClipper) => false;
 }

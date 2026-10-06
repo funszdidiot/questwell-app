@@ -285,7 +285,8 @@ The gallery supports:
 - valid canonical placement choices for Hearth families;
 - locked-family benchmark comparison where a benchmark exists;
 - data-driven static décor, floor rugs and wall art;
-- body-specific wearable preview assets from the manifest;
+- body-specific single-overlay outfit assets on the locked runtime foundations and identity layers;
+- explicit rejection of layered robes/cloaks: use their dedicated runtime compositor/review route until layered manifests are supported;
 - visible manifest approval/QA state.
 
 The review surface is account-free and must never mutate catalog, ownership, economy or activation state.

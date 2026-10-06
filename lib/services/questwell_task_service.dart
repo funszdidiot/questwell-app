@@ -1,5 +1,7 @@
 import '/backend/supabase/supabase.dart';
 import '/backend/supabase/questwell_network.dart';
+import 'package:uuid/uuid.dart';
+import 'questwell_task_creation.dart';
 
 class QuestwellTaskCompletionResult {
   const QuestwellTaskCompletionResult({
@@ -29,6 +31,22 @@ class QuestwellTaskCompletionResult {
 
 class QuestwellTaskService {
   const QuestwellTaskService._();
+
+  static QuestwellTaskCreation newCreation() => QuestwellTaskCreation(
+    requestId: const Uuid().v4(),
+    ownerId: SupaFlow.client.auth.currentUser?.id ?? '',
+    currentOwner: () => SupaFlow.client.auth.currentUser?.id ?? '',
+    send: (params) => QuestwellNetwork.write(() async {
+      final result = await SupaFlow.client.rpc(
+        'create_task_once',
+        params: params,
+      );
+      if (result is! String || result.isEmpty) {
+        throw StateError('Quest creation was not confirmed.');
+      }
+      return result;
+    }),
+  );
 
   static List<TasksRow> visibleHomeTasks(
     List<TasksRow> tasks, {

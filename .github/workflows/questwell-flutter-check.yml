@@ -17,8 +17,8 @@ jobs:
       - name: Verify approved and candidate class assets
         run: python3 tool/verify_avatar_assets.py
 
-      - name: Test preview update handling
-        run: node --test tool/qa/preview_updates_test.cjs tool/qa/delete_account_test.mjs
+      - name: Test preview updates, account deletion and repository protection
+        run: node --test tool/qa/preview_updates_test.cjs tool/qa/delete_account_test.mjs tool/qa/repository_ignore_test.cjs tool/qa/android_signing_test.mjs
 
       - name: Validate seasonal release standards
         run: |
@@ -33,8 +33,23 @@ jobs:
           flutter-version: '3.44.6'
           cache: true
 
-      - name: Install dependencies
-        run: flutter pub get
+      - name: Install locked dependencies
+        shell: bash
+        run: |
+          git ls-files --error-unmatch pubspec.lock
+          flutter pub get --enforce-lockfile
+          git diff --exit-code -- pubspec.yaml pubspec.lock
+          sha256sum pubspec.lock
+
+      - name: Verify locked resolution with an empty package cache
+        shell: bash
+        env:
+          PUB_CACHE: ${{ runner.temp }}/questwell-empty-pub-cache
+        run: |
+          test ! -e "$PUB_CACHE"
+          flutter pub get --enforce-lockfile
+          git diff --exit-code -- pubspec.yaml pubspec.lock
+          sha256sum pubspec.lock
 
       - name: Analyze
         run: flutter analyze --no-fatal-infos --no-fatal-warnings
@@ -52,3 +67,6 @@ jobs:
       - name: Build proposed development app without deploying
         if: github.event_name == 'pull_request' && github.base_ref == 'questwell-dev'
         run: flutter build web --release --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA"
+
+      - name: Verify checks and builds preserved dependency inputs
+        run: git diff --exit-code -- pubspec.yaml pubspec.lock

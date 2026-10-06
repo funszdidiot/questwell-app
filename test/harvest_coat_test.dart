@@ -5,11 +5,34 @@ import 'package:flutter_test/flutter_test.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 import '../lib/widgets/questwell_scholar_cuffs.dart';
 import '../lib/widgets/questwell_male_paper_doll.dart';
+import '../lib/widgets/questwell_legacy_chest.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  test('legacy male head duplicate preserves the locked visible identity pixels', () async {
+    Future<ui.Image> decode(String asset) async {
+      final data = await rootBundle.load(asset);
+      final codec = await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes,data.lengthInBytes));
+      final image = (await codec.getNextFrame()).image;
+      codec.dispose();
+      return image;
+    }
+    final body = await decode(QuestwellMalePaperDoll.baseAsset);
+    final identity = await decode(QuestwellMalePaperDoll.identityAsset);
+    final b = (await body.toByteData())!;
+    final i = (await identity.toByteData())!;
+    for (var pixel=0; pixel<240*74; pixel++) {
+      if (b.getUint8(pixel*4+3)>0 || i.getUint8(pixel*4+3)>0) {
+        expect(b.getUint32(pixel*4), i.getUint32(pixel*4), reason:'Original head RGBA must match');
+      }
+    }
+    final clip = const MaleIdentityClipper().getClip(const Size(480,640));
+    expect(clip.getBounds(), const Rect.fromLTRB(0,0,480,148));
+    body.dispose(); identity.dispose();
+  });
   for (final body in ['female','male','neutral']) {
-    final asset='assets/images/questwell/avatar/harvest_coat_${body}_v2.webp';
+    final asset='assets/images/questwell/avatar/harvest_coat_${body}_v8.webp';
+    final rearAsset='assets/images/questwell/avatar/harvest_coat_rear_${body}_v8.webp';
     test('$body Harvest coat retains the authored canvas and clear hands/legs',()async{
       final data=await rootBundle.load(asset);
       final codec=await ui.instantiateImageCodec(data.buffer.asUint8List(data.offsetInBytes,data.lengthInBytes));
@@ -18,8 +41,18 @@ void main() {
       final bytes=(await image.toByteData())!;
       int alpha(int x,int y)=>bytes.getUint8((y*240+x)*4+3);
       expect(alpha(120,45),0,reason:'Do not cover head');
-      expect(alpha(75,185),0,reason:'Keep left hand visible');
-      expect(alpha(165,185),0,reason:'Keep right hand visible');
+      final hands = HarvestCoatHandsClipper(body).getClip(const Size(240,320));
+      expect(hands.contains(const Offset(75,185)), isTrue);
+      expect(hands.contains(const Offset(165,185)), isTrue);
+      expect(hands.contains(const Offset(120,185)), isFalse, reason:'Restore hands only, never trouser strips');
+      final wristY = body == 'female' ? 173.0 : 176.0;
+      final wristXs = body == 'male' ? [68.0,172.0] : body == 'female' ? [76.0,162.0] : [76.0,167.0];
+      for (final x in wristXs) {
+        expect(hands.contains(Offset(x,wristY)),isTrue,
+            reason:'Original wrist must continue through the cuff to the hand');
+        expect(hands.contains(Offset(x,wristY-3)),isFalse,
+            reason:'Do not put forearm skin over the sleeve');
+      }
       expect(alpha(110,250),0,reason:'Keep trousers visible');
       for (final x in [115,120,125]) {
         for (final y in [180,190,200]) {
@@ -38,12 +71,17 @@ void main() {
           await tester.pumpAndSettle();
           final images=tester.widgetList<Image>(find.byType(Image)).map((w)=>(w.image as AssetImage).assetName).toList();
           expect(images,contains(asset));
+          expect(images,contains(rearAsset));
+          expect(images.indexOf(rearAsset),lessThan(images.indexOf(asset)),
+              reason:'Cuff cavity cloth belongs behind the wrist, not on top of it');
+          final handLayers = tester.widgetList<ClipPath>(find.byType(ClipPath))
+              .where((widget) => widget.clipper is HarvestCoatHandsClipper);
+          expect(handLayers.length, 1, reason:'Original hands remain in front of side panels');
           expect(images.any((s)=>s.contains('/classes/')),isFalse,reason:'No original class garment should leak through');
           if (body == 'male') {
             expect(images, containsAll([
               QuestwellMalePaperDoll.baseAsset,
               QuestwellMalePaperDoll.everydayAsset,
-              QuestwellMalePaperDoll.identityAsset,
             ]));
           }
           expect(find.byType(QuestwellScholarCuffs),findsNothing);

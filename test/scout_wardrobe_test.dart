@@ -283,17 +283,17 @@ void main() {
           matching: find.byType(ClipPath)), findsNothing);
       }
       await render();
-      final bounds = tester.getRect(asset(QuestwellMalePaperDoll.baseAsset));
+      final bounds = tester.getRect(asset(QuestwellMalePaperDoll.baseAsset).first);
       expect(assets(tester), maleRobeLayers(archetype));
       await render(chest: 'everyday-adventurer-outfit');
       expect(assets(tester), [QuestwellMalePaperDoll.baseAsset,
-        QuestwellMalePaperDoll.everydayAsset, QuestwellMalePaperDoll.identityAsset]);
-      expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset)), bounds);
+        QuestwellMalePaperDoll.everydayAsset, QuestwellMalePaperDoll.baseAsset]);
+      expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset).first), bounds);
       await render();
       expect(assets(tester), maleRobeLayers(archetype));
       // Unsupported/stale entries return to the v3 class stack. Approved legacy
       // chest items keep their garment while using v3 as the only foundation.
-      for (final chest in ['woodland-scout-outfit', 'unknown-outfit']) {
+      for (final chest in ['unknown-outfit']) {
         await render(chest: chest);
         expect(assets(tester), maleRobeLayers(archetype));
         expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset).first), bounds);
@@ -303,14 +303,15 @@ void main() {
         await render(chest: chest);
         final paths = assets(tester);
         expect(paths, contains(QuestwellMalePaperDoll.baseAsset));
-        expect(paths, contains(QuestwellMalePaperDoll.identityAsset));
+        expect(paths.where((p) => p == QuestwellMalePaperDoll.baseAsset).length, greaterThan(1),
+            reason: 'Foreground head samples the exact original body pixels');
         if (chest == 'starter-business-suit') {
-          expect(paths, contains('assets/images/questwell/avatar/base/base_male.webp'));
+          expect(paths, contains('assets/images/questwell/avatar/business_suit_male_v1.webp'));
         } else {
           expect(paths, contains(QuestwellMalePaperDoll.everydayAsset));
         }
         if (chest == 'midnight-harvest-coat') {
-          expect(paths, contains('assets/images/questwell/avatar/harvest_coat_male_v2.webp'));
+          expect(paths, contains('assets/images/questwell/avatar/harvest_coat_male_v8.webp'));
         }
         expect(tester.getRect(asset(QuestwellMalePaperDoll.baseAsset).first), bounds);
       }

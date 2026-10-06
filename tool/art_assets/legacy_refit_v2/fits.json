@@ -1,0 +1,180 @@
+{
+  "status": "DEV DEPLOYED at 0546cb4; source and delivered runtime QA passed; no founder lock",
+  "method": "Individual coherent sources. Uniform whole-canvas registration only; no local warps or anatomy changes.",
+  "fits": [
+    {
+      "family": "cloak",
+      "body": "female",
+      "source": "cloak_female_aline_source.png",
+      "width": 192,
+      "height": 256,
+      "left": 24,
+      "top": 51,
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
+      "sha256": {
+        "cloak_female_aline_source.png": "f6f9dbcd2d3f92d0be315484471009d79dac0b1c8792803a179d86780e50ca11",
+        "cloak_female_registered.png": "c77c3b79bc52125e57b307971aa1605aae37c3cc64e0dd7505e2d83b5442e2d2",
+        "cloak_female_review_light.png": "3bd239aedcfbf27ddc3641d0ba89e6da16d34bc94df7d974b051b30466c6c59c",
+        "cloak_female_review_dark.png": "0c38a472abe17cbc0fd656aa3e68ca4178ace0e71055b494e17b4db20974be5d"
+      },
+      "output": "assets/images/questwell/avatar/moss_cloak_female_v3.webp",
+      "output_sha256": "b2fd6b0e830978482e67e9b4a6a4db35dfadd30584502958d821f0db1914c80a"
+    },
+    {
+      "family": "cloak",
+      "body": "male",
+      "source": "cloak_male_calm_source.png",
+      "width": 197,
+      "height": 263,
+      "left": 21,
+      "top": 53,
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
+      "sha256": {
+        "cloak_male_calm_source.png": "c72dff05b5394e407b54aafad4b3d25f6769a1805191bca0ac9ce3b65031ab78",
+        "cloak_male_registered.png": "5e78bef9a696a9984171c4fed73f2abba69faff4b6418e468843344db6420fec",
+        "cloak_male_review_light.png": "82fa192d642b6c0874d807fe9d033abc1a9ab42bb47df8c479598e6b321ec50d",
+        "cloak_male_review_dark.png": "da8005cd2bba0825dcb4f059ececd69b6772d6e440a881ba0704b7ff196cb694"
+      },
+      "output": "assets/images/questwell/avatar/moss_cloak_male_v3.webp",
+      "output_sha256": "20ecb1968abbbaba4517da29e9bd38ce5cdeb1d01ceae6a3dbfc47929892f0ca"
+    },
+    {
+      "family": "cloak",
+      "body": "neutral",
+      "source": "cloak_neutral_shoulders_source.png",
+      "width": 204,
+      "height": 272,
+      "left": 18,
+      "top": 43,
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
+      "sha256": {
+        "cloak_neutral_shoulders_source.png": "0800864cb0afb3cea0b6b167d66d8abcf1346a5145fe7f71b47e97c8c13653e2",
+        "cloak_neutral_registered.png": "b350f4f19fde897e90535e3960335ac24b648d1181fd9b7bb3a55d5a8057103a",
+        "cloak_neutral_review_light.png": "3d6e29aea3f81c9d0d96beac2605d878cdd65acc98bf7b1b423770e5c72c7736",
+        "cloak_neutral_review_dark.png": "261c4575b4562d35ca49ac19e3c0e9b149937c0e19dd1aa02b32c938355125cb"
+      },
+      "output": "assets/images/questwell/avatar/moss_cloak_neutral_v3.webp",
+      "output_sha256": "95f87b15b2dfeba016d13227e38570d7a720310c7a6e07a397976cf85c76e5dd"
+    },
+    {
+      "family": "mantle",
+      "body": "female",
+      "source": "mantle_female_source.png",
+      "width": 216,
+      "height": 288,
+      "left": 12,
+      "top": 27,
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
+      "sha256": {
+        "mantle_female_source.png": "c76b3ac13fff4582c7973bf88b03aee0f9917aa04735086bf574e05cb7b3c619",
+        "mantle_female_registered.png": "2b04bce6952e1ca95406ef2f907d62bb209a2b9add7ed9d961e3f9a2824848c0",
+        "mantle_female_review_light.png": "892de00c862c2fc57582089946762995232e65d7b21f5b340a34f742b40844cb",
+        "mantle_female_review_dark.png": "0857b24fca9d2afec66956d74835d53bd4e3ad2a6e9b8d203307d00f47bb6a36"
+      },
+      "output": "assets/images/questwell/avatar/hearthguard_mantle_female_v3.webp",
+      "output_sha256": "3d94781d746ff75cd259fbdeefe32d5035967dd226f57b49e49aac7171cc96d9"
+    },
+    {
+      "family": "mantle",
+      "body": "male",
+      "source": "mantle_male_coverage_source.png",
+      "width": 192,
+      "height": 256,
+      "left": 21,
+      "top": 55,
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
+      "sha256": {
+        "mantle_male_coverage_source.png": "ab5ca6ce11ef7d4caf635d7904c9a4316c2bc62511c899690089cf08a14235ab",
+        "mantle_male_registered.png": "53122a37558428a6dc0d0e6f91bd6779524d64fd7c631fe152fd69a165770aa7",
+        "mantle_male_review_light.png": "8e880eb9e303b910592dce304dd2cb355ad512421ffd58ff0e82a8fd2f951f29",
+        "mantle_male_review_dark.png": "88845af272d89c5a1cdd657aa8224ff44e50f60f2fd1bfc4ed904fa3e4f59238"
+      },
+      "output": "assets/images/questwell/avatar/hearthguard_mantle_male_v3.webp",
+      "output_sha256": "fc82f28315283d7117dda45140916181b3f93026990350dea74504ca270756c0"
+    },
+    {
+      "family": "mantle",
+      "body": "neutral",
+      "source": "mantle_neutral_source.png",
+      "width": 200,
+      "height": 267,
+      "left": 23,
+      "top": 43,
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
+      "sha256": {
+        "mantle_neutral_source.png": "90a82b6858cbd7e8c79b2a5e124cd08ea7c7c30f84e47d21fb836418efd14f59",
+        "mantle_neutral_registered.png": "af20b8211a8b70e3efd2d433b1a4e256fc231891c6a915df43293da4387e492d",
+        "mantle_neutral_review_light.png": "cbf4b90b20526ea8c97e0f6dd6972e9678da8a9049d77efaa232001c555b5184",
+        "mantle_neutral_review_dark.png": "aea736db0e9bb550b97f0a4392577babdade30b84de42b7cbb8f23829a210a9a"
+      },
+      "output": "assets/images/questwell/avatar/hearthguard_mantle_neutral_v3.webp",
+      "output_sha256": "5bb393d40ff6af8cb9a802ac7219a1747b63710c410f6c55569efecd2b09b14b"
+    },
+    {
+      "family": "coat",
+      "body": "female",
+      "source": "coat_female_inner_source.png",
+      "width": 176,
+      "height": 235,
+      "left": 24,
+      "top": 23,
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
+      "sha256": {
+        "coat_female_inner_source.png": "6771a45f59989198e839405e5c33f3f1488554b0b30c9b347328fe58da826c1b",
+        "coat_female_registered.png": "74a2c8a40a7e995c8ce65a1d0984f74789c48d9b88fb952d7f236e3fd3017f21",
+        "coat_female_review_light.png": "10ae3203f4458135721a61db9c5ecd4ab99e27f1e70440f5771fccaa87482233",
+        "coat_female_review_dark.png": "06717941e6128f34f86bf8b9b7622e6ca2f1dd6af4e79505298773676e9143e7"
+      },
+      "output": "assets/images/questwell/avatar/harvest_coat_female_v4.webp",
+      "output_sha256": "2969270592cebbe5c3da09752f10b0369b3eb4a10a4e38424d8897945e33b956"
+    },
+    {
+      "family": "coat",
+      "body": "male",
+      "source": "coat_male_inner_source.png",
+      "width": 168,
+      "height": 224,
+      "left": 31,
+      "top": 28,
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
+      "sha256": {
+        "coat_male_inner_source.png": "4f31d304c86f6f907be85e314991dda88457f9e721645989934555ddfdab9e48",
+        "coat_male_registered.png": "a7af24abc7d3f5cff615db69324e02d42e25c08214f75dd86776ee2886a9f1ac",
+        "coat_male_review_light.png": "08ed72dea666996120371a3008b6b1ef27c68bd663f4bcdcffd53ab8a4fca59d",
+        "coat_male_review_dark.png": "67dc52816b4e5c9ac98a50382280ad090f27a99b901a2d516ca5334616e018ae"
+      },
+      "output": "assets/images/questwell/avatar/harvest_coat_male_v4.webp",
+      "output_sha256": "a00da96cdb042787e2c282dbcc7303a44d07e906a520b24e58a5ef197b244b20"
+    },
+    {
+      "family": "coat",
+      "body": "neutral",
+      "source": "coat_neutral_left_source.png",
+      "width": 178,
+      "height": 237,
+      "left": 28,
+      "top": 12,
+      "qa": "Independent native/enlarged source QA and native light/dark delivered runtime visual QA PASS",
+      "sha256": {
+        "coat_neutral_left_source.png": "9a212794d76ff4f53efa6a205acc5c9de7c927741654273ddb9b15e46ca857d0",
+        "coat_neutral_registered.png": "2c7a48705d1df6c8c3c05323421c0c072bd5fa9f30ded32d7021972a64664b20",
+        "coat_neutral_review_light.png": "6e266186d969dee420fdcce7a5f9b4df0a3e9b538770330f4fb59b172dc704e1",
+        "coat_neutral_review_dark.png": "468b4364c4216f3c21232c165243ed9d67a3bb45fdc8ef6c9b2407a12a084ad9"
+      },
+      "output": "assets/images/questwell/avatar/harvest_coat_neutral_v4.webp",
+      "output_sha256": "8a79b0add3f8518ecc70c1d4f768d88dc07d8f178850a2c78ddddbed42f9232a"
+    }
+  ],
+  "coat_depth": "One coherent coat overlay above full unchanged body/Everyday; foreground duplicate of exact original hands preserves their depth, alpha and registration. Never clip primary body.",
+  "generation": {
+    "tool": "built-in image_gen",
+    "inputs": "Each exact locked body as fitting reference; historical same-family garment as design reference only.",
+    "prompt_set": {
+      "cloak": "Fit one coherent moss-green cloak per locked body; conceal arms and hands. Preserve hood, leaf clasp, gold oak/fern embroidery and sage lining. Calm continuous A-line drape, no bulges or accordion lining. Transparent garment only.",
+      "mantle": "Fit one coherent burgundy Hearthguard Mantle per locked body; conceal arms and hands. Preserve standing collar, shield clasp, double capelet, shield/flame/star gold embroidery. Calm natural drape. Transparent garment only.",
+      "coat": "Fit one coherent burgundy Harvest Coat with moss waistcoat/lapels, ivory collar, oak-leaf clasps and hip pockets per locked body. Natural shoulders/sleeves and wrist cuffs; intact hands exposed. Repair whole connected sleeve/waist regions, no patches, no anatomy in output."
+    },
+    "iterations": "Rejected sources remain local historical candidates; only selected sources below govern reproducible exports. No local warps, perspective transforms, body changes or mixed garment components."
+  },
+  "delivery_evidence": "tool/qa/individual_refit_delivery_0546cb4.json"
+}

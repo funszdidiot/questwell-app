@@ -4,6 +4,7 @@ import 'questwell_equipment_policy.dart';
 import 'questwell_cosmetic_sync.dart';
 import 'questwell_cosmetic_models.dart';
 import 'questwell_purchase_recovery.dart';
+import 'questwell_onboarding_session.dart';
 export 'questwell_cosmetic_models.dart';
 
 class QuestwellCosmeticService {
@@ -211,17 +212,14 @@ class QuestwellCosmeticService {
         .eq('id', uid));
   }
 
-  static Future<void> completeOnboarding() async {
-    final uid = SupaFlow.client.auth.currentUser?.id;
-    if (uid == null) {
-      throw StateError('Authentication required.');
-    }
-
-    await _write(() => SupaFlow.client
-        .from('users')
-        .update({'onboarding_completed': true})
-        .eq('id', uid));
-  }
+  static QuestwellOnboardingSession newOnboardingSession() =>
+      QuestwellOnboardingSession(
+        ownerId: SupaFlow.client.auth.currentUser?.id ?? '',
+        currentOwner: () => SupaFlow.client.auth.currentUser?.id ?? '',
+        send: (params) => _write(() => SupaFlow.client.rpc(
+          'finish_onboarding_once', params: params,
+        )),
+      );
 
   static Future<String> claimClassMasteryReward() async {
     final uid = SupaFlow.client.auth.currentUser?.id;

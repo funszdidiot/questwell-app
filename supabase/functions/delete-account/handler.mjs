@@ -23,8 +23,25 @@ export function createDeleteAccountHandler(backend) {
     try {
       const user = await backend.verifyUser(token);
       if (!user?.id) return reply(401, {error: 'Sign in required'});
-      // Revoke refresh sessions before removal. Deletion cascades app-owned data.
+      // Drain in-flight writes and fence new sessions before cleanup starts.
+      await backend.beginDeletion(user.id);
+      // Revoke first. Storage's restrictive session policy then blocks old JWTs.
       await backend.revokeSessions(token);
+      // Re-read the first remaining page: advancing an offset while deleting
+      // would skip objects. Never walk an entire bucket or trust a name prefix.
+      let empty = false;
+      for (let batch = 0; batch <= 10; batch++) {
+        const objects = await backend.listOwnedObjects(user.id);
+        if (!Array.isArray(objects) || objects.length > 100 || objects.some(object =>
+          !object || object.owner_id !== user.id || typeof object.bucket_id !== 'string' ||
+          !object.bucket_id || typeof object.name !== 'string' || !object.name ||
+          object.bucket_id !== objects[0].bucket_id)) throw Error('Invalid inventory');
+        if (objects.length === 0) { empty = true; break; }
+        if (batch === 10) break;
+        await backend.removeOwnedObjects(user.id, objects[0].bucket_id, objects.map(object => object.name));
+      }
+      if (!empty) throw Error('Cleanup requires another request');
+      // Storage API failures/timeouts leave Auth intact and never claim success.
       await backend.deleteUser(user.id);
       return reply(200, {deleted: true});
     } catch {

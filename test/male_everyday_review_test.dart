@@ -18,7 +18,7 @@ void main() {
       expect(tester.takeException(), isNull);
       expect(find.text('Male wardrobe fit review'), findsOneWidget);
       expect(
-          find.text('Account equipment rollout pending remaining garment fits'),
+          find.text('Woodland v2 fit approved · Account rollout in verification'),
           findsOneWidget);
       expect(find.byType(QuestwellMalePaperDoll), findsNWidgets(2));
 
@@ -28,7 +28,7 @@ void main() {
       const dressed = [
         QuestwellMalePaperDoll.baseAsset,
         QuestwellMalePaperDoll.everydayAsset,
-        QuestwellMalePaperDoll.identityAsset,
+        QuestwellMalePaperDoll.baseAsset,
       ];
       expect(assets(), [...dressed, ...dressed]);
       final bodyImage = find.image(const AssetImage(QuestwellMalePaperDoll.baseAsset));

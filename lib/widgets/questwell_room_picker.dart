@@ -108,12 +108,15 @@ class _RoomPickerState extends State<_RoomPicker> {
   }
   @override
   Widget build(BuildContext context) {
-    final wallArt = QuestwellWallArt.isSide(widget.slug);
+    final wallArt = widget.hearthRenderSpec?.renderKind == 'wall_art_sprite' ||
+      widget.hearthProfileKey == 'wall_art_side' ||
+      widget.hearthProfileKey == 'wall_art_center' ||
+      QuestwellWallArt.isSide(widget.slug) || widget.slug == 'moonlit-woodland';
     final prefix = wallArt ? 'wall_art' : 'room';
     final blockedByShelf = wallArt && widget.equippedSlugs['room:${_slot == 'wall_left' ? 'left' : 'right'}'] == 'walnut-bookshelf';
     final preview = Map<String, String>.from(widget.equippedSlugs)
       ..removeWhere((key, value) => (key == prefix || key.startsWith('$prefix:')) && value == widget.slug)
-      ..['$prefix:$_slot'] = widget.slug;
+      ..[wallArt && _slot == 'wall_center' ? 'wall_art' : '$prefix:$_slot'] = widget.slug;
     return Dialog(backgroundColor: const Color(0xFF111827), insetPadding: const EdgeInsets.all(12),
       child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 430),
         child: Column(mainAxisSize: MainAxisSize.min, children: [

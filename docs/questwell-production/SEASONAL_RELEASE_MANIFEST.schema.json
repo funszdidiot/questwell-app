@@ -333,13 +333,9 @@
               ]
             },
             "render_mode": {
-              "type": [
-                "string",
-                "null"
-              ],
+              "type": "string",
               "enum": [
-                null,
-                "full_canvas_overlay"
+                "single_overlay_outfit"
               ]
             },
             "assets_by_body": {
@@ -360,7 +356,12 @@
                 }
               }
             }
-          }
+          },
+          "required": [
+            "render_mode",
+            "supported_bodies",
+            "assets_by_body"
+          ]
         },
         "provenance": {
           "type": "object",

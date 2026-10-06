@@ -1,0 +1,78 @@
+{
+  "revision": "588994dc017181b636b14d2f30d27622099e3c15",
+  "url": "https://funszdidiot.github.io/questwell-app/",
+  "assets": [
+    {
+      "path": "assets/images/questwell/avatar/business_suit_female_v1.webp",
+      "sha256": "64c2ea9a5ee38197ce291397006147fbdbf99e753d1973aef03a82c62c62bdf2",
+      "bytes": 27182,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/business_suit_male_v1.webp",
+      "sha256": "ba21e4b0dd7813a8d50d80cb976ba9f1cfcf116632f93866f763002c43e49301",
+      "bytes": 31072,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/business_suit_neutral_v1.webp",
+      "sha256": "6493b297e64d5b9cae7a39a5d37eb6d5bdb41ebc8f598f7a57f8ea1d843c2b9e",
+      "bytes": 27512,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_female_v3.webp",
+      "sha256": "65960800ebfff282171e44f11d1cfa011b191f85cfc811eb9e6f5e7e7d69045c",
+      "bytes": 17438,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_male_v3.webp",
+      "sha256": "36a311485699c40caca48b96ec054a469f2161fffec1d55610fa49f9c2d7101c",
+      "bytes": 24108,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/harvest_coat_neutral_v3.webp",
+      "sha256": "a56652aa1a23fbdf7207b1445a5d654b49d732c2bfeefae36c8bc73386cd15e5",
+      "bytes": 19856,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_female_v1.webp",
+      "sha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a",
+      "bytes": 38378,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp",
+      "sha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e",
+      "bytes": 12914,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+      "sha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "bytes": 35220,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+      "sha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "bytes": 9506,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+      "sha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "bytes": 38704,
+      "status": "pass"
+    },
+    {
+      "path": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+      "sha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "bytes": 8828,
+      "status": "pass"
+    }
+  ]
+}

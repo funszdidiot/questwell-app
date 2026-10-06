@@ -98,14 +98,17 @@ void main() {
         expect(images.map((image) => (image.image as AssetImage).assetName), [
           QuestwellMalePaperDoll.baseAsset,
           if (showEveryday) QuestwellMalePaperDoll.everydayAsset,
-          if (showEveryday) QuestwellMalePaperDoll.identityAsset,
+          if (showEveryday) QuestwellMalePaperDoll.baseAsset,
         ]);
         for (var i = 0; i < images.length; i++) {
           expect(tester.getRect(imageFinder.at(i)), tester.getRect(doll));
           expect(images[i].fit, BoxFit.contain);
           expect(images[i].alignment, Alignment.bottomCenter);
         }
-        for (final type in [ClipPath, ClipRect, Transform, ColorFiltered]) {
+        expect(find.ancestor(of: imageFinder.first, matching: find.byType(ClipPath)), findsNothing);
+        expect(find.descendant(of: doll, matching: find.byType(QuestwellMaleIdentity)),
+            showEveryday ? findsOneWidget : findsNothing);
+        for (final type in [ClipRect, Transform, ColorFiltered]) {
           expect(find.descendant(of: doll, matching: find.byType(type)),
               findsNothing,
               reason: 'The intact foundation must never be masked or refitted');

@@ -1,5 +1,82 @@
 # Questwell Production Dashboard
 
+## Male Woodland account integration — 2026-10-05
+
+**DEV DEPLOYED; signed-in account/iPhone acceptance pending.**
+PR #22 merged with Tanya's approval as `fad7777`. Preview workflow `37376148332`
+and backend workflow `37376148039` passed. The served revision and four locked
+asset hashes match. Sample Market purchase (650 → 530 coins), equip and unequip
+passed. All 390 Flutter tests and isolated Woodland account/persistence checks
+passed. The database migration `20261005212048` is verified. Price, Scout-only
+eligibility, ownership and locked artwork remain unchanged.
+The sample is in-memory; no signed-in hosted account or physical iPhone test has
+been reported. See `../qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md`. Broader release and
+G3 history holds remain separate.
+
+## Male Woodland sleeve and size correction — 2026-10-05
+
+**DEV DEPLOYED / technically verified.** Version 2 replaces the rejected v1 fit
+in the male Woodland development review on immutable male v3. Delivered revision
+`ae72f23`, workflow `37342883393`: 387 Flutter tests, 12 preview Node checks,
+asset/dependency/analyzer/build/deploy gates passed; backend workflow `37342882902`
+passed 19 additional Node guards and 14 isolated fixture/application assertions.
+Five delivered hashes match. Actual Body/Everyday/robe/Woodland transitions,
+light/dark/enlarged review, belt grimoire and route reload passed, followed by
+independent delivered visual QA. One continuous outfit overlay; original body and
+hands retained. Tanya approved “It’s good” on 2026-10-05: art/template is now LOCKED. The later account-integration delivery is recorded above.
+Physical iOS/Safari and real-user persistence were not tested. No founder blocker.
+Evidence: `../qa/MALE_WOODLAND_V2.md` and `../../tool/qa/male_woodland_v2_delivery.json`.
+
+## Male neckline renderer — 2026-10-05
+
+**DEV DEPLOYED / technically verified.** Shared original-head sampling now
+removes the rectangular neckline from male Everyday and all five robe states,
+matching the verified legacy renderer. Full primary body remains unclipped;
+all asset bytes, eligibility and equipment policy are unchanged. Runtime
+`9da7205`, workflow `37334631348`: 387 Flutter + 12 Node tests and mandatory
+asset/analyzer/dependency/build/deploy gates passed. All 23 delivered male hashes
+match. Actual native/enlarged/light/dark, class/equipment transitions, sample
+Market purchase/equip/unequip and independent visual QA passed. No founder
+blocker or new art lock. See `../qa/MALE_IDENTITY_SAMPLING.md`.
+
+Tanya's October 5 “Better!” is recorded as positive fit feedback; the existing
+body/garment locks remain authoritative.
+
+## Active garment correction — 2026-10-05 America/Chicago
+
+**Coats: DEV DEPLOYED / repair technically verified.** All three Harvest Coat v8
+inner sleeves cover the locked arms without exposed skin/undershirt or broad
+compensating cloth. Female cuffs wrap the fixed wrists with curved hems and rear
+depth. Accepted cloak/mantle art and all locked body/identity/Everyday bytes are
+unchanged. A scoped male legacy head-layer correction also removed the existing
+rectangular neckline artifact using pixel-identical original head pixels.
+Runtime `4b6be2b`, workflow `37331784954`: 387 Flutter + 12 Node checks, asset,
+analysis, locked-dependency, build/deploy gates and 31 delivered hashes passed.
+Actual native/enlarged/Hearth independent visual QA, wear/remove/restoration,
+belt grimoire and sample Market purchase/equip/unequip verified. No new founder
+lock or founder blocker. See `../qa/COAT_UNDERARM_REBUILD.md`.
+
+**Coat cuffs: DEV DEPLOYED — founder correction.** Tanya accepted cloak/mantle v4 and
+reported disconnected wrist joins on all three coats. Preserve accepted cloth.
+Corrected original-hand foreground depth at the cuff openings; no body or art
+bytes changed. Runtime `dc3e464`, workflow `37314935274`: 386 Flutter + 8 Node
+tests and full build/deploy passed; 31 delivered hashes match. Actual three-body
+avatar/Hearth, wear/remove/restoration and independent delivered visual QA passed.
+Earlier all-nine QA is superseded for coat wrists. No founder blocker or new lock.
+
+**DEV DEPLOYED.** Tanya requested narrower male coat elbows, wrapping wider cuffs,
+no cloak/mantle inner flaps, proper rear layers and natural shoulder drape. She
+then rejected excessive cloak/mantle flare. All six were redrawn to hang
+mostly downward; the standing natural-drape rule is recorded for future cloaks,
+capes, robes and mantles. Runtime `e46a42b`, workflow `37312732888`: 386 Flutter
+and 8 Node tests, analysis/assets/build/deploy passed. All 31 delivered hashes
+match. All nine actual renderer fits passed independent delivered visual QA;
+all three bodies restore class robes on unequip. Male sample Market coat
+preview/purchase/equip/unequip verified. See `../qa/CLOAK_MANTLE_INNER_FLAPS.md`.
+The previous DEV DEPLOYED row
+below records the historical baseline, not acceptance of the latest correction.
+No locked body/Everyday/robe asset changes and no founder blocker.
+
 Continued **2026-10-04 (America/Chicago)**. Approved neutral outfits are **DEV DEPLOYED / LOCKED** at `9ce9b92`: full gate, account eligibility, live Market purchase/equip/unequip and ten delivered hashes verified. See `../qa/NEUTRAL_OUTFIT_ROLLOUT.md`. The shared male robe/Everyday integration and newer sleeve/thumb correction are **DEV DEPLOYED** at `958aaaf`: workflow `37229645601`, 373 Flutter + 8 Node tests, analysis/assets/build/deploy and all 23 delivered asset hashes passed. All five classes were visually checked in the shared Adventurer renderer; Everyday inventory equip → Hearth → unequip → restored robe and sample Market purchase/equip passed. No founder action is needed. Locked body, identity and Everyday bytes remain unchanged. This is a recorded snapshot, not a background-worker claim.
 
 ## Production lifecycle
@@ -15,8 +92,8 @@ Use **BLOCKED** only when the affected work cannot proceed. Active visual develo
 | 1 | Male robes in the actual app / coherent male wardrobe rollout | DEV DEPLOYED | Body v3, Everyday v2 and historical robe v3 remain locked | Non-restrictive migration is deployed: all male defaults and legacy chest states retain locked v3; Business Suit, Midnight Harvest Coat, Moss Green Cloak and Hearthguard Mantle remain available. Workflow `37218307696` passed asset verification, analyzer, full Flutter regressions, preview build and deployment. Supabase migration `20261004164110` preserves legacy availability and male Everyday support with no price, balance, class-rule or ownership change. |
 | 1 | Neutral Everyday and class-robe runtime/persistence audit | DEV DEPLOYED | Body v4, everyday v3 and robe v11 locked | All five robes rendered; 390px Adventurer/Hearth equip/unequip and Market fixture flows passed. Applied migration `20261004035017` passed deployed synthetic public-RPC tests with zero retained fixtures/security findings. Browser fixtures were in-memory; no real-user login/refresh/account writes were tested. Legacy chest migration is separate. |
 | 1 | Approved neutral outfits rollout | DEV DEPLOYED | LOCKED | Verified `9ce9b92`: full gate, ten delivered hashes, live neutral purchase/equip/unequip and rolled-back account RPCs. Price 120 and Scout rule preserved. |
-| 1 | Male Woodland Scout outfit | DEV DEPLOYED | CANDIDATE — NOT LOCKED | Verified runtime `0330c3b`, workflow `37213357594`: 367 Flutter + 8 Node tests, asset/analyzer/build/deploy gates, five delivered hashes and actual light/dark/enlarged controls, grimoire and reload passed. Male Market purchase/equip remains disabled under the existing account boundary. Art remains a candidate. |
-| 1 | Migrate legacy female/neutral chest foundations coherently | QA | Existing paper-doll bodies stay locked; visual fit review remains separate | Concurrent shared legacy foundation implementation is included in `958aaaf`. The gate now verifies unclipped locked female/neutral bodies in legacy states; old class coats are absent. Detailed delivered fit review remains separate. Current catalog behavior is unchanged; no founder blocker. |
+| 1 | Male Woodland Scout outfit v2 | DEV DEPLOYED; hosted-account/iPhone acceptance pending | LOCKED — founder approved 2026-10-05 | PR #22 merge `fad7777`; verified build, locked assets, sample buy/equip/unequip and isolated account persistence. Live migration `20261005212048` verified. |
+| 1 | Harvest Coat, Moss-Green Cloak and Hearthguard Mantle — individual body refits | DEV DEPLOYED | Nine scoped candidates; no new lock | Founder-rejected widened fits superseded by nine independently drawn fits. Native/enlarged light/dark independent QA passed. Complete bodies preserved; cloak/mantle conceal arms/hands, coat restores exact original hands above side panels. Verified `0546cb4`, workflow `37266712857`: 385 Flutter + 8 Node tests, build/deploy, 15 delivered hashes, independent runtime visual QA and sample Market equip/unequip passed. No founder blocker. See `../qa/LEGACY_INDIVIDUAL_REFIT.md`. |
 | 1 | Accepted male robe v3 fixed-body review integration | DEV DEPLOYED | Robe v3 LOCKED — accepted cuff finish verified | Recovered exact `16facaf` handoff and independent source QA. Body, everyday, identity and all four robe masks preserved. Delivered `31dfebe`, workflow `37177492039`: 355 Flutter + 8 Node tests, analysis/assets/build/deploy passed. All seven delivered hashes, clothing transitions, enlargement, reload and independent delivered-image QA passed. |
 | 1 | Male class robe surfaces and thumb-gap repair (art-review routes only) | DEV DEPLOYED | Historical v3/foreground locked; requested rear repair is not a new lock | Repaired `7cc9030`, run `37181630492`: 363 Flutter + 8 Node tests, assets/analyzer/build/deploy, 28 delivered hashes, actual all-five gallery/controls/class switch/reload and independent delivered visual QA passed. Bodies, hands, foreground and class designs unchanged. Male Woodland is now DEV DEPLOYED as a separate outfit candidate (`0330c3b`). |
 | 2 | Issue #6: Warding Lantern and Emerald Wayfarer Rug | QA / DEV DEPLOYING | v1/v2 rejected; v3 64-bit candidates NOT LOCKED | Founder rejected the earlier code-painted/vector-like passes and reaffirmed the locked 64-bit Questwell vision. New v3 assets `warding_lantern_v3_64bit.webp` and `emerald_wayfarer_rug_v3_64bit.webp` are authored as crisp pixel/sprite art with richer brass/wood/glass and woven texture, wired with nearest-neighbor runtime filtering and the approved rug floor footprint. Full gate `37243648578` is running. Keep both catalog entries inactive and preserve ownership/economy until founder visual approval. |
@@ -91,3 +168,25 @@ All five male robe defaults and approved Everyday now use the actual shared app 
 ## Latest neutral approval and rollout — 2026-10-04
 
 Tanya: **“The neutral outfits are good- push them.”** Neutral Woodland v3 is now founder-approved and LOCKED at `tool/neutral_woodland_fit_reference.json`. This newer instruction explicitly authorizes its development app and account eligibility rollout for female and neutral Scouts; male Woodland remains unavailable. Earlier female-only and neutral-candidate statements are historical and superseded for this scope. Existing neutral Everyday and all five class robes remain locked. Exact artwork and bodies are unchanged. Rollout status: **DEV DEPLOYED / LOCKED**, verified at `9ce9b92` (workflow `37236299144`, 373 Flutter + 8 Node tests, ten delivered asset hashes, live neutral Market purchase/equip/unequip). Evidence: `docs/qa/NEUTRAL_OUTFIT_ROLLOUT.md`.
+
+
+## Legacy wardrobe visual audit — 2026-10-04 America/Chicago
+
+Audit DEV DEPLOYED at `7533e3b`: `?review=legacy-wardrobe` provides, an account-free comparison of the actual shared renderer for all three locked bodies, every class, and the four retained legacy chest garments. Native/enlarged, light/dark and equipment-removal controls expose fit and restoration issues without changing assets or account policy. This is a QA surface, not a new garment approval. Delivered runtime inspection follows the full development gate.
+
+
+## Legacy fits — all three bodies, repair QA
+
+Tanya explicitly expanded scope to female and neutral. **DEV DEPLOYED** at `339cc495`: new coherent Business Suit v1 and Harvest Coat v3 overlays are integrated into the shared renderer for all three bodies. Independent light/dark export QA passed after resolving shoulder, underarm, forearm, cuff, leg and footwear gaps. Cloak/mantle registration now covers complete arms with cloth rather than clipping anatomy; the actual runtime exposed an old generic jaw crop, corrected with complete original identity and body-specific foreground neck contours. Workflow `37260882702` passed 387 Flutter + 8 Node tests, full analysis/build/deployment; delivered version, 21 asset hashes, actual appearance and independent runtime QA passed. These are scoped repair candidates, not new founder locks. No blocker or new founder decision is required.
+
+Suit rendering no longer samples historical full-body Business Suit images. Harvest occlusion clips only hidden Everyday garment pixels; the locked body stays an unclipped sibling. Catalog, prices, ownership, eligibility, persistence, class policy and belt grimoire are unchanged. Provenance and exact export hashes: `tool/art_assets/legacy_refit_v1/provenance.json`.
+
+
+Legacy repair delivery evidence: [LEGACY_FIT_REPAIR.md](../qa/LEGACY_FIT_REPAIR.md). The same shared renderer is used by Hearth, Adventurer, inventory and Market. Browser tests used in-memory sample inventory; no real account writes or new real-user refresh persistence test were performed. Existing persistence code and account policy are unchanged and prior RPC evidence remains scoped to its recorded migration. Development fit verification is complete; founder visual acceptance remains separate and is not requested as a routine blocker.
+
+
+Neck-overlap regression follow-up (PR #13): preserve the delivered `339cc49` body-specific contours and original identity restoration while explicitly unioning the head/neck foreground region. **DEV DEPLOYED** at `9d47ee6`, workflow `37261924230`: 388 Flutter + 8 Node tests, configured analysis/asset checks, build/deploy, matching version and browser bundle, all-three-body appearance, enlarged neckline, light/dark and neutral Guardian equip/unequip restoration passed. No artwork or account behavior changes. Existing independent legacy-fit completion evidence above remains valid; current screenshots and limitations are in `../qa/LEGACY_FIT_REPAIR.md`.
+
+## Superseding individual fits — 2026-10-05
+
+Tanya rejected the earlier widened coat/cloak/mantle shapes. The historical legacy/neckline delivery records above establish technical delivery only, not current visual acceptance. Nine separately authored individual fits are now **DEV DEPLOYED** at `0546cb4`; no new founder lock. Cloak/mantle cover complete arms/hands with cloth; coat preserves the exact original hands in front. Complete locked bodies and existing catalog/equipment rules are unchanged. Full technical and independent delivered visual QA passed. See `../qa/LEGACY_INDIVIDUAL_REFIT.md`. No founder decision blocks this completed development integration.

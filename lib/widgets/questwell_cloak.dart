@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
-/// Continuous front drapes wrap over the outfit; forearms are restored above them.
+/// Individually fitted full-canvas cloth covers the complete locked paper doll.
 class QuestwellCloak extends StatelessWidget {
   const QuestwellCloak({super.key, required this.slug, required this.bodyType,
     this.rear = false});
@@ -9,84 +9,39 @@ class QuestwellCloak extends StatelessWidget {
   final String bodyType;
   final bool rear;
   static bool supports(String? slug) =>
-    slug == 'moss-green-cloak' || slug == 'hearthguard-mantle';
-  static String asset(String slug) => slug == 'hearthguard-mantle'
-    ? 'assets/images/questwell_guardian_mantle_v1.webp'
-    : 'assets/images/questwell_moss_cloak_v2.webp';
-  static Rect bounds(String body, String slug) {
-    final mantle = slug == 'hearthguard-mantle';
-    return switch (body) {
-      'female' => Rect.fromLTWH(mantle ? 43 : 41, 76, mantle ? 150 : 154, 212),
-      'male' => Rect.fromLTWH(mantle ? 38 : 36, 75, mantle ? 164 : 168, 216),
-      _ => Rect.fromLTWH(mantle ? 42 : 40, 77, mantle ? 156 : 160, 211),
-    };
-  }
-  static Matrix4 drapeTransform(double width, double height, double lean) {
-    const taper = .93;
-    final perspective = (1/taper - 1)/height;
-    return Matrix4.identity()
-      ..setEntry(3, 1, perspective)
-      ..setEntry(0, 1, width*perspective/2 + lean/(height*taper))
-      ..setEntry(1, 1, 1/taper);
+      slug == 'moss-green-cloak' || slug == 'hearthguard-mantle';
+  static String asset(String slug, String body, {bool rear = false}) {
+    final fittedBody = const {'male', 'female'}.contains(body) ? body : 'neutral';
+    final family = slug == 'hearthguard-mantle' ? 'hearthguard_mantle' : 'moss_cloak';
+    return 'assets/images/questwell/avatar/${family}_${rear ? 'rear_' : ''}${fittedBody}_v4.webp';
   }
   @override
   Widget build(BuildContext context) => IgnorePointer(child: ExcludeSemantics(
-    child: LayoutBuilder(builder: (context, constraints) {
-      final scale = math.min(constraints.maxWidth / 240, constraints.maxHeight / 320);
-      final fit = bounds(bodyType, slug);
-      final artwork = Image.asset(asset(slug), fit: BoxFit.fill,
-        filterQuality: FilterQuality.high, gaplessPlayback: true);
-
-      return Stack(clipBehavior: Clip.none, children: [Positioned(
-        left: (constraints.maxWidth - 240*scale)/2 + fit.left*scale,
-        top: constraints.maxHeight - 320*scale + fit.top*scale,
-        width: fit.width*scale, height: fit.height*scale,
-        child: Transform(
-          // Keep the neckline registered; taper the hem without cropping its
-          // embroidery. A tiny lateral fall avoids a perfectly mirrored skirt.
-          transform: drapeTransform(fit.width*scale, fit.height*scale,
-            slug == 'hearthguard-mantle' ? -1.2*scale : 1.2*scale),
-          child: artwork))]);
-    }),
+    child: Image.asset(asset(slug, bodyType, rear: rear), fit: BoxFit.contain,
+      alignment: Alignment.bottomCenter, filterQuality: FilterQuality.high,
+      gaplessPlayback: true),
   ));
 }
 
-/// Only the head and curved neck emerge above a closed cloak.
-class QuestwellCloakForegroundClipper extends CustomClipper<Path> {
-  const QuestwellCloakForegroundClipper(this.body);
+/// Apply only to the original identity duplicate, never to the primary body.
+/// Neutral identity includes a square neck tail; a collar must occlude that
+/// neck normally while the original hair remains in front of the cloth.
+class QuestwellCloakHairClipper extends CustomClipper<Path> {
+  const QuestwellCloakHairClipper(this.body);
   final String body;
   @override
   Path getClip(Size size) {
-    final scale=math.min(size.width/240,size.height/320);
-    final left=(size.width-240*scale)/2, top=size.height-320*scale;
-    final female=body=='female';
-    final path=Path()..addRect(const Rect.fromLTRB(0,0,240,73));
-    // Restore the actual skin contour down into the collar opening. Never
-    // restore a horizontal strip of the shirt or cut the neck off at the jaw.
-    final neckLeft = female ? 111.0 : 109.0;
-    final neckRight = female ? 127.0 : 129.0;
-    path.moveTo(neckLeft,70);
-    path.lineTo(neckLeft,76);
-    path.quadraticBezierTo(neckLeft+1,80,120,female ? 83 : 84);
-    path.quadraticBezierTo(neckRight-1,80,neckRight,75);
-    path.lineTo(neckRight,70);path.close();
-    return path.transform((Matrix4.identity()..scale(scale,scale)).storage)
-      .shift(Offset(left,top));
+    final scale = math.min(size.width / 240, size.height / 320);
+    var path = Path()..addRect(const Rect.fromLTWH(0, 0, 240, 320));
+    if (body == 'neutral') {
+      path = Path.combine(PathOperation.difference, path,
+        Path()..addRect(const Rect.fromLTRB(108, 74, 140, 320)));
+    }
+    return path.transform((Matrix4.identity()..scale(scale, scale)).storage)
+      .shift(Offset((size.width - 240 * scale) / 2, size.height - 320 * scale));
   }
   @override
-  bool shouldReclip(covariant QuestwellCloakForegroundClipper oldClipper) => oldClipper.body!=body;
-}
-
-/// Upper sleeves remain underneath the capelet; only the lower forearms and
-/// the contoured neck emerge above it. Source shading supplies the overlap.
-class QuestwellCloakForeground extends StatelessWidget {
-  const QuestwellCloakForeground({super.key, required this.body, required this.children});
-  final String body;
-  final List<Widget> children;
-  @override
-  Widget build(BuildContext context) => IgnorePointer(child:
-    ClipPath(clipper: QuestwellCloakForegroundClipper(body),
-      child: Stack(fit: StackFit.expand, children: children)));
+  bool shouldReclip(covariant QuestwellCloakHairClipper oldClipper) => oldClipper.body != body;
 }
 
 /// The outer cloak replaces class lapels and epaulettes. Preserve the central
@@ -110,31 +65,4 @@ class QuestwellCloakUnderlayerClipper extends CustomClipper<Path> {
   }
   @override
   bool shouldReclip(covariant QuestwellCloakUnderlayerClipper oldClipper) => oldClipper.body!=body;
-}
-
-/// Keep the original face, hair, central outfit and legs; hide arms and hands
-/// inside the full outer drape without changing the approved source assets.
-class QuestwellClosedCloakBodyClipper extends CustomClipper<Path> {
-  const QuestwellClosedCloakBodyClipper(this.body);
-  final String body;
-  @override
-  Path getClip(Size size) {
-    final scale = math.min(size.width/240,size.height/320);
-    final path = Path()
-      ..addRect(const Rect.fromLTRB(0,0,240,77))
-      ..addRect(const Rect.fromLTRB(100,70,140,205))
-      ..addRect(const Rect.fromLTRB(0,205,240,320));
-    if (body=='female') {
-      path.moveTo(65,70);path.lineTo(107,70);path.lineTo(106,82);
-      path.lineTo(93,86);path.lineTo(86,100);path.lineTo(84,117);
-      path.lineTo(68,117);path.close();
-      path.moveTo(136,70);path.lineTo(174,70);path.lineTo(174,115);
-      path.lineTo(156,115);path.lineTo(155,99);path.lineTo(149,90);
-      path.lineTo(137,84);path.close();
-    }
-    return path.transform((Matrix4.identity()..scale(scale,scale)).storage)
-      .shift(Offset((size.width-240*scale)/2,size.height-320*scale));
-  }
-  @override
-  bool shouldReclip(covariant QuestwellClosedCloakBodyClipper oldClipper) => oldClipper.body!=body;
 }

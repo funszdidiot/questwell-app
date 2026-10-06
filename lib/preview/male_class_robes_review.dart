@@ -26,7 +26,7 @@ class MaleClassRobesReviewApp extends StatelessWidget {
                     const Text('One fixed body. Five class designs.',
                         textAlign: TextAlign.center),
                     const SizedBox(height: 8),
-                    const Text('Development review · account wardrobe rollout pending',
+                    const Text('Live male robes · visual review',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.white70)),
                     const SizedBox(height: 24),

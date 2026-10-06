@@ -1,0 +1,56 @@
+name: Questwell Android signing
+
+on:
+  pull_request:
+    branches: [questwell-dev, flutterflow]
+    paths:
+      - 'android/**'
+      - 'pubspec.*'
+      - 'tool/qa/android_signing_test.mjs'
+      - '.github/workflows/questwell-android-signing.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  signing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.6'
+          cache: true
+      - name: Require a credential-free fixture
+        run: |
+          test ! -e android/key.properties
+          node --test tool/qa/android_signing_test.mjs
+          flutter pub get --enforce-lockfile
+      - name: Build the simulated preview in debug mode
+        run: flutter build apk --debug --target lib/main_preview.dart
+      - name: Release signing must reject absent credentials
+        shell: bash
+        run: |
+          set +e
+          flutter build apk --release --target lib/main_preview.dart > "$RUNNER_TEMP/signing-validation.log" 2>&1
+          result=$?
+          set -e
+          if [ "$result" -eq 0 ]; then
+            echo 'Release signing unexpectedly accepted missing credentials'
+            exit 1
+          fi
+          if ! grep -F 'Questwell release signing requires complete private android/key.properties credentials.' "$RUNNER_TEMP/signing-validation.log"; then
+            cat "$RUNNER_TEMP/signing-validation.log"
+            echo 'Failure was not the expected missing release keystore'
+            exit 1
+          fi
+      - name: Preserve dependency inputs
+        run: git diff --exit-code -- pubspec.yaml pubspec.lock

@@ -1,0 +1,17 @@
+{
+  "method": "One continuous whole-outfit field; modest shoulder ease and heel containment, no independent parts",
+  "scale": 1.02,
+  "offset": [
+    -2.400000000000002,
+    20
+  ],
+  "canvas": [
+    240,
+    320
+  ],
+  "source": [
+    1086,
+    1448
+  ],
+  "cleanup": "Largest alpha>16 component plus 3-source-pixel antialias fringe"
+}

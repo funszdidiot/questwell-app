@@ -207,39 +207,39 @@
       }
     },
     {
-      "slug": "fixture-solstice-scholar-robe",
-      "name": "Fixture Solstice Scholar Robe",
+      "slug": "fixture-solstice-scout-outfit",
+      "name": "Fixture Solstice Scout Outfit",
       "category": "outfit",
       "rarity": "rare",
-      "description": "Fictional wearable candidate using the locked scholar robe body assets to prove body-specific seasonal review.",
+      "description": "Fictional single-overlay outfit review using the approved Woodland body-specific assets.",
       "price": 0,
       "premium": false,
-      "required_archetype": "scholar",
+      "required_archetype": "scout",
       "unlock_method": "shop",
       "milestone_level": null,
-      "visual_family": "scholar_robe",
+      "visual_family": "woodland_scout",
       "asset_state": "candidate",
       "hearth": null,
       "wearable": {
-        "template_id": "scholar-robe-locked",
+        "template_id": "woodland-scout-body-specific",
         "supported_bodies": [
           "female",
           "neutral",
           "male"
         ],
-        "fit_reference": "Locked scholar robe body-specific template",
-        "render_mode": "full_canvas_overlay",
+        "fit_reference": "Locked body-specific Woodland Scout outfit templates",
+        "render_mode": "single_overlay_outfit",
         "assets_by_body": {
-          "female": "assets/images/questwell/avatar/classes/scholar/scholar_robe_female_polish_v2.webp",
-          "neutral": "assets/images/questwell/avatar/classes/scholar/scholar_robe_neutral_polish_v2.webp",
-          "male": "assets/images/questwell/avatar/classes/scholar/scholar_robe_male_polish_v2.webp"
+          "female": "assets/images/questwell/avatar/woodland_scout_unified_female_v11.webp",
+          "neutral": "assets/images/questwell/avatar/woodland_scout_unified_neutral_v3.webp",
+          "male": "assets/images/questwell/avatar/woodland_scout_unified_male_candidate_v2.webp"
         }
       },
       "provenance": {
         "source": "Questwell review fixture",
         "version": 1,
         "method": "locked-template derivative proof",
-        "source_art_ref": "scholar-robe-locked-reference"
+        "source_art_ref": "approved-body-specific-woodland-outfits"
       },
       "qa": {
         "preflight": "pass",

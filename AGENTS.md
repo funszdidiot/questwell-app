@@ -40,3 +40,60 @@ Lesson: alpha-only thumb checks can pass while an opaque trouser layer still cov
 ## Latest neutral approval and rollout — 2026-10-04
 
 Tanya: **“The neutral outfits are good- push them.”** Neutral Woodland v3 is now founder-approved and LOCKED at `tool/neutral_woodland_fit_reference.json`. This newer instruction explicitly authorizes its development app and account eligibility rollout for female and neutral Scouts; male Woodland remains unavailable. Earlier female-only and neutral-candidate statements are historical and superseded for this scope. Existing neutral Everyday and all five class robes remain locked. Exact artwork and bodies are unchanged. Rollout status: **DEV DEPLOYED / LOCKED**, verified at `9ce9b92` (workflow `37236299144`, 373 Flutter + 8 Node tests, ten delivered asset hashes, live neutral Market purchase/equip/unequip). Evidence: `docs/qa/NEUTRAL_OUTFIT_ROLLOUT.md`.
+
+
+## Individual legacy garment correction — 2026-10-05
+
+Tanya rejected the mantle, cloak and coat shapes and reaffirmed locked paper-doll bodies and individual garment fits. Her “Yes” confirms cloak/mantle conceal arms and hands completely; Harvest Coat leaves hands exposed. Rebuild each family for male/female/neutral independently. Technical coverage and deployment alone do not establish visual quality. Avoid broad shared transforms, ballooned sleeves and distorted motifs. Preserve complete primary bodies, original hands/identity and existing availability. No new founder lock is inferred from independent QA. Current replacement fits: `tool/art_assets/legacy_refit_v2/fits.json`; integration evidence: `docs/qa/LEGACY_INDIVIDUAL_REFIT.md`.
+
+
+## Latest male Woodland approval — 2026-10-05 America/Chicago
+
+Tanya approved the exact delivered male Woodland v2 with **“It’s good”**.
+`tool/male_woodland_v2_fit_reference.json` is LOCKED and supersedes the historical
+v1 candidate reference. Preserve the single-overlay geometry, alpha, registration,
+sleeve/cuff openings, hand clearance, seams and boots on immutable male v3.
+Historical `candidate` naming does not reopen approval. Verified development
+review: `ae72f23`, documented in `docs/qa/MALE_WOODLAND_V2.md`. Male account rollout
+remains queued; the current shared renderer and equipment policy still gate it.
+Do not report account equipping as delivered based on this art approval record.
+
+## Male Woodland integration continuation — 2026-10-05
+
+Tanya's subsequent “Keep going” continues the approved male Woodland inventory
+and equip integration. The exact locked v2 overlay is now wired into the proposed
+shared renderer and body-fit policy, with an unchanged public API and a scoped
+forward migration. QA: `docs/qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md`. Preserve the
+G3 live-database deployment hold in `supabase/README.md`; do not publish enabled
+client capability against the still-gated live backend. Art remains LOCKED;
+isolated CI readiness and delivered account support must be reported separately.
+
+Tanya's subsequent “Next” authorizes the scoped database deployment step requested
+at that handoff. Use only the reviewed male Woodland forward CI path documented
+in `docs/qa/MALE_WOODLAND_FORWARD_DEPLOYMENT.md`. Preserve existing history and
+stop on drift; this does not authorize replay/repair, other pending migrations,
+new credentials or `flutterflow` promotion. Keep client integration gated until
+the database result is verified. The broader G3 history hold remains in force.
+
+## Verified male Woodland database deployment — 2026-10-05
+
+Tanya separately approved the scoped 24-hour deployment token and its GitHub
+Actions storage. Workflow `37360094077` retry job `111981993154` applied the
+unchanged tested `76e2242` payload at 21:20:48 UTC as remote migration
+`20261005212048`. All guarded postconditions passed; independent read-only checks
+confirm male support, 49 total history entries and exactly one Woodland record.
+The earlier credential blocker is resolved. Other live migrations and history
+repair remain gated. Preserve the tested deployment branch. PR #22 still needs
+fresh combined-revision checks, its own founder merge approval under FIX_PLAN.md
+and delivered runtime verification. No `flutterflow` promotion is authorized.
+
+## Male Woodland development delivery — 2026-10-05
+
+Tanya approved PR #22's merge. Development revision `fad7777` is deployed and
+verified: 390 Flutter tests, combined backend checks, served revision, four locked
+asset hashes, and sample Market buy/equip/unequip passed. The live fit migration
+was already verified. Earlier draft/client-gated statements are historical.
+Signed-in hosted-account and physical iPhone/Safari acceptance remain pending;
+no result has been reported. Do not treat “Next” as a passed manual test.
+See `docs/qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md`. No production promotion or other
+live migration/history repair is included.
