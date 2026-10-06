@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:project_momentum/backend/supabase/questwell_network.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,7 +54,7 @@ void main() {
   }
 
   for (final count in [2, 3, 5]) {
-    testWidgets('submits $count trimmed steps and opens the created battle', (
+    testWidgets('submits $count trimmed steps and closes the creation form', (
       tester,
     ) async {
       var calls = 0;
@@ -118,5 +120,52 @@ void main() {
     );
     expect(find.text('  Test project  '), findsOneWidget);
     expect(find.textContaining('private server details'), findsNothing);
+  });
+  testWidgets('uncertain write keeps the refresh warning visible', (
+    tester,
+  ) async {
+    const warning =
+        'Your change may have been received; refresh before trying again.';
+    await open(tester, ({
+      required title,
+      required steps,
+      bossType = 'inbox_hydra',
+    }) async {
+      throw const QuestwellNetworkException(warning);
+    });
+    await fill(tester, 2);
+    await tester.tap(find.text('Start Boss Battle'));
+    await tester.pumpAndSettle();
+    expect(
+      find.descendant(
+        of: find.byType(BottomSheet),
+        matching: find.text(warning),
+      ),
+      findsOneWidget,
+    );
+  });
+  testWidgets('validation appears in the form without sending a request', (
+    tester,
+  ) async {
+    var calls = 0;
+    await open(tester, ({
+      required title,
+      required steps,
+      bossType = 'inbox_hydra',
+    }) async {
+      calls++;
+      return 'created-battle';
+    });
+    await tester.ensureVisible(find.text('Start Boss Battle'));
+    await tester.tap(find.text('Start Boss Battle'));
+    await tester.pumpAndSettle();
+    expect(calls, 0);
+    expect(
+      find.descendant(
+        of: find.byType(BottomSheet),
+        matching: find.text('Add a boss title and at least two attack steps.'),
+      ),
+      findsOneWidget,
+    );
   });
 }

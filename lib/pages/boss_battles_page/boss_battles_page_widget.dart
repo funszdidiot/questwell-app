@@ -1,4 +1,5 @@
 import '/widgets/questwell_app_navigation.dart';
+import '/backend/supabase/questwell_network.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_boss_service.dart';
 import '/services/questwell_progression.dart';
@@ -158,6 +159,8 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       TextEditingController(),
     ];
     var bossType = 'inbox_hydra';
+    var submitting = false;
+    String? errorMessage;
 
     final created = await showModalBottomSheet<String>(
       context: context,
@@ -240,49 +243,74 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     label: const Text('Add step'),
                   ),
                   const SizedBox(height: 18),
+                  if (errorMessage != null) ...[
+                    Semantics(
+                      liveRegion: true,
+                      child: Text(
+                        errorMessage!,
+                        style: TextStyle(color: theme.error),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
                   FilledButton.icon(
-                    onPressed: () async {
-                      final title = titleController.text.trim();
-                      final steps = stepControllers
-                          .map((controller) => controller.text.trim())
-                          .where((value) => value.isNotEmpty)
-                          .toList();
+                    onPressed: submitting
+                        ? null
+                        : () async {
+                            if (submitting) return;
+                            final title = titleController.text.trim();
+                            final steps = stepControllers
+                                .map((controller) => controller.text.trim())
+                                .where((value) => value.isNotEmpty)
+                                .toList();
 
-                      if (title.isEmpty || steps.length < 2) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Add a boss title and at least two attack steps.',
-                            ),
-                          ),
-                        );
-                        return;
-                      }
+                            if (title.isEmpty || steps.length < 2) {
+                              setSheetState(
+                                () => errorMessage = 'Add a boss title and at least two attack steps.',
+                              );
+                              return;
+                            }
 
-                      if (!QuestwellBossUnlocks.available(bossType, level))
-                        return;
-                      try {
-                        final battleId = await widget.createBattle(
-                          title: title,
-                          steps: steps,
-                          bossType: bossType,
-                        );
-                        if (context.mounted) {
-                          Navigator.of(context).pop(battleId);
-                        }
-                      } catch (_) {
-                        if (!context.mounted) return;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Could not start this Boss Battle. Please try again.',
-                            ),
-                          ),
-                        );
-                      }
-                    },
+                            if (!QuestwellBossUnlocks.available(
+                              bossType,
+                              level,
+                            )) {
+                              setSheetState(
+                                () => errorMessage = 'Choose an unlocked boss.',
+                              );
+                              return;
+                            }
+                            setSheetState(() {
+                              submitting = true;
+                              errorMessage = null;
+                            });
+                            try {
+                              final battleId = await widget.createBattle(
+                                title: title,
+                                steps: steps,
+                                bossType: bossType,
+                              );
+                              if (battleId.trim().isEmpty) {
+                                throw const QuestwellNetworkException(
+                                  'The server did not confirm your battle. Close this form and refresh before trying again.',
+                                );
+                              }
+                              if (context.mounted) {
+                                Navigator.of(context).pop(battleId);
+                              }
+                            } catch (error) {
+                              if (!context.mounted) return;
+                              setSheetState(() {
+                                submitting = false;
+                                errorMessage =
+                                    error is QuestwellNetworkException
+                                    ? error.message
+                                    : 'Could not start this Boss Battle. Your draft is saved here. Please try again.';
+                              });
+                            }
+                          },
                     icon: const Icon(Icons.sports_mma_outlined),
-                    label: const Text('Start Boss Battle'),
+                    label: Text(submitting ? 'Starting…' : 'Start Boss Battle'),
                   ),
                 ],
               ),
