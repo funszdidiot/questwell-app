@@ -40,7 +40,9 @@ The existing welcome panel is extracted only to test this boundary. Starter and
 skip share a synchronous guard, with all actions disabled while pending.
 Failures remain visible and retryable. The service captures the owner and checks
 it before sending and after receiving. A disposed panel cannot apply a late UI
-callback. The existing cosmetic read/write coordinator prevents stale profile
+callback. Home keys the panel by account and creates a fresh session on an
+explicit submission from a changed account, so retained Home state cannot strand
+the newly signed-in account. The existing cosmetic read/write coordinator prevents stale profile
 loads overtaking onboarding. No state-management package or art changes.
 
 Tests were authored before implementation. The isolated harness first records

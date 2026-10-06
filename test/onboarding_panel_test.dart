@@ -12,12 +12,14 @@ void main() {
   Future<void> mount(
     WidgetTester tester,
     Future<QuestwellOnboardingResult> Function(String?) finish,
-    VoidCallback completed,
-  ) async {
+    VoidCallback completed, {
+    Key? key,
+  }) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: QuestwellOnboardingPanel(
+            key: key,
             finish: finish,
             onCompleted: completed,
           ),
@@ -121,17 +123,30 @@ void main() {
   });
 
   testWidgets(
-    'leaving the page before completion does not call a stale UI callback',
+    'a new account panel discards the old result and can finish independently',
     (tester) async {
       final pending = Completer<QuestwellOnboardingResult>();
       var finished = 0;
-      await mount(tester, (_) => pending.future, () => finished++);
+      await mount(
+        tester,
+        (_) => pending.future,
+        () => finished++,
+        key: const ValueKey('account-a'),
+      );
       await tester.tap(find.text('Reply to one email'));
       await tester.pump();
-      await tester.pumpWidget(const MaterialApp(home: SizedBox()));
+      await mount(
+        tester,
+        (_) async => const QuestwellOnboardingResult(completed: true),
+        () => finished++,
+        key: const ValueKey('account-b'),
+      );
       pending.complete(const QuestwellOnboardingResult(completed: true));
       await tester.pumpAndSettle();
       expect(finished, 0);
+      await tester.tap(find.text('Clear five files'));
+      await tester.pumpAndSettle();
+      expect(finished, 1);
       expect(tester.takeException(), isNull);
     },
   );

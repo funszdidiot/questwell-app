@@ -79,6 +79,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   Future<QuestwellOnboardingResult> _finishOnboarding(String? starterKey) {
+    if (_onboardingSession?.ownerId != currentUserUid) {
+      _onboardingSession = QuestwellCosmeticService.newOnboardingSession();
+    }
     final session = _onboardingSession ??=
         QuestwellCosmeticService.newOnboardingSession();
     return session.finish(starterKey);
@@ -505,6 +508,7 @@ const SizedBox(height: 2),
                 if (!_onboardingCompleted) ...[
                   const SizedBox(height: 18),
                   QuestwellOnboardingPanel(
+                    key: ValueKey('onboarding-$currentUserUid'),
                     finish: _finishOnboarding,
                     onCompleted: _onboardingFinished,
                   ),
