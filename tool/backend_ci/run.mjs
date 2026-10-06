@@ -7,6 +7,7 @@ import {assertDisposableCi, assertLocalStatus} from './guard.mjs';
 import {smoke} from './smoke.mjs';
 import {assertCatalogMatches} from './catalog.mjs';
 import {exerciseWoodlandForward} from './woodland-forward.mjs';
+import {exerciseHardeningForward} from './hardening-forward.mjs';
 
 assertDisposableCi(process.env);
 if (process.argv.includes('--preflight')) {
@@ -389,6 +390,16 @@ try {
   console.log(run(['migration', 'list', '--local']));
   console.log(run(['db', 'lint', '--local', '--schema', 'public,private', '--level', 'warning', '--fail-on', 'error']));
   console.log(run(['db', 'advisors', '--local', '--type', 'security', '--level', 'warn', '--fail-on', 'none']));
+  exerciseHardeningForward({source,workdir,run,expectSqlFailure,readCatalog});
+  for (const contract of ['task-reward-contract.sql','boss-reward-contract.sql',
+    'account-deletion-contract.sql','task-creation-contract.sql',
+    'onboarding-contract.sql','boss-creation-contract.sql']) {
+    run(['db','query','--local','--file',join(source,contract)]);
+  }
+  creationTests('regressions');
+  onboardingTests('regressions');
+  bossCreationTests('regressions');
+  bossTests('regressions');
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();
