@@ -22,12 +22,16 @@ class QuestwellBossCreationRecovery {
 
   Future<String> create({
     required String key,
+    String? requestId,
     required Future<String> Function(String requestId) send,
     Future<String> Function(Future<String>)? wait,
   }) async {
     final saved = _confirmed[key];
     if (saved != null) return saved;
-    final id = _identities.putIfAbsent(key, () => const Uuid().v4());
+    final id = _identities.putIfAbsent(
+      key,
+      () => requestId ?? const Uuid().v4(),
+    );
     final request = _requests.putIfAbsent(key, () async {
       final result = await Future<String>.sync(() => send(id));
       if (result.trim().isEmpty) {

@@ -131,4 +131,23 @@ void main() {
       expect(ids.toSet().length, 2);
     },
   );
+  test(
+    'board acknowledgement cannot change an open forms explicit identity',
+    () async {
+      final recovery = QuestwellBossCreationRecovery();
+      final sent = <String>[];
+      Future<String> create() => recovery.create(
+        key: 'A/form-1/draft',
+        requestId: 'fixed-form-id',
+        send: (id) async {
+          sent.add(id);
+          return 'original-battle';
+        },
+      );
+      expect(await create(), 'original-battle');
+      recovery.acknowledge(['original-battle']);
+      expect(await create(), 'original-battle');
+      expect(sent, ['fixed-form-id', 'fixed-form-id']);
+    },
+  );
 }

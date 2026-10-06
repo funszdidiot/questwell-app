@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import '/widgets/questwell_app_navigation.dart';
 import '/backend/supabase/questwell_network.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -31,6 +33,7 @@ class BossBattlesPageWidget extends StatefulWidget {
     required List<String> steps,
     String bossType,
     String? expectedOwnerId,
+    String? requestId,
   })
   createBattle;
 
@@ -153,6 +156,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
 
   Future<void> _showCreateBattle() async {
     final owner = widget.currentOwner();
+    final requestId = const Uuid().v4();
     if (_creationNeedsRefresh) {
       try {
         setState(_refresh);
@@ -326,6 +330,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                               }
                               final battleId = await widget.createBattle(
                                 expectedOwnerId: owner,
+                                requestId: requestId,
                                 title: title,
                                 steps: steps,
                                 bossType: bossType,

@@ -69,6 +69,7 @@ class QuestwellBossService {
     required List<String> steps,
     String bossType = 'inbox_hydra',
     String? expectedOwnerId,
+    String? requestId,
   }) async {
     final uid = SupaFlow.client.auth.currentUser?.id;
     if (uid == null) throw StateError('Authentication required.');
@@ -76,7 +77,8 @@ class QuestwellBossService {
       throw StateError('Boss account changed.');
     }
     return _creationRecovery.create(
-      key: jsonEncode([uid, title, steps, bossType]),
+      key: jsonEncode([uid, requestId, title, steps, bossType]),
+      requestId: requestId,
       send: (requestId) async {
         if (SupaFlow.client.auth.currentUser?.id != uid) {
           throw StateError('Boss account changed.');

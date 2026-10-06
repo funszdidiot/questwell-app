@@ -20,6 +20,7 @@ void main() {
       required List<String> steps,
       String bossType,
       String? expectedOwnerId,
+      String? requestId,
     })
     create, {
     Future<List<QuestwellBossBattle>> Function()? load,
@@ -69,6 +70,7 @@ void main() {
         required steps,
         bossType = 'inbox_hydra',
         expectedOwnerId,
+        requestId,
       }) async {
         calls++;
         expect(title, 'Test project');
@@ -93,6 +95,7 @@ void main() {
       required steps,
       bossType = 'inbox_hydra',
       expectedOwnerId,
+      requestId,
     }) {
       calls++;
       return pending.future;
@@ -112,6 +115,7 @@ void main() {
       required steps,
       bossType = 'inbox_hydra',
       expectedOwnerId,
+      requestId,
     }) async {
       throw StateError('private server details');
     });
@@ -140,6 +144,7 @@ void main() {
         required steps,
         bossType = 'inbox_hydra',
         expectedOwnerId,
+        requestId,
       }) async {
         throw const QuestwellNetworkException(warning);
       });
@@ -164,6 +169,7 @@ void main() {
       required steps,
       bossType = 'inbox_hydra',
       expectedOwnerId,
+      requestId,
     }) async {
       calls++;
       return 'created-battle';
@@ -191,6 +197,7 @@ void main() {
         required steps,
         bossType = 'inbox_hydra',
         expectedOwnerId,
+        requestId,
       }) => pending.future,
     );
     await fill(tester, 2);
@@ -216,6 +223,7 @@ void main() {
             required steps,
             bossType = 'inbox_hydra',
             expectedOwnerId,
+            requestId,
           }) async {
             calls++;
             if (blankResponse) return '';
@@ -269,6 +277,7 @@ void main() {
         required steps,
         bossType = 'inbox_hydra',
         expectedOwnerId,
+        requestId,
       }) => pending.future,
       load: () async {
         loads++;
@@ -299,6 +308,7 @@ void main() {
         required steps,
         bossType = 'inbox_hydra',
         expectedOwnerId,
+        requestId,
       }) => pending.future,
       load: () async {
         loads++;
@@ -326,12 +336,14 @@ void main() {
         required steps,
         bossType = 'inbox_hydra',
         expectedOwnerId,
+        requestId,
       }) {
         expect(expectedOwnerId, 'owner-a');
         expect(title, 'Test project');
         expect(steps, ['Attack 1', 'Attack 2']);
         return recovery.create(
-          key: '$expectedOwnerId/$title/$steps/$bossType',
+          key: '$expectedOwnerId/$requestId/$title/$steps/$bossType',
+          requestId: requestId,
           send: (id) async {
             ids.add(id);
             if (ids.length == 1)
@@ -364,6 +376,7 @@ void main() {
       required steps,
       bossType = 'inbox_hydra',
       expectedOwnerId,
+      requestId,
     }) async {
       calls++;
       return 'saved';

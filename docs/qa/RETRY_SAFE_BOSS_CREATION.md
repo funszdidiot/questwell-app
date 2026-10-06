@@ -19,16 +19,20 @@ account deletion. No client or service-role table access is granted. A private
 provisional ID is replaced with the created boss ID before transaction commit;
 any creation/step failure rolls everything back.
 
-The session-local recovery helper retains request IDs through failed transports,
+Each creation form captures one UUID at opening and passes it on every retry,
+even after a background board read acknowledges the boss. The session-local
+recovery helper retains request IDs through failed transports,
 coalesces concurrent calls, permits a fresh transport after timeout using the
 same identity, and keeps confirmed success until the list observes
 that exact boss. The form locks its draft during submission/uncertainty and offers
 safe retry or a board check. The owner captured at form open is checked before
 submission and after the response; the server independently checks expected owner.
-Request IDs are not persisted across process restart. After a restart, users must
+Request IDs are not persisted after closing the form or process restart. After
+closing an uncertain form or restarting, users must
 check their board before recreating an unconfirmed draft; no durable offline-draft
-claim is made. A matching owner/payload in the same session remains the same
-unconfirmed request until its confirmed boss is observed.
+claim is made. A reopened form is a new intentional request; the existing board-refresh guard
+remains before reopening after an uncertain outcome. This does not prove a late
+write absent, so the exit copy directs users to check their battles.
 
 ## Verification
 
