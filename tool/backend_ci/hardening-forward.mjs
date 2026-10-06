@@ -36,7 +36,27 @@ export function exerciseHardeningForward({source,workdir,run,expectSqlFailure,re
   expectSqlFailure(payloadFile,'Hardening postcondition failed');
   assert.deepEqual(readState(),before,'All seven changes must roll back together');
   writePayload(expected);
-  run(['db','query','--local','--file',payloadFile]);
+  try {
+    run(['db','query','--local','--file',payloadFile]);
+  } catch (error) {
+    // Fixture-only diagnosis preserves the failing postcondition and rollback.
+    // Report differing schema entries, never synthetic user rows or credentials.
+    const literal=JSON.stringify(sequentialCatalog).replaceAll("'","''");
+    const diagnostic=guardedPayload(sources,catalogSql,expected).replace(
+      "raise exception 'Hardening postcondition failed; transaction rolled back';",
+      `declare actual jsonb; differences jsonb; begin
+        execute $diagnostic_catalog$${catalogSql}$diagnostic_catalog$ into actual;
+        select jsonb_object_agg(e.key,jsonb_build_object(
+          'expected_only',(select jsonb_agg(v) from (select value v from jsonb_array_elements(e.value) except select value from jsonb_array_elements(actual->e.key)) d),
+          'actual_only',(select jsonb_agg(v) from (select value v from jsonb_array_elements(actual->e.key) except select value from jsonb_array_elements(e.value)) d)))
+        into differences from jsonb_each('${literal}'::jsonb) e where e.value is distinct from actual->e.key;
+        raise exception 'Hardening fixture schema difference: %',differences;
+      end;`);
+    writeFileSync(payloadFile,diagnostic);
+    try { run(['db','query','--local','--file',payloadFile]); } catch {}
+    assert.deepEqual(readState(),before,'Failed diagnostic must roll back');
+    throw error;
+  }
   const after=readState();
   assert.deepEqual(after,{...before,schema_sha256:afterHash},'Existing migration history must be unchanged');
   assertCatalogMatches(sequentialCatalog,readCatalog());
