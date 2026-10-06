@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_momentum/add_task_page/add_task_page_widget.dart';
 import 'package:project_momentum/preview/quest_board_review.dart';
+import 'package:project_momentum/services/questwell_task_creation.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -74,6 +75,55 @@ void main() {
     expect(attempts, 2);
     expect(closed, 1);
   });
+
+  testWidgets(
+    'Unconfirmed live submission retains immutable draft and retries its identity',
+    (tester) async {
+      final requests = <Map<String, dynamic>>[];
+      var closed = 0;
+      final creation = QuestwellTaskCreation(
+        requestId: 'request-a',
+        ownerId: 'owner-a',
+        currentOwner: () => 'owner-a',
+        send: (params) async {
+          requests.add(params);
+          if (requests.length == 1)
+            throw TimeoutException('accepted response lost');
+          return 'task-a';
+        },
+      );
+      await mount(
+        tester,
+        AddTaskPageWidget(creation: creation, onClose: () => closed++),
+      );
+      await tester.enterText(
+        find.byType(TextFormField),
+        'Keep this submission',
+      );
+      FocusManager.instance.primaryFocus?.unfocus();
+      await tap(tester, 'Easy');
+      await tap(tester, 'Post to Quest Board');
+      await tester.pumpAndSettle();
+      expect(closed, 0);
+      final field = tester.widget<TextFormField>(find.byType(TextFormField));
+      expect(field.controller!.text, 'Keep this submission');
+      expect(field.enabled, isFalse);
+      expect(
+        find.textContaining('Your quest may already be there.'),
+        findsOneWidget,
+      );
+      await tap(tester, 'Back to quests');
+      await tester.pumpAndSettle();
+      expect(find.text('Check the quest board?'), findsOneWidget);
+      await tester.tap(find.text('Keep editing'));
+      await tester.pumpAndSettle();
+      await tap(tester, 'Post to Quest Board');
+      await tester.pumpAndSettle();
+      expect(requests.length, 2);
+      expect(requests[1], requests[0]);
+      expect(closed, 1);
+    },
+  );
 
   testWidgets('Back and Quests protect the entered draft', (tester) async {
     var closed = 0;
