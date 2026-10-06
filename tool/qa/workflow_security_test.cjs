@@ -24,10 +24,17 @@ test('direct pushes and unlocked installs fail policy',()=> {
   bad(original.replace('run: cp build/web/index.html build/web/404.html','run: npm install sharp'));
 });
 test('duplicate YAML keys fail closed',()=>bad(original+'\npermissions:\n  contents: read\n'));
-test('Flutter nested mutable cache paths must stay disabled',()=> {
+test('upstream Flutter composite is rejected even with nested cache steps disabled',()=> {
   const file='.github/actions/flutter/action.yml';
-  const text=fs.readFileSync(path.join(root,file),'utf8').replace('cache: false','cache: true');
-  assert.ok(validate(text,file).some(e=>e.includes('nested Flutter')));
+  const text=`runs:
+  using: composite
+  steps:
+    - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2
+      with:
+        cache: false
+        pub-cache: false
+`;
+  assert.ok(validate(text,file).some(e=>e.includes('unreviewed action pin')));
 });
 test('asset proposal cannot become automatic',()=> {
   const file='.github/workflows/neutral-woodland-repair.yml';

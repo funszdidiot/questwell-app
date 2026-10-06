@@ -6,8 +6,12 @@ major tag and exact revision retrieved on 2026-10-06. The major versions remain
 unchanged; no Flutter/application dependency upgrade is included. The existing
 checksum-pinned Supabase CLI and scoped historical deployment guard remain intact.
 
-The local Flutter wrapper disables both mutable nested cache actions in the pinned
-upstream composite and uses explicitly pinned cache actions. SDK version remains
+The local Flutter wrapper vendors the reviewed upstream installer with its MIT
+license and invokes explicitly pinned JavaScript cache actions. The upstream
+composite is not invoked: GitHub resolves nested action metadata before testing
+step conditions, so disabling its mutable cache steps was insufficient. AI review
+identified that issue in the initial implementation; the policy now rejects that
+composite even with both cache flags disabled. SDK version remains
 3.44.6. Its cache keys include platform, architecture and version; package keys also
 include the committed pub lockfile. Pages packaging reproduces the upstream Linux
 tar layout and uploads with a directly pinned action, avoiding that composite's
@@ -47,7 +51,7 @@ validation, not visual approval or an end-to-end generated-art PR acceptance.
 
 `node tool/ci/workflow-security.cjs` parses every workflow plus the allowed local
 composite, checks reviewed pins, token scopes, credential-free checkout, trigger
-boundaries, nested cache opt-outs and asset output guards. Negative controls reject
+boundaries, the local-only Flutter setup boundary and asset output guards. Negative controls reject
 mutable/unknown pins, privileged trigger forms, duplicate YAML keys, stored checkout
 credentials, direct pushes and unpinned install commands. The shared Flutter gate
 runs these checks for every PR and preview delivery. This policy is a scoped

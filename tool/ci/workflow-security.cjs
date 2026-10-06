@@ -18,8 +18,6 @@ function validate(text, name) {
           const match = /^([^@]+)@([a-f0-9]{40})$/.exec(step.uses);
           if (!match || pins[match[1]]?.sha !== match[2]) errors.push(`unreviewed action pin: ${step.uses}`);
           if (match?.[1] === 'actions/checkout' && step.with?.['persist-credentials'] !== false) errors.push('checkout persists credentials');
-          if (match?.[1] === 'subosito/flutter-action' &&
-              (step.with?.cache !== false || step.with?.['pub-cache'] !== false)) errors.push('mutable nested Flutter caches enabled');
         }
       }
       if (step.run) {
