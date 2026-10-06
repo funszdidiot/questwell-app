@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../lib/preview/seasonal_gallery_review.dart';
@@ -34,6 +35,9 @@ void main() {
     await tester.binding.setSurfaceSize(const Size(1200, 1000));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
+    await tester.runAsync(
+      () => rootBundle.loadString('assets/jsons/seasonal_review_fixture.json'),
+    );
     await tester.pumpWidget(const QuestwellSeasonalGalleryReviewApp());
     final lantern = find.byKey(
       const ValueKey('seasonal-item-fixture-solstice-ward-lantern'),
@@ -70,6 +74,10 @@ void main() {
       const QuestwellSeasonalGalleryReviewApp(
         initialSlug: 'fixture-solstice-scout-outfit',
       ),
+    );
+    await pumpUntilFound(
+      tester,
+      find.byKey(const ValueKey('seasonal-item-fixture-solstice-scout-outfit')),
     );
     await pumpReview(tester);
 
