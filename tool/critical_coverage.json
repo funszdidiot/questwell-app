@@ -17,5 +17,8 @@
     "lib/services/questwell_boss_creation_recovery.dart",
     "lib/startup/questwell_bootstrap.dart",
     "lib/startup/questwell_startup.dart"
+  ],
+  "Feedback": [
+    "lib/services/questwell_feedback_service.dart"
   ]
 }
