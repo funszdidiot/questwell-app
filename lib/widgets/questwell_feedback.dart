@@ -386,10 +386,13 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(_accountMessage),
+              Text(_accountMessage,
+                  style:
+                      QuestwellTypography.body(color: const Color(0xFFF0E5CC))),
               TextButton(
                 onPressed: _close,
-                child: const Text('Close feedback'),
+                child: Text('Close feedback',
+                    style: QuestwellTypography.control(color: _gold)),
               ),
             ],
           ),
