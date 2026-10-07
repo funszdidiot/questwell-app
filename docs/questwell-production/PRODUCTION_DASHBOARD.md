@@ -18,14 +18,21 @@ pre-merge run passed 886 Flutter and 397 Chrome tests; post-merge checks passed.
 Campfire mode and sample customization navigation passed. Artwork, room geometry
 and account behavior are unchanged. Signed-in account/device acceptance is pending.
 
-**Wordmark follow-up: QA checkpoint** on `fix/hearth-wordmark-large-text`.
-Tanya's “Fix it” authorizes the remaining logo clipping repair. The decorative
-Hearth wordmark scales down only when needed to retain every letter; functional
-text keeps the selected accessibility size. Six regressions check full paragraph
-width and transformed bounds at 320/390/1440 px and 1x/2x text. Independent review,
-required CI and deployed verification must pass before this follow-up is complete.
-See `../qa/HEARTH_VISUAL_POLISH.md` and the follow-up PR for delivery evidence.
-No new art lock or release GO.
+**Wordmark repair: DEV DEPLOYED** via [PR #68](https://github.com/funszdidiot/questwell-app/pull/68),
+revision `6e0a8a5`, Preview `37697942663`. Full logo at 320 px/200% text was
+verified in the browser and independently visually approved. 892 Flutter and
+397 Chrome tests passed. Functional text keeps its selected size.
+
+## Adventurer heading — October 7, 2026
+
+**QA checkpoint** on `fix/adventurer-heading-wrap`, following Tanya's “Keep going.”
+The back action and heading now wrap as complete elements when width is tight,
+preventing the isolated final letter at 320 px/200% text. Title and subtitle keep
+their text scale; the back action keeps its tap target and callback. Six targeted
+regressions exercise 320/390/430 px at 1x/2x text. Required CI, independent review
+and delivered visual verification are pending at this checkpoint. The follow-up
+PR records final evidence. See `../qa/ADVENTURER_HEADING_LAYOUT.md`.
+No account/equipment/art changes or release GO.
 
 ## Male Woodland account integration — 2026-10-05
 
