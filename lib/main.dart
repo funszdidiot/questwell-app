@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'dart:ui' as ui show TextDirection;
 import 'package:flutter/foundation.dart';
 import 'services/questwell_monitoring.dart';
 import 'config/questwell_environment.dart';
@@ -99,7 +100,7 @@ void runQuestwell({
   );
   runApp(environment.isStaging
       ? Directionality(
-          textDirection: TextDirection.ltr,
+          textDirection: ui.TextDirection.ltr,
           child: Banner(
             message: 'STAGING',
             location: BannerLocation.topEnd,

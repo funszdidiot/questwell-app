@@ -149,6 +149,8 @@ jobs:
     name: iOS unsigned release compile
     runs-on: macos-15
     timeout-minutes: 30
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
     steps:
       - name: Checkout without stored credentials
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -158,9 +160,17 @@ jobs:
         uses: ./.github/actions/flutter
         with:
           flutter-version: '3.44.6'
-      - name: Record native toolchain
+      - name: Verify pinned Apple upload toolchain
+        shell: bash
         run: |
-          xcodebuild -version
+          test -d "$DEVELOPER_DIR"
+          xcode_version="$(xcodebuild -version)"
+          ios_sdk_version="$(xcrun --sdk iphoneos --show-sdk-version)"
+          printf '%s\niOS SDK %s\n' "$xcode_version" "$ios_sdk_version"
+          test "$xcode_version" = $'Xcode 26.3\nBuild version 17C529'
+          test "$ios_sdk_version" = '26.2'
+      - name: Record remaining native toolchain
+        run: |
           pod --version
           flutter --version
       - name: Install locked dependencies
