@@ -486,21 +486,18 @@ void main() {
       FilePicker.platform = ScreenshotPicker();
       await tester.binding.setSurfaceSize(const Size(390, 850));
       addTearDown(() => tester.binding.setSurfaceSize(null));
-      await QuestwellFeedbackDraftStore(owner).save(draft);
-      await tester.pumpWidget(
-        MaterialApp(
+      // This scenario tests transport after disposal. Keep local persistence
+      // injected so it does not reuse another widget test's fake-clock queue.
+      await tester.pumpWidget(MaterialApp(
           home: Scaffold(
-            body: Builder(
-              builder: (context) => TextButton(
-                onPressed: () =>
-                    QuestwellFeedback.open(context, screen: 'Quests'),
-                child: const Text('Open'),
-              ),
-            ),
-          ),
-        ),
-      );
-      await tester.tap(find.text('Open'));
+              body: QuestwellFeedbackForm(
+        initialDraft: draft,
+        ownerId: owner,
+        onSave: (_) async {},
+        onClear: () async {},
+        onSubmit: (_) async {},
+        onClose: () {},
+      ))));
       await tester.pumpAndSettle();
       final attach = find.text('Attach screenshots');
       await tester.ensureVisible(attach);
