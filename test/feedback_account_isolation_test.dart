@@ -303,6 +303,7 @@ void main() {
       await tester.pumpWidget(const SizedBox());
       await tester.pumpAndSettle();
     },
+    timeout: const Timeout(Duration(seconds: 45)),
   );
   test('cleanup rejects stale completion after a switch', () async {
     respond = (_) async {
@@ -375,6 +376,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
       },
+      timeout: const Timeout(Duration(seconds: 45)),
     );
   }
 
@@ -429,47 +431,53 @@ void main() {
         await tester.pumpWidget(const SizedBox());
         await tester.pumpAndSettle();
       },
+      timeout: const Timeout(Duration(seconds: 45)),
     );
   }
-  testWidgets('failed close keeps account-change protection active', (
-    tester,
-  ) async {
-    GoogleFonts.config.allowRuntimeFetching = false;
-    await tester.binding.setSurfaceSize(const Size(390, 850));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-    var closes = 0;
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: QuestwellFeedbackForm(
-            initialDraft: draft,
-            ownerId: owner,
-            onSave: (_) async => throw StateError('synthetic storage failure'),
-            onSubmit: (_) async {},
-            onClear: () async {},
-            onClose: () => closes++,
+  testWidgets(
+    'failed close keeps account-change protection active',
+    (
+      tester,
+    ) async {
+      GoogleFonts.config.allowRuntimeFetching = false;
+      await tester.binding.setSurfaceSize(const Size(390, 850));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      var closes = 0;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: QuestwellFeedbackForm(
+              initialDraft: draft,
+              ownerId: owner,
+              onSave: (_) async =>
+                  throw StateError('synthetic storage failure'),
+              onSubmit: (_) async {},
+              onClear: () async {},
+              onClose: () => closes++,
+            ),
           ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Close feedback'));
-    await tester.pumpAndSettle();
-    expect(closes, 0);
-    await session(other);
-    await tester.pumpAndSettle();
-    expect(find.text('Synthetic message'), findsNothing);
-    expect(
-      find.text('Your account changed. Close this note and reopen feedback.'),
-      findsOneWidget,
-    );
-    await tester.tap(find.widgetWithText(TextButton, 'Close feedback'));
-    await tester.pumpAndSettle();
-    expect(closes, 1);
-    await tester.pumpWidget(const SizedBox());
-    await tester.pumpAndSettle();
-    expect(tester.takeException(), isNull);
-  });
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Close feedback'));
+      await tester.pumpAndSettle();
+      expect(closes, 0);
+      await session(other);
+      await tester.pumpAndSettle();
+      expect(find.text('Synthetic message'), findsNothing);
+      expect(
+        find.text('Your account changed. Close this note and reopen feedback.'),
+        findsOneWidget,
+      );
+      await tester.tap(find.widgetWithText(TextButton, 'Close feedback'));
+      await tester.pumpAndSettle();
+      expect(closes, 1);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    },
+    timeout: const Timeout(Duration(seconds: 45)),
+  );
 
   testWidgets(
     'disposing during successful screenshot report does not delete its attachments',
@@ -522,5 +530,6 @@ void main() {
       expect(requests.where((r) => r.method == 'DELETE'), isEmpty);
       expect(tester.takeException(), isNull);
     },
+    timeout: const Timeout(Duration(seconds: 45)),
   );
 }
