@@ -9,10 +9,11 @@ class QuestwellStagingNavigation extends HashUrlStrategy {
 
   final PlatformLocation location;
   bool _ready = false;
+  String _orEmpty(String? value) => value ?? '';
 
   @override
   String getPath() {
-    final hash = location.hash;
+    final hash = _orEmpty(location.hash);
     return _ready && hash.startsWith('#/') ? hash.substring(1) : '/';
   }
 
@@ -27,7 +28,8 @@ class QuestwellStagingNavigation extends HashUrlStrategy {
   }
 
   void finishCallback() {
-    if (location.hash.isNotEmpty && !location.hash.startsWith('#/')) {
+    final hash = _orEmpty(location.hash);
+    if (hash.isNotEmpty && !hash.startsWith('#/')) {
       // Only the safe recovery flag survives an Auth callback. Never preserve
       // token/error parameters or let them appear as a router diagnostic.
       Map<String, String> query;

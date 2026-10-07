@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+from stamp_staging_artifact import stamp
 
 
 def package(root, revision):
@@ -17,7 +18,8 @@ def package(root, revision):
         raise ValueError('Staging base path was not compiled correctly')
     if not (source / 'main.dart.js').is_file() or target.exists():
         raise ValueError('Missing staging bundle or unexpected target')
-    html = html.replace('main.dart.js', f'main.dart.js?rev={revision}')
+    stamp(source, revision)
+    html = (source / 'index.html').read_text()
     html = html.replace('manifest.json', f'manifest.json?rev={revision}')
     html = html.replace('__QUESTWELL_BUILD__', revision)
     html = html.replace('<title> Questwell </title>', '<title>Questwell Staging</title>')
@@ -25,10 +27,6 @@ def package(root, revision):
     if '__QUESTWELL_BUILD__' in html:
         raise ValueError('Unresolved staging build token')
     (source / 'index.html').write_text(html)
-    (source / 'questwell-version.json').write_text(json.dumps({
-        'revision': revision, 'environment': 'staging',
-        'project': 'hpjzfytwivlpsdhiupyd',
-    }))
     manifest_path = source / 'manifest.json'
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
     manifest.update(name='Questwell Staging', short_name='QW Staging',

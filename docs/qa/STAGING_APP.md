@@ -2,6 +2,11 @@
 
 Candidate; hosted acceptance and recovery are not yet passed.
 
+Extends the separately merged PR #64 candidate. Its constant profile selection,
+verified legacy public anon key, compiled endpoint validator, bundle SHA256 and
+seven-day artifact retention are preserved. Packaging reuses that validator
+before adding the staging manifest and copying the independently compiled bundle.
+
 The existing Pages artifact includes two independently compiled bundles. Root
 remains live_beta; /questwell-app/staging/ targets only the founder-created
 hpjzfytwivlpsdhiupyd project. Both compile in PR CI. Public signup stays disabled;

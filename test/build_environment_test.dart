@@ -4,6 +4,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:project_momentum/config/questwell_environment.dart';
 
 void main() {
+  test('build/path mismatch fails before backend startup', () {
+    final staging = QuestwellEnvironment.select('staging');
+    final live = QuestwellEnvironment.select('live_beta');
+    final stagingUrl = Uri.parse(staging.authReturnUrl);
+    expect(() => staging.verifyWebLocation(stagingUrl), returnsNormally);
+    expect(() => live.verifyWebLocation(stagingUrl), throwsStateError);
+    expect(() => staging.verifyWebLocation(Uri.parse(live.authReturnUrl)),
+        throwsStateError);
+    expect(
+        () => staging.verifyWebLocation(
+            Uri.parse('https://unapproved.example/questwell-app/staging/')),
+        throwsStateError);
+    expect(
+        () => live
+            .verifyWebLocation(Uri.parse('${staging.authReturnUrl}authPage')),
+        throwsStateError);
+    expect(
+        () => staging
+            .verifyWebLocation(Uri.parse('${staging.authReturnUrl}authPage')),
+        throwsStateError);
+  });
+
   test('test runner explicitly uses the isolated non-live target', () {
     final config = QuestwellEnvironment.current;
     expect(config.name, 'isolated_test');
@@ -16,6 +38,8 @@ void main() {
     for (final name in [
       '',
       'production',
+      'Staging',
+      ' staging',
       'live-beta',
       ' live_beta',
     ]) {
@@ -42,44 +66,34 @@ void main() {
     },
   );
 
-  test('staging cannot target the live project or callback', () {
-    final staging = QuestwellEnvironment.select('staging');
-    final live = QuestwellEnvironment.select('live_beta');
-    expect(staging.supabaseUrl, 'https://hpjzfytwivlpsdhiupyd.supabase.co');
-    expect(staging.publicKey, startsWith('sb_publishable_'));
-    expect(staging.publicKey, isNot(live.publicKey));
-    expect(staging.authReturnUrl,
-        'https://funszdidiot.github.io/questwell-app/staging/');
-    expect(staging.isStaging, isTrue);
-  });
-
-  test('build/path mismatch fails before backend startup', () {
-    final staging = QuestwellEnvironment.select('staging');
-    final live = QuestwellEnvironment.select('live_beta');
-    final stagingUrl = Uri.parse(staging.authReturnUrl);
-    expect(() => staging.verifyWebLocation(stagingUrl), returnsNormally);
-    expect(() => live.verifyWebLocation(stagingUrl), throwsStateError);
-    expect(() => staging.verifyWebLocation(Uri.parse(live.authReturnUrl)),
-        throwsStateError);
-    expect(
-        () => staging.verifyWebLocation(
-            Uri.parse('https://unapproved.example/questwell-app/staging/')),
-        throwsStateError);
-    expect(
-        () => live
-            .verifyWebLocation(Uri.parse('${staging.authReturnUrl}authPage')),
-        throwsStateError);
-    expect(
-        () => staging
-            .verifyWebLocation(Uri.parse('${staging.authReturnUrl}authPage')),
-        throwsStateError);
-  });
-
   test('isolated profile cannot inherit any live beta endpoint or key', () {
     final isolated = QuestwellEnvironment.select('isolated_test');
     final live = QuestwellEnvironment.select('live_beta');
     expect(isolated.supabaseUrl, isNot(live.supabaseUrl));
     expect(isolated.publicKey, isNot(live.publicKey));
     expect(isolated.authReturnUrl, isNot(live.authReturnUrl));
+  });
+
+  test('staging pins its own public project and callback together', () {
+    final staging = QuestwellEnvironment.select('staging');
+    expect(staging.name, 'staging');
+    expect(staging.supabaseUrl, 'https://hpjzfytwivlpsdhiupyd.supabase.co');
+    expect(
+      staging.authReturnUrl,
+      'https://funszdidiot.github.io/questwell-app/staging/',
+    );
+    final claims = jsonDecode(
+      utf8.decode(
+        base64Url.decode(base64Url.normalize(staging.publicKey.split('.')[1])),
+      ),
+    ) as Map<String, dynamic>;
+    expect(claims['role'], 'anon');
+    expect(claims['ref'], 'hpjzfytwivlpsdhiupyd');
+    for (final name in ['live_beta', 'isolated_test']) {
+      final other = QuestwellEnvironment.select(name);
+      expect(staging.supabaseUrl, isNot(other.supabaseUrl));
+      expect(staging.publicKey, isNot(other.publicKey));
+      expect(staging.authReturnUrl, isNot(other.authReturnUrl));
+    }
   });
 }
