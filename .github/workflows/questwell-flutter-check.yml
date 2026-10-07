@@ -158,7 +158,14 @@ jobs:
           xcode_version="$(xcodebuild -version)"
           ios_sdk_version="$(xcrun --sdk iphoneos --show-sdk-version)"
           printf '%s\niOS SDK %s\n' "$xcode_version" "$ios_sdk_version"
-          test "$xcode_version" = $'Xcode 26.3\nBuild version 17C529'
+          test "$xcode_version" = 
+      - name: Install locked dependencies
+        run: flutter pub get --enforce-lockfile
+      - name: Compile iOS release without signing or distribution
+        run: flutter build ios --release --no-codesign --target lib/main.dart --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
+      - name: Preserve dependency inputs
+        run: git diff --exit-code -- pubspec.yaml pubspec.lock
+Xcode 26.3\nBuild version 17C529'
           test "$ios_sdk_version" = '26.2'
       - name: Record remaining native toolchain
         run: |

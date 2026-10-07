@@ -129,6 +129,11 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
   @override
   void initState() {
     super.initState();
+    for (final attachment in _draft.attachments) {
+      _attachmentBytes.add(null);
+      _attachmentNames.add(attachment.name);
+      _attachmentMimes.add(attachment.mimeType);
+    }
     if (widget.ownerId != null) {
       _authSubscription =
           SupaFlow.client.auth.onAuthStateChange.listen((state) {
@@ -143,7 +148,7 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
 
   bool _sending = false, _sent = false;
   String? _error, _storageNote;
-  final List<Uint8List> _attachmentBytes = [];
+  final List<Uint8List?> _attachmentBytes = [];
   final List<String> _attachmentNames = [], _attachmentMimes = [];
   static const _gold = Color(0xFFE4C586), _muted = Color(0xFFB9C7D7);
 
@@ -192,6 +197,7 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
   Future<void> _pickScreenshot() async {
     try {
       _requireOwner();
+      if (_sending || _sent) return;
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: const ['png', 'jpg', 'jpeg', 'webp'],
@@ -199,6 +205,9 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
         allowMultiple: true,
       );
       _requireOwner();
+      // A picker opened before Send must not change the durable request while
+      // its save/receipt/upload is pending, or recreate a draft after success.
+      if (_sending || _sent) return;
       if (result == null || result.files.isEmpty) return;
       final remaining =
           QuestwellFeedbackService.maxAttachments - _attachmentBytes.length;
@@ -219,7 +228,8 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
           );
           return;
         }
-        if (bytes.length > QuestwellFeedbackService.maxAttachmentBytes) {
+        if (bytes.isEmpty ||
+            bytes.length > QuestwellFeedbackService.maxAttachmentBytes) {
           setState(() => _error = '${file.name} is larger than 5 MB.');
           return;
         }
@@ -247,6 +257,12 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
             ? 'Added $remaining screenshots. You can attach up to 5 per report.'
             : null;
       });
+      _edit(_draft.copyWith(edited: true, attachments: [
+        ..._draft.attachments,
+        for (var i = 0; i < bytesToAdd.length; i++)
+          QuestwellFeedbackAttachment.fromBytes(
+              namesToAdd[i], mimesToAdd[i], bytesToAdd[i]),
+      ]));
     } catch (_) {
       if (mounted)
         setState(
@@ -259,6 +275,7 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
     if (_sending || _sent || !_form.currentState!.validate()) return;
     _saveTimer?.cancel();
     final canCleanFreshUploads = !_draft.attempted;
+    final wasAttempted = _draft.attempted;
     setState(() {
       _sending = true;
       _error = null;
@@ -268,9 +285,27 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
     var submissionStarted = false;
     try {
       _requireOwner();
-      await _persist();
+      try {
+        // Durable request identity/attachment intent is required before writes.
+        await widget.onSave(_draft);
+      } catch (_) {
+        throw const QuestwellFeedbackException(
+            'Could not save this request safely. Keep the form open and try again.');
+      }
       _requireOwner();
-      if (!widget.preview && _attachmentBytes.isNotEmpty) {
+      final owner = widget.ownerId;
+      var received = false;
+      if (wasAttempted && !widget.preview && owner != null) {
+        received = await QuestwellFeedbackService.isReceived(_draft, owner,
+            attachmentPaths:
+                QuestwellFeedbackService.attachmentPaths(_draft, owner));
+        _requireOwner();
+        if (!received && !_draft.attachmentsKnown) {
+          throw const QuestwellFeedbackException(
+              'This older draft has no saved screenshot details. Edit your note and reattach any screenshots before sending.');
+        }
+      }
+      if (!received && !widget.preview && _attachmentBytes.isNotEmpty) {
         final ownerId = widget.ownerId;
         if (ownerId == null) {
           throw const QuestwellFeedbackException(
@@ -278,14 +313,21 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
           );
         }
         for (var i = 0; i < _attachmentBytes.length; i++) {
+          final bytes = _attachmentBytes[i];
           uploadedPaths.add(
-            await QuestwellFeedbackService.uploadScreenshot(
-              ownerId: ownerId,
-              feedbackId: _draft.id,
-              bytes: _attachmentBytes[i],
-              mimeType: _attachmentMimes[i],
-              index: i,
-            ),
+            bytes == null
+                ? await QuestwellFeedbackService.restoreScreenshot(
+                    ownerId: ownerId,
+                    feedbackId: _draft.id,
+                    attachment: _draft.attachments[i],
+                    index: i)
+                : await QuestwellFeedbackService.uploadScreenshot(
+                    ownerId: ownerId,
+                    feedbackId: _draft.id,
+                    bytes: bytes,
+                    mimeType: _attachmentMimes[i],
+                    index: i,
+                  ),
           );
           _requireOwner();
         }
@@ -295,7 +337,7 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
           ownerId,
           attachmentPaths: uploadedPaths,
         );
-      } else {
+      } else if (!received) {
         submissionStarted = true;
         await widget.onSubmit(_draft);
       }
@@ -642,11 +684,17 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
                                       tooltip: 'Remove screenshot',
                                       onPressed: _sending
                                           ? null
-                                          : () => setState(() {
-                                                _attachmentBytes.removeAt(i);
-                                                _attachmentNames.removeAt(i);
-                                                _attachmentMimes.removeAt(i);
-                                              }),
+                                          : () {
+                                              _attachmentBytes.removeAt(i);
+                                              _attachmentNames.removeAt(i);
+                                              _attachmentMimes.removeAt(i);
+                                              final attachments = [
+                                                ..._draft.attachments
+                                              ]..removeAt(i);
+                                              _edit(_draft.copyWith(
+                                                  edited: true,
+                                                  attachments: attachments));
+                                            },
                                       icon: const Icon(
                                         Icons.close,
                                         size: 18,
@@ -659,7 +707,9 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
                             Padding(
                               padding: const EdgeInsets.only(top: 6),
                               child: Text(
-                                'Optional · up to 5 screenshots · PNG, JPEG, or WebP · 5 MB each · stored privately',
+                                _attachmentBytes.any((bytes) => bytes == null)
+                                    ? 'Saved screenshots will be verified before sending. If recovery fails, remove them and choose them again.'
+                                    : 'Optional · up to 5 screenshots · PNG, JPEG, or WebP · 5 MB each · stored privately',
                                 style: QuestwellTypography.body(
                                   fontSize: 11,
                                   color: _muted,
