@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:ui';
+import 'package:flutter/foundation.dart';
+import 'services/questwell_monitoring.dart';
 
 import 'startup/questwell_bootstrap.dart';
 import 'startup/questwell_startup.dart';
@@ -18,16 +21,48 @@ import 'flutter_flow/flutter_flow_util.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  final monitoring = QuestwellMonitoring(
+    dsn: const String.fromEnvironment('QUESTWELL_SENTRY_DSN'),
+    build: const String.fromEnvironment('QUESTWELL_BUILD'),
+    environment: const String.fromEnvironment('QUESTWELL_ENVIRONMENT'),
+    platform: kIsWeb
+        ? MonitoringPlatform.web
+        : defaultTargetPlatform == TargetPlatform.android
+        ? MonitoringPlatform.android
+        : defaultTargetPlatform == TargetPlatform.iOS
+        ? MonitoringPlatform.ios
+        : MonitoringPlatform.desktop,
+  );
+  final previousFlutterError = FlutterError.onError;
+  FlutterError.onError = (details) {
+    unawaited(monitoring.report(MonitoringCode.flutterFailure));
+    previousFlutterError?.call(details);
+  };
+  final previousPlatformError = PlatformDispatcher.instance.onError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    unawaited(monitoring.report(MonitoringCode.platformFailure));
+    return previousPlatformError?.call(error, stack) ?? false;
+  };
   GoRouter.optionURLReflectsImperativeAPIs = true;
   usePathUrlStrategy();
 
   final bootstrap = QuestwellBootstrap(
     captureCallback: () => QuestwellAuthCallback.capture(Uri.base),
     initializeBackend: () async {
-      await SupaFlow.initialize();
+      try {
+        await SupaFlow.initialize();
+      } catch (_) {
+        unawaited(monitoring.report(MonitoringCode.backendStartup));
+        rethrow;
+      }
     },
     initializePreferences: () async {
-      await FlutterFlowTheme.initialize();
+      try {
+        await FlutterFlowTheme.initialize();
+      } catch (_) {
+        unawaited(monitoring.report(MonitoringCode.preferencesStartup));
+        rethrow;
+      }
     },
   );
   runApp(
@@ -58,10 +93,12 @@ class _MyAppState extends State<MyApp> {
     return matchList.uri.path;
   }
 
-  List<String> getRouteStack() =>
-      _router.routerDelegate.currentConfiguration.matches
-          .map((e) => getRoute(e))
-          .toList();
+  List<String> getRouteStack() => _router
+      .routerDelegate
+      .currentConfiguration
+      .matches
+      .map((e) => getRoute(e))
+      .toList();
 
   late Stream<BaseAuthUser> userStream;
   StreamSubscription<AuthState>? _recoverySubscription;
@@ -77,7 +114,9 @@ class _MyAppState extends State<MyApp> {
         _appStateNotifier.update(user);
       }, onError: _handleAuthStreamError);
     jwtTokenStream.listen((_) {}, onError: _handleAuthStreamError);
-    _recoverySubscription = SupaFlow.client.auth.onAuthStateChange.listen((state) {
+    _recoverySubscription = SupaFlow.client.auth.onAuthStateChange.listen((
+      state,
+    ) {
       if (state.event == AuthChangeEvent.passwordRecovery && mounted) {
         QuestwellAuthCallback.recovering = true;
         QuestwellAuthCallback.linkFailed = false;
@@ -105,9 +144,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void setThemeMode(ThemeMode mode) => safeSetState(() {
-        _themeMode = mode;
-        FlutterFlowTheme.saveThemeMode(mode);
-      });
+    _themeMode = mode;
+    FlutterFlowTheme.saveThemeMode(mode);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -120,14 +159,8 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('en', '')],
-      theme: ThemeData(
-        brightness: Brightness.light,
-        useMaterial3: false,
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        useMaterial3: false,
-      ),
+      theme: ThemeData(brightness: Brightness.light, useMaterial3: false),
+      darkTheme: ThemeData(brightness: Brightness.dark, useMaterial3: false),
       themeMode: _themeMode,
       routerConfig: _router,
     );
