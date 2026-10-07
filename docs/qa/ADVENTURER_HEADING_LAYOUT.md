@@ -24,6 +24,12 @@ Formatter and diff whitespace checks passed. Required CI and independent source
 review are pending at this checkpoint. The PR will record exact-revision results.
 Local Flutter is not retried after the prior automatic metadata-endpoint rejection.
 
+Initial CI 37700074902 passed 892 existing tests and the new heading assertions,
+but all six added cases measured the 40 px inner Tooltip visual as the tap target.
+The test now measures the outer IconButton (including framework input padding)
+and taps its corner to verify the padded hit area. App code is unchanged by this
+test correction; the final candidate requires fresh CI and independent review.
+
 After protected development merge, verify the delivered revision and actual
 320 px/200% header, normal-size header, and back navigation. Independent rendered
 review precedes completion. Sample browser evidence does not establish signed-in
