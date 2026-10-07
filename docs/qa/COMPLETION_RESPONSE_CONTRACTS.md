@@ -21,8 +21,8 @@ account guards and single-attempt writes remain unchanged. A rejected response
 is unconfirmed and does not claim server rollback. Home and Boss now reload
 board state and appearance/totals on completion errors, display safe uncertainty
 guidance, and withhold stale completion actions while the reload is pending.
-Early Boss refresh failures are observed immediately and still delivered to the
-board error/retry state. Quest Board already refreshes on its error path. No live database, auth, catalog, package or visual change.
+Early Boss and Chronicle refresh failures are observed immediately and still
+delivered to the relevant error/retry state. Quest Board already refreshes on its error path. No live database, auth, catalog, package or visual change.
 
 ## Regression evidence
 
@@ -48,13 +48,16 @@ board error/retry state. Quest Board already refreshes on its error path. No liv
 
 The repository AI reviewer flagged that the new service guidance was hidden by
 existing generic Home/Boss retry copy. Four widget cases reproduced absent
-reconciliation before correction. Six final widget cases cover both real pages
+reconciliation before correction. A fifth reproduction exposed an early
+Chronicle refresh rejection. Seven final widget cases cover both real pages
 when the server has committed but validation rejects its reply: successful,
-failed and pending board reload. They verify one mutation, board/profile reads,
+failed and pending board reload, plus a fast Chronicle failure. They verify one mutation, board/profile reads,
 safe guidance, no stale completion action and no unhandled refresh error.
 Defaulted callback seams preserve runtime services and make these states
 reproducible without customer accounts. This suite is included in Chrome CI.
-The initial 801/338 Flutter/Chrome CI results and six green required checks were
+The corrected full local suite passed 807 tests before the final Chronicle
+observer; the final targeted run covers all seven widget cases, the service
+adapters and boss creation. The initial 801/338 Flutter/Chrome CI results and six green required checks were
 for the earlier parser-only head; fresh final-head CI is required after this fix.
 
 ## Delivery limits and rollback

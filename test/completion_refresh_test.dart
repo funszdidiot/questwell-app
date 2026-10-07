@@ -33,7 +33,12 @@ void main() {
     bossesDefeated: 0,
   );
   for (final boss in [false, true]) {
-    for (final refreshMode in ['success', 'failure', 'pending']) {
+    for (final refreshMode in [
+      'success',
+      'failure',
+      'pending',
+      if (!boss) 'momentum failure'
+    ]) {
       final refreshFails = refreshMode == 'failure';
       testWidgets(
           '${boss ? 'Boss' : 'Home'} reconciles an unconfirmed completion; refresh=$refreshMode',
@@ -92,7 +97,12 @@ void main() {
               )
             : HomePageWidget(
                 loadAppearance: loadAppearance,
-                loadMomentum: () async => momentum,
+                loadMomentum: () async {
+                  if (committed && refreshMode == 'momentum failure') {
+                    throw StateError('private momentum details');
+                  }
+                  return momentum;
+                },
                 loadTasks: () async {
                   read();
                   if (committed && refreshMode == 'pending')

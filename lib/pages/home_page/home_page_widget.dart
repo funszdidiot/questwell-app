@@ -66,6 +66,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   void _loadHomeData() {
     _loadCosmetics();
     _momentumFuture = widget.loadMomentum();
+    // Keep early refresh errors observed until FutureBuilder attaches.
+    // The same future still exposes its error to the momentum retry UI.
+    _momentumFuture.ignore();
   }
 
   void _cosmeticsChanged() {
