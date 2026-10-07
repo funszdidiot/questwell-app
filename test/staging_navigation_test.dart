@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:project_momentum/config/questwell_staging_navigation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:project_momentum/auth/questwell_auth_callback.dart';
 
 class FakeLocation extends BrowserPlatformLocation {
   FakeLocation(this.current);
@@ -48,9 +49,37 @@ void main() {
       expect(location.current.fragment, fragment);
       navigation.finishCallback();
       expect(location.current.toString(),
-          'https://funszdidiot.github.io/questwell-app/staging/?recovery=true#/');
+          'https://funszdidiot.github.io/questwell-app/staging/#/');
       expect(navigation.getPath(), '/');
       expect(location.writes.single, isNot(contains('private')));
+    });
+  }
+
+  for (final suffix in [
+    '#access_token=private&type=recovery',
+    '',
+    '#/questBoard'
+  ]) {
+    test('completed recovery cannot be revived after reload: $suffix', () {
+      addTearDown(QuestwellAuthCallback.clear);
+      final location = FakeLocation(Uri.parse(
+        'https://funszdidiot.github.io/questwell-app/staging/'
+        '?recovery=true$suffix',
+      ));
+      QuestwellAuthCallback.capture(location.current);
+      expect(QuestwellAuthCallback.recovering, isTrue);
+      final navigation = QuestwellStagingNavigation(location);
+      navigation.finishCallback();
+      expect(QuestwellAuthCallback.recovering, isTrue);
+      expect(location.current.query, isEmpty);
+      if (suffix == '#/questBoard') {
+        expect(navigation.getPath(), '/questBoard');
+      }
+      QuestwellAuthCallback.clear();
+      navigation.pushState(null, '', '/homePage');
+      QuestwellAuthCallback.capture(location.current);
+      expect(QuestwellAuthCallback.needsAuthScreen, isFalse);
+      expect(location.current.query, isEmpty);
     });
   }
 

@@ -29,21 +29,13 @@ class QuestwellStagingNavigation extends HashUrlStrategy {
 
   void finishCallback() {
     final hash = _orEmpty(location.hash);
-    if (hash.isNotEmpty && !hash.startsWith('#/')) {
-      // Only the safe recovery flag survives an Auth callback. Never preserve
-      // token/error parameters or let them appear as a router diagnostic.
-      Map<String, String> query;
-      try {
-        query = Uri.splitQueryString(
-          location.search.startsWith('?')
-              ? location.search.substring(1)
-              : location.search,
-        );
-      } on FormatException {
-        query = const {};
-      }
-      final recovery = query['recovery'] == 'true' ? '?recovery=true' : '';
-      location.replaceState(null, '', '${location.pathname}$recovery#/');
+    final isRoute = hash.startsWith('#/');
+    if (location.search.isNotEmpty || (hash.isNotEmpty && !isRoute)) {
+      // Recovery intent was captured before SDK initialization. Remove the
+      // outer query as well, so subsequent hash navigation/reloads cannot
+      // revive a completed recovery flow or expose callback parameters.
+      location.replaceState(
+          null, '', '${location.pathname}${isRoute ? hash : '#/'}');
     }
     _ready = true;
   }

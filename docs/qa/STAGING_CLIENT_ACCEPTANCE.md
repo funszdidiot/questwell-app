@@ -6,7 +6,13 @@ packaging. It retains the compile-time profile selection, exact public anon key,
 artifact checks and retained candidate. Deployment and actual account acceptance
 must be recorded separately; source integration alone does not close this gate.
 
-Status: QA candidate, not deployed and not a release GO.
+## Historical PR #64 baseline
+
+The following describes the original retained-only artifact. PR #66 behavior is
+documented above and in STAGING_APP.md. Neither source change proves deployment
+or actual account acceptance.
+
+Status at PR #64: QA candidate, not deployed and not a release GO.
 
 The explicit `staging` profile selects the existing synthetic-only project
 `hpjzfytwivlpsdhiupyd` and proposed callback
