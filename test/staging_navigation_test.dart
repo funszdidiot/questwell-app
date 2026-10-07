@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:project_momentum/flutter_flow/nav/nav.dart';
+import 'package:project_momentum/startup/questwell_startup.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:project_momentum/config/questwell_staging_navigation.dart';
@@ -59,6 +62,32 @@ void main() {
     expect(navigation.getPath(), '/');
     navigation.finishCallback();
     expect(navigation.getPath(), '/questBoard');
+    expect(location.writes, isEmpty);
+  });
+
+  testWidgets('startup hands sanitized hash route to the actual app router',
+      (tester) async {
+    final location = FakeLocation(Uri.parse(
+      'https://funszdidiot.github.io/questwell-app/staging/#/questBoard',
+    ));
+    final navigation = QuestwellStagingNavigation(location);
+    GoRouter? router;
+    addTearDown(() => router?.dispose());
+    await tester.pumpWidget(QuestwellStartup(
+      initialize: () async {
+        navigation.finishCallback();
+      },
+      appBuilder: (_) {
+        router = createRouter(AppStateNotifier.instance,
+            initialLocation: navigation.getPath());
+        return Directionality(
+          textDirection: TextDirection.ltr,
+          child: Text(router!.routeInformationProvider.value.uri.path),
+        );
+      },
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('/questBoard'), findsOneWidget);
     expect(location.writes, isEmpty);
   });
 

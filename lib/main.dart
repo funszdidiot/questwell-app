@@ -95,7 +95,7 @@ void runQuestwell({
   );
   final startup = QuestwellStartup(
     initialize: bootstrap.run,
-    appBuilder: (_) => MyApp(),
+    appBuilder: (_) => MyApp(initialLocation: stagingNavigation?.getPath()),
   );
   runApp(environment.isStaging
       ? Directionality(
@@ -110,6 +110,9 @@ void runQuestwell({
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key, this.initialLocation});
+  final String? initialLocation;
+
   @override
   State<MyApp> createState() => _MyAppState();
 
@@ -145,7 +148,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
 
     _appStateNotifier = AppStateNotifier.instance;
-    _router = createRouter(_appStateNotifier);
+    _router = createRouter(_appStateNotifier,
+        initialLocation: widget.initialLocation);
     userStream = projectMomentumSupabaseUserStream()
       ..listen((user) {
         _appStateNotifier.update(user);

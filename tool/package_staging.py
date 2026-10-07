@@ -30,8 +30,9 @@ def package(root, revision):
         'project': 'hpjzfytwivlpsdhiupyd',
     }))
     manifest_path = source / 'manifest.json'
-    manifest = json.loads(manifest_path.read_text())
-    manifest.update(name='Questwell Staging', short_name='QW Staging')
+    manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
+    manifest.update(name='Questwell Staging', short_name='QW Staging',
+                    start_url='./', scope='./', display='standalone')
     manifest_path.write_text(json.dumps(manifest))
     shutil.copytree(source, target)
 

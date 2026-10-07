@@ -15,7 +15,6 @@ class PackageTest(unittest.TestCase):
         source.mkdir(parents=True)
         (source / 'index.html').write_text(f'<base href="{base}"><title> Questwell </title><script src="main.dart.js"></script>__QUESTWELL_BUILD__')
         (source / 'main.dart.js').write_text('staging compiled app')
-        (source / 'manifest.json').write_text('{}')
         live = root / 'build/web'
         live.mkdir()
         (live / 'main.dart.js').write_text('live compiled app')
@@ -31,6 +30,9 @@ class PackageTest(unittest.TestCase):
             self.assertEqual(json.loads((target / 'questwell-version.json').read_text())['environment'], 'staging')
             self.assertNotIn('__QUESTWELL_BUILD__', (target / 'index.html').read_text())
             self.assertIn('Questwell Staging', (target / 'index.html').read_text())
+            manifest = json.loads((target / 'manifest.json').read_text())
+            self.assertEqual(manifest['start_url'], './')
+            self.assertEqual(manifest['scope'], './')
             with self.assertRaises(ValueError):
                 module.package(root, 'a' * 40)
 
