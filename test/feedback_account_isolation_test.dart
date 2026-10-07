@@ -325,7 +325,7 @@ void main() {
         await tester.binding.setSurfaceSize(const Size(390, 850));
         addTearDown(() => tester.binding.setSurfaceSize(null));
         final pending = Completer<void>();
-        var sends = 0, clears = 0;
+        var sends = 0, clears = 0, closes = 0;
         await tester.pumpWidget(
           MaterialApp(
             home: Scaffold(
@@ -342,7 +342,7 @@ void main() {
                   clears++;
                   return phase == 'clear' ? pending.future : Future.value();
                 },
-                onClose: () {},
+                onClose: () => closes++,
               ),
             ),
           ),
@@ -355,6 +355,9 @@ void main() {
         await tester.pumpAndSettle();
         await session(other);
         await tester.pumpAndSettle();
+        await tester.tap(find.widgetWithText(TextButton, 'Close feedback'));
+        await tester.pumpAndSettle();
+        expect(closes, 1);
         pending.complete();
         await tester.pumpAndSettle();
         expect(sends, phase == 'save' ? 0 : 1);
@@ -529,4 +532,67 @@ void main() {
     },
     timeout: const Timeout(Duration(seconds: 45)),
   );
+  for (final scenario in ['disposed upload', 'uncertain insert']) {
+    testWidgets(
+        '$scenario preserves committed attachments and cleans only fresh unsent uploads',
+        (tester) async {
+      GoogleFonts.config.allowRuntimeFetching = false;
+      FilePicker.platform = ScreenshotPicker();
+      await tester.binding.setSurfaceSize(const Size(390, 850));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final pending = Completer<http.Response>();
+      await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+              body: QuestwellFeedbackForm(
+        initialDraft: draft,
+        ownerId: owner,
+        onSave: (_) async {},
+        onClear: () async {},
+        onSubmit: (_) async {},
+        onClose: () {},
+      ))));
+      await tester.pumpAndSettle();
+      final attach = find.text('Attach screenshots');
+      await tester.ensureVisible(attach);
+      await tester.pumpAndSettle();
+      await tester.tap(attach);
+      await tester.pumpAndSettle();
+      respond = (request) async {
+        if (request.method == 'DELETE') return json([]);
+        if (request.url.path.contains('/storage/')) {
+          if (scenario == 'disposed upload') return pending.future;
+          return json({'Key': 'beta-feedback/$owner/${draft.id}-0.png'});
+        }
+        return pending.future;
+      };
+      final send = find.widgetWithText(FilledButton, 'Send feedback');
+      await tester.ensureVisible(send);
+      await tester.pumpAndSettle();
+      await tester.tap(send);
+      await tester.pumpAndSettle();
+      if (scenario == 'disposed upload') {
+        await tester.pumpWidget(const SizedBox());
+        await tester.pumpAndSettle();
+        pending
+            .complete(json({'Key': 'beta-feedback/$owner/${draft.id}-0.png'}));
+      } else {
+        // The server may have committed before the response was lost.
+        pending.completeError(http.ClientException('synthetic response loss'));
+      }
+      await tester.pumpAndSettle();
+      expect(requests.where((r) => r.method == 'DELETE'),
+          scenario == 'disposed upload' ? hasLength(1) : isEmpty);
+      expect(
+          requests.where((r) => r.url.path.contains('/rest/v1/beta_feedback')),
+          scenario == 'disposed upload' ? isEmpty : hasLength(1));
+      if (scenario == 'uncertain insert') {
+        expect(find.textContaining('We could not confirm delivery.'),
+            findsOneWidget);
+        expect(find.text('NOTE RECEIVED'), findsNothing);
+      }
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpAndSettle();
+    }, timeout: const Timeout(Duration(seconds: 45)));
+  }
 }
