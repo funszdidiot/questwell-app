@@ -41,13 +41,22 @@ failed**, all eight failures in the new 14-case isolation test. This includes
 actual upload/insert requests from the switched-account screenshot form.
 Earlier tests-only attempts stopped at a redundant import and language-version
 formatting; both were corrected without weakening the gate. The final suite adds
-eight more cases (22 total) for lifecycle and review findings.
+eleven more cases (25 total) for lifecycle and review findings.
 
 Independent review also caught and corrected premature listener cancellation on
 failed close, and a new confirmed-delivery cleanup path on disposal. Regression
-cases require the stale view to close even when saving fails and require no
-remote deletion after a confirmed send on a disposed form. Auth-event identity
-latches even a rapid account change. Final green CI and delivery evidence belongs
+cases require the stale view to close even when saving fails or a send is still
+pending, and require no remote deletion after a confirmed send on a disposed form.
+Two older repository threads additionally required immediate invalidated closure
+and cleanup of a fresh completed upload abandoned before submission. Cleanup is
+now independent of widget mounting, but only for previously unattempted drafts
+before any insert begins and under the same owner. Confirmed/uncertain inserts
+and retried drafts retain attachments. Tests cover both cleanup and retention. Auth-event identity
+latches even a rapid account change. Tests-only head `39b39ea16165441c5ff8ba0098a929a0874c72ef`, focused job
+`112609313398` in run `37564591083`, reproduced those corrections with **286 passed
+and five failed** (three blocked-close cases and both cleanup cases). A further
+retry-origin case verifies that an attempted draft's files are never cleaned up
+as fresh abandoned uploads. Final green CI and delivery evidence belongs
 in PR #51 and the current FIX_PLAN; the reproduction is not a passing result.
 
 Local package resolution was stopped by automatic security review because it
@@ -58,11 +67,12 @@ resolved legacy allowances are removed. No diagnostic baseline changes.
 
 ## Remaining delivery limitation
 
-The pre-existing catch path can remove successfully uploaded screenshots after
-an uncertain insert, even if the report committed. Retrying a deterministic
-non-upsert upload may also encounter an existing object. This PR isolates account
-ownership; it does not claim retry-safe attachment delivery. That distinct
-reconciliation/cleanup contract remains required before flow 9 acceptance/GO.
+Cleanup after an uncertain insert is now suppressed because the report may have
+committed. Deterministic non-upsert retries can still collide with an existing
+object, and edited attachment selections need a full request-identity/reconciliation
+contract. This PR does not claim retry-safe attachment delivery. That distinct
+recovery work remains required before hosted flow 9 acceptance/GO. No existing
+hosted report or object is cleaned up by this implementation work.
 Hosted and signed native/device acceptance also remain open.
 
 Supabase's changelog and current Flutter upload documentation were checked on

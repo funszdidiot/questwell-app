@@ -532,7 +532,11 @@ void main() {
     },
     timeout: const Timeout(Duration(seconds: 45)),
   );
-  for (final scenario in ['disposed upload', 'uncertain insert']) {
+  for (final scenario in [
+    'disposed upload',
+    'uncertain insert',
+    'retried upload'
+  ]) {
     testWidgets(
         '$scenario preserves committed attachments and cleans only fresh unsent uploads',
         (tester) async {
@@ -544,7 +548,9 @@ void main() {
       await tester.pumpWidget(MaterialApp(
           home: Scaffold(
               body: QuestwellFeedbackForm(
-        initialDraft: draft,
+        initialDraft: scenario == 'retried upload'
+            ? draft.copyWith(attempted: true)
+            : draft,
         ownerId: owner,
         onSave: (_) async {},
         onClear: () async {},
@@ -560,7 +566,7 @@ void main() {
       respond = (request) async {
         if (request.method == 'DELETE') return json([]);
         if (request.url.path.contains('/storage/')) {
-          if (scenario == 'disposed upload') return pending.future;
+          if (scenario != 'uncertain insert') return pending.future;
           return json({'Key': 'beta-feedback/$owner/${draft.id}-0.png'});
         }
         return pending.future;
@@ -570,7 +576,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(send);
       await tester.pumpAndSettle();
-      if (scenario == 'disposed upload') {
+      if (scenario != 'uncertain insert') {
         await tester.pumpWidget(const SizedBox());
         await tester.pumpAndSettle();
         pending
@@ -584,7 +590,7 @@ void main() {
           scenario == 'disposed upload' ? hasLength(1) : isEmpty);
       expect(
           requests.where((r) => r.url.path.contains('/rest/v1/beta_feedback')),
-          scenario == 'disposed upload' ? isEmpty : hasLength(1));
+          scenario != 'uncertain insert' ? isEmpty : hasLength(1));
       if (scenario == 'uncertain insert') {
         expect(find.textContaining('We could not confirm delivery.'),
             findsOneWidget);

@@ -173,6 +173,14 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
   }
 
   Future<void> _close() async {
+    if (!_sameOwner) {
+      _saveTimer?.cancel();
+      // Account-invalidated UI must not wait for network or local storage.
+      // The callback/store remains bound to the original owner.
+      if (!_sent) unawaited(_persist());
+      if (mounted) widget.onClose();
+      return;
+    }
     if (_sending) return;
     _saveTimer?.cancel();
     if (!_sent) await _persist();
@@ -250,13 +258,14 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
   Future<void> _submit() async {
     if (_sending || _sent || !_form.currentState!.validate()) return;
     _saveTimer?.cancel();
+    final canCleanFreshUploads = !_draft.attempted;
     setState(() {
       _sending = true;
       _error = null;
       _draft = _draft.copyWith(attempted: true);
     });
     final uploadedPaths = <String>[];
-    var deliveryConfirmed = false;
+    var submissionStarted = false;
     try {
       _requireOwner();
       await _persist();
@@ -280,15 +289,16 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
           );
           _requireOwner();
         }
+        submissionStarted = true;
         await QuestwellFeedbackService.submit(
           _draft,
           ownerId,
           attachmentPaths: uploadedPaths,
         );
       } else {
+        submissionStarted = true;
         await widget.onSubmit(_draft);
       }
-      deliveryConfirmed = true;
       _requireOwner();
       try {
         await widget.onClear();
@@ -302,8 +312,11 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
       _requireOwner();
       if (mounted) setState(() => _sent = true);
     } catch (error) {
-      if (mounted &&
-          !deliveryConfirmed &&
+      // Once an insert was attempted, a lost response may hide a commit.
+      // Retried draft IDs may also refer to an earlier committed report.
+      // Only a fresh request's uploads before its first insert are removable.
+      if (canCleanFreshUploads &&
+          !submissionStarted &&
           _sameOwner &&
           uploadedPaths.isNotEmpty) {
         try {
