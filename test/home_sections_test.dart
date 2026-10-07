@@ -3,8 +3,34 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../lib/widgets/questwell_home_sections.dart';
+import '../lib/preview/home_sections_review.dart';
 
 void main() {
+  for (final viewport in [const Size(320, 740), const Size(1440, 1000)]) {
+    testWidgets('Composed Hearth scrolls and toggles at $viewport',
+        (tester) async {
+      GoogleFonts.config.allowRuntimeFetching = false;
+      await tester.binding.setSurfaceSize(viewport);
+      tester.platformDispatcher.textScaleFactorTestValue =
+          viewport.width == 320 ? 2 : 1;
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      await tester.pumpWidget(const HomeSectionsReviewApp());
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(tester.takeException(), isNull);
+      await tester.ensureVisible(find.byType(Switch));
+      await tester.tap(find.byType(Switch));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.text('ONE SMALL WIN'), findsOneWidget);
+      expect(tester.widget<Switch>(find.byType(Switch)).value, isTrue);
+      await tester.ensureVisible(find.text('Customize adventurer'));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.text('35 XP to level 4'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+    });
+  }
+
   for (final width in [320.0, 390.0, 430.0, 1440.0]) {
     testWidgets('Hearth canvas bounds room and content at $width px',
         (tester) async {

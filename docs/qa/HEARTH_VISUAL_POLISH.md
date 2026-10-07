@@ -27,9 +27,11 @@ the SDK and official Flutter documentation. Large text is never clamped.
 
 ## Verification
 
-Six added tests cover phone/wide bounds, 2x text fallback, remaining quest
-visibility and destination callbacks. Dart formatting passed using the bundled
-SDK formatter and the existing package language version (3.0). CI remains pending.
+Eight added tests cover phone/wide bounds, 2x text fallback, remaining quest
+visibility and destination callbacks, plus actual composed Hearth scrolling
+and Campfire toggling at 320 px/2x text and 1440 px/1x. Dart formatting passed using the bundled
+SDK formatter and the existing package language version (3.0). CI remains pending. Independent AI source review found no concrete blocker in
+the initial patch; follow-up review of composition tests is pending.
 Local Flutter startup was rejected by automatic approval review because it
 attempted a cloud metadata endpoint; it was not retried or bypassed.
 
