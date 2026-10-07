@@ -63,6 +63,14 @@ jobs:
       - name: Add SPA fallback
         run: cp build/web/index.html build/web/404.html
 
+      - name: Build isolated staging app
+        env:
+          QUESTWELL_SENTRY_DSN: https://c744c51f4c910e471c49f6d31bcf82b8@o4512216559190016.ingest.us.sentry.io/4512216571379712
+        run: flutter build web --release --dart-define=QUESTWELL_ENVIRONMENT=staging --target lib/main_monitored_preview.dart --base-href "/questwell-app/staging/" --output=build/staging --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA" --dart-define=QUESTWELL_SENTRY_DSN="$QUESTWELL_SENTRY_DSN"
+
+      - name: Package separate staging bundle
+        run: python3 tool/package_staging.py
+
       - name: Configure Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
 
