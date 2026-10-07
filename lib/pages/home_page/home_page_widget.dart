@@ -24,7 +24,18 @@ import 'home_page_model.dart';
 export 'home_page_model.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({super.key});
+  const HomePageWidget({
+    super.key,
+    this.loadAppearance = QuestwellCosmeticService.load,
+    this.loadMomentum = QuestwellChronicleService.load,
+    this.loadTasks = QuestwellOpenTaskList.loadCurrent,
+    this.completeTask = QuestwellTaskService.completeTask,
+  });
+
+  final Future<QuestwellCosmeticsSnapshot> Function() loadAppearance;
+  final Future<ChronicleSnapshot> Function() loadMomentum;
+  final Future<List<TasksRow>> Function() loadTasks;
+  final Future<QuestwellTaskCompletionResult> Function(String) completeTask;
 
   static String routeName = 'HomePage';
   static String routePath = '/homePage';
@@ -54,7 +65,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   void _loadHomeData() {
     _loadCosmetics();
-    _momentumFuture = QuestwellChronicleService.load();
+    _momentumFuture = widget.loadMomentum();
+    // Keep early refresh errors observed until FutureBuilder attaches.
+    // The same future still exposes its error to the momentum retry UI.
+    _momentumFuture.ignore();
   }
 
   void _cosmeticsChanged() {
@@ -62,7 +76,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   void _loadCosmetics() {
-    final request = QuestwellCosmeticService.load();
+    final request = widget.loadAppearance();
     _homeSnapshotFuture = request;
     _homeSnapshotFuture.then((data) {
       if (!mounted || !identical(request, _homeSnapshotFuture)) return;
@@ -83,8 +97,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     if (_onboardingSession?.ownerId != currentUserUid) {
       _onboardingSession = QuestwellCosmeticService.newOnboardingSession();
     }
-    final session = _onboardingSession ??=
-        QuestwellCosmeticService.newOnboardingSession();
+    final session =
+        _onboardingSession ??= QuestwellCosmeticService.newOnboardingSession();
     return session.finish(starterKey);
   }
 
@@ -188,20 +202,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
     try {
       final profile = (await _homeSnapshotFuture).profile;
-      final reward = await QuestwellTaskService.completeTask(taskId);
+      final reward = await widget.completeTask(taskId);
 
       if (!mounted) return;
 
       final previousXp = reward.totalXp - reward.xpAwarded;
-      final previousLevel = QuestwellProgression.levelForXp(previousXp, legacyOffset: profile.levelXpOffset);
-      final newLevel = QuestwellProgression.levelForXp(reward.totalXp, legacyOffset: profile.levelXpOffset);
+      final previousLevel = QuestwellProgression.levelForXp(previousXp,
+          legacyOffset: profile.levelXpOffset);
+      final newLevel = QuestwellProgression.levelForXp(reward.totalXp,
+          legacyOffset: profile.levelXpOffset);
       final leveledUp = newLevel > previousLevel;
       final firstWin = previousXp == 0 && reward.xpAwarded > 0;
 
       setState(_loadHomeData);
 
-      if (await showQuestwellMilestones(context, previousLevel: previousLevel, level: newLevel,
-          xpAwarded: reward.xpAwarded, coinsAwarded: reward.coinsAwarded)) {
+      if (await showQuestwellMilestones(context,
+          previousLevel: previousLevel,
+          level: newLevel,
+          xpAwarded: reward.xpAwarded,
+          coinsAwarded: reward.coinsAwarded)) {
         if (mounted) setState(_loadHomeData);
         return;
       }
@@ -291,18 +310,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             ),
             actions: [
               TextButton(
-                onPressed: () =>
-                    Navigator.of(dialogContext).pop('chronicle'),
+                onPressed: () => Navigator.of(dialogContext).pop('chronicle'),
                 child: const Text('See Chronicle'),
               ),
               TextButton(
-                onPressed: () =>
-                    Navigator.of(dialogContext).pop('add'),
+                onPressed: () => Navigator.of(dialogContext).pop('add'),
                 child: const Text('Add Next Quest'),
               ),
               FilledButton(
-                onPressed: () =>
-                    Navigator.of(dialogContext).pop('continue'),
+                onPressed: () => Navigator.of(dialogContext).pop('continue'),
                 child: Text(
                   firstWin
                       ? 'Keep Going'
@@ -324,12 +340,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         await context.pushNamed(ChroniclePageWidget.routeName);
         if (mounted) setState(_loadHomeData);
       }
-    } catch (error) {
+    } catch (_) {
       if (!mounted) return;
-
+      // A rejected/lost reply can follow a committed completion. Reconcile
+      // server state and totals without sending the completion again.
+      setState(_loadHomeData);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Could not complete this quest. Please try again.'),
+        const SnackBar(
+          content: Text(
+            'Completion was not confirmed. Check the refreshed board before trying again.',
+          ),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -343,7 +363,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
-    final openTasks = QuestwellOpenTaskList.loadCurrent();
+    final openTasks = widget.loadTasks();
 
     final overview = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -391,9 +411,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
             final data = snapshot.data!;
             final profile = data.profile;
-            final equipped = data.cosmetics
-                .where((item) => item.equipped)
-                .toList();
+            final equipped =
+                data.cosmetics.where((item) => item.equipped).toList();
             final classMastered = data.cosmetics.any(
               (item) =>
                   item.requiredArchetype == profile.adventurerArchetype &&
@@ -462,19 +481,20 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       Widget nextWin, {
       List<Widget> remainingQuests = const [],
       bool emphasizeAddQuest = false,
-    }) => QuestwellHomeFocusLayout(
-      nextWin: nextWin,
-      overview: overview,
-      remainingQuests: remainingQuests,
-      emphasizeAddQuest: emphasizeAddQuest,
-      onOpen: (destination) async {
-        final route = destination == 'quests'
-            ? QuestBoardPageWidget.routeName
-            : ExpeditionPageWidget.routeName;
-        await context.pushNamed(route);
-        if (mounted) setState(_loadHomeData);
-      },
-    );
+    }) =>
+        QuestwellHomeFocusLayout(
+          nextWin: nextWin,
+          overview: overview,
+          remainingQuests: remainingQuests,
+          emphasizeAddQuest: emphasizeAddQuest,
+          onOpen: (destination) async {
+            final route = destination == 'quests'
+                ? QuestBoardPageWidget.routeName
+                : ExpeditionPageWidget.routeName;
+            await context.pushNamed(route);
+            if (mounted) setState(_loadHomeData);
+          },
+        );
 
     return GestureDetector(
       onTap: () {
@@ -506,13 +526,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       final data = snapshot.data;
                       final archetype =
                           data?.profile.adventurerArchetype ?? 'wanderer';
-                      final equipped =
-                          data?.cosmetics
+                      final equipped = data?.cosmetics
                               .where((item) => item.equipped)
                               .toList() ??
                           const <QuestwellCosmetic>[];
-                      final mastered =
-                          data?.cosmetics.any(
+                      final mastered = data?.cosmetics.any(
                             (item) =>
                                 item.requiredArchetype == archetype &&
                                 item.unlockMethod == 'class_mastery' &&
@@ -614,7 +632,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         );
                       }
 
-                      if (!snapshot.hasData) {
+                      if (snapshot.connectionState != ConnectionState.done ||
+                          !snapshot.hasData) {
                         return focusLayout(
                           const Padding(
                             padding: EdgeInsets.all(28),
@@ -626,9 +645,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       final tasks = snapshot.data!;
                       final visibleTasks =
                           QuestwellTaskService.visibleHomeTasks(
-                            tasks,
-                            campfireMode: _campfireMode,
-                          );
+                        tasks,
+                        campfireMode: _campfireMode,
+                      );
 
                       if (visibleTasks.isEmpty) {
                         return focusLayout(
@@ -651,11 +670,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       return focusLayout(
                         card(0),
                         remainingQuests: [
-                          for (
-                            var index = 1;
-                            index < visibleTasks.length;
-                            index++
-                          ) ...[
+                          for (var index = 1;
+                              index < visibleTasks.length;
+                              index++) ...[
                             card(index),
                             if (index != visibleTasks.length - 1)
                               const SizedBox(height: 10),
@@ -877,7 +894,8 @@ class _RewardChip extends StatelessWidget {
                   ? const QuestwellCurrencyPixelIcon(kind: 'xp', size: 17)
                   : Icon(icon, size: 16, color: theme.primary),
           const SizedBox(width: 6),
-          Flexible(child: Text(
+          Flexible(
+              child: Text(
             label,
             style: theme.labelMedium.override(
               font: GoogleFonts.roboto(

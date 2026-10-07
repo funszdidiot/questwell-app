@@ -1,7 +1,8 @@
 {
   "Rewards": [
     "lib/services/questwell_task_service.dart",
-    "lib/services/questwell_boss_service.dart"
+    "lib/services/questwell_boss_service.dart",
+    "lib/services/questwell_reward_response.dart"
   ],
   "Purchases": [
     "lib/services/questwell_cosmetic_service.dart",
