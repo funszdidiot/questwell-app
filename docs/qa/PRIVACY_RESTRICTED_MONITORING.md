@@ -57,3 +57,31 @@ Current access blockers: automatic approval review denied the Sentry browser
 origin, stating no trusted authorization for the private account. Do not work
 around that block. It also blocked local Flutter setup due to a possible cloud
 metadata request. No live event, dashboard receipt or local Flutter pass is claimed.
+
+
+## Development activation — October 7, 2026
+
+The founder directed completion of approved gates without repeated approval.
+Sentry browser access now works. The exact existing public ingest DSN was read
+from Questwell project 4512216571379712 in Momentum Labs; no new key or account
+permission was created. Project settings still mandate scrubbing and prevent IP
+storage; source fetching remains off. No SDK or dependency versions change.
+
+Only `questwell-preview.yml` supplies that public DSN. Normal/native/PR builds
+remain disabled without configuration. Preview `?review=monitoring-check` sends
+a fixed probe, then deliberately raises an error inside the real backend startup
+try/catch before Supabase is initialized. The normal safe startup failure screen
+is expected. No sign-in, account reads/writes, user text or screenshot is used.
+This is controlled error-delivery evidence, not evidence of a spontaneous crash.
+The regression exercises that startup path with the actual Sentry envelope and
+an in-memory transport; its pending CI result must be recorded separately.
+
+Verification: open the delivered preview check once, then inspect both `probe`
+and `backendStartup` in Sentry. Match exact release revision, live_beta environment,
+web platform, event timestamps and inspect event data for no account/request/
+exception/breadcrumb/attachment payloads. SDK transport acceptance alone is not
+receipt. Standard preview loading must still show normal startup/sign-in.
+
+Rollback activation: remove the workflow DSN env/build define and rebuild the
+development preview. Remove the preview check branch if no longer needed.
+No production promotion, database or auth configuration change is included.
