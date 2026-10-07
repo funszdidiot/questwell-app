@@ -19,7 +19,12 @@ class QuestwellHomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       const Row(mainAxisSize: MainAxisSize.min, children: [
-        Flexible(child: QuestwellBrandWordmark(showSubtitle: false)),
+        // Fit the complete decorative logo; surrounding UI keeps its text scale.
+        Flexible(
+            child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: QuestwellBrandWordmark(showSubtitle: false))),
         SizedBox(width: 3),
         QuestwellWordmarkSparkles(),
       ]);
