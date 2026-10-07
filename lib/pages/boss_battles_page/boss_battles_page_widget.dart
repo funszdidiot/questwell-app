@@ -23,8 +23,10 @@ class BossBattlesPageWidget extends StatefulWidget {
     this.loadAppearance = QuestwellCosmeticService.load,
     this.createBattle = QuestwellBossService.createBattle,
     this.currentOwner = QuestwellBossService.currentOwner,
+    this.completeStep = QuestwellBossService.completeStep,
   });
 
+  final Future<BossStepCompletionResult> Function(String) completeStep;
   final String? Function() currentOwner;
   final Future<List<QuestwellBossBattle>> Function() loadBattles;
   final Future<QuestwellCosmeticsSnapshot> Function() loadAppearance;
@@ -34,8 +36,7 @@ class BossBattlesPageWidget extends StatefulWidget {
     String bossType,
     String? expectedOwnerId,
     String? requestId,
-  })
-  createBattle;
+  }) createBattle;
 
   static String routeName = 'BossBattlesPage';
   static String routePath = '/boss-battles';
@@ -61,6 +62,9 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
 
   void _refresh() {
     _future = widget.loadBattles();
+    // FutureBuilder attaches on the next frame. Observe early errors too;
+    // the original future still carries its failure to the board's retry UI.
+    _future.ignore();
   }
 
   Future<void> _loadCampfireMode() async {
@@ -86,8 +90,8 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
     setState(() => _busyStepId = step.id);
 
     try {
-      final profile = (await QuestwellCosmeticService.load()).profile;
-      final result = await QuestwellBossService.completeStep(step.id);
+      final profile = (await widget.loadAppearance()).profile;
+      final result = await widget.completeStep(step.id);
       if (!mounted) return;
       setState(_refresh);
 
@@ -143,9 +147,15 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
       }
     } catch (_) {
       if (!mounted) return;
+      // The server may have completed the step even though its reply was
+      // unconfirmed. Reload instead of inviting a blind repeated mutation.
+      setState(_refresh);
+      _loadCampfireMode();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Could not complete this boss step. Please try again.'),
+          content: Text(
+            'Completion was not confirmed. Check the refreshed board before trying again.',
+          ),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -276,8 +286,8 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                     onPressed: submitting || uncertain
                         ? null
                         : () => setSheetState(() {
-                            stepControllers.add(TextEditingController());
-                          }),
+                              stepControllers.add(TextEditingController());
+                            }),
                     icon: const Icon(Icons.add),
                     label: const Text('Add step'),
                   ),
@@ -305,7 +315,8 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
 
                             if (title.isEmpty || steps.length < 2) {
                               setSheetState(
-                                () => errorMessage = 'Add a boss title and at least two attack steps.',
+                                () => errorMessage =
+                                    'Add a boss title and at least two attack steps.',
                               );
                               return;
                             }
@@ -360,8 +371,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                               }
                             } catch (error) {
                               accountChanged = widget.currentOwner() != owner;
-                              uncertain =
-                                  uncertain ||
+                              uncertain = uncertain ||
                                   error is QuestwellNetworkException;
                               if (uncertain) _creationNeedsRefresh = true;
                               if (!context.mounted) {
@@ -380,8 +390,8 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                 errorMessage = accountChanged
                                     ? 'Your account changed. Close this draft and start again.'
                                     : error is QuestwellNetworkException
-                                    ? 'Your battle may already exist. Retry this unchanged draft safely, or close and check your battles.'
-                                    : 'Could not start this Boss Battle. Your draft is saved here. Please try again.';
+                                        ? 'Your battle may already exist. Retry this unchanged draft safely, or close and check your battles.'
+                                        : 'Could not start this Boss Battle. Your draft is saved here. Please try again.';
                               });
                             }
                           },
@@ -390,10 +400,10 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                       accountChanged
                           ? 'Account changed'
                           : uncertain
-                          ? 'Retry this battle'
-                          : submitting
-                          ? 'Starting…'
-                          : 'Start Boss Battle',
+                              ? 'Retry this battle'
+                              : submitting
+                                  ? 'Starting…'
+                                  : 'Start Boss Battle',
                     ),
                   ),
                   if (uncertain || accountChanged)
@@ -435,46 +445,49 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    bottomNavigationBar: const QuestwellAppNavigation(
-      current: QuestwellDestination.bosses,
-    ),
-    backgroundColor: const Color(0xFF111827),
-    body: SafeArea(
-      child: FutureBuilder<List<QuestwellBossBattle>>(
-        future: _future,
-        builder: (context, snapshot) => QuestwellBossBoard(
-          battles: snapshot.data ?? const [],
-          initialBattleId: _createdBattleId,
-          unlockProgress: QuestwellBossUnlockProgress(
-            level: _appearance?.profile.level ?? 1,
-            totalXp: _appearance?.profile.totalXp ?? 0,
-            offset: _appearance?.profile.levelXpOffset ?? 0,
-            known: _appearance != null,
-          ),
-          loading: !snapshot.hasData && !snapshot.hasError,
-          failed: snapshot.hasError,
-          busyStepId: _busyStepId,
-          campfire: _campfireMode,
-          archetype: _appearance?.profile.adventurerArchetype ?? 'wanderer',
-          body: _appearance?.profile.avatarBodyType ?? 'neutral',
-          equipment: {
-            for (final item in _appearance?.cosmetics ?? <QuestwellCosmetic>[])
-              if (item.equipped) item.renderKey: item.slug,
-          },
-          onHome: () => context.goNamed(HomePageWidget.routeName),
-          onCreate: _showCreateBattle,
-          onAttack: _completeStep,
-          onRetry: () => setState(_refresh),
-          onRefresh: () async {
-            setState(_refresh);
-            try {
-              await Future.wait([_future, _loadCampfireMode()]);
-            } catch (_) {
-              /* FutureBuilder displays the retry state. */
-            }
-          },
+        bottomNavigationBar: const QuestwellAppNavigation(
+          current: QuestwellDestination.bosses,
         ),
-      ),
-    ),
-  );
+        backgroundColor: const Color(0xFF111827),
+        body: SafeArea(
+          child: FutureBuilder<List<QuestwellBossBattle>>(
+            future: _future,
+            builder: (context, snapshot) => QuestwellBossBoard(
+              battles: snapshot.connectionState == ConnectionState.done
+                  ? snapshot.data ?? const []
+                  : const [],
+              initialBattleId: _createdBattleId,
+              unlockProgress: QuestwellBossUnlockProgress(
+                level: _appearance?.profile.level ?? 1,
+                totalXp: _appearance?.profile.totalXp ?? 0,
+                offset: _appearance?.profile.levelXpOffset ?? 0,
+                known: _appearance != null,
+              ),
+              loading: snapshot.connectionState != ConnectionState.done,
+              failed: snapshot.hasError,
+              busyStepId: _busyStepId,
+              campfire: _campfireMode,
+              archetype: _appearance?.profile.adventurerArchetype ?? 'wanderer',
+              body: _appearance?.profile.avatarBodyType ?? 'neutral',
+              equipment: {
+                for (final item
+                    in _appearance?.cosmetics ?? <QuestwellCosmetic>[])
+                  if (item.equipped) item.renderKey: item.slug,
+              },
+              onHome: () => context.goNamed(HomePageWidget.routeName),
+              onCreate: _showCreateBattle,
+              onAttack: _completeStep,
+              onRetry: () => setState(_refresh),
+              onRefresh: () async {
+                setState(_refresh);
+                try {
+                  await Future.wait([_future, _loadCampfireMode()]);
+                } catch (_) {
+                  /* FutureBuilder displays the retry state. */
+                }
+              },
+            ),
+          ),
+        ),
+      );
 }
