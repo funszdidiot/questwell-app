@@ -27,13 +27,14 @@ class ScreenshotPicker extends FilePicker {
     bool withReadStream = false,
     bool lockParentWindow = false,
     bool readSequential = false,
-  }) async => FilePickerResult([
-    PlatformFile(
-      name: 'synthetic.png',
-      size: 3,
-      bytes: Uint8List.fromList([1, 2, 3]),
-    ),
-  ]);
+  }) async =>
+      FilePickerResult([
+        PlatformFile(
+          name: 'synthetic.png',
+          size: 3,
+          bytes: Uint8List.fromList([1, 2, 3]),
+        ),
+      ]);
 }
 
 void main() {
@@ -44,16 +45,16 @@ void main() {
   late Future<http.Response> Function(http.Request) respond;
 
   http.Response json(Object? data, {int status = 200}) => http.Response(
-    jsonEncode(data),
-    status,
-    headers: {'content-type': 'application/json'},
-  );
+        jsonEncode(data),
+        status,
+        headers: {'content-type': 'application/json'},
+      );
   Map<String, dynamic> body(http.Request request) =>
       jsonDecode(request.body) as Map<String, dynamic>;
   Future<void> session(String uid) async {
     final expiry =
         DateTime.now().add(const Duration(hours: 1)).millisecondsSinceEpoch ~/
-        1000;
+            1000;
     final payload = base64Url
         .encode(utf8.encode(jsonEncode({'sub': uid, 'exp': expiry})))
         .replaceAll('=', '');
@@ -127,11 +128,11 @@ void main() {
   );
   final stale = throwsA(isA<QuestwellFeedbackException>());
   Future<String> upload() => QuestwellFeedbackService.uploadScreenshot(
-    ownerId: owner,
-    feedbackId: draft.id,
-    bytes: Uint8List.fromList([1, 2, 3]),
-    mimeType: 'image/png',
-  );
+        ownerId: owner,
+        feedbackId: draft.id,
+        bytes: Uint8List.fromList([1, 2, 3]),
+        mimeType: 'image/png',
+      );
 
   test('same-owner report writes once with its stable request ID', () async {
     respond = (request) async {
@@ -226,8 +227,8 @@ void main() {
   });
 
   test('same-owner upload returns the owner-scoped path', () async {
-    respond = (_) async =>
-        json({'Key': 'beta-feedback/$owner/${draft.id}-0.png'});
+    respond =
+        (_) async => json({'Key': 'beta-feedback/$owner/${draft.id}-0.png'});
     expect(await upload(), '$owner/${draft.id}-0.png');
     expect(requests, hasLength(1));
   });
