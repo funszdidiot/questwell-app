@@ -399,7 +399,6 @@
     "lib/startup/questwell_startup.dart": "7b133e980166d97fcd7a6a8b65db6374341d79f300b1fa035b0ecca0bb9d04dd",
     "lib/widgets/alchemist_underlayer_clip.dart": "4d567080b3b1b88e68439f8a13998e26655eb49dec8507323b5d84df688a6b58",
     "lib/widgets/guardian_underlayer_clip.dart": "f2609e0846628a3c0fe9bf6805a1d087a6b24c062c150de1efd845c16689f873",
-    "lib/widgets/questwell_adventurer_view.dart": "a10bbaa675b665db928b6b47e4c4fd1cba69ed7da66bd0813a0c30fdcf422baa",
     "lib/widgets/questwell_annotated_grimoire.dart": "8b3fa44dc59a9b05de46a539d928f29ba6e788de843d30ee923ca3e549fa6dd8",
     "lib/widgets/questwell_app_navigation.dart": "44586766bd7caf80519b688d9fc427a4075fddfb0712fa5214af1753131f8c7a",
     "lib/widgets/questwell_autumn_lantern.dart": "8bc8bb73bb145da237e1b5bb1ff7427b5ef5d79249a18598a9df1ab3d1629ce8",
