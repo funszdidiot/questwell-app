@@ -13,9 +13,21 @@ abstract final class QuestwellFeedbackService {
   static const _bucket = 'beta-feedback';
   static const maxAttachmentBytes = 5 * 1024 * 1024;
   static const maxAttachments = 5;
-  static const allowedAttachmentTypes = {'image/png', 'image/jpeg', 'image/webp'};
+  static const allowedAttachmentTypes = {
+    'image/png',
+    'image/jpeg',
+    'image/webp',
+  };
 
   static String? get userId => SupaFlow.client.auth.currentUser?.id;
+
+  static void _requireOwner(String? ownerId) {
+    if (ownerId == null || ownerId.isEmpty || userId != ownerId) {
+      throw const QuestwellFeedbackException(
+        'Your account changed. Close this note and reopen feedback.',
+      );
+    }
+  }
 
   static Future<String> uploadScreenshot({
     required String ownerId,
@@ -24,51 +36,99 @@ abstract final class QuestwellFeedbackService {
     required String mimeType,
     int index = 0,
   }) async {
-    if (userId != ownerId) {
-      throw const QuestwellFeedbackException('Please sign in to the same account before uploading.');
-    }
+    _requireOwner(ownerId);
     if (bytes.isEmpty || bytes.length > maxAttachmentBytes) {
-      throw const QuestwellFeedbackException('Screenshots must be 5 MB or smaller.');
+      throw const QuestwellFeedbackException(
+        'Screenshots must be 5 MB or smaller.',
+      );
     }
     if (!allowedAttachmentTypes.contains(mimeType)) {
-      throw const QuestwellFeedbackException('Use a PNG, JPEG, or WebP screenshot.');
+      throw const QuestwellFeedbackException(
+        'Use a PNG, JPEG, or WebP screenshot.',
+      );
     }
-    final extension = mimeType == 'image/png' ? 'png' : mimeType == 'image/webp' ? 'webp' : 'jpg';
+    final extension = mimeType == 'image/png'
+        ? 'png'
+        : mimeType == 'image/webp'
+            ? 'webp'
+            : 'jpg';
     final path = '$ownerId/$feedbackId-$index.$extension';
-    await QuestwellNetwork.write(() => SupaFlow.client.storage.from(_bucket)
-      .uploadBinary(path, bytes, fileOptions: FileOptions(contentType: mimeType, upsert: false)));
+    await QuestwellNetwork.write(() {
+      _requireOwner(ownerId);
+      return SupaFlow.client.storage.from(_bucket).uploadBinary(
+            path,
+            bytes,
+            fileOptions: FileOptions(contentType: mimeType, upsert: false),
+          );
+    });
+    _requireOwner(ownerId);
     return path;
   }
 
   static Future<void> removeScreenshots(List<String> paths) async {
     if (paths.isEmpty) return;
-    await QuestwellNetwork.write(() => SupaFlow.client.storage.from(_bucket).remove(paths));
+    final ownerId = userId;
+    _requireOwner(ownerId);
+    if (paths.any((path) => !path.startsWith('$ownerId/'))) {
+      throw const QuestwellFeedbackException(
+        'Screenshots belong to a different account.',
+      );
+    }
+    await QuestwellNetwork.write(() {
+      _requireOwner(ownerId);
+      return SupaFlow.client.storage.from(_bucket).remove(paths);
+    });
+    _requireOwner(ownerId);
   }
 
-  static Future<void> submit(QuestwellFeedbackDraft draft, String ownerId, {List<String> attachmentPaths = const []}) async {
-    if (userId != ownerId) {
-      throw const QuestwellFeedbackException('Please sign in to the same account before sending this draft.');
-    }
-    final row = {...draft.toJson(), 'user_id': ownerId, 'attachment_path': attachmentPaths.firstOrNull, 'attachment_paths': attachmentPaths}..remove('attempted');
-    for (final field in ['goal', 'message', 'expected', 'steps', 'reply_email', 'device']) {
+  static Future<void> submit(
+    QuestwellFeedbackDraft draft,
+    String ownerId, {
+    List<String> attachmentPaths = const [],
+  }) async {
+    _requireOwner(ownerId);
+    final row = {
+      ...draft.toJson(),
+      'user_id': ownerId,
+      'attachment_path': attachmentPaths.firstOrNull,
+      'attachment_paths': attachmentPaths,
+    }..remove('attempted');
+    for (final field in [
+      'goal',
+      'message',
+      'expected',
+      'steps',
+      'reply_email',
+      'device',
+    ]) {
       row[field] = (row[field] as String).trim();
     }
     try {
       await QuestwellNetwork.write(() async {
+        _requireOwner(ownerId);
         try {
           await SupaFlow.client.from('beta_feedback').insert(row);
         } on PostgrestException catch (error) {
+          _requireOwner(ownerId);
           if (error.code != '23505') rethrow;
           // A previous timed-out request may have succeeded. Confirm ownership
           // before treating this exact request ID as already received.
-          final existing = await SupaFlow.client.from('beta_feedback').select('id')
-            .eq('id', draft.id).eq('user_id', ownerId).maybeSingle();
+          final existing = await SupaFlow.client
+              .from('beta_feedback')
+              .select('id')
+              .eq('id', draft.id)
+              .eq('user_id', ownerId)
+              .maybeSingle();
+          _requireOwner(ownerId);
           if (existing == null) rethrow;
         }
       });
+      _requireOwner(ownerId);
     } on PostgrestException catch (error) {
       if (error.message.contains('feedback_rate_limit')) {
-        throw const QuestwellFeedbackException('You have sent several notes recently. Your note is still here; please try again in an hour.');
+        throw const QuestwellFeedbackException(
+          'You have sent several notes recently. Your note is still here; please try again in an hour.',
+        );
       }
       rethrow;
     }
