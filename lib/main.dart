@@ -28,10 +28,10 @@ void main() {
     platform: kIsWeb
         ? MonitoringPlatform.web
         : defaultTargetPlatform == TargetPlatform.android
-        ? MonitoringPlatform.android
-        : defaultTargetPlatform == TargetPlatform.iOS
-        ? MonitoringPlatform.ios
-        : MonitoringPlatform.desktop,
+            ? MonitoringPlatform.android
+            : defaultTargetPlatform == TargetPlatform.iOS
+                ? MonitoringPlatform.ios
+                : MonitoringPlatform.desktop,
   );
   final previousFlutterError = FlutterError.onError;
   FlutterError.onError = (details) {
@@ -93,12 +93,10 @@ class _MyAppState extends State<MyApp> {
     return matchList.uri.path;
   }
 
-  List<String> getRouteStack() => _router
-      .routerDelegate
-      .currentConfiguration
-      .matches
-      .map((e) => getRoute(e))
-      .toList();
+  List<String> getRouteStack() =>
+      _router.routerDelegate.currentConfiguration.matches
+          .map((e) => getRoute(e))
+          .toList();
 
   late Stream<BaseAuthUser> userStream;
   StreamSubscription<AuthState>? _recoverySubscription;
@@ -144,9 +142,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void setThemeMode(ThemeMode mode) => safeSetState(() {
-    _themeMode = mode;
-    FlutterFlowTheme.saveThemeMode(mode);
-  });
+        _themeMode = mode;
+        FlutterFlowTheme.saveThemeMode(mode);
+      });
 
   @override
   Widget build(BuildContext context) {

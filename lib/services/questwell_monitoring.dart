@@ -26,8 +26,7 @@ class QuestwellMonitoring {
     // No implicit live destination, no test traffic, no arbitrary metadata.
     if (!_validDsn(dsn) ||
         !RegExp(r'^[0-9a-f]{7,40}$').hasMatch(build) ||
-        !{'live_beta', 'staging'}.contains(environment))
-      return;
+        !{'live_beta', 'staging'}.contains(environment)) return;
     final settings = options ?? SentryOptions();
     settings
       ..dsn = dsn
