@@ -8,6 +8,27 @@ Questwell is a cozy fantasy productivity game with a high-detail 64-bit-era RPG 
 
 Typography and UI must remain consistent with the established Questwell system. Avoid visual drift between Hearth, Adventurer, Market, Boss Battles, Chronicle and secondary modes.
 
+## Founder clarification — October 7, 2026
+
+Tanya: “I want the polished avatars but in a 90s 64 bit world- I want the
+nostalgia but in an intentional way,” followed by “Let’s work on it.”
+
+Retain the exact polished, locked avatar artwork. The nostalgic environment and
+interface should support those characters through consistent material depth,
+lighting, perspective and deliberate pixel accents. Do not pixelate, regenerate,
+reshape or blur the locked characters to force a match. This clarification
+supersedes any earlier wording interpreted as requiring avatar restylization.
+World/decor production still follows the existing 64-bit-era art quality and
+canonical slot/scale rules. In-world artwork and small inventory icons retain
+their established distinct resolution roles.
+
+The generated Hearth concept establishes a direction to develop, not a replacement
+sprite sheet, exact mobile layout, new room template or final art lock. Begin with
+shared timber/brass Hearth panels, evergreen actions and coordinated Campfire
+controls. Preserve the wordmark, pixel headings and readable Roboto body text.
+Keep decoration outside text and hit targets. Validate at 320/390/430 px, desktop
+and enlarged text before extending this material language to other screens.
+
 ## Avatar architecture
 
 Three selectable foundations exist: female, male and gender neutral. They are paper dolls.

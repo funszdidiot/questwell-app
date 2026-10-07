@@ -4,6 +4,7 @@ import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import 'questwell_wordmark_sparkles.dart';
 import 'questwell_class_emblem.dart';
+import 'questwell_hearth_material.dart';
 
 const _gold = Color(0xFFE4C586);
 const _ink = Color(0xFFF0E5CC);
@@ -117,13 +118,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                   onPressed: onCustomize,
-                  style: OutlinedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(48),
-                      foregroundColor: _ink,
-                      side: const BorderSide(color: Color(0xFF766342)),
-                      textStyle: _body(16, bold: true),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(3))),
+                  style: QuestwellHearthMaterial.secondaryButton(),
                   child: const Text('Customize adventurer'))),
         ],
       ));
@@ -194,8 +189,19 @@ class QuestwellHomeCampfireControl extends StatelessWidget {
             child: Switch(
                 value: active,
                 onChanged: onChanged,
-                activeThumbColor: const Color(0xFFFFCC7A),
-                activeTrackColor: const Color(0xFF936033))),
+                activeThumbColor:
+                    onChanged == null ? null : const Color(0xFFFFCC7A),
+                activeTrackColor: onChanged == null
+                    ? null
+                    : QuestwellHearthMaterial.evergreen,
+                inactiveThumbColor:
+                    onChanged == null ? null : const Color(0xFFC4B79C),
+                inactiveTrackColor:
+                    onChanged == null ? null : const Color(0xFF26352F),
+                trackOutlineColor: onChanged == null
+                    ? null
+                    : const WidgetStatePropertyAll(
+                        QuestwellHearthMaterial.brass))),
       ]));
 }
 
@@ -210,23 +216,6 @@ class QuestwellHomePanel extends StatelessWidget {
   final bool warm;
   final EdgeInsets padding;
   @override
-  Widget build(BuildContext context) => Material(
-      color: warm ? const Color(0xFF2B211D) : const Color(0xFF19232D),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(3),
-          side: BorderSide(
-              color: warm ? const Color(0xFF94603D) : const Color(0xFF65563D))),
-      clipBehavior: Clip.antiAlias,
-      child: Ink(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: warm
-                ? const [Color(0xFF33271F), Color(0xFF231E1D)]
-                : const [Color(0xFF202D37), Color(0xFF17212B)],
-          ),
-        ),
-        child: Padding(padding: padding, child: child),
-      ));
+  Widget build(BuildContext context) =>
+      QuestwellHearthFrame(warm: warm, padding: padding, child: child);
 }
