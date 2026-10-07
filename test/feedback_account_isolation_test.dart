@@ -615,7 +615,10 @@ void main() {
           home: Scaffold(
               body: QuestwellFeedbackForm(
         initialDraft: scenario == 'retried upload'
-            ? draft.copyWith(attempted: true)
+            ? draft.copyWith(attempted: true, attachments: [
+                QuestwellFeedbackAttachment.fromBytes(
+                    'synthetic.png', 'image/png', Uint8List.fromList([1, 2, 3]))
+              ])
             : draft,
         ownerId: owner,
         onSave: (_) async {},
@@ -624,13 +627,17 @@ void main() {
         onClose: () {},
       ))));
       await tester.pumpAndSettle();
-      final attach = find.text('Attach screenshots');
-      await tester.ensureVisible(attach);
-      await tester.pumpAndSettle();
-      await tester.tap(attach);
-      await tester.pumpAndSettle();
+      if (scenario != 'retried upload') {
+        final attach = find.text('Attach screenshots');
+        await tester.ensureVisible(attach);
+        await tester.pumpAndSettle();
+        await tester.tap(attach);
+        await tester.pumpAndSettle();
+      }
       respond = (request) async {
         if (request.method == 'DELETE') return json([]);
+        if (request.method == 'GET' && request.url.path.contains('/rest/'))
+          return json(null);
         if (request.url.path.contains('/storage/')) {
           if (scenario != 'uncertain insert') return pending.future;
           return json({'Key': 'beta-feedback/$owner/${draft.id}-0.png'});
@@ -645,8 +652,9 @@ void main() {
       if (scenario != 'uncertain insert') {
         await tester.pumpWidget(const SizedBox());
         await tester.pumpAndSettle();
-        pending
-            .complete(json({'Key': 'beta-feedback/$owner/${draft.id}-0.png'}));
+        pending.complete(scenario == 'retried upload'
+            ? http.Response.bytes([1, 2, 3], 200)
+            : json({'Key': 'beta-feedback/$owner/${draft.id}-0.png'}));
       } else {
         // The server may have committed before the response was lost.
         pending.completeError(http.ClientException('synthetic response loss'));
@@ -656,7 +664,7 @@ void main() {
           scenario == 'disposed upload' ? hasLength(1) : isEmpty);
       expect(
           requests.where((r) => r.url.path.contains('/rest/v1/beta_feedback')),
-          scenario != 'uncertain insert' ? isEmpty : hasLength(1));
+          scenario == 'disposed upload' ? isEmpty : hasLength(1));
       if (scenario == 'uncertain insert') {
         expect(find.textContaining('We could not confirm delivery.'),
             findsOneWidget);
@@ -665,6 +673,178 @@ void main() {
       expect(tester.takeException(), isNull);
       await tester.pumpWidget(const SizedBox());
       await tester.pumpAndSettle();
+    }, timeout: const Timeout(Duration(seconds: 45)));
+  }
+
+  for (final afterSuccess in [false, true]) {
+    testWidgets(
+        'late picker cannot edit ${afterSuccess ? 'sent' : 'pending'} request',
+        (tester) async {
+      GoogleFonts.config.allowRuntimeFetching = false;
+      final picker = Completer<FilePickerResult?>();
+      final pendingSave = Completer<void>();
+      FilePicker.platform = ScreenshotPicker(pending: picker.future);
+      await tester.binding.setSurfaceSize(const Size(390, 850));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final saved = <QuestwellFeedbackDraft>[];
+      final submitted = <QuestwellFeedbackDraft>[];
+      await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+              body: QuestwellFeedbackForm(
+        initialDraft: draft,
+        ownerId: owner,
+        onSave: (value) async {
+          saved.add(value);
+          if (!afterSuccess) await pendingSave.future;
+        },
+        onSubmit: (value) async {
+          submitted.add(value);
+        },
+        onClear: () async {},
+        onClose: () {},
+      ))));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Attach screenshots'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Attach screenshots'));
+      await tester.pumpAndSettle();
+      final send = find.widgetWithText(FilledButton, 'Send feedback');
+      await tester.ensureVisible(send);
+      await tester.pumpAndSettle();
+      await tester.tap(send);
+      await tester.pumpAndSettle();
+      picker.complete(FilePickerResult([
+        PlatformFile(
+            name: 'late.png', size: 3, bytes: Uint8List.fromList([1, 2, 3]))
+      ]));
+      await tester.pumpAndSettle();
+      if (!afterSuccess) {
+        pendingSave.complete();
+        await tester.pumpAndSettle();
+      }
+      expect(submitted, hasLength(1));
+      expect(submitted.single.id, draft.id);
+      expect(submitted.single.attachments, isEmpty);
+      expect(
+          saved.every(
+              (value) => value.id == draft.id && value.attachments.isEmpty),
+          isTrue);
+      expect(find.text('late.png'), findsNothing);
+      expect(find.text('NOTE RECEIVED'), findsOneWidget);
+      expect(requests, isEmpty);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+    }, timeout: const Timeout(Duration(seconds: 45)));
+  }
+  final attachment = QuestwellFeedbackAttachment.fromBytes(
+      'saved.png', 'image/png', Uint8List.fromList([1, 2, 3]));
+  test(
+      'manifest survives serialization without screenshot bytes and edits rotate attempted identity',
+      () {
+    final original = draft.copyWith(attempted: true, attachments: [attachment]);
+    final restored = QuestwellFeedbackDraft.fromJson(
+        jsonDecode(jsonEncode(original.toJson())));
+    expect(restored.id, original.id);
+    expect(restored.attachments.single.matches(Uint8List.fromList([1, 2, 3])),
+        isTrue);
+    expect(restored.attachments.single.matches(Uint8List.fromList([3, 2, 1])),
+        isFalse);
+    expect(restored.toJson()['attachment_manifest'][0].containsKey('bytes'),
+        isFalse);
+    final removed = restored.copyWith(edited: true, attachments: []);
+    expect(removed.id, isNot(original.id));
+    expect(removed.attempted, isFalse);
+    expect(removed.attachments, isEmpty);
+    expect(restored.copyWith(attempted: true).id, original.id);
+  });
+  test('local recovery metadata never enters server insert payload', () async {
+    respond = (request) async {
+      expect(body(request).keys, isNot(contains('attachment_manifest')));
+      expect(body(request).keys, isNot(contains('attachments_known')));
+      expect(body(request).keys, isNot(contains('attempted')));
+      return http.Response('', 201);
+    };
+    await QuestwellFeedbackService.submit(
+        draft.copyWith(attachments: [attachment]), owner,
+        attachmentPaths: ['$owner/${draft.id}-0.png']);
+  });
+  for (final scenario in [
+    'received',
+    'uploaded',
+    'missing',
+    'mismatch',
+    'save failure',
+    'receipt failure',
+    'legacy absent',
+    'legacy received'
+  ]) {
+    testWidgets('reopened screenshot report: $scenario', (tester) async {
+      GoogleFonts.config.allowRuntimeFetching = false;
+      await tester.binding.setSurfaceSize(const Size(390, 850));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      var restored = draft.copyWith(attempted: true, attachments: [attachment]);
+      if (scenario.startsWith('legacy')) {
+        final old = restored.toJson()
+          ..remove('attachment_manifest')
+          ..remove('attachments_known');
+        restored = QuestwellFeedbackDraft.fromJson(old);
+      }
+      var cleared = false;
+      respond = (request) async {
+        if (request.url.path.contains('/rest/') && request.method == 'GET') {
+          if (scenario == 'receipt failure')
+            return json({'message': 'unavailable'}, status: 503);
+          return json(scenario == 'received' || scenario == 'legacy received'
+              ? receipt(restored, paths: ['$owner/${draft.id}-0.png'])
+              : null);
+        }
+        if (request.url.path.contains('/storage/') && request.method == 'GET') {
+          if (scenario == 'missing')
+            return json({'message': 'missing'}, status: 404);
+          return http.Response.bytes(
+              scenario == 'mismatch' ? [9, 9, 9] : [1, 2, 3], 200);
+        }
+        expect(request.method, 'POST');
+        expect(request.url.path, '/rest/v1/beta_feedback');
+        expect(body(request)['attachment_paths'], ['$owner/${draft.id}-0.png']);
+        return http.Response('', 201);
+      };
+      await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+              body: QuestwellFeedbackForm(
+        initialDraft: restored,
+        ownerId: owner,
+        onSave: (_) async {
+          if (scenario == 'save failure') throw StateError('full');
+        },
+        onClear: () async {
+          cleared = true;
+        },
+        onClose: () {},
+        onSubmit: (_) async =>
+            fail('Must not silently send a text-only report'),
+      ))));
+      await tester.pumpAndSettle();
+      final send = find.widgetWithText(FilledButton, 'Send feedback');
+      await tester.ensureVisible(send);
+      await tester.pumpAndSettle();
+      await tester.tap(send);
+      await tester.pumpAndSettle();
+      final success =
+          ['received', 'uploaded', 'legacy received'].contains(scenario);
+      expect(cleared, success);
+      expect(
+          find.text('NOTE RECEIVED'), success ? findsOneWidget : findsNothing);
+      expect(requests.where((r) => r.method == 'POST'),
+          scenario == 'uploaded' ? hasLength(1) : isEmpty);
+      expect(requests.where((r) => r.method == 'DELETE'), isEmpty);
+      if (scenario == 'received' || scenario == 'legacy received')
+        expect(requests, hasLength(1));
+      if (scenario == 'save failure') expect(requests, isEmpty);
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
     }, timeout: const Timeout(Duration(seconds: 45)));
   }
 }
