@@ -1,5 +1,14 @@
 # Questwell Production Dashboard
 
+## Intentional 90s Hearth materials — October 7, 2026
+
+**QA** on `feat/hearth-retro-interface`. Founder-directed polished-avatar /
+64-bit-world direction begins with shared timber/brass panels, evergreen actions
+and coordinated Campfire control. Existing assets, placement, fonts and account
+contracts are preserved. CI, independent review and delivered visual verification
+are pending; this is not a new art lock or release GO.
+See `../qa/HEARTH_RETRO_MATERIALS.md`.
+
 ## Hearth visual polish — October 7, 2026
 
 **DEV DEPLOYED** via PR #67, revision `dcc6809`, Preview `37694560933`.

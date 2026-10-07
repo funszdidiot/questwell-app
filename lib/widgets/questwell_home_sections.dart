@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
-import 'questwell_quest_card.dart';
+import 'questwell_hearth_material.dart';
 import 'questwell_home_overview.dart';
 
 /// Shared account/review canvas. Room coordinates remain owned by the renderer.
@@ -105,11 +105,12 @@ class QuestwellHomeFocusLayout extends StatelessWidget {
 class QuestwellHomeEmptyBoard extends StatelessWidget {
   const QuestwellHomeEmptyBoard({super.key});
   @override
-  Widget build(BuildContext context) => QuestwellNoticeboard(
+  Widget build(BuildContext context) => QuestwellHearthFrame(
+        parchment: true,
+        padding: EdgeInsets.zero,
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
-          color: const Color(0xFFF0E0BA),
           child: Column(children: [
             Container(
                 width: 10,
@@ -152,40 +153,14 @@ class QuestwellHomeActions extends StatelessWidget {
               onPressed: () => onOpen('quests'),
               icon: const Icon(Icons.add, size: 22),
               label: const Text('Add quest'),
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF326F69),
-                foregroundColor: Colors.white,
-                minimumSize: const Size.fromHeight(52),
-                padding: const EdgeInsets.all(15),
-                textStyle: QuestwellTypography.body(
-                  fontSize: 16,
-                  height: 1.3,
-                  fontWeight: FontWeight.w700,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(3),
-                ),
-              ),
+              style: QuestwellHearthMaterial.primaryButton(),
             )
           else
             OutlinedButton.icon(
               onPressed: () => onOpen('quests'),
               icon: const Icon(Icons.add, size: 22),
               label: const Text('Add quest'),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: const Color(0xFFF0E5CC),
-                minimumSize: const Size.fromHeight(52),
-                padding: const EdgeInsets.all(15),
-                textStyle: QuestwellTypography.body(
-                  fontSize: 16,
-                  height: 1.3,
-                  fontWeight: FontWeight.w700,
-                ),
-                side: const BorderSide(color: Color(0xFF65563D)),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(3),
-                ),
-              ),
+              style: QuestwellHearthMaterial.secondaryButton(),
             ),
           const SizedBox(height: 12),
           _destination(
