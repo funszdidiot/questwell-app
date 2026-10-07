@@ -4,7 +4,7 @@
   "private": true,
   "description": "Locked workflow validation and isolated asset proposal tools",
   "dependencies": {
-    "sharp": "0.34.5",
+    "sharp": "0.35.5",
     "yaml": "2.8.1"
   }
 }
