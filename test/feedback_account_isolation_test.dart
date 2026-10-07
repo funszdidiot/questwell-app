@@ -132,6 +132,17 @@ void main() {
     message: 'Synthetic message',
   );
   final stale = throwsA(isA<QuestwellFeedbackException>());
+  Map<String, dynamic> receipt(QuestwellFeedbackDraft value,
+          {List<String> paths = const []}) =>
+      {
+        ...value.toJson(),
+        'user_id': owner,
+        'attachment_path': paths.firstOrNull,
+        'attachment_paths': paths,
+      }
+        ..remove('attempted')
+        ..remove('attachment_manifest')
+        ..remove('attachments_known');
   Future<String> upload() => QuestwellFeedbackService.uploadScreenshot(
         ownerId: owner,
         feedbackId: draft.id,
@@ -217,9 +228,64 @@ void main() {
         return json({'code': '23505', 'message': 'duplicate'}, status: 409);
       expect(request.url.queryParameters['id'], 'eq.${draft.id}');
       expect(request.url.queryParameters['user_id'], 'eq.$owner');
-      return json({'id': draft.id});
+      return json(receipt(draft));
     };
     await QuestwellFeedbackService.submit(draft, owner);
+    expect(requests, hasLength(2));
+  });
+  for (final lostResponse in [false, true]) {
+    test(
+        'upload recovers identical private bytes after ${lostResponse ? 'lost response' : 'collision'}',
+        () async {
+      respond = (request) async {
+        if (request.method == 'POST') {
+          if (lostResponse)
+            throw http.ClientException('response lost after commit');
+          return json(
+              {'statusCode': '409', 'error': 'Duplicate', 'message': 'exists'},
+              status: 409);
+        }
+        expect(request.method, 'GET');
+        return http.Response.bytes([1, 2, 3], 200);
+      };
+      expect(await upload(), '$owner/${draft.id}-0.png');
+      expect(requests.where((r) => r.method == 'POST'), hasLength(1));
+      expect(requests.where((r) => r.method == 'GET'), hasLength(1));
+    });
+  }
+  test(
+      'colliding screenshot with different bytes is never overwritten or accepted',
+      () async {
+    respond = (request) async => request.method == 'POST'
+        ? json({'statusCode': '409', 'error': 'Duplicate', 'message': 'exists'},
+            status: 409)
+        : http.Response.bytes([3, 2, 1], 200);
+    await expectLater(upload(), stale);
+    expect(requests, hasLength(2));
+    expect(requests.any((r) => r.method == 'PUT' || r.method == 'DELETE'),
+        isFalse);
+  });
+  for (final changed in ['message', 'attachment_paths']) {
+    test('duplicate ID cannot confirm a different $changed', () async {
+      respond = (request) async => request.method == 'POST'
+          ? json({'code': '23505', 'message': 'duplicate'}, status: 409)
+          : json({
+              ...receipt(draft),
+              changed: changed == 'message' ? 'different' : ['$owner/other.png']
+            });
+      await expectLater(QuestwellFeedbackService.submit(draft, owner), stale);
+      expect(requests, hasLength(2));
+    });
+  }
+  test('account change during collision verification cannot confirm old upload',
+      () async {
+    respond = (request) async {
+      if (request.method == 'POST')
+        return json({'statusCode': '409', 'error': 'Duplicate'}, status: 409);
+      await session(other);
+      return http.Response.bytes([1, 2, 3], 200);
+    };
+    await expectLater(upload(), stale);
     expect(requests, hasLength(2));
   });
   test('uncertain write is not retried', () async {
