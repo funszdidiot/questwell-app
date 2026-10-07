@@ -2,14 +2,21 @@
 
 ## Hearth visual polish — October 7, 2026
 
-**QA checkpoint; delivery status is tracked in [PR #67](https://github.com/funszdidiot/questwell-app/pull/67).** Bounded page/room framing, adaptive
-quest/overview columns, a shared subdued panel treatment, and corrected review
-ordering. Existing artwork, room geometry and account behavior are unchanged.
-Eight new viewport/text-scale/composition regressions and the corrected legacy scroll checks passed in CI. The current-base
-combined revision is awaiting its final required checks. Local Flutter startup
-was blocked by automatic approval review after a metadata-endpoint attempt;
-no retry or bypass. Runtime visual/device acceptance remains pending.
-See `../qa/HEARTH_VISUAL_POLISH.md`. No new art lock or release GO.
+**DEV DEPLOYED** via PR #67, revision `dcc6809`, Preview `37694560933`.
+Bounded page/room framing, adaptive quest/overview columns, shared panels and
+account-free review ordering are verified in the delivered browser. The final
+pre-merge run passed 886 Flutter and 397 Chrome tests; post-merge checks passed.
+Campfire mode and sample customization navigation passed. Artwork, room geometry
+and account behavior are unchanged. Signed-in account/device acceptance is pending.
+
+**Wordmark follow-up: QA checkpoint** on `fix/hearth-wordmark-large-text`.
+Tanya's “Fix it” authorizes the remaining logo clipping repair. The decorative
+Hearth wordmark scales down only when needed to retain every letter; functional
+text keeps the selected accessibility size. Six regressions check full paragraph
+width and transformed bounds at 320/390/1440 px and 1x/2x text. Independent review,
+required CI and deployed verification must pass before this follow-up is complete.
+See `../qa/HEARTH_VISUAL_POLISH.md` and the follow-up PR for delivery evidence.
+No new art lock or release GO.
 
 ## Male Woodland account integration — 2026-10-05
 

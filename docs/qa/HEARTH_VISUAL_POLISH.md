@@ -53,3 +53,27 @@ The review uses labeled sample data; no fixture is added to an account path.
 
 Revert the single presentation commit through a development PR. No data rollback.
 This work does not authorize production promotion or establish a new art lock.
+
+## Deployed result and wordmark repair — October 7
+
+PR #67 merged as `dcc6809897284282da59c8b6bbab5df364b78100`.
+Preview `37694560933` and backend `37694560160` passed; the served version
+matched that revision. Final pre-merge checks passed 886 Flutter / 397 Chrome
+tests. Browser review verified desktop framing/columns, Campfire mode, phone
+scrolling at 320 px/200% text and sample customization navigation.
+
+That rendered review found an existing silent fade of the decorative wordmark
+at 320 px/200% text. Tanya requested “Fix it.” The follow-up branch
+`fix/hearth-wordmark-large-text` fits only the complete Hearth logo within its
+available width using `FittedBox(scaleDown)`. All surrounding content retains
+the selected text size. The shared wordmark design, fonts, sparkles, artwork,
+room geometry and other screens are unchanged.
+
+Six targeted regressions at 320/390/1440 px and 1x/2x text measure the paragraph's
+full intrinsic width and its transformed screen bounds, check max-line overflow,
+and confirm functional text retains its scale. This specifically covers silent
+fading that exception-only layout tests missed. CI must execute these tests;
+local Flutter startup remains unattempted after the earlier automatic rejection.
+At this source checkpoint, independent review, CI and delivered visual review
+remain pending. The follow-up PR records their final results. Signed-in accounts
+and physical-device acceptance are not inferred from the sample preview.
