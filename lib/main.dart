@@ -19,20 +19,28 @@ import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 
-void main() {
+void main() => runQuestwell();
+
+/// The preview-only check uses the real startup failure path before any backend
+/// initialization. The standard/native entry point never enables it.
+void runQuestwell({
+  bool monitoringCheck = false,
+  QuestwellMonitoring? monitoringOverride,
+}) {
   WidgetsFlutterBinding.ensureInitialized();
-  final monitoring = QuestwellMonitoring(
-    dsn: const String.fromEnvironment('QUESTWELL_SENTRY_DSN'),
-    build: const String.fromEnvironment('QUESTWELL_BUILD'),
-    environment: const String.fromEnvironment('QUESTWELL_ENVIRONMENT'),
-    platform: kIsWeb
-        ? MonitoringPlatform.web
-        : defaultTargetPlatform == TargetPlatform.android
-            ? MonitoringPlatform.android
-            : defaultTargetPlatform == TargetPlatform.iOS
-                ? MonitoringPlatform.ios
-                : MonitoringPlatform.desktop,
-  );
+  final monitoring = monitoringOverride ??
+      QuestwellMonitoring(
+        dsn: const String.fromEnvironment('QUESTWELL_SENTRY_DSN'),
+        build: const String.fromEnvironment('QUESTWELL_BUILD'),
+        environment: const String.fromEnvironment('QUESTWELL_ENVIRONMENT'),
+        platform: kIsWeb
+            ? MonitoringPlatform.web
+            : defaultTargetPlatform == TargetPlatform.android
+                ? MonitoringPlatform.android
+                : defaultTargetPlatform == TargetPlatform.iOS
+                    ? MonitoringPlatform.ios
+                    : MonitoringPlatform.desktop,
+      );
   final previousFlutterError = FlutterError.onError;
   FlutterError.onError = (details) {
     unawaited(monitoring.report(MonitoringCode.flutterFailure));
@@ -50,6 +58,10 @@ void main() {
     captureCallback: () => QuestwellAuthCallback.capture(Uri.base),
     initializeBackend: () async {
       try {
+        if (monitoringCheck) {
+          await monitoring.report(MonitoringCode.probe);
+          throw StateError('Questwell diagnostic startup check');
+        }
         await SupaFlow.initialize();
       } catch (_) {
         unawaited(monitoring.report(MonitoringCode.backendStartup));
