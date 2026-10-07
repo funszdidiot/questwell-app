@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'questwell_boss_creation_recovery.dart';
 import 'questwell_boss_list.dart';
+import 'questwell_reward_response.dart';
 import '/backend/supabase/supabase.dart';
 import '/backend/supabase/questwell_network.dart';
 
@@ -79,17 +80,17 @@ class QuestwellBossService {
       throw StateError('Reward account changed.');
     }
 
-    if (response is! List || response.isEmpty) {
-      throw StateError('No boss step result returned.');
+    final row = QuestwellRewardResponse.singleRow(response);
+    final bossCompleted = row['boss_completed'];
+    if (bossCompleted is! bool) {
+      QuestwellRewardResponse.invalid();
     }
-
-    final row = Map<String, dynamic>.from(response.first as Map);
     return BossStepCompletionResult(
-      bossCompleted: row['boss_completed'] == true,
-      xpAwarded: (row['xp_awarded'] as num?)?.toInt() ?? 0,
-      coinsAwarded: (row['coins_awarded'] as num?)?.toInt() ?? 0,
-      totalXp: (row['total_xp'] as num?)?.toInt() ?? 0,
-      coinBalance: (row['coin_balance'] as num?)?.toInt() ?? 0,
+      bossCompleted: bossCompleted,
+      xpAwarded: QuestwellRewardResponse.integer(row, 'xp_awarded'),
+      coinsAwarded: QuestwellRewardResponse.integer(row, 'coins_awarded'),
+      totalXp: QuestwellRewardResponse.integer(row, 'total_xp'),
+      coinBalance: QuestwellRewardResponse.integer(row, 'coin_balance'),
     );
   }
 }

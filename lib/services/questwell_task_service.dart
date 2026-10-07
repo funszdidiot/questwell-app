@@ -2,6 +2,7 @@ import '/backend/supabase/supabase.dart';
 import '/backend/supabase/questwell_network.dart';
 import 'package:uuid/uuid.dart';
 import 'questwell_task_creation.dart';
+import 'questwell_reward_response.dart';
 
 class QuestwellTaskCompletionResult {
   const QuestwellTaskCompletionResult({
@@ -19,12 +20,16 @@ class QuestwellTaskCompletionResult {
   final int coinBalance;
 
   factory QuestwellTaskCompletionResult.fromJson(Map<String, dynamic> json) {
+    final taskId = json['task_id'];
+    if (taskId is! String || taskId.trim().isEmpty) {
+      QuestwellRewardResponse.invalid();
+    }
     return QuestwellTaskCompletionResult(
-      taskId: json['task_id']?.toString() ?? '',
-      xpAwarded: (json['xp_awarded'] as num?)?.toInt() ?? 0,
-      coinsAwarded: (json['coins_awarded'] as num?)?.toInt() ?? 0,
-      totalXp: (json['total_xp'] as num?)?.toInt() ?? 0,
-      coinBalance: (json['coin_balance'] as num?)?.toInt() ?? 0,
+      taskId: taskId,
+      xpAwarded: QuestwellRewardResponse.integer(json, 'xp_awarded'),
+      coinsAwarded: QuestwellRewardResponse.integer(json, 'coins_awarded'),
+      totalXp: QuestwellRewardResponse.integer(json, 'total_xp'),
+      coinBalance: QuestwellRewardResponse.integer(json, 'coin_balance'),
     );
   }
 }
@@ -107,11 +112,11 @@ class QuestwellTaskService {
       throw StateError('Reward account changed.');
     }
 
-    if (response is! List || response.isEmpty) {
-      throw StateError('Questwell did not receive a completion result.');
+    final row = QuestwellRewardResponse.singleRow(response);
+    final result = QuestwellTaskCompletionResult.fromJson(row);
+    if (result.taskId != taskId) {
+      QuestwellRewardResponse.invalid();
     }
-
-    final row = Map<String, dynamic>.from(response.first as Map);
-    return QuestwellTaskCompletionResult.fromJson(row);
+    return result;
   }
 }

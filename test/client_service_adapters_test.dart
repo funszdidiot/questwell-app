@@ -226,6 +226,134 @@ void main() {
         expect(body(requests.single),
             boss ? {'p_step_id': 'step-id'} : {'p_task_id': 'quest-id'});
       });
+      Map<String, Object?> completionRow() => {
+            'task_id': 'quest-id',
+            'boss_completed': true,
+            'xp_awarded': 13,
+            'coins_awarded': 7,
+            'total_xp': 213,
+            'coin_balance': 87,
+          };
+      for (final field in [
+        'xp_awarded',
+        'coins_awarded',
+        'total_xp',
+        'coin_balance',
+      ]) {
+        for (final invalid in <Object?>[
+          null,
+          '13',
+          true,
+          1.5,
+          -1,
+          2147483648
+        ]) {
+          test('$label rejects $field=$invalid without retry', () async {
+            respond = (_) async => json([completionRow()..[field] = invalid]);
+            await expectLater(complete(), throwsStateError);
+            expect(requests, hasLength(1));
+          });
+        }
+        test('$label rejects missing $field without retry', () async {
+          respond = (_) async => json([completionRow()..remove(field)]);
+          await expectLater(complete(), throwsStateError);
+          expect(requests, hasLength(1));
+        });
+      }
+      for (final shape in [
+        'null',
+        'scalar',
+        'null row',
+        'list row',
+        'two rows'
+      ]) {
+        test('$label rejects $shape response without retry', () async {
+          final Object? response = switch (shape) {
+            'null' => null,
+            'scalar' => 1,
+            'null row' => [null],
+            'list row' => [<Object>[]],
+            _ => [completionRow(), completionRow()],
+          };
+          respond = (_) async => json(response);
+          await expectLater(complete(), throwsStateError);
+          expect(requests, hasLength(1));
+        });
+      }
+      final identityField = boss ? 'boss_completed' : 'task_id';
+      final invalidIdentities = boss
+          ? <Object?>[null, 'true', 0, 1]
+          : <Object?>[null, '', '   ', 123, true, 'other-quest'];
+      for (final invalid in invalidIdentities) {
+        test('$label rejects $identityField=$invalid without retry', () async {
+          respond =
+              (_) async => json([completionRow()..[identityField] = invalid]);
+          await expectLater(complete(), throwsStateError);
+          expect(requests, hasLength(1));
+        });
+      }
+      test('$label rejects missing $identityField without retry', () async {
+        respond = (_) async => json([completionRow()..remove(identityField)]);
+        await expectLater(complete(), throwsStateError);
+        expect(requests, hasLength(1));
+      });
+      test('$label accepts integer boundaries and additive response fields',
+          () async {
+        respond = (_) async => json([
+              completionRow()
+                ..['xp_awarded'] = 0
+                ..['coins_awarded'] = 0
+                ..['total_xp'] = 2147483647
+                ..['coin_balance'] = 2147483647
+                ..['future_field'] = 'ignored',
+            ]);
+        final result = await complete();
+        expect(result.xpAwarded, 0);
+        expect(result.totalXp, 2147483647);
+        expect(result.coinBalance, 2147483647);
+        expect(requests, hasLength(1));
+      });
+      test('$label accepts whole JSON numbers without truncation', () async {
+        respond = (_) async => json([
+              completionRow()
+                ..['xp_awarded'] = 13.0
+                ..['coins_awarded'] = 7.0
+                ..['total_xp'] = 213.0
+                ..['coin_balance'] = 87.0,
+            ]);
+        final result = await complete();
+        expect(result.xpAwarded, 13);
+        expect(result.totalXp, 213);
+        expect(requests, hasLength(1));
+      });
+      for (final logout in [false, true]) {
+        test(
+            '$label checks owner before interpreting a malformed reply $logout',
+            () async {
+          final entered = Completer<void>();
+          final reply = Completer<http.Response>();
+          respond = (_) {
+            entered.complete();
+            return reply.future;
+          };
+          final result = complete();
+          final check = expectLater(
+              result,
+              throwsA(isA<StateError>().having(
+                  (e) => e.message, 'message', 'Reward account changed.')));
+          await entered.future;
+          if (logout) {
+            respond = (_) async => json({});
+            await SupaFlow.client.auth.signOut(scope: SignOutScope.local);
+          } else {
+            await session(other);
+          }
+          reply.complete(json([{}]));
+          await check;
+          expect(requests.where((r) => r.url.path.contains('/rpc/')),
+              hasLength(1));
+        });
+      }
       test('$label browser disconnect is normalized without resending',
           () async {
         final failure = http.ClientException('Failed to fetch');
@@ -312,6 +440,23 @@ void main() {
         await expectLater(
             complete(), throwsA(isA<QuestwellNetworkException>()));
         expect(requests, hasLength(1));
+      });
+    }
+    for (final value in [
+      double.nan,
+      double.infinity,
+      double.negativeInfinity
+    ]) {
+      test('task result factory rejects non-finite numbers: $value', () {
+        expect(
+            () => QuestwellTaskCompletionResult.fromJson({
+                  'task_id': 'quest-id',
+                  'xp_awarded': value,
+                  'coins_awarded': 0,
+                  'total_xp': 0,
+                  'coin_balance': 0,
+                }),
+            throwsStateError);
       });
     }
     test('quest creation explicit retry preserves receipt and original owner',
