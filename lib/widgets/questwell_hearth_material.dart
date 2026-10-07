@@ -36,7 +36,7 @@ abstract final class QuestwellHearthMaterial {
 
 /// A restrained timber rail and brass corner finish around readable content.
 /// Native Material/Ink interactions remain above the background, while the
-/// decorative foreground occupies only the inset reserved for the frame.
+/// decorative foreground occupies the content's existing outer margin.
 class QuestwellHearthFrame extends StatelessWidget {
   const QuestwellHearthFrame({
     super.key,
@@ -57,22 +57,19 @@ class QuestwellHearthFrame extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: CustomPaint(
           foregroundPainter: const _HearthFramePainter(),
-          child: Padding(
-            padding: const EdgeInsets.all(6),
-            child: Ink(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: parchment
-                      ? const [Color(0xFFF0E0BA), Color(0xFFE7D3A7)]
-                      : warm
-                          ? const [Color(0xFF33271F), Color(0xFF231E1D)]
-                          : const [Color(0xFF202D37), Color(0xFF17212B)],
-                ),
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: parchment
+                    ? const [Color(0xFFF0E0BA), Color(0xFFE7D3A7)]
+                    : warm
+                        ? const [Color(0xFF33271F), Color(0xFF231E1D)]
+                        : const [Color(0xFF202D37), Color(0xFF17212B)],
               ),
-              child: Padding(padding: padding, child: child),
             ),
+            child: Padding(padding: padding, child: child),
           ),
         ),
       );
@@ -88,6 +85,12 @@ class _HearthFramePainter extends CustomPainter {
     final paint = Paint()..isAntiAlias = false;
     canvas.save();
     canvas.clipRect(bounds);
+    // Paint rails inside the existing margin without reducing layout width.
+    paint
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 6
+      ..color = QuestwellHearthMaterial.timber;
+    canvas.drawRect(bounds.deflate(3), paint);
     // Stepped highlights suggest carved rails without texture behind text.
     paint
       ..style = PaintingStyle.stroke

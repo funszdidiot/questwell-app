@@ -41,8 +41,12 @@ and FilledButton.styleFrom against official API documentation and the local
 - Local Flutter startup was blocked by automatic approval review after an
   unexpected cloud metadata request. No workaround or approval bypass attempted;
   compile/test verification uses the existing GitHub Actions workflow.
-- Independent code review, CI compilation/tests and delivered screenshot review:
-  pending. Do not report deployment or final visual approval from source alone.
+- Independent code review approved the first pass after correcting disabled
+  switch colors. Initial CI passed analysis, critical-client coverage and Android/
+  iOS compilation, but found three 320px/200% layout failures (900 tests passed).
+  The frame's additional padding reduced content width. Rails now paint within
+  the existing margin; all regression assertions remain unchanged. CI rerun and
+  delivered screenshot review pending. Source approval is not visual acceptance.
 
 ## Rollback and remaining work
 
