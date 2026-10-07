@@ -57,7 +57,19 @@ abstract final class QuestwellFeedbackService {
       required int index}) async {
     final path =
         screenshotPath(ownerId, feedbackId, attachment.mimeType, index);
-    final bytes = await _download(ownerId, path);
+    Uint8List bytes;
+    try {
+      bytes = await _download(ownerId, path);
+    } on StorageException catch (error) {
+      _requireOwner(ownerId);
+      if (error.statusCode == '404' ||
+          error.message.toLowerCase().contains('not found') ||
+          error.message.toLowerCase().contains('does not exist')) {
+        throw const QuestwellFeedbackException(
+            'A saved screenshot is missing. Remove it and choose it again.');
+      }
+      rethrow;
+    }
     if (!attachment.matches(bytes)) {
       throw const QuestwellFeedbackException(
           'A saved screenshot could not be verified. Remove it and choose it again.');

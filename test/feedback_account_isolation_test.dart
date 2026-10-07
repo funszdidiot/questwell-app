@@ -842,6 +842,16 @@ void main() {
       if (scenario == 'received' || scenario == 'legacy received')
         expect(requests, hasLength(1));
       if (scenario == 'save failure') expect(requests, isEmpty);
+      if (scenario == 'missing') {
+        expect(
+            find.text(
+                'A saved screenshot is missing. Remove it and choose it again.'),
+            findsOneWidget);
+        expect(
+            find.textContaining(
+                'Check your connection and tap Send feedback to retry.'),
+            findsNothing);
+      }
       await tester.pumpWidget(const SizedBox());
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);

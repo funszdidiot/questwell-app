@@ -30,6 +30,10 @@ Synthetic HTTP and sessions only; this is not a report of exposed tester content
 - Editing text or adding/removing screenshots after an attempt starts a new report
   ID. Restored screenshots under a newly edited ID may need explicit reselection;
   we do not copy, delete or repurpose an earlier report's remote objects.
+- Repository review caught that a missing restored object still showed generic
+  connection/retry guidance. Storage not-found responses now identify the missing
+  screenshot and direct removal/reselection; the missing-object widget case asserts
+  that guidance and rejects the generic retry loop. Other storage errors remain failures.
 - Old attempted drafts without manifests may recover a matching original receipt.
   An absent receipt requires an explicit edit/reselection, not invented attachment intent.
 - Owner checks guard reads/writes and their completions. A late file-picker result
