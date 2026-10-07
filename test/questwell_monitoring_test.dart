@@ -4,6 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:project_momentum/services/questwell_monitoring.dart';
 import 'package:sentry/sentry.dart';
 
+class TestEventProcessor implements EventProcessor {
+  TestEventProcessor(this.transform);
+  final SentryEvent? Function(SentryEvent, Hint) transform;
+
+  @override
+  SentryEvent? apply(SentryEvent event, Hint hint) => transform(event, hint);
+}
+
 class RecordingTransport implements Transport {
   final List<SentryEnvelope> envelopes = [];
   bool fail = false;
@@ -69,23 +77,25 @@ void main() {
 
   test('reconstruction removes sensitive fields added before send', () async {
     const secret = 'private-token-email-user-text-screenshot';
-    options.addEventProcessor((event, hint) {
-      event.user = SentryUser(id: secret, email: secret);
-      event.request = SentryRequest(url: secret);
-      event.breadcrumbs = [Breadcrumb(message: secret)];
-      event.tags = {'private': secret};
-      event.serverName = secret;
-      event.transaction = secret;
-      event.message = SentryMessage('backendStartup', params: [secret]);
-      final attachment = SentryAttachment.fromIntList(
-        utf8.encode(secret),
-        'private.png',
-      );
-      hint.attachments.add(attachment);
-      hint.screenshot = attachment;
-      hint.viewHierarchy = attachment;
-      return event;
-    });
+    options.addEventProcessor(
+      TestEventProcessor((event, hint) {
+        event.user = SentryUser(id: secret, email: secret);
+        event.request = SentryRequest(url: secret);
+        event.breadcrumbs = [Breadcrumb(message: secret)];
+        event.tags = {'private': secret};
+        event.serverName = secret;
+        event.transaction = secret;
+        event.message = SentryMessage('backendStartup', params: [secret]);
+        final attachment = SentryAttachment.fromIntList(
+          utf8.encode(secret),
+          'private.png',
+        );
+        hint.attachments.add(attachment);
+        hint.screenshot = attachment;
+        hint.viewHierarchy = attachment;
+        return event;
+      }),
+    );
     await monitoring.report(MonitoringCode.backendStartup);
     final event =
         transport.envelopes.single.items.single.originalObject! as SentryEvent;
@@ -97,10 +107,12 @@ void main() {
   });
 
   test('unknown diagnostic is dropped at the outbound boundary', () async {
-    options.addEventProcessor((event, hint) {
-      event.message = SentryMessage('private arbitrary text');
-      return event;
-    });
+    options.addEventProcessor(
+      TestEventProcessor((event, hint) {
+        event.message = SentryMessage('private arbitrary text');
+        return event;
+      }),
+    );
     expect(
       await monitoring.report(MonitoringCode.probe),
       MonitoringResult.unavailable,
