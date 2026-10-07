@@ -13,6 +13,8 @@ import 'package:project_momentum/services/questwell_feedback_service.dart';
 import 'package:project_momentum/widgets/questwell_feedback.dart';
 
 class ScreenshotPicker extends FilePicker {
+  ScreenshotPicker({this.pending});
+  final Future<FilePickerResult?>? pending;
   @override
   Future<FilePickerResult?> pickFiles({
     String? dialogTitle,
@@ -28,13 +30,15 @@ class ScreenshotPicker extends FilePicker {
     bool lockParentWindow = false,
     bool readSequential = false,
   }) async =>
-      FilePickerResult([
-        PlatformFile(
-          name: 'synthetic.png',
-          size: 3,
-          bytes: Uint8List.fromList([1, 2, 3]),
-        ),
-      ]);
+      pending != null
+          ? await pending!
+          : FilePickerResult([
+              PlatformFile(
+                name: 'synthetic.png',
+                size: 3,
+                bytes: Uint8List.fromList([1, 2, 3]),
+              ),
+            ]);
 }
 
 void main() {
@@ -297,6 +301,225 @@ void main() {
       expect(await QuestwellFeedbackDraftStore(other).load(), isNull);
       await tester.pumpWidget(const SizedBox());
       await tester.pumpAndSettle();
+    },
+  );
+  test('cleanup rejects stale completion after a switch', () async {
+    respond = (_) async {
+      await session(other);
+      return json([]);
+    };
+    await expectLater(
+      QuestwellFeedbackService.removeScreenshots(['$owner/${draft.id}-0.png']),
+      stale,
+    );
+    expect(requests, hasLength(1));
+  });
+
+  for (final phase in ['save', 'submit', 'clear']) {
+    testWidgets(
+      'account switch during $phase prevents subsequent work and stale success',
+      (tester) async {
+        GoogleFonts.config.allowRuntimeFetching = false;
+        await tester.binding.setSurfaceSize(const Size(390, 850));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        final pending = Completer<void>();
+        var sends = 0, clears = 0;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: QuestwellFeedbackForm(
+                initialDraft: draft,
+                ownerId: owner,
+                onSave: (_) =>
+                    phase == 'save' ? pending.future : Future.value(),
+                onSubmit: (_) {
+                  sends++;
+                  return phase == 'submit' ? pending.future : Future.value();
+                },
+                onClear: () {
+                  clears++;
+                  return phase == 'clear' ? pending.future : Future.value();
+                },
+                onClose: () {},
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        final send = find.widgetWithText(FilledButton, 'Send feedback');
+        await tester.ensureVisible(send);
+        await tester.pumpAndSettle();
+        await tester.tap(send);
+        await tester.pumpAndSettle();
+        await session(other);
+        await tester.pumpAndSettle();
+        pending.complete();
+        await tester.pumpAndSettle();
+        expect(sends, phase == 'save' ? 0 : 1);
+        expect(clears, phase == 'clear' ? 1 : 0);
+        expect(find.text('NOTE RECEIVED'), findsNothing);
+        expect(find.text('Synthetic message'), findsNothing);
+        expect(
+          find.text(
+            'Your account changed. Close this note and reopen feedback.',
+          ),
+          findsOneWidget,
+        );
+        // A return to the original account does not revive this invalidated screen.
+        await session(owner);
+        await tester.pumpAndSettle();
+        expect(find.text('Synthetic message'), findsNothing);
+        expect(find.text('Send feedback'), findsNothing);
+        await tester.pumpWidget(const SizedBox());
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
+  for (final disposed in [false, true]) {
+    testWidgets(
+      'pending file picker cannot publish after ${disposed ? 'disposal' : 'account switch'}',
+      (tester) async {
+        GoogleFonts.config.allowRuntimeFetching = false;
+        await tester.binding.setSurfaceSize(const Size(390, 850));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        final pending = Completer<FilePickerResult?>();
+        FilePicker.platform = ScreenshotPicker(pending: pending.future);
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: QuestwellFeedbackForm(
+                initialDraft: draft,
+                ownerId: owner,
+                onSave: (_) async {},
+                onSubmit: (_) async {},
+                onClear: () async {},
+                onClose: () {},
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        final attach = find.text('Attach screenshots');
+        await tester.ensureVisible(attach);
+        await tester.pumpAndSettle();
+        await tester.tap(attach);
+        await tester.pumpAndSettle();
+        if (disposed) {
+          await tester.pumpWidget(const SizedBox());
+        } else {
+          await session(other);
+        }
+        await tester.pumpAndSettle();
+        pending.complete(
+          FilePickerResult([
+            PlatformFile(
+              name: 'late.png',
+              size: 1,
+              bytes: Uint8List.fromList([1]),
+            ),
+          ]),
+        );
+        await tester.pumpAndSettle();
+        expect(find.text('late.png'), findsNothing);
+        expect(requests, isEmpty);
+        expect(tester.takeException(), isNull);
+        await tester.pumpWidget(const SizedBox());
+        await tester.pumpAndSettle();
+      },
+    );
+  }
+  testWidgets('failed close keeps account-change protection active', (
+    tester,
+  ) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
+    await tester.binding.setSurfaceSize(const Size(390, 850));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    var closes = 0;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: QuestwellFeedbackForm(
+            initialDraft: draft,
+            ownerId: owner,
+            onSave: (_) async => throw StateError('synthetic storage failure'),
+            onSubmit: (_) async {},
+            onClear: () async {},
+            onClose: () => closes++,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Close feedback'));
+    await tester.pumpAndSettle();
+    expect(closes, 0);
+    await session(other);
+    await tester.pumpAndSettle();
+    expect(find.text('Synthetic message'), findsNothing);
+    expect(
+      find.text('Your account changed. Close this note and reopen feedback.'),
+      findsOneWidget,
+    );
+    await tester.tap(find.widgetWithText(TextButton, 'Close feedback'));
+    await tester.pumpAndSettle();
+    expect(closes, 1);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+    'disposing during successful screenshot report does not delete its attachments',
+    (tester) async {
+      GoogleFonts.config.allowRuntimeFetching = false;
+      FilePicker.platform = ScreenshotPicker();
+      await tester.binding.setSurfaceSize(const Size(390, 850));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await QuestwellFeedbackDraftStore(owner).save(draft);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => TextButton(
+                onPressed: () =>
+                    QuestwellFeedback.open(context, screen: 'Quests'),
+                child: const Text('Open'),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('Open'));
+      await tester.pumpAndSettle();
+      final attach = find.text('Attach screenshots');
+      await tester.ensureVisible(attach);
+      await tester.pumpAndSettle();
+      await tester.tap(attach);
+      await tester.pumpAndSettle();
+      final pending = Completer<http.Response>();
+      respond = (request) async {
+        if (request.method == 'DELETE') return json([]);
+        if (request.url.path.contains('/storage/'))
+          return json({'Key': 'beta-feedback/$owner/${draft.id}-0.png'});
+        return pending.future;
+      };
+      final send = find.widgetWithText(FilledButton, 'Send feedback');
+      await tester.ensureVisible(send);
+      await tester.pumpAndSettle();
+      await tester.tap(send);
+      await tester.pumpAndSettle();
+      expect(
+        requests.where((r) => r.url.path.contains('/rest/v1/beta_feedback')),
+        hasLength(1),
+      );
+      await tester.pumpWidget(const SizedBox());
+      await tester.pumpAndSettle();
+      pending.complete(http.Response('', 201));
+      await tester.pumpAndSettle();
+      expect(requests.where((r) => r.method == 'DELETE'), isEmpty);
+      expect(tester.takeException(), isNull);
     },
   );
 }
