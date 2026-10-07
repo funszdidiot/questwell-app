@@ -1,4 +1,8 @@
 import 'dart:convert';
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:project_momentum/main.dart' as application;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:project_momentum/services/questwell_monitoring.dart';
@@ -42,6 +46,37 @@ void main() {
     );
   });
   tearDown(() async => monitoring.close());
+
+  testWidgets('preview check exercises real startup error recovery',
+      (tester) async {
+    final previousFlutterError = FlutterError.onError;
+    final previousPlatformError = PlatformDispatcher.instance.onError;
+    addTearDown(() {
+      FlutterError.onError = previousFlutterError;
+      PlatformDispatcher.instance.onError = previousPlatformError;
+    });
+    application.runQuestwell(
+      monitoringCheck: true,
+      monitoringOverride: monitoring,
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Questwell couldn’t open'), findsOneWidget);
+    final events = transport.envelopes
+        .map((envelope) => envelope.items.single.originalObject! as SentryEvent)
+        .toList();
+    expect(events.map((event) => event.message!.formatted), [
+      'probe',
+      'backendStartup',
+    ]);
+    expect(events.every((event) => event.exceptions == null), isTrue);
+    expect(events.every((event) => event.user == null), isTrue);
+    expect(events.every((event) => event.request == null), isTrue);
+    expect(events.every((event) => event.breadcrumbs == null), isTrue);
+    expect(
+      await monitoring.report(MonitoringCode.backendStartup),
+      MonitoringResult.suppressed,
+    );
+  });
 
   test(
     'actual SDK envelope contains only the permitted event fields',

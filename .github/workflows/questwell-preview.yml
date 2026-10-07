@@ -43,7 +43,11 @@ jobs:
 
       # Includes the CPU-only CanvasKit image fix (flutter/flutter#180706).
       - name: Build preview
-        run: flutter build web --release --dart-define=QUESTWELL_ENVIRONMENT=live_beta --target lib/main_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA"
+        # Public ingest-only DSN, verified in the approved Questwell project.
+        # The standard/native and PR test builds remain unconfigured.
+        env:
+          QUESTWELL_SENTRY_DSN: https://c744c51f4c910e471c49f6d31bcf82b8@o4512216559190016.ingest.us.sentry.io/4512216571379712
+        run: flutter build web --release --dart-define=QUESTWELL_ENVIRONMENT=live_beta --target lib/main_monitored_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA" --dart-define=QUESTWELL_SENTRY_DSN="$QUESTWELL_SENTRY_DSN"
 
       - name: Verify build preserved dependency inputs
         run: git diff --exit-code -- pubspec.yaml pubspec.lock
