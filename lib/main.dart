@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'services/questwell_monitoring.dart';
+import 'config/questwell_environment.dart';
+import 'config/questwell_staging_navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'startup/questwell_bootstrap.dart';
 import 'startup/questwell_startup.dart';
@@ -52,10 +55,21 @@ void runQuestwell({
     return previousPlatformError?.call(error, stack) ?? false;
   };
   GoRouter.optionURLReflectsImperativeAPIs = true;
-  usePathUrlStrategy();
+  final environment = QuestwellEnvironment.current;
+  final stagingNavigation =
+      environment.isStaging ? QuestwellStagingNavigation() : null;
+  if (stagingNavigation != null) {
+    SharedPreferences.setPrefix('flutter.questwell.staging.');
+    setUrlStrategy(stagingNavigation);
+  } else {
+    usePathUrlStrategy();
+  }
 
   final bootstrap = QuestwellBootstrap(
-    captureCallback: () => QuestwellAuthCallback.capture(Uri.base),
+    captureCallback: () {
+      if (kIsWeb) environment.verifyWebLocation(Uri.base);
+      QuestwellAuthCallback.capture(Uri.base);
+    },
     initializeBackend: () async {
       try {
         if (monitoringCheck) {
@@ -66,6 +80,8 @@ void runQuestwell({
       } catch (_) {
         unawaited(monitoring.report(MonitoringCode.backendStartup));
         rethrow;
+      } finally {
+        stagingNavigation?.finishCallback();
       }
     },
     initializePreferences: () async {
@@ -77,9 +93,20 @@ void runQuestwell({
       }
     },
   );
-  runApp(
-    QuestwellStartup(initialize: bootstrap.run, appBuilder: (_) => MyApp()),
+  final startup = QuestwellStartup(
+    initialize: bootstrap.run,
+    appBuilder: (_) => MyApp(),
   );
+  runApp(environment.isStaging
+      ? Directionality(
+          textDirection: TextDirection.ltr,
+          child: Banner(
+            message: 'STAGING',
+            location: BannerLocation.topEnd,
+            child: startup,
+          ),
+        )
+      : startup);
 }
 
 class MyApp extends StatefulWidget {

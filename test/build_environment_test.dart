@@ -16,7 +16,6 @@ void main() {
     for (final name in [
       '',
       'production',
-      'staging',
       'live-beta',
       ' live_beta',
     ]) {
@@ -42,6 +41,39 @@ void main() {
       expect(claims['ref'], 'bdzcazkyypopbanbjnud');
     },
   );
+
+  test('staging cannot target the live project or callback', () {
+    final staging = QuestwellEnvironment.select('staging');
+    final live = QuestwellEnvironment.select('live_beta');
+    expect(staging.supabaseUrl, 'https://hpjzfytwivlpsdhiupyd.supabase.co');
+    expect(staging.publicKey, startsWith('sb_publishable_'));
+    expect(staging.publicKey, isNot(live.publicKey));
+    expect(staging.authReturnUrl,
+        'https://funszdidiot.github.io/questwell-app/staging/');
+    expect(staging.isStaging, isTrue);
+  });
+
+  test('build/path mismatch fails before backend startup', () {
+    final staging = QuestwellEnvironment.select('staging');
+    final live = QuestwellEnvironment.select('live_beta');
+    final stagingUrl = Uri.parse(staging.authReturnUrl);
+    expect(() => staging.verifyWebLocation(stagingUrl), returnsNormally);
+    expect(() => live.verifyWebLocation(stagingUrl), throwsStateError);
+    expect(() => staging.verifyWebLocation(Uri.parse(live.authReturnUrl)),
+        throwsStateError);
+    expect(
+        () => staging.verifyWebLocation(
+            Uri.parse('https://unapproved.example/questwell-app/staging/')),
+        throwsStateError);
+    expect(
+        () => live
+            .verifyWebLocation(Uri.parse('${staging.authReturnUrl}authPage')),
+        throwsStateError);
+    expect(
+        () => staging
+            .verifyWebLocation(Uri.parse('${staging.authReturnUrl}authPage')),
+        throwsStateError);
+  });
 
   test('isolated profile cannot inherit any live beta endpoint or key', () {
     final isolated = QuestwellEnvironment.select('isolated_test');
