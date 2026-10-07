@@ -16,7 +16,8 @@ void main() {
     for (final name in [
       '',
       'production',
-      'staging',
+      'Staging',
+      ' staging',
       'live-beta',
       ' live_beta',
     ]) {
@@ -49,5 +50,28 @@ void main() {
     expect(isolated.supabaseUrl, isNot(live.supabaseUrl));
     expect(isolated.publicKey, isNot(live.publicKey));
     expect(isolated.authReturnUrl, isNot(live.authReturnUrl));
+  });
+
+  test('staging pins its own public project and callback together', () {
+    final staging = QuestwellEnvironment.select('staging');
+    expect(staging.name, 'staging');
+    expect(staging.supabaseUrl, 'https://hpjzfytwivlpsdhiupyd.supabase.co');
+    expect(
+      staging.authReturnUrl,
+      'https://funszdidiot.github.io/questwell-app/staging/',
+    );
+    final claims = jsonDecode(
+      utf8.decode(
+        base64Url.decode(base64Url.normalize(staging.publicKey.split('.')[1])),
+      ),
+    ) as Map<String, dynamic>;
+    expect(claims['role'], 'anon');
+    expect(claims['ref'], 'hpjzfytwivlpsdhiupyd');
+    for (final name in ['live_beta', 'isolated_test']) {
+      final other = QuestwellEnvironment.select(name);
+      expect(staging.supabaseUrl, isNot(other.supabaseUrl));
+      expect(staging.publicKey, isNot(other.publicKey));
+      expect(staging.authReturnUrl, isNot(other.authReturnUrl));
+    }
   });
 }
