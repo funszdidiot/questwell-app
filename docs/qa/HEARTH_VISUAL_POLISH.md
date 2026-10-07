@@ -16,9 +16,9 @@ Tanya's “Let's do it” continues the proposed focused Hearth pass.
 Files: `lib/pages/home_page/home_page_widget.dart`,
 `lib/widgets/questwell_home_sections.dart`,
 `lib/widgets/questwell_home_overview.dart`,
-`lib/preview/home_sections_review.dart`, `test/home_sections_test.dart`,
+`lib/preview/home_sections_review.dart`, `test/home_sections_test.dart`, `test/mobile_layout_test.dart`,
 this handoff, the production dashboard pair and `tool/quality_baseline.json`
-(removal of four resolved formatting entries only).
+(removal of five resolved formatting entries only).
 
 Presentation only: no API/schema, reward/selection behavior, authentication,
 dependencies, asset bytes, room slot geometry, prices or equipment changes.
@@ -30,8 +30,12 @@ the SDK and official Flutter documentation. Large text is never clamped.
 Eight added tests cover phone/wide bounds, 2x text fallback, remaining quest
 visibility and destination callbacks, plus actual composed Hearth scrolling
 and Campfire toggling at 320 px/2x text and 1440 px/1x. Dart formatting passed using the bundled
-SDK formatter and the existing package language version (3.0). CI remains pending. Independent AI source review found no concrete blocker in
-the initial patch; follow-up review of composition tests is pending.
+SDK formatter and the existing package language version (3.0). CI run 37691557845 passed all eleven home-section tests, including the eight
+new cases, and the analyzer/format baseline. The full suite exposed a legacy
+mobile test that searched only for ListView. It now targets Scrollable and
+asserts positive scroll offset, retaining all three page checks. Final CI remains
+pending. Independent AI source review found no concrete blocker in
+the initial patch; follow-up source review approved the actual-composition tests too.
 Local Flutter startup was rejected by automatic approval review because it
 attempted a cloud metadata endpoint; it was not retried or bypassed.
 
