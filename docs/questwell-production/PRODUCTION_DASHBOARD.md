@@ -2,10 +2,11 @@
 
 ## Hearth visual polish — October 7, 2026
 
-**QA; isolated candidate, not yet deployed.** Bounded page/room framing, adaptive
+**QA checkpoint; delivery status is tracked in [PR #67](https://github.com/funszdidiot/questwell-app/pull/67).** Bounded page/room framing, adaptive
 quest/overview columns, a shared subdued panel treatment, and corrected review
 ordering. Existing artwork, room geometry and account behavior are unchanged.
-Eight new viewport/text-scale/composition regressions passed in CI; a legacy scroll-finder correction awaits the final run. Local Flutter startup
+Eight new viewport/text-scale/composition regressions and the corrected legacy scroll checks passed in CI. The current-base
+combined revision is awaiting its final required checks. Local Flutter startup
 was blocked by automatic approval review after a metadata-endpoint attempt;
 no retry or bypass. Runtime visual/device acceptance remains pending.
 See `../qa/HEARTH_VISUAL_POLISH.md`. No new art lock or release GO.

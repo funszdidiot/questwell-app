@@ -1,7 +1,9 @@
 # Hearth visual polish — October 7, 2026
 
-Status: QA on `feat/hearth-visual-polish`, based on development `26a46e4`.
+Pre-deployment checkpoint: QA on `feat/hearth-visual-polish`, based on development `26a46e4`.
 Tanya's “Let's do it” continues the proposed focused Hearth pass.
+Current review, CI and delivery evidence: https://github.com/funszdidiot/questwell-app/pull/67.
+The checkpoint below records preparation; consult that PR for subsequent delivery.
 
 ## Plan and contract
 
@@ -33,8 +35,12 @@ and Campfire toggling at 320 px/2x text and 1440 px/1x. Dart formatting passed u
 SDK formatter and the existing package language version (3.0). CI run 37691557845 passed all eleven home-section tests, including the eight
 new cases, and the analyzer/format baseline. The full suite exposed a legacy
 mobile test that searched only for ListView. It now targets Scrollable and
-asserts positive scroll offset, retaining all three page checks. Final CI remains
-pending. Independent AI source review found no concrete blocker in
+asserts positive scroll offset, retaining all three page checks. The corrected revision cleared the complete Flutter suite, Chrome tests, Android
+build and isolated backend checks in run 37692055140 / 37692054984; iOS and
+final web packaging were still running at this checkpoint. Development then
+advanced to a108547 (the separately reviewed staging client); it is merged
+unchanged into this branch to satisfy the strict current-base gate. A fresh
+combined-revision CI run remains required. Independent AI source review found no concrete blocker in
 the initial patch; follow-up source review approved the actual-composition tests too.
 Local Flutter startup was rejected by automatic approval review because it
 attempted a cloud metadata endpoint; it was not retried or bypassed.
