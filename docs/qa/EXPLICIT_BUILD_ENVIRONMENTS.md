@@ -10,27 +10,26 @@ Builds require `QUESTWELL_ENVIRONMENT`. Three explicit profiles exist:
 | --- | --- | --- | --- |
 | `live_beta` | Existing beta project, unchanged public anon key | Existing GitHub Pages app | Explicit development preview deployment |
 | `isolated_test` | Loopback port 1 with a deliberately invalid public key | Loopback port 1 | Injected unit/widget tests; never real Auth/API integration |
-| `staging` | Existing synthetic-only staging project | Proposed `/questwell-app/staging/` callback | Non-deployed acceptance candidate; see `STAGING_CLIENT_ACCEPTANCE.md` |
+| `staging` | Existing synthetic-only staging project | Proposed `/questwell-app/staging/` callback | Separate hosted-build candidate; see `STAGING_APP.md` |
 
 Missing, misspelled and `production` selections fail before SDK
 initialization. No fallback to beta exists. The URL, public key and auth return
 are selected together; the old independent `QUESTWELL_AUTH_RETURN_URL` override
-is removed. No session store, project, key, auth dashboard or redirect allowlist
-is changed. The live profile uses the same host and therefore the same SDK
-session storage namespace. Tests verify the existing JWT contains only the
+is removed. The staging build uses a separate preference prefix and the SDK's
+project-specific session key; live preferences and session storage remain
+unchanged. No auth dashboard or redirect allowlist change is included. Tests verify the existing JWT contains only the
 public `anon` role and the expected project reference.
 
 CI runs:
 
     flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
 
-Both web preview builds explicitly pass:
-
-    --dart-define=QUESTWELL_ENVIRONMENT=live_beta
+The root preview explicitly passes `--dart-define=QUESTWELL_ENVIRONMENT=live_beta`;
+the separate staging bundle passes `--dart-define=QUESTWELL_ENVIRONMENT=staging`.
 
 Ordinary `flutter test` without the isolated selection intentionally fails the
 configuration regression, preventing accidental implicit selection. Standalone
-builds can compile without a selection but show the startup recovery screen;
+builds can compile without a selection but fail environment initialization;
 compilation is not evidence of a usable configured release. Android signing
 fixtures are compile/signing checks only, not runnable release acceptance.
 

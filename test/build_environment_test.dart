@@ -4,6 +4,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:project_momentum/config/questwell_environment.dart';
 
 void main() {
+  test('build/path mismatch fails before backend startup', () {
+    final staging = QuestwellEnvironment.select('staging');
+    final live = QuestwellEnvironment.select('live_beta');
+    final stagingUrl = Uri.parse(staging.authReturnUrl);
+    expect(() => staging.verifyWebLocation(stagingUrl), returnsNormally);
+    expect(() => live.verifyWebLocation(stagingUrl), throwsStateError);
+    expect(() => staging.verifyWebLocation(Uri.parse(live.authReturnUrl)),
+        throwsStateError);
+    expect(
+        () => staging.verifyWebLocation(
+            Uri.parse('https://unapproved.example/questwell-app/staging/')),
+        throwsStateError);
+    expect(
+        () => live
+            .verifyWebLocation(Uri.parse('${staging.authReturnUrl}authPage')),
+        throwsStateError);
+    expect(
+        () => staging
+            .verifyWebLocation(Uri.parse('${staging.authReturnUrl}authPage')),
+        throwsStateError);
+  });
+
   test('test runner explicitly uses the isolated non-live target', () {
     final config = QuestwellEnvironment.current;
     expect(config.name, 'isolated_test');

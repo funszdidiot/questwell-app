@@ -13,6 +13,21 @@ class QuestwellEnvironment {
   final String publicKey;
   final String authReturnUrl;
 
+  bool get isStaging => name == 'staging';
+
+  /// Protect against the root Pages fallback accidentally serving a live bundle
+  /// under the staging path. No backend may initialize on a mismatched path.
+  void verifyWebLocation(Uri uri) {
+    final stagingPath = uri.path == '/questwell-app/staging' ||
+        uri.path.startsWith('/questwell-app/staging/');
+    if ((name == 'live_beta' && stagingPath) ||
+        (isStaging &&
+            (uri.origin != 'https://funszdidiot.github.io' ||
+                uri.path != '/questwell-app/staging/'))) {
+      throw StateError('Questwell build does not match this location.');
+    }
+  }
+
   // Const selection removes inactive endpoint sets from release bundles.
   static const _buildName = String.fromEnvironment('QUESTWELL_ENVIRONMENT');
   static const _compiledProfile = _buildName == 'live_beta'

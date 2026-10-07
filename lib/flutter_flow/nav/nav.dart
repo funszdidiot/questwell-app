@@ -5,7 +5,6 @@ import '/pages/account_settings_page/account_settings_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 import '/auth/base_auth_user_provider.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -73,21 +72,26 @@ class AppStateNotifier extends ChangeNotifier {
   }
 }
 
-GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
-      initialLocation: '/',
-      debugLogDiagnostics: true,
+GoRouter createRouter(AppStateNotifier appStateNotifier,
+        {String? initialLocation}) =>
+    GoRouter(
+      initialLocation: initialLocation ?? '/',
+      overridePlatformDefaultLocation: initialLocation != null,
+      debugLogDiagnostics: initialLocation == null,
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
       errorBuilder: (context, state) =>
           appStateNotifier.loggedIn && !QuestwellAuthCallback.needsAuthScreen
-              ? HomePageWidget() : AuthPageWidget(),
+              ? HomePageWidget()
+              : AuthPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) =>
-              appStateNotifier.loggedIn && !QuestwellAuthCallback.needsAuthScreen
-                  ? HomePageWidget() : AuthPageWidget(),
+          builder: (context, _) => appStateNotifier.loggedIn &&
+                  !QuestwellAuthCallback.needsAuthScreen
+              ? HomePageWidget()
+              : AuthPageWidget(),
         ),
         FFRoute(
           name: HomePageWidget.routeName,
