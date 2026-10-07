@@ -3,8 +3,103 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../lib/widgets/questwell_home_sections.dart';
+import '../lib/preview/home_sections_review.dart';
 
 void main() {
+  for (final viewport in [const Size(320, 740), const Size(1440, 1000)]) {
+    testWidgets('Composed Hearth scrolls and toggles at $viewport',
+        (tester) async {
+      GoogleFonts.config.allowRuntimeFetching = false;
+      await tester.binding.setSurfaceSize(viewport);
+      tester.platformDispatcher.textScaleFactorTestValue =
+          viewport.width == 320 ? 2 : 1;
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      await tester.pumpWidget(const HomeSectionsReviewApp());
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(tester.takeException(), isNull);
+      await tester.ensureVisible(find.byType(Switch));
+      await tester.tap(find.byType(Switch));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.text('ONE SMALL WIN'), findsOneWidget);
+      expect(tester.widget<Switch>(find.byType(Switch)).value, isTrue);
+      await tester.ensureVisible(find.text('Customize adventurer'));
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.text('35 XP to level 4'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+    });
+  }
+
+  for (final width in [320.0, 390.0, 430.0, 1440.0]) {
+    testWidgets('Hearth canvas bounds room and content at $width px',
+        (tester) async {
+      await tester.binding.setSurfaceSize(Size(width, 1000));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await tester.pumpWidget(const MaterialApp(
+          home: Scaffold(
+        body: QuestwellHomeCanvas(children: [
+          QuestwellHomeRoomFrame(
+              child: SizedBox(
+                  key: ValueKey('room'), width: double.infinity, height: 342)),
+          SizedBox(
+              key: ValueKey('content'), width: double.infinity, height: 200),
+        ]),
+      )));
+      final room = tester.getRect(find.byKey(const ValueKey('room')));
+      final content = tester.getRect(find.byKey(const ValueKey('content')));
+      expect(room.width, width < 680 ? width - 40 : 640);
+      expect(content.width, width < 1000 ? width - 40 : 960);
+      expect(room.center.dx, closeTo(width / 2, .01));
+      expect(content.center.dx, closeTo(width / 2, .01));
+      expect(tester.takeException(), isNull);
+    });
+  }
+
+  for (final scale in [1.0, 2.0]) {
+    testWidgets(
+        'Wide Hearth respects text size and retains every quest ($scale)',
+        (tester) async {
+      GoogleFonts.config.allowRuntimeFetching = false;
+      await tester.binding.setSurfaceSize(const Size(1440, 1200));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final opened = <String>[];
+      await tester.pumpWidget(MaterialApp(
+          home: MediaQuery(
+        data: MediaQueryData(textScaler: TextScaler.linear(scale)),
+        child: Scaffold(
+            body: QuestwellHomeCanvas(children: [
+          QuestwellHomeFocusLayout(
+            nextWin: const Text('Featured quest'),
+            overview:
+                const SizedBox(height: 220, child: Text('Your adventurer')),
+            remainingQuests: const [Text('Second quest'), Text('Third quest')],
+            onOpen: opened.add,
+          ),
+        ])),
+      )));
+      await tester.pumpAndSettle();
+      final featured = tester.getRect(find.text('Featured quest'));
+      final overview = tester.getRect(find.text('Your adventurer'));
+      if (scale == 1) {
+        expect(overview.left, greaterThan(featured.right));
+        expect(overview.top, closeTo(featured.top, .01));
+      } else {
+        expect(
+            overview.top,
+            greaterThan(
+                tester.getBottomLeft(find.text('Start an expedition')).dy));
+      }
+      expect(tester.getTopLeft(find.text('Second quest')).dy,
+          greaterThan(overview.bottom));
+      expect(find.text('Third quest'), findsOneWidget);
+      await tester.tap(find.text('Add quest'));
+      await tester.tap(find.text('Start an expedition'));
+      expect(opened, ['quests', 'expedition']);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   testWidgets(
     'Home actions remain readable and route correctly on narrow screens',
     (tester) async {
@@ -65,9 +160,8 @@ void main() {
                     QuestwellHomeFocusLayout(
                       nextWin: Text(empty ? 'Empty board' : 'Featured quest'),
                       overview: const Text('Character overview'),
-                      remainingQuests: empty
-                          ? const []
-                          : const [Text('Another quest')],
+                      remainingQuests:
+                          empty ? const [] : const [Text('Another quest')],
                       emphasizeAddQuest: empty,
                       onOpen: opened.add,
                     ),
