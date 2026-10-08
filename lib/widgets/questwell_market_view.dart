@@ -164,28 +164,40 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                                     style:
                                         QuestwellTypography.body(color: cream)))
                           else if (room(item))
-                            LayoutBuilder(
-                                builder: (context, constraints) =>
-                                    QuestwellHearthPixelScene(
-                                        // Match the Hearth camera as the sheet resizes.
-                                        // Fixed height crops wide/foldable previews.
-                                        immersive: true,
-                                        height: constraints.maxWidth * .68 + 8,
-                                        archetype: widget
-                                            .data.profile.adventurerArchetype,
-                                        avatarBodyType:
-                                            widget.data.profile.avatarBodyType,
-                                        equippedSlugs: roomPreview!,
-                                        hearthProfileBySlug: {
-                                          for (final i in widget.data.cosmetics)
-                                            if (i.hearthProfileKey != null)
-                                              i.slug: i.hearthProfileKey!
-                                        },
-                                        hearthRenderBySlug: {
-                                          for (final i in widget.data.cosmetics)
-                                            if (i.hearthRenderSpec != null)
-                                              i.slug: i.hearthRenderSpec!
-                                        }))
+                            Center(
+                                child: ConstrainedBox(
+                                    constraints:
+                                        const BoxConstraints(maxWidth: 760),
+                                    child: LayoutBuilder(
+                                        builder: (context, constraints) =>
+                                            QuestwellHearthPixelScene(
+                                                // Match the Hearth camera as the sheet resizes.
+                                                // Fixed height crops wide/foldable previews.
+                                                immersive: true,
+                                                height:
+                                                    constraints.maxWidth * .68 +
+                                                        8,
+                                                archetype: widget.data.profile
+                                                    .adventurerArchetype,
+                                                avatarBodyType: widget.data
+                                                    .profile.avatarBodyType,
+                                                equippedSlugs: roomPreview!,
+                                                hearthProfileBySlug: {
+                                                  for (final i
+                                                      in widget.data.cosmetics)
+                                                    if (i.hearthProfileKey !=
+                                                        null)
+                                                      i.slug:
+                                                          i.hearthProfileKey!
+                                                },
+                                                hearthRenderBySlug: {
+                                                  for (final i
+                                                      in widget.data.cosmetics)
+                                                    if (i.hearthRenderSpec !=
+                                                        null)
+                                                      i.slug:
+                                                          i.hearthRenderSpec!
+                                                }))))
                           else
                             SizedBox(
                                 height: 265,

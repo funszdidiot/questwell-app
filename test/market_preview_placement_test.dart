@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../lib/services/questwell_cosmetic_models.dart';
 import '../lib/widgets/questwell_market_view.dart';
+import '../lib/widgets/questwell_app_style.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 
 QuestwellCosmetic decor(
@@ -48,6 +49,7 @@ Future<void> openPreview(
   addTearDown(tester.view.resetDevicePixelRatio);
   await tester.pumpWidget(
     MaterialApp(
+      theme: QuestwellAppStyle.theme(),
       home: Scaffold(
         body: QuestwellMarketView(
           data: QuestwellCosmeticsSnapshot(
@@ -144,6 +146,7 @@ void main() {
         expect(scene.immersive, isTrue);
         expect(room.height, closeTo(room.width * .68 + 8, .01));
         expect(room.width, lessThanOrEqualTo(viewport.width));
+        expect(room.width, lessThanOrEqualTo(760));
         expect(scene.equippedSlugs, initialEquipment);
         expect(tester.takeException(), isNull);
       }
