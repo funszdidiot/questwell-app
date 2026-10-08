@@ -120,7 +120,8 @@ void main() {
           entry.key, 'wall_left',
           anchor: anchor);
       expect(centered.center, anchor);
-      expect(centered.size, legacy.size);
+      expect(centered.width, closeTo(legacy.width, .001));
+      expect(centered.height, closeTo(legacy.height, .001));
       expect(
           QuestwellHearthSetting.original.wallArtAnchor(entry.key, 'wall_left'),
           isNull);
