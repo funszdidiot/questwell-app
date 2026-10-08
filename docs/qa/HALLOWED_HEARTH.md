@@ -8,6 +8,24 @@ The approved 24-hour project-scoped credential was created and stored. Reviewed 
 
 Purchase boundaries, single charging, owned retries after cutoff and placement/restoration were verified with synthetic accounts in the isolated harness. No real-account purchase was made for this release verification. No main/flutterflow promotion occurred. Earlier pending/blocker statements below are historical and superseded for this approved release.
 
+## Saved rug replacement repair — October 8 UTC
+
+Tanya reported that Moonweb Rug was owned but would not save. Live request logs
+showed `room spot changed; refresh and confirm replacement`. Read-only diagnosis
+found an inactive Emerald Wayfarer Rug still occupying the floor for the affected
+Moonweb owner. The active catalog filter hid this occupant from the picker, so
+it sent null as the expected occupant and the server correctly refused.
+
+The client now retains equipped slot identities from the ownership response,
+independent of active catalog visibility, and passes them to both Market and
+Inventory pickers. Hidden items use the label “Stored Hearth item” and require
+explicit replacement confirmation. They are not reactivated or rendered. The
+server concurrency guard and all ownership/currency rules are unchanged.
+The adapter regression exercises the real Market save path, cancellation,
+expected occupant ID, exactly one placement request and state reconstruction
+on reload. CI and delivered repair verification belong to PR #81; earlier
+activation checks did not cover replacement of an inactive stored rug.
+
 ## Authority and scope
 
 Tanya approved the generated Halloween room with: “Add some animated spiders and we’re a go.” This scopes the seasonal room art and two ambient spiders. It does not approve price, dates, account activation or production launch. No schema, ownership, currency or auth changes.

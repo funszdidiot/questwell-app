@@ -79,7 +79,8 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
           archetype: data.profile.adventurerArchetype, bodyType: data.profile.avatarBodyType,
           equippedSlugs: {for (final i in equipped) i.renderKey: i.slug},
           occupants: {for (final i in equipped.where((i) => i.category == cosmetic.category))
-            i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)},
+            i.roomSlot ?? 'right': RoomOccupant(i.id, i.name),
+            ...data.hearthOccupants},
           placementChoices: cosmetic.hearthPlacements.isEmpty
               ? null
               : {for (final option in cosmetic.hearthPlacements)

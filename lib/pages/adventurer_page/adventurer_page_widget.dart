@@ -431,6 +431,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
               savingAppearance: _savingBodyType || _savingArchetype,
               busyItem: _busyCosmeticId,
               onPlace: _place,
+              hearthOccupants: data.hearthOccupants,
               onBody: _chooseBodyType,
               onClass: (value) => _requestArchetypeChange(value, data),
               onEquip: (id) => _equip(data.cosmetics.firstWhere((item) => item.id == id)),

@@ -6,10 +6,8 @@ import 'questwell_milestone_reward.dart';
 import 'questwell_mastery_relic.dart';
 import '../services/questwell_cosmetic_models.dart';
 
-class RoomOccupant {
-  const RoomOccupant(this.id, this.name);
-  final String id, name;
-}
+export '../services/questwell_cosmetic_models.dart' show RoomOccupant;
+
 class RoomPlacement {
   const RoomPlacement(this.slot, this.expectedOccupant);
   final String slot;

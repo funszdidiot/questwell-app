@@ -12,6 +12,8 @@ Approved scoped activation `37723523792` succeeded as migration
 `20261008033653`. Read-only checks confirm six active items, five render entries,
 the November 8 Chicago purchase cutoff and permanent ownership. Existing
 catalog/schema and 51 prior history entries are unchanged (52 total now).
+Saved inactive-slot occupants now remain visible to the replacement confirmation
+flow in Market and Inventory; the Moonweb regression is recorded in PR #81.
 No main/flutterflow promotion. See `../qa/HALLOWED_HEARTH.md` and
 `../qa/HALLOWED_HEARTH_FORWARD_DEPLOYMENT.md`.
 

@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:project_momentum/pages/market_page/market_page_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:project_momentum/backend/supabase/supabase.dart';
@@ -247,7 +250,18 @@ void main() {
             'unlocked_at': '2026-01-01T00:00:00Z',
             'source': 'purchase'
           },
-          {'cosmetic_id': 'retired', 'equipped': false}
+          {'cosmetic_id': 'retired', 'equipped': false},
+          {
+            'cosmetic_id': 'inactive-rug',
+            'equipped': true,
+            'room_slot': 'floor'
+          },
+          {
+            'cosmetic_id': 'unequipped-old',
+            'equipped': false,
+            'room_slot': 'left'
+          },
+          {'cosmetic_id': 'non-room', 'equipped': true, 'room_slot': null},
         ]);
       case '/rest/v1/hearth_profile_slots':
         return json([
@@ -289,6 +303,93 @@ void main() {
       QuestwellCosmetic.fromJson(catalogRow('owned', slug),
           owned: owned, equipped: false);
 
+  testWidgets('Market replaces a hidden saved rug only after confirmation',
+      (tester) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
+    await tester.binding.setSurfaceSize(const Size(390, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    var placed = false;
+    respond = (request) async {
+      switch (request.url.path) {
+        case '/rest/v1/cosmetics':
+          return json([
+            {
+              ...catalogRow('moonweb', 'moonweb-rug'),
+              'name': 'Moonweb Rug',
+              'category': 'room',
+              'hearth_profile_key': 'floor_rug',
+              'price': 60,
+            }
+          ]);
+        case '/rest/v1/user_cosmetics':
+          return json([
+            {
+              'cosmetic_id': 'moonweb',
+              'equipped': placed,
+              'room_slot': placed ? 'floor' : null
+            },
+            {
+              'cosmetic_id': 'hidden-emerald',
+              'equipped': !placed,
+              'room_slot': placed ? null : 'floor'
+            },
+          ]);
+        case '/rest/v1/hearth_profile_slots':
+          return json([
+            {
+              'profile_key': 'floor_rug',
+              'slot_key': 'floor',
+              'placement_label': 'Beneath the adventurer',
+              'sort_order': 10
+            }
+          ]);
+        case '/rest/v1/hearth_render_registry':
+          return json([]);
+        case '/rest/v1/rpc/place_hearth_cosmetic':
+          expect(body(request), {
+            'p_cosmetic_id': 'moonweb',
+            'p_slot': 'floor',
+            'p_expected_occupant': 'hidden-emerald',
+          });
+          placed = true;
+          return http.Response('', 204);
+        default:
+          return catalog(request);
+      }
+    };
+    await tester.pumpWidget(const MaterialApp(home: MarketPageWidget()));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Place in Hearth'));
+    await tester.tap(find.text('Place in Hearth'));
+    await tester.pumpAndSettle();
+    expect(find.text('Replaces Stored Hearth item'), findsOneWidget);
+    await tester.tap(find.text('Save placement'));
+    await tester.pumpAndSettle();
+    expect(find.text('Replace Stored Hearth item?'), findsOneWidget);
+    await tester.tap(find.text('Keep current item'));
+    await tester.pumpAndSettle();
+    expect(placed, isFalse);
+    expect(requests.where((r) => r.url.path.endsWith('place_hearth_cosmetic')),
+        isEmpty);
+    await tester.tap(find.text('Save placement'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Replace item'));
+    await tester.pumpAndSettle();
+    expect(placed, isTrue);
+    expect(requests.where((r) => r.url.path.endsWith('place_hearth_cosmetic')),
+        hasLength(1));
+    expect(find.text('Moonweb Rug placed in your Hearth.'), findsOneWidget);
+    expect(find.text('Could not save your equipment. Refresh and try again.'),
+        findsNothing);
+    // A reload reconstructs the newly saved floor slot from persisted ownership.
+    final saved = await QuestwellCosmeticService.load();
+    expect(saved.hearthOccupants['floor']!.id, 'moonweb');
+    expect(saved.cosmetics.single.equipped, isTrue);
+    expect(saved.cosmetics.single.roomSlot, 'floor');
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   group('catalog adapter', () {
     test(
         'joins ownership, placements and renderer metadata while filtering retired items',
@@ -308,6 +409,15 @@ void main() {
       expect(owned.hearthPlacements.map((x) => x.slot), ['left', 'right']);
       expect(owned.hearthRenderSpec!.assetPath, 'synthetic.png');
       expect(owned.hearthRenderSpec!.aspectRatio, 0.5);
+      // Hidden catalog entries still occupy saved room slots. They must not
+      // reappear as purchasable/equippable items just to allow replacement.
+      expect(snapshot.hearthOccupants.keys,
+          unorderedEquals(['wall-left', 'floor']));
+      expect(snapshot.hearthOccupants['floor']!.id, 'inactive-rug');
+      expect(snapshot.hearthOccupants['floor']!.name, 'Stored Hearth item');
+      expect(snapshot.hearthOccupants['wall-left']!.name, owned.name);
+      expect(
+          snapshot.cosmetics.any((item) => item.id == 'inactive-rug'), isFalse);
       expect(snapshot.cosmetics.last.owned, isFalse);
       expect(snapshot.cosmetics.last.hearthRenderSpec, isNull);
       expect(requests, hasLength(5));
