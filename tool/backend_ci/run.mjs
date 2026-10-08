@@ -501,9 +501,9 @@ try {
   writeFileSync(costumeClosed, costumeSql.replace(costumeClock,
     "timestamptz '2026-11-09T06:00:00Z' >= timestamptz '2026-11-09T06:00:00Z'"));
   runHardeningPayload(costumeClosed, 'Halloween purchase window has already closed');
-  run(['db','query','--local','--file',costumeOpen]);
-  run(['db','query','--local','--file',costumeOpen]); // Idempotent metadata retry.
-  run(['db','query','--local','--file',join(source,'halloween-costumes-contract.sql')]);
+  runHardeningPayload(costumeOpen);
+  runHardeningPayload(costumeOpen); // Idempotent metadata retry.
+  runHardeningPayload(join(source,'halloween-costumes-contract.sql'));
   console.log('Halloween costumes: exact pricing, retries, all class/body fits and persistent equipment passed.');
 
   // Approved content limits are tested AFTER historical schema-parity gates.
