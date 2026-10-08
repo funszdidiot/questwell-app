@@ -81,6 +81,8 @@ void main() {
             await tester.pump(const Duration(milliseconds: 400));
             await tester.tap(browse);
             await tester.pump(const Duration(milliseconds: 400));
+            await tester.ensureVisible(find.text('Hearth').last);
+            await tester.pump(const Duration(milliseconds: 400));
             await tester.tap(find.text('Hearth').last);
             await tester.pump(const Duration(milliseconds: 400));
           }

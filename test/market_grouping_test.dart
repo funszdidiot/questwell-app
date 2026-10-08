@@ -27,31 +27,34 @@ QuestwellCosmetic item(String id, String category, int price,
 Widget market(List<QuestwellCosmetic> items, {double scale = 1}) => MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: QuestwellAppStyle.theme(),
+    builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+            disableAnimations: true, textScaler: TextScaler.linear(scale)),
+        child: child!),
     home: QuestwellScaffold(
-        body: MediaQuery(
-            data: MediaQueryData(
-                disableAnimations: true, textScaler: TextScaler.linear(scale)),
-            child: QuestwellMarketView(
-                data: QuestwellCosmeticsSnapshot(
-                    profile: const QuestwellProfile(
-                        level: 1,
-                        totalXp: 0,
-                        coinBalance: 100,
-                        currentEnergyMode: 'normal',
-                        onboardingCompleted: true,
-                        adventurerArchetype: 'scout',
-                        avatarBodyType: 'neutral'),
-                    cosmetics: items),
-                onPurchase: (_) async {},
-                onEquip: (_) async {},
-                onUnequip: (_) async {},
-                onRefresh: () async {}))));
+        body: QuestwellMarketView(
+            data: QuestwellCosmeticsSnapshot(
+                profile: const QuestwellProfile(
+                    level: 1,
+                    totalXp: 0,
+                    coinBalance: 100,
+                    currentEnergyMode: 'normal',
+                    onboardingCompleted: true,
+                    adventurerArchetype: 'scout',
+                    avatarBodyType: 'neutral'),
+                cosmetics: items),
+            onPurchase: (_) async {},
+            onEquip: (_) async {},
+            onUnequip: (_) async {},
+            onRefresh: () async {})));
 
 Future<void> choose(WidgetTester tester, String label) async {
   final browse = find.byKey(const ValueKey('market-browse-type'));
   await tester.dragUntilVisible(
       browse.hitTestable(), find.byType(ListView), const Offset(0, -140));
   await tester.tap(browse);
+  await tester.pumpAndSettle();
+  await tester.ensureVisible(find.text(label).last);
   await tester.pumpAndSettle();
   await tester.tap(find.text(label).last);
   await tester.pumpAndSettle();
