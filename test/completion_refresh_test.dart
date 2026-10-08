@@ -143,7 +143,14 @@ void main() {
         if (refreshMode == 'pending') {
           await tester.pump();
           await tester.pump(const Duration(milliseconds: 100));
-          expect(action, findsNothing);
+          if (boss) {
+            expect(action, findsWidgets);
+            for (final button in tester.widgetList<FilledButton>(action)) {
+              expect(button.onPressed, isNull);
+            }
+          } else {
+            expect(action, findsNothing);
+          }
           expect(writes, 1);
           pending.complete();
         }
