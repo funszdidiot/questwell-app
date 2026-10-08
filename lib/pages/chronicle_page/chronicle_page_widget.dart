@@ -1,3 +1,4 @@
+import '/widgets/questwell_destination_entrance.dart';
 import '../../widgets/questwell_hearth_material.dart';
 import '../../widgets/questwell_app_style.dart';
 import '/services/questwell_task_service.dart';
@@ -101,29 +102,6 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                 child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 760),
           child: Column(children: [
-            Padding(
-                padding: const EdgeInsets.fromLTRB(12, 12, 18, 12),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Wrap(
-                          spacing: 6,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            IconButton(
-                                tooltip: 'Back to the Hearth',
-                                onPressed: () => QuestwellNavigationScope.open(
-                                    context, QuestwellDestination.hearth),
-                                icon:
-                                    const Icon(Icons.arrow_back, color: _gold)),
-                            Text('CHRONICLE',
-                                style: QuestwellTypography.sectionHeading(
-                                    size: 14)),
-                          ]),
-                      const SizedBox(height: 4),
-                      Text('Your adventure, one page at a time.',
-                          style: _text(13, color: _muted)),
-                    ])),
             Expanded(
                 child: FutureBuilder<ChronicleSnapshot>(
                     future: _future,
@@ -211,8 +189,13 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
                           },
                           child: ListView(
                               physics: const AlwaysScrollableScrollPhysics(),
-                              padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
+                              padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
                               children: [
+                                const QuestwellDestinationEntrance(
+                                    destination: 'chronicle',
+                                    title: 'CHRONICLE',
+                                    subtitle:
+                                        'Your adventure, one page at a time.'),
                                 _JournalSummary(data: data),
                                 const SizedBox(height: 22),
                                 Text('YOUR STORY',

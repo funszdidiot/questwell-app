@@ -197,7 +197,7 @@ void main() {
       now = now.add(const Duration(seconds: 2));
       await tester.pump(const Duration(seconds: 2));
       expect(find.text('EXPEDITION COMPLETE'), findsOneWidget);
-      expect(find.text('REST BY THE FIRE.'), findsOneWidget);
+      expect(find.text('Rest by the fire.'), findsOneWidget);
       expect(find.byKey(const ValueKey('expedition-campfire-art')),
           findsOneWidget);
       expect(tester.getSize(transition), before);

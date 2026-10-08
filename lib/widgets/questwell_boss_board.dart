@@ -1,3 +1,4 @@
+import '/widgets/questwell_destination_entrance.dart';
 import 'questwell_hearth_icon.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_app_style.dart';
@@ -136,19 +137,13 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
     final content = ListView(
         controller: _scroll,
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(18, 14, 18, 32),
+        padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
         children: [
-          Row(children: [
-            IconButton(
-                onPressed: widget.onHome,
-                tooltip: 'Back to the Hearth',
-                icon: const Icon(Icons.arrow_back_rounded, color: _gold)),
-            const SizedBox(width: 6),
-            Expanded(
-                child: Text('BOSS BATTLES',
-                    style: QuestwellTypography.sectionHeading(size: 14))),
-            const QuestwellHearthIcon(kind: 'boss', size: 28),
-          ]),
+          QuestwellDestinationEntrance(
+              destination: 'bosses',
+              title: 'BOSS BATTLES',
+              subtitle: 'Big challenges. One brave step at a time.',
+              onHome: widget.onHome),
           Wrap(
               alignment: WrapAlignment.spaceBetween,
               crossAxisAlignment: WrapCrossAlignment.center,

@@ -1,3 +1,4 @@
+import '/widgets/questwell_destination_entrance.dart';
 import '../../widgets/questwell_hearth_icon.dart';
 import '../../widgets/questwell_hearth_material.dart';
 import '../../widgets/questwell_app_style.dart';
@@ -191,85 +192,31 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
           bottomNavigationBar: QuestwellAppNavigation(
               current: QuestwellDestination.expedition, onSelect: _navigate),
           backgroundColor: theme.primaryBackground,
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            leading: IconButton(
-              tooltip: 'Back to the Hearth',
-              icon: const Icon(Icons.home_outlined),
-              onPressed: () => _navigate(QuestwellDestination.hearth),
-            ),
-            backgroundColor: QuestwellAppStyle.background,
-            elevation: 0,
-            foregroundColor: theme.primaryText,
-            actions: [
-              IconButton(
-                tooltip: _sceneMotion ? 'Pause scenery' : 'Animate scenery',
-                onPressed: () => setState(() => _sceneMotion = !_sceneMotion),
-                icon: Icon(_sceneMotion
-                    ? Icons.motion_photos_pause_outlined
-                    : Icons.motion_photos_on_outlined),
-              )
-            ],
-            title: Text(
-              'EXPEDITION',
-              style: theme.titleLarge.override(
-                font: GoogleFonts.pressStart2p(
-                  fontWeight: FontWeight.w700,
-                ),
-                fontSize: 14,
-                letterSpacing: .4,
-              ),
-            ),
-          ),
           body: SafeArea(
-            top: false,
+            top: true,
             child: Center(
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 600),
                     child: ListView(
-                      padding: const EdgeInsets.fromLTRB(20, 18, 20, 32),
+                      padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
                       children: [
-                        Text(
-                          _finished
-                              ? 'REST BY THE FIRE.'
-                              : 'SET OUT. DO ONE THING.',
-                          style: theme.headlineSmall.override(
-                            font: GoogleFonts.pressStart2p(
-                              fontWeight: FontWeight.w700,
-                            ),
-                            fontSize: 14,
-                            letterSpacing: .3,
-                          ),
-                        ),
-                        const SizedBox(height: 18),
-                        AnimatedSwitcher(
-                          key: const ValueKey('expedition-scene-transition'),
-                          duration: MediaQuery.disableAnimationsOf(context) ||
-                                  !_sceneMotion
-                              ? Duration.zero
-                              : const Duration(milliseconds: 2200),
-                          switchInCurve: Curves.easeInOutSine,
-                          switchOutCurve: Curves.easeInOutSine,
-                          // Keep the outgoing scene opaque behind the incoming fade.
-                          // This avoids the dark dip of fading both layers at once.
-                          transitionBuilder: (child, animation) =>
-                              AnimatedBuilder(
-                            animation: animation,
-                            child: child,
-                            builder: (context, scene) => Opacity(
-                              opacity:
-                                  animation.status == AnimationStatus.reverse
-                                      ? 1.0
-                                      : animation.value,
-                              child: scene,
-                            ),
-                          ),
-                          child: QuestwellExpeditionScene(
-                            key: ValueKey(_finished),
-                            campfire: _finished,
-                            motion: _sceneMotion,
-                          ),
-                        ),
+                        QuestwellDestinationEntrance(
+                            destination: 'expedition',
+                            title: 'EXPEDITION',
+                            subtitle: _finished
+                                ? 'Rest by the fire.'
+                                : 'Set out. Do one thing.',
+                            onHome: () =>
+                                _navigate(QuestwellDestination.hearth),
+                            action: IconButton(
+                                tooltip: _sceneMotion
+                                    ? 'Pause scenery'
+                                    : 'Animate scenery',
+                                onPressed: () => setState(
+                                    () => _sceneMotion = !_sceneMotion),
+                                icon: Icon(_sceneMotion
+                                    ? Icons.motion_photos_pause_outlined
+                                    : Icons.motion_photos_on_outlined))),
                         const SizedBox(height: 22),
                         QuestwellHearthFrame(
                           padding: const EdgeInsets.all(22),
@@ -419,6 +366,35 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                 ),
                               ],
                             ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        AnimatedSwitcher(
+                          key: const ValueKey('expedition-scene-transition'),
+                          duration: MediaQuery.disableAnimationsOf(context) ||
+                                  !_sceneMotion
+                              ? Duration.zero
+                              : const Duration(milliseconds: 2200),
+                          switchInCurve: Curves.easeInOutSine,
+                          switchOutCurve: Curves.easeInOutSine,
+                          // Keep the outgoing scene opaque behind the incoming fade.
+                          // This avoids the dark dip of fading both layers at once.
+                          transitionBuilder: (child, animation) =>
+                              AnimatedBuilder(
+                            animation: animation,
+                            child: child,
+                            builder: (context, scene) => Opacity(
+                              opacity:
+                                  animation.status == AnimationStatus.reverse
+                                      ? 1.0
+                                      : animation.value,
+                              child: scene,
+                            ),
+                          ),
+                          child: QuestwellExpeditionScene(
+                            key: ValueKey(_finished),
+                            campfire: _finished,
+                            motion: _sceneMotion,
                           ),
                         ),
                         const SizedBox(height: 20),

@@ -1,3 +1,4 @@
+import 'home_sections_review.dart';
 import '../widgets/questwell_app_style.dart';
 import '../widgets/questwell_equipment_swap.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,6 @@ import '../widgets/questwell_market_view.dart';
 import '../widgets/questwell_room_picker.dart';
 import '../widgets/questwell_wall_art.dart';
 import 'market_catalog.dart';
-import 'home_sections_review.dart';
-import '../widgets/questwell_market_home_button.dart';
 
 /// Interactive sample shop; never connects to an account or spends real coins.
 class MarketReviewApp extends StatefulWidget {
@@ -125,22 +124,16 @@ class _MarketReviewAppState extends State<MarketReviewApp> {
                               setState(() => coins = coins == 0 ? 650 : 0),
                           child: const Text('Toggle coin balance')),
                     ])),
-            SizedBox(
-                width: width,
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Builder(
-                        builder: (context) => QuestwellMarketHomeButton(
-                            onHome: () => Navigator.of(context).pushReplacement(
-                                MaterialPageRoute<void>(
-                                    builder: (_) =>
-                                        const HomeSectionsReviewApp())))))),
             Expanded(
                 child: Center(
                     child: SizedBox(
                         width: width,
                         child: Builder(
                             builder: (ctx) => QuestwellMarketView(
+                                  onHome: () => Navigator.of(ctx)
+                                      .pushReplacement(MaterialPageRoute<void>(
+                                          builder: (_) =>
+                                              const HomeSectionsReviewApp())),
                                   data: QuestwellCosmeticsSnapshot(
                                       profile: QuestwellProfile(
                                           level: 4,

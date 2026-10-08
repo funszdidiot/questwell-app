@@ -19,11 +19,13 @@ class QuestwellMarketView extends StatefulWidget {
       required this.onEquip,
       required this.onUnequip,
       required this.onRefresh,
-      this.busyId});
+      this.busyId,
+      this.onHome});
   final QuestwellCosmeticsSnapshot data;
   final Future<void> Function(QuestwellCosmetic) onPurchase, onEquip, onUnequip;
   final Future<void> Function() onRefresh;
   final String? busyId;
+  final VoidCallback? onHome;
   @override
   State<QuestwellMarketView> createState() => _QuestwellMarketViewState();
 }
@@ -288,9 +290,11 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     return RefreshIndicator(
         onRefresh: widget.onRefresh,
         child: ListView(
-            padding: const EdgeInsets.fromLTRB(18, 8, 18, 30),
+            padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
             children: [
-              QuestwellMarketShopfront(coins: widget.data.profile.coinBalance),
+              QuestwellMarketShopfront(
+                  coins: widget.data.profile.coinBalance,
+                  onHome: widget.onHome),
               const SizedBox(height: 16),
               _browseControls(),
               const SizedBox(height: 14),

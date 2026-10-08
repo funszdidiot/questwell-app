@@ -47,6 +47,17 @@ class _AdventurerReviewAppState extends State<AdventurerReviewApp> {
                 child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 430),
           child: QuestwellAdventurerView(
+              onSettings: () => showDialog<void>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                          title: const Text('Account settings'),
+                          content: const Text(
+                              'Account settings are available when signed in. This preview uses sample data.'),
+                          actions: [
+                            TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Close'))
+                          ])),
               archetype: _class,
               bodyType: _body,
               level: 3,

@@ -1,3 +1,4 @@
+import '/widgets/questwell_destination_entrance.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_app_style.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +76,8 @@ class QuestwellAdventurerView extends StatefulWidget {
       this.claiming = false,
       this.busyItem,
       this.hearthOccupants = const {},
-      this.onPlace});
+      this.onPlace,
+      this.onSettings});
   final String archetype, bodyType, description, relicName;
   final int level, xp, coins, collectionOwned, collectionTotal;
   final List<AdventurerInventoryItem> items;
@@ -86,6 +88,7 @@ class QuestwellAdventurerView extends StatefulWidget {
       onPlace;
   final ValueChanged<String> onBody, onClass, onEquip, onUnequip;
   final VoidCallback onClaim, onMarket, onBack;
+  final VoidCallback? onSettings;
   @override
   State<QuestwellAdventurerView> createState() =>
       _QuestwellAdventurerViewState();
@@ -164,23 +167,19 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         .toList();
     return ListView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(18, 12, 18, 28),
+        padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
         children: [
-          Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                IconButton(
-                    tooltip: 'Back to the Hearth',
-                    onPressed: widget.onBack,
-                    icon: const Icon(Icons.arrow_back, color: _gold)),
-                Text('ADVENTURER',
-                    style: QuestwellTypography.sectionHeading(size: 12)),
-              ]),
-          const SizedBox(height: 6),
-          Text('Make yourself at home.', style: _text(15, color: _muted)),
-          const SizedBox(height: 16),
+          QuestwellDestinationEntrance(
+              destination: 'adventurer',
+              title: 'ADVENTURER',
+              subtitle: 'Make yourself at home.',
+              onHome: widget.onBack,
+              action: widget.onSettings == null
+                  ? null
+                  : IconButton(
+                      tooltip: 'Account settings',
+                      onPressed: widget.onSettings,
+                      icon: const Icon(Icons.settings_outlined))),
           _panel(
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
             // Existing approved avatar renderer and assets remain the single source of truth.

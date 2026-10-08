@@ -54,15 +54,14 @@ void main() {
         expect(titleRect.left, greaterThanOrEqualTo(18));
         expect(titleRect.right, lessThanOrEqualTo(width - 18));
         // Measure the outer tap target, not the smaller visual inside Tooltip.
-        final back = find.byWidgetPredicate((widget) =>
-            widget is IconButton && widget.tooltip == 'Back to the Hearth');
+        final back = find.byTooltip('Back to the Hearth');
         final backRect = tester.getRect(back);
         expect(backRect.width, greaterThanOrEqualTo(48));
         expect(backRect.height, greaterThanOrEqualTo(48));
         expect(titleRect.overlaps(backRect), isFalse);
         final subtitle = tester
             .renderObject<RenderParagraph>(find.text('Make yourself at home.'));
-        expect(subtitle.textScaler.scale(15), 15 * scale);
+        expect(subtitle.textScaler.scale(14), 14 * scale);
         await tester.tapAt(backRect.topLeft + const Offset(1, 1));
         expect(returnedHome, isTrue);
         expect(tester.takeException(), isNull);

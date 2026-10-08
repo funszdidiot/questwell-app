@@ -101,9 +101,8 @@ void main() {
               heading.getBoxesForSelection(
                   const TextSelection(baseOffset: 0, extentOffset: 9)),
               hasLength(1));
-          expect(heading.textScaler.scale(14), 14 * setting.$2);
-          final back = find.byWidgetPredicate((widget) =>
-              widget is IconButton && widget.tooltip == 'Back to the Hearth');
+          expect(heading.textScaler.scale(12), 12 * setting.$2);
+          final back = find.byTooltip('Back to the Hearth');
           expect(
               tester
                   .getRect(find.text('CHRONICLE'))

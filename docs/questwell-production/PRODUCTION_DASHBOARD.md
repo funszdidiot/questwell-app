@@ -1,5 +1,16 @@
 # Questwell Production Dashboard
 
+## Illustrated destination entrances — October 8, 2026
+
+**BUILDING / QA pending.** Tanya identified that shared colors and frames did not
+establish consistent page arrivals. Six destinations now use one entrance component
+with Hearth navigation, an illustrated setting, a live title plaque and welcome copy.
+Five new scenery candidates accompany the existing Market. Locked avatars and
+economy remain unchanged. Independent source review caught and corrected enlarged
+title wrapping and settings availability during loading/error states. CI and
+delivered visual review remain pending; no new art lock is claimed.
+
+
 ## App-wide Hearth standard — October 7, 2026 (America/Chicago)
 
 **DEV DEPLOYED / QA**. Tanya explicitly directed the entire app to follow the accepted

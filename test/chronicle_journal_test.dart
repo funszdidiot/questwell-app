@@ -54,6 +54,8 @@ void main() {
     await tester.tap(find.text('Bosses'));
     await tester.pumpAndSettle();
     expect(find.text('A victory worth a page.'), findsOneWidget);
+    await tester.scrollUntilVisible(find.byTooltip('Back to the Hearth'), -250,
+        scrollable: find.byType(Scrollable).first);
     expect(find.byTooltip('Back to the Hearth'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
