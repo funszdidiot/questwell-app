@@ -58,8 +58,8 @@ export function verifyApplied(actual, plan) {
   assert.match(records[0].version, /^\d{14}$/, 'Invalid migration version');
   assert.ok(Array.isArray(records[0].statements) && records[0].statements.length > 0 &&
     records[0].statements.every(s => typeof s === 'string'), 'Invalid recorded statements');
-  assert.ok(records[0].statements.join('\n').includes(`-- questwell-content-source-sha256:${plan.sourceDigest}`),
-    'Recorded source digest missing');
+  assert.equal(sha256(records[0].statements.join('\n')), sha256(plan.sql),
+    'Complete recorded payload differs');
 }
 
 // The injected transport exists for network-free failure testing. The CLI uses fetch.

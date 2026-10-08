@@ -82,7 +82,11 @@ development head and approval freshness immediately before its single migration
 request. The SQL retains its independent transactional drift checks and locks.
 
 Readback requires exact protected schema/history hashes, both functions, four
-triggers, owner grants, one14-digit migration record and its source digest marker.
+triggers, owner grants, one14-digit migration record and a SHA256 match of the
+complete recorded statement sequence to the reviewed payload. A matching source
+comment alone is insufficient. Unexpected provider statement rewriting fails
+closed and requires read-only reconciliation; never weaken the comparison to
+accept additional or different SQL.
 Already-applied matching state returns without a write. A timeout, HTTP error or
 failed readback is never retried automatically; reconcile read-only first. Server
 bodies, SQL, tokens and assertion diffs are suppressed by the CLI.

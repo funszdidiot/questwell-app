@@ -138,6 +138,8 @@ test('already applied state is verified without writing; fake or duplicate recor
   assert.equal(f.writes(), 0);
   for (const records of [[], [...applied().records, ...applied().records],
     [{version: 'bad', statements: [plan.sql]}], [{version: '20261008120000', statements: ['wrong']}],
+    [{version: '20261008120000', statements: [plan.sql, 'delete from public.tasks;']}],
+    [{version: '20261008120000', statements: [`-- questwell-content-source-sha256:${plan.sourceDigest}\nselect 1;`]}],
     [{version: '20261008120000', statements: [null]}]]) {
     assert.throws(() => verifyApplied({...applied(), records}, plan));
     const broken = fixture({before: {...applied(), records}});
