@@ -112,8 +112,12 @@ export async function rehearseRecovery(status) {
     "process.stdout.write(process.env.TUS_USE_FILE_VERSION_SEPARATOR === 'true' ? '-$v-' : '/')"]);
   assert.ok(['/', '-$v-'].includes(fileVersionSeparator));
   const probeScript = readFileSync(new URL('./recovery-file-probe.mjs', import.meta.url), 'utf8');
-  const fileProbe = input => JSON.parse(docker(['exec', '-i', 'supabase_storage_questwell-disposable-ci',
-    'node', '--input-type=module', '-e', probeScript], JSON.stringify(input)));
+  const fileProbe = input => {
+    const result = JSON.parse(docker(['exec', '-i', 'supabase_storage_questwell-disposable-ci',
+      'node', '--input-type=module', '-e', probeScript], JSON.stringify(input)));
+    assert.ok(!result.error, `Synthetic file probe failed: ${result.error}/${result.reason}`);
+    return result;
+  };
   const feedbackId = randomUUID();
   ok(await request('/rest/v1/beta_feedback', a, 'POST', {
     id: feedbackId, user_id: a.id, category: 'bug', goal: 'Synthetic recovery',

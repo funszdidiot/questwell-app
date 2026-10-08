@@ -5,18 +5,22 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 
+let stage = 'input';
 try {
   const root = '/var/lib/storage';
   const input = JSON.parse(fs.readFileSync(0, 'utf8'));
+  stage = 'root';
   const rootStat = fs.lstatSync(root);
   assert.ok(rootStat.isDirectory() && !rootStat.isSymbolicLink());
   assert.equal(fs.realpathSync(root), root);
   if (input.mode === 'discover') {
+    stage = 'discovery_input';
     assert.match(input.objectPath, /^[0-9a-f-]{36}\/recovery\.png$/);
     assert.ok(input.version === null || /^[0-9a-f-]{36}$/.test(input.version));
     assert.ok(['/', '-$v-'].includes(input.separator));
     const suffix = `/beta-feedback/${input.objectPath}${input.version ? `${input.separator}${input.version}` : ''}`;
     const pending = [{dir: root, depth: 0}], matches = [];
+    stage = 'traversal';
     let examined = 0;
     while (pending.length) {
       const {dir, depth} = pending.pop();
@@ -32,15 +36,19 @@ try {
         }
       }
     }
+    stage = matches.length === 0 ? 'no_match' : 'multiple_matches';
     assert.equal(matches.length, 1);
+    stage = 'read_matching_file';
     const bytes = fs.readFileSync(matches[0]);
     process.stdout.write(JSON.stringify({relativePath: path.relative(root, matches[0]),
       bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex')}));
   } else {
+    stage = 'absence_input';
     assert.equal(input.mode, 'absent');
     assert.equal(typeof input.relativePath, 'string');
     const parts = input.relativePath.split('/');
     assert.ok(parts.length > 0 && parts.length <= 22 && parts.every(p => p && p !== '.' && p !== '..'));
+    stage = 'absence_probe';
     let current = root, absent = false;
     for (const part of parts) {
       current = path.join(current, part);
@@ -56,8 +64,8 @@ try {
     assert.ok(absent);
     process.stdout.write(JSON.stringify({absent: true}));
   }
-} catch {
+} catch (error) {
   // Filesystem errors contain paths. Never disclose them in CI output.
-  process.stderr.write('Synthetic file probe failed; filesystem details withheld\n');
-  process.exitCode = 1;
+  process.stdout.write(JSON.stringify({error: stage,
+    reason: ['ENOENT', 'EACCES', 'EPERM', 'ENOTDIR', 'EAGAIN'].includes(error.code) ? error.code : 'assertion'}));
 }
