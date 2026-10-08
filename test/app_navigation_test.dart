@@ -55,8 +55,8 @@ void main() {
       home: QuestwellNavigationScope(onSelect: (value) => destination = value,
         child: const ExpeditionPageWidget())));
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Begin Expedition'));
-    await tester.tap(find.text('Begin Expedition')); await tester.pump();
+    await tester.ensureVisible(find.text('Begin'));
+    await tester.tap(find.text('Begin')); await tester.pump();
     await tester.tap(tab('Hearth')); await tester.pumpAndSettle();
     expect(find.text('Leave this expedition?'), findsOneWidget);
     await tester.tap(find.text('Stay here')); await tester.pumpAndSettle();
@@ -79,8 +79,8 @@ void main() {
       home: QuestwellNavigationScope(onSelect: (value) => destination = value,
         child: ExpeditionPageWidget(clock: () => now))));
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Begin Expedition'));
-    await tester.tap(find.text('Begin Expedition')); await tester.pump();
+    await tester.ensureVisible(find.text('Begin'));
+    await tester.tap(find.text('Begin')); await tester.pump();
     await tester.tap(find.byTooltip('Back to the Hearth')); await tester.pumpAndSettle();
     expect(find.text('Leave this expedition?'), findsOneWidget);
     expect(destination, isNull);
@@ -95,12 +95,12 @@ void main() {
     now = now.add(const Duration(seconds: 20));
     await tester.pump(const Duration(seconds: 1));
     expect(find.text('24:53'), findsOneWidget);
-    expect(find.text('Resume Expedition'), findsOneWidget);
+    expect(find.text('Resume'), findsOneWidget);
     expect(destination, isNull);
     await tester.tap(find.byTooltip('Back to the Hearth')); await tester.pumpAndSettle();
     await tester.tap(find.text('End and leave')); await tester.pumpAndSettle();
     expect(destination, QuestwellDestination.hearth);
-    expect(find.text('Begin Expedition'), findsOneWidget);
+    expect(find.text('Begin'), findsOneWidget);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox());
   });
@@ -115,8 +115,8 @@ void main() {
       home: QuestwellNavigationScope(onSelect: (value) => destination = value,
         child: const ExpeditionPageWidget())));
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Begin Expedition'));
-    await tester.tap(find.text('Begin Expedition')); await tester.pump();
+    await tester.ensureVisible(find.text('Begin'));
+    await tester.tap(find.text('Begin')); await tester.pump();
     final navigator = Navigator.of(tester.element(find.byType(ExpeditionPageWidget)));
     await navigator.maybePop(); await tester.pumpAndSettle();
     expect(find.text('Leave this expedition?'), findsOneWidget);
@@ -144,8 +144,8 @@ void main() {
     await tester.tap(find.byTooltip('Back to the Hearth')); await tester.pumpAndSettle();
     expect(visits, 1);
     expect(find.text('Leave this expedition?'), findsNothing);
-    await tester.ensureVisible(find.text('Begin Expedition'));
-    await tester.tap(find.text('Begin Expedition')); await tester.pump();
+    await tester.ensureVisible(find.text('Begin'));
+    await tester.tap(find.text('Begin')); await tester.pump();
     now = now.add(const Duration(seconds: 2));
     await tester.pump(const Duration(seconds: 1)); await tester.pumpAndSettle();
     expect(find.text('EXPEDITION COMPLETE'), findsOneWidget);

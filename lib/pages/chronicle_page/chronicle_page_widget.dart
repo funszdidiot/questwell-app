@@ -103,25 +103,27 @@ class _ChroniclePageWidgetState extends State<ChroniclePageWidget> {
           child: Column(children: [
             Padding(
                 padding: const EdgeInsets.fromLTRB(12, 12, 18, 12),
-                child: Row(children: [
-                  IconButton(
-                      tooltip: 'Back to the Hearth',
-                      onPressed: () => QuestwellNavigationScope.open(
-                          context, QuestwellDestination.hearth),
-                      icon: const Icon(Icons.arrow_back, color: _gold)),
-                  const SizedBox(width: 6),
-                  Expanded(
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Wrap(
+                          spacing: 6,
+                          crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                        Text('CHRONICLE',
-                            style:
-                                QuestwellTypography.sectionHeading(size: 14)),
-                        const SizedBox(height: 4),
-                        Text('Your adventure, one page at a time.',
-                            style: _text(13, color: _muted)),
-                      ])),
-                ])),
+                            IconButton(
+                                tooltip: 'Back to the Hearth',
+                                onPressed: () => QuestwellNavigationScope.open(
+                                    context, QuestwellDestination.hearth),
+                                icon:
+                                    const Icon(Icons.arrow_back, color: _gold)),
+                            Text('CHRONICLE',
+                                style: QuestwellTypography.sectionHeading(
+                                    size: 14)),
+                          ]),
+                      const SizedBox(height: 4),
+                      Text('Your adventure, one page at a time.',
+                          style: _text(13, color: _muted)),
+                    ])),
             Expanded(
                 child: FutureBuilder<ChronicleSnapshot>(
                     future: _future,

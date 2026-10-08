@@ -20,7 +20,7 @@ class ExpeditionReviewApp extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     child: Text(
-                        'Campfire preview · Tap Begin Expedition for a 5-second journey.',
+                        'Campfire preview · Tap Begin for a 5-second journey.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Color(0xFFFFF0C9),

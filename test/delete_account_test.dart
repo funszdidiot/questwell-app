@@ -65,7 +65,7 @@ void main() {
     );
     await tester.enterText(find.byType(TextField), 'DELETE');
     await tester.pump();
-    await tester.tap(find.text('Permanently delete'));
+    await tester.tap(find.text('Delete forever'));
     await tester.pump();
     await tester.tap(find.text('Deleting account…'));
     await tester.pump();
@@ -100,7 +100,7 @@ void main() {
     );
     await tester.enterText(find.byType(TextField), 'DELETE');
     await tester.pump();
-    await tester.tap(find.text('Permanently delete'));
+    await tester.tap(find.text('Delete forever'));
     await tester.pumpAndSettle();
     expect(
       find.textContaining('Some files may already be deleted.'),
@@ -126,7 +126,7 @@ void main() {
     );
     await tester.enterText(find.byType(TextField), 'DELETE');
     await tester.pump();
-    await tester.tap(find.text('Permanently delete'));
+    await tester.tap(find.text('Delete forever'));
     await tester.pumpAndSettle();
     expect(done, isFalse);
     expect(

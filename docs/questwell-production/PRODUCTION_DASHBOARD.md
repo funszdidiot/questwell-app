@@ -2,11 +2,16 @@
 
 ## App-wide Hearth standard — October 7, 2026 (America/Chicago)
 
-**BUILDING / QA**. Tanya explicitly directed the entire app to follow the accepted
+**DEV DEPLOYED / QA**. Tanya explicitly directed the entire app to follow the accepted
 Hearth standard. Shared chrome, materials, navigation, typography, icons, inputs,
 buttons and feedback now form one presentation system across the main screens
-and account flows. Required CI and independent delivered review are pending.
-See `APP_VISUAL_STANDARD.md`; the delivery PR records final evidence.
+and account flows. PR #77 deployed at `b01aa00a`, Preview `37724181383`, with
+946 Flutter / 397 Chrome tests and all required checks passing. Independent
+review accepted the shared materials across all main destinations. A follow-up
+corrects four enlarged-text wrapping defects and Market detail typography.
+Those corrections remain in QA; real account settings still need a signed-in
+visual check. See `APP_VISUAL_STANDARD.md` and
+`../qa/APP_WIDE_HEARTH.md` for the exact scope and limitations.
 
 
 ## Hallowed Hearth Halloween collection — October 8, 2026
