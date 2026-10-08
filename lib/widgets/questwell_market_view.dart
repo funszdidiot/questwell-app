@@ -167,16 +167,17 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                               else if (room(item))
                                 Center(
                                     child: ConstrainedBox(
-                                        constraints:
-                                            const BoxConstraints(maxWidth: 760),
+                                        constraints: BoxConstraints(
+                                            maxWidth:
+                                                ((sheetBounds.maxHeight - 32) / .68)
+                                                    .clamp(0.0, 760.0)),
                                         child: LayoutBuilder(
                                             builder: (context, constraints) =>
                                                 QuestwellHearthPixelScene(
                                                     // Match the Hearth camera as the sheet resizes.
                                                     // Fixed height crops wide/foldable previews.
                                                     immersive: true,
-                                                    height: constraints
-                                                                .maxWidth *
+                                                    height: constraints.maxWidth *
                                                             .68 +
                                                         8,
                                                     archetype: widget
