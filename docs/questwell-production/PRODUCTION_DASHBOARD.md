@@ -1,5 +1,9 @@
 # Questwell Production Dashboard
 
+## Halloween complete costumes — October 8, 2026
+
+**QA.** Midnight Masquerade and Pumpkin Court are fitted across female, neutral and male bodies, each with an integrated blouse and mask. Independent visual review passes all six exports. Dedicated account-free preview and decode/body-preservation tests are prepared. CI and delivered verification remain pending. Tanya authorized pricing and rollout under the same Halloween rules: 180 coins each, November 8 cutoff and permanent ownership. Shared renderer/catalog preparation is in QA; activation follows verified delivery. See `../qa/HALLOWEEN_COSTUMES.md`.
+
 ## Market browsing — October 8, 2026
 
 **QA.** Tanya requested related items together rather than an interleaved price

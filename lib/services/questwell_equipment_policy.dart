@@ -8,6 +8,8 @@ abstract final class QuestwellEquipmentPolicy {
   static bool isRetired(String slug) => retiredSlugs.contains(slug);
 
   static const renderReadySlugs = <String>{
+    'midnight-masquerade',
+    'pumpkin-court',
     'hallowed-hearth',
     'velvet-batwing-chair',
     'moonbrew-side-table',
@@ -76,6 +78,8 @@ abstract final class QuestwellEquipmentPolicy {
     'hearthguard-mantle',
   };
   static const bodyFits = <String, Set<String>>{
+    'midnight-masquerade': {'female', 'neutral', 'male'},
+    'pumpkin-court': {'female', 'neutral', 'male'},
     'everyday-adventurer-outfit': {'female', 'neutral', 'male'},
     'woodland-scout-outfit': {'female', 'neutral', 'male'},
   };

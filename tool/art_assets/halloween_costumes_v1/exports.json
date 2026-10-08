@@ -1,0 +1,316 @@
+{
+  "status": "candidate_fit_review_pending",
+  "canvas": [
+    240,
+    320
+  ],
+  "outfits": {
+    "midnight_masquerade:female": {
+      "layers": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/front.webp",
+          "sha256": "de618ad68499235f5c77750df24869dc3507e55b2cea1e783a1e537fc1f25859",
+          "alphaSha256": "2631ef0945ece8c3552543a627aa74606e73a31757c2a3dc3b527d3495e8c563"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/cuffs.webp",
+          "sha256": "740e9d15fc361463a6bf19822b254762b8ab1504fee9c6e7011a5e9e134aee6c",
+          "alphaSha256": "8b21847b3926d1edae194e0fc1501256098d9109c94e1a3860dc2e8bbc5147d0"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/rear.webp",
+          "sha256": "7deedd1d2e19c01baaa18c55640b2a911b63d63e207e655570c98ad13efb6a9f",
+          "alphaSha256": "e56266ad2416379833ae169335bea7bb938a4ddc167193b8be28807ea3d19eb0"
+        },
+        "underlay": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/underlay.webp",
+          "sha256": "f31258b9e97cb16b7193204f34f244439c27adf5235edff2a5968a221c020cc4",
+          "alphaSha256": "0998994fddfe9fb4a11053efcb35af4e93e2aab26ca0d899ad9362442bbee254"
+        },
+        "mask": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/mask.webp",
+          "sha256": "b2752179f850536b60f4d6df4cb32d4c456986b2ec78efedd6508a70ecdca9a7",
+          "alphaSha256": "4e3f4f5328fb87b0ecdb8904ba462b47fa9d9427f9ddd863ac055165a812e42f"
+        }
+      },
+      "sourceSha256": "23b79caec3f989b2d93ba469cc298d992d4328e616c1aadbebb9cf558eec90fd",
+      "maskSourceSha256": "f724372302a0b33a95c9b8acde9df47256ab0743619ae9a3f5f656a9fcb49fcc",
+      "robeAlphaExact": true,
+      "template": {
+        "front": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v7.webp",
+        "cuffs": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_female_v7.webp",
+        "rear": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v7.webp"
+      },
+      "eyes": [
+        [
+          106.5,
+          55
+        ],
+        [
+          125,
+          52
+        ]
+      ]
+    },
+    "pumpkin_court:female": {
+      "layers": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/front.webp",
+          "sha256": "fc788c03d4b1f286520492a75a31b9958105b2e2b0d12cdb7c5ecd0c62f0fa45",
+          "alphaSha256": "2631ef0945ece8c3552543a627aa74606e73a31757c2a3dc3b527d3495e8c563"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/cuffs.webp",
+          "sha256": "c70e398a01fff8a009ef09fd3d2e65ae2d602e751299657159e9cd82421d6b94",
+          "alphaSha256": "8b21847b3926d1edae194e0fc1501256098d9109c94e1a3860dc2e8bbc5147d0"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/rear.webp",
+          "sha256": "4d9cb3c505b7e77b1df0c46fee5ed2acccd4f808a7d6d39a330670cbc789529b",
+          "alphaSha256": "e56266ad2416379833ae169335bea7bb938a4ddc167193b8be28807ea3d19eb0"
+        },
+        "underlay": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/underlay.webp",
+          "sha256": "26b136eae1f7c2b5a1c804e5ce78478daf9ae73b8109b2dd59e1575b4971516d",
+          "alphaSha256": "0998994fddfe9fb4a11053efcb35af4e93e2aab26ca0d899ad9362442bbee254"
+        },
+        "mask": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/mask.webp",
+          "sha256": "87534ab978a041b79ad34328b9f7ed6fef6c9a3b7e9633175ccb26b1911202cf",
+          "alphaSha256": "e5fde152fb2222cb825b0b01e38034bec6cfc31997d7bfbec27d99854a24da52"
+        }
+      },
+      "sourceSha256": "4357847dc351230cf526dc20c53f8ab48b123c736f37633415af96e09f2950ab",
+      "maskSourceSha256": "e2b7d922b3241db9a110f5dfbe02a9ab0c51e78ba2928fe830d17029d90b4d68",
+      "robeAlphaExact": true,
+      "template": {
+        "front": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v7.webp",
+        "cuffs": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_female_v7.webp",
+        "rear": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v7.webp"
+      },
+      "eyes": [
+        [
+          106.5,
+          55
+        ],
+        [
+          125,
+          52
+        ]
+      ]
+    },
+    "midnight_masquerade:neutral": {
+      "layers": {
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/rear.webp",
+          "sha256": "f005f504cc9d66ef7f9d916f2cd1d72b493874c6b026e4bee280e34559e06b5b",
+          "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae"
+        },
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/front.webp",
+          "sha256": "edb65714fafe2783b5272114e16c9b5facb50fa1b7ff0c409862536a0afd78b5",
+          "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/cuffs.webp",
+          "sha256": "ca43d121efde757c6189717bbcaf444d0584ec1b207ebc2665002a1c295f0a55",
+          "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f"
+        },
+        "collar": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/collar.webp",
+          "sha256": "53134b59736312ac453923ed2244a3b659235dbb8b14693d9a7ef60588301214",
+          "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e"
+        },
+        "underlay": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/underlay.webp",
+          "sha256": "b44bdd9954b9c7c27d22b29e9c23486e3fa9308f806c370bec20120eee9a2bb1",
+          "alphaSha256": "1bc7c180f1fd57ff37546d1393497d4bbcc5835833f200ef32f659519be5348f"
+        },
+        "mask": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/mask.webp",
+          "sha256": "cda43719ae44c3cbdae6b7eb9dee20c1bc3782fa855255f25065056a3de64aaa",
+          "alphaSha256": "178c57503ae27155cbb44f4ca6a1b03ee3dd8c32ef2d07bb7f4f805d3bfeacf9"
+        }
+      },
+      "sourceSha256": "03ccafa8af2a7ae2b827b857d31b6c5987ac2c6553dcd9fc0fcd56c5165fe694",
+      "maskSourceSha256": "f724372302a0b33a95c9b8acde9df47256ab0743619ae9a3f5f656a9fcb49fcc",
+      "robeAlphaExact": true,
+      "template": {
+        "rear": "tool/art_assets/neutral_robe_v11/scout_robe_rear_neutral_candidate_v11.webp",
+        "front": "tool/art_assets/neutral_robe_v11/scout_robe_front_neutral_candidate_v11.webp",
+        "cuffs": "tool/art_assets/neutral_robe_v11/scout_robe_cuffs_neutral_candidate_v11.webp",
+        "collar": "tool/art_assets/neutral_robe_v11/scout_robe_collar_neutral_candidate_v11.webp"
+      },
+      "eyes": [
+        [
+          114,
+          55
+        ],
+        [
+          132,
+          55
+        ]
+      ]
+    },
+    "pumpkin_court:neutral": {
+      "layers": {
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/rear.webp",
+          "sha256": "656c863b96318fe5ffdf9f78dbcae47c7966fe10fd802765773f21a6378257fe",
+          "alphaSha256": "1274cb0a0ee3623e3e0a36d64a92c161d4858d9e1a1c2b57551c81940d1ce8ae"
+        },
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/front.webp",
+          "sha256": "35fb746e20bc80e9817a4bce8aa00b84ea1546e6a75b40c1dd1c3554e4418ce8",
+          "alphaSha256": "e6a29efb2e7e08ba40a25a60166f43549f046b4b09d64da6a4f0326956fca0bb"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/cuffs.webp",
+          "sha256": "e7c819c30d24c4840d49599105040c6cd1c34264e2f00460e5012623631ebb5a",
+          "alphaSha256": "1f03ec2fc764651edf89c685b31a3fb06e85ca2f384ae80042036ca5658afc7f"
+        },
+        "collar": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/collar.webp",
+          "sha256": "d46921a6b213136868af48e53c15ecd90d06eb206b33229cbe334274c54c475b",
+          "alphaSha256": "0891e767d878c4efd57798cdd5f63cb022197d8e8b0846888286826717173e6e"
+        },
+        "underlay": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/underlay.webp",
+          "sha256": "9f2acb4837cf1eb7e62f52b58a8b7c57f2f05cedcffedf3daabf0cdf52f48511",
+          "alphaSha256": "1bc7c180f1fd57ff37546d1393497d4bbcc5835833f200ef32f659519be5348f"
+        },
+        "mask": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/mask.webp",
+          "sha256": "6d06fad6a56618e3a2fa721c870ffe8c688b19bd906e3a11474f415abb7a99c0",
+          "alphaSha256": "f5baff98b3e6ed28f46ebc8f2484b49b42ff7999fc8d903964c7b27581b5fe27"
+        }
+      },
+      "sourceSha256": "45408fbfa7f7decdf357e9a6b6b4cbd8a51f2110c59cfc9b33aaa845694699ba",
+      "maskSourceSha256": "e2b7d922b3241db9a110f5dfbe02a9ab0c51e78ba2928fe830d17029d90b4d68",
+      "robeAlphaExact": true,
+      "template": {
+        "rear": "tool/art_assets/neutral_robe_v11/scout_robe_rear_neutral_candidate_v11.webp",
+        "front": "tool/art_assets/neutral_robe_v11/scout_robe_front_neutral_candidate_v11.webp",
+        "cuffs": "tool/art_assets/neutral_robe_v11/scout_robe_cuffs_neutral_candidate_v11.webp",
+        "collar": "tool/art_assets/neutral_robe_v11/scout_robe_collar_neutral_candidate_v11.webp"
+      },
+      "eyes": [
+        [
+          114,
+          55
+        ],
+        [
+          132,
+          55
+        ]
+      ]
+    },
+    "midnight_masquerade:male": {
+      "layers": {
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/rear.webp",
+          "sha256": "3a7be21a2f9adadf703de2f36ddf2c63aed7dcb3fc02d33eb5cffbb9a0621701",
+          "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+        },
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/front.webp",
+          "sha256": "08589d0566fdb94cd1fac309da16bd31b82d7ccf05063c6cf5edb48ebd4ada96",
+          "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/cuffs.webp",
+          "sha256": "0105ed8d616e8bcba4b1174acde54c8ce084df3c69f021ccf94e6e71f0adb2cf",
+          "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+        },
+        "collar": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/collar.webp",
+          "sha256": "cfac8aef329f64948335999f96f0e43e11c1bed8e445576629a7b4317ebef8ea",
+          "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+        },
+        "underlay": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/underlay.webp",
+          "sha256": "bca6a5973b8cd2f411eace862cf48a978863afa3cd08ec869e96196a87569143",
+          "alphaSha256": "d26b8a3fbba9340619917023edd660851d4ad2ed623b7a6b05853d094f3bbf41"
+        },
+        "mask": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/mask.webp",
+          "sha256": "9f8f7d5af80d836da4bab119517fdf8736f41deae93c2cfa6f33d5aacbf3add8",
+          "alphaSha256": "b3c1bd5f9edc8c3ec15fa76956efa2348c09e72705d0304163842f3c055646e8"
+        }
+      },
+      "sourceSha256": "50f1ee47e2e0a8e659fb56a693428f6cd03cfc2ce1911a849251186cc6bfa41b",
+      "maskSourceSha256": "f724372302a0b33a95c9b8acde9df47256ab0743619ae9a3f5f656a9fcb49fcc",
+      "robeAlphaExact": true,
+      "template": {
+        "rear": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v4.webp",
+        "front": "assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v4.webp",
+        "cuffs": "tool/art_assets/male_robe_v3/scout_robe_cuffs_male_v3.webp",
+        "collar": "tool/art_assets/male_robe_v3/scout_robe_collar_male_v3.webp"
+      },
+      "eyes": [
+        [
+          112,
+          52
+        ],
+        [
+          128.5,
+          52
+        ]
+      ]
+    },
+    "pumpkin_court:male": {
+      "layers": {
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/rear.webp",
+          "sha256": "742640f31a008b3917da7f4c9c8197a550d667beac236378bef3606e717cc42e",
+          "alphaSha256": "a7b61a6453bf2baec7b90f8d884f5b4f85337f5464e2bd03274c87075a61e710"
+        },
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/front.webp",
+          "sha256": "5897a851edb038f170d57692d8b1d471f2d99ddb1df7c14416e8065c899cab5b",
+          "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/cuffs.webp",
+          "sha256": "f52951e9137849640c2f390da511b1de69b060dee1c3380c0bd86d267925176b",
+          "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+        },
+        "collar": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/collar.webp",
+          "sha256": "6f75db4932efeaf30ff4138607c6ba71c19c0d9d90ee2533cddee90b56ed9121",
+          "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+        },
+        "underlay": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/underlay.webp",
+          "sha256": "f5212992004d651c0d39586e128948fcb95098432ab5b71a8d0695e0e5d181e5",
+          "alphaSha256": "d26b8a3fbba9340619917023edd660851d4ad2ed623b7a6b05853d094f3bbf41"
+        },
+        "mask": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/mask.webp",
+          "sha256": "585cd723891d401353efc6be2ddc05d8ccd0be7501b2a1088e7deced24a0604e",
+          "alphaSha256": "34e8b33a405d63bb49d4d2be391843773a6f6808197e7fc1b7f3406f9f659162"
+        }
+      },
+      "sourceSha256": "36a0712756135b85c7e6808a5d9903117dc7375036112ff53a16f7b871a947ff",
+      "maskSourceSha256": "e2b7d922b3241db9a110f5dfbe02a9ab0c51e78ba2928fe830d17029d90b4d68",
+      "robeAlphaExact": true,
+      "template": {
+        "rear": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v4.webp",
+        "front": "assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v4.webp",
+        "cuffs": "tool/art_assets/male_robe_v3/scout_robe_cuffs_male_v3.webp",
+        "collar": "tool/art_assets/male_robe_v3/scout_robe_collar_male_v3.webp"
+      },
+      "eyes": [
+        [
+          112,
+          52
+        ],
+        [
+          128.5,
+          52
+        ]
+      ]
+    }
+  },
+  "fixedAssetsUnchanged": true
+}

@@ -484,6 +484,28 @@ try {
   assertCatalogMatches(hallowedBefore, hallowedAfter);
   run(['db','query','--local','--file',join(source,'hallowed-contract.sql')]);
   console.log('Halloween prices, hidden staging, purchase boundaries, retry and permanent placement passed.');
+  // Reuse the approved seasonal window and existing purchase/equip RPCs.
+  const costumeFixture = join(workdir, 'halloween-costume-parent.sql');
+  writeFileSync(costumeFixture, "update public.cosmetics set active=true,availability_start='2026-10-08T03:36:53.444481Z' where slug='hallowed-hearth';");
+  run(['db','query','--local','--file',costumeFixture]);
+  const costumeRelease = resolve(source,'../../docs/releases/halloween-costumes-2026/activate.sql');
+  // Only the disposable rehearsal substitutes a fixed open-window clock.
+  // The published activation source retains the real clock guard unchanged.
+  const costumeOpen = join(workdir, 'halloween-costume-open.sql');
+  const costumeSql = readFileSync(costumeRelease, 'utf8');
+  const costumeClock = "statement_timestamp() >= timestamptz '2026-11-09T06:00:00Z'";
+  assert.equal(costumeSql.split(costumeClock).length, 2);
+  writeFileSync(costumeOpen, costumeSql.replace(costumeClock,
+    "timestamptz '2026-10-08T18:00:00Z' >= timestamptz '2026-11-09T06:00:00Z'"));
+  const costumeClosed = join(workdir, 'halloween-costume-closed.sql');
+  writeFileSync(costumeClosed, costumeSql.replace(costumeClock,
+    "timestamptz '2026-11-09T06:00:00Z' >= timestamptz '2026-11-09T06:00:00Z'"));
+  runHardeningPayload(costumeClosed, 'Halloween purchase window has already closed');
+  run(['db','query','--local','--file',costumeOpen]);
+  run(['db','query','--local','--file',costumeOpen]); // Idempotent metadata retry.
+  run(['db','query','--local','--file',join(source,'halloween-costumes-contract.sql')]);
+  console.log('Halloween costumes: exact pricing, retries, all class/body fits and persistent equipment passed.');
+
   // Approved content limits are tested AFTER historical schema-parity gates.
   run(['db','query','--local','--file',join(source,'content-limits-legacy.sql')]);
   const contentMigration = '20261008023552_approved_content_limits.sql';

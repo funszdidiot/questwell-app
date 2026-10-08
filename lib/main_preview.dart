@@ -1,3 +1,4 @@
+import 'preview/halloween_costumes_review.dart';
 import 'preview/quest_completion_review.dart';
 import 'preview/hallowed_hearth_review.dart';
 import 'preview/neutral_scout_review.dart';
@@ -40,7 +41,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'quest-completion') {
+  if (Uri.base.queryParameters['review'] == 'halloween-costumes') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const HalloweenCostumesReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'quest-completion') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const QuestCompletionReviewApp());
   } else if (Uri.base.queryParameters['review'] == 'hallowed-hearth') {

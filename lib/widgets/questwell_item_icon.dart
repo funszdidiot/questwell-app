@@ -74,7 +74,30 @@ class QuestwellItemIconPainter extends CustomPainter {
       r(x + 2, y + h - 2, w - 3, 1, dark);
     }
 
-    if (slug == 'hallowed-hearth') {
+    if (slug == 'midnight-masquerade' || slug == 'pumpkin-court') {
+      final pumpkin = slug == 'pumpkin-court';
+      final cloth = pumpkin ? woodLight : purpleDark;
+      final facing = pumpkin ? greenDark : ink;
+      r(10, 9, 12, 20, ink);
+      r(7, 10, 4, 12, ink);
+      r(21, 10, 4, 12, ink);
+      r(8, 11, 3, 10, cloth);
+      r(21, 11, 3, 10, cloth);
+      r(11, 10, 10, 18, cloth);
+      r(13, 10, 6, 12, pumpkin ? cream : purple);
+      r(11, 10, 2, 18, facing);
+      r(19, 10, 2, 18, facing);
+      r(10, 27, 12, 2, goldShade);
+      r(12, 29, 3, 2, ink);
+      r(17, 29, 3, 2, ink);
+      r(9, 3, 14, 4, goldShade);
+      r(10, 4, 12, 3, facing);
+      r(12, 5, 2, 1, cream);
+      r(18, 5, 2, 1, cream);
+      r(8, 2, 2, 3, facing);
+      r(22, 2, 2, 3, facing);
+      gem(15, 13, gold);
+    } else if (slug == 'hallowed-hearth') {
       panel(2, 3, 28, 27, woodDark, woodLight, ink);
       r(4, 5, 24, 20, purpleDark);
       r(4, 25, 24, 3, wood);
