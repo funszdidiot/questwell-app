@@ -1,14 +1,44 @@
 # Questwell Production Dashboard
 
+## Hallowed Hearth Halloween collection — October 8, 2026
+
+**QA — PR #75.** Six designs, 740 total coins, purchases through November 8
+Chicago time and permanent ownership are founder-approved. Approved artwork,
+animated spiders, Market icons, generic furnishing placement and review route
+are integrated on the feature branch. The migration stages six inactive catalog
+rows and enforces server purchase dates while preserving owned retries.
+Existing Harvest prices, IDs, ownership and locked avatar files are unchanged.
+Local manifests pass; CI and independent visual/backend review are running.
+No live catalog mutation or app deployment is claimed. Local Flutter setup is
+unavailable after an automatic metadata-access denial; CI is the verification path.
+See `../releases/hallowed-hearth-2026/RELEASE_BRIEF.md` and `../qa/HALLOWED_HEARTH.md`.
+
+## Hearth icon and empty-state consistency — October 8, 2026
+
+**QA**. The furnished-home review found the room composition successful, with
+remaining inconsistencies in small artwork and state wording. Home class badges,
+coins, XP gems and empty clipboard now share the shaded illustration style.
+Empty boards use “A FRESH PAGE”; active and Campfire headings remain contextual.
+“Class mastered” distinguishes collection mastery from ongoing level progress.
+Scene geometry, locked art and account/economy logic are unchanged. Required CI
+and delivered independent review are pending; final evidence belongs to the PR.
+The account-free previews do not share quest/balance state across destinations,
+so their separate interaction checks cannot prove a persistent account loop.
+
+
+
 ## Hearth craftsmanship and first useful view — October 7, 2026
 
-**QA**. Tanya's holistic independent review found that the cozy direction works,
+**DEV DEPLOYED** via PR #73 at `c0d0ff0`, Preview `37713922615`.
+907 Flutter / 397 Chrome tests and required gates passed; independent delivered
+review accepted the materials and first useful phone view. The following scope
+is historical. Tanya's holistic independent review found that the cozy direction works,
 but the complete reference's material quality and mobile proportions remain
 unmet. Current scoped work refines carved/brass/parchment surfaces, emerald
 actions, Home icons and compact typography. The primary action must be entirely
 visible at390px /740px without reducing selected text scaling. Avatar, garment,
 room geometry and game economy remain unchanged. Required CI and independent
-delivered aesthetic review are pending; functional test success is not visual
+delivered aesthetic review passed; functional test success is not visual
 acceptance. See `../qa/HEARTH_FULL_HOME.md`.
 
 ## Full Hearth reference composition — October 7, 2026

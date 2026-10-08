@@ -16,7 +16,8 @@ class QuestwellProfile {
   final int level;
   final int totalXp;
   final int levelXpOffset;
-  int get xpIntoLevel => QuestwellProgression.xpIntoLevel(totalXp, legacyOffset: levelXpOffset);
+  int get xpIntoLevel =>
+      QuestwellProgression.xpIntoLevel(totalXp, legacyOffset: levelXpOffset);
   final int coinBalance;
   final String currentEnergyMode;
   final bool onboardingCompleted;
@@ -31,8 +32,7 @@ class QuestwellProfile {
       totalXp: (json['total_xp'] as num?)?.toInt() ?? 0,
       levelXpOffset: (json['level_xp_offset'] as num?)?.toInt() ?? 0,
       coinBalance: (json['coin_balance'] as num?)?.toInt() ?? 0,
-      currentEnergyMode:
-          json['current_energy_mode']?.toString() ?? 'normal',
+      currentEnergyMode: json['current_energy_mode']?.toString() ?? 'normal',
       onboardingCompleted: json['onboarding_completed'] == true,
       adventurerArchetype:
           json['adventurer_archetype']?.toString() ?? 'wanderer',
@@ -157,11 +157,15 @@ class QuestwellCosmetic {
   final String? hearthProfileKey;
   final List<QuestwellHearthPlacementOption> hearthPlacements;
   final QuestwellHearthRenderSpec? hearthRenderSpec;
+  bool availableForPurchaseAt(DateTime now) =>
+      (availabilityStart == null || !now.isBefore(availabilityStart!)) &&
+      (availabilityEnd == null || now.isBefore(availabilityEnd!));
+
   bool get specialEdition => editionType != 'standard';
   String get renderKey => QuestwellLoadoutModel.renderKey(
-    category: category,
-    roomSlot: roomSlot,
-  );
+        category: category,
+        roomSlot: roomSlot,
+      );
 
   QuestwellCosmetic copyWith({
     bool? owned,
@@ -225,8 +229,10 @@ class QuestwellCosmetic {
       source: source,
       collectionKey: json['collection_key']?.toString(),
       editionType: json['edition_type']?.toString() ?? 'standard',
-      availabilityStart: DateTime.tryParse(json['availability_start']?.toString() ?? ''),
-      availabilityEnd: DateTime.tryParse(json['availability_end']?.toString() ?? ''),
+      availabilityStart:
+          DateTime.tryParse(json['availability_start']?.toString() ?? ''),
+      availabilityEnd:
+          DateTime.tryParse(json['availability_end']?.toString() ?? ''),
       hearthProfileKey: json['hearth_profile_key']?.toString(),
       hearthPlacements: hearthPlacements,
       hearthRenderSpec: hearthRenderSpec,
@@ -243,4 +249,3 @@ class QuestwellCosmeticsSnapshot {
   final QuestwellProfile profile;
   final List<QuestwellCosmetic> cosmetics;
 }
-
