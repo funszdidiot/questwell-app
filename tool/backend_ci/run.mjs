@@ -9,6 +9,7 @@ import {assertCatalogMatches} from './catalog.mjs';
 import {exerciseWoodlandForward} from './woodland-forward.mjs';
 import {exerciseHardeningForward} from './hardening-forward.mjs';
 import {exerciseHallowedForward} from './hallowed-forward.mjs';
+import {rehearseRecovery} from './recovery.mjs';
 
 assertDisposableCi(process.env);
 if (process.argv.includes('--preflight')) {
@@ -496,6 +497,7 @@ try {
   if (contentResult.stderr) console.error(redact(contentResult.stderr));
   assert.equal(contentResult.status, 0, 'Content-limit Auth/REST scenarios failed');
   console.log(run(['db','lint','--local','--schema','public,private','--level','warning','--fail-on','error']));
+  await rehearseRecovery(status);
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();
