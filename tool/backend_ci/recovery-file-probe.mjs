@@ -7,9 +7,11 @@ import {createHash} from 'node:crypto';
 
 let stage = 'input';
 try {
-  const root = '/var/lib/storage';
+  // Supabase CLI v2.119.0 storage.service.ts mounts its named volume at /mnt.
+  const root = '/mnt';
   const input = JSON.parse(fs.readFileSync(0, 'utf8'));
   stage = 'root';
+  assert.equal(process.env.STORAGE_FILE_BACKEND_PATH || process.env.FILE_STORAGE_BACKEND_PATH, root);
   const rootStat = fs.lstatSync(root);
   assert.ok(rootStat.isDirectory() && !rootStat.isSymbolicLink());
   assert.equal(fs.realpathSync(root), root);
