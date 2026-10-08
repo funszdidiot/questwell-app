@@ -1,3 +1,4 @@
+import 'questwell_app_style.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -750,12 +751,7 @@ class _QuestwellFeedbackFormState extends State<QuestwellFeedbackForm> {
                             const SizedBox(height: 18),
                             FilledButton(
                               onPressed: _sending ? null : _submit,
-                              style: FilledButton.styleFrom(
-                                minimumSize: const Size.fromHeight(48),
-                                backgroundColor: const Color(0xFF316D69),
-                                foregroundColor: Colors.white,
-                                textStyle: QuestwellTypography.control(),
-                              ),
+                              style: QuestwellAppStyle.primaryButton(),
                               child: Text(
                                 _sending ? 'Sending…' : 'Send feedback',
                               ),

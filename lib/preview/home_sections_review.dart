@@ -1,3 +1,4 @@
+import '../widgets/questwell_app_style.dart';
 import '../widgets/questwell_app_navigation.dart';
 import 'package:flutter/material.dart';
 import 'review_loadout.dart';
@@ -30,8 +31,8 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark(useMaterial3: true),
-        home: Scaffold(
+        theme: QuestwellAppStyle.theme(),
+        home: QuestwellScaffold(
           backgroundColor: const Color(0xFF201813),
           bottomNavigationBar: QuestwellAppNavigation(
               current: QuestwellDestination.hearth, onSelect: _open),

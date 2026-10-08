@@ -191,6 +191,191 @@ class _HearthIconPainter extends CustomPainter {
           const [Color(0xFFC09AEF), Color(0xFF9161CB)]);
       shape(const [Offset(32, 4), Offset(43, 25), Offset(32, 59)],
           const [Color(0xFFF0DFFF), Color(0xFFAB7CD7)]);
+    } else if (kind == 'chronicle' ||
+        kind == 'adventurer' ||
+        kind == 'boss' ||
+        kind == 'bosses' ||
+        kind == 'market' ||
+        kind == 'campfire') {
+      if (kind == 'chronicle') {
+        shape(const [
+          Offset(10, 11),
+          Offset(30, 15),
+          Offset(32, 20),
+          Offset(35, 15),
+          Offset(55, 11),
+          Offset(55, 53),
+          Offset(34, 57),
+          Offset(30, 57),
+          Offset(10, 53)
+        ], const [
+          Color(0xFFB8814D),
+          Color(0xFF634329)
+        ]);
+        shape(const [
+          Offset(14, 10),
+          Offset(29, 14),
+          Offset(30, 50),
+          Offset(14, 46)
+        ], const [
+          Color(0xFFFFEDC1),
+          Color(0xFFD9B982)
+        ]);
+        shape(const [
+          Offset(34, 14),
+          Offset(51, 10),
+          Offset(51, 46),
+          Offset(34, 50)
+        ], const [
+          Color(0xFFFFEDC1),
+          Color(0xFFD9B982)
+        ]);
+        for (final y in [23.0, 31.0, 39.0]) {
+          rect(18, y, 8, 2, const Color(0xFF94764E));
+          rect(38, y, 9, 2, const Color(0xFF94764E));
+        }
+      } else if (kind == 'adventurer') {
+        shape(const [
+          Offset(9, 56),
+          Offset(15, 41),
+          Offset(25, 36),
+          Offset(39, 36),
+          Offset(49, 41),
+          Offset(55, 56)
+        ], const [
+          Color(0xFF91AC79),
+          Color(0xFF365B44)
+        ]);
+        shape(const [
+          Offset(21, 12),
+          Offset(32, 6),
+          Offset(44, 14),
+          Offset(45, 28),
+          Offset(38, 38),
+          Offset(25, 38),
+          Offset(18, 27)
+        ], const [
+          Color(0xFFEDC899),
+          Color(0xFFB17B51)
+        ]);
+        shape(const [
+          Offset(18, 23),
+          Offset(20, 10),
+          Offset(31, 5),
+          Offset(43, 11),
+          Offset(46, 22),
+          Offset(36, 15),
+          Offset(28, 20)
+        ], const [
+          Color(0xFFB27A46),
+          Color(0xFF5B3929)
+        ]);
+        rect(24, 25, 3, 3, const Color(0xFF483225));
+        rect(36, 25, 3, 3, const Color(0xFF483225));
+        rect(30, 44, 4, 6, const Color(0xFFE3C07C));
+      } else if (kind == 'boss' || kind == 'bosses') {
+        shape(const [
+          Offset(10, 10),
+          Offset(54, 10),
+          Offset(53, 35),
+          Offset(43, 49),
+          Offset(32, 58),
+          Offset(21, 49),
+          Offset(11, 35)
+        ], const [
+          Color(0xFFFFE3A0),
+          Color(0xFF9C6739)
+        ]);
+        shape(const [
+          Offset(17, 17),
+          Offset(47, 17),
+          Offset(46, 33),
+          Offset(39, 43),
+          Offset(32, 49),
+          Offset(25, 43),
+          Offset(18, 33)
+        ], const [
+          Color(0xFFAB6871),
+          Color(0xFF623643)
+        ]);
+        shape(const [
+          Offset(32, 19),
+          Offset(39, 31),
+          Offset(32, 42),
+          Offset(25, 31)
+        ], const [
+          Color(0xFFFFE3A0),
+          Color(0xFFCF9C53)
+        ]);
+      } else if (kind == 'market') {
+        shape(const [
+          Offset(11, 27),
+          Offset(53, 27),
+          Offset(53, 56),
+          Offset(11, 56)
+        ], const [
+          Color(0xFFE6C38B),
+          Color(0xFFA97945)
+        ]);
+        shape(const [
+          Offset(14, 10),
+          Offset(50, 10),
+          Offset(59, 28),
+          Offset(5, 28)
+        ], const [
+          Color(0xFF93AF85),
+          Color(0xFF315E47)
+        ]);
+        rect(18, 12, 6, 15, const Color(0xFFEAD29B));
+        rect(38, 12, 6, 15, const Color(0xFFEAD29B));
+        rect(17, 35, 13, 12, const Color(0xFF466453));
+        rect(36, 34, 10, 22, const Color(0xFF62492E));
+        rect(8, 54, 48, 4, const Color(0xFFC79957));
+      } else {
+        shape(const [
+          Offset(12, 49),
+          Offset(16, 43),
+          Offset(53, 54),
+          Offset(49, 60)
+        ], const [
+          Color(0xFFAA7845),
+          Color(0xFF62412A)
+        ]);
+        shape(const [
+          Offset(12, 54),
+          Offset(49, 43),
+          Offset(53, 49),
+          Offset(16, 60)
+        ], const [
+          Color(0xFFAA7845),
+          Color(0xFF62412A)
+        ]);
+        shape(const [
+          Offset(14, 39),
+          Offset(22, 21),
+          Offset(24, 30),
+          Offset(34, 4),
+          Offset(39, 22),
+          Offset(44, 17),
+          Offset(51, 39),
+          Offset(44, 49),
+          Offset(25, 51)
+        ], const [
+          Color(0xFFFFCF58),
+          Color(0xFFD75E26)
+        ]);
+        shape(const [
+          Offset(24, 42),
+          Offset(33, 24),
+          Offset(36, 36),
+          Offset(40, 30),
+          Offset(43, 44),
+          Offset(34, 49)
+        ], const [
+          Color(0xFFFFEFBA),
+          Color(0xFFFFAD3E)
+        ]);
+      }
     } else if (kind == 'hearth') {
       rect(43, 10, 7, 20, const Color(0xFF916138));
       shape(const [

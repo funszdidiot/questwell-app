@@ -1,3 +1,5 @@
+import 'questwell_hearth_material.dart';
+import 'questwell_app_style.dart';
 import 'package:flutter/material.dart';
 import 'questwell_class_emblem.dart';
 import 'questwell_mastery_relic.dart';
@@ -110,12 +112,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
           : value[0].toUpperCase() + value.substring(1).replaceAll('_', ' ');
   Widget _heading(String title) =>
       Text(title, style: QuestwellTypography.sectionHeading(size: 12));
-  Widget _panel(Widget child) => Material(
-      color: const Color(0xFF19232D),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(3),
-          side: const BorderSide(color: Color(0xFF65563D))),
-      child: Padding(padding: const EdgeInsets.all(16), child: child));
+  Widget _panel(Widget child) => QuestwellHearthFrame(child: child);
 
   @override
   void dispose() {
@@ -392,9 +389,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
               Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: FilledButton(
-                      style: FilledButton.styleFrom(
-                          textStyle: QuestwellTypography.body(
-                              fontSize: 14, fontWeight: FontWeight.w700)),
+                      style: QuestwellAppStyle.primaryButton(),
                       onPressed: widget.claiming ? null : widget.onClaim,
                       child: Text(widget.claiming
                           ? 'Claiming…'

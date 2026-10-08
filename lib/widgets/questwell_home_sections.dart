@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_home_overview.dart';
@@ -201,7 +200,8 @@ class QuestwellHomeActions extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
             child: Row(
               children: [
-                QuestwellNavPixelIcon(kind: kind, size: 22),
+                QuestwellHearthIcon(
+                    kind: kind == 'inventory' ? 'adventurer' : kind, size: 22),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(

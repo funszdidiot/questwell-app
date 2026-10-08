@@ -1,3 +1,4 @@
+import '../../widgets/questwell_app_style.dart';
 import 'package:uuid/uuid.dart';
 
 import '/widgets/questwell_app_navigation.dart';
@@ -444,7 +445,7 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => QuestwellScaffold(
         bottomNavigationBar: const QuestwellAppNavigation(
           current: QuestwellDestination.bosses,
         ),

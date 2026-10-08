@@ -1,3 +1,5 @@
+import 'questwell_hearth_material.dart';
+import 'questwell_app_style.dart';
 import 'package:flutter/material.dart';
 
 import 'questwell_delete_account.dart';
@@ -37,13 +39,13 @@ class _QuestwellAccountSettingsState extends State<QuestwellAccountSettings> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => QuestwellScaffold(
         backgroundColor: const Color(0xFF111827),
         appBar: AppBar(
           leading: widget.onBack == null
               ? null
               : BackButton(onPressed: widget.onBack),
-          backgroundColor: const Color(0xFF111827),
+          backgroundColor: QuestwellAppStyle.background,
           foregroundColor: const Color(0xFFF0E5CC),
           title: Text(
             'Account',
@@ -125,13 +127,7 @@ class _AccountPanel extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF19232D),
-          border: Border.all(color: const Color(0xFF65563D)),
-          borderRadius: BorderRadius.circular(3),
-        ),
+  Widget build(BuildContext context) => QuestwellHearthFrame(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

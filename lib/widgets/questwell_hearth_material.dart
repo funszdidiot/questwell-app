@@ -254,6 +254,8 @@ class QuestwellHearthButton extends StatelessWidget {
             child: FilledButton(
                 onPressed: onPressed,
                 style: QuestwellHearthMaterial.primaryButton().copyWith(
+                    backgroundBuilder: (context, states, child) =>
+                        child ?? const SizedBox(),
                     backgroundColor:
                         const WidgetStatePropertyAll(Colors.transparent),
                     padding: const WidgetStatePropertyAll(

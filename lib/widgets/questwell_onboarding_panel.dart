@@ -1,9 +1,10 @@
+import 'questwell_hearth_material.dart';
 import 'package:flutter/material.dart';
+import 'questwell_hearth_icon.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../services/questwell_onboarding_session.dart';
-import 'questwell_pixel_art.dart';
 
 /// The existing welcome panel with one shared submission state for all choices.
 class QuestwellOnboardingPanel extends StatefulWidget {
@@ -44,7 +45,8 @@ class _QuestwellOnboardingPanelState extends State<QuestwellOnboardingPanel> {
     } on QuestwellOnboardingAccountChanged {
       if (mounted)
         setState(
-          () => _error = 'Your account changed. Return to the home page before finishing setup.',
+          () => _error =
+              'Your account changed. Return to the home page before finishing setup.',
         );
     } catch (_) {
       if (mounted)
@@ -59,16 +61,14 @@ class _QuestwellOnboardingPanelState extends State<QuestwellOnboardingPanel> {
   @override
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
-    return QuestwellRetroPanel(
+    return QuestwellHearthFrame(
       padding: const EdgeInsets.all(16),
-      accent: const Color(0xFFF1C75B),
-      background: const Color(0xFF1A1714),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.auto_awesome, color: theme.primary),
+              const QuestwellHearthIcon(kind: 'xp', size: 24),
               const SizedBox(width: 9),
               Expanded(
                 child: Text(
