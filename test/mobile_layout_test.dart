@@ -89,7 +89,7 @@ void main() {
     await tester.enterText(find.byType(TextField), 'moss-green');
     FocusManager.instance.primaryFocus?.unfocus();
     await tester.pumpAndSettle();
-    final category = find.widgetWithText(TextButton, 'All');
+    final category = find.byKey(const ValueKey('market-browse-type'));
     final filter = find.widgetWithText(OutlinedButton, 'My class');
     expect(tester.getSize(category).height, greaterThanOrEqualTo(48));
     expect(tester.getSize(filter).height, greaterThanOrEqualTo(48));

@@ -1,14 +1,23 @@
 # Questwell Production Dashboard
 
+## Market browsing — October 8, 2026
+
+**QA.** Tanya requested related items together rather than an interleaved price
+list. Results now use Outfits, Gear, Familiars and Effects sections, with Hearth
+settings, rugs/floor decor, wall art and furniture/decor grouped separately.
+Browse by type replaces the horizontal category strip. Search, filters,
+collections, purchase confirmation and equipment policy are preserved.
+Evidence and delivery status: `../qa/MARKET_BROWSING.md` and the delivery PR.
+
 ## Illustrated destination entrances — October 8, 2026
 
-**QA / local independent review approved; not deployed.** Six destinations use
-one arrival component with Hearth navigation, illustrated settings, live title
-plaques, and welcome copy. Loading/error arrivals, settings context, and selected
-boss scrolling are corrected. Independent review accepted all twelve mobile and
-enlarged-text captures. 980 tests and the release web build passed. Publication status is
-recorded in [destination entrance QA](../qa/DESTINATION_ENTRANCES.md). New artwork
-remains a development candidate; locked avatars and economy are unchanged.
+**DEV DEPLOYED / signed-in and device acceptance pending.** PR #91 merged and
+Preview workflow `37802188289` deployed `cabf74e`. All remote gates passed.
+The served revision and five scenery hashes matched. All six hosted sample
+entrances were visually verified at 320px/200% text, alongside settings entry
+and return-to-Hearth navigation. Independent review accepted twelve earlier
+mobile captures; 980 regression tests passed. New art remains a candidate.
+The available browser is signed out; no account or physical-device pass is claimed.
 
 
 ## App-wide Hearth standard — October 7, 2026 (America/Chicago)
