@@ -1,4 +1,4 @@
-import '/widgets/questwell_destination_entrance.dart';
+import 'questwell_destination_entrance.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_app_style.dart';
 import 'package:flutter/material.dart';

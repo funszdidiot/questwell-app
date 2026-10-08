@@ -1,4 +1,4 @@
-import '/widgets/questwell_destination_entrance.dart';
+import 'questwell_destination_entrance.dart';
 import 'questwell_hearth_icon.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_app_style.dart';
@@ -69,6 +69,8 @@ class QuestwellBossBoard extends StatefulWidget {
 class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
   String? _selected;
   final _scroll = ScrollController();
+  final _encounterAnchor = GlobalKey();
+  bool _revealingAttack = false;
   @override
   void initState() {
     super.initState();
@@ -80,13 +82,52 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
     super.didUpdateWidget(oldWidget);
     // A creation result can arrive before the refreshed battle list.
     // Keep that requested ID until its battle arrives.
-    if (widget.initialBattleId != null &&
-        widget.initialBattleId != oldWidget.initialBattleId) {
-      _selected = widget.initialBattleId;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && _scroll.hasClients) _scroll.jumpTo(0);
-      });
+    final requested = widget.initialBattleId;
+    final requestedArrived = requested != null &&
+        _selected == requested &&
+        !oldWidget.battles.any((battle) => battle.id == requested) &&
+        widget.battles.any((battle) => battle.id == requested);
+    if (requested != null &&
+        (requested != oldWidget.initialBattleId || requestedArrived)) {
+      _selected = requested;
+      _revealSelected(requested);
     }
+  }
+
+  void _revealSelected(String id) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _showEncounter(id);
+    });
+  }
+
+  Future<bool> _showEncounter(String id) async {
+    if (!mounted || _selected != id || !_scroll.hasClients) return false;
+    // A tall arrival at enlarged text can keep the encounter outside the lazy
+    // list's cache. Walk toward it until its real anchor has been laid out.
+    _scroll.jumpTo(0);
+    await WidgetsBinding.instance.endOfFrame;
+    while (mounted &&
+        _selected == id &&
+        _scroll.hasClients &&
+        _encounterAnchor.currentContext == null) {
+      final position = _scroll.position;
+      final next = (position.pixels + position.viewportDimension)
+          .clamp(0.0, position.maxScrollExtent)
+          .toDouble();
+      if (next <= position.pixels) return false;
+      _scroll.jumpTo(next);
+      await WidgetsBinding.instance.endOfFrame;
+    }
+    if (!mounted || _selected != id) return false;
+    final anchor = _encounterAnchor.currentContext;
+    if (anchor == null) return false;
+    await Scrollable.ensureVisible(anchor,
+        alignment: 0,
+        duration: Duration(
+            milliseconds: MediaQuery.disableAnimationsOf(context) ? 0 : 300),
+        curve: Curves.easeOut);
+    await WidgetsBinding.instance.endOfFrame;
+    return mounted && _selected == id;
   }
 
   @override
@@ -97,13 +138,44 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
 
   void _select(String id) {
     setState(() => _selected = id);
-    if (_scroll.hasClients) {
-      if (MediaQuery.disableAnimationsOf(context)) {
-        _scroll.jumpTo(0);
-      } else {
-        _scroll.animateTo(0,
-            duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+    _revealSelected(id);
+  }
+
+  Future<void> _attackAfterReveal(
+      QuestwellBossBattle battle, QuestwellBossStep step) async {
+    if (_revealingAttack ||
+        widget.loading ||
+        widget.failed ||
+        widget.busyStepId != null) return;
+    setState(() {
+      _revealingAttack = true;
+      _selected = battle.id;
+    });
+    try {
+      if (!await _showEncounter(battle.id)) {
+        if (!mounted || _selected != battle.id) return;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                'Bring the battle into view, then try your attack again.')));
+        return;
       }
+      if (!mounted ||
+          _selected != battle.id ||
+          widget.loading ||
+          widget.failed ||
+          widget.busyStepId != null) return;
+      // Re-check the current snapshot after asynchronous scrolling.
+      for (final current in widget.battles) {
+        if (current.id != battle.id || current.completed) continue;
+        for (final currentStep in current.steps) {
+          if (currentStep.id == step.id && !currentStep.completed) {
+            widget.onAttack(current, currentStep);
+            return;
+          }
+        }
+      }
+    } finally {
+      if (mounted) setState(() => _revealingAttack = false);
     }
   }
 
@@ -172,7 +244,7 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
                 style: QuestwellTypography.body(fontSize: 12, color: _muted)),
             const SizedBox(height: 8),
           ],
-          if (widget.loading)
+          if (widget.loading && battle == null)
             const Padding(
                 padding: EdgeInsets.all(36),
                 child: Center(child: CircularProgressIndicator(color: _gold)))
@@ -205,6 +277,11 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
                   style: QuestwellTypography.body(color: _muted)),
             ]))
           else ...[
+            if (widget.loading)
+              Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text('Updating battle…',
+                      style: QuestwellTypography.body(color: _muted))),
             Text(battle.title,
                 style: QuestwellTypography.body(
                     fontSize: 21,
@@ -215,16 +292,18 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
             Text(_strategies[battle.bossType] ?? 'One useful step at a time.',
                 style: QuestwellTypography.body(color: _muted)),
             const SizedBox(height: 12),
-            QuestwellBossEncounter(
-                key: ValueKey('encounter-${battle.id}'),
-                encounterId: battle.id,
-                bossType: battle.bossType,
-                progress: battle.progress,
-                defeated: battle.completed,
-                persistEntrance: !widget.practice,
-                archetype: widget.archetype,
-                body: widget.body,
-                equipment: widget.equipment),
+            SizedBox(
+                key: _encounterAnchor,
+                child: QuestwellBossEncounter(
+                    key: ValueKey('encounter-${battle.id}'),
+                    encounterId: battle.id,
+                    bossType: battle.bossType,
+                    progress: battle.progress,
+                    defeated: battle.completed,
+                    persistEntrance: !widget.practice,
+                    archetype: widget.archetype,
+                    body: widget.body,
+                    equipment: widget.equipment)),
             const SizedBox(height: 16),
             if (battle.completed) ...[
               QuestwellBossVictoryPanel(
@@ -329,14 +408,13 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
         : Semantics(
             label: 'Complete attack: ${step.title}',
             child: FilledButton(
-                onPressed: widget.busyStepId != null || battle.completed
+                onPressed: _revealingAttack ||
+                        widget.loading ||
+                        widget.failed ||
+                        widget.busyStepId != null ||
+                        battle.completed
                     ? null
-                    : () {
-                        // Keep the battle being completed in view, but do not pin an automatic
-                        // history default across refreshes that contain a newer victory.
-                        setState(() => _selected = battle.id);
-                        widget.onAttack(battle, step);
-                      },
+                    : () => _attackAfterReveal(battle, step),
                 style: QuestwellAppStyle.primaryButton(),
                 child: busy
                     ? const SizedBox(

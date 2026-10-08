@@ -2,13 +2,13 @@
 
 ## Illustrated destination entrances — October 8, 2026
 
-**BUILDING / QA pending.** Tanya identified that shared colors and frames did not
-establish consistent page arrivals. Six destinations now use one entrance component
-with Hearth navigation, an illustrated setting, a live title plaque and welcome copy.
-Five new scenery candidates accompany the existing Market. Locked avatars and
-economy remain unchanged. Independent source review caught and corrected enlarged
-title wrapping and settings availability during loading/error states. CI and
-delivered visual review remain pending; no new art lock is claimed.
+**QA / local independent review approved; not deployed.** Six destinations use
+one arrival component with Hearth navigation, illustrated settings, live title
+plaques, and welcome copy. Loading/error arrivals, settings context, and selected
+boss scrolling are corrected. Independent review accepted all twelve mobile and
+enlarged-text captures. 980 tests and the release web build passed. Publication status is
+recorded in [destination entrance QA](../qa/DESTINATION_ENTRANCES.md). New artwork
+remains a development candidate; locked avatars and economy are unchanged.
 
 
 ## App-wide Hearth standard — October 7, 2026 (America/Chicago)

@@ -1,8 +1,7 @@
+import '/widgets/questwell_destination_entrance.dart';
 import '../../widgets/questwell_app_style.dart';
 import '/widgets/questwell_app_navigation.dart';
 import '/widgets/questwell_equipment_swap.dart';
-import 'package:go_router/go_router.dart';
-import '/pages/home_page/home_page_widget.dart';
 import '../../widgets/questwell_wall_art.dart';
 import '/widgets/questwell_room_picker.dart';
 import '/services/questwell_cosmetic_service.dart';
@@ -173,6 +172,16 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
     }
   }
 
+  Widget _arrivalState(Widget status) =>
+      ListView(padding: const EdgeInsets.fromLTRB(18, 8, 18, 32), children: [
+        const QuestwellDestinationEntrance(
+            destination: 'market',
+            title: 'MARKET',
+            subtitle:
+                'Rare finds, class gear, and questionable fashion choices.'),
+        status,
+      ]);
+
   @override
   Widget build(BuildContext context) => QuestwellScaffold(
       bottomNavigationBar:
@@ -184,15 +193,16 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
               future: _future,
               builder: (context, snapshot) {
                 if (snapshot.hasError)
-                  return Center(
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  return _arrivalState(
+                      Column(mainAxisSize: MainAxisSize.min, children: [
                     const Text('The shop could not refresh.'),
                     TextButton(
                         onPressed: () => setState(_refresh),
                         child: const Text('Try again'))
                   ]));
                 if (!snapshot.hasData)
-                  return const Center(child: CircularProgressIndicator());
+                  return _arrivalState(
+                      const Center(child: CircularProgressIndicator()));
                 return QuestwellMarketView(
                     data: snapshot.data!,
                     busyId: _busyCosmeticId,

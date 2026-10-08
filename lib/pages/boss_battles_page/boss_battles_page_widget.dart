@@ -465,9 +465,9 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
           child: FutureBuilder<List<QuestwellBossBattle>>(
             future: _future,
             builder: (context, snapshot) => QuestwellBossBoard(
-              battles: snapshot.connectionState == ConnectionState.done
-                  ? snapshot.data ?? const []
-                  : const [],
+              // FutureBuilder retains the last server snapshot while refreshing.
+              // Keep its encounter mounted so the next snapshot can animate health.
+              battles: snapshot.data ?? const [],
               initialBattleId: _createdBattleId,
               unlockProgress: QuestwellBossUnlockProgress(
                 level: _appearance?.profile.level ?? 1,

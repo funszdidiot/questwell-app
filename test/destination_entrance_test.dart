@@ -7,7 +7,7 @@ import '../lib/widgets/questwell_destination_entrance.dart';
 
 void main() {
   GoogleFonts.config.allowRuntimeFetching = false;
-  for (final width in [320.0, 390.0, 430.0]) {
+  for (final width in [320.0, 390.0, 430.0, 960.0]) {
     for (final scale in [1.0, 2.0]) {
       testWidgets('All arrival signs preserve whole words at $width/$scale',
           (tester) async {

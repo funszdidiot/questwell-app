@@ -8,7 +8,6 @@ import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_expedition_scene.dart';
 import '/widgets/questwell_typography.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 
 class ExpeditionPageWidget extends StatefulWidget {
@@ -251,11 +250,9 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                           children: [
                                             Text(
                                               _timeLabel(secondsRemaining),
-                                              style:
-                                                  theme.displaySmall.override(
-                                                font: GoogleFonts.roboto(
-                                                  fontWeight: FontWeight.w800,
-                                                ),
+                                              style: QuestwellTypography.body(
+                                                fontSize: 36,
+                                                fontWeight: FontWeight.w800,
                                                 color: const Color(0xFFF2E7CE),
                                                 letterSpacing: 1.5,
                                               ),
@@ -281,10 +278,9 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                                   ? 'REST. THE PATH CAN WAIT.'
                                                   : 'READY WHEN YOU ARE',
                                       textAlign: TextAlign.center,
-                                      style: theme.labelSmall.override(
-                                        font: GoogleFonts.roboto(
-                                          fontWeight: FontWeight.w800,
-                                        ),
+                                      style: QuestwellTypography.body(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w800,
                                         color: const Color(0xFFD8C7A3),
                                         letterSpacing: 1.2,
                                       ),
@@ -418,11 +414,10 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                           : _started
                                               ? 'Take a breath, adventurer. Your progress is safe, and the path will be here when you’re ready.'
                                               : 'You don’t need to see the whole path to take the first step. Choose one small task, adventurer. Your journey begins here.',
-                                  style: theme.bodyMedium.override(
-                                    font: GoogleFonts.roboto(),
+                                  style: QuestwellTypography.body(
                                     color: const Color(0xFFF2E7CE),
                                     fontSize: 15,
-                                    lineHeight: 1.5,
+                                    height: 1.5,
                                     letterSpacing: 0,
                                   ),
                                 ),
