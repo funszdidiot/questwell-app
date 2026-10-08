@@ -1,0 +1,82 @@
+[
+  {
+    "slug": "velvet-batwing-chair",
+    "source": "exec-2b217ee6-8825-4b71-9792-035af1dfda48.png",
+    "asset": "assets/images/questwell/hearth/velvet_batwing_chair_v1.webp",
+    "width": 1312,
+    "height": 1199,
+    "alpha_bounds": [
+      41,
+      39,
+      1293,
+      1199
+    ],
+    "sha256": "97ef78c06ece2eae1c4a7cfd1b3f0130a5a8a50075c6b56a1659334a5d54f437",
+    "founder_visual_approval": "I love them!",
+    "runtime_qa": "not_run"
+  },
+  {
+    "slug": "moonbrew-side-table",
+    "source": "exec-aec57f06-9f77-46bc-aef1-13770b846b2f.png",
+    "asset": "assets/images/questwell/hearth/moonbrew_side_table_v1.webp",
+    "width": 1225,
+    "height": 1284,
+    "alpha_bounds": [
+      0,
+      19,
+      1209,
+      1284
+    ],
+    "sha256": "84f5817c74643913f6c5ba2c4879638d2145d64d565a7f65ff08a61991e0304d",
+    "founder_visual_approval": "I love them!",
+    "runtime_qa": "not_run"
+  },
+  {
+    "slug": "witchlight-bookcase",
+    "source": "exec-2bf8f32c-8de2-47ff-8149-2a7c415e7e56.png",
+    "asset": "assets/images/questwell/hearth/witchlight_bookcase_v1.webp",
+    "width": 1024,
+    "height": 1536,
+    "alpha_bounds": [
+      0,
+      0,
+      1011,
+      1536
+    ],
+    "sha256": "9e5f5bf7eba8d376549d31f69bf9cb226e2bc5023404ef7157d9ee864cf60371",
+    "founder_visual_approval": "I love them!",
+    "runtime_qa": "not_run"
+  },
+  {
+    "slug": "moonweb-rug",
+    "source": "exec-6d0238ca-c8fc-4187-b042-b81e5b8fdeb1.png",
+    "asset": "assets/images/questwell/hearth/moonweb_rug_v1.webp",
+    "width": 1774,
+    "height": 887,
+    "alpha_bounds": [
+      0,
+      10,
+      1766,
+      887
+    ],
+    "sha256": "b017794ed4e5b75606c7a3aff72d8692576dbab5242fbddb27b4bff504de25e3",
+    "founder_visual_approval": "I love them!",
+    "runtime_qa": "not_run"
+  },
+  {
+    "slug": "midnight-visitors-print",
+    "source": "exec-51d360a7-92de-45e6-8566-06663b28f381.png",
+    "asset": "assets/images/questwell/hearth/midnight_visitors_print_v1.webp",
+    "width": 1095,
+    "height": 1437,
+    "alpha_bounds": [
+      0,
+      44,
+      1063,
+      1437
+    ],
+    "sha256": "cf1e8c2691ac6a100ca10b0c9e43aa4e083c82f2198a13a950b16b7aafb6dfc8",
+    "founder_visual_approval": "I love them!",
+    "runtime_qa": "not_run"
+  }
+]

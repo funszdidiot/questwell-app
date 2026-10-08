@@ -8,6 +8,7 @@ import {smoke} from './smoke.mjs';
 import {assertCatalogMatches} from './catalog.mjs';
 import {exerciseWoodlandForward} from './woodland-forward.mjs';
 import {exerciseHardeningForward} from './hardening-forward.mjs';
+import {exerciseHallowedForward} from './hallowed-forward.mjs';
 
 assertDisposableCi(process.env);
 if (process.argv.includes('--preflight')) {
@@ -466,6 +467,22 @@ try {
   if (chronicleResult.stderr) console.error(redact(chronicleResult.stderr));
   assert.equal(chronicleResult.status, 0, 'Chronicle Auth/REST scenarios failed');
   console.log(run(['db','lint','--local','--schema','public,private','--level','warning','--fail-on','error']));
+  // Halloween is tested after historical hardening hashes are verified.
+  run(['db','query','--local','--file',join(source,'hallowed-fixture.sql')]);
+  exerciseHallowedForward({source,workdir,run,runPayload:runHardeningPayload});
+  const hallowedBefore = readCatalog();
+  const hallowedMigration = '20261008015627_hallowed_hearth_catalog.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', hallowedMigration), join(workdir, 'supabase/migrations', hallowedMigration));
+  run(['migration','up','--local']);
+  const hallowedAfter = readCatalog();
+  const beforePurchase = hallowedBefore.functions.find(f => f.schema === 'private' && f.name === 'purchase_cosmetic');
+  const afterPurchase = hallowedAfter.functions.find(f => f.schema === 'private' && f.name === 'purchase_cosmetic');
+  assert.ok(beforePurchase && afterPurchase);
+  assert.notEqual(beforePurchase.definition, afterPurchase.definition);
+  beforePurchase.definition = afterPurchase.definition;
+  assertCatalogMatches(hallowedBefore, hallowedAfter);
+  run(['db','query','--local','--file',join(source,'hallowed-contract.sql')]);
+  console.log('Halloween prices, hidden staging, purchase boundaries, retry and permanent placement passed.');
   // Approved content limits are tested AFTER historical schema-parity gates.
   run(['db','query','--local','--file',join(source,'content-limits-legacy.sql')]);
   const contentMigration = '20261008023552_approved_content_limits.sql';

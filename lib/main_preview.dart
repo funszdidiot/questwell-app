@@ -1,3 +1,4 @@
+import 'preview/hallowed_hearth_review.dart';
 import 'preview/neutral_scout_review.dart';
 import 'preview/legacy_wardrobe_review.dart';
 import 'preview/male_everyday_review.dart';
@@ -38,7 +39,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'legacy-wardrobe') {
+  if (Uri.base.queryParameters['review'] == 'hallowed-hearth') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const HallowedHearthReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'legacy-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const LegacyWardrobeReviewApp());
   } else if (Uri.base.queryParameters['review'] == 'male-woodland') {
@@ -58,49 +62,62 @@ void main() {
     runApp(const MaleEverydayReviewApp());
   } else if (Uri.base.queryParameters['review'] == 'neutral-robes') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const NeutralRobesReviewApp()));
+    runApp(
+        QuestwellPreviewNavigationHost(child: const NeutralRobesReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'neutral-scout') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const NeutralScoutReviewApp()));
+    runApp(
+        QuestwellPreviewNavigationHost(child: const NeutralScoutReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'neutral-paper-doll') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const NeutralPaperDollReviewApp()));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const NeutralPaperDollReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'woodland-scout') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp(woodland: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const ScoutWardrobeReviewApp(woodland: true)));
   } else if (Uri.base.queryParameters['review'] == 'alchemist-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp(archetype: 'alchemist')));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const ScoutWardrobeReviewApp(archetype: 'alchemist')));
   } else if (Uri.base.queryParameters['review'] == 'scholar-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp(archetype: 'scholar')));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const ScoutWardrobeReviewApp(archetype: 'scholar')));
   } else if (Uri.base.queryParameters['review'] == 'guardian-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp(archetype: 'guardian')));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const ScoutWardrobeReviewApp(archetype: 'guardian')));
   } else if (Uri.base.queryParameters['review'] == 'wanderer-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp(archetype: 'wanderer')));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const ScoutWardrobeReviewApp(archetype: 'wanderer')));
   } else if (Uri.base.queryParameters['review'] == 'scout-wardrobe') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp()));
+    runApp(
+        QuestwellPreviewNavigationHost(child: const ScoutWardrobeReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'clean-bases') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const CleanBaseReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'autumn-lantern') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const AutumnLanternReviewApp()));
+    runApp(
+        QuestwellPreviewNavigationHost(child: const AutumnLanternReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'harvest-display') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const HarvestDisplayReviewApp()));
+    runApp(
+        QuestwellPreviewNavigationHost(child: const HarvestDisplayReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'harvest-coat') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const HarvestCoatReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'hearth-settings') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const HearthSettingsReviewApp()));
+    runApp(
+        QuestwellPreviewNavigationHost(child: const HearthSettingsReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'wanderer-cuffs') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const WandererCuffReviewApp()));
+    runApp(
+        QuestwellPreviewNavigationHost(child: const WandererCuffReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'rug') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const RugReviewApp()));
@@ -109,33 +126,37 @@ void main() {
     runApp(QuestwellPreviewNavigationHost(child: const Issue6DecorReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'seasonal-gallery') {
     WidgetsFlutterBinding.ensureInitialized();
-    final requested = Uri.base.queryParameters['collection'] ??
-        'seasonal-review-fixture';
+    final requested =
+        Uri.base.queryParameters['collection'] ?? 'seasonal-review-fixture';
     final safeCollection = RegExp(r'^[a-z0-9-]+$').hasMatch(requested)
         ? requested
         : 'seasonal-review-fixture';
-    final manifestAsset = 'assets/jsons/' +
-        safeCollection.replaceAll('-', '_') +
-        '.json';
+    final manifestAsset =
+        'assets/jsons/' + safeCollection.replaceAll('-', '_') + '.json';
     runApp(QuestwellSeasonalGalleryReviewApp(
       manifestAsset: manifestAsset,
       initialSlug: Uri.base.queryParameters['item'],
     ));
   } else if (Uri.base.queryParameters['review'] == 'mastery') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'Adventurer', masteryPreview: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const MobileReviewApp(
+            initialScreen: 'Adventurer', masteryPreview: true)));
   } else if (Uri.base.queryParameters['review'] == 'new-quest') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'New quest')));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const MobileReviewApp(initialScreen: 'New quest')));
   } else if (Uri.base.queryParameters['review'] == 'navigation') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'Hearth')));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const MobileReviewApp(initialScreen: 'Hearth')));
   } else if (Uri.base.queryParameters['review'] == 'mobile') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'campfire') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const ExpeditionReviewApp(quickFinish: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const ExpeditionReviewApp(quickFinish: true)));
   } else if (Uri.base.queryParameters['review'] == 'expedition') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const ExpeditionReviewApp()));
@@ -147,7 +168,8 @@ void main() {
     runApp(QuestwellPreviewNavigationHost(child: const EffectsReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'boots') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const NeutralRobesReviewApp()));
+    runApp(
+        QuestwellPreviewNavigationHost(child: const NeutralRobesReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'grimoire') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const GrimoireReviewApp()));
@@ -168,61 +190,85 @@ void main() {
     runApp(QuestwellPreviewNavigationHost(child: const ChronicleReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'milestones') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const MilestoneRoadmapReviewApp()));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const MilestoneRoadmapReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'starlit-orrery') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const HearthPolishReviewApp(firstJourney: true, orrery: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const HearthPolishReviewApp(firstJourney: true, orrery: true)));
   } else if (Uri.base.queryParameters['review'] == 'first-journey') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const HearthPolishReviewApp(firstJourney: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const HearthPolishReviewApp(firstJourney: true)));
   } else if (Uri.base.queryParameters['review'] == 'hearth-polish') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const HearthPolishReviewApp()));
+    runApp(
+        QuestwellPreviewNavigationHost(child: const HearthPolishReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'hearth-decor') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const HearthDecorReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'bookshelf') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const HearthReviewApp(bookshelf: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const HearthReviewApp(bookshelf: true)));
   } else if (Uri.base.queryParameters['review'] == 'hearth') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const HearthReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'quests') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'Quests')));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const MobileReviewApp(initialScreen: 'Quests')));
   } else if (Uri.base.queryParameters['review'] == 'home') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const HomeSectionsReviewApp()));
+    runApp(
+        QuestwellPreviewNavigationHost(child: const HomeSectionsReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'adventurer') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const MobileReviewApp(initialScreen: 'Adventurer')));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const MobileReviewApp(initialScreen: 'Adventurer')));
   } else if (Uri.base.queryParameters['review'] == 'scarf-matrix') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const ScarfFitReviewApp()));
   } else if (Uri.base.queryParameters['review'] == 'satchel-matrix') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const ScarfFitReviewApp(satchel: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const ScarfFitReviewApp(satchel: true)));
   } else if (Uri.base.queryParameters['review'] == 'brooch-matrix') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const ScarfFitReviewApp(satchel: true, lantern: true, brooch: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const ScarfFitReviewApp(
+            satchel: true, lantern: true, brooch: true)));
   } else if (Uri.base.queryParameters['review'] == 'brooch') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const EquipmentReviewApp(headwear: true, neckwear: true, satchel: true, lantern: true, brooch: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const EquipmentReviewApp(
+            headwear: true,
+            neckwear: true,
+            satchel: true,
+            lantern: true,
+            brooch: true)));
   } else if (Uri.base.queryParameters['review'] == 'lantern-matrix') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const ScarfFitReviewApp(satchel: true, lantern: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const ScarfFitReviewApp(satchel: true, lantern: true)));
   } else if (Uri.base.queryParameters['review'] == 'lantern') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const EquipmentReviewApp(headwear: true, neckwear: true, satchel: true, lantern: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const EquipmentReviewApp(
+            headwear: true, neckwear: true, satchel: true, lantern: true)));
   } else if (Uri.base.queryParameters['review'] == 'satchel') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const EquipmentReviewApp(headwear: true, neckwear: true, satchel: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const EquipmentReviewApp(
+            headwear: true, neckwear: true, satchel: true)));
   } else if (Uri.base.queryParameters['review'] == 'scarf') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const EquipmentReviewApp(headwear: true, neckwear: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const EquipmentReviewApp(headwear: true, neckwear: true)));
   } else if (Uri.base.queryParameters['review'] == 'headwear') {
     WidgetsFlutterBinding.ensureInitialized();
-    runApp(QuestwellPreviewNavigationHost(child: const EquipmentReviewApp(headwear: true)));
+    runApp(QuestwellPreviewNavigationHost(
+        child: const EquipmentReviewApp(headwear: true)));
   } else if (Uri.base.queryParameters['review'] == 'equipment') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(QuestwellPreviewNavigationHost(child: const EquipmentReviewApp()));
