@@ -43,7 +43,7 @@ class _HomeSectionsReviewAppState extends State<HomeSectionsReviewApp> {
                     builder: (context, bounds) => QuestwellHomeHero(
                         room: QuestwellHearthPixelScene(
                             immersive: true,
-                            height: bounds.maxWidth * .72 + 40,
+                            height: bounds.maxWidth * .68 + 8,
                             archetype: widget.loadout?.archetype ?? 'scout',
                             avatarBodyType: widget.loadout?.body ?? 'neutral',
                             showRelic: widget.loadout?.mastered

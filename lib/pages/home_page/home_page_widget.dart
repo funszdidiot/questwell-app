@@ -547,7 +547,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     return QuestwellHomeHero(
                         room: QuestwellHearthPixelScene(
                       immersive: true,
-                      height: roomWidth * .72 + 40,
+                      height: roomWidth * .68 + 8,
                       archetype: archetype,
                       avatarBodyType: data?.profile.avatarBodyType ?? 'neutral',
                       showRelic: mastered,
