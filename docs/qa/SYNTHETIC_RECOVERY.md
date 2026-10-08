@@ -1,7 +1,8 @@
 # Synthetic recovery rehearsal
 
-Status: implementation awaiting independent review and execution. No recovery
-result is claimed until the backend workflow passes the final recovery scenario.
+Executed results are recorded in the backend workflow's final `synthetic recovery`
+record and the release FIX_PLAN. This procedure alone is not recovery evidence;
+the complete workflow and final recovery scenario must pass.
 
 `tool/backend_ci/recovery.mjs` runs only at the end of the existing GitHub-hosted
 disposable backend harness. It accepts no target override. It rejects hosted
