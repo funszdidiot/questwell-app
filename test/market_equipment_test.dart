@@ -322,21 +322,22 @@ void main() {
                     onRefresh: () async {})))));
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
-    final categories = find.byType(SingleChildScrollView);
-    final effects = find.widgetWithText(TextButton, 'Effects');
+    final browse = find.byKey(const ValueKey('market-browse-type'));
     await tester.dragUntilVisible(
-        effects.hitTestable(), categories, const Offset(-160, 0));
-    await tester.tap(effects);
+        browse.hitTestable(), find.byType(ListView), const Offset(0, -140));
+    await tester.tap(browse);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Effects').last);
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('market-starter-business-suit')),
         findsNothing);
-    final all = find.widgetWithText(TextButton, 'All');
-    await tester.dragUntilVisible(
-        all.hitTestable(), categories, const Offset(160, 0));
-    await tester.tap(all);
+    await tester.tap(browse);
     await tester.pumpAndSettle();
-    expect(find.byKey(const ValueKey('market-starter-business-suit')),
-        findsOneWidget);
+    await tester.tap(find.text('All treasures').last);
+    await tester.pumpAndSettle();
+    final search = find.byType(TextField);
+    await tester.dragUntilVisible(
+        search.hitTestable(), find.byType(ListView), const Offset(0, 140));
     await tester.enterText(find.byType(TextField), 'moss-green');
     await tester.pumpAndSettle();
     FocusManager.instance.primaryFocus?.unfocus();

@@ -7,6 +7,7 @@ import '../services/questwell_loadout_model.dart';
 import 'questwell_body_fit_labels.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_market_preview.dart';
+import 'questwell_hearth_decor.dart';
 import 'questwell_typography.dart';
 import 'questwell_market_shopfront.dart';
 import 'questwell_market_motion.dart';
@@ -33,11 +34,9 @@ class QuestwellMarketView extends StatefulWidget {
 class _QuestwellMarketViewState extends State<QuestwellMarketView> {
   String category = 'All', query = '', collection = 'All', rarity = 'All';
   final searchController = TextEditingController();
-  final categoryScrollController = ScrollController();
   @override
   void dispose() {
     searchController.dispose();
-    categoryScrollController.dispose();
     super.dispose();
   }
 
@@ -61,6 +60,23 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       bodyRestricted(i) || classRestricted(i);
   String group(QuestwellCosmetic i) =>
       QuestwellLoadoutModel.inventoryGroup(i.category);
+  // Browse sections are presentation only; equipment groups stay unchanged.
+  String section(QuestwellCosmetic item) {
+    if (item.category == 'wall_art') return 'Wall art';
+    if (item.category != 'room') return group(item);
+    final slots = item.hearthPlacements.isNotEmpty
+        ? item.hearthPlacements.map((placement) => placement.slot)
+        : item.hearthProfileKey != null
+            ? const <String>[]
+            : QuestwellHearthDecor.choices(item.slug, knownOnly: true).keys;
+    if (slots.contains('setting')) return 'Hearth settings';
+    if (slots.contains('floor')) return 'Rugs & floor decor';
+    if (slots.isNotEmpty && slots.every((slot) => slot.startsWith('wall_'))) {
+      return 'Wall art';
+    }
+    return 'Furniture & decor';
+  }
+
   bool get hasSeasonal => widget.data.cosmetics.any((i) =>
       i.unlockMethod == 'shop' &&
       !QuestwellEquipmentPolicy.isRetired(i.slug) &&
@@ -313,9 +329,28 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                 .contains(query.toLowerCase().trim())))
         .toList()
       ..sort((a, b) {
+        const order = [
+          'Outfits',
+          'Gear',
+          'Familiars',
+          'Effects',
+          'Hearth settings',
+          'Rugs & floor decor',
+          'Wall art',
+          'Furniture & decor'
+        ];
+        final sectionOrder =
+            order.indexOf(section(a)).compareTo(order.indexOf(section(b)));
+        if (sectionOrder != 0) return sectionOrder;
         final price = a.price.compareTo(b.price);
-        return price != 0 ? price : a.name.compareTo(b.name);
+        if (price != 0) return price;
+        final name = a.name.toLowerCase().compareTo(b.name.toLowerCase());
+        return name != 0 ? name : a.id.compareTo(b.id);
       });
+    final sections = <String, List<QuestwellCosmetic>>{};
+    for (final item in items) {
+      sections.putIfAbsent(section(item), () => []).add(item);
+    }
     return RefreshIndicator(
         onRefresh: widget.onRefresh,
         child: ListView(
@@ -355,19 +390,38 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                               }),
                           child: Text('Reset filters'))
                     ])),
-              LayoutBuilder(builder: (context, constraints) {
-                final width = constraints.maxWidth > 650
-                    ? (constraints.maxWidth - 14) / 2
-                    : constraints.maxWidth;
-                return Wrap(spacing: 14, runSpacing: 12, children: [
-                  for (final i in items)
-                    SizedBox(
-                        key: ValueKey(i.id),
-                        width: width,
-                        child: QuestwellPurchaseGlow(
-                            owned: i.owned, child: card(i)))
-                ]);
-              }),
+              for (final section in sections.entries) ...[
+                Padding(
+                    padding: const EdgeInsets.only(top: 14, bottom: 12),
+                    child: Semantics(
+                        header: true,
+                        child: Column(
+                            key: ValueKey('market-section-${section.key}'),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(section.key,
+                                  style: QuestwellTypography.sectionHeading(
+                                      color: gold)),
+                              const SizedBox(height: 6),
+                              Text(
+                                  '${section.value.length} ${section.value.length == 1 ? 'treasure' : 'treasures'}',
+                                  style: QuestwellTypography.body(
+                                      color: muted, fontSize: 12)),
+                            ]))),
+                LayoutBuilder(builder: (context, constraints) {
+                  final width = constraints.maxWidth > 650
+                      ? (constraints.maxWidth - 14) / 2
+                      : constraints.maxWidth;
+                  return Wrap(spacing: 14, runSpacing: 12, children: [
+                    for (final i in section.value)
+                      SizedBox(
+                          key: ValueKey(i.id),
+                          width: width,
+                          child: QuestwellPurchaseGlow(
+                              owned: i.owned, child: card(i)))
+                  ]);
+                }),
+              ],
               const SizedBox(height: 22),
               Text(
                   'Coins come from your quests. Every purchase stays in your inventory.',
@@ -410,64 +464,47 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                   borderSide: const BorderSide(color: gold)),
             )),
         const SizedBox(height: 8),
-        Scrollbar(
-            controller: categoryScrollController,
-            thumbVisibility: true,
-            thickness: 2,
-            radius: const Radius.circular(2),
-            child: SingleChildScrollView(
-                controller: categoryScrollController,
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.only(bottom: 6),
-                child: Row(children: [
-                  for (final name in [
-                    'All',
-                    'Outfits',
-                    'Gear',
-                    'Familiars',
-                    'Effects',
-                    'Hearth',
-                    if (hasSeasonal) 'Seasonal',
-                    'Collections'
-                  ])
-                    Semantics(
-                        selected: category == name,
-                        child: Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: category == name
-                                            ? gold
-                                            : Colors.transparent,
-                                        width: 2))),
-                            child: TextButton(
-                                onPressed: () => setState(() {
-                                      category = name;
-                                      if (name != 'Collections')
-                                        collection = 'All';
-                                    }),
-                                style: TextButton.styleFrom(
-                                    foregroundColor:
-                                        category == name ? gold : muted,
-                                    textStyle: QuestwellTypography.body(
-                                        fontSize: 14,
-                                        fontWeight: category == name
-                                            ? FontWeight.w700
-                                            : FontWeight.w400),
-                                    minimumSize: const Size(48, 48),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 10),
-                                    tapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(4))),
-                                child: Text(name)))),
-                ]))),
+        DropdownButtonFormField<String>(
+          key: const ValueKey('market-browse-type'),
+          initialValue: category,
+          isExpanded: true,
+          isDense: false,
+          itemHeight: null,
+          dropdownColor: const Color(0xFF14272A),
+          style: QuestwellTypography.body(color: cream),
+          decoration: InputDecoration(
+              labelText: 'Browse by type',
+              labelStyle: QuestwellTypography.body(color: muted),
+              border: const OutlineInputBorder()),
+          items: [
+            for (final name in [
+              'All',
+              'Outfits',
+              'Gear',
+              'Familiars',
+              'Effects',
+              'Hearth',
+              if (hasSeasonal || category == 'Seasonal') 'Seasonal',
+              'Collections'
+            ])
+              DropdownMenuItem(
+                  value: name,
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Text(name == 'All' ? 'All treasures' : name))),
+          ],
+          onChanged: (value) => setState(() {
+            category = value ?? 'All';
+            if (category != 'Collections') collection = 'All';
+          }),
+        ),
         const SizedBox(height: 8),
         if (category == 'Collections') ...[
           DropdownButtonFormField<String>(
             value: collection,
+            isExpanded: true,
+            isDense: false,
+            itemHeight: null,
             dropdownColor: const Color(0xFF14272A),
             style: QuestwellTypography.body(color: cream),
             decoration: InputDecoration(
