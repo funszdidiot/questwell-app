@@ -19,8 +19,11 @@ native builds and backend gates passed. Preview `37722573952` succeeded.
 
 Approved scoped activation `37723523792` succeeded as migration
 `20261008033653`. Read-only checks confirm six active items, five render entries,
-the November 8 Chicago purchase cutoff and permanent ownership. Existing
-catalog/schema and 51 prior history entries are unchanged (52 total now).
+the November 8 Chicago purchase cutoff and permanent ownership. Activation added
+six catalog rows and five render rows, and changed `private.purchase_cosmetic`
+to enforce purchase dates. Pre-existing catalog/render data, the protected schema
+outside that intended function change, and all 51 prior history entries retain
+their exact hashes (52 history entries total now).
 Saved inactive-slot occupants now remain visible to the replacement confirmation
 flow in Market and Inventory; the Moonweb regression is recorded in PR #81.
 No main/flutterflow promotion. See `../qa/HALLOWED_HEARTH.md` and
