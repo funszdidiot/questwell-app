@@ -131,16 +131,21 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
         }
       }
       await WidgetsBinding.instance.endOfFrame;
-      if (!mounted) return;
+      if (!mounted || _selected != battle.id) return;
       final anchor = _encounterAnchor.currentContext;
-      if (anchor != null) {
-        await Scrollable.ensureVisible(anchor,
-            alignment: 0,
-            duration: Duration(
-                milliseconds:
-                    MediaQuery.disableAnimationsOf(context) ? 0 : 150));
+      if (anchor == null) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                'Bring the battle into view, then try your attack again.')));
+        return;
       }
+      await Scrollable.ensureVisible(anchor,
+          alignment: 0,
+          duration: Duration(
+              milliseconds: MediaQuery.disableAnimationsOf(context) ? 0 : 150));
+      await WidgetsBinding.instance.endOfFrame;
       if (!mounted ||
+          _selected != battle.id ||
           widget.loading ||
           widget.failed ||
           widget.busyStepId != null) return;
