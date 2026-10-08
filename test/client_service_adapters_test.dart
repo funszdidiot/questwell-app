@@ -538,7 +538,7 @@ void main() {
       await expectLater(
           QuestwellBossService.createBattle(
               title: 'Switch pending',
-              steps: ['Step'],
+              steps: ['First', 'Second'],
               requestId: 'boss-switch'),
           throwsStateError);
       expect(requests, hasLength(1));
@@ -547,7 +547,9 @@ void main() {
       respond = (_) async => json({});
       await expectLater(
           QuestwellBossService.createBattle(
-              title: 'Malformed', steps: ['Step'], requestId: 'boss-malformed'),
+              title: 'Malformed',
+              steps: ['First', 'Second'],
+              requestId: 'boss-malformed'),
           throwsA(isA<QuestwellNetworkException>()));
       expect(requests, hasLength(1));
     });

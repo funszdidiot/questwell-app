@@ -1,10 +1,14 @@
+import 'questwell_content_policy.dart';
 import '/backend/supabase/supabase.dart';
 import '/backend/supabase/questwell_network.dart';
 
 DateTime _chronicleWeekStart(DateTime now) {
   final today = now.toLocal();
-  return DateTime(today.year, today.month, today.day)
-      .subtract(Duration(days: today.weekday - 1));
+  return DateTime(
+    today.year,
+    today.month,
+    today.day,
+  ).subtract(Duration(days: today.weekday - 1));
 }
 
 List<ChronicleWin> _sortedChronicleWins(List<ChronicleWin> entries) =>
@@ -143,6 +147,11 @@ class QuestwellChronicleService {
     if (originals.isEmpty)
       throw StateError('The original quest is unavailable.');
     final original = originals.single;
+    if (QuestwellContentPolicy.titleError(original.title ?? '') != null) {
+      throw StateError(
+        'Create a new quest with a name of 1–120 characters. The original is unchanged.',
+      );
+    }
     await TasksTable().insert({
       'user_id': uid,
       'title': original.title,
@@ -244,7 +253,10 @@ class QuestwellChronicleService {
         ChronicleWin(
           kind: 'set_aside',
           taskId: row['id']?.toString(),
-          title: row['title']?.toString() ?? 'Quest',
+          title: QuestwellContentPolicy.displayTitle(
+            row['title']?.toString(),
+            'Untitled quest',
+          ),
           completedAt: DateTime.parse(row['created_at'].toString()),
           xp: (row['xp_value'] as num?)?.toInt() ?? 0,
           coins: (row['coin_value'] as num?)?.toInt() ?? 0,
@@ -287,9 +299,10 @@ class QuestwellChronicleService {
     }
     final response = await QuestwellNetwork.read(() {
       checkOwner();
-      return db.rpc('chronicle_totals', params: {
-        'p_week_start': weekStart.toUtc().toIso8601String(),
-      });
+      return db.rpc(
+        'chronicle_totals',
+        params: {'p_week_start': weekStart.toUtc().toIso8601String()},
+      );
     });
     checkOwner();
     final totals = _ChronicleTotals(response, uid, weekStart);
