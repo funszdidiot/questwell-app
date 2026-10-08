@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {assertRecoveryEnvironment} from '../backend_ci/recovery.mjs';
+import {assertRecoveryEnvironment, recoveryFailureCategories} from '../backend_ci/recovery.mjs';
 
 const env = {GITHUB_ACTIONS: 'true', RUNNER_ENVIRONMENT: 'github-hosted'};
 const local = {API_URL: 'http://127.0.0.1:54321',
@@ -17,4 +17,11 @@ test('recovery rejects hosted credentials, remote Docker and non-disposable runn
     {DB_URL: 'postgresql://postgres:secret@example.com/postgres'}]) {
     assert.throws(() => assertRecoveryEnvironment(env, {...local, ...override}));
   }
+});
+test('recovery error diagnostics never return server text or row values', () => {
+  const secrets = 'private@example.test eyJsecret.payload.signature password-hash';
+  assert.deepEqual(recoveryFailureCategories(`ERROR: can only create extension in database postgres\n${secrets}`),
+    ['extension_database_restriction']);
+  assert.deepEqual(recoveryFailureCategories(`ERROR: schema secret already exists\n${secrets}`), ['already_exists']);
+  assert.deepEqual(recoveryFailureCategories(secrets), []);
 });

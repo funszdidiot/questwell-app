@@ -10,6 +10,29 @@ const dbContainer = 'supabase_db_questwell-disposable-ci';
 const services = ['auth', 'rest', 'storage'].map(s => `supabase_${s}_questwell-disposable-ci`);
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
+// Deliberately return fixed labels, never fragments of SQL, COPY rows or secrets.
+export function recoveryFailureCategories(stderr) {
+  const patterns = {
+    extension_database_restriction: /can only (?:create extension|be installed) in database/i,
+    already_exists: /already exists/i,
+    permission_denied: /permission denied/i,
+    must_be_owner: /must be owner|must be member|must be superuser/i,
+    missing_role: /role .+ does not exist/i,
+    missing_schema: /schema .+ does not exist/i,
+    missing_relation: /relation .+ does not exist/i,
+    missing_function: /function .+ does not exist/i,
+    missing_extension: /extension .+ is not available/i,
+    configuration_parameter: /unrecognized configuration parameter|cannot change parameter/i,
+    duplicate_key: /duplicate key/i,
+    foreign_key: /foreign key constraint/i,
+    check_constraint: /check constraint/i,
+    invalid_input: /invalid input syntax/i,
+    archive_version: /unsupported version|not a valid archive/i,
+    connection: /could not connect|connection.+failed|connection.+closed/i,
+  };
+  return Object.entries(patterns).filter(([,pattern]) => pattern.test(String(stderr))).map(([name]) => name);
+}
+
 export function assertRecoveryEnvironment(env, status) {
   assertDisposableCi(env);
   assertLocalStatus(status);
@@ -26,6 +49,8 @@ export async function rehearseRecovery(status) {
       maxBuffer: 64 * 1024 * 1024,
     });
     // Dump/SQL errors can contain Auth data. Never print stdout/stderr on failure.
+    if (result.status !== 0) console.error(JSON.stringify({recovery_command_failed: args[0],
+      categories: recoveryFailureCategories(result.stderr)}));
     assert.equal(result.status, 0, `Disposable recovery command ${args[0]} failed (${result.error?.code ?? 'nonzero exit'}); output withheld`);
     return result.stdout;
   };
