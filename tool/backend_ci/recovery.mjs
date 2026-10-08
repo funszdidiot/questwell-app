@@ -197,8 +197,12 @@ export async function rehearseRecovery(status) {
   requireMarker();
   docker(['start', ...services]);
   for (let attempt = 0; ; attempt++) {
-    try { if ((await request('/auth/v1/health', null)).status === 200 &&
-      (await request('/rest/v1/', null)).status === 200) break; } catch {}
+    try {
+      const storage = await request('/storage/v1/bucket/beta-feedback', {token: status.SERVICE_ROLE_KEY});
+      if ((await request('/auth/v1/health', null)).status === 200 &&
+        (await request('/rest/v1/', null)).status === 200 && storage.status === 200 &&
+        storage.data?.id === 'beta-feedback' && storage.data.public === false) break;
+    } catch {}
     assert.ok(attempt < 59, 'Restored local APIs did not become ready');
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
