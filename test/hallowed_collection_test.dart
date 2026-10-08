@@ -152,7 +152,9 @@ void main() {
                 widget is Image &&
                 widget.image is AssetImage &&
                 (widget.image as AssetImage).assetName == render.assetPath),
-            findsOneWidget);
+            // Wall art deliberately draws the same sprite twice: its alpha
+            // silhouette shadow, then the room-lit foreground artwork.
+            findsNWidgets(render.renderKind == 'wall_art_sprite' ? 2 : 1));
       }
       expect(tester.takeException(), isNull);
     }
