@@ -713,3 +713,50 @@ class QuestwellHomeQuestCard extends StatelessWidget {
       featured: featured,
       onComplete: onComplete);
 }
+
+class _RewardChip extends StatelessWidget {
+  const _RewardChip({
+    required this.icon,
+    required this.label,
+  });
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = FlutterFlowTheme.of(context);
+
+    return Container(
+      padding: const EdgeInsetsDirectional.fromSTEB(10, 7, 10, 7),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0D0C11),
+        border: Border.all(
+          color: const Color(0xFF4C3A24),
+          width: 2,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          icon == Icons.monetization_on_outlined
+              ? const QuestwellCurrencyPixelIcon(kind: 'coin', size: 17)
+              : icon == Icons.auto_awesome
+                  ? const QuestwellCurrencyPixelIcon(kind: 'xp', size: 17)
+                  : Icon(icon, size: 16, color: theme.primary),
+          const SizedBox(width: 6),
+          Flexible(
+              child: Text(
+            label,
+            style: theme.labelMedium.override(
+              font: GoogleFonts.roboto(
+                fontWeight: FontWeight.w600,
+              ),
+              letterSpacing: 0,
+            ),
+          )),
+        ],
+      ),
+    );
+  }
+}
