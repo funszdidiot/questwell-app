@@ -53,8 +53,8 @@ void main() {
           final quest = find.byWidgetPredicate((widget) =>
               widget is QuestwellQuestCard &&
               widget.title == 'Send the email you have been putting off');
-          final action = find.descendant(
-              of: quest, matching: find.text('Complete quest'));
+          final action =
+              find.descendant(of: quest, matching: find.text('Complete quest'));
           // The noticeboard is built lazily below the enlarged heading/filters.
           await tester.scrollUntilVisible(action, 200,
               scrollable: find.byType(Scrollable).first);
