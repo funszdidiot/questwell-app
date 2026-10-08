@@ -1,0 +1,283 @@
+{
+  "schema_version": "questwell.seasonal-release/v1",
+  "release_id": "hallowed-hearth-2026",
+  "display_name": "The Hallowed Hearth",
+  "release_type": "seasonal",
+  "collection_key": "midnight-harvest",
+  "theme": {
+    "summary": "Approved cozy Halloween expansion with plum velvet, carved walnut, amber firelight, brass, crescent moons, bats and cobwebs.",
+    "palette": [
+      "plum",
+      "dark walnut",
+      "amber",
+      "burnt orange",
+      "aged brass"
+    ],
+    "materials": [
+      "velvet",
+      "walnut",
+      "wool",
+      "brass"
+    ],
+    "motifs": [
+      "crescent moons",
+      "bats",
+      "cobwebs",
+      "pumpkins"
+    ]
+  },
+  "availability": {
+    "status": "planned",
+    "starts_at": null,
+    "ends_at": "2026-11-09T06:00:00Z",
+    "ownership_persists_after_archive": true
+  },
+  "approval": {
+    "brief_status": "approved",
+    "visual_status": "approved",
+    "economy_status": "approved",
+    "activation_status": "authorized",
+    "founder_decision_ref": "Tanya approved art (I love them!) and the exact 220/140/100/160/60/60 coin prices, November 8 cutoff, and permanent ownership (Yes), October 7, 2026 America/Chicago. Rollout remains subject to required QA."
+  },
+  "items": [
+    {
+      "slug": "hallowed-hearth",
+      "name": "The Hallowed Hearth",
+      "category": "room",
+      "rarity": "rare",
+      "description": "Approved Halloween room with two gently descending spiders.",
+      "price": 220,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "hearth_setting",
+      "asset_state": "approved",
+      "wearable": null,
+      "provenance": {
+        "source": "image_gen; founder approved October 7, 2026",
+        "version": 1,
+        "method": "64-bit-era art direction; lossless WebP export",
+        "source_art_ref": "assets/images/questwell/hearth/hallowed_hearth_v1.webp"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "not_run"
+      },
+      "hearth": {
+        "profile_key": "hearth_setting"
+      }
+    },
+    {
+      "slug": "velvet-batwing-chair",
+      "name": "Velvet Batwing Chair",
+      "category": "room",
+      "rarity": "uncommon",
+      "description": "Plum velvet, walnut feet and a crescent cushion.",
+      "price": 140,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "seating",
+      "asset_state": "approved",
+      "wearable": null,
+      "provenance": {
+        "source": "image_gen; founder approved October 7, 2026",
+        "version": 1,
+        "method": "64-bit-era art direction; lossless WebP export",
+        "source_art_ref": "exec-2b217ee6-8825-4b71-9792-035af1dfda48.png"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "not_run"
+      },
+      "hearth": {
+        "profile_key": "seating",
+        "render": {
+          "render_kind": "static_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/velvet_batwing_chair_v1.webp",
+          "canvas_width": 1312,
+          "canvas_height": 1199,
+          "visible_base": 1.0,
+          "shadow_profile": "seating",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      }
+    },
+    {
+      "slug": "moonbrew-side-table",
+      "name": "Moonbrew Side Table",
+      "category": "room",
+      "rarity": "uncommon",
+      "description": "A copper cup and spellbook on a carved walnut table.",
+      "price": 100,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "side_table",
+      "asset_state": "approved",
+      "wearable": null,
+      "provenance": {
+        "source": "image_gen; founder approved October 7, 2026",
+        "version": 1,
+        "method": "64-bit-era art direction; lossless WebP export",
+        "source_art_ref": "exec-aec57f06-9f77-46bc-aef1-13770b846b2f.png"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "not_run"
+      },
+      "hearth": {
+        "profile_key": "side_table",
+        "render": {
+          "render_kind": "static_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/moonbrew_side_table_v1.webp",
+          "canvas_width": 1225,
+          "canvas_height": 1284,
+          "visible_base": 1.0,
+          "shadow_profile": "side_table",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      }
+    },
+    {
+      "slug": "witchlight-bookcase",
+      "name": "Witchlight Bookcase",
+      "category": "room",
+      "rarity": "uncommon",
+      "description": "Old books and softly glowing amber bottles.",
+      "price": 160,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "large_furniture",
+      "asset_state": "approved",
+      "wearable": null,
+      "provenance": {
+        "source": "image_gen; founder approved October 7, 2026",
+        "version": 1,
+        "method": "64-bit-era art direction; lossless WebP export",
+        "source_art_ref": "exec-2bf8f32c-8de2-47ff-8149-2a7c415e7e56.png"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "not_run"
+      },
+      "hearth": {
+        "profile_key": "large_furniture",
+        "render": {
+          "render_kind": "static_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/witchlight_bookcase_v1.webp",
+          "canvas_width": 1024,
+          "canvas_height": 1536,
+          "visible_base": 1.0,
+          "shadow_profile": "wide_plinth",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      }
+    },
+    {
+      "slug": "moonweb-rug",
+      "name": "Moonweb Rug",
+      "category": "room",
+      "rarity": "uncommon",
+      "description": "Plum wool, copper fringe and a woven moon-and-web motif.",
+      "price": 60,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "floor_rug",
+      "asset_state": "approved",
+      "wearable": null,
+      "provenance": {
+        "source": "image_gen; founder approved October 7, 2026",
+        "version": 1,
+        "method": "64-bit-era art direction; lossless WebP export",
+        "source_art_ref": "exec-6d0238ca-c8fc-4187-b042-b81e5b8fdeb1.png"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "not_run"
+      },
+      "hearth": {
+        "profile_key": "floor_rug",
+        "render": {
+          "render_kind": "floor_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/moonweb_rug_v1.webp",
+          "canvas_width": 1774,
+          "canvas_height": 887,
+          "visible_base": 1.0,
+          "shadow_profile": "none",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      }
+    },
+    {
+      "slug": "midnight-visitors-print",
+      "name": "Midnight Visitors Print",
+      "category": "wall_art",
+      "rarity": "uncommon",
+      "description": "A moonlit cottage and three bats in a walnut frame.",
+      "price": 60,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "wall_art_side",
+      "asset_state": "approved",
+      "wearable": null,
+      "provenance": {
+        "source": "image_gen; founder approved October 7, 2026",
+        "version": 1,
+        "method": "64-bit-era art direction; lossless WebP export",
+        "source_art_ref": "exec-51d360a7-92de-45e6-8566-06663b28f381.png"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "not_run"
+      },
+      "hearth": {
+        "profile_key": "wall_art_side",
+        "render": {
+          "render_kind": "wall_art_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/midnight_visitors_print_v1.webp",
+          "canvas_width": 1095,
+          "canvas_height": 1437,
+          "visible_base": 1.0,
+          "shadow_profile": "none",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      }
+    }
+  ]
+}

@@ -80,6 +80,8 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       return 'Coming soon';
     if (i.equipped) return room(i) ? 'Placed in Hearth' : 'Equipped';
     if (i.owned) return room(i) ? 'Place in Hearth' : 'Equip';
+    if (!i.availableForPurchaseAt(DateTime.now()))
+      return 'Outside seasonal availability';
     if (i.price > widget.data.profile.coinBalance)
       return '${i.price - widget.data.profile.coinBalance} more coins';
     return i.price == 0 ? 'Claim free' : 'Buy · ${i.price} coins';
@@ -90,7 +92,9 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
       !restricted(i) &&
       !i.equipped &&
       QuestwellEquipmentPolicy.isReady(i.slug, i.category) &&
-      (i.owned || i.price <= widget.data.profile.coinBalance);
+      (i.owned ||
+          (i.availableForPurchaseAt(DateTime.now()) &&
+              i.price <= widget.data.profile.coinBalance));
   Future<void> _activateItem(QuestwellCosmetic i) async {
     if (!canAct(i)) return;
     if (i.owned) {

@@ -9,6 +9,19 @@ and account flows. Required CI and independent delivered review are pending.
 See `APP_VISUAL_STANDARD.md`; the delivery PR records final evidence.
 
 
+## Hallowed Hearth Halloween collection — October 8, 2026
+
+**QA — PR #75.** Six designs, 740 total coins, purchases through November 8
+Chicago time and permanent ownership are founder-approved. Approved artwork,
+animated spiders, Market icons, generic furnishing placement and review route
+are integrated on the feature branch. The migration stages six inactive catalog
+rows and enforces server purchase dates while preserving owned retries.
+Existing Harvest prices, IDs, ownership and locked avatar files are unchanged.
+Local manifests pass; CI and independent visual/backend review are running.
+No live catalog mutation or app deployment is claimed. Local Flutter setup is
+unavailable after an automatic metadata-access denial; CI is the verification path.
+See `../releases/hallowed-hearth-2026/RELEASE_BRIEF.md` and `../qa/HALLOWED_HEARTH.md`.
+
 ## Hearth icon and empty-state consistency — October 8, 2026
 
 **DEV DEPLOYED** via PR #74 at `20a71d6`, Preview `37716661788`.
@@ -22,6 +35,7 @@ Scene geometry, locked art and account/economy logic are unchanged. Required CI
 and delivered independent review are pending; final evidence belongs to the PR.
 The account-free previews do not share quest/balance state across destinations,
 so their separate interaction checks cannot prove a persistent account loop.
+
 
 
 ## Hearth craftsmanship and first useful view — October 7, 2026
