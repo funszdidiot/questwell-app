@@ -148,7 +148,7 @@ class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
                 backgroundBuilder: (context, states, child) =>
                     child ?? const SizedBox(),
               ),
-              child: Text(_busy ? 'Deleting account…' : 'Permanently delete'),
+              child: Text(_busy ? 'Deleting account…' : 'Delete forever'),
             ),
           ],
         ),

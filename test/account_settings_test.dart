@@ -154,7 +154,7 @@ void main() {
     expect(
       tester
           .widget<FilledButton>(
-            find.widgetWithText(FilledButton, 'Permanently delete'),
+            find.widgetWithText(FilledButton, 'Delete forever'),
           )
           .onPressed,
       isNull,
@@ -372,7 +372,7 @@ void main() {
           await tester.pumpAndSettle();
           await tester.enterText(find.byType(TextField), 'DELETE');
           await tester.pump();
-          await tester.tap(find.text('Permanently delete'));
+          await tester.tap(find.text('Delete forever'));
         }
         await tester.pumpAndSettle();
         expect(pendingStage == 'sign-out' ? signOuts : deletions, 1);
@@ -449,7 +449,7 @@ void main() {
           await tester.pumpAndSettle();
           await tester.enterText(find.byType(TextField), 'DELETE');
           await tester.pump();
-          await tester.tap(find.text('Permanently delete'));
+          await tester.tap(find.text('Delete forever'));
         } else {
           await tester.tap(find.widgetWithText(OutlinedButton, 'Sign out'));
         }

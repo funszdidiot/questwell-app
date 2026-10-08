@@ -11,7 +11,7 @@ void main() {
     ));
 
     expect(find.text('25:00'), findsOneWidget);
-    final begin = find.text('Begin Expedition');
+    final begin = find.text('Begin');
     expect(begin, findsOneWidget);
 
     // The timer controls sit below the scene on the default 800 x 600 view.
@@ -34,7 +34,7 @@ void main() {
     expect(pause.hitTestable(), findsOneWidget);
     await tester.tap(pause);
     await tester.pump();
-    expect(find.text('Resume Expedition'), findsOneWidget);
+    expect(find.text('Resume'), findsOneWidget);
 
     now = now.add(const Duration(seconds: 5));
     await tester.pump(const Duration(seconds: 5));

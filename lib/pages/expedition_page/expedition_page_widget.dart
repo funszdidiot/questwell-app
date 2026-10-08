@@ -398,8 +398,8 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                             : _running
                                                 ? 'Pause'
                                                 : _started
-                                                    ? 'Resume Expedition'
-                                                    : 'Begin Expedition',
+                                                    ? 'Resume'
+                                                    : 'Begin',
                                       ),
                                       style: QuestwellAppStyle.primaryButton(),
                                     ),
