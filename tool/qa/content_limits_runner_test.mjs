@@ -60,7 +60,7 @@ function fixture(patch = {}) {
 
 test('pending approval stops before any network, while offline check needs no secret', async () => {
   const f = fixture();
-  await assert.rejects(f.run({approval: JSON.parse(read('tool/deploy/content-limits-approval.json'))}));
+  await assert.rejects(f.run({approval: {...approval, status: 'pending'}}));
   assert.equal(f.requests.length, 0);
   const cli = new URL('../deploy/content-limits.mjs', import.meta.url).pathname;
   const result = spawnSync(process.execPath, [cli, '--check'], {encoding: 'utf8', env: {}});
