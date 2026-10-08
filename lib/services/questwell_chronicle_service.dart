@@ -12,10 +12,11 @@ DateTime _chronicleWeekStart(DateTime now) {
 }
 
 List<ChronicleWin> _sortedChronicleWins(List<ChronicleWin> entries) =>
-    List<ChronicleWin>.from(entries)..sort((a, b) {
-      final date = b.completedAt.compareTo(a.completedAt);
-      return date != 0 ? date : a.kind.compareTo(b.kind);
-    });
+    List<ChronicleWin>.from(entries)
+      ..sort((a, b) {
+        final date = b.completedAt.compareTo(a.completedAt);
+        return date != 0 ? date : a.kind.compareTo(b.kind);
+      });
 
 class _ChronicleTotals {
   _ChronicleTotals(Object? response, String owner, DateTime weekStart) {

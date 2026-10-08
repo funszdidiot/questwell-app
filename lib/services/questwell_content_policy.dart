@@ -16,8 +16,8 @@ class QuestwellContentPolicy {
 
   static String? descriptionError(String? value) =>
       (value?.runes.length ?? 0) > descriptionLimit
-      ? 'Use 4,000 characters or fewer for the description.'
-      : null;
+          ? 'Use 4,000 characters or fewer for the description.'
+          : null;
 
   static String? bossError(String title, List<String> steps) {
     final error = titleError(title);

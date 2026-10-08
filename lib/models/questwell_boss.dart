@@ -73,8 +73,7 @@ class QuestwellBossBattle {
         'Untitled boss',
       ),
       status: json['status']?.toString() ?? 'open',
-      rewardXp:
-          (json['reward_xp'] as num?)?.toInt() ??
+      rewardXp: (json['reward_xp'] as num?)?.toInt() ??
           QuestwellBossRewards.victoryXp,
       rewardCoins: (json['reward_coins'] as num?)?.toInt() ?? 50,
       bossType: json['boss_type']?.toString() ?? 'inbox_hydra',
