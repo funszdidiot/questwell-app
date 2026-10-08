@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_hallowed_spiders.dart';
+import '../lib/widgets/questwell_catalog_equipment.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 
 Future<Uint8List> paintFrame(double phase,
@@ -23,6 +24,35 @@ Future<Uint8List> paintFrame(double phase,
 }
 
 void main() {
+  testWidgets('Hallowed rain stays inside its glass and animates',
+      (tester) async {
+    Future<Uint8List> frame(double phase) async {
+      final recorder = ui.PictureRecorder();
+      QuestwellRainyWindowOverlay(phase: phase, hallowed: true)
+          .paint(Canvas(recorder), const Size(390, 260));
+      final picture = recorder.endRecording();
+      final image = await picture.toImage(390, 260);
+      final data = await image.toByteData();
+      final bytes = Uint8List.fromList(data!.buffer.asUint8List());
+      image.dispose();
+      picture.dispose();
+      return bytes;
+    }
+
+    final start = await tester.runAsync(() => frame(0));
+    final later = await tester.runAsync(() => frame(.25));
+    expect(start, isNot(orderedEquals(later!)));
+    var painted = 0;
+    for (var y = 0; y < 260; y++) {
+      for (var x = 0; x < 390; x++) {
+        if (later[(y * 390 + x) * 4 + 3] == 0) continue;
+        painted++;
+        expect(x, inInclusiveRange(247, 313));
+        expect(y, inInclusiveRange(43, 113));
+      }
+    }
+    expect(painted, greaterThan(500));
+  });
   testWidgets('portrait crop keeps both animated spiders visible',
       (tester) async {
     final start =

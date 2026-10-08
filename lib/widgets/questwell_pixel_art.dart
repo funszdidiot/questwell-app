@@ -1301,9 +1301,11 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                         renderSpec: hearthRenderBySlug[art],
                       ),
                 if (equippedSlugs['room:window'] == 'rainy-window')
-                  const Positioned.fill(
+                  Positioned.fill(
                       key: ValueKey('hearth-rainy-window-bounds'),
-                      child: QuestwellRainyWindow()),
+                      child: QuestwellRainyWindow(
+                          hallowed: roomSetting ==
+                              QuestwellHearthSetting.hallowedHearth)),
                 for (final slot in QuestwellHearthDecor.backToFront(
                   equippedSlugs,
                   profileBySlug: hearthProfileBySlug,

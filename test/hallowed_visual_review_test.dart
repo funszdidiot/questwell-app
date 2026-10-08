@@ -68,6 +68,7 @@ void main() {
                   'room:floor': 'moonweb-rug',
                   'wall_art:wall_left': 'midnight-visitors-print',
                   'room:mantel': 'first-journey-trophy',
+                  'room:window': 'rainy-window',
                 },
                 hearthProfileBySlug: profiles,
                 hearthRenderBySlug: renders,
