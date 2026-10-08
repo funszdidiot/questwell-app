@@ -21,9 +21,10 @@ independent of active catalog visibility, and passes them to both Market and
 Inventory pickers. Hidden items use the label “Stored Hearth item” and require
 explicit replacement confirmation. They are not reactivated or rendered. The
 server concurrency guard and all ownership/currency rules are unchanged.
-The adapter regression exercises the real Market save path, cancellation,
-expected occupant ID, exactly one placement request and state reconstruction
-on reload. CI and delivered repair verification belong to PR #81; earlier
+The SDK-adapter regression exercises catalog filtering, the exact expected
+occupant ID, one placement request and state reconstruction on reload. A separate
+real picker test verifies cancellation and explicit replacement confirmation.
+These separate harnesses avoid mixing SDK work with the widget fake clock. CI and delivered repair verification belong to PR #81; earlier
 activation checks did not cover replacement of an inactive stored rug.
 
 ## Authority and scope
