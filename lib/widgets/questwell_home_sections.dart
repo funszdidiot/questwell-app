@@ -4,6 +4,7 @@ import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_home_overview.dart';
+import 'questwell_hearth_icon.dart';
 
 /// Shared account/review canvas. Room coordinates remain owned by the renderer.
 class QuestwellHomeCanvas extends StatelessWidget {
@@ -91,7 +92,11 @@ class QuestwellHomeFocusLayout extends StatelessWidget {
           overview,
           const SizedBox(height: 9),
           QuestwellHearthQuestFrame(
-              label: gentle ? 'ONE SMALL WIN' : 'YOUR NEXT WIN',
+              label: emphasizeAddQuest
+                  ? 'A FRESH PAGE'
+                  : gentle
+                      ? 'ONE SMALL WIN'
+                      : 'YOUR NEXT WIN',
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -138,7 +143,7 @@ class QuestwellHomeEmptyBoard extends StatelessWidget {
   const QuestwellHomeEmptyBoard({super.key});
   @override
   Widget build(BuildContext context) => Column(children: [
-        const QuestwellNavPixelIcon(kind: 'quests', size: 42),
+        const QuestwellHearthIcon(kind: 'quests', size: 42),
         const SizedBox(height: 10),
         Text('Room to breathe.',
             textAlign: TextAlign.center,

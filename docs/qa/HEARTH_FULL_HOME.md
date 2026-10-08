@@ -91,3 +91,25 @@ The existing server-derived milestone reward now sits directly below Campfire,
 so users need not expand More to discover their next unlock. Its selection,
 eligibility and empty behavior are unchanged; no new reward or economy rule is
 introduced. Weekly momentum and secondary actions remain in More.
+
+
+## Delivered craftsmanship and focused consistency follow-up — October 8
+
+PR #73 shipped at c0d0ff0; Preview 37713922615 succeeded after 907 Flutter /
+397 Chrome tests, analyzer/format, coverage, native and backend gates. Independent
+source and delivered visual reviews accepted the scoped refinements. The complete
+primary button is visible at 390px/740px; Campfire and 320px/200% text work.
+Account-only next-reward content remains source/test-verified, not visually proven.
+
+The current follow-up unifies the Home class badges, coins, XP gems and empty
+clipboard with the existing shaded navigation illustrations. It changes the
+empty plaque to “A FRESH PAGE” and mastery text to “Class mastered”. Tests cover
+active versus empty Campfire headings and compact mastered status at 320/390/430px
+with 100%/200% text. No avatar, room geometry, reward or account rules change.
+Status: QA; final checks and delivered independent acceptance recorded in its PR.
+
+The preview quest board can test form creation and completion; the separate Home
+fixture can test sample rewards and empty state. Because each owns local state
+and is remounted on destination changes, this does not verify persistent account
+creation/completion/reward/return-home behavior. Signed-in acceptance remains
+separate; no retention or fun claim follows from these checks.
