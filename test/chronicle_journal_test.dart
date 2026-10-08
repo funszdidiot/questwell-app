@@ -42,12 +42,14 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
     await tester.ensureVisible(find.text('Milestones'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Milestones'));
     await tester.pumpAndSettle();
     expect(find.text('Starlit Orrery'), findsOneWidget);
     expect(find.text('+20 XP'), findsNothing);
     expect(tester.takeException(), isNull);
     await tester.ensureVisible(find.text('Bosses'));
+    await tester.pumpAndSettle();
     expect(find.text('Bosses').hitTestable(), findsOneWidget);
     await tester.tap(find.text('Bosses'));
     await tester.pumpAndSettle();
