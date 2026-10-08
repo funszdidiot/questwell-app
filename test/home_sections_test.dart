@@ -11,6 +11,27 @@ import '../lib/preview/home_sections_review.dart';
 
 void main() {
   GoogleFonts.config.allowRuntimeFetching = false;
+  testWidgets('The primary quest action is fully visible on a 390px phone',
+      (tester) async {
+    final font = FontLoader('HearthSerif')
+      ..addFont(rootBundle.load('assets/fonts/DejaVuSerif-Bold.ttf'));
+    await font.load();
+    await tester.binding.setSurfaceSize(const Size(390, 740));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(const HomeSectionsReviewApp());
+    await tester.pump(const Duration(milliseconds: 300));
+    final action =
+        tester.getRect(find.widgetWithText(FilledButton, 'Complete quest'));
+    final navigation = tester.getRect(find.byType(QuestwellAppNavigation));
+    expect(action.bottom, lessThanOrEqualTo(navigation.top - 8),
+        reason: 'The first useful action must be fully above fixed navigation');
+    expect(find.text('Complete quest').hitTestable(), findsOneWidget);
+    await tester.tap(find.text('Complete quest'));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('105 / 130 XP'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+  });
   testWidgets('Large Hearth labels preserve whole words at 320px',
       (tester) async {
     final font = FontLoader('HearthSerif')
@@ -119,7 +140,8 @@ void main() {
                 nextWin: Text(empty ? 'Empty board' : 'Featured quest'),
                 overview: const Text('Your adventurer'),
                 campfire: const Text('Campfire control'),
-                secondary: const Text('Next reward'),
+                reward: const Text('Next reward'),
+                secondary: const Text('Weekly momentum'),
                 remainingQuests: empty
                     ? const []
                     : const [Text('Second quest'), Text('Third quest')],
@@ -134,6 +156,9 @@ void main() {
                 .getTopLeft(find.text(empty ? 'Empty board' : 'Featured quest'))
                 .dy));
         expect(find.text('Second quest'), findsNothing);
+        expect(find.text('Next reward'), findsOneWidget,
+            reason: 'The next reward must not require expanding More');
+        expect(find.text('Weekly momentum'), findsNothing);
         if (empty) {
           await tester.tap(find.widgetWithText(FilledButton, 'Add quest'));
           expect(opened, ['quests']);
@@ -143,6 +168,7 @@ void main() {
         await tester.tap(find.text('More at the Hearth'));
         await tester.pumpAndSettle();
         expect(find.text('Next reward'), findsOneWidget);
+        expect(find.text('Weekly momentum'), findsOneWidget);
         if (!empty) {
           expect(find.text('Second quest'), findsOneWidget);
           expect(find.text('Third quest'), findsOneWidget);

@@ -18,17 +18,20 @@ TextStyle _body(double size, {Color color = _ink, bool bold = false}) =>
 class QuestwellHomeHeader extends StatelessWidget {
   const QuestwellHomeHeader({super.key});
   @override
-  Widget build(BuildContext context) =>
-      const Row(mainAxisSize: MainAxisSize.min, children: [
+  Widget build(BuildContext context) => const SizedBox(
+      height: 34,
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
         // Fit the complete decorative logo; surrounding UI keeps its text scale.
         Flexible(
-            child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: QuestwellBrandWordmark(showSubtitle: false))),
+            child: SizedBox(
+                width: 230,
+                child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: QuestwellBrandWordmark(showSubtitle: false)))),
         SizedBox(width: 3),
         QuestwellWordmarkSparkles(),
-      ]);
+      ]));
 }
 
 class HomeCollectionItem {

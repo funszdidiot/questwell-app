@@ -75,10 +75,11 @@ class QuestwellHomeFocusLayout extends StatelessWidget {
       this.remainingQuests = const [],
       this.emphasizeAddQuest = false,
       this.campfire,
+      this.reward,
       this.secondary,
       this.gentle = false});
   final Widget nextWin, overview;
-  final Widget? campfire, secondary;
+  final Widget? campfire, reward, secondary;
   final ValueChanged<String> onOpen;
   final List<Widget> remainingQuests;
   final bool emphasizeAddQuest, gentle;
@@ -88,7 +89,7 @@ class QuestwellHomeFocusLayout extends StatelessWidget {
         child:
             Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           overview,
-          const SizedBox(height: 14),
+          const SizedBox(height: 9),
           QuestwellHearthQuestFrame(
               label: gentle ? 'ONE SMALL WIN' : 'YOUR NEXT WIN',
               child: Column(
@@ -102,7 +103,8 @@ class QuestwellHomeFocusLayout extends StatelessWidget {
                           onPressed: () => onOpen('quests')),
                     ],
                   ])),
-          if (campfire != null) ...[const SizedBox(height: 12), campfire!],
+          if (campfire != null) ...[const SizedBox(height: 5), campfire!],
+          if (reward != null) reward!,
           const SizedBox(height: 16),
           Theme(
               data:

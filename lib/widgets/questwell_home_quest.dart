@@ -1,3 +1,4 @@
+import 'questwell_hearth_icon.dart';
 import 'package:flutter/material.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_pixel_art.dart';
@@ -36,19 +37,19 @@ class QuestwellHearthQuestContent extends StatelessWidget {
       LayoutBuilder(builder: (context, bounds) {
         final titleWidget = Text(title,
             style:
-                QuestwellHearthMaterial.serif(featured ? 25 : 20, color: _ink));
+                QuestwellHearthMaterial.serif(featured ? 20 : 18, color: _ink));
         if (bounds.maxWidth < 270 ||
             MediaQuery.textScalerOf(context).scale(16) > 22) {
           return titleWidget;
         }
         return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                   color: const Color(0xFFDABD87),
                   borderRadius: BorderRadius.circular(6)),
-              child: const QuestwellNavPixelIcon(kind: 'quests', size: 34)),
-          const SizedBox(width: 14),
+              child: const QuestwellHearthIcon(kind: 'quests', size: 30)),
+          const SizedBox(width: 10),
           Expanded(child: titleWidget),
         ]);
       }),
@@ -64,13 +65,13 @@ class QuestwellHearthQuestContent extends StatelessWidget {
             style: QuestwellTypography.body(fontSize: 14, color: _ink))
       ],
       const Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: 7),
           child: Divider(height: 1, color: Color(0xFFBDA16F))),
       Wrap(spacing: 18, runSpacing: 8, children: [
         _reward('xp', '+$xp XP'),
         _reward('coin', '+$coins coins'),
       ]),
-      const SizedBox(height: 16),
+      const SizedBox(height: 11),
       if (featured)
         QuestwellHearthButton(
             label: completing ? 'Completing…' : 'Complete quest',

@@ -444,7 +444,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   .map((item) => item.name)
                   .toList(),
               collection: const [],
-              nextReward: QuestwellNextReward(cosmetics: data.cosmetics),
               onCustomize: () async {
                 await context.pushNamed(AdventurerPageWidget.routeName);
                 if (mounted) setState(_loadHomeData);
@@ -458,12 +457,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         ),
       ],
     );
+    final nextReward = FutureBuilder<QuestwellCosmeticsSnapshot>(
+        future: _homeSnapshotFuture,
+        builder: (context, snapshot) => snapshot.hasData
+            ? QuestwellNextReward(cosmetics: snapshot.data!.cosmetics)
+            : const SizedBox.shrink());
     final secondary = Column(children: [
-      FutureBuilder<QuestwellCosmeticsSnapshot>(
-          future: _homeSnapshotFuture,
-          builder: (context, snapshot) => snapshot.hasData
-              ? QuestwellNextReward(cosmetics: snapshot.data!.cosmetics)
-              : const SizedBox.shrink()),
       FutureBuilder<ChronicleSnapshot>(
         future: _momentumFuture,
         builder: (context, snapshot) {
@@ -494,6 +493,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           overview: overview,
           gentle: _campfireMode,
           secondary: secondary,
+          reward: nextReward,
           campfire: QuestwellHomeCampfireControl(
               active: _campfireMode,
               onChanged: _changingEnergyMode ? null : _setCampfireMode),

@@ -1,5 +1,16 @@
 # Questwell Production Dashboard
 
+## Hearth craftsmanship and first useful view — October 7, 2026
+
+**QA**. Tanya's holistic independent review found that the cozy direction works,
+but the complete reference's material quality and mobile proportions remain
+unmet. Current scoped work refines carved/brass/parchment surfaces, emerald
+actions, Home icons and compact typography. The primary action must be entirely
+visible at390px /740px without reducing selected text scaling. Avatar, garment,
+room geometry and game economy remain unchanged. Required CI and independent
+delivered aesthetic review are pending; functional test success is not visual
+acceptance. See `../qa/HEARTH_FULL_HOME.md`.
+
 ## Full Hearth reference composition — October 7, 2026
 
 **DEV DEPLOYED** via PR #71 at `f88f070`, Preview `37708222571`. Tanya's full

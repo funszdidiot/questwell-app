@@ -1,5 +1,5 @@
+import 'questwell_hearth_icon.dart';
 import 'questwell_hearth_material.dart';
-import 'questwell_pixel_art.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'questwell_typography.dart';
@@ -208,12 +208,10 @@ class QuestwellAppNavigation extends StatelessWidget {
                   : BorderSide.none,
               foregroundColor:
                   selected ? const Color(0xFFF3DEAF) : const Color(0xFFC5B5A0),
-              backgroundColor: selected
-                  ? QuestwellHearthMaterial.evergreen
-                  : Colors.transparent),
+              backgroundColor: Colors.transparent),
           child: stacked
               ? Row(children: [
-                  QuestwellNavPixelIcon(kind: kind, size: 24),
+                  QuestwellHearthIcon(kind: kind, size: 28),
                   const SizedBox(width: 12),
                   Expanded(
                       child: Text(label,
@@ -222,7 +220,7 @@ class QuestwellAppNavigation extends StatelessWidget {
               : Column(mainAxisSize: MainAxisSize.min, children: [
                   Opacity(
                       opacity: selected ? 1 : .65,
-                      child: QuestwellNavPixelIcon(kind: kind, size: 29)),
+                      child: QuestwellHearthIcon(kind: kind, size: 32)),
                   const SizedBox(height: 3),
                   Text(label,
                       textAlign: TextAlign.center,
@@ -236,7 +234,9 @@ class QuestwellAppNavigation extends StatelessWidget {
                           : Colors.transparent),
                 ]),
         ));
-    return stacked ? button : Expanded(child: button);
+    final surface =
+        QuestwellHearthTabSurface(selected: selected, child: button);
+    return stacked ? surface : Expanded(child: surface);
   }
 
   Widget _legacyNavigation(BuildContext context) => Material(
