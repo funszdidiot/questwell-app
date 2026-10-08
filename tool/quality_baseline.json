@@ -464,7 +464,6 @@
     "test/market_collections_test.dart": "ad10a6c56bdbfb70e1e0479687764d1e0fa4f98d780ea319d2e6140c2e83396d",
     "test/market_discoverability_test.dart": "804e5b4e5caabbd87b36d60b1a0a26b5821f1c030120d9900f3960a96b07f77a",
     "test/market_preview_loadout_test.dart": "f96ca4768604f4b0a6ea0dc3fd72bebf11f31e77419d98831f2f1ad7e9e63019",
-    "test/market_preview_placement_test.dart": "620927b0785d20d7c386d544078489fb4b95ea765cb5cdbef1b6d41a7b0be1e1",
     "test/mastery_relic_test.dart": "fb120e3bf27d07bcc8b34ba55bab103469197c4291012d669b65671192e572b9",
     "test/milestone_roadmap_test.dart": "a950e281251683c46c76cc634133a87e01cf2230966c122e82d2a03acb54af02",
     "test/new_quest_form_test.dart": "3889d6a3124a0b030d9eac27806cb57868658d74d4ea8e496d49a2fda129a141",
