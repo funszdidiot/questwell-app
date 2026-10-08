@@ -8,10 +8,6 @@ jobs:
   compare:
     runs-on: ubuntu-24.04
     timeout-minutes: 8
-    strategy:
-      fail-fast: false
-      matrix:
-        mode: [full, split]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -21,26 +17,23 @@ jobs:
         with:
           flutter-version: '3.44.6'
       - run: flutter pub get --enforce-lockfile
-      - name: Original complete coverage invocation
-        if: matrix.mode == 'full'
+      - name: All critical tests in independent coverage processes
         shell: bash
         run: |
-          set -o pipefail
-          timeout --signal=TERM --kill-after=15s 120s flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --coverage --branch-coverage --concurrency=1 test/open_task_list_test.dart test/boss_list_test.dart test/boss_creation_recovery_test.dart test/purchase_recovery_test.dart test/delete_account_test.dart test/auth_flow_test.dart test/questwell_network_test.dart test/startup_bootstrap_test.dart test/widget_test.dart test/client_service_adapters_test.dart test/auth_catalog_adapters_test.dart test/feedback_account_isolation_test.dart 2>&1 | tee coverage-diagnostic.log
-      - name: Same tests in isolated coverage processes
-        if: matrix.mode == 'split'
-        shell: bash
-        run: |
-          set -o pipefail
-          timeout --signal=TERM --kill-after=15s 120s flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --coverage --branch-coverage --concurrency=1 --coverage-path=coverage/auth.info test/auth_catalog_adapters_test.dart 2>&1 | tee coverage-auth.log
-          timeout --signal=TERM --kill-after=15s 120s flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --coverage --branch-coverage --concurrency=1 --coverage-path=coverage/remaining.info test/open_task_list_test.dart test/boss_list_test.dart test/boss_creation_recovery_test.dart test/purchase_recovery_test.dart test/delete_account_test.dart test/auth_flow_test.dart test/questwell_network_test.dart test/startup_bootstrap_test.dart test/widget_test.dart test/client_service_adapters_test.dart test/feedback_account_isolation_test.dart 2>&1 | tee coverage-remaining.log
-          cat coverage/auth.info coverage/remaining.info > coverage/lcov.info
+          set -euo pipefail
+          mkdir -p coverage/parts
+          for test_file in test/open_task_list_test.dart test/boss_list_test.dart test/boss_creation_recovery_test.dart test/purchase_recovery_test.dart test/delete_account_test.dart test/auth_flow_test.dart test/questwell_network_test.dart test/startup_bootstrap_test.dart test/widget_test.dart test/client_service_adapters_test.dart test/auth_catalog_adapters_test.dart test/feedback_account_isolation_test.dart; do
+            part_name="$(basename "$test_file" .dart)"
+            timeout --signal=TERM --kill-after=15s 120s flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --coverage --branch-coverage --concurrency=1 --coverage-path="coverage/parts/$part_name.info" "$test_file" 2>&1 | tee "coverage-$part_name.log"
+            test -s "coverage/parts/$part_name.info"
+          done
+          cat coverage/parts/*.info > coverage/lcov.info
           python3 tool/critical_coverage.py coverage/lcov.info --flutter-lcov --output coverage/critical-paths
       - name: Preserve diagnostic evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: coverage-diagnostic-${{ matrix.mode }}
+          name: coverage-diagnostic-per-file
           path: |
             coverage-*.log
             coverage/
