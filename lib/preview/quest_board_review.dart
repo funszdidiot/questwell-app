@@ -160,7 +160,7 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
             constraints: const BoxConstraints(maxWidth: 760),
             child: Builder(
                 builder: (context) => ListView(
-                        padding: const EdgeInsets.fromLTRB(18, 20, 18, 24),
+                        padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
                         children: [
                           QuestwellBoardHeading(
                               completed: _done.length,

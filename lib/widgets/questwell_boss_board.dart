@@ -1,3 +1,4 @@
+import 'questwell_destination_entrance.dart';
 import 'questwell_hearth_icon.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_app_style.dart';
@@ -81,13 +82,52 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
     super.didUpdateWidget(oldWidget);
     // A creation result can arrive before the refreshed battle list.
     // Keep that requested ID until its battle arrives.
-    if (widget.initialBattleId != null &&
-        widget.initialBattleId != oldWidget.initialBattleId) {
-      _selected = widget.initialBattleId;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted && _scroll.hasClients) _scroll.jumpTo(0);
-      });
+    final requested = widget.initialBattleId;
+    final requestedArrived = requested != null &&
+        _selected == requested &&
+        !oldWidget.battles.any((battle) => battle.id == requested) &&
+        widget.battles.any((battle) => battle.id == requested);
+    if (requested != null &&
+        (requested != oldWidget.initialBattleId || requestedArrived)) {
+      _selected = requested;
+      _revealSelected(requested);
     }
+  }
+
+  void _revealSelected(String id) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _showEncounter(id);
+    });
+  }
+
+  Future<bool> _showEncounter(String id) async {
+    if (!mounted || _selected != id || !_scroll.hasClients) return false;
+    // A tall arrival at enlarged text can keep the encounter outside the lazy
+    // list's cache. Walk toward it until its real anchor has been laid out.
+    _scroll.jumpTo(0);
+    await WidgetsBinding.instance.endOfFrame;
+    while (mounted &&
+        _selected == id &&
+        _scroll.hasClients &&
+        _encounterAnchor.currentContext == null) {
+      final position = _scroll.position;
+      final next = (position.pixels + position.viewportDimension)
+          .clamp(0.0, position.maxScrollExtent)
+          .toDouble();
+      if (next <= position.pixels) return false;
+      _scroll.jumpTo(next);
+      await WidgetsBinding.instance.endOfFrame;
+    }
+    if (!mounted || _selected != id) return false;
+    final anchor = _encounterAnchor.currentContext;
+    if (anchor == null) return false;
+    await Scrollable.ensureVisible(anchor,
+        alignment: 0,
+        duration: Duration(
+            milliseconds: MediaQuery.disableAnimationsOf(context) ? 0 : 300),
+        curve: Curves.easeOut);
+    await WidgetsBinding.instance.endOfFrame;
+    return mounted && _selected == id;
   }
 
   @override
@@ -98,14 +138,7 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
 
   void _select(String id) {
     setState(() => _selected = id);
-    if (_scroll.hasClients) {
-      if (MediaQuery.disableAnimationsOf(context)) {
-        _scroll.jumpTo(0);
-      } else {
-        _scroll.animateTo(0,
-            duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
-      }
-    }
+    _revealSelected(id);
   }
 
   Future<void> _attackAfterReveal(
@@ -119,31 +152,13 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
       _selected = battle.id;
     });
     try {
-      // Bring a lazily built encounter back before requesting a server result.
-      // Otherwise a fast response can finish its animation below the viewport.
-      if (_scroll.hasClients) {
-        if (MediaQuery.disableAnimationsOf(context)) {
-          _scroll.jumpTo(0);
-        } else {
-          await _scroll.animateTo(0,
-              duration: const Duration(milliseconds: 250),
-              curve: Curves.easeOut);
-        }
-      }
-      await WidgetsBinding.instance.endOfFrame;
-      if (!mounted || _selected != battle.id) return;
-      final anchor = _encounterAnchor.currentContext;
-      if (anchor == null) {
+      if (!await _showEncounter(battle.id)) {
+        if (!mounted || _selected != battle.id) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
                 'Bring the battle into view, then try your attack again.')));
         return;
       }
-      await Scrollable.ensureVisible(anchor,
-          alignment: 0,
-          duration: Duration(
-              milliseconds: MediaQuery.disableAnimationsOf(context) ? 0 : 150));
-      await WidgetsBinding.instance.endOfFrame;
       if (!mounted ||
           _selected != battle.id ||
           widget.loading ||
@@ -194,19 +209,13 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
     final content = ListView(
         controller: _scroll,
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(18, 14, 18, 32),
+        padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
         children: [
-          Row(children: [
-            IconButton(
-                onPressed: widget.onHome,
-                tooltip: 'Back to the Hearth',
-                icon: const Icon(Icons.arrow_back_rounded, color: _gold)),
-            const SizedBox(width: 6),
-            Expanded(
-                child: Text('BOSS BATTLES',
-                    style: QuestwellTypography.sectionHeading(size: 14))),
-            const QuestwellHearthIcon(kind: 'boss', size: 28),
-          ]),
+          QuestwellDestinationEntrance(
+              destination: 'bosses',
+              title: 'BOSS BATTLES',
+              subtitle: 'Big challenges. One brave step at a time.',
+              onHome: widget.onHome),
           Wrap(
               alignment: WrapAlignment.spaceBetween,
               crossAxisAlignment: WrapCrossAlignment.center,

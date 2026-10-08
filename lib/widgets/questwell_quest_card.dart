@@ -1,3 +1,4 @@
+import 'questwell_destination_entrance.dart';
 import 'questwell_hearth_icon.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_app_style.dart';
@@ -139,19 +140,12 @@ class QuestwellBoardHeading extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('QUEST BOARD',
-              style: QuestwellTypography.sectionHeading(size: 14)),
-          const SizedBox(height: 8),
-          Text('One small win at a time.',
-              style: QuestwellTypography.body(
-                  fontSize: 17, color: const Color(0xFFF0E5CC))),
-          const SizedBox(height: 6),
-          Text(
-              completed == 0
-                  ? 'Pick a quest that fits your energy.'
-                  : '$completed ${completed == 1 ? 'quest' : 'quests'} finished this visit. Keep your momentum.',
-              style: QuestwellTypography.body(
-                  fontSize: 13, color: const Color(0xFFB9C7D7))),
+          QuestwellDestinationEntrance(
+              destination: 'quests',
+              title: 'QUEST BOARD',
+              subtitle: completed == 0
+                  ? 'One small win at a time. Pick a quest that fits your energy.'
+                  : '$completed ${completed == 1 ? 'quest' : 'quests'} finished this visit. Keep your momentum.'),
           if (onAdd != null) ...[
             const SizedBox(height: 18),
             FilledButton.icon(

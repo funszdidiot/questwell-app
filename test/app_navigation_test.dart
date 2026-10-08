@@ -111,6 +111,9 @@ void main() {
     await tester.ensureVisible(find.text('Begin'));
     await tester.tap(find.text('Begin'));
     await tester.pump();
+    await tester.scrollUntilVisible(find.byTooltip('Back to the Hearth'), -200,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Back to the Hearth'));
     await tester.pumpAndSettle();
     expect(find.text('Leave this expedition?'), findsOneWidget);
@@ -121,8 +124,13 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     expect(find.text('24:53'), findsOneWidget);
     expect(find.text('Pause'), findsOneWidget);
+    await tester.ensureVisible(find.text('Pause'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Pause'));
     await tester.pump();
+    await tester.scrollUntilVisible(find.byTooltip('Back to the Hearth'), -200,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Back to the Hearth'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Stay here'));
@@ -132,6 +140,9 @@ void main() {
     expect(find.text('24:53'), findsOneWidget);
     expect(find.text('Resume'), findsOneWidget);
     expect(destination, isNull);
+    await tester.scrollUntilVisible(find.byTooltip('Back to the Hearth'), -200,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Back to the Hearth'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('End and leave'));
@@ -192,6 +203,9 @@ void main() {
                 initialDuration: const Duration(seconds: 1),
                 clock: () => now))));
     await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.byTooltip('Back to the Hearth'), -200,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Back to the Hearth'));
     await tester.pumpAndSettle();
     expect(visits, 1);
@@ -203,6 +217,9 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     await tester.pumpAndSettle();
     expect(find.text('EXPEDITION COMPLETE'), findsOneWidget);
+    await tester.scrollUntilVisible(find.byTooltip('Back to the Hearth'), -200,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Back to the Hearth'));
     await tester.pumpAndSettle();
     expect(visits, 2);

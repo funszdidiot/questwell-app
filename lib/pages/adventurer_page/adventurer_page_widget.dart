@@ -1,3 +1,4 @@
+import '/widgets/questwell_destination_entrance.dart';
 import '../../widgets/questwell_hearth_icon.dart';
 import '../../widgets/questwell_hearth_material.dart';
 import '../../widgets/questwell_app_style.dart';
@@ -318,31 +319,22 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
         cosmetic.requiredArchetype != currentArchetype;
   }
 
+  Widget _arrival() => QuestwellDestinationEntrance(
+      destination: 'adventurer',
+      title: 'ADVENTURER',
+      subtitle: 'Make yourself at home.',
+      action: IconButton(
+          tooltip: 'Account settings',
+          onPressed: () =>
+              context.pushNamed(AccountSettingsPageWidget.routeName),
+          icon: const Icon(Icons.settings_outlined)));
+
   @override
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
 
     return QuestwellScaffold(
       backgroundColor: const Color(0xFF111827),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: QuestwellAppStyle.background,
-        actions: [
-          TextButton.icon(
-            onPressed: () =>
-                context.pushNamed(AccountSettingsPageWidget.routeName),
-            icon: const Icon(Icons.settings_outlined, size: 20),
-            label: const Text('Account settings'),
-            style: TextButton.styleFrom(
-              foregroundColor: const Color(0xFFF2D9A0),
-              minimumSize: const Size(48, 48),
-              textStyle:
-                  GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700),
-            ),
-          ),
-          const SizedBox(width: 12),
-        ],
-      ),
       bottomNavigationBar: const QuestwellAppNavigation(
           current: QuestwellDestination.adventurer),
       body: SafeArea(
@@ -351,52 +343,53 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
           future: _future,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: QuestwellHearthFrame(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const QuestwellHearthIcon(
-                          kind: 'adventurer',
-                          size: 42,
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          'CHARACTER SHEET UNAVAILABLE',
-                          textAlign: TextAlign.center,
-                          style: theme.titleMedium.override(
-                            font: GoogleFonts.pressStart2p(
-                              fontWeight: FontWeight.w700,
+              return ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  children: [
+                    _arrival(),
+                    Center(
+                        child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: QuestwellHearthFrame(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const QuestwellHearthIcon(
+                              kind: 'adventurer',
+                              size: 42,
                             ),
-                            fontSize: 10,
-                            letterSpacing: .3,
-                          ),
+                            const SizedBox(height: 12),
+                            Text(
+                              'CHARACTER SHEET UNAVAILABLE',
+                              textAlign: TextAlign.center,
+                              style: theme.titleMedium.override(
+                                font: GoogleFonts.pressStart2p(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                fontSize: 10,
+                                letterSpacing: .3,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            TextButton(
+                              onPressed: () => setState(_refresh),
+                              child: const Text('TRY AGAIN'),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 10),
-                        TextButton(
-                          onPressed: () => setState(_refresh),
-                          child: const Text('TRY AGAIN'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
+                      ),
+                    )),
+                  ]);
             }
 
             if (!snapshot.hasData) {
-              return const Center(
-                child: SizedBox(
-                  width: 220,
-                  child: QuestwellHearthFrame(
-                    padding: EdgeInsets.all(20),
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                ),
-              );
+              return ListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  children: [
+                    _arrival(),
+                    const Center(child: CircularProgressIndicator()),
+                  ]);
             }
 
             final data = snapshot.data!;
@@ -430,6 +423,8 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                 await _future;
               },
               child: QuestwellAdventurerView(
+                onSettings: () =>
+                    context.pushNamed(AccountSettingsPageWidget.routeName),
                 archetype: data.profile.adventurerArchetype,
                 bodyType: selectedBodyType,
                 level: data.profile.level,

@@ -1,9 +1,7 @@
+import '/widgets/questwell_destination_entrance.dart';
 import '../../widgets/questwell_app_style.dart';
 import '/widgets/questwell_app_navigation.dart';
 import '/widgets/questwell_equipment_swap.dart';
-import 'package:go_router/go_router.dart';
-import '/pages/home_page/home_page_widget.dart';
-import '/widgets/questwell_market_home_button.dart';
 import '../../widgets/questwell_wall_art.dart';
 import '/widgets/questwell_room_picker.dart';
 import '/services/questwell_cosmetic_service.dart';
@@ -174,37 +172,37 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
     }
   }
 
+  Widget _arrivalState(Widget status) =>
+      ListView(padding: const EdgeInsets.fromLTRB(18, 8, 18, 32), children: [
+        const QuestwellDestinationEntrance(
+            destination: 'market',
+            title: 'MARKET',
+            subtitle:
+                'Rare finds, class gear, and questionable fashion choices.'),
+        status,
+      ]);
+
   @override
   Widget build(BuildContext context) => QuestwellScaffold(
       bottomNavigationBar:
           const QuestwellAppNavigation(current: QuestwellDestination.market),
       backgroundColor: const Color(0xFF101C21),
-      appBar: AppBar(
-        backgroundColor: QuestwellAppStyle.background,
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        leadingWidth: 116,
-        leading: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: QuestwellMarketHomeButton(
-                onHome: () => context.goNamed(HomePageWidget.routeName))),
-      ),
       body: SafeArea(
-          top: false,
+          top: true,
           child: FutureBuilder<QuestwellCosmeticsSnapshot>(
               future: _future,
               builder: (context, snapshot) {
                 if (snapshot.hasError)
-                  return Center(
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  return _arrivalState(
+                      Column(mainAxisSize: MainAxisSize.min, children: [
                     const Text('The shop could not refresh.'),
                     TextButton(
                         onPressed: () => setState(_refresh),
                         child: const Text('Try again'))
                   ]));
                 if (!snapshot.hasData)
-                  return const Center(child: CircularProgressIndicator());
+                  return _arrivalState(
+                      const Center(child: CircularProgressIndicator()));
                 return QuestwellMarketView(
                     data: snapshot.data!,
                     busyId: _busyCosmeticId,

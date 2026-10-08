@@ -1,5 +1,16 @@
 # Questwell Production Dashboard
 
+## Illustrated destination entrances — October 8, 2026
+
+**QA / local independent review approved; not deployed.** Six destinations use
+one arrival component with Hearth navigation, illustrated settings, live title
+plaques, and welcome copy. Loading/error arrivals, settings context, and selected
+boss scrolling are corrected. Independent review accepted all twelve mobile and
+enlarged-text captures. 980 tests and the release web build passed. Publication status is
+recorded in [destination entrance QA](../qa/DESTINATION_ENTRANCES.md). New artwork
+remains a development candidate; locked avatars and economy are unchanged.
+
+
 ## App-wide Hearth standard — October 7, 2026 (America/Chicago)
 
 **DEV DEPLOYED / QA**. Tanya explicitly directed the entire app to follow the accepted

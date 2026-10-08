@@ -234,7 +234,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
               child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 760),
                   child: ListView(
-                    padding: const EdgeInsets.fromLTRB(18, 20, 18, 24),
+                    padding: const EdgeInsets.fromLTRB(18, 8, 18, 32),
                     children: [
                       QuestwellBoardHeading(
                           completed: _completedThisVisit,

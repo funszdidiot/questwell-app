@@ -54,6 +54,8 @@ void main() {
     await tester.tap(find.text('Bosses'));
     await tester.pumpAndSettle();
     expect(find.text('A victory worth a page.'), findsOneWidget);
+    await tester.scrollUntilVisible(find.byTooltip('Back to the Hearth'), -250,
+        scrollable: find.byType(Scrollable).first);
     expect(find.byTooltip('Back to the Hearth'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -121,8 +123,15 @@ void main() {
     await tester.enterText(find.byType(TextField), '  PROPOSAL  ');
     await tester.pumpAndSettle();
     expect(find.text('Send the proposal'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Proposal dragon'), 150,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
     expect(find.text('Proposal dragon'), findsOneWidget);
     expect(find.text('Recorded win 0'), findsNothing);
+    await tester.scrollUntilVisible(
+        find.widgetWithText(ChoiceChip, 'Quests'), -150,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(ChoiceChip, 'Quests'));
     await tester.pumpAndSettle();
     expect(find.text('Send the proposal'), findsOneWidget);
@@ -164,7 +173,10 @@ void main() {
             },
             onOpenBoard: () => opened = true)));
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Do this quest again'));
+    await tester.scrollUntilVisible(find.text('Do this quest again'), 150,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
+    expect(find.text('Do this quest again').hitTestable(), findsOneWidget);
     await tester.tap(find.text('Do this quest again'));
     await tester.pump();
     await tester.tap(find.text('Adding quest…'));
@@ -209,7 +221,10 @@ void main() {
             })));
     await tester.pumpAndSettle();
     expect(find.text('Do this quest again'), findsOneWidget);
-    await tester.ensureVisible(find.text('Do this quest again'));
+    await tester.scrollUntilVisible(find.text('Do this quest again'), 150,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
+    expect(find.text('Do this quest again').hitTestable(), findsOneWidget);
     await tester.tap(find.text('Do this quest again'));
     await tester.pumpAndSettle();
     expect(find.text('Could not copy this quest. Please try again.'),
@@ -266,7 +281,10 @@ void main() {
     expect(find.text('A quest for later'), findsOneWidget);
     expect(find.text('A finished quest'), findsNothing);
     expect(find.text('+60 XP'), findsNothing);
-    await tester.ensureVisible(find.text('Restore to board'));
+    await tester.scrollUntilVisible(find.text('Restore to board'), 150,
+        scrollable: find.byType(Scrollable).first);
+    await tester.pumpAndSettle();
+    expect(find.text('Restore to board').hitTestable(), findsOneWidget);
     await tester.tap(find.text('Restore to board'));
     await tester.pump();
     await tester.tap(find.text('Restoring…'));
