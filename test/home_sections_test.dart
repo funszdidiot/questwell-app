@@ -11,6 +11,27 @@ import '../lib/preview/home_sections_review.dart';
 
 void main() {
   GoogleFonts.config.allowRuntimeFetching = false;
+  testWidgets('The primary quest action is fully visible on a 390px phone',
+      (tester) async {
+    final font = FontLoader('HearthSerif')
+      ..addFont(rootBundle.load('assets/fonts/DejaVuSerif-Bold.ttf'));
+    await font.load();
+    await tester.binding.setSurfaceSize(const Size(390, 740));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(const HomeSectionsReviewApp());
+    await tester.pump(const Duration(milliseconds: 300));
+    final action =
+        tester.getRect(find.widgetWithText(FilledButton, 'Complete quest'));
+    final navigation = tester.getRect(find.byType(QuestwellAppNavigation));
+    expect(action.bottom, lessThanOrEqualTo(navigation.top - 8),
+        reason: 'The first useful action must be fully above fixed navigation');
+    expect(find.text('Complete quest').hitTestable(), findsOneWidget);
+    await tester.tap(find.text('Complete quest'));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text('105 / 130 XP'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+  });
   testWidgets('Large Hearth labels preserve whole words at 320px',
       (tester) async {
     final font = FontLoader('HearthSerif')

@@ -64,3 +64,25 @@ widths with enlarged text, navigation now uses full-width rows and Campfire plac
 its switch beside the description below the title. Text scaling remains intact.
 A bundled-font regression checks actual rendered word boxes for the three
 navigation labels and “Campfire”; normal-size composition is unchanged.
+
+## Full-goal review and interface refinement — October 7
+
+Tanya requested a fresh independent assessment against the entire loved reference.
+Two reviewers agreed that cozy atmosphere is established, but premium interface
+craftsmanship and mobile composition remain incomplete. The 390px / 740px initial
+view partly hid the completion button and left Campfire below the fold. Prior
+functional QA did not constitute full art-direction acceptance.
+
+The next scoped pass preserves scene dimensions, asset bytes, canonical placement,
+avatar/body/garment locks, account writes and economy. A shorter decorative header,
+20px featured title and tighter card spacing improve the first useful view. Shared
+frames gain carved wood gradients, forged brass brackets and rivets; parchment
+gains restrained fibers and edge ornament; the emerald action and selected tab
+share directional light and recessed edges. Dedicated small Hearth illustrations
+replace the simpler Home navigation symbols without changing other destinations.
+
+A bundled-font 390px / 740px regression requires the complete quest button to sit
+at least 8px above fixed navigation and work without scrolling. Existing enlarged
+text, pending completion, notes, Campfire and navigation tests remain intact.
+Status: QA; required checks, independent source review and delivered aesthetic
+comparison pending. No measured retention claim or new artwork lock is implied.
