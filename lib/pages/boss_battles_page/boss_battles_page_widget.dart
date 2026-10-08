@@ -1,3 +1,4 @@
+import '/services/questwell_content_policy.dart';
 import 'package:uuid/uuid.dart';
 
 import '/widgets/questwell_app_navigation.dart';
@@ -36,7 +37,8 @@ class BossBattlesPageWidget extends StatefulWidget {
     String bossType,
     String? expectedOwnerId,
     String? requestId,
-  }) createBattle;
+  })
+  createBattle;
 
   static String routeName = 'BossBattlesPage';
   static String routePath = '/boss-battles';
@@ -283,11 +285,15 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   ],
                   const SizedBox(height: 10),
                   OutlinedButton.icon(
-                    onPressed: submitting || uncertain
+                    onPressed:
+                        submitting ||
+                            uncertain ||
+                            stepControllers.length >=
+                                QuestwellContentPolicy.bossStepLimit
                         ? null
                         : () => setSheetState(() {
-                              stepControllers.add(TextEditingController());
-                            }),
+                            stepControllers.add(TextEditingController());
+                          }),
                     icon: const Icon(Icons.add),
                     label: const Text('Add step'),
                   ),
@@ -318,6 +324,13 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                 () => errorMessage =
                                     'Add a boss title and at least two attack steps.',
                               );
+                              return;
+                            }
+
+                            final contentError =
+                                QuestwellContentPolicy.bossError(title, steps);
+                            if (contentError != null) {
+                              setSheetState(() => errorMessage = contentError);
                               return;
                             }
 
@@ -371,7 +384,8 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                               }
                             } catch (error) {
                               accountChanged = widget.currentOwner() != owner;
-                              uncertain = uncertain ||
+                              uncertain =
+                                  uncertain ||
                                   error is QuestwellNetworkException;
                               if (uncertain) _creationNeedsRefresh = true;
                               if (!context.mounted) {
@@ -390,8 +404,8 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                 errorMessage = accountChanged
                                     ? 'Your account changed. Close this draft and start again.'
                                     : error is QuestwellNetworkException
-                                        ? 'Your battle may already exist. Retry this unchanged draft safely, or close and check your battles.'
-                                        : 'Could not start this Boss Battle. Your draft is saved here. Please try again.';
+                                    ? 'Your battle may already exist. Retry this unchanged draft safely, or close and check your battles.'
+                                    : 'Could not start this Boss Battle. Your draft is saved here. Please try again.';
                               });
                             }
                           },
@@ -400,10 +414,10 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                       accountChanged
                           ? 'Account changed'
                           : uncertain
-                              ? 'Retry this battle'
-                              : submitting
-                                  ? 'Starting…'
-                                  : 'Start Boss Battle',
+                          ? 'Retry this battle'
+                          : submitting
+                          ? 'Starting…'
+                          : 'Start Boss Battle',
                     ),
                   ),
                   if (uncertain || accountChanged)
@@ -445,49 +459,48 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        bottomNavigationBar: const QuestwellAppNavigation(
-          current: QuestwellDestination.bosses,
-        ),
-        backgroundColor: const Color(0xFF111827),
-        body: SafeArea(
-          child: FutureBuilder<List<QuestwellBossBattle>>(
-            future: _future,
-            builder: (context, snapshot) => QuestwellBossBoard(
-              battles: snapshot.connectionState == ConnectionState.done
-                  ? snapshot.data ?? const []
-                  : const [],
-              initialBattleId: _createdBattleId,
-              unlockProgress: QuestwellBossUnlockProgress(
-                level: _appearance?.profile.level ?? 1,
-                totalXp: _appearance?.profile.totalXp ?? 0,
-                offset: _appearance?.profile.levelXpOffset ?? 0,
-                known: _appearance != null,
-              ),
-              loading: snapshot.connectionState != ConnectionState.done,
-              failed: snapshot.hasError,
-              busyStepId: _busyStepId,
-              campfire: _campfireMode,
-              archetype: _appearance?.profile.adventurerArchetype ?? 'wanderer',
-              body: _appearance?.profile.avatarBodyType ?? 'neutral',
-              equipment: {
-                for (final item
-                    in _appearance?.cosmetics ?? <QuestwellCosmetic>[])
-                  if (item.equipped) item.renderKey: item.slug,
-              },
-              onHome: () => context.goNamed(HomePageWidget.routeName),
-              onCreate: _showCreateBattle,
-              onAttack: _completeStep,
-              onRetry: () => setState(_refresh),
-              onRefresh: () async {
-                setState(_refresh);
-                try {
-                  await Future.wait([_future, _loadCampfireMode()]);
-                } catch (_) {
-                  /* FutureBuilder displays the retry state. */
-                }
-              },
-            ),
+    bottomNavigationBar: const QuestwellAppNavigation(
+      current: QuestwellDestination.bosses,
+    ),
+    backgroundColor: const Color(0xFF111827),
+    body: SafeArea(
+      child: FutureBuilder<List<QuestwellBossBattle>>(
+        future: _future,
+        builder: (context, snapshot) => QuestwellBossBoard(
+          battles: snapshot.connectionState == ConnectionState.done
+              ? snapshot.data ?? const []
+              : const [],
+          initialBattleId: _createdBattleId,
+          unlockProgress: QuestwellBossUnlockProgress(
+            level: _appearance?.profile.level ?? 1,
+            totalXp: _appearance?.profile.totalXp ?? 0,
+            offset: _appearance?.profile.levelXpOffset ?? 0,
+            known: _appearance != null,
           ),
+          loading: snapshot.connectionState != ConnectionState.done,
+          failed: snapshot.hasError,
+          busyStepId: _busyStepId,
+          campfire: _campfireMode,
+          archetype: _appearance?.profile.adventurerArchetype ?? 'wanderer',
+          body: _appearance?.profile.avatarBodyType ?? 'neutral',
+          equipment: {
+            for (final item in _appearance?.cosmetics ?? <QuestwellCosmetic>[])
+              if (item.equipped) item.renderKey: item.slug,
+          },
+          onHome: () => context.goNamed(HomePageWidget.routeName),
+          onCreate: _showCreateBattle,
+          onAttack: _completeStep,
+          onRetry: () => setState(_refresh),
+          onRefresh: () async {
+            setState(_refresh);
+            try {
+              await Future.wait([_future, _loadCampfireMode()]);
+            } catch (_) {
+              /* FutureBuilder displays the retry state. */
+            }
+          },
         ),
-      );
+      ),
+    ),
+  );
 }

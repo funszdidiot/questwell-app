@@ -36,7 +36,7 @@ jobs:
         run: python3 tool/verify_avatar_assets.py
 
       - name: Test preview updates, account deletion and repository protection
-        run: node --test tool/qa/preview_updates_test.cjs tool/qa/delete_account_test.mjs tool/qa/repository_ignore_test.cjs tool/qa/android_signing_test.mjs
+        run: node --test tool/qa/data_policy_test.mjs tool/qa/preview_updates_test.cjs tool/qa/delete_account_test.mjs tool/qa/repository_ignore_test.cjs tool/qa/android_signing_test.mjs
 
       - name: Validate seasonal release standards
         run: |

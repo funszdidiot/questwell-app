@@ -1,3 +1,4 @@
+import 'questwell_content_policy.dart';
 import 'dart:convert';
 
 import 'questwell_boss_creation_recovery.dart';
@@ -36,6 +37,8 @@ class QuestwellBossService {
     if (expectedOwnerId != null && expectedOwnerId != uid) {
       throw StateError('Boss account changed.');
     }
+    final error = QuestwellContentPolicy.bossError(title, steps);
+    if (error != null) throw ArgumentError(error);
     return _creationRecovery.create(
       key: jsonEncode([uid, requestId, title, steps, bossType]),
       requestId: requestId,
