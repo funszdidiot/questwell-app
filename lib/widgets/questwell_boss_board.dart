@@ -177,7 +177,7 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
                 style: QuestwellTypography.body(fontSize: 12, color: _muted)),
             const SizedBox(height: 8),
           ],
-          if (widget.loading)
+          if (widget.loading && battle == null)
             const Padding(
                 padding: EdgeInsets.all(36),
                 child: Center(child: CircularProgressIndicator(color: _gold)))
@@ -210,6 +210,11 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
                   style: QuestwellTypography.body(color: _muted)),
             ]))
           else ...[
+            if (widget.loading)
+              Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text('Updating battle…',
+                      style: QuestwellTypography.body(color: _muted))),
             Text(battle.title,
                 style: QuestwellTypography.body(
                     fontSize: 21,
@@ -334,7 +339,10 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
         : Semantics(
             label: 'Complete attack: ${step.title}',
             child: FilledButton(
-                onPressed: widget.busyStepId != null || battle.completed
+                onPressed: widget.loading ||
+                        widget.failed ||
+                        widget.busyStepId != null ||
+                        battle.completed
                     ? null
                     : () {
                         // Keep the battle being completed in view, but do not pin an automatic
