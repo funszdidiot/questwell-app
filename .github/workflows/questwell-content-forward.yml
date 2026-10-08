@@ -1,0 +1,49 @@
+name: Reviewed content limits forward migration
+
+on:
+  pull_request:
+    branches: [questwell-dev]
+  push:
+    branches: [questwell-dev, deploy/content-limits-approved]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: questwell-content-forward-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  guards:
+    name: Content rollout runner guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout without stored credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Test rollout gates and one-write transport without credentials
+        run: |
+          node --test tool/qa/content_limits_forward_test.mjs tool/qa/content_limits_runner_test.mjs
+          node tool/deploy/content-limits.mjs --check
+
+  apply:
+    name: Apply only the reviewed content limits
+    if: github.event_name == 'push' && github.ref == 'refs/heads/deploy/content-limits-approved'
+    needs: guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      checks: read
+    steps:
+      - name: Checkout reviewed revision without stored credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Require recorded approval and verify then apply the fixed payload
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          QUESTWELL_CONTENT_MIGRATION_TOKEN: ${{ secrets.QUESTWELL_CONTENT_MIGRATION_TOKEN }}
+        run: node tool/deploy/content-limits.mjs
