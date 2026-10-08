@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../lib/preview/mobile_review.dart';
-import '../lib/widgets/questwell_app_navigation.dart';
-import '../lib/widgets/questwell_app_style.dart';
-import '../lib/widgets/questwell_delete_account.dart';
+import 'package:project_momentum/preview/mobile_review.dart';
+import 'package:project_momentum/widgets/questwell_app_navigation.dart';
+import 'package:project_momentum/widgets/questwell_app_style.dart';
+import 'package:project_momentum/widgets/questwell_delete_account.dart';
 
 void main() {
   GoogleFonts.config.allowRuntimeFetching = false;

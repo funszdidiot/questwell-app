@@ -17,6 +17,26 @@ abstract final class QuestwellAppStyle {
     borderSide: BorderSide(color: brass),
   );
 
+  /// Startup must remain readable even before fonts/backend initialization.
+  static ThemeData fallbackTheme() =>
+      ThemeData.dark(useMaterial3: false).copyWith(
+        scaffoldBackgroundColor: background,
+        colorScheme: const ColorScheme.dark(
+            primary: Color(0xFFE4C586),
+            onPrimary: background,
+            secondary: Color(0xFF9DBFA5),
+            surface: surface,
+            onSurface: ink,
+            error: Color(0xFFFFB4AB)),
+        filledButtonTheme: FilledButtonThemeData(
+            style: FilledButton.styleFrom(
+                backgroundColor: emerald,
+                foregroundColor: ink,
+                minimumSize: const Size(48, 48),
+                side: const BorderSide(color: brass),
+                shape: QuestwellHearthMaterial.shape)),
+      );
+
   static ThemeData theme() {
     final base = ThemeData.dark(useMaterial3: false);
     final scheme = base.colorScheme.copyWith(
@@ -103,21 +123,12 @@ abstract final class QuestwellAppStyle {
       QuestwellHearthMaterial.primaryButton().copyWith(
         minimumSize: const WidgetStatePropertyAll(Size(48, 48)),
         textStyle: WidgetStatePropertyAll(QuestwellHearthMaterial.serif(17)),
-        backgroundBuilder: (context, states, child) => DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: states.contains(WidgetState.disabled)
-                      ? const [Color(0xFF48504A), Color(0xFF303B35)]
-                      : const [Color(0xFF386C54), Color(0xFF173D32)]),
-              border: Border.all(
-                  color: states.contains(WidgetState.disabled)
-                      ? const Color(0xFF786E55)
-                      : brass),
-            ),
-            child: child),
+        backgroundBuilder: (context, states, child) =>
+            QuestwellHearthTabSurface(
+                selected: true,
+                paintAsInk: true,
+                disabled: states.contains(WidgetState.disabled),
+                child: child ?? const SizedBox()),
       );
 }
 

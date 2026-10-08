@@ -93,6 +93,10 @@ void main() {
   testWidgets('Parchment auth validation stays readable at 320px/200%',
       (tester) async {
     await mount(tester, FakeAuth(), width: 320, scale: 2);
+    for (final field
+        in tester.widgetList<EditableText>(find.byType(EditableText))) {
+      expect(field.cursorColor, const Color(0xFF244C3E));
+    }
     await tap(tester, 'Enter the Hearth');
     expect(find.text('Enter a valid email address.'), findsOneWidget);
     final errors =
@@ -100,7 +104,7 @@ void main() {
     expect(errors.first.style?.color, const Color(0xFF8C302B));
     for (final field
         in tester.widgetList<EditableText>(find.byType(EditableText))) {
-      expect(field.cursorColor, const Color(0xFF244C3E));
+      expect(field.cursorColor, const Color(0xFF8C302B));
     }
     expect(tester.takeException(), isNull);
   });

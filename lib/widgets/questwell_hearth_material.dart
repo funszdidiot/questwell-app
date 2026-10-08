@@ -313,27 +313,34 @@ class _HearthButtonPainter extends CustomPainter {
 /// Same lit emerald and metal edge for the current Home destination.
 class QuestwellHearthTabSurface extends StatelessWidget {
   const QuestwellHearthTabSurface(
-      {super.key, required this.selected, required this.child});
-  final bool selected;
+      {super.key,
+      required this.selected,
+      required this.child,
+      this.disabled = false,
+      this.paintAsInk = false});
+  final bool selected, disabled, paintAsInk;
   final Widget child;
   @override
-  Widget build(BuildContext context) => selected
-      ? DecoratedBox(
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Color(0xFF315F4C), Color(0xFF142F28)]),
-              boxShadow: [
-                BoxShadow(
-                    color: Color(0x66000000),
-                    blurRadius: 3,
-                    offset: Offset(0, 2))
-              ]),
-          child: CustomPaint(
-              foregroundPainter: const _HearthButtonPainter(), child: child),
-        )
-      : child;
+  Widget build(BuildContext context) {
+    if (!selected) return child;
+    final decoration = BoxDecoration(
+        gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: disabled
+                ? const [Color(0xFF48504A), Color(0xFF303B35)]
+                : const [Color(0xFF315F4C), Color(0xFF142F28)]),
+        boxShadow: const [
+          BoxShadow(
+              color: Color(0x66000000), blurRadius: 3, offset: Offset(0, 2))
+        ]);
+    final framed = CustomPaint(
+        foregroundPainter: const _HearthButtonPainter(), child: child);
+    // Buttons need ink below their focus/splash; navigation paints above timber.
+    return paintAsInk
+        ? Ink(decoration: decoration, child: framed)
+        : DecoratedBox(decoration: decoration, child: framed);
+  }
 }
 
 class QuestwellHearthQuestFrame extends StatelessWidget {

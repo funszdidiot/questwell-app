@@ -36,6 +36,7 @@ never suppressed to make a layout fit. Respect reduced-motion preferences.
 | Boss battles | Shared attack/victory panels and controls | Create, attack, pending/failed, history, victory |
 | Expedition | Shared timer panel, chrome and controls | Begin, pause, leave confirmation, finish, motion |
 | Chronicle | Shared parchment, currency icons and navigation | Search, filter, repeat/restore, pagination |
+| Startup/recovery | Shared timber/frame/palette; system-font fallback before initialization | Slow load, safe failure, retry/restart |
 | Authentication | Current Hearth background, parchment and controls | Sign in/create/reset/recovery, autofill, errors |
 | Onboarding | Shared welcome frame and visual hierarchy | Choice, skip/finish, retry, existing progress guard |
 | Account | Shared panels; distinct deletion warning | Sign out, disabled state, deletion confirmation |
