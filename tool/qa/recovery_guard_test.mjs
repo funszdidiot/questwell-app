@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {assertRecoveryEnvironment, recoveryFailureCategories} from '../backend_ci/recovery.mjs';
+import {assertRecoveryEnvironment, recoveryFailureCategories, assertMissingRecoveryFile} from '../backend_ci/recovery.mjs';
 
 const env = {GITHUB_ACTIONS: 'true', RUNNER_ENVIRONMENT: 'github-hosted'};
 const local = {API_URL: 'http://127.0.0.1:54321',
@@ -24,4 +24,15 @@ test('recovery error diagnostics never return server text or row values', () => 
     ['extension_database_restriction']);
   assert.deepEqual(recoveryFailureCategories(`ERROR: schema secret already exists\n${secrets}`), ['already_exists']);
   assert.deepEqual(recoveryFailureCategories(secrets), []);
+});
+test('missing bytes require a specific object error, never a generic outage or denial', () => {
+  const path = 'synthetic-owner/recovery.png';
+  const missing = {status: 500, data: {code: 'InternalError', message: `ENOENT: stat '/storage/${path}-$v-version'`}};
+  assert.doesNotThrow(() => assertMissingRecoveryFile(missing, path));
+  assert.doesNotThrow(() => assertMissingRecoveryFile({status: 404, data: {code: 'NoSuchKey'}}, path));
+  for (const r of [{status: 200}, {status: 502}, {status: 403}, {status: 500},
+    {...missing, data: {...missing.data, message: 'Database unavailable'}},
+    {...missing, data: {...missing.data, message: 'ENOENT: stat other-owner/recovery.png'}}]) {
+    assert.throws(() => assertMissingRecoveryFile(r, path));
+  }
 });
