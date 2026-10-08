@@ -4,7 +4,8 @@ import '../lib/widgets/questwell_hearth_layout.dart';
 import '../lib/widgets/questwell_room_picker.dart';
 
 void main() {
-  test('same Hearth family uses the same visual scale and ground line per slot', () {
+  test('same Hearth family uses the same visual scale and ground line per slot',
+      () {
     const scene = Size(390, 420);
 
     final autumn = QuestwellHearthLayout.bounds(
@@ -22,11 +23,14 @@ void main() {
 
     expect(autumn.height, closeTo(warding.height, .01));
     expect(
-      autumn.top + autumn.height *
-          QuestwellHearthLayout.assetSpec('autumn-ember-lantern')!.visibleBase,
+      autumn.top +
+          autumn.height *
+              QuestwellHearthLayout.assetSpec('autumn-ember-lantern')!
+                  .visibleBase,
       closeTo(
-        warding.top + warding.height *
-            QuestwellHearthLayout.assetSpec('warding-lantern')!.visibleBase,
+        warding.top +
+            warding.height *
+                QuestwellHearthLayout.assetSpec('warding-lantern')!.visibleBase,
         .01,
       ),
     );
@@ -52,12 +56,17 @@ void main() {
 
     expect(shelf.height, closeTo(workbench.height, .01));
     expect(workbench.height, closeTo(harvest.height, .01));
-    final shelfFloor = shelf.top + shelf.height *
-        QuestwellHearthLayout.assetSpec('walnut-bookshelf')!.visibleBase;
-    final workbenchFloor = workbench.top + workbench.height *
-        QuestwellHearthLayout.assetSpec('copper-potion-workbench')!.visibleBase;
-    final harvestFloor = harvest.top + harvest.height *
-        QuestwellHearthLayout.assetSpec('harvest-apothecary-display')!.visibleBase;
+    final shelfFloor = shelf.top +
+        shelf.height *
+            QuestwellHearthLayout.assetSpec('walnut-bookshelf')!.visibleBase;
+    final workbenchFloor = workbench.top +
+        workbench.height *
+            QuestwellHearthLayout.assetSpec('copper-potion-workbench')!
+                .visibleBase;
+    final harvestFloor = harvest.top +
+        harvest.height *
+            QuestwellHearthLayout.assetSpec('harvest-apothecary-display')!
+                .visibleBase;
     expect(shelfFloor, closeTo(workbenchFloor, .01));
     expect(workbenchFloor, closeTo(harvestFloor, .01));
   });
@@ -102,27 +111,28 @@ void main() {
 
     RoomPlacement? result;
     await tester.pumpWidget(MaterialApp(
-      home: Builder(builder: (context) => Scaffold(
-        body: TextButton(
-          onPressed: () async {
-            result = await showRoomPicker(
-              context,
-              name: 'Future Seasonal Lamp',
-              id: 'future-lamp',
-              slug: 'unregistered-future-lamp',
-              archetype: 'wanderer',
-              bodyType: 'neutral',
-              equippedSlugs: const {},
-              occupants: const {},
-              placementChoices: const {
-                'left': 'Backend left',
-                'right': 'Backend right',
-              },
-            );
-          },
-          child: const Text('Open'),
-        ),
-      )),
+      home: Builder(
+          builder: (context) => Scaffold(
+                body: TextButton(
+                  onPressed: () async {
+                    result = await showRoomPicker(
+                      context,
+                      name: 'Future Seasonal Lamp',
+                      id: 'future-lamp',
+                      slug: 'unregistered-future-lamp',
+                      archetype: 'wanderer',
+                      bodyType: 'neutral',
+                      equippedSlugs: const {},
+                      occupants: const {},
+                      placementChoices: const {
+                        'left': 'Backend left',
+                        'right': 'Backend right',
+                      },
+                    );
+                  },
+                  child: const Text('Open'),
+                ),
+              )),
     ));
 
     await tester.tap(find.text('Open'));
@@ -138,5 +148,60 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(result?.slot, 'right');
+  });
+  testWidgets(
+      'hidden floor occupant requires explicit replacement confirmation',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(390, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    RoomPlacement? result;
+    var confirmedSaves = 0;
+    await tester.pumpWidget(MaterialApp(
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(disableAnimations: true),
+        child: child!,
+      ),
+      home: Builder(
+          builder: (context) => Scaffold(
+                body: TextButton(
+                    onPressed: () async {
+                      result = await showRoomPicker(context,
+                          name: 'Moonweb Rug',
+                          id: 'moonweb',
+                          slug: 'moonweb-rug',
+                          archetype: 'wanderer',
+                          bodyType: 'neutral',
+                          equippedSlugs: const {},
+                          occupants: const {
+                            'floor': RoomOccupant(
+                                'hidden-emerald', 'Stored Hearth item')
+                          },
+                          placementChoices: const {
+                            'floor': 'Beneath the adventurer'
+                          },
+                          hearthProfileKey: 'floor_rug');
+                      if (result != null) confirmedSaves++;
+                    },
+                    child: const Text('Place in Hearth')),
+              )),
+    ));
+    await tester.tap(find.text('Place in Hearth'));
+    await tester.pumpAndSettle();
+    expect(find.text('Replaces Stored Hearth item'), findsOneWidget);
+    await tester.tap(find.text('Save placement'));
+    await tester.pumpAndSettle();
+    expect(find.text('Replace Stored Hearth item?'), findsOneWidget);
+    await tester.tap(find.text('Keep current item'));
+    await tester.pumpAndSettle();
+    expect(result, isNull);
+    expect(confirmedSaves, 0);
+    await tester.tap(find.text('Save placement'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Replace item'));
+    await tester.pumpAndSettle();
+    expect(confirmedSaves, 1);
+    expect(result!.slot, 'floor');
+    expect(result!.expectedOccupant, 'hidden-emerald');
+    expect(tester.takeException(), isNull);
   });
 }

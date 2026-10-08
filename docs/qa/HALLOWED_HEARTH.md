@@ -1,5 +1,32 @@
 # Hallowed Hearth — October 7, 2026
 
+## Verified active release — October 8 UTC
+
+PR #79 centered the print over the fireplace and merged as `973f49642eb779543e2b4df1a65ac7085bb8917e`. Independent source and wide/mobile visual review passed. All required checks passed: 928 Flutter tests, 397 Chrome tests, coverage, Android, iOS and backend rehearsal. Preview `37722573952` and backend `37722573519` passed; the served revision and six asset hashes matched. Actual hosted furnishings, avatar and animated spiders were verified.
+
+The approved 24-hour project-scoped credential was created and stored. Reviewed activation workflow `37723523792`, job `113136402518`, succeeded at 03:36:53 UTC as migration `20261008033653`. Read-only post-verification found six active, nonpremium, all-class items at 220/140/100/160/60/60 coins and five exact render entries. Purchases close at `2026-11-09T06:00:00Z`; ownership and placement remain permanent. Keep the rows active after cutoff. Existing catalog, schema and 51 prior history records retain their exact protected hashes; there is one matching new forward record (52 total).
+
+Purchase boundaries, single charging, owned retries after cutoff and placement/restoration were verified with synthetic accounts in the isolated harness. No real-account purchase was made for this release verification. No main/flutterflow promotion occurred. Earlier pending/blocker statements below are historical and superseded for this approved release.
+
+## Saved rug replacement repair — October 8 UTC
+
+Tanya reported that Moonweb Rug was owned but would not save. Live request logs
+showed `room spot changed; refresh and confirm replacement`. Read-only diagnosis
+found an inactive Emerald Wayfarer Rug still occupying the floor for the affected
+Moonweb owner. The active catalog filter hid this occupant from the picker, so
+it sent null as the expected occupant and the server correctly refused.
+
+The client now retains equipped slot identities from the ownership response,
+independent of active catalog visibility, and passes them to both Market and
+Inventory pickers. Hidden items use the label “Stored Hearth item” and require
+explicit replacement confirmation. They are not reactivated or rendered. The
+server concurrency guard and all ownership/currency rules are unchanged.
+The SDK-adapter regression exercises catalog filtering, the exact expected
+occupant ID, one placement request and state reconstruction on reload. A separate
+real picker test verifies cancellation and explicit replacement confirmation.
+These separate harnesses avoid mixing SDK work with the widget fake clock. CI and delivered repair verification belong to PR #81; earlier
+activation checks did not cover replacement of an inactive stored rug.
+
 ## Authority and scope
 
 Tanya approved the generated Halloween room with: “Add some animated spiders and we’re a go.” This scopes the seasonal room art and two ambient spiders. It does not approve price, dates, account activation or production launch. No schema, ownership, currency or auth changes.

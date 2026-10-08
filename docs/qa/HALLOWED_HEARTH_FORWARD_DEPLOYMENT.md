@@ -8,14 +8,24 @@ and permanent ownership. PR #75 implements this scope. Existing Harvest prices,
 IDs and availability remain unchanged. No bundle SKU or account grants are added.
 The root migration history remains incomplete and must not be replayed or repaired.
 
-The forward path and real SQL rehearsal passed. PR #75 was merged and development
-revision `7bd70a9` was verified with all six asset hashes and the hosted furnished
-review. Live activation has NOT occurred. Tanya approved the requested 24-hour
-project-scoped token and its GitHub Actions storage on October 8 UTC, while also
-requesting the print be centered on the fireplace. Complete that correction's CI,
-independent review and delivered verification before activation. The prior
-Woodland credential is expired and outside this scope. No deployment branch or
-new secret has yet been created.
+**Verified active:** PR #79 centers the print on the fireplace; development
+revision `973f49642eb779543e2b4df1a65ac7085bb8917e` is served and all six
+artwork hashes match. Independent source/visual review and all client/backend
+gates passed. Preview `37722573952` and backend `37722573519` succeeded.
+
+Tanya approved the exact 24-hour project-scoped Database Read + Migrations Write
+token and GitHub Actions storage. It was created and stored; the prior Woodland
+credential was not reused. Branch `deploy/hallowed-hearth-approved` remains at
+the verified release SHA. Activation workflow `37723523792`, job `113136402518`,
+succeeded at 03:36:53 UTC October 8 as migration `20261008033653`.
+
+Independent read-only post-verification confirmed six active approved-price
+items, five renderer entries, nonpremium/all-class access, start
+`2026-10-08T03:36:53.444481Z`, end `2026-11-09T06:00:00Z`, exact protected
+schema/catalog/51-prior-history hashes and one new matching forward record.
+The combined source digest is
+`4321040c7b9b9324368668967aadc3f58b18cbf160b3396066b8f540e148187a`.
+No retry or history repair occurred. Total migration history is now 52.
 
 ## Reviewed path
 
@@ -57,16 +67,15 @@ cutoff, placement, unequip and restoration. No real account is used by CI.
 
 ## Credential and execution gate
 
-A newly approved short-lived token scoped only to this project's Database Read
-and Migrations Write capabilities must be stored as GitHub Actions secret
+The approved short-lived token, now stored, is scoped only to this project's Database Read
+and Migrations Write capabilities and is stored as GitHub Actions secret
 `QUESTWELL_HALLOWED_MIGRATION_TOKEN`. Do not paste credentials into chat, reuse
 the Woodland secret or grant broad project/account permissions. This new
 credential creation/storage is not inferred from artwork approval.
 
-Once the credential and all gates are available, create the dedicated deployment
-branch at the verified served development SHA. Inspect the workflow outcome, then
-independently query metadata to verify the six prices, start/end dates, renderer
-rows, unchanged protected state and one matching migration record.
+The dedicated deployment branch was created only after all gates passed, and
+the workflow outcome plus independent read-only metadata checks were verified.
+Preserve that branch as execution evidence; do not move it for documentation.
 
 There are no automatic write retries. On timeout, interruption, drift or ambiguous
 API failure, reconcile state and history read-only first. An existing exact

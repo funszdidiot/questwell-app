@@ -1,21 +1,44 @@
 # Questwell Production Dashboard
 
+## App-wide Hearth standard — October 7, 2026 (America/Chicago)
+
+**DEV DEPLOYED / QA**. Tanya explicitly directed the entire app to follow the accepted
+Hearth standard. Shared chrome, materials, navigation, typography, icons, inputs,
+buttons and feedback now form one presentation system across the main screens
+and account flows. PR #77 deployed at `b01aa00a`, Preview `37724181383`, with
+946 Flutter / 397 Chrome tests and all required checks passing. Independent
+review accepted the shared materials across all main destinations. A follow-up
+corrects four enlarged-text wrapping defects and Market detail typography.
+Those corrections remain in QA; real account settings still need a signed-in
+visual check. See `APP_VISUAL_STANDARD.md` and
+`../qa/APP_WIDE_HEARTH.md` for the exact scope and limitations.
+
+
 ## Hallowed Hearth Halloween collection — October 8, 2026
 
-**QA — fireplace alignment correction.** Six designs, 740 total coins,
-purchases through November 8 Chicago time and permanent ownership are approved.
-PR #75 passed independent source/visual review, all client/backend checks and
-atomic activation rehearsal; development delivery at `7bd70a9` is verified.
-Tanya approved the scoped 24-hour activation credential and requested the print
-be centered on the fireplace. That narrow room-anchor correction is in QA.
-Catalog activation awaits the corrected delivered client and approved credential
-setup. No live catalog mutation has occurred. Existing Harvest items and locked
-avatar assets are unchanged. See `../qa/HALLOWED_HEARTH.md` and
+**LOCKED / DEV DEPLOYED — catalog active.** Six approved designs total 740
+coins. PR #79 centers the print over the fireplace in wide and portrait layouts.
+Revision `973f496` is served; all six asset hashes and the furnished browser
+preview were verified. Independent review, 928 Flutter / 397 Chrome tests,
+native builds and backend gates passed. Preview `37722573952` succeeded.
+
+Approved scoped activation `37723523792` succeeded as migration
+`20261008033653`. Read-only checks confirm six active items, five render entries,
+the November 8 Chicago purchase cutoff and permanent ownership. Activation added
+six catalog rows and five render rows, and changed `private.purchase_cosmetic`
+to enforce purchase dates. Pre-existing catalog/render data, the protected schema
+outside that intended function change, and all 51 prior history entries retain
+their exact hashes (52 history entries total now).
+Saved inactive-slot occupants now remain visible to the replacement confirmation
+flow in Market and Inventory; the Moonweb regression is recorded in PR #81.
+No main/flutterflow promotion. See `../qa/HALLOWED_HEARTH.md` and
 `../qa/HALLOWED_HEARTH_FORWARD_DEPLOYMENT.md`.
 
 ## Hearth icon and empty-state consistency — October 8, 2026
 
-**QA**. The furnished-home review found the room composition successful, with
+**DEV DEPLOYED** via PR #74 at `20a71d6`, Preview `37716661788`.
+913 Flutter / 397 Chrome tests passed; independent visual review accepted the
+390px mastered empty state and 320px/200% Campfire controls. The furnished-home review found the room composition successful, with
 remaining inconsistencies in small artwork and state wording. Home class badges,
 coins, XP gems and empty clipboard now share the shaded illustration style.
 Empty boards use “A FRESH PAGE”; active and Campfire headings remain contextual.

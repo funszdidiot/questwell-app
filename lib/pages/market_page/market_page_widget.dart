@@ -1,3 +1,4 @@
+import '../../widgets/questwell_app_style.dart';
 import '/widgets/questwell_app_navigation.dart';
 import '/widgets/questwell_equipment_swap.dart';
 import 'package:go_router/go_router.dart';
@@ -54,8 +55,8 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(error.toString().contains('not enough coins')
-            ? 'Your coin balance changed. Refresh and try again.'
-            : 'We could not confirm this purchase. Reconnect and refresh the shop to check your inventory. Buying the same item again will not charge you twice.'),
+              ? 'Your coin balance changed. Refresh and try again.'
+              : 'We could not confirm this purchase. Reconnect and refresh the shop to check your inventory. Buying the same item again will not charge you twice.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -74,42 +75,60 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
         final data = await QuestwellCosmeticService.load();
         if (!mounted) return;
         final equipped = data.cosmetics.where((i) => i.equipped).toList();
-        final pick = await showRoomPicker(context, name: cosmetic.name, id: cosmetic.id,
-          slug: cosmetic.slug, currentSlot: cosmetic.equipped ? cosmetic.roomSlot ?? 'right' : null,
-          archetype: data.profile.adventurerArchetype, bodyType: data.profile.avatarBodyType,
-          equippedSlugs: {for (final i in equipped) i.renderKey: i.slug},
-          occupants: {for (final i in equipped.where((i) => i.category == cosmetic.category))
-            i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)},
-          placementChoices: cosmetic.hearthPlacements.isEmpty
-              ? null
-              : {for (final option in cosmetic.hearthPlacements)
-                  option.slot: option.label},
-          hearthProfileKey: cosmetic.hearthProfileKey,
-          hearthProfilesBySlug: {
-            for (final item in data.cosmetics)
-              if (item.hearthProfileKey != null)
-                item.slug: item.hearthProfileKey!,
-          },
-          hearthRenderSpec: cosmetic.hearthRenderSpec,
-          hearthRenderBySlug: {
-            for (final item in data.cosmetics)
-              if (item.hearthRenderSpec != null)
-                item.slug: item.hearthRenderSpec!,
-          });
+        final pick = await showRoomPicker(context,
+            name: cosmetic.name,
+            id: cosmetic.id,
+            slug: cosmetic.slug,
+            currentSlot:
+                cosmetic.equipped ? cosmetic.roomSlot ?? 'right' : null,
+            archetype: data.profile.adventurerArchetype,
+            bodyType: data.profile.avatarBodyType,
+            equippedSlugs: {for (final i in equipped) i.renderKey: i.slug},
+            occupants: {
+              for (final i
+                  in equipped.where((i) => i.category == cosmetic.category))
+                i.roomSlot ?? 'right': RoomOccupant(i.id, i.name),
+              ...data.hearthOccupants
+            },
+            placementChoices: cosmetic.hearthPlacements.isEmpty
+                ? null
+                : {
+                    for (final option in cosmetic.hearthPlacements)
+                      option.slot: option.label
+                  },
+            hearthProfileKey: cosmetic.hearthProfileKey,
+            hearthProfilesBySlug: {
+              for (final item in data.cosmetics)
+                if (item.hearthProfileKey != null)
+                  item.slug: item.hearthProfileKey!,
+            },
+            hearthRenderSpec: cosmetic.hearthRenderSpec,
+            hearthRenderBySlug: {
+              for (final item in data.cosmetics)
+                if (item.hearthRenderSpec != null)
+                  item.slug: item.hearthRenderSpec!,
+            });
         if (pick == null) return;
-        await QuestwellCosmeticService.place(cosmetic.id, pick.slot, pick.expectedOccupant);
+        await QuestwellCosmeticService.place(
+            cosmetic.id, pick.slot, pick.expectedOccupant);
       } else {
         final current = await QuestwellCosmeticService.load();
-      if (!mounted) return;
-      final conflict = cloakConflict(cosmetic,current.cosmetics);
-      if (conflict != null && !await confirmCloakSwap(context,cosmetic,conflict)) return;
-      if (!mounted) return;
-      await QuestwellCosmeticService.equip(cosmetic,expectedConflict:conflict?.id);
+        if (!mounted) return;
+        final conflict = cloakConflict(cosmetic, current.cosmetics);
+        if (conflict != null &&
+            !await confirmCloakSwap(context, cosmetic, conflict)) return;
+        if (!mounted) return;
+        await QuestwellCosmeticService.equip(cosmetic,
+            expectedConflict: conflict?.id);
       }
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(cosmetic.category == 'room' ? '${cosmetic.name} placed in your Hearth.' : cosmetic.category == 'wall_art' ? '${cosmetic.name} hung in your Hearth.' : '${cosmetic.name} equipped.'),
+          content: Text(cosmetic.category == 'room'
+              ? '${cosmetic.name} placed in your Hearth.'
+              : cosmetic.category == 'wall_art'
+                  ? '${cosmetic.name} hung in your Hearth.'
+                  : '${cosmetic.name} equipped.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -135,7 +154,10 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text((cosmetic.category == 'room' || cosmetic.category == 'wall_art') ? '${cosmetic.name} removed from your Hearth.' : '${cosmetic.name} unequipped.'),
+          content: Text(
+              (cosmetic.category == 'room' || cosmetic.category == 'wall_art')
+                  ? '${cosmetic.name} removed from your Hearth.'
+                  : '${cosmetic.name} unequipped.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -153,27 +175,45 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.market),
-    backgroundColor: const Color(0xFF101C21),
-    appBar: AppBar(
+  Widget build(BuildContext context) => QuestwellScaffold(
+      bottomNavigationBar:
+          const QuestwellAppNavigation(current: QuestwellDestination.market),
       backgroundColor: const Color(0xFF101C21),
-      automaticallyImplyLeading: false,
-      elevation: 0,
-      scrolledUnderElevation: 0,
-      leadingWidth: 116,
-      leading: Padding(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: QuestwellMarketHomeButton(
-          onHome: () => context.goNamed(HomePageWidget.routeName))),
-    ),
-    body: SafeArea(top: false, child: FutureBuilder<QuestwellCosmeticsSnapshot>(
-      future: _future, builder: (context, snapshot) {
-        if (snapshot.hasError) return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-          const Text('The shop could not refresh.'),
-          TextButton(onPressed:()=>setState(_refresh),child:const Text('Try again'))]));
-        if (!snapshot.hasData) return const Center(child:CircularProgressIndicator());
-        return QuestwellMarketView(data:snapshot.data!,busyId:_busyCosmeticId,
-          onPurchase:_purchase,onEquip:_equip,onUnequip:_unequip,
-          onRefresh:() async {setState(_refresh);await _future;});
-      })));
+      appBar: AppBar(
+        backgroundColor: QuestwellAppStyle.background,
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        leadingWidth: 116,
+        leading: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: QuestwellMarketHomeButton(
+                onHome: () => context.goNamed(HomePageWidget.routeName))),
+      ),
+      body: SafeArea(
+          top: false,
+          child: FutureBuilder<QuestwellCosmeticsSnapshot>(
+              future: _future,
+              builder: (context, snapshot) {
+                if (snapshot.hasError)
+                  return Center(
+                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    const Text('The shop could not refresh.'),
+                    TextButton(
+                        onPressed: () => setState(_refresh),
+                        child: const Text('Try again'))
+                  ]));
+                if (!snapshot.hasData)
+                  return const Center(child: CircularProgressIndicator());
+                return QuestwellMarketView(
+                    data: snapshot.data!,
+                    busyId: _busyCosmeticId,
+                    onPurchase: _purchase,
+                    onEquip: _equip,
+                    onUnequip: _unequip,
+                    onRefresh: () async {
+                      setState(_refresh);
+                      await _future;
+                    });
+              })));
 }

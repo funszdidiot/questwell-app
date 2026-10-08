@@ -1,10 +1,12 @@
+import '../../widgets/questwell_hearth_icon.dart';
+import '../../widgets/questwell_hearth_material.dart';
+import '../../widgets/questwell_app_style.dart';
 import '/pages/account_settings_page/account_settings_page_widget.dart';
 import '/widgets/questwell_app_navigation.dart';
 import '/widgets/questwell_equipment_swap.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_cosmetic_service.dart';
-import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_adventurer_view.dart';
 import '/pages/market_page/market_page_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +23,6 @@ class AdventurerPageWidget extends StatefulWidget {
 }
 
 class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
-
   late Future<QuestwellCosmeticsSnapshot> _future;
   String? _busyCosmeticId;
   bool _savingArchetype = false;
@@ -46,14 +47,20 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     try {
       final current = await QuestwellCosmeticService.load();
       if (!mounted) return;
-      final conflict = cloakConflict(cosmetic,current.cosmetics);
-      if (conflict != null && !await confirmCloakSwap(context,cosmetic,conflict)) return;
+      final conflict = cloakConflict(cosmetic, current.cosmetics);
+      if (conflict != null &&
+          !await confirmCloakSwap(context, cosmetic, conflict)) return;
       if (!mounted) return;
-      await QuestwellCosmeticService.equip(cosmetic,expectedConflict:conflict?.id);
+      await QuestwellCosmeticService.equip(cosmetic,
+          expectedConflict: conflict?.id);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(cosmetic.category == 'room' ? '${cosmetic.name} placed in your Hearth.' : cosmetic.category == 'wall_art' ? '${cosmetic.name} hung in your Hearth.' : '${cosmetic.name} equipped.'),
+          content: Text(cosmetic.category == 'room'
+              ? '${cosmetic.name} placed in your Hearth.'
+              : cosmetic.category == 'wall_art'
+                  ? '${cosmetic.name} hung in your Hearth.'
+                  : '${cosmetic.name} equipped.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -80,9 +87,12 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
       if (mounted) {
         setState(_refresh);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Could not save placement. The spot may have changed. Please try again.')));
+            content: Text(
+                'Could not save placement. The spot may have changed. Please try again.')));
       }
-    } finally { if (mounted) setState(() => _busyCosmeticId = null); }
+    } finally {
+      if (mounted) setState(() => _busyCosmeticId = null);
+    }
   }
 
   Future<void> _unequip(QuestwellCosmetic cosmetic) async {
@@ -94,11 +104,12 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text((cosmetic.category == 'room' || cosmetic.category == 'wall_art')
-            ? '${cosmetic.name} removed from your Hearth.'
-            : cosmetic.category == 'chest'
-              ? 'Back in your class outfit. ${cosmetic.name} stays in your inventory.'
-              : '${cosmetic.name} unequipped.'),
+          content: Text((cosmetic.category == 'room' ||
+                  cosmetic.category == 'wall_art')
+              ? '${cosmetic.name} removed from your Hearth.'
+              : cosmetic.category == 'chest'
+                  ? 'Back in your class outfit. ${cosmetic.name} stays in your inventory.'
+                  : '${cosmetic.name} unequipped.'),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -229,7 +240,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Class change failed. Please try again.')));
+          content: Text('Class change failed. Please try again.')));
     } finally {
       if (mounted) setState(() => _savingArchetype = false);
     }
@@ -253,10 +264,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
         .toList();
 
     if (incompatible.isNotEmpty) {
-      final preview = incompatible
-          .take(3)
-          .map((item) => item.name)
-          .join(', ');
+      final preview = incompatible.take(3).map((item) => item.name).join(', ');
       final remaining = incompatible.length - 3;
       final confirmed = await showDialog<bool>(
         context: context,
@@ -310,157 +318,180 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
         cosmetic.requiredArchetype != currentArchetype;
   }
 
-
   @override
   Widget build(BuildContext context) {
     final theme = FlutterFlowTheme.of(context);
 
-    return Scaffold(
+    return QuestwellScaffold(
       backgroundColor: const Color(0xFF111827),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xFF111827),
+        backgroundColor: QuestwellAppStyle.background,
         actions: [
           TextButton.icon(
-            onPressed: () => context.pushNamed(AccountSettingsPageWidget.routeName),
+            onPressed: () =>
+                context.pushNamed(AccountSettingsPageWidget.routeName),
             icon: const Icon(Icons.settings_outlined, size: 20),
             label: const Text('Account settings'),
             style: TextButton.styleFrom(
               foregroundColor: const Color(0xFFF2D9A0),
               minimumSize: const Size(48, 48),
-              textStyle: GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700),
+              textStyle:
+                  GoogleFonts.roboto(fontSize: 14, fontWeight: FontWeight.w700),
             ),
           ),
           const SizedBox(width: 12),
         ],
       ),
-      bottomNavigationBar: const QuestwellAppNavigation(current: QuestwellDestination.adventurer),
+      bottomNavigationBar: const QuestwellAppNavigation(
+          current: QuestwellDestination.adventurer),
       body: SafeArea(
         top: true,
         child: FutureBuilder<QuestwellCosmeticsSnapshot>(
-        future: _future,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: QuestwellRetroPanel(
-                  padding: const EdgeInsets.all(16),
-                  accent: const Color(0xFFE87947),
-                  background: const Color(0xFF1A1512),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const QuestwellNavPixelIcon(
-                        kind: 'adventurer',
-                        size: 42,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        'CHARACTER SHEET UNAVAILABLE',
-                        textAlign: TextAlign.center,
-                        style: theme.titleMedium.override(
-                          font: GoogleFonts.pressStart2p(
-                            fontWeight: FontWeight.w700,
-                          ),
-                          fontSize: 10,
-                          letterSpacing: .3,
+          future: _future,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: QuestwellHearthFrame(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const QuestwellHearthIcon(
+                          kind: 'adventurer',
+                          size: 42,
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      TextButton(
-                        onPressed: () => setState(_refresh),
-                        child: const Text('TRY AGAIN'),
-                      ),
-                    ],
+                        const SizedBox(height: 12),
+                        Text(
+                          'CHARACTER SHEET UNAVAILABLE',
+                          textAlign: TextAlign.center,
+                          style: theme.titleMedium.override(
+                            font: GoogleFonts.pressStart2p(
+                              fontWeight: FontWeight.w700,
+                            ),
+                            fontSize: 10,
+                            letterSpacing: .3,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        TextButton(
+                          onPressed: () => setState(_refresh),
+                          child: const Text('TRY AGAIN'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }
+              );
+            }
 
-          if (!snapshot.hasData) {
-            return const Center(
-              child: SizedBox(
-                width: 220,
-                child: QuestwellRetroPanel(
-                  padding: EdgeInsets.all(20),
-                  child: Center(child: CircularProgressIndicator()),
+            if (!snapshot.hasData) {
+              return const Center(
+                child: SizedBox(
+                  width: 220,
+                  child: QuestwellHearthFrame(
+                    padding: EdgeInsets.all(20),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
                 ),
+              );
+            }
+
+            final data = snapshot.data!;
+            final selectedBodyType =
+                _avatarBodyOverride ?? data.profile.avatarBodyType;
+            final classCollection = data.cosmetics
+                .where(
+                  (item) =>
+                      item.requiredArchetype ==
+                          data.profile.adventurerArchetype &&
+                      item.unlockMethod == 'shop',
+                )
+                .toList();
+            final masteryRewards = data.cosmetics
+                .where(
+                  (item) =>
+                      item.requiredArchetype ==
+                          data.profile.adventurerArchetype &&
+                      item.unlockMethod == 'class_mastery',
+                )
+                .toList();
+            final ownedClassItems =
+                classCollection.where((item) => item.owned).length;
+            final collectionComplete = classCollection.isNotEmpty &&
+                ownedClassItems == classCollection.length;
+            final masteryOwned = masteryRewards.any((item) => item.owned);
+
+            return RefreshIndicator(
+              onRefresh: () async {
+                setState(_refresh);
+                await _future;
+              },
+              child: QuestwellAdventurerView(
+                archetype: data.profile.adventurerArchetype,
+                bodyType: selectedBodyType,
+                level: data.profile.level,
+                xp: data.profile.totalXp,
+                coins: data.profile.coinBalance,
+                description:
+                    _archetypeDescription(data.profile.adventurerArchetype),
+                mastered: masteryOwned,
+                collectionOwned: ownedClassItems,
+                collectionTotal: classCollection.length,
+                relicName: _masteryRelicName(data.profile.adventurerArchetype),
+                canClaim: collectionComplete && !masteryOwned,
+                claiming: _claimingMastery,
+                onClaim: _claimMasteryReward,
+                savingAppearance: _savingBodyType || _savingArchetype,
+                busyItem: _busyCosmeticId,
+                onPlace: _place,
+                hearthOccupants: data.hearthOccupants,
+                onBody: _chooseBodyType,
+                onClass: (value) => _requestArchetypeChange(value, data),
+                onEquip: (id) =>
+                    _equip(data.cosmetics.firstWhere((item) => item.id == id)),
+                onUnequip: (id) => _unequip(
+                    data.cosmetics.firstWhere((item) => item.id == id)),
+                onBack: () => QuestwellNavigationScope.open(
+                    context, QuestwellDestination.hearth),
+                onMarket: () async {
+                  await context.pushNamed(MarketPageWidget.routeName);
+                  if (mounted) setState(_refresh);
+                },
+                items: data.cosmetics
+                    .map((item) => AdventurerInventoryItem(
+                          id: item.id,
+                          name: item.name,
+                          slug: item.slug,
+                          category: item.category,
+                          roomSlot: item.roomSlot,
+                          milestoneLevel: item.milestoneLevel,
+                          unlockedAt: item.unlockedAt,
+                          source: item.source,
+                          description: item.description,
+                          owned: item.owned,
+                          equipped: item.equipped,
+                          archetype: item.requiredArchetype,
+                          shop: item.unlockMethod == 'shop',
+                          collectionKey: item.collectionKey,
+                          editionType: item.editionType,
+                          hearthProfileKey: item.hearthProfileKey,
+                          hearthRenderSpec: item.hearthRenderSpec,
+                          hearthPlacements: [
+                            for (final option in item.hearthPlacements)
+                              MapEntry(option.slot, option.label),
+                          ],
+                          classLocked: _classLocked(
+                              item, data.profile.adventurerArchetype),
+                        ))
+                    .toList(),
               ),
             );
-          }
-
-          final data = snapshot.data!;
-          final selectedBodyType =
-              _avatarBodyOverride ?? data.profile.avatarBodyType;
-          final classCollection = data.cosmetics
-              .where(
-                (item) =>
-                    item.requiredArchetype ==
-                        data.profile.adventurerArchetype &&
-                    item.unlockMethod == 'shop',
-              )
-              .toList();
-          final masteryRewards = data.cosmetics
-              .where(
-                (item) =>
-                    item.requiredArchetype ==
-                        data.profile.adventurerArchetype &&
-                    item.unlockMethod == 'class_mastery',
-              )
-              .toList();
-          final ownedClassItems =
-              classCollection.where((item) => item.owned).length;
-          final collectionComplete = classCollection.isNotEmpty &&
-              ownedClassItems == classCollection.length;
-          final masteryOwned =
-              masteryRewards.any((item) => item.owned);
-
-          return RefreshIndicator(
-            onRefresh: () async { setState(_refresh); await _future; },
-            child: QuestwellAdventurerView(
-              archetype: data.profile.adventurerArchetype, bodyType: selectedBodyType,
-              level: data.profile.level, xp: data.profile.totalXp, coins: data.profile.coinBalance,
-              description: _archetypeDescription(data.profile.adventurerArchetype),
-              mastered: masteryOwned, collectionOwned: ownedClassItems,
-              collectionTotal: classCollection.length,
-              relicName: _masteryRelicName(data.profile.adventurerArchetype),
-              canClaim: collectionComplete && !masteryOwned,
-              claiming: _claimingMastery, onClaim: _claimMasteryReward,
-              savingAppearance: _savingBodyType || _savingArchetype,
-              busyItem: _busyCosmeticId,
-              onPlace: _place,
-              onBody: _chooseBodyType,
-              onClass: (value) => _requestArchetypeChange(value, data),
-              onEquip: (id) => _equip(data.cosmetics.firstWhere((item) => item.id == id)),
-              onUnequip: (id) => _unequip(data.cosmetics.firstWhere((item) => item.id == id)),
-              onBack: () => QuestwellNavigationScope.open(context, QuestwellDestination.hearth),
-              onMarket: () async {
-                await context.pushNamed(MarketPageWidget.routeName);
-                if (mounted) setState(_refresh);
-              },
-              items: data.cosmetics.map((item) => AdventurerInventoryItem(
-                id: item.id, name: item.name, slug: item.slug, category: item.category, roomSlot: item.roomSlot,
-                milestoneLevel: item.milestoneLevel, unlockedAt: item.unlockedAt, source: item.source,
-                description: item.description, owned: item.owned, equipped: item.equipped,
-                archetype: item.requiredArchetype, shop: item.unlockMethod == 'shop',
-                collectionKey: item.collectionKey,
-                editionType: item.editionType,
-                hearthProfileKey: item.hearthProfileKey,
-                hearthRenderSpec: item.hearthRenderSpec,
-                hearthPlacements: [
-                  for (final option in item.hearthPlacements)
-                    MapEntry(option.slot, option.label),
-                ],
-                classLocked: _classLocked(item, data.profile.adventurerArchetype),
-              )).toList(),
-            ),
-          );
-        },
-      ),
+          },
+        ),
       ),
     );
   }
 }
-

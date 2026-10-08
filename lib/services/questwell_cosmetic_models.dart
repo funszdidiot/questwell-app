@@ -240,12 +240,21 @@ class QuestwellCosmetic {
   }
 }
 
+/// A saved slot occupant may be absent from the active catalog. Keep its ID
+/// for explicit replacement confirmation and the server's concurrency guard.
+class RoomOccupant {
+  const RoomOccupant(this.id, this.name);
+  final String id, name;
+}
+
 class QuestwellCosmeticsSnapshot {
   const QuestwellCosmeticsSnapshot({
     required this.profile,
     required this.cosmetics,
+    this.hearthOccupants = const {},
   });
 
   final QuestwellProfile profile;
   final List<QuestwellCosmetic> cosmetics;
+  final Map<String, RoomOccupant> hearthOccupants;
 }

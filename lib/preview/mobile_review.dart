@@ -1,3 +1,4 @@
+import '../widgets/questwell_app_style.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'adventurer_review.dart';
@@ -15,9 +16,14 @@ import '../widgets/questwell_market_view.dart';
 /// Dev-only fixtures. All purchases and equipment changes stay in memory.
 class MobileReviewApp extends StatefulWidget {
   const MobileReviewApp(
-      {super.key, this.initialScreen = 'Market', this.masteryPreview = false});
+      {super.key,
+      this.initialScreen = 'Market',
+      this.masteryPreview = false,
+      this.initialWidth = 390,
+      this.initialTextScale = 1});
   final String initialScreen;
   final bool masteryPreview;
+  final double initialWidth, initialTextScale;
   @override
   State<MobileReviewApp> createState() => _MobileReviewAppState();
 }
@@ -25,8 +31,8 @@ class MobileReviewApp extends StatefulWidget {
 class _MobileReviewAppState extends State<MobileReviewApp> {
   late String screen = widget.initialScreen;
   final _loadout = QuestwellReviewLoadout();
-  double width = 390;
-  double scale = 1;
+  late double width = widget.initialWidth;
+  late double scale = widget.initialTextScale;
   Widget get scene => switch (screen) {
         'Hearth' => HomeSectionsReviewApp(loadout: _loadout),
         'Boss Battles' => const BossReviewApp(),
@@ -43,7 +49,7 @@ class _MobileReviewAppState extends State<MobileReviewApp> {
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Questwell · Mobile review',
-        theme: ThemeData.dark(useMaterial3: true),
+        theme: QuestwellAppStyle.theme(),
         home: QuestwellNavigationScope(
           onSelect: (destination) => setState(() => screen = destination.label),
           child: Column(children: [
@@ -55,7 +61,7 @@ class _MobileReviewAppState extends State<MobileReviewApp> {
                       (destination) => destination.label == screen)),
           ]),
         ),
-        builder: (context, navigator) => Scaffold(
+        builder: (context, navigator) => QuestwellScaffold(
           backgroundColor: const Color(0xFF080F16),
           body: SafeArea(
               child: Column(children: [
@@ -141,8 +147,8 @@ class _SampleMarketState extends State<_SampleMarket> {
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark(useMaterial3: true),
-        home: Scaffold(
+        theme: QuestwellAppStyle.theme(),
+        home: QuestwellScaffold(
             backgroundColor: const Color(0xFF0A1419),
             body: QuestwellMarketView(
               data: QuestwellCosmeticsSnapshot(
