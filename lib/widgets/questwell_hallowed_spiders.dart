@@ -42,7 +42,8 @@ class _HallowedSpidersState extends State<QuestwellHallowedSpiders>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _still = MediaQuery.disableAnimationsOf(context) || !TickerMode.of(context);
+    _still = MediaQuery.disableAnimationsOf(context) ||
+        !TickerMode.valuesOf(context).enabled;
     _syncMotion();
   }
 
