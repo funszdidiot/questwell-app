@@ -8,10 +8,14 @@ and permanent ownership. PR #75 implements this scope. Existing Harvest prices,
 IDs and availability remain unchanged. No bundle SKU or account grants are added.
 The root migration history remains incomplete and must not be replayed or repaired.
 
-The forward path is prepared; live execution has NOT occurred. It needs successful
-combined-revision CI, independent review, delivered client verification and a new
-scoped deployment credential. The prior Woodland credential is expired and outside
-this scope. No deployment branch or new secret has been created.
+The forward path and real SQL rehearsal passed. PR #75 was merged and development
+revision `7bd70a9` was verified with all six asset hashes and the hosted furnished
+review. Live activation has NOT occurred. Tanya approved the requested 24-hour
+project-scoped token and its GitHub Actions storage on October 8 UTC, while also
+requesting the print be centered on the fireplace. Complete that correction's CI,
+independent review and delivered verification before activation. The prior
+Woodland credential is expired and outside this scope. No deployment branch or
+new secret has yet been created.
 
 ## Reviewed path
 

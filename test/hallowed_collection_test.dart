@@ -105,6 +105,32 @@ void main() {
         closeTo(390 * .340 - 130 * .52, .001));
   });
 
+  test('fireplace art stays centered across wide and cropped rooms', () {
+    for (final entry in {
+      const Size(960, 640): const Offset(355, 112),
+      const Size(390, 420): const Offset(112.96875, 73.5),
+      const Size(320, 420): const Offset(77.96875, 73.5),
+    }.entries) {
+      final anchor = QuestwellHearthSetting.hallowedHearth
+          .wallArtAnchor(entry.key, 'wall_left')!;
+      expect(anchor.dx, closeTo(entry.value.dx, .001));
+      expect(anchor.dy, closeTo(entry.value.dy, .001));
+      final legacy = QuestwellHearthDecor.wallArtBounds(entry.key, 'wall_left');
+      final centered = QuestwellHearthDecor.wallArtBounds(
+          entry.key, 'wall_left',
+          anchor: anchor);
+      expect(centered.center, anchor);
+      expect(centered.size, legacy.size);
+      expect(
+          QuestwellHearthSetting.original.wallArtAnchor(entry.key, 'wall_left'),
+          isNull);
+      expect(
+          QuestwellHearthSetting.hallowedHearth
+              .wallArtAnchor(entry.key, 'wall_right'),
+          isNull);
+    }
+  });
+
   testWidgets(
       'approved furnishing manifest composes at mobile and desktop widths',
       (tester) async {
