@@ -81,3 +81,12 @@ test('proposal packages a binary patch and hashes without committing or pushing'
     assert.throws(()=>run('neutral-woodland-repair',repo,out),/Unexpected/);
   } finally {fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('Halloween privileged job requires the exact deployment branch and push event',()=> {
+  const file='.github/workflows/questwell-hallowed-forward.yml';
+  const text=fs.readFileSync(path.join(root,file),'utf8');
+  const guard="github.event_name == 'push' && github.ref == 'refs/heads/deploy/hallowed-hearth-approved'";
+  for(const replacement of ['true',"github.event_name == 'push'","github.ref == 'refs/heads/deploy/hallowed-hearth-approved'"]) {
+    assert.ok(validate(text.replace(guard,replacement),file).length>0);
+  }
+});
