@@ -18,6 +18,7 @@ const env = {GITHUB_ACTIONS: 'true', RUNNER_ENVIRONMENT: 'github-hosted', GITHUB
 const approval = {status: 'approved', project: input.expected.project,
   migration_name: input.expected.migration_name, payload_sha256: sha256(plan.sql),
   approval_ref: 'synthetic approval only', backup_evidence_ref: 'synthetic backup only',
+  backup_completed_at: '2026-10-08T10:00:00Z',
   backup_verified_at: '2026-10-08T11:00:00Z', valid_until: '2026-10-08T13:00:00Z'};
 const applied = () => ({...plan.after, records: [{version: '20261008120000', statements: [plan.sql]}]});
 
@@ -77,6 +78,8 @@ test('approval binds payload, target and evidence with bounded backup age', () =
   for (const patch of [{status: 'pending'}, {project: 'other'}, {migration_name: 'other'},
     {payload_sha256: '0'.repeat(64)}, {approval_ref: ''}, {backup_evidence_ref: null},
     {backup_verified_at: '2026-10-07T10:00:00Z'}, {backup_verified_at: '2026-10-08T12:01:00Z'},
+    {backup_completed_at: '2026-10-07T10:00:00Z'}, {backup_completed_at: '2026-10-08T11:01:00Z'},
+    {backup_completed_at: null},
     {valid_until: '2026-10-08T12:00:00Z'}, {valid_until: '2026-10-10T00:00:00Z'},
     {backup_verified_at: 'bad'}]) assert.throws(() => verifyApproval({...approval, ...patch}, plan.sql, now));
 });

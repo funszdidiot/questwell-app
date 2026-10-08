@@ -69,7 +69,9 @@ configure its new token until the exact live action is authorized.
 `content-limits-approval.json` deliberately remains **pending**. It blocks all
 network access even if someone supplies credentials. After actual G3 approval and
 backup verification, a reviewed update must reference that evidence, the exact
-payload SHA256, and a window expiring within24 hours of backup verification. This
+payload SHA256, actual backup completion time, verification time, and a window
+expiring within24 hours of the backup's completion. Rechecking an old backup
+does not renew its freshness. This
 record is an operator attestation, not an automatic backup inventory or restore
 test. Never invent evidence or turn pending into approved to make CI pass.
 

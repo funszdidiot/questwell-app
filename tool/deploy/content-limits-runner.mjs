@@ -32,10 +32,11 @@ export function verifyApproval(approval, sql, now) {
   for (const key of ['approval_ref', 'backup_evidence_ref']) {
     assert.ok(typeof approval[key] === 'string' && approval[key].trim().length > 0, 'Approval evidence missing');
   }
-  const backup = Date.parse(approval.backup_verified_at);
+  const backup = Date.parse(approval.backup_completed_at);
+  const verified = Date.parse(approval.backup_verified_at);
   const expiry = Date.parse(approval.valid_until);
-  assert.ok(Number.isFinite(now) && Number.isFinite(backup) && Number.isFinite(expiry), 'Invalid approval times');
-  assert.ok(backup <= now && now - backup <= day, 'Backup evidence is stale or future-dated');
+  assert.ok([now, backup, verified, expiry].every(Number.isFinite), 'Invalid approval times');
+  assert.ok(backup <= verified && verified <= now && now - backup <= day, 'Backup is stale or future-dated');
   assert.ok(now < expiry && expiry <= backup + day, 'Deployment approval expired or too long');
 }
 
