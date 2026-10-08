@@ -2,7 +2,8 @@
 
 ## Halloween complete costumes — October 8, 2026
 
-**QA.** Midnight Masquerade and Pumpkin Court are fitted across female, neutral and male bodies, each with an integrated blouse and mask. Independent visual review passes all six exports. Dedicated account-free preview and decode/body-preservation tests are prepared. CI and delivered verification remain pending. Tanya authorized pricing and rollout under the same Halloween rules: 180 coins each, November 8 cutoff and permanent ownership. Shared renderer/catalog preparation is in QA; activation follows verified delivery. See `../qa/HALLOWEEN_COSTUMES.md`.
+**DEV DEPLOYED / catalog active.** Midnight Masquerade and Pumpkin Court are available at 180 coins each in midnight-harvest, all classes and three bodies. Each includes blouse, mask, trousers and boots. Same November 8 cutoff and permanent ownership. PR #94 deployed d74492a; Preview37824576161 and Backend37824575215 passed. All34 served assets match; hosted fitted review passed. Activation20261008184056 adds exactly2 rows, preserving existing catalog, equipment functions and all53 prior history entries. Signed-in/device acceptance remains unclaimed. See `../qa/HALLOWEEN_COSTUMES.md` and PR #94 for current delivery evidence.
+
 
 ## Market browsing — October 8, 2026
 
