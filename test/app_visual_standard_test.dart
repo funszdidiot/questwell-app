@@ -4,6 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_momentum/preview/mobile_review.dart';
+import 'package:project_momentum/preview/market_catalog.dart';
+import 'package:project_momentum/services/questwell_cosmetic_models.dart';
+import 'package:project_momentum/widgets/questwell_market_view.dart';
 import 'package:project_momentum/widgets/questwell_app_navigation.dart';
 import 'package:project_momentum/widgets/questwell_app_style.dart';
 import 'package:project_momentum/widgets/questwell_delete_account.dart';
@@ -104,6 +107,54 @@ void main() {
     }
   }
 
+  testWidgets('Market preserves whole words with nonlinear enlarged text',
+      (tester) async {
+    final font = FontLoader('HearthSerif')
+      ..addFont(rootBundle.load('assets/fonts/DejaVuSerif-Bold.ttf'));
+    await font.load();
+    await tester.binding.setSurfaceSize(const Size(340, 740));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(MaterialApp(
+        theme: QuestwellAppStyle.theme(),
+        builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+                textScaler: const _NonlinearLargeText(),
+                disableAnimations: true),
+            child: child!),
+        home: Scaffold(
+            body: QuestwellMarketView(
+                data: QuestwellCosmeticsSnapshot(
+                    profile: QuestwellProfile(
+                        level: 4,
+                        totalXp: 355,
+                        coinBalance: 100,
+                        currentEnergyMode: 'normal',
+                        onboardingCompleted: true,
+                        adventurerArchetype: 'scholar',
+                        avatarBodyType: 'male'),
+                    cosmetics: [
+                      QuestwellCosmetic.fromJson(marketReviewCatalog
+                          .firstWhere((row) => row['name'] == 'Business Suit'))
+                    ]),
+                onPurchase: (_) async {},
+                onEquip: (_) async {},
+                onUnequip: (_) async {},
+                onRefresh: () async {}))));
+    await tester.pump();
+    await tester.scrollUntilVisible(find.text('Business Suit'), 200,
+        scrollable: find.byType(Scrollable).first);
+    final title =
+        tester.renderObject<RenderParagraph>(find.text('Business Suit'));
+    expect(title.textScaler.scale(18), 36);
+    for (final range in [(0, 8), (9, 13)]) {
+      expect(
+          title.getBoxesForSelection(
+              TextSelection(baseOffset: range.$1, extentOffset: range.$2)),
+          hasLength(1));
+    }
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Deletion keeps its warning color under the shared button theme',
       (tester) async {
     final font = FontLoader('HearthSerif')
@@ -143,4 +194,15 @@ void main() {
     }
     expect(tester.takeException(), isNull);
   });
+}
+
+// Model the nonlinear case: body-sized text doubles while very large text
+// receives much less scaling. Layout must use the actual title font size.
+class _NonlinearLargeText extends TextScaler {
+  const _NonlinearLargeText();
+  @override
+  double scale(double fontSize) =>
+      fontSize <= 20 ? fontSize * 2 : fontSize + 20;
+  @override
+  double get textScaleFactor => 2;
 }

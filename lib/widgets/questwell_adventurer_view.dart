@@ -74,10 +74,12 @@ class QuestwellAdventurerView extends StatefulWidget {
       this.savingAppearance = false,
       this.claiming = false,
       this.busyItem,
+      this.hearthOccupants = const {},
       this.onPlace});
   final String archetype, bodyType, description, relicName;
   final int level, xp, coins, collectionOwned, collectionTotal;
   final List<AdventurerInventoryItem> items;
+  final Map<String, RoomOccupant> hearthOccupants;
   final bool mastered, canClaim, savingAppearance, claiming;
   final String? busyItem;
   final Future<void> Function(String id, String slot, String? expectedOccupant)?
@@ -474,7 +476,8 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
         occupants: {
           for (final i in widget.items
               .where((i) => i.category == item.category && i.equipped))
-            i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)
+            i.roomSlot ?? 'right': RoomOccupant(i.id, i.name),
+          ...widget.hearthOccupants,
         },
         placementChoices: item.hearthPlacements.isEmpty
             ? null

@@ -570,8 +570,9 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                   ]);
               // At larger text sizes, reserve enough room for whole item words.
               // Keep the selected text scale and give the title the card width.
-              final stack = constraints.maxWidth <
-                  93 + MediaQuery.textScalerOf(context).scale(150);
+              final titleScale =
+                  MediaQuery.textScalerOf(context).scale(18) / 18;
+              final stack = constraints.maxWidth < 93 + 150 * titleScale;
               if (stack) {
                 return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
