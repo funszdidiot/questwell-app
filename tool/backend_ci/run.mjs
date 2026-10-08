@@ -483,6 +483,19 @@ try {
   assertCatalogMatches(hallowedBefore, hallowedAfter);
   run(['db','query','--local','--file',join(source,'hallowed-contract.sql')]);
   console.log('Halloween prices, hidden staging, purchase boundaries, retry and permanent placement passed.');
+  // Approved content limits are tested AFTER historical schema-parity gates.
+  run(['db','query','--local','--file',join(source,'content-limits-legacy.sql')]);
+  const contentMigration = '20261008023552_approved_content_limits.sql';
+  copyFileSync(resolve(source, '../../supabase/migrations', contentMigration), join(workdir, 'supabase/migrations', contentMigration));
+  run(['migration','up','--local']);
+  run(['db','query','--local','--file',join(source,'content-limits-contract.sql')]);
+  const contentResult = spawnSync(process.execPath, [join(source,'content-limits.mjs')], {
+    input: JSON.stringify({status}), env, encoding:'utf8', timeout:120000, maxBuffer:1024*1024,
+  });
+  if (contentResult.stdout) console.log(redact(contentResult.stdout));
+  if (contentResult.stderr) console.error(redact(contentResult.stderr));
+  assert.equal(contentResult.status, 0, 'Content-limit Auth/REST scenarios failed');
+  console.log(run(['db','lint','--local','--schema','public,private','--level','warning','--fail-on','error']));
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();
