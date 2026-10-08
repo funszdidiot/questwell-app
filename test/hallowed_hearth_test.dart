@@ -6,14 +6,15 @@ import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_hallowed_spiders.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 
-Future<Uint8List> paintFrame(double phase) async {
+Future<Uint8List> paintFrame(double phase,
+    {Size size = const Size(390, 260)}) async {
   final recorder = ui.PictureRecorder();
   HallowedSpiderPainter(
     AlwaysStoppedAnimation(phase),
     still: false,
-  ).paint(Canvas(recorder), const Size(390, 260));
+  ).paint(Canvas(recorder), size);
   final picture = recorder.endRecording();
-  final image = await picture.toImage(390, 260);
+  final image = await picture.toImage(size.width.toInt(), size.height.toInt());
   final data = await image.toByteData();
   final bytes = Uint8List.fromList(data!.buffer.asUint8List());
   image.dispose();
@@ -22,6 +23,30 @@ Future<Uint8List> paintFrame(double phase) async {
 }
 
 void main() {
+  testWidgets('portrait crop keeps both animated spiders visible',
+      (tester) async {
+    final start =
+        await tester.runAsync(() => paintFrame(0, size: const Size(390, 420)));
+    final middle =
+        await tester.runAsync(() => paintFrame(.5, size: const Size(390, 420)));
+    expect(start, isNot(orderedEquals(middle!)));
+    var left = 0;
+    var right = 0;
+    for (var y = 0; y < 168; y++) {
+      for (var x = 0; x < 390; x++) {
+        if (middle[(y * 390 + x) * 4 + 3] != 0) {
+          if (x < 195) {
+            left++;
+          } else {
+            right++;
+          }
+        }
+      }
+    }
+    expect(left, greaterThan(20));
+    expect(right, greaterThan(20));
+    expect(middle.skip(390 * 168 * 4).every((byte) => byte == 0), isTrue);
+  });
   testWidgets(
     'motion paints changes, loops continuously and leaves floor clear',
     (tester) async {

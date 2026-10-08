@@ -91,7 +91,18 @@ class HallowedSpiderPainter extends CustomPainter {
       final phase = ((still ? .12 : motion.value) + i * .43) % 1;
       // Cosine closes the loop with zero velocity, preventing a visible reset.
       final travel = (1 - math.cos(phase * math.pi * 2)) / 2;
-      final anchor = Offset(i == 0 ? 245 : 1300, i == 0 ? 54 : 67);
+      // Portrait cover crops remove the original corners. Keep silk and bodies
+      // visible near the cropped ceiling edge without moving the room itself.
+      final margin = math.min(32.0, size.width * .1);
+      final anchor = Offset(
+        (i == 0 ? 245.0 : 1300.0)
+            .clamp(
+              (margin - origin.dx) / scale,
+              (size.width - margin - origin.dx) / scale,
+            )
+            .toDouble(),
+        math.max(i == 0 ? 54.0 : 67.0, (12 - origin.dy) / scale),
+      );
       final center = anchor +
           Offset(
             still ? 0 : math.sin(phase * math.pi * 2) * 5,
