@@ -4,6 +4,44 @@ import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_home_overview.dart';
 
 void main() {
+  for (final width in [320.0, 390.0, 430.0]) {
+    for (final scale in [1.0, 2.0]) {
+      testWidgets('Mastered compact status stays readable ($width/$scale)',
+          (tester) async {
+        GoogleFonts.config.allowRuntimeFetching = false;
+        await tester.binding.setSurfaceSize(Size(width, 1000));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        var customized = false;
+        await tester.pumpWidget(MaterialApp(
+            home: MediaQuery(
+                data: MediaQueryData(textScaler: TextScaler.linear(scale)),
+                child: Scaffold(
+                    body:
+                        ListView(padding: const EdgeInsets.all(16), children: [
+                  QuestwellHomeCharacter(
+                      compact: true,
+                      archetype: 'scout',
+                      className: 'Scout',
+                      level: 12,
+                      xp: 0,
+                      coins: 720,
+                      mastered: true,
+                      equippedNames: const [],
+                      collection: const [],
+                      onCustomize: () => customized = true,
+                      onMarket: () {})
+                ])))));
+        await tester.pumpAndSettle();
+        expect(find.text('Level 12 · Class mastered'), findsOneWidget);
+        expect(find.text('720 coins'), findsOneWidget);
+        expect(find.text('0 / 265 XP'), findsOneWidget);
+        await tester.tap(find.text('Level 12 · Class mastered'));
+        expect(customized, isTrue);
+        expect(tester.takeException(), isNull);
+      });
+    }
+  }
+
   testWidgets('Overview supports large text, compact loadout and navigation',
       (tester) async {
     GoogleFonts.config.allowRuntimeFetching = false;
@@ -61,6 +99,7 @@ void main() {
     expect(tester.widget<Text>(find.text('35 XP to level 4')).style?.fontFamily,
         GoogleFonts.roboto().fontFamily);
     expect(find.text('35 XP to level 4'), findsOneWidget);
+    expect(find.text('Level 3 · Class mastered'), findsOneWidget);
     expect(find.text('1 worn · 2 room items'), findsOneWidget);
     expect(find.text('Fern Study · Walnut Bookshelf'), findsNothing);
     expect(find.text('View all'), findsNothing);

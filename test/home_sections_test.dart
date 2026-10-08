@@ -100,6 +100,12 @@ void main() {
               greaterThan(0),
               reason: 'Earned XP must paint visibly inside the frame');
         }
+        await tester.ensureVisible(find.byType(Switch));
+        await tester.tap(find.byType(Switch));
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(find.text('ONE SMALL WIN'), findsOneWidget);
+        await tester.tap(find.byType(Switch));
+        await tester.pump(const Duration(milliseconds: 300));
         await tester.ensureVisible(find.text('Complete quest'));
         await tester.tap(find.text('Complete quest'));
         await tester.pump(const Duration(milliseconds: 300));
@@ -110,14 +116,14 @@ void main() {
         await tester.ensureVisible(find.byType(Switch));
         await tester.tap(find.byType(Switch));
         await tester.pump(const Duration(milliseconds: 300));
-        expect(find.text('ONE SMALL WIN'), findsOneWidget);
+        expect(find.text('A FRESH PAGE'), findsOneWidget);
         expect(tester.widget<Switch>(find.byType(Switch)).value, isTrue);
         expect(find.byType(Switch).hitTestable(), findsOneWidget,
             reason:
                 'Campfire must retain the scrolled content when embers appear');
         await tester.tap(find.byType(Switch));
         await tester.pump(const Duration(milliseconds: 300));
-        expect(find.text('YOUR NEXT WIN'), findsOneWidget);
+        expect(find.text('A FRESH PAGE'), findsOneWidget);
         expect(tester.takeException(), isNull);
         await tester.pumpWidget(const SizedBox());
       });
@@ -159,6 +165,8 @@ void main() {
         expect(find.text('Next reward'), findsOneWidget,
             reason: 'The next reward must not require expanding More');
         expect(find.text('Weekly momentum'), findsNothing);
+        expect(find.text(empty ? 'A FRESH PAGE' : 'YOUR NEXT WIN'),
+            findsOneWidget);
         if (empty) {
           await tester.tap(find.widgetWithText(FilledButton, 'Add quest'));
           expect(opened, ['quests']);
