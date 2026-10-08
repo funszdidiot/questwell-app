@@ -1,0 +1,38 @@
+name: Hearth coverage diagnosis
+on:
+  push:
+    branches: [qa/hearth-coverage-diagnostic]
+permissions:
+  contents: read
+jobs:
+  isolated:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        revision: ['908481078a3ae3c10aab397f3a3d3662e55c3ad0', '75fa1a73892c14ecefae8d6354d15556daddbb12']
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ matrix.revision }}
+          persist-credentials: false
+      - uses: ./.github/actions/flutter
+        with:
+          flutter-version: '3.44.6'
+      - run: flutter pub get --enforce-lockfile
+      - name: Diagnose unchanged adapter file with branch coverage
+        shell: bash
+        run: |
+          set -o pipefail
+          timeout --signal=TERM --kill-after=15s 120s flutter --verbose test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --coverage --branch-coverage --concurrency=1 test/auth_catalog_adapters_test.dart 2>&1 | tee coverage-diagnostic.log
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: coverage-diagnostic-${{ matrix.revision }}
+          path: |
+            coverage-diagnostic.log
+            coverage/lcov.info
+          retention-days: 3
+          if-no-files-found: error
