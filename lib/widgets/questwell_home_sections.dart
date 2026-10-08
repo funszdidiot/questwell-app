@@ -14,16 +14,38 @@ class QuestwellHomeCanvas extends StatelessWidget {
   Widget build(BuildContext context) => Align(
         alignment: Alignment.topCenter,
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1000),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: children,
+          constraints: const BoxConstraints(maxWidth: 760),
+          child: QuestwellHearthTimber(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: children),
             ),
           ),
         ),
       );
+}
+
+/// The logo is part of the room, not a separate toolbar above a framed thumbnail.
+class QuestwellHomeHero extends StatelessWidget {
+  const QuestwellHomeHero({super.key, required this.room});
+  final Widget room;
+  @override
+  Widget build(BuildContext context) => Stack(children: [
+        room,
+        Positioned(
+            left: 20,
+            right: 20,
+            top: 8,
+            child: IgnorePointer(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  const QuestwellHomeHeader(),
+                  const QuestwellPixelDivider(accent: Color(0xFFD6A84B))
+                ]))),
+      ]);
 }
 
 class QuestwellHomeRoomFrame extends StatelessWidget {
@@ -34,70 +56,75 @@ class QuestwellHomeRoomFrame extends StatelessWidget {
   Widget build(BuildContext context) => Align(
         alignment: Alignment.topCenter,
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 640),
+          constraints: const BoxConstraints(maxWidth: 760),
           child: child,
         ),
       );
 }
 
-/// Keep the next action close to the room without burying customization below
-/// a long quest list. Selection, loading and completion stay with the caller.
+/// The approved single-column sequence remains the same at desktop widths.
 class QuestwellHomeFocusLayout extends StatelessWidget {
-  const QuestwellHomeFocusLayout({
-    super.key,
-    required this.nextWin,
-    required this.overview,
-    required this.onOpen,
-    this.remainingQuests = const [],
-    this.emphasizeAddQuest = false,
-  });
-
+  const QuestwellHomeFocusLayout(
+      {super.key,
+      required this.nextWin,
+      required this.overview,
+      required this.onOpen,
+      this.remainingQuests = const [],
+      this.emphasizeAddQuest = false,
+      this.campfire,
+      this.secondary,
+      this.gentle = false});
   final Widget nextWin, overview;
+  final Widget? campfire, secondary;
   final ValueChanged<String> onOpen;
   final List<Widget> remainingQuests;
-  final bool emphasizeAddQuest;
-
+  final bool emphasizeAddQuest, gentle;
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-        builder: (context, constraints) {
-          // Preserve comfortable reading widths instead of shrinking enlarged text.
-          final wide = constraints.maxWidth >= 840 &&
-              MediaQuery.textScalerOf(context).scale(16) <= 20;
-          final focus = Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              nextWin,
-              const SizedBox(height: 16),
-              QuestwellHomeActions(
-                onOpen: onOpen,
-                emphasizeAddQuest: emphasizeAddQuest,
-              ),
-            ],
-          );
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (wide)
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          overview,
+          const SizedBox(height: 14),
+          QuestwellHearthQuestFrame(
+              label: gentle ? 'ONE SMALL WIN' : 'YOUR NEXT WIN',
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(flex: 5, child: focus),
-                    const SizedBox(width: 24),
-                    Expanded(flex: 4, child: overview),
+                    nextWin,
+                    if (emphasizeAddQuest) ...[
+                      const SizedBox(height: 14),
+                      QuestwellHearthButton(
+                          label: 'Add quest',
+                          onPressed: () => onOpen('quests')),
+                    ],
+                  ])),
+          if (campfire != null) ...[const SizedBox(height: 12), campfire!],
+          const SizedBox(height: 16),
+          Theme(
+              data:
+                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                key: const PageStorageKey('hearth-more'),
+                iconColor: QuestwellHearthMaterial.brass,
+                collapsedIconColor: QuestwellHearthMaterial.brass,
+                title: Text('More at the Hearth',
+                    style: QuestwellTypography.body(
+                        fontSize: 14, color: QuestwellHearthMaterial.ink)),
+                children: [
+                  QuestwellHomeActions(
+                      onOpen: onOpen, emphasizeAddQuest: false),
+                  if (secondary != null) ...[
+                    const SizedBox(height: 12),
+                    secondary!
                   ],
-                )
-              else ...[
-                focus,
-                const SizedBox(height: 24),
-                overview,
-              ],
-              if (remainingQuests.isNotEmpty) ...[
-                const SizedBox(height: 28),
-                ...remainingQuests,
-              ],
-            ],
-          );
-        },
+                  if (remainingQuests.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    ...remainingQuests
+                  ],
+                ],
+              )),
+        ]),
       );
 }
 
@@ -105,35 +132,19 @@ class QuestwellHomeFocusLayout extends StatelessWidget {
 class QuestwellHomeEmptyBoard extends StatelessWidget {
   const QuestwellHomeEmptyBoard({super.key});
   @override
-  Widget build(BuildContext context) => QuestwellHearthFrame(
-        parchment: true,
-        padding: EdgeInsets.zero,
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
-          child: Column(children: [
-            Container(
-                width: 10,
-                height: 10,
-                decoration: const BoxDecoration(
-                    color: Color(0xFFAA6343),
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(color: Color(0x4434291F), offset: Offset(1, 2))
-                    ])),
-            const SizedBox(height: 10),
-            Text('Room to breathe.',
-                textAlign: TextAlign.center,
-                style: QuestwellTypography.sectionHeading(
-                    size: 12, color: const Color(0xFF34291F))),
-            const SizedBox(height: 8),
-            Text('Add one thing when you’re ready.',
-                textAlign: TextAlign.center,
-                style: QuestwellTypography.body(
-                    fontSize: 15, color: const Color(0xFF66513A))),
-          ]),
-        ),
-      );
+  Widget build(BuildContext context) => Column(children: [
+        const QuestwellNavPixelIcon(kind: 'quests', size: 42),
+        const SizedBox(height: 10),
+        Text('Room to breathe.',
+            textAlign: TextAlign.center,
+            style: QuestwellHearthMaterial.serif(24,
+                color: const Color(0xFF302418))),
+        const SizedBox(height: 8),
+        Text('Add one thing when you’re ready.',
+            textAlign: TextAlign.center,
+            style: QuestwellTypography.body(
+                fontSize: 15, color: const Color(0xFF66513A))),
+      ]);
 }
 
 class QuestwellHomeActions extends StatelessWidget {

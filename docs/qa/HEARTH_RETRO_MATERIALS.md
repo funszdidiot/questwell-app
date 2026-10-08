@@ -54,3 +54,9 @@ Revert this scoped client change through a reviewed PR. No database rollback.
 The broader world-art treatment, Market/Adventurer unification and activity/reward
 experience remain separate passes. No physical-device or signed-in acceptance
 has been established by the account-free review.
+
+## Delivery reconciliation
+
+DEV DEPLOYED at efad9b5, Preview 37704535201; 903 Flutter / 397 Chrome tests and
+build gates passed. Delivered desktop/mobile and Campfire were independently
+reviewed. Further whole-page direction and evidence: `HEARTH_FULL_HOME.md`.

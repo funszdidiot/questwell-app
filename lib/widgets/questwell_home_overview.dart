@@ -58,7 +58,8 @@ class QuestwellHomeCharacter extends StatelessWidget {
       required this.collection,
       required this.onCustomize,
       required this.onMarket,
-      this.nextReward});
+      this.nextReward,
+      this.compact = false});
   final String archetype, className;
   final int level, xp, coins;
   int get xpRequired => QuestwellProgression.xpToNextLevel(level);
@@ -67,61 +68,132 @@ class QuestwellHomeCharacter extends StatelessWidget {
   final List<HomeCollectionItem> collection;
   final VoidCallback onCustomize, onMarket;
   final Widget? nextReward;
+  final bool compact;
 
   @override
-  Widget build(BuildContext context) => QuestwellHomePanel(
+  Widget build(BuildContext context) => compact
+      ? _statusStrip(context)
+      : QuestwellHomePanel(
           child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(children: [
-            QuestwellClassEmblem(archetype: archetype, size: 42),
-            const SizedBox(width: 12),
-            Expanded(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                  Text(className,
-                      style: QuestwellTypography.sectionHeading(size: 13)),
-                  Text('Level $level${mastered ? ' · Mastered' : ''}',
-                      style: _body(14, color: _muted)),
-                ])),
-          ]),
-          const SizedBox(height: 14),
-          Wrap(spacing: 16, runSpacing: 6, children: [
-            Text('$xp / $xpRequired XP', style: _body(14, bold: true)),
-            Row(mainAxisSize: MainAxisSize.min, children: [
-              const QuestwellCurrencyPixelIcon(kind: 'coin', size: 16),
-              const SizedBox(width: 6),
-              Text('$coins coins', style: _body(14, color: _gold, bold: true)),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: [
+              QuestwellClassEmblem(archetype: archetype, size: 42),
+              const SizedBox(width: 12),
+              Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    Text(className,
+                        style: QuestwellTypography.sectionHeading(size: 13)),
+                    Text('Level $level${mastered ? ' · Mastered' : ''}',
+                        style: _body(14, color: _muted)),
+                  ])),
             ]),
-          ]),
-          const SizedBox(height: 8),
-          Semantics(
-              label: 'Level progress',
-              value: '$xp out of $xpRequired XP',
-              child: QuestwellPixelMeter(
-                  value: xp / xpRequired,
-                  kind: 'xp',
-                  height: 16,
-                  segments: 12)),
-          const SizedBox(height: 6),
-          Text(
-              '${(xpRequired - xp).clamp(0, xpRequired)} XP to level ${level + 1}',
-              style: _body(12, color: _muted)),
-          if (nextReward != null) nextReward!,
-          const SizedBox(height: 12),
-          Text(
-              '${equippedNames.length} worn · ${decorNames.length} room item${decorNames.length == 1 ? '' : 's'}',
-              style: _body(13, color: _muted)),
-          const SizedBox(height: 10),
-          SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                  onPressed: onCustomize,
-                  style: QuestwellHearthMaterial.secondaryButton(),
-                  child: const Text('Customize adventurer'))),
-        ],
-      ));
+            const SizedBox(height: 14),
+            Wrap(spacing: 16, runSpacing: 6, children: [
+              Text('$xp / $xpRequired XP', style: _body(14, bold: true)),
+              Row(mainAxisSize: MainAxisSize.min, children: [
+                const QuestwellCurrencyPixelIcon(kind: 'coin', size: 16),
+                const SizedBox(width: 6),
+                Text('$coins coins',
+                    style: _body(14, color: _gold, bold: true)),
+              ]),
+            ]),
+            const SizedBox(height: 8),
+            Semantics(
+                label: 'Level progress',
+                value: '$xp out of $xpRequired XP',
+                child: QuestwellPixelMeter(
+                    value: xp / xpRequired,
+                    kind: 'xp',
+                    height: 16,
+                    segments: 12)),
+            const SizedBox(height: 6),
+            Text(
+                '${(xpRequired - xp).clamp(0, xpRequired)} XP to level ${level + 1}',
+                style: _body(12, color: _muted)),
+            if (nextReward != null) nextReward!,
+            const SizedBox(height: 12),
+            Text(
+                '${equippedNames.length} worn · ${decorNames.length} room item${decorNames.length == 1 ? '' : 's'}',
+                style: _body(13, color: _muted)),
+            const SizedBox(height: 10),
+            SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                    onPressed: onCustomize,
+                    style: QuestwellHearthMaterial.secondaryButton(),
+                    child: const Text('Customize adventurer'))),
+          ],
+        ));
+  Widget _statusStrip(BuildContext context) => Semantics(
+        button: true,
+        label: 'Customize adventurer',
+        child: QuestwellHomePanel(
+            padding: EdgeInsets.zero,
+            child: InkWell(
+                onTap: onCustomize,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  child: LayoutBuilder(builder: (context, bounds) {
+                    final stacked = bounds.maxWidth < 300 ||
+                        MediaQuery.textScalerOf(context).scale(14) > 20;
+                    final identity = Row(children: [
+                      QuestwellClassEmblem(archetype: archetype, size: 32),
+                      const SizedBox(width: 10),
+                      Expanded(
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                            Text(className,
+                                style: QuestwellTypography.sectionHeading(
+                                    size: 10)),
+                            Text('Level $level${mastered ? ' · Mastered' : ''}',
+                                style: _body(12, color: _muted)),
+                          ])),
+                    ]);
+                    final coinsView =
+                        Row(mainAxisSize: MainAxisSize.min, children: [
+                      const QuestwellCurrencyPixelIcon(kind: 'coin', size: 20),
+                      const SizedBox(width: 6),
+                      Text('$coins coins', style: _body(13, color: _gold)),
+                      const SizedBox(width: 3),
+                      const Icon(Icons.chevron_right, size: 14, color: _muted),
+                    ]);
+                    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (stacked) ...[
+                            identity,
+                            const SizedBox(height: 8),
+                            coinsView
+                          ] else
+                            Row(children: [
+                              Expanded(child: identity),
+                              const SizedBox(width: 12),
+                              coinsView
+                            ]),
+                          const SizedBox(height: 7),
+                          Semantics(
+                              label: 'Level progress',
+                              value: '$xp out of $xpRequired XP',
+                              child: Row(children: [
+                                Expanded(
+                                    child: QuestwellPixelMeter(
+                                        value: xp / xpRequired,
+                                        kind: 'xp',
+                                        height: 8,
+                                        segments: 10)),
+                                const SizedBox(width: 8),
+                                Text('$xp / $xpRequired XP',
+                                    style: _body(11, color: _muted))
+                              ])),
+                        ]);
+                  }),
+                ))),
+      );
 }
 
 class QuestwellHomeMomentum extends StatelessWidget {
@@ -170,13 +242,12 @@ class QuestwellHomeCampfireControl extends StatelessWidget {
   Widget build(BuildContext context) => QuestwellHomePanel(
       warm: active,
       child: Row(children: [
-        const QuestwellNavPixelIcon(kind: 'campfire', size: 28),
+        const QuestwellNavPixelIcon(kind: 'campfire', size: 36),
         const SizedBox(width: 12),
         Expanded(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Campfire Mode',
-              style: QuestwellTypography.sectionHeading(size: 11, color: _ink)),
+          Text('Campfire Mode', style: QuestwellHearthMaterial.serif(17)),
           Text(
               active
                   ? 'One gentle quest. A little warmth.'

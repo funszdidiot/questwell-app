@@ -1,13 +1,21 @@
 # Questwell Production Dashboard
 
+## Full Hearth reference composition — October 7, 2026
+
+**QA** on `feat/hearth-room-materials`. Tanya explicitly selected the entire
+reference home: room, layout, typography, controls and navigation. Implemented
+candidate uses immersive room/logo, compact status strip, parchment next-quest
+panel, Campfire below and timber navigation. Required CI and delivered visual
+checks pending. Locked avatars and canonical decorating geometry preserved.
+See `../qa/HEARTH_FULL_HOME.md`.
+
 ## Intentional 90s Hearth materials — October 7, 2026
 
-**QA** on `feat/hearth-retro-interface`. Founder-directed polished-avatar /
-64-bit-world direction begins with shared timber/brass panels, evergreen actions
-and coordinated Campfire control. Existing assets, placement, fonts and account
-contracts are preserved. CI, independent review and delivered visual verification
-are pending; this is not a new art lock or release GO.
-See `../qa/HEARTH_RETRO_MATERIALS.md`.
+**DEV DEPLOYED** at `efad9b5`, Preview `37704535201`. 903 Flutter and 397 Chrome
+tests and build gates passed. Independent review confirmed the delivered material
+pass, Campfire and 320px enlarged text. The full-home reference above supersedes
+this phase's restrained scope; no new avatar lock or production launch is inferred.
+See `../qa/HEARTH_RETRO_MATERIALS.md` and `../qa/HEARTH_FULL_HOME.md`.
 
 ## Hearth visual polish — October 7, 2026
 
