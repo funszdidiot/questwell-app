@@ -1,7 +1,7 @@
 # App-wide Hearth delivery
 
-Status: development deployed; delivered review in progress. PR #77 tracks exact
-checks and delivered review.
+Status: development deployed; main-screen independent review completed.
+PR #77 records the shared rollout; PR #82 records the delivered polish corrections.
 
 The shared presentation contract is
 `../questwell-production/APP_VISUAL_STANDARD.md`. Locked art, account behavior,
@@ -62,13 +62,30 @@ Bundled-font geometry regressions cover all four wrapping defects while
 preserving text scaling. No purchase, equipment, deletion, timer or navigation
 behavior changes are involved.
 
-Browser control and screenshot calls initially timed out across review tabs.
-An attempted preview quest submission was not verified before reload, so it is
-not recorded as a passed interaction. Sequential review with full screenshots
-recovered. The final corrections still need delivered review. Real account
-settings were inaccessible without signing in and were not visually verified in
-this pass. Their shared presentation and behavior have source/widget coverage;
-that is not a substitute for signed-in inspection. Edit and successful quest
-creation were not reverified after the earlier browser stall.
-Account-free fixtures do not establish signed-in persistence, physical-device
-acceptance or long-term use.
+## Final delivered polish review
+
+PR #82 merged as `0a49ecf66f5699dda26029ec5dda4eb256333551`, tree
+`30cc91e7203e16a48f67973e10d72945b036aef8`. Preview `37729581654` and backend
+`37729581211` succeeded. The final pre-merge tree passed 950 Flutter and 398 Chrome
+tests, coverage, analyzer/format, web/staging packaging and Android/iOS builds.
+
+Independent delivered recheck passed Market whole-word titles at 320px/200%,
+shared serif detail headings at 390px, Chronicle's intact heading, Expedition
+Begin/Resume with timer start/pause/reset, and the deletion warning label and
+cancellation. Successful quest creation and Edit were also verified at enlarged
+text. A preview-only Easy-to-Annoying mapping mismatch was corrected and tested;
+creation, reopening and saving now retain Easy and +10 XP/+5 coins.
+
+That final inspection found one further narrow-layout defect: the Quest Board
+completion icon squeezed the word Complete into two lines. The scoped follow-up
+lets the icon wrap above its label, preserving the full text scale, button style,
+busy state and callback. A real-font 320px/200% geometry check also taps the
+button and confirms the corresponding quest disappears. The follow-up delivery
+PR records its final CI and live recheck.
+
+Browser control initially stalled; sequential review with full screenshots
+recovered. Real account settings were inaccessible without signing in and remain
+outside the delivered visual evidence. Their shared presentation and behavior
+have source/widget coverage; that is not a substitute for signed-in inspection.
+Account-free fixtures do not establish hosted-account persistence, physical-device
+acceptance or long-term engagement.

@@ -82,16 +82,24 @@ class QuestwellQuestCard extends StatelessWidget {
           const SizedBox(height: 16),
           SizedBox(
               width: double.infinity,
-              child: FilledButton.icon(
+              child: FilledButton(
                 onPressed: busy ? null : onComplete,
-                icon: busy
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2))
-                    : const Icon(Icons.check_rounded, size: 20),
-                label: Text(busy ? busyLabel : 'Complete quest'),
                 style: QuestwellAppStyle.primaryButton(),
+                child: Wrap(
+                    alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
+                    runSpacing: 4,
+                    children: [
+                      busy
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(strokeWidth: 2))
+                          : const Icon(Icons.check_rounded, size: 20),
+                      Text(busy ? busyLabel : 'Complete quest',
+                          textAlign: TextAlign.center),
+                    ]),
               )),
         ]),
       );
