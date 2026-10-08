@@ -1,4 +1,4 @@
-import '../../widgets/questwell_hearth_icon.dart';
+import '/widgets/questwell_quest_completion.dart';
 import '../../widgets/questwell_hearth_material.dart';
 import '../../widgets/questwell_app_style.dart';
 import '/widgets/questwell_home_quest.dart';
@@ -231,108 +231,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       if (!mounted) return;
       final nextAction = await showDialog<String>(
         context: context,
-        builder: (dialogContext) {
-          final dialogTheme = FlutterFlowTheme.of(dialogContext);
-          return AlertDialog(
-            backgroundColor: dialogTheme.secondaryBackground,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: Row(
-              children: [
-                Icon(
-                  leveledUp ? Icons.auto_awesome : Icons.task_alt,
-                  color: dialogTheme.primary,
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    firstWin
-                        ? 'Your First Win!'
-                        : leveledUp
-                            ? 'Level Up!'
-                            : 'Quest Complete!',
-                    style: dialogTheme.titleLarge.override(
-                      font: GoogleFonts.roboto(
-                        fontWeight: FontWeight.w700,
-                      ),
-                      letterSpacing: 0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const QuestwellVictoryPixelArt(
-                  height: 100,
-                  bossVictory: false,
-                ),
-                const SizedBox(height: 14),
-                Text(
-                  firstWin
-                      ? 'That is the loop: do one real thing, earn progress, and keep the momentum.'
-                      : leveledUp
-                          ? 'Your adventurer reached Level $newLevel.'
-                          : 'A small win became real momentum.',
-                  style: dialogTheme.bodyMedium.override(
-                    font: GoogleFonts.roboto(),
-                    color: dialogTheme.secondaryText,
-                    letterSpacing: 0,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    _RewardChip(
-                      icon: Icons.auto_awesome,
-                      label: '+${reward.xpAwarded} XP',
-                    ),
-                    _RewardChip(
-                      icon: Icons.monetization_on_outlined,
-                      label: '+${reward.coinsAwarded} coins',
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-                Text(
-                  'Balance: ${reward.coinBalance} coins • ${reward.totalXp} total XP',
-                  style: dialogTheme.labelMedium.override(
-                    font: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w600,
-                    ),
-                    color: dialogTheme.secondaryText,
-                    letterSpacing: 0,
-                  ),
-                ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop('chronicle'),
-                child: const Text('See Chronicle'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop('add'),
-                child: const Text('Add Next Quest'),
-              ),
-              FilledButton(
-                onPressed: () => Navigator.of(dialogContext).pop('continue'),
-                child: Text(
-                  firstWin
-                      ? 'Keep Going'
-                      : leveledUp
-                          ? 'Continue Adventure'
-                          : 'Claim Win',
-                ),
-              ),
-            ],
-          );
-        },
+        builder: (dialogContext) => QuestwellQuestCompletionDialog(
+          questTitle: task.title ?? 'Your quest',
+          xpAwarded: reward.xpAwarded,
+          coinsAwarded: reward.coinsAwarded,
+          totalXp: reward.totalXp,
+          coinBalance: reward.coinBalance,
+          level: newLevel,
+          firstWin: firstWin,
+          leveledUp: leveledUp,
+        ),
       );
 
       if (!mounted) return;
@@ -710,51 +618,4 @@ class QuestwellHomeQuestCard extends StatelessWidget {
       completing: completing,
       featured: featured,
       onComplete: onComplete);
-}
-
-class _RewardChip extends StatelessWidget {
-  const _RewardChip({
-    required this.icon,
-    required this.label,
-  });
-
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = FlutterFlowTheme.of(context);
-
-    return Container(
-      padding: const EdgeInsetsDirectional.fromSTEB(10, 7, 10, 7),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0D0C11),
-        border: Border.all(
-          color: const Color(0xFF4C3A24),
-          width: 2,
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          icon == Icons.monetization_on_outlined
-              ? const QuestwellHearthIcon(kind: 'coin', size: 17)
-              : icon == Icons.auto_awesome
-                  ? const QuestwellHearthIcon(kind: 'xp', size: 17)
-                  : Icon(icon, size: 16, color: theme.primary),
-          const SizedBox(width: 6),
-          Flexible(
-              child: Text(
-            label,
-            style: theme.labelMedium.override(
-              font: GoogleFonts.roboto(
-                fontWeight: FontWeight.w600,
-              ),
-              letterSpacing: 0,
-            ),
-          )),
-        ],
-      ),
-    );
-  }
 }
