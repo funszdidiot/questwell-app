@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 import 'questwell_wordmark_sparkles.dart';
-import 'questwell_class_emblem.dart';
+import 'questwell_hearth_icon.dart';
 import 'questwell_hearth_material.dart';
 
 const _gold = Color(0xFFE4C586);
@@ -81,7 +81,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(children: [
-              QuestwellClassEmblem(archetype: archetype, size: 42),
+              QuestwellHearthIcon(kind: 'class_$archetype', size: 42),
               const SizedBox(width: 12),
               Expanded(
                   child: Column(
@@ -89,7 +89,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
                       children: [
                     Text(className,
                         style: QuestwellTypography.sectionHeading(size: 13)),
-                    Text('Level $level${mastered ? ' · Mastered' : ''}',
+                    Text('Level $level${mastered ? ' · Class mastered' : ''}',
                         style: _body(14, color: _muted)),
                   ])),
             ]),
@@ -97,7 +97,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
             Wrap(spacing: 16, runSpacing: 6, children: [
               Text('$xp / $xpRequired XP', style: _body(14, bold: true)),
               Row(mainAxisSize: MainAxisSize.min, children: [
-                const QuestwellCurrencyPixelIcon(kind: 'coin', size: 16),
+                const QuestwellHearthIcon(kind: 'coin', size: 16),
                 const SizedBox(width: 6),
                 Text('$coins coins',
                     style: _body(14, color: _gold, bold: true)),
@@ -144,7 +144,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
                     final stacked = bounds.maxWidth < 300 ||
                         MediaQuery.textScalerOf(context).scale(14) > 20;
                     final identity = Row(children: [
-                      QuestwellClassEmblem(archetype: archetype, size: 32),
+                      QuestwellHearthIcon(kind: 'class_$archetype', size: 32),
                       const SizedBox(width: 10),
                       Expanded(
                           child: Column(
@@ -153,13 +153,14 @@ class QuestwellHomeCharacter extends StatelessWidget {
                             Text(className,
                                 style: QuestwellTypography.sectionHeading(
                                     size: 10)),
-                            Text('Level $level${mastered ? ' · Mastered' : ''}',
+                            Text(
+                                'Level $level${mastered ? ' · Class mastered' : ''}',
                                 style: _body(12, color: _muted)),
                           ])),
                     ]);
                     final coinsView =
                         Row(mainAxisSize: MainAxisSize.min, children: [
-                      const QuestwellCurrencyPixelIcon(kind: 'coin', size: 20),
+                      const QuestwellHearthIcon(kind: 'coin', size: 20),
                       const SizedBox(width: 6),
                       Text('$coins coins', style: _body(13, color: _gold)),
                       const SizedBox(width: 3),

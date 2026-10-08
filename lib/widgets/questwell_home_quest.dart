@@ -1,7 +1,6 @@
 import 'questwell_hearth_icon.dart';
 import 'package:flutter/material.dart';
 import 'questwell_hearth_material.dart';
-import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 
 /// Shared real-account and interactive review presentation. Rewards and writes
@@ -91,7 +90,7 @@ class QuestwellHearthQuestContent extends StatelessWidget {
 
   Widget _reward(String kind, String label) =>
       Row(mainAxisSize: MainAxisSize.min, children: [
-        QuestwellCurrencyPixelIcon(kind: kind, size: 20),
+        QuestwellHearthIcon(kind: kind, size: 20),
         const SizedBox(width: 6),
         Flexible(
             child: Text(label,

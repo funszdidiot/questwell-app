@@ -9,7 +9,8 @@ class QuestwellHearthIcon extends StatelessWidget {
   Widget build(BuildContext context) => ExcludeSemantics(
       child: SizedBox.square(
           dimension: size,
-          child: CustomPaint(painter: _HearthIconPainter(kind))));
+          child:
+              ClipRect(child: CustomPaint(painter: _HearthIconPainter(kind)))));
 }
 
 class _HearthIconPainter extends CustomPainter {
@@ -48,7 +49,149 @@ class _HearthIconPainter extends CustomPainter {
 
     p.color = const Color(0x44000000);
     canvas.drawOval(const Rect.fromLTWH(8, 54, 48, 7), p);
-    if (kind == 'hearth') {
+    if (kind == 'coin' || kind.startsWith('class_')) {
+      // Faceted brass rims share the same light direction as the Hearth frames.
+      const rim = [
+        Offset(20, 5),
+        Offset(44, 5),
+        Offset(58, 19),
+        Offset(58, 43),
+        Offset(44, 57),
+        Offset(20, 57),
+        Offset(6, 43),
+        Offset(6, 19)
+      ];
+      shape(rim, const [Color(0xFFFFE7A1), Color(0xFFAA7134)]);
+      shape(
+          const [
+            Offset(22, 11),
+            Offset(42, 11),
+            Offset(52, 21),
+            Offset(52, 41),
+            Offset(42, 51),
+            Offset(22, 51),
+            Offset(12, 41),
+            Offset(12, 21)
+          ],
+          kind == 'coin'
+              ? const [Color(0xFFF9D571), Color(0xFFC48B35)]
+              : const [Color(0xFF376B59), Color(0xFF142F2C)]);
+      if (kind == 'coin') {
+        shape(const [
+          Offset(28, 16),
+          Offset(36, 16),
+          Offset(36, 46),
+          Offset(28, 46)
+        ], const [
+          Color(0xFFFFEBAA),
+          Color(0xFFB67A2B)
+        ]);
+        rect(18, 21, 2, 17, const Color(0xFFF9E3A0));
+      } else if (kind == 'class_scout') {
+        rect(30, 14, 3, 34, const Color(0xFF102825));
+        rect(16, 30, 32, 3, const Color(0xFF102825));
+        shape(const [Offset(39, 16), Offset(34, 34), Offset(25, 30)],
+            const [Color(0xFFFFEDBF), Color(0xFFCFB67D)]);
+        shape(const [Offset(25, 46), Offset(25, 30), Offset(34, 34)],
+            const [Color(0xFF9AD1B1), Color(0xFF49947B)]);
+      } else if (kind == 'class_scholar') {
+        shape(const [
+          Offset(17, 21),
+          Offset(31, 24),
+          Offset(31, 44),
+          Offset(17, 41)
+        ], const [
+          Color(0xFFFFEDC1),
+          Color(0xFFD9B982)
+        ]);
+        shape(const [
+          Offset(33, 24),
+          Offset(47, 21),
+          Offset(47, 41),
+          Offset(33, 44)
+        ], const [
+          Color(0xFFFFEDC1),
+          Color(0xFFD9B982)
+        ]);
+        for (final y in [28.0, 34.0]) {
+          rect(20, y, 7, 2, const Color(0xFF94764E));
+          rect(37, y, 7, 2, const Color(0xFF94764E));
+        }
+      } else if (kind == 'class_alchemist') {
+        shape(const [
+          Offset(26, 18),
+          Offset(38, 18),
+          Offset(37, 28),
+          Offset(45, 40),
+          Offset(42, 46),
+          Offset(22, 46),
+          Offset(19, 40),
+          Offset(27, 28)
+        ], const [
+          Color(0xFFE1EFE0),
+          Color(0xFF96B8BE)
+        ]);
+        shape(const [
+          Offset(25, 34),
+          Offset(39, 34),
+          Offset(42, 42),
+          Offset(22, 42)
+        ], const [
+          Color(0xFF8ACAE2),
+          Color(0xFF4E75B3)
+        ]);
+        rect(25, 16, 14, 4, const Color(0xFFD6AB65));
+      } else if (kind == 'class_guardian') {
+        shape(const [
+          Offset(20, 19),
+          Offset(44, 19),
+          Offset(44, 35),
+          Offset(32, 47),
+          Offset(20, 35)
+        ], const [
+          Color(0xFFE7C283),
+          Color(0xFFAC733D)
+        ]);
+        shape(const [
+          Offset(24, 23),
+          Offset(40, 23),
+          Offset(40, 33),
+          Offset(32, 41),
+          Offset(24, 33)
+        ], const [
+          Color(0xFFB36970),
+          Color(0xFF793F52)
+        ]);
+        rect(30, 24, 4, 15, const Color(0xFFFFE8B5));
+        rect(26, 28, 12, 4, const Color(0xFFFFE8B5));
+      } else {
+        shape(const [
+          Offset(17, 23),
+          Offset(27, 19),
+          Offset(37, 23),
+          Offset(47, 19),
+          Offset(47, 42),
+          Offset(37, 46),
+          Offset(27, 42),
+          Offset(17, 46)
+        ], const [
+          Color(0xFFFFEDC1),
+          Color(0xFFC9A46D)
+        ]);
+        rect(26, 23, 2, 18, const Color(0xFFA8834D));
+        rect(36, 25, 2, 17, const Color(0xFFA8834D));
+        rect(21, 32, 21, 3, const Color(0xFF577B60));
+        rect(39, 27, 3, 8, const Color(0xFF577B60));
+      }
+    } else if (kind == 'xp') {
+      shape(
+          const [Offset(32, 4), Offset(53, 25), Offset(32, 59), Offset(11, 25)],
+          const [Color(0xFFE2C7FF), Color(0xFF7846AC)]);
+      shape(const [Offset(32, 4), Offset(32, 59), Offset(21, 25)],
+          const [Color(0xFFC09AEF), Color(0xFF9161CB)]);
+      shape(const [Offset(32, 4), Offset(43, 25), Offset(32, 59)],
+          const [Color(0xFFF0DFFF), Color(0xFFAB7CD7)]);
+    } else if (kind == 'hearth') {
       rect(43, 10, 7, 20, const Color(0xFF916138));
       shape(const [
         Offset(14, 28),
