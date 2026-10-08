@@ -239,41 +239,65 @@ class QuestwellHomeCampfireControl extends StatelessWidget {
   final bool active;
   final ValueChanged<bool>? onChanged;
   @override
-  Widget build(BuildContext context) => QuestwellHomePanel(
+  Widget build(BuildContext context) {
+    final title =
+        Text('Campfire Mode', style: QuestwellHearthMaterial.serif(17));
+    final description = Text(
+        active
+            ? 'One gentle quest. A little warmth.'
+            : 'Lower the pace. Focus on one quest.',
+        style: _body(13, color: _muted));
+    final control = Semantics(
+        label: 'Campfire Mode',
+        child: Switch(
+            value: active,
+            onChanged: onChanged,
+            activeThumbColor:
+                onChanged == null ? null : const Color(0xFFFFCC7A),
+            activeTrackColor:
+                onChanged == null ? null : QuestwellHearthMaterial.evergreen,
+            inactiveThumbColor:
+                onChanged == null ? null : const Color(0xFFC4B79C),
+            inactiveTrackColor:
+                onChanged == null ? null : const Color(0xFF26352F),
+            trackOutlineColor: onChanged == null
+                ? null
+                : const WidgetStatePropertyAll(QuestwellHearthMaterial.brass)));
+    return QuestwellHomePanel(
       warm: active,
-      child: Row(children: [
-        const QuestwellNavPixelIcon(kind: 'campfire', size: 36),
-        const SizedBox(width: 12),
-        Expanded(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Campfire Mode', style: QuestwellHearthMaterial.serif(17)),
-          Text(
-              active
-                  ? 'One gentle quest. A little warmth.'
-                  : 'Lower the pace. Focus on one quest.',
-              style: _body(13, color: _muted)),
-        ])),
-        const SizedBox(width: 6),
-        Semantics(
-            label: 'Campfire Mode',
-            child: Switch(
-                value: active,
-                onChanged: onChanged,
-                activeThumbColor:
-                    onChanged == null ? null : const Color(0xFFFFCC7A),
-                activeTrackColor: onChanged == null
-                    ? null
-                    : QuestwellHearthMaterial.evergreen,
-                inactiveThumbColor:
-                    onChanged == null ? null : const Color(0xFFC4B79C),
-                inactiveTrackColor:
-                    onChanged == null ? null : const Color(0xFF26352F),
-                trackOutlineColor: onChanged == null
-                    ? null
-                    : const WidgetStatePropertyAll(
-                        QuestwellHearthMaterial.brass))),
-      ]));
+      child: LayoutBuilder(builder: (context, bounds) {
+        final largeText = bounds.maxWidth < 300 &&
+            MediaQuery.textScalerOf(context).scale(17) > 22;
+        if (largeText) {
+          return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(children: [
+                  const QuestwellNavPixelIcon(kind: 'campfire', size: 36),
+                  const SizedBox(width: 12),
+                  Expanded(child: title),
+                ]),
+                const SizedBox(height: 6),
+                Row(children: [
+                  Expanded(child: description),
+                  const SizedBox(width: 8),
+                  control
+                ]),
+              ]);
+        }
+        return Row(children: [
+          const QuestwellNavPixelIcon(kind: 'campfire', size: 36),
+          const SizedBox(width: 12),
+          Expanded(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [title, description])),
+          const SizedBox(width: 6),
+          control,
+        ]);
+      }),
+    );
+  }
 }
 
 /// A quiet, shared material treatment around the Hearth's detailed pixel art.

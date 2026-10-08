@@ -58,3 +58,9 @@ center-wall painting at 390px. The same correction reserves an attached header
 strip above the scene; room coordinates and artwork remain untouched. Regression
 checks require the header to end before the room bounds at all tested widths and
 text scales. This is a safe space for the logo, not a moved decor slot.
+
+The 320px / 200% text review found short labels breaking within words. At narrow
+widths with enlarged text, navigation now uses full-width rows and Campfire places
+its switch beside the description below the title. Text scaling remains intact.
+A bundled-font regression checks actual rendered word boxes for the three
+navigation labels and “Campfire”; normal-size composition is unchanged.

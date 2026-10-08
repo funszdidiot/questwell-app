@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../lib/widgets/questwell_home_sections.dart';
@@ -9,6 +11,29 @@ import '../lib/preview/home_sections_review.dart';
 
 void main() {
   GoogleFonts.config.allowRuntimeFetching = false;
+  testWidgets('Large Hearth labels preserve whole words at 320px',
+      (tester) async {
+    final font = FontLoader('HearthSerif')
+      ..addFont(rootBundle.load('assets/fonts/DejaVuSerif-Bold.ttf'));
+    await font.load();
+    await tester.binding.setSurfaceSize(const Size(320, 1000));
+    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    await tester.pumpWidget(const HomeSectionsReviewApp());
+    await tester.pump(const Duration(milliseconds: 300));
+    for (final label in ['Hearth', 'Quests', 'Explore', 'Campfire Mode']) {
+      final paragraph = tester.renderObject<RenderParagraph>(find.descendant(
+          of: find.text(label), matching: find.byType(RichText)));
+      final wordLength = label == 'Campfire Mode' ? 8 : label.length;
+      final boxes = paragraph.getBoxesForSelection(
+          TextSelection(baseOffset: 0, extentOffset: wordLength));
+      expect(boxes, hasLength(1),
+          reason: '$label must not split inside a word');
+    }
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+  });
   for (final width in [320.0, 390.0, 430.0, 1440.0]) {
     for (final scale in [1.0, 2.0]) {
       testWidgets('Full Hearth sequence and controls at $width / $scale',

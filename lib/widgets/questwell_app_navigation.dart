@@ -153,71 +153,91 @@ class QuestwellAppNavigation extends StatelessWidget {
                               color: QuestwellHearthMaterial.brass, width: 2))),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _tab(
-                            'Hearth',
-                            'hearth',
-                            current == QuestwellDestination.hearth,
-                            () => _open(context, QuestwellDestination.hearth)),
-                        _tab(
-                            'Quests',
-                            'quests',
-                            current == QuestwellDestination.quests,
-                            () => _open(context, QuestwellDestination.quests)),
-                        _tab(
-                            'Explore',
-                            'expedition',
-                            ![
-                              QuestwellDestination.hearth,
-                              QuestwellDestination.quests
-                            ].contains(current),
-                            () => _explore(context)),
-                      ]),
+                  child: LayoutBuilder(builder: (context, bounds) {
+                    final stacked = bounds.maxWidth < 420 &&
+                        MediaQuery.textScalerOf(context).scale(15) > 22;
+                    final tabs = <Widget>[
+                      _tab(
+                          'Hearth',
+                          'hearth',
+                          current == QuestwellDestination.hearth,
+                          () => _open(context, QuestwellDestination.hearth),
+                          stacked: stacked),
+                      _tab(
+                          'Quests',
+                          'quests',
+                          current == QuestwellDestination.quests,
+                          () => _open(context, QuestwellDestination.quests),
+                          stacked: stacked),
+                      _tab(
+                          'Explore',
+                          'expedition',
+                          ![
+                            QuestwellDestination.hearth,
+                            QuestwellDestination.quests
+                          ].contains(current),
+                          () => _explore(context),
+                          stacked: stacked),
+                    ];
+                    return stacked
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: tabs)
+                        : Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: tabs);
+                  }),
                 ),
               )),
         )),
       );
 
-  Widget _tab(String label, String kind, bool selected, VoidCallback onTap) =>
-      Expanded(
-        child: Semantics(
-            selected: selected,
-            child: TextButton(
-              onPressed: onTap,
-              style: TextButton.styleFrom(
-                  minimumSize: const Size(48, 70),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 4, vertical: 7),
-                  shape: QuestwellHearthMaterial.shape,
-                  side: selected
-                      ? const BorderSide(color: QuestwellHearthMaterial.brass)
-                      : BorderSide.none,
-                  foregroundColor: selected
-                      ? const Color(0xFFF3DEAF)
-                      : const Color(0xFFC5B5A0),
-                  backgroundColor: selected
-                      ? QuestwellHearthMaterial.evergreen
-                      : Colors.transparent),
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Opacity(
-                    opacity: selected ? 1 : .65,
-                    child: QuestwellNavPixelIcon(kind: kind, size: 29)),
-                const SizedBox(height: 3),
-                Text(label,
-                    textAlign: TextAlign.center,
-                    style: QuestwellHearthMaterial.serif(15)),
-                const SizedBox(height: 4),
-                Container(
-                    height: 2,
-                    width: 56,
-                    color: selected
-                        ? const Color(0xFFF1C75B)
-                        : Colors.transparent),
-              ]),
-            )),
-      );
+  Widget _tab(String label, String kind, bool selected, VoidCallback onTap,
+      {bool stacked = false}) {
+    final button = Semantics(
+        selected: selected,
+        child: TextButton(
+          onPressed: onTap,
+          style: TextButton.styleFrom(
+              minimumSize: Size(48, stacked ? 48 : 70),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 7),
+              shape: QuestwellHearthMaterial.shape,
+              side: selected
+                  ? const BorderSide(color: QuestwellHearthMaterial.brass)
+                  : BorderSide.none,
+              foregroundColor:
+                  selected ? const Color(0xFFF3DEAF) : const Color(0xFFC5B5A0),
+              backgroundColor: selected
+                  ? QuestwellHearthMaterial.evergreen
+                  : Colors.transparent),
+          child: stacked
+              ? Row(children: [
+                  QuestwellNavPixelIcon(kind: kind, size: 24),
+                  const SizedBox(width: 12),
+                  Expanded(
+                      child: Text(label,
+                          style: QuestwellHearthMaterial.serif(15))),
+                ])
+              : Column(mainAxisSize: MainAxisSize.min, children: [
+                  Opacity(
+                      opacity: selected ? 1 : .65,
+                      child: QuestwellNavPixelIcon(kind: kind, size: 29)),
+                  const SizedBox(height: 3),
+                  Text(label,
+                      textAlign: TextAlign.center,
+                      style: QuestwellHearthMaterial.serif(15)),
+                  const SizedBox(height: 4),
+                  Container(
+                      height: 2,
+                      width: 56,
+                      color: selected
+                          ? const Color(0xFFF1C75B)
+                          : Colors.transparent),
+                ]),
+        ));
+    return stacked ? button : Expanded(child: button);
+  }
+
   Widget _legacyNavigation(BuildContext context) => Material(
         color: const Color(0xFF101C29),
         child: SafeArea(
