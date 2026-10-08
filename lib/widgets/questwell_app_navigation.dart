@@ -181,6 +181,7 @@ class QuestwellAppNavigation extends StatelessWidget {
                     ];
                     return stacked
                         ? Column(
+                            mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: tabs)
                         : Row(

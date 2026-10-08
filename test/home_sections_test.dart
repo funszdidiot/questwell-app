@@ -22,6 +22,9 @@ void main() {
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
     await tester.pumpWidget(const HomeSectionsReviewApp());
     await tester.pump(const Duration(milliseconds: 300));
+    expect(tester.getSize(find.byType(QuestwellAppNavigation)).height,
+        lessThan(300),
+        reason: 'Large navigation must leave room for the Hearth');
     for (final label in ['Hearth', 'Quests', 'Explore', 'Campfire Mode']) {
       final paragraph = tester.renderObject<RenderParagraph>(find.descendant(
           of: find.text(label), matching: find.byType(RichText)));
