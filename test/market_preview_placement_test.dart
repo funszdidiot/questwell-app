@@ -62,7 +62,8 @@ Future<void> openPreview(
       ),
     ),
   );
-  await tester.ensureVisible(find.text('Preview').first);
+  await tester.scrollUntilVisible(find.text('Preview'), 250,
+      scrollable: find.byType(Scrollable).first);
   await tester.pump();
   await tester.tap(find.text('Preview').first);
   await tester.pump();
