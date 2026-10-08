@@ -34,3 +34,24 @@ Tanya subsequently requested the whole collection to be priced and pushed out, a
 Client integration now includes all six slugs, five generic render specs, composed review, matching 32px icons, profile-based chair/table spacing and seasonal purchase actions. The new forward migration stages six inactive catalog rows and five renderer entries without touching existing harvest items or ownership. A guarded purchase-function change enforces dates server-side after the owned retry check. The CI harness verifies price, inactive/future/expired purchases, boundary equality, single charges, retry after cutoff, permanent placement and restoration. These checks are implemented, with execution results recorded separately.
 
 The new items must remain inactive until reviewed client delivery and scoped forward deployment are verified. Keep active=true after launch; availability_end closes new purchases. Deactivation would prevent owned Hearth placement. No live migration or activation has been executed.
+
+## CI and independent review — October 8 UTC
+
+PR #75 revision `84c9cbc` passed every client job in run `37717381489`: full
+Flutter regression suite, Chrome navigation tests, analyzer/formatting, critical
+coverage, Android build and iOS unsigned compile. The actual Flutter-rendered
+390px/960px composites for all three bodies plus matching icons received
+independent visual PASS. Mantel attachments and portrait spider visibility were
+corrected; Rainy Window now maps the approved room's glass panes and passes its
+pixel-boundary test. Latest captures are artifact `11524890246`.
+
+The initial isolated backend run `37717381340` found a fixture-only missing
+legacy bookshelf dependency, before reaching Halloween scenarios. The two
+unrelated bookshelf-required slots are removed from the disposable fixture;
+real catalog/lookup data are unchanged. Backend success is not yet claimed.
+
+The scoped activation workflow, drift guards and atomic rollback rehearsal are
+prepared in the [deployment runbook](HALLOWED_HEARTH_FORWARD_DEPLOYMENT.md).
+Nineteen local forward/workflow tests pass. Independent review found a future
+CI expiry issue; the rehearsal now expects safe activation refusal after cutoff.
+The final combined-revision backend rehearsal and new credential remain gates.

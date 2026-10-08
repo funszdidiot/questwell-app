@@ -8,6 +8,7 @@ import {smoke} from './smoke.mjs';
 import {assertCatalogMatches} from './catalog.mjs';
 import {exerciseWoodlandForward} from './woodland-forward.mjs';
 import {exerciseHardeningForward} from './hardening-forward.mjs';
+import {exerciseHallowedForward} from './hallowed-forward.mjs';
 
 assertDisposableCi(process.env);
 if (process.argv.includes('--preflight')) {
@@ -468,6 +469,7 @@ try {
   console.log(run(['db','lint','--local','--schema','public,private','--level','warning','--fail-on','error']));
   // Halloween is tested after historical hardening hashes are verified.
   run(['db','query','--local','--file',join(source,'hallowed-fixture.sql')]);
+  exerciseHallowedForward({source,workdir,run,runPayload:runHardeningPayload});
   const hallowedBefore = readCatalog();
   const hallowedMigration = '20261008015627_hallowed_hearth_catalog.sql';
   copyFileSync(resolve(source, '../../supabase/migrations', hallowedMigration), join(workdir, 'supabase/migrations', hallowedMigration));

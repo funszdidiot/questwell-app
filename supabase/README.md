@@ -63,3 +63,14 @@ Signed-in hosted-account and physical iPhone/Safari acceptance remain pending;
 no result has been reported. Do not treat “Next” as a passed manual test.
 See `docs/qa/MALE_WOODLAND_ACCOUNT_ROLLOUT.md`. No production promotion or other
 live migration/history repair is included.
+
+## Scoped Halloween continuation — 2026-10-08
+
+Tanya approved the six-item Hallowed Hearth collection, exact coin prices and
+seasonal purchase window with permanent ownership. The single guarded forward
+path is documented in [the Halloween runbook](../docs/qa/HALLOWED_HEARTH_FORWARD_DEPLOYMENT.md).
+It preserves existing history and legacy catalog rows, requires the delivered
+reviewed client, and atomically adds the scoped purchase-date check, six items
+and five render registrations. Live execution remains blocked on its new scoped
+credential and final CI/review gates. Do not reuse the Woodland credential or
+replay the root chain. No live change has yet been made.

@@ -1,4 +1,5 @@
--- Canonical lookup rows in the disposable CI stack only.
+-- Canonical lookup rows needed by this collection in the disposable CI stack only.
+-- Legacy bookshelf-dependent slots are outside this fixture; its catalog is absent.
 do $fixture$
 begin
 insert into public.hearth_slots(slot_key,zone,default_label,sort_order) values
@@ -46,13 +47,11 @@ insert into public.hearth_profile_slots(
   ('side_table','side','Beside the chair',10,null),
 
   ('trophy_surface','mantel','Fireplace mantel',10,null),
-  ('trophy_surface','bookshelf_top','On the bookcase',20,'walnut-bookshelf'),
 
   ('relic_display','left','Back left pedestal',10,null),
   ('relic_display','right','Back right pedestal',20,null),
   ('relic_display','front','Front left pedestal',30,null),
   ('relic_display','mantel','On the fireplace mantel',40,null),
-  ('relic_display','bookshelf_top','On the bookcase',50,'walnut-bookshelf'),
 
   ('floor_rug','floor','Beneath the adventurer',10,null),
   ('window_feature','window','Window alcove',10,null),

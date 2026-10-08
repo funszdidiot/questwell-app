@@ -1,0 +1,18 @@
+{
+  "before": {
+    "records": [],
+    "new_count": 0,
+    "live_valid": false,
+    "render_count": 0,
+    "history_count": 51,
+    "schema_sha256": "89701851907fa8412b987b1f2f7f41d5db8e92833713fec076c8a01c7dd8b767",
+    "catalog_sha256": "7afca3eadd02a260eda65557844566ec35b66dfa0628202975a9ccd188b1e337",
+    "history_sha256": "6e38c3910913235cdac4be209650ad4dd22199ead5cf12b09dae75b810d65769",
+    "purchase_sha256": "aff6cf9a0edfde4cdb40fc1c67d7a4b640d28c5aa55c27734ad70289d3f5d67f"
+  },
+  "source_sha256": "9b12d4bec7dcab5c6a1c066268512c5bdc4fcf001f94c717c82d57d8efb5dbb8",
+  "activation_sha256": "f458089802810c68d5bfac4ff928cc2126977c9f7a30ba2fba886a49eb7378a4",
+  "catalog_sql_sha256": "a9a98f3066496014fac1d403f5c0104c2deafd365602a3a2fffe787cbd2b86ef",
+  "after_purchase_sha256": "9896f3fc420f06eb5d529ed1c967b2f8f827fd11c8141678bfe778a0bb5d94da",
+  "manifest_sha256": "a3be59f7f9e48bd560eb128d32ee521f26353cc102ac71164082ad89b2a0b2c0"
+}
