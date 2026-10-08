@@ -295,6 +295,10 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                               decoration: InputDecoration(
                                 helperText:
                                     '1–120 characters. Existing text is never shortened.',
+                                helperMaxLines: 6,
+                                helperStyle: QuestwellTypography.body(
+                                    fontSize: 13,
+                                    color: const Color(0xFF67543E)),
                                 labelText: 'Quest name',
                                 hintText: 'Reply to Jordan',
                                 labelStyle: QuestwellTypography.body(
