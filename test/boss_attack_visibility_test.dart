@@ -45,8 +45,13 @@ void main() {
                       onAttack: (_, step) {
                         writes++;
                         submittedStep = step.id;
-                        arenaAtSubmission = tester
-                            .getRect(find.byKey(const ValueKey('boss-arena')));
+                        final box = find
+                            .byKey(const ValueKey('boss-arena'))
+                            .evaluate()
+                            .single
+                            .renderObject as RenderBox;
+                        arenaAtSubmission =
+                            box.localToGlobal(Offset.zero) & box.size;
                       })))));
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(find.text('Later attacks · 19'), 250);
