@@ -357,7 +357,13 @@ void main() {
           return catalog(request);
       }
     };
-    await tester.pumpWidget(const MaterialApp(home: MarketPageWidget()));
+    await tester.pumpWidget(MaterialApp(
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(disableAnimations: true),
+        child: child!,
+      ),
+      home: const MarketPageWidget(),
+    ));
     await tester.pumpAndSettle();
     await tester.ensureVisible(find.text('Place in Hearth'));
     await tester.tap(find.text('Place in Hearth'));
