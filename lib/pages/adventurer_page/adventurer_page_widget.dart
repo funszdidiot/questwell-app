@@ -1,3 +1,4 @@
+import '../../widgets/questwell_hearth_icon.dart';
 import '../../widgets/questwell_hearth_material.dart';
 import '../../widgets/questwell_app_style.dart';
 import '/pages/account_settings_page/account_settings_page_widget.dart';
@@ -6,7 +7,6 @@ import '/widgets/questwell_equipment_swap.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/services/questwell_cosmetic_service.dart';
-import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_adventurer_view.dart';
 import '/pages/market_page/market_page_widget.dart';
 import 'package:flutter/material.dart';
@@ -359,7 +359,7 @@ class _AdventurerPageWidgetState extends State<AdventurerPageWidget> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const QuestwellNavPixelIcon(
+                        const QuestwellHearthIcon(
                           kind: 'adventurer',
                           size: 42,
                         ),

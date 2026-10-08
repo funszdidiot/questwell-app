@@ -1,3 +1,4 @@
+import '../../widgets/questwell_hearth_icon.dart';
 import '../../widgets/questwell_hearth_material.dart';
 import '../../widgets/questwell_app_style.dart';
 import '/widgets/questwell_home_quest.dart';
@@ -737,9 +738,9 @@ class _RewardChip extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           icon == Icons.monetization_on_outlined
-              ? const QuestwellCurrencyPixelIcon(kind: 'coin', size: 17)
+              ? const QuestwellHearthIcon(kind: 'coin', size: 17)
               : icon == Icons.auto_awesome
-                  ? const QuestwellCurrencyPixelIcon(kind: 'xp', size: 17)
+                  ? const QuestwellHearthIcon(kind: 'xp', size: 17)
                   : Icon(icon, size: 16, color: theme.primary),
           const SizedBox(width: 6),
           Flexible(

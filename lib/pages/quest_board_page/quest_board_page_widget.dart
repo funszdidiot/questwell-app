@@ -1,3 +1,4 @@
+import '../../widgets/questwell_hearth_icon.dart';
 import '../../widgets/questwell_hearth_material.dart';
 import '../../widgets/questwell_app_style.dart';
 import '/widgets/questwell_app_navigation.dart';
@@ -366,7 +367,7 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                                       onPressed: () => context.pushNamed(
                                         BossBattlesPageWidget.routeName,
                                       ),
-                                      icon: const QuestwellNavPixelIcon(
+                                      icon: const QuestwellHearthIcon(
                                         kind: 'boss',
                                         size: 20,
                                       ),
