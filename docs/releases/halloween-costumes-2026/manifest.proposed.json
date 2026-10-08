@@ -1,0 +1,94 @@
+{
+  "schema_version": "questwell.seasonal-release/v1",
+  "release_id": "halloween-costumes-2026",
+  "display_name": "Halloween Wardrobe",
+  "release_type": "seasonal",
+  "collection_key": "midnight-harvest",
+  "theme": {
+    "summary": "Two complete robe, blouse, mask, trousers and boots outfits, all classes and three locked bodies. Dedicated layered preview; account rollout pending.",
+    "palette": [
+      "smoky plum",
+      "black",
+      "copper",
+      "burnt orange",
+      "forest green",
+      "cream"
+    ],
+    "materials": [
+      "velvet",
+      "gathered cloth",
+      "antique copper"
+    ],
+    "motifs": [
+      "bats",
+      "crescent",
+      "pumpkin",
+      "leaves"
+    ]
+  },
+  "availability": {
+    "status": "planned",
+    "starts_at": null,
+    "ends_at": "2026-11-09T06:00:00Z",
+    "ownership_persists_after_archive": true
+  },
+  "approval": {
+    "brief_status": "approved",
+    "visual_status": "approved",
+    "economy_status": "approved",
+    "activation_status": "authorized",
+    "founder_decision_ref": "Tanya authorized pricing and app rollout under the same Halloween timelines and rules on October 8, 2026. Agent selected 180 coins each, matching the existing Midnight Harvest Coat."
+  },
+  "items": [
+    {
+      "slug": "midnight-masquerade",
+      "name": "Midnight Masquerade",
+      "category": "chest",
+      "rarity": "rare",
+      "description": "Plum velvet, smoky-plum blouse and black/copper bat mask.",
+      "price": 180,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "visual_family": "layered_robe_complete_costume",
+      "asset_state": "approved",
+      "wearable": null,
+      "provenance": {
+        "source": "Approved ImageGen studies and six individually registered surface sources",
+        "version": 1,
+        "method": "Exact locked robe alpha, unchanged bodies, registered blouse underlay and mask. Dedicated layered compositor; single-overlay manifest mode deliberately unused.",
+        "source_art_ref": "tool/art_assets/halloween_costumes_v1/exports.json"
+      },
+      "qa": {
+        "preflight": "pass",
+        "runtime": "not_run",
+        "visual": "pass"
+      }
+    },
+    {
+      "slug": "pumpkin-court",
+      "name": "Pumpkin Court",
+      "category": "chest",
+      "rarity": "rare",
+      "description": "Orange and green robe, cream blouse and copper/green leaf mask.",
+      "price": 180,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "visual_family": "layered_robe_complete_costume",
+      "asset_state": "approved",
+      "wearable": null,
+      "provenance": {
+        "source": "Approved ImageGen studies and six individually registered surface sources",
+        "version": 1,
+        "method": "Exact locked robe alpha, unchanged bodies, registered blouse underlay and mask. Dedicated layered compositor; single-overlay manifest mode deliberately unused.",
+        "source_art_ref": "tool/art_assets/halloween_costumes_v1/exports.json"
+      },
+      "qa": {
+        "preflight": "pass",
+        "runtime": "not_run",
+        "visual": "pass"
+      }
+    }
+  ]
+}

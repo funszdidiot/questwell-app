@@ -1,0 +1,86 @@
+{
+  "female": {
+    "body": "assets/images/questwell/avatar/base/paper_doll_female_v1.webp",
+    "identity": "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp",
+    "under": [
+      "assets/images/questwell/avatar/scout_trousers_female_v6.webp",
+      "assets/images/questwell/avatar/scout_top_female_v6.webp",
+      "assets/images/questwell/avatar/scout_boots_female_v6.webp"
+    ],
+    "layers": {
+      "front": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v7.webp",
+      "cuffs": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_female_v7.webp",
+      "rear": "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v7.webp"
+    },
+    "source_sha256": {
+      "assets/images/questwell/avatar/base/paper_doll_female_v1.webp": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a",
+      "assets/images/questwell/avatar/base/paper_doll_female_identity_v1.webp": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e",
+      "assets/images/questwell/avatar/scout_trousers_female_v6.webp": "14d57926eeeea3b56451a4b6af1fc86022c74b673bd1be8870c8e388afe1fd8f",
+      "assets/images/questwell/avatar/scout_top_female_v6.webp": "07bbd9864164f7944750fc2f0beffb30d643407e0d72f0f3328802a2baee5a5a",
+      "assets/images/questwell/avatar/scout_boots_female_v6.webp": "7b2fb6260c25d162582a672d8c0427da3a4ea0634d5423abc1b3fa959fd54ce3",
+      "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_female_v7.webp": "96c0268d966468cb460ba824307dc84fc3917266c18faa1e052e844f0f676f56",
+      "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_cuff_front_female_v7.webp": "32a98e9f7130d667271296be451f4461c0ce052771fa269ae7715b6460d4273e",
+      "assets/images/questwell/avatar/classes/alchemist/alchemist_robe_rear_female_v7.webp": "b13c9198b82f79c81e2d79a2cf53c0a0df95c5f28e3c0f09754eaeb51d03c49f"
+    },
+    "canvas": [
+      240,
+      320
+    ]
+  },
+  "neutral": {
+    "body": "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp",
+    "identity": "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp",
+    "under": [
+      "tool/art_assets/neutral_everyday_v2/everyday_boots_neutral_candidate_v2.webp",
+      "tool/art_assets/neutral_everyday_v3/everyday_trousers_neutral_candidate_v3.webp",
+      "tool/art_assets/neutral_everyday_v2/everyday_top_neutral_candidate_v2.webp"
+    ],
+    "layers": {
+      "rear": "tool/art_assets/neutral_robe_v11/scout_robe_rear_neutral_candidate_v11.webp",
+      "front": "tool/art_assets/neutral_robe_v11/scout_robe_front_neutral_candidate_v11.webp",
+      "cuffs": "tool/art_assets/neutral_robe_v11/scout_robe_cuffs_neutral_candidate_v11.webp",
+      "collar": "tool/art_assets/neutral_robe_v11/scout_robe_collar_neutral_candidate_v11.webp"
+    },
+    "source_sha256": {
+      "assets/images/questwell/avatar/base/paper_doll_neutral_v4.webp": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "assets/images/questwell/avatar/base/paper_doll_neutral_identity_v4.webp": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "tool/art_assets/neutral_everyday_v2/everyday_boots_neutral_candidate_v2.webp": "12ed127e63ba1548f39ebc65ed1cb9385d99cbe9bb0f16ce056295c72cb68130",
+      "tool/art_assets/neutral_everyday_v3/everyday_trousers_neutral_candidate_v3.webp": "c08a045e586befc45cb0dbfcf6cec72121b47195e4f06ee8fb525aff27caa865",
+      "tool/art_assets/neutral_everyday_v2/everyday_top_neutral_candidate_v2.webp": "4c5a4c4e36bffa1c43948a4d3b2805510e7f13abe16415d5ae49e0be4283d25c",
+      "tool/art_assets/neutral_robe_v11/scout_robe_rear_neutral_candidate_v11.webp": "3b87885ad45e811617d6c35388d4358da6e203694ff7046254115cb12769cd40",
+      "tool/art_assets/neutral_robe_v11/scout_robe_front_neutral_candidate_v11.webp": "dea2d75e45975f56049c91d0d17b82e361235ecd17efeda227c9b6f8a85c6e09",
+      "tool/art_assets/neutral_robe_v11/scout_robe_cuffs_neutral_candidate_v11.webp": "9a7b7b7b23f79c4079a0186f9630f13313a4e62bdbb0bd258381bd970d97b8d0",
+      "tool/art_assets/neutral_robe_v11/scout_robe_collar_neutral_candidate_v11.webp": "63746950fc5c0b8ac022207a2e5823fe13932bc5fbbe2e1d3d9c309b70d0892e"
+    },
+    "canvas": [
+      240,
+      320
+    ]
+  },
+  "male": {
+    "body": "assets/images/questwell/avatar/base/paper_doll_male_v3.webp",
+    "identity": "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp",
+    "under": [
+      "assets/images/questwell/avatar/everyday_outfit_male_v2.webp"
+    ],
+    "layers": {
+      "rear": "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v4.webp",
+      "front": "assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v4.webp",
+      "cuffs": "tool/art_assets/male_robe_v3/scout_robe_cuffs_male_v3.webp",
+      "collar": "tool/art_assets/male_robe_v3/scout_robe_collar_male_v3.webp"
+    },
+    "source_sha256": {
+      "assets/images/questwell/avatar/base/paper_doll_male_v3.webp": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "assets/images/questwell/avatar/base/paper_doll_male_identity_v3.webp": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "assets/images/questwell/avatar/everyday_outfit_male_v2.webp": "f1677830404354248d8fe13c1aec35da059946c7ee902ff21411dcca584b2cee",
+      "assets/images/questwell/avatar/classes/scout/scout_robe_rear_male_v4.webp": "2147de65e671da707df1e3c210e8851f6330878e8d974a9b1f377e3536b7e845",
+      "assets/images/questwell/avatar/classes/scout/scout_robe_front_male_v4.webp": "487840ba3657f1810d8c1bda3a5d7fcef934099f9fa4627af3077e42e3555e3d",
+      "tool/art_assets/male_robe_v3/scout_robe_cuffs_male_v3.webp": "273c2bdc8ba2b71cc83621b65dd8f85fa2ef95693a6c88048cf795624fe15539",
+      "tool/art_assets/male_robe_v3/scout_robe_collar_male_v3.webp": "180e7987b3bcc88e0b394aa081de0475761429bab164a986fb55c90a0d8cf850"
+    },
+    "canvas": [
+      240,
+      320
+    ]
+  }
+}

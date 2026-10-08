@@ -125,6 +125,12 @@ flutter:
     - assets/images/
     - assets/images/questwell/avatar/
     - assets/images/questwell/avatar/base/
+    - assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/
+    - assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/
+    - assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/
+    - assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/
+    - assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/
+    - assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/
     - assets/images/questwell/avatar/classes/scholar/
     - assets/images/questwell/avatar/classes/scout/
     - assets/images/questwell/avatar/classes/alchemist/
