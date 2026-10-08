@@ -3,6 +3,7 @@ import {readFileSync, writeFileSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import {assertDisposableCi} from './guard.mjs';
 import {guardedPayload, migrationPath, stateQuery} from '../deploy/content-limits-contract.mjs';
+import {makePlan} from '../deploy/content-limits-runner.mjs';
 
 export function exerciseContentLimitsForward({source, workdir, run, runPayload}) {
   assertDisposableCi(process.env);
@@ -38,7 +39,29 @@ export function exerciseContentLimitsForward({source, workdir, run, runPayload})
   // The unchanged source migration and authenticated boundary cases run next.
   execute(positive + '\nrollback;\n');
   assert.deepEqual(readState(), before, 'Positive rehearsal must preserve fixture history');
+  // Exercise the runner's real catalog/history query against a recorded fixture,
+  // including both the pre-install and post-install shapes. Never retain it.
+  const plan = makePlan(sql, catalog, expected);
+  writeFileSync(stateFile, plan.query);
+  assert.deepEqual(readState(), plan.before);
+  const quote = value => `'${value.replaceAll("'", "''")}'`;
+  execute(positive + `\ninsert into supabase_migrations.schema_migrations(version,name,statements)
+    values('20990101000000','approved_content_limits_live',array[${quote(positive)}]);
+    do $runner_record$
+    declare actual jsonb;
+    begin
+      execute $runner_query$${plan.query}$runner_query$ into actual;
+      if actual - 'records' is distinct from ${quote(JSON.stringify(plan.after))}::jsonb
+        or jsonb_array_length(actual->'records') <> 1
+        or actual->'records'->0->>'version' <> '20990101000000'
+        or actual->'records'->0->'statements'->>0 is distinct from ${quote(positive)} then
+        raise exception 'Runner recorded metadata mismatch';
+      end if;
+    end $runner_record$;
+    rollback;\n`);
+  assert.deepEqual(readState(), plan.before, 'Recorded fixture must roll back');
+  writeFileSync(stateFile, stateQuery(catalog));
   execute(positive + positive, 'Content deployment precondition drift');
   assert.deepEqual(readState(), before, 'Repeat refusal must roll back the outer transaction');
-  console.log('Content forward: timeout, schema drift, atomic rollback, exact staging objects and repeat refusal passed.');
+  console.log('Content forward: timeout, drift, rollback, exact objects, runner recorded metadata and repeat refusal passed.');
 }
