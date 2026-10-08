@@ -29,7 +29,7 @@ jobs:
 
       - name: Test isolation guards and reject remote credentials
         run: |
-          node --test tool/qa/backend_ci_guard_test.mjs tool/qa/backend_catalog_test.mjs tool/qa/hardening_contract_test.mjs tool/qa/recovery_guard_test.mjs
+          node --test tool/qa/backend_ci_guard_test.mjs tool/qa/backend_catalog_test.mjs tool/qa/hardening_contract_test.mjs tool/qa/recovery_guard_test.mjs tool/qa/content_limits_forward_test.mjs
           node tool/backend_ci/run.mjs --preflight
 
       - name: Install checksum-pinned Supabase CLI

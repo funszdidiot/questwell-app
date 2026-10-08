@@ -9,6 +9,7 @@ import {assertCatalogMatches} from './catalog.mjs';
 import {exerciseWoodlandForward} from './woodland-forward.mjs';
 import {exerciseHardeningForward} from './hardening-forward.mjs';
 import {exerciseHallowedForward} from './hallowed-forward.mjs';
+import {exerciseContentLimitsForward} from './content-limits-forward.mjs';
 
 assertDisposableCi(process.env);
 if (process.argv.includes('--preflight')) {
@@ -486,6 +487,7 @@ try {
   // Approved content limits are tested AFTER historical schema-parity gates.
   run(['db','query','--local','--file',join(source,'content-limits-legacy.sql')]);
   const contentMigration = '20261008023552_approved_content_limits.sql';
+  exerciseContentLimitsForward({source, workdir, run, runPayload: runHardeningPayload});
   copyFileSync(resolve(source, '../../supabase/migrations', contentMigration), join(workdir, 'supabase/migrations', contentMigration));
   run(['migration','up','--local']);
   run(['db','query','--local','--file',join(source,'content-limits-contract.sql')]);

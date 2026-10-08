@@ -1,0 +1,19 @@
+{
+  "project": "bdzcazkyypopbanbjnud",
+  "migration_name": "approved_content_limits_live",
+  "migration_path": "supabase/migrations/20261008023552_approved_content_limits.sql",
+  "source_sha256": "f9898988c1389088c79e6c62bc3cbf4e47753c867b1336ea9a8ec0d73a8c0c9a",
+  "catalog_sql_sha256": "a9a98f3066496014fac1d403f5c0104c2deafd365602a3a2fffe787cbd2b86ef",
+  "after_limits_sha256": "1425882772d40a17143e096fd333d253501dbbca5ff91ae604755911f0dc7913",
+  "after_grant_count": 2,
+  "before": {
+    "protected_schema_sha256": "8a9a2d66a06c174d1af09975ee9e72799760d054b0543679a3e6eb6170e32b45",
+    "limits_sha256": "ef617572f96c8e8db67c3f2a79f368f3101db97158c3ed37f7fc5fc45bccfc95",
+    "function_count": 0,
+    "trigger_count": 0,
+    "grant_count": 0,
+    "history_sha256": "9c245664ef9485d356271a7bcfb470daea7974b4334e3e923d7f0c8be3b89793",
+    "history_count": 52,
+    "rollout_records": 0
+  }
+}
