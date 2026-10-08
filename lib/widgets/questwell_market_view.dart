@@ -143,113 +143,142 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
             child: ConstrainedBox(
                 constraints: BoxConstraints(
                     maxHeight: MediaQuery.sizeOf(ctx).height * .88),
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.fromLTRB(22, 0, 22, 24),
-                    child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(item.name,
-                              style: QuestwellHearthMaterial.serif(25,
-                                  color: cream)),
-                          Text(
-                              '${title(item.rarity)} · ${title(item.category.replaceAll('_', ' '))}',
-                              style: QuestwellTypography.body(color: gold)),
-                          const SizedBox(height: 16),
-                          if (room(item) && roomPreview == null)
-                            Padding(
-                                padding: const EdgeInsets.all(24),
-                                child: Text(
-                                    'Room preview unavailable for this item.',
-                                    style:
-                                        QuestwellTypography.body(color: cream)))
-                          else if (room(item))
-                            QuestwellHearthPixelScene(
-                                height: 265,
-                                archetype:
-                                    widget.data.profile.adventurerArchetype,
-                                avatarBodyType:
-                                    widget.data.profile.avatarBodyType,
-                                equippedSlugs: roomPreview!,
-                                hearthProfileBySlug: {
-                                  for (final i in widget.data.cosmetics)
-                                    if (i.hearthProfileKey != null)
-                                      i.slug: i.hearthProfileKey!
-                                },
-                                hearthRenderBySlug: {
-                                  for (final i in widget.data.cosmetics)
-                                    if (i.hearthRenderSpec != null)
-                                      i.slug: i.hearthRenderSpec!
-                                })
-                          else
-                            SizedBox(
-                                height: 265,
-                                child: QuestwellLayeredAdventurerArt(
-                                    archetype: item.requiredArchetype ??
-                                        widget.data.profile.adventurerArchetype,
-                                    avatarBodyType:
-                                        QuestwellBodyFitLabels.previewBody(
-                                            item.slug,
-                                            widget.data.profile.avatarBodyType),
-                                    equippedSlugs: preview(item))),
-                          const SizedBox(height: 10),
-                          Text(
-                              bodyRestricted(item)
-                                  ? '${title(QuestwellBodyFitLabels.bodyName(QuestwellBodyFitLabels.previewBody(item.slug, widget.data.profile.avatarBodyType)))} fit preview'
-                                  : 'Try-on preview',
-                              textAlign: TextAlign.center,
-                              style: QuestwellTypography.body(
-                                  color: muted, fontSize: 12)),
-                          const SizedBox(height: 16),
-                          Text(item.description,
-                              style: QuestwellTypography.body(
-                                  color: cream, height: 1.5)),
-                          const SizedBox(height: 12),
-                          Text(
-                              item.requiredArchetype == null
-                                  ? 'Available to every class'
-                                  : 'For ${title(item.requiredArchetype!)} adventurers',
-                              style: QuestwellTypography.body(color: muted)),
-                          Text(
-                              item.owned
-                                  ? 'Already in your inventory'
-                                  : item.price == 0
-                                      ? 'Free'
-                                      : '${item.price} coins',
-                              style: QuestwellTypography.body(
-                                  color: gold, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 20),
-                          FilledButton(
-                              style: QuestwellAppStyle.primaryButton(),
-                              onPressed: canAct(item)
-                                  ? () => Navigator.pop(ctx, 'activate')
-                                  : null,
-                              child: Text(action(item))),
-                          if (item.equipped && widget.busyId == null)
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                    textStyle: QuestwellTypography.control(),
-                                    minimumSize: const Size(48, 48)),
-                                onPressed: () => Navigator.pop(ctx, 'remove'),
-                                child: Text(room(item)
-                                    ? 'Return to inventory'
-                                    : 'Unequip')),
-                          if (item.equipped &&
-                              room(item) &&
-                              widget.busyId == null)
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                    textStyle: QuestwellTypography.control(),
-                                    minimumSize: const Size(48, 48)),
-                                onPressed: () => Navigator.pop(ctx, 'move'),
-                                child: Text('Move item')),
-                          TextButton(
-                              style: TextButton.styleFrom(
-                                  textStyle: QuestwellTypography.control(),
-                                  minimumSize: const Size(48, 48)),
-                              onPressed: () => Navigator.pop(ctx),
-                              child: Text('Back to shop')),
-                        ])))));
+                child: LayoutBuilder(
+                    builder: (context, sheetBounds) => SingleChildScrollView(
+                        padding: const EdgeInsets.fromLTRB(22, 0, 22, 24),
+                        child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(item.name,
+                                  style: QuestwellHearthMaterial.serif(25,
+                                      color: cream)),
+                              Text(
+                                  '${title(item.rarity)} · ${title(item.category.replaceAll('_', ' '))}',
+                                  style: QuestwellTypography.body(color: gold)),
+                              const SizedBox(height: 16),
+                              if (room(item) && roomPreview == null)
+                                Padding(
+                                    padding: const EdgeInsets.all(24),
+                                    child: Text(
+                                        'Room preview unavailable for this item.',
+                                        style: QuestwellTypography.body(
+                                            color: cream)))
+                              else if (room(item))
+                                Center(
+                                    child: ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                            maxWidth:
+                                                ((sheetBounds.maxHeight - 32) / .68)
+                                                    .clamp(0.0, 760.0)),
+                                        child: LayoutBuilder(
+                                            builder: (context, constraints) =>
+                                                QuestwellHearthPixelScene(
+                                                    // Match the Hearth camera as the sheet resizes.
+                                                    // Fixed height crops wide/foldable previews.
+                                                    immersive: true,
+                                                    height: constraints.maxWidth *
+                                                            .68 +
+                                                        8,
+                                                    archetype: widget
+                                                        .data
+                                                        .profile
+                                                        .adventurerArchetype,
+                                                    avatarBodyType: widget.data
+                                                        .profile.avatarBodyType,
+                                                    equippedSlugs: roomPreview!,
+                                                    hearthProfileBySlug: {
+                                                      for (final i in widget
+                                                          .data.cosmetics)
+                                                        if (i.hearthProfileKey !=
+                                                            null)
+                                                          i.slug: i
+                                                              .hearthProfileKey!
+                                                    },
+                                                    hearthRenderBySlug: {
+                                                      for (final i in widget
+                                                          .data.cosmetics)
+                                                        if (i.hearthRenderSpec !=
+                                                            null)
+                                                          i.slug: i
+                                                              .hearthRenderSpec!
+                                                    }))))
+                              else
+                                SizedBox(
+                                    height: 265,
+                                    child: QuestwellLayeredAdventurerArt(
+                                        archetype: item.requiredArchetype ??
+                                            widget.data.profile
+                                                .adventurerArchetype,
+                                        avatarBodyType:
+                                            QuestwellBodyFitLabels.previewBody(
+                                                item.slug,
+                                                widget.data.profile
+                                                    .avatarBodyType),
+                                        equippedSlugs: preview(item))),
+                              const SizedBox(height: 10),
+                              Text(
+                                  bodyRestricted(item)
+                                      ? '${title(QuestwellBodyFitLabels.bodyName(QuestwellBodyFitLabels.previewBody(item.slug, widget.data.profile.avatarBodyType)))} fit preview'
+                                      : 'Try-on preview',
+                                  textAlign: TextAlign.center,
+                                  style: QuestwellTypography.body(
+                                      color: muted, fontSize: 12)),
+                              const SizedBox(height: 16),
+                              Text(item.description,
+                                  style: QuestwellTypography.body(
+                                      color: cream, height: 1.5)),
+                              const SizedBox(height: 12),
+                              Text(
+                                  item.requiredArchetype == null
+                                      ? 'Available to every class'
+                                      : 'For ${title(item.requiredArchetype!)} adventurers',
+                                  style:
+                                      QuestwellTypography.body(color: muted)),
+                              Text(
+                                  item.owned
+                                      ? 'Already in your inventory'
+                                      : item.price == 0
+                                          ? 'Free'
+                                          : '${item.price} coins',
+                                  style: QuestwellTypography.body(
+                                      color: gold,
+                                      fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 20),
+                              FilledButton(
+                                  style: QuestwellAppStyle.primaryButton(),
+                                  onPressed: canAct(item)
+                                      ? () => Navigator.pop(ctx, 'activate')
+                                      : null,
+                                  child: Text(action(item))),
+                              if (item.equipped && widget.busyId == null)
+                                TextButton(
+                                    style: TextButton.styleFrom(
+                                        textStyle:
+                                            QuestwellTypography.control(),
+                                        minimumSize: const Size(48, 48)),
+                                    onPressed: () =>
+                                        Navigator.pop(ctx, 'remove'),
+                                    child: Text(room(item)
+                                        ? 'Return to inventory'
+                                        : 'Unequip')),
+                              if (item.equipped &&
+                                  room(item) &&
+                                  widget.busyId == null)
+                                TextButton(
+                                    style: TextButton.styleFrom(
+                                        textStyle:
+                                            QuestwellTypography.control(),
+                                        minimumSize: const Size(48, 48)),
+                                    onPressed: () => Navigator.pop(ctx, 'move'),
+                                    child: Text('Move item')),
+                              TextButton(
+                                  style: TextButton.styleFrom(
+                                      textStyle: QuestwellTypography.control(),
+                                      minimumSize: const Size(48, 48)),
+                                  onPressed: () => Navigator.pop(ctx),
+                                  child: Text('Back to shop')),
+                            ]))))));
     if (!mounted) return;
     if (result == 'activate') await _activateItem(item);
     if (result == 'remove') await widget.onUnequip(item);

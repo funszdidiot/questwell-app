@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../lib/services/questwell_cosmetic_models.dart';
 import '../lib/widgets/questwell_market_view.dart';
+import '../lib/widgets/questwell_app_style.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
 
 QuestwellCosmetic decor(
@@ -14,38 +15,41 @@ QuestwellCosmetic decor(
   List<String> slots = const [],
   QuestwellHearthRenderSpec? spec,
   bool equipped = false,
-}) => QuestwellCosmetic.fromJson(
-  {
-    'id': slug,
-    'slug': slug,
-    'name': slug,
-    'category': category,
-    'hearth_profile_key': profile,
-  },
-  owned: equipped,
-  equipped: equipped,
-  roomSlot: slot,
-  hearthRenderSpec: spec,
-  hearthPlacements: [
-    for (var n = 0; n < slots.length; n++)
-      QuestwellHearthPlacementOption(
-        slot: slots[n],
-        label: slots[n],
-        sortOrder: n,
-      ),
-  ],
-);
+}) =>
+    QuestwellCosmetic.fromJson(
+      {
+        'id': slug,
+        'slug': slug,
+        'name': slug,
+        'category': category,
+        'hearth_profile_key': profile,
+      },
+      owned: equipped,
+      equipped: equipped,
+      roomSlot: slot,
+      hearthRenderSpec: spec,
+      hearthPlacements: [
+        for (var n = 0; n < slots.length; n++)
+          QuestwellHearthPlacementOption(
+            slot: slots[n],
+            label: slots[n],
+            sortOrder: n,
+          ),
+      ],
+    );
 
 Future<void> openPreview(
   WidgetTester tester,
-  List<QuestwellCosmetic> items,
-) async {
-  tester.view.physicalSize = const Size(360, 740);
+  List<QuestwellCosmetic> items, {
+  Size size = const Size(360, 740),
+}) async {
+  tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
   await tester.pumpWidget(
     MaterialApp(
+      theme: QuestwellAppStyle.theme(),
       home: Scaffold(
         body: QuestwellMarketView(
           data: QuestwellCosmeticsSnapshot(
@@ -60,7 +64,8 @@ Future<void> openPreview(
       ),
     ),
   );
-  await tester.ensureVisible(find.text('Preview').first);
+  await tester.scrollUntilVisible(find.text('Preview'), 250,
+      scrollable: find.byType(Scrollable).first);
   await tester.pump();
   await tester.tap(find.text('Preview').first);
   await tester.pump();
@@ -115,6 +120,65 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
+  for (final size in [
+    const Size(320, 740),
+    const Size(390, 844),
+    const Size(599, 900),
+    const Size(600, 900),
+    const Size(840, 900),
+    const Size(1200, 800),
+    const Size(840, 390),
+    const Size(740, 320),
+  ]) {
+    testWidgets('Room camera matches Hearth at $size and after folding',
+        (tester) async {
+      final item = decor('fern-study',
+          category: 'wall_art', slots: ['wall_left', 'wall_right']);
+      await openPreview(tester, [item], size: size);
+      final sceneFinder = find.byType(QuestwellHearthPixelScene);
+      final initialEquipment = Map<String, String>.of(
+          tester.widget<QuestwellHearthPixelScene>(sceneFinder).equippedSlugs);
+      for (final viewport in [
+        size,
+        const Size(360, 740),
+        const Size(840, 390),
+        size
+      ]) {
+        tester.view.physicalSize = viewport;
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 400));
+        final room =
+            tester.getSize(find.byKey(const ValueKey('hearth-room-bounds')));
+        final scene = tester.widget<QuestwellHearthPixelScene>(sceneFinder);
+        expect(scene.immersive, isTrue);
+        expect(room.height, closeTo(room.width * .68 + 8, .01));
+        expect(room.width, lessThanOrEqualTo(viewport.width));
+        expect(room.width, lessThanOrEqualTo(760));
+        final sheetScroll = find
+            .ancestor(
+                of: sceneFinder, matching: find.byType(SingleChildScrollView))
+            .first;
+        expect(
+            room.height, lessThanOrEqualTo(tester.getSize(sheetScroll).height));
+        await tester
+            .ensureVisible(find.byKey(const ValueKey('hearth-room-bounds')));
+        await tester.pump();
+        final visibleRoom =
+            tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
+        final visibleSheet = tester.getRect(sheetScroll);
+        expect(visibleRoom.top, greaterThanOrEqualTo(visibleSheet.top - .01));
+        expect(
+            visibleRoom.bottom, lessThanOrEqualTo(visibleSheet.bottom + .01));
+        expect(scene.equippedSlugs, initialEquipment);
+        expect(tester.takeException(), isNull);
+      }
+      await tester.ensureVisible(find.text('Back to shop'));
+      await tester.tap(find.text('Back to shop'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(sceneFinder, findsNothing);
+    });
+  }
   testWidgets('Market does not invent a position for unregistered decor', (
     tester,
   ) async {
