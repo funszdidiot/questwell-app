@@ -35,6 +35,17 @@ void main() {
                 .getTopLeft(find.text('Clear one small corner of your desk.'))
                 .dy));
         expect(find.byType(QuestwellAppNavigation), findsOneWidget);
+        final fill = find.descendant(
+            of: find.byType(QuestwellHomeCharacter),
+            matching: find.byWidgetPredicate((widget) =>
+                widget is ColoredBox &&
+                widget.color == const Color(0xFF8D65D6)));
+        expect(fill, findsNWidgets(7));
+        for (final segment in fill.evaluate()) {
+          expect(tester.getSize(find.byWidget(segment.widget)).height,
+              greaterThan(0),
+              reason: 'Earned XP must paint visibly inside the frame');
+        }
         await tester.ensureVisible(find.text('Complete quest'));
         await tester.tap(find.text('Complete quest'));
         await tester.pump(const Duration(milliseconds: 300));

@@ -29,3 +29,26 @@ Status: QA. Required GitHub Actions, final independent source review, deployed m
 ## First material pass reconciliation
 
 The preceding material pass is DEV DEPLOYED at `efad9b5eb1c51405e3145b1bf94ac231400ca264`, manual Preview run `37704535201`. All required checks passed (903 Flutter / 397 Chrome tests plus analyzer, format and build gates); delivered UI and Campfire/320px enlarged text were independently checked. PR #70 metadata remained stale despite verified development ancestry and tree; deployment was verified by the successful workflow and actual UI, not the blocked served-version JSON endpoint.
+
+## Development delivery and live correction
+
+PR #71 merged to development at `f88f070930f7a17cd32aaaecb044ea1d8aa12797`.
+Preview `37708222571` built and deployed successfully. Premerge check
+`37707646776` passed 905 Flutter / 397 Chrome tests, analyzer/format, coverage,
+Android and iOS builds; backend `37707646567` and migration guards also passed.
+Merged deployment repeated the required checks successfully.
+
+Live review confirmed the richer room and whole-page hierarchy, and sample quest
+completion updated 95→105 XP and 49→51 coins. Both root and the independent visual
+reviewer found the compact XP rail empty despite the correct numeric value: its
+8px height was entirely consumed by shared-meter padding/borders. The scoped
+follow-up raises it to 16px, leaving 6px visible fill, and asserts seven earned
+segments have positive painted height across all existing viewport/text-scale cases.
+Independent source review approved the correction. Its CI and delivered check are
+recorded in the follow-up PR; no XP calculation or account behavior changes.
+
+Earlier CI also caught a removed private reward helper still used by the completion
+dialog (restored byte-for-byte), enlarged reward-label overflow (flexible wrapping),
+and Campfire scroll reset (stable content key). Wooden navigation is intentionally
+limited to Home so other screens retain their tested viewport layout. Existing tests
+were preserved, and switch hit testing now verifies the scroll position survives.

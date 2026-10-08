@@ -184,7 +184,7 @@ class QuestwellHomeCharacter extends StatelessWidget {
                                     child: QuestwellPixelMeter(
                                         value: xp / xpRequired,
                                         kind: 'xp',
-                                        height: 8,
+                                        height: 16,
                                         segments: 10)),
                                 const SizedBox(width: 8),
                                 Text('$xp / $xpRequired XP',
