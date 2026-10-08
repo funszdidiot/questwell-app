@@ -138,7 +138,9 @@ export async function rehearseRecovery(status) {
   requireMarker();
   sql('create database questwell_restore_ci template template0;', 'template1');
   assert.equal(sql("select to_regclass('public.users') is null;", 'questwell_restore_ci'), 't');
-  sql('drop schema public;', 'questwell_restore_ci');
+  // PostgreSQL 17 dumps expect initdb's public schema to exist. Keep that
+  // empty template0 schema; pg_restore restores its ownership and privileges.
+  assert.equal(sql("select to_regnamespace('public') is not null;", 'questwell_restore_ci'), 't');
   docker(['exec', '-i', dbContainer, 'pg_restore', '--host=/var/run/postgresql',
     '--username=supabase_admin', '--dbname=questwell_restore_ci', '--no-password',
     '--exit-on-error', '--single-transaction'], archive);
@@ -187,8 +189,17 @@ export async function rehearseRecovery(status) {
   // Database metadata is present, but bytes must still be missing after restore.
   assert.equal(sql(`select count(*) from storage.objects where bucket_id='beta-feedback' and name='${objectPath}';`), '1');
   denied(await request(downloadPath, a));
-  ok(await request(`/storage/v1/object/beta-feedback/${objectPath}`, {token: status.SERVICE_ROLE_KEY}, 'POST',
-    backupFile.bytes, {'content-type': 'image/png', 'x-upsert': 'true'}));
+  // Use the real owner API, not a service-role upsert that can lose owner_id.
+  // Existing policies deliberately grant no UPDATE. Recreate exactly this new
+  // synthetic object; feedback references its stable path, not its internal ID.
+  ok(await request('/storage/v1/object/beta-feedback', a, 'DELETE', {prefixes: [objectPath]}));
+  assert.equal(sql(`select count(*) from storage.objects where bucket_id='beta-feedback' and name='${objectPath}';`), '0');
+  ok(await request(`/storage/v1/object/beta-feedback/${objectPath}`, a, 'POST',
+    backupFile.bytes, {'content-type': 'image/png'}));
+  assert.equal(sql(`select owner_id from storage.objects where bucket_id='beta-feedback' and name='${objectPath}';`), a.id);
+  const ownedFiles = await request('/rest/v1/rpc/account_deletion_objects', {token: status.SERVICE_ROLE_KEY},
+    'POST', {p_user_id: a.id}); ok(ownedFiles);
+  assert.deepEqual(ownedFiles.data, [{bucket_id: 'beta-feedback', name: objectPath, owner_id: a.id}]);
   const recoveredFile = await request(downloadPath, a); ok(recoveredFile);
   assert.equal(recoveredFile.bytes.length, originalBytes.length);
   assert.equal(sha256(recoveredFile.bytes), sha256(originalBytes));

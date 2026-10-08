@@ -15,8 +15,9 @@ reward, a two-step boss, feedback and an actual PNG. It downloads the bytes and
 takes a full logical database archive, including Auth and Storage metadata. The
 archive stays in memory and is never uploaded or printed. The source database is
 retained under another name; restore is into a separately created empty database.
-Identical disposable platform roles/extensions are prerequisites, not restored
-infrastructure. A generated marker and absent target-name checks guard switching.
+Identical disposable platform roles/extensions and retained Auth/Storage service
+configuration/signing keys are prerequisites, not restored infrastructure. A
+generated marker and absent target-name checks guard switching.
 
 Before switching services, it compares schema/functions/RLS/grants and content
 hashes/counts for public/private tables, Auth users/identities and Storage
@@ -25,6 +26,12 @@ balances, reward consistency, boss steps and feedback. Exactly the newly created
 image is removed through Storage's API to simulate lost bytes. The restored
 metadata must NOT make that image downloadable. Restoring the saved bytes must
 produce the same byte length/SHA-256, with other-owner and anonymous access denied.
+The freshly authenticated owner recreates only this synthetic path through
+Storage DELETE/POST; no SQL metadata edit, token minting, permission change or
+service-role upsert is used. Its owner ID and account-deletion inventory must
+match afterward. Internal object ID/version/timestamps are recreated; stable
+path, ownership, feedback reference and file bytes are the restored guarantees.
+This matters because [Storage ownership follows the caller's JWT subject](https://supabase.com/docs/guides/storage/security/ownership).
 
 Timing starts before file retrieval/database export and ends after acceptance.
 Sanitized CI output records the conservative database recovery-point lower bound,
