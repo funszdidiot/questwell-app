@@ -90,3 +90,14 @@ test('Halloween privileged job requires the exact deployment branch and push eve
     assert.ok(validate(text.replace(guard,replacement),file).length>0);
   }
 });
+
+test('content privileged job requires its exact branch and never gains token write scopes',()=> {
+  const file='.github/workflows/questwell-content-forward.yml';
+  const text=fs.readFileSync(path.join(root,file),'utf8');
+  const guard="github.event_name == 'push' && github.ref == 'refs/heads/deploy/content-limits-approved'";
+  assert.deepEqual(validate(text,file),[]);
+  for(const replacement of ['true',"github.event_name == 'push'","github.ref == 'refs/heads/deploy/content-limits-approved'"]) {
+    assert.ok(validate(text.replace(guard,replacement),file).length>0);
+  }
+  assert.ok(validate(text.replace('checks: read','checks: write'),file).length>0);
+});

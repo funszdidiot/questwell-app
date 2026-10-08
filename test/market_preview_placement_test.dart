@@ -127,6 +127,8 @@ void main() {
     const Size(600, 900),
     const Size(840, 900),
     const Size(1200, 800),
+    const Size(840, 390),
+    const Size(740, 320),
   ]) {
     testWidgets('Room camera matches Hearth at $size and after folding',
         (tester) async {
@@ -136,7 +138,12 @@ void main() {
       final sceneFinder = find.byType(QuestwellHearthPixelScene);
       final initialEquipment = Map<String, String>.of(
           tester.widget<QuestwellHearthPixelScene>(sceneFinder).equippedSlugs);
-      for (final viewport in [size, const Size(360, 740), size]) {
+      for (final viewport in [
+        size,
+        const Size(360, 740),
+        const Size(840, 390),
+        size
+      ]) {
         tester.view.physicalSize = viewport;
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 400));
@@ -147,6 +154,21 @@ void main() {
         expect(room.height, closeTo(room.width * .68 + 8, .01));
         expect(room.width, lessThanOrEqualTo(viewport.width));
         expect(room.width, lessThanOrEqualTo(760));
+        final sheetScroll = find
+            .ancestor(
+                of: sceneFinder, matching: find.byType(SingleChildScrollView))
+            .first;
+        expect(
+            room.height, lessThanOrEqualTo(tester.getSize(sheetScroll).height));
+        await tester
+            .ensureVisible(find.byKey(const ValueKey('hearth-room-bounds')));
+        await tester.pump();
+        final visibleRoom =
+            tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
+        final visibleSheet = tester.getRect(sheetScroll);
+        expect(visibleRoom.top, greaterThanOrEqualTo(visibleSheet.top - .01));
+        expect(
+            visibleRoom.bottom, lessThanOrEqualTo(visibleSheet.bottom + .01));
         expect(scene.equippedSlugs, initialEquipment);
         expect(tester.takeException(), isNull);
       }
