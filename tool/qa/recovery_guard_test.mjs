@@ -27,12 +27,14 @@ test('recovery error diagnostics never return server text or row values', () => 
 });
 test('missing bytes require a specific object error, never a generic outage or denial', () => {
   const path = 'synthetic-owner/recovery.png';
-  const missing = {status: 500, data: {code: 'InternalError', message: `ENOENT: stat '/storage/${path}-$v-version'`}};
-  assert.doesNotThrow(() => assertMissingRecoveryFile(missing, path));
+  const missing = {status: 500, data: {code: 'InternalError', message: `ENOENT: no such file or directory, stat '/storage/beta-feedback/${path}-$v-version'`}};
+  assert.doesNotThrow(() => assertMissingRecoveryFile(missing, path, 'version'));
   assert.doesNotThrow(() => assertMissingRecoveryFile({status: 404, data: {code: 'NoSuchKey'}}, path));
   for (const r of [{status: 200}, {status: 502}, {status: 403}, {status: 500},
     {...missing, data: {...missing.data, message: 'Database unavailable'}},
+    {...missing, data: {...missing.data, message: `ENOENT: no such file or directory, stat '/storage/beta-feedback/${path}.unrelated-$v-version'`}},
+    {...missing, data: {...missing.data, message: `ENOENT: no such file or directory, stat '/storage/beta-feedback/${path}-$v-other'`}},
     {...missing, data: {...missing.data, message: 'ENOENT: stat other-owner/recovery.png'}}]) {
-    assert.throws(() => assertMissingRecoveryFile(r, path));
+    assert.throws(() => assertMissingRecoveryFile(r, path, 'version'));
   }
 });

@@ -31,10 +31,10 @@ catalog parity again.
 Fresh password sign-ins then verify both owners, isolated quests,
 balances, reward consistency, boss steps and feedback. Exactly the newly created
 image is removed through Storage's API to simulate lost bytes. The restored
-metadata must NOT make that image downloadable. Restoring the saved bytes must
-follow a specific missing-object error, not a generic outage or authorization
+metadata must NOT make that image downloadable. The failed download must
+report a specific missing-object error, not a generic outage or authorization
 failure. The local file adapter's HTTP 500 is accepted only with InternalError,
-ENOENT and the exact synthetic object path; other-owner denials stay strict.
+ENOENT and the exact synthetic object key/version filename; other-owner denials stay strict.
 Restoring the saved bytes must
 produce the same byte length/SHA-256, with other-owner and anonymous access denied.
 The freshly authenticated owner recreates only this synthetic path through

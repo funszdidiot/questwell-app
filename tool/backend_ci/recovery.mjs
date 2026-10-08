@@ -10,13 +10,15 @@ const dbContainer = 'supabase_db_questwell-disposable-ci';
 const services = ['auth', 'rest', 'storage'].map(s => `supabase_${s}_questwell-disposable-ci`);
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
-export function assertMissingRecoveryFile(response, objectPath) {
+export function assertMissingRecoveryFile(response, objectPath, version) {
   // The local file adapter reports stat ENOENT as InternalError/500 when the
   // restored metadata exists but its bytes do not. Never accept arbitrary 5xx,
   // authentication failures or a different missing path as recovery evidence.
+  const physicalSuffix = `/beta-feedback/${objectPath}${version ? `-$v-${version}` : ''}`;
+  const filename = typeof response.data?.message === 'string'
+    ? response.data.message.match(/^ENOENT: no such file or directory, stat '([^']+)'$/)?.[1] : undefined;
   const missing = response.status === 500 && response.data?.code === 'InternalError' &&
-    typeof response.data.message === 'string' &&
-    /\bENOENT\b/.test(response.data.message) && response.data.message.includes(objectPath);
+    typeof filename === 'string' && filename.endsWith(physicalSuffix);
   assert.ok(missing || ([400,404].includes(response.status) && response.data?.code === 'NoSuchKey'),
     `Expected specific missing-file error; received HTTP ${response.status}`);
 }
@@ -107,6 +109,8 @@ export async function rehearseRecovery(status) {
   // Generated with Pillow and verified including PNG chunk CRCs before review.
   const originalBytes = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGPwqEwAAAIuASK5cz6PAAAAAElFTkSuQmCC', 'base64');
   ok(await request(`/storage/v1/object/beta-feedback/${objectPath}`, a, 'POST', originalBytes, {'content-type': 'image/png'}));
+  const objectVersion = JSON.parse(sql(`select to_jsonb(version) from storage.objects where bucket_id='beta-feedback' and name='${objectPath}';`));
+  assert.ok(objectVersion === null || /^[0-9a-f-]{36}$/.test(objectVersion));
   const feedbackId = randomUUID();
   ok(await request('/rest/v1/beta_feedback', a, 'POST', {
     id: feedbackId, user_id: a.id, category: 'bug', goal: 'Synthetic recovery',
@@ -236,7 +240,7 @@ export async function rehearseRecovery(status) {
   const steps = await request('/rest/v1/boss_steps?select=id', a); ok(steps); assert.equal(steps.data.length, 2);
   // Database metadata is present, but bytes must still be missing after restore.
   assert.equal(sql(`select count(*) from storage.objects where bucket_id='beta-feedback' and name='${objectPath}';`), '1');
-  assertMissingRecoveryFile(await request(downloadPath, a), objectPath);
+  assertMissingRecoveryFile(await request(downloadPath, a), objectPath, objectVersion);
   // Use the real owner API, not a service-role upsert that can lose owner_id.
   // Existing policies deliberately grant no UPDATE. Recreate exactly this new
   // synthetic object; feedback references its stable path, not its internal ID.
