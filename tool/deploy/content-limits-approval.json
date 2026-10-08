@@ -1,11 +1,11 @@
 {
-  "status": "pending",
+  "status": "approved",
   "project": "bdzcazkyypopbanbjnud",
   "migration_name": "approved_content_limits_live",
   "payload_sha256": "c8ab7ae3f3025f4631bf8d4b7ca85ad72a41e859096d65cf52409d5d1e7b30cf",
-  "approval_ref": null,
-  "backup_evidence_ref": null,
-  "backup_completed_at": null,
-  "backup_verified_at": null,
-  "valid_until": null
+  "approval_ref": "docs/qa/CONTENT_LIMITS_FORWARD.md#october-8-live-beta-approval",
+  "backup_evidence_ref": "libfile_394d774ec2908191b0c30c43f46d7eb4 version 0; questwell-backup-evidence-20261008.jpg",
+  "backup_completed_at": "2026-10-08T07:53:34Z",
+  "backup_verified_at": "2026-10-08T13:25:00Z",
+  "valid_until": "2026-10-09T07:53:34Z"
 }
