@@ -55,3 +55,10 @@ prepared in the [deployment runbook](HALLOWED_HEARTH_FORWARD_DEPLOYMENT.md).
 Nineteen local forward/workflow tests pass. Independent review found a future
 CI expiry issue; the rehearsal now expects safe activation refusal after cutoff.
 The final combined-revision backend rehearsal and new credential remain gates.
+
+The first atomic SQL rehearsal (`37718425446`) correctly stopped before writes
+when the exact-definition guard compared PostgreSQL's trailing newline against
+a literal without it. The guard now strips only outer whitespace; its entire
+function body remains exact and the forward metadata hash is unchanged. A
+read-only live comparison confirms a match. The source digest was refreshed and
+the complete rehearsal is being rerun.

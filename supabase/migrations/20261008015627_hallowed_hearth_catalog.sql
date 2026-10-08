@@ -9,7 +9,7 @@ declare current_definition text;
 begin
   select pg_get_functiondef('private.purchase_cosmetic(uuid)'::regprocedure)
     into current_definition;
-  if btrim(current_definition)=btrim($after$CREATE OR REPLACE FUNCTION private.purchase_cosmetic(p_cosmetic_id uuid)
+  if btrim(current_definition,E' \n\r\t')=btrim($after$CREATE OR REPLACE FUNCTION private.purchase_cosmetic(p_cosmetic_id uuid)
  RETURNS TABLE(cosmetic_id uuid, remaining_coins integer, already_owned boolean)
  LANGUAGE plpgsql
  SECURITY DEFINER
@@ -60,7 +60,7 @@ begin
 end;
 $function$$after$) then
     null; -- Safe replay.
-  elsif btrim(current_definition)=btrim($before$CREATE OR REPLACE FUNCTION private.purchase_cosmetic(p_cosmetic_id uuid)
+  elsif btrim(current_definition,E' \n\r\t')=btrim($before$CREATE OR REPLACE FUNCTION private.purchase_cosmetic(p_cosmetic_id uuid)
  RETURNS TABLE(cosmetic_id uuid, remaining_coins integer, already_owned boolean)
  LANGUAGE plpgsql
  SECURITY DEFINER
