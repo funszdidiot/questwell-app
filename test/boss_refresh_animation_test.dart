@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../lib/pages/boss_battles_page/boss_battles_page_widget.dart';
-import '../lib/services/questwell_boss_service.dart';
-import '../lib/services/questwell_cosmetic_models.dart';
-import '../lib/widgets/questwell_boss_encounter.dart';
-import '../lib/widgets/questwell_pixel_art.dart';
+import 'package:project_momentum/pages/boss_battles_page/boss_battles_page_widget.dart';
+import 'package:project_momentum/services/questwell_boss_service.dart';
+import 'package:project_momentum/services/questwell_cosmetic_models.dart';
+import 'package:project_momentum/widgets/questwell_boss_encounter.dart';
+import 'package:project_momentum/widgets/questwell_pixel_art.dart';
 
 void main() {
   GoogleFonts.config.allowRuntimeFetching = false;
