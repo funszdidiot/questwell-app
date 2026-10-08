@@ -2,16 +2,16 @@
 
 ## Hallowed Hearth Halloween collection — October 8, 2026
 
-**QA — PR #75.** Six designs, 740 total coins, purchases through November 8
-Chicago time and permanent ownership are founder-approved. Approved artwork,
-animated spiders, Market icons, generic furnishing placement and review route
-are integrated on the feature branch. The migration stages six inactive catalog
-rows and enforces server purchase dates while preserving owned retries.
-Existing Harvest prices, IDs, ownership and locked avatar files are unchanged.
-Local manifests pass; CI and independent visual/backend review are running.
-No live catalog mutation or app deployment is claimed. Local Flutter setup is
-unavailable after an automatic metadata-access denial; CI is the verification path.
-See `../releases/hallowed-hearth-2026/RELEASE_BRIEF.md` and `../qa/HALLOWED_HEARTH.md`.
+**QA — fireplace alignment correction.** Six designs, 740 total coins,
+purchases through November 8 Chicago time and permanent ownership are approved.
+PR #75 passed independent source/visual review, all client/backend checks and
+atomic activation rehearsal; development delivery at `7bd70a9` is verified.
+Tanya approved the scoped 24-hour activation credential and requested the print
+be centered on the fireplace. That narrow room-anchor correction is in QA.
+Catalog activation awaits the corrected delivered client and approved credential
+setup. No live catalog mutation has occurred. Existing Harvest items and locked
+avatar assets are unchanged. See `../qa/HALLOWED_HEARTH.md` and
+`../qa/HALLOWED_HEARTH_FORWARD_DEPLOYMENT.md`.
 
 ## Hearth icon and empty-state consistency — October 8, 2026
 
