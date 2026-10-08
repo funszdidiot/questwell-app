@@ -47,6 +47,9 @@ void main() {
         await tester.pump(const Duration(milliseconds: 300));
         expect(find.text('ONE SMALL WIN'), findsOneWidget);
         expect(tester.widget<Switch>(find.byType(Switch)).value, isTrue);
+        expect(find.byType(Switch).hitTestable(), findsOneWidget,
+            reason:
+                'Campfire must retain the scrolled content when embers appear');
         await tester.tap(find.byType(Switch));
         await tester.pump(const Duration(milliseconds: 300));
         expect(find.text('YOUR NEXT WIN'), findsOneWidget);

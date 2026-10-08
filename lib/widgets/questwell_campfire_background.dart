@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 
 /// Viewport-bound atmosphere. Only this paint layer ticks, never home data.
 class QuestwellCampfireBackground extends StatefulWidget {
-  const QuestwellCampfireBackground({super.key, required this.active, required this.child});
+  const QuestwellCampfireBackground(
+      {super.key, required this.active, required this.child});
   final bool active;
   final Widget child;
   @override
-  State<QuestwellCampfireBackground> createState() => _QuestwellCampfireBackgroundState();
+  State<QuestwellCampfireBackground> createState() =>
+      _QuestwellCampfireBackgroundState();
 }
 
-class _QuestwellCampfireBackgroundState extends State<QuestwellCampfireBackground>
+class _QuestwellCampfireBackgroundState
+    extends State<QuestwellCampfireBackground>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _drift = AnimationController(
-    vsync: this, duration: const Duration(seconds: 16));
+  late final AnimationController _drift =
+      AnimationController(vsync: this, duration: const Duration(seconds: 16));
   bool _reduceMotion = false;
 
   void _syncMotion() {
@@ -45,28 +48,42 @@ class _QuestwellCampfireBackgroundState extends State<QuestwellCampfireBackgroun
 
   @override
   Widget build(BuildContext context) => Stack(fit: StackFit.expand, children: [
-    const DecoratedBox(decoration: BoxDecoration(gradient: LinearGradient(
-      begin: Alignment.topCenter, end: Alignment.bottomCenter,
-      colors: [Color(0xFF111B2B), Color(0xFF111827), Color(0xFF17120F)],
-      stops: [0, .56, 1],
-    ))),
-    if (widget.active) Positioned.fill(child: IgnorePointer(
-      child: ExcludeSemantics(child: RepaintBoundary(child: CustomPaint(
-        painter: _EmberPainter(_drift, still: _reduceMotion),
-      ))),
-    )),
-    widget.child,
-    // Keep a few sparks visible beside opaque cards without covering content.
-    if (widget.active) Positioned.fill(child: IgnorePointer(
-      child: ExcludeSemantics(child: RepaintBoundary(child: CustomPaint(
-        painter: _EmberPainter(_drift, still: _reduceMotion, edgesOnly: true),
-      ))),
-    )),
-  ]);
+        const DecoratedBox(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFF111B2B), Color(0xFF111827), Color(0xFF17120F)],
+          stops: [0, .56, 1],
+        ))),
+        if (widget.active)
+          Positioned.fill(
+              child: IgnorePointer(
+            child: ExcludeSemantics(
+                child: RepaintBoundary(
+                    child: CustomPaint(
+              painter: _EmberPainter(_drift, still: _reduceMotion),
+            ))),
+          )),
+        KeyedSubtree(
+            key: const ValueKey('hearth-content'), child: widget.child),
+        // Keep a few sparks visible beside opaque cards without covering content.
+        if (widget.active)
+          Positioned.fill(
+              child: IgnorePointer(
+            child: ExcludeSemantics(
+                child: RepaintBoundary(
+                    child: CustomPaint(
+              painter:
+                  _EmberPainter(_drift, still: _reduceMotion, edgesOnly: true),
+            ))),
+          )),
+      ]);
 }
 
 class _EmberPainter extends CustomPainter {
-  _EmberPainter(this.drift, {required this.still, this.edgesOnly = false}) : super(repaint: drift);
+  _EmberPainter(this.drift, {required this.still, this.edgesOnly = false})
+      : super(repaint: drift);
   final Animation<double> drift;
   final bool still;
   final bool edgesOnly;
@@ -76,14 +93,16 @@ class _EmberPainter extends CustomPainter {
     canvas.clipRect(Offset.zero & size);
     final warmth = still ? .5 : .5 + .5 * math.sin(drift.value * math.pi * 4);
     if (!edgesOnly) {
-    final glow = Paint()..shader = RadialGradient(
-      center: Alignment(0, 1.1), radius: 1.2,
-      colors: [
-        const Color(0xFFB85C29).withValues(alpha: .20 + warmth * .09),
-        const Color(0x00763C24),
-      ],
-    ).createShader(Offset.zero & size);
-    canvas.drawRect(Offset.zero & size, glow);
+      final glow = Paint()
+        ..shader = RadialGradient(
+          center: Alignment(0, 1.1),
+          radius: 1.2,
+          colors: [
+            const Color(0xFFB85C29).withValues(alpha: .20 + warmth * .09),
+            const Color(0x00763C24),
+          ],
+        ).createShader(Offset.zero & size);
+      canvas.drawRect(Offset.zero & size, glow);
     }
     final paint = Paint()..isAntiAlias = false;
     // Slow, continuous drift and a gentle eight-second warmth cycle.
@@ -92,12 +111,15 @@ class _EmberPainter extends CustomPainter {
       final baseX = edgesOnly
           ? (i.isEven ? 5.0 : size.width - 10)
           : ((i * .381966 + .07) % 1) * size.width;
-      final x = (baseX + math.sin(phase * math.pi * 2 + i) * (edgesOnly ? 3 : 22)).roundToDouble();
+      final x =
+          (baseX + math.sin(phase * math.pi * 2 + i) * (edgesOnly ? 3 : 22))
+              .roundToDouble();
       final y = ((1 - phase) * (size.height + 30) - 15).roundToDouble();
       final edgeFade = math.min(1.0, math.min(phase, 1 - phase) * 7);
       final side = i % 4 == 0 ? 5.0 : 3.0;
-      paint.color = (i % 3 == 0 ? const Color(0xFFFFD27C) : const Color(0xFFEF9454))
-        .withValues(alpha: edgeFade * (i % 3 == 0 ? .90 : .68));
+      paint.color =
+          (i % 3 == 0 ? const Color(0xFFFFD27C) : const Color(0xFFEF9454))
+              .withValues(alpha: edgeFade * (i % 3 == 0 ? .90 : .68));
       canvas.drawRect(Rect.fromLTWH(x, y, side, side), paint);
       if (side == 5) {
         paint.color = const Color(0xFFE7733F).withValues(alpha: edgeFade * .32);
@@ -106,7 +128,8 @@ class _EmberPainter extends CustomPainter {
     }
     canvas.restore();
   }
+
   @override
-  bool shouldRepaint(covariant _EmberPainter oldDelegate) => oldDelegate.still != still ||
-      oldDelegate.edgesOnly != edgesOnly;
+  bool shouldRepaint(covariant _EmberPainter oldDelegate) =>
+      oldDelegate.still != still || oldDelegate.edgesOnly != edgesOnly;
 }

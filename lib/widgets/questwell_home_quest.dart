@@ -92,6 +92,8 @@ class QuestwellHearthQuestContent extends StatelessWidget {
       Row(mainAxisSize: MainAxisSize.min, children: [
         QuestwellCurrencyPixelIcon(kind: kind, size: 20),
         const SizedBox(width: 6),
-        Text(label, style: QuestwellHearthMaterial.serif(16, color: _ink)),
+        Flexible(
+            child: Text(label,
+                style: QuestwellHearthMaterial.serif(16, color: _ink))),
       ]);
 }
