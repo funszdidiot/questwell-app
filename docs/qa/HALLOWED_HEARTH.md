@@ -62,3 +62,23 @@ a literal without it. The guard now strips only outer whitespace; its entire
 function body remains exact and the forward metadata hash is unchanged. A
 read-only live comparison confirms a match. The source digest was refreshed and
 the complete rehearsal is being rerun.
+
+## Verified delivery and founder correction — October 8 UTC
+
+PR #75 merged as `7bd70a9`. Preview run `37719619319` and backend run
+`37719618858` passed. The served revision and six image hashes matched; the
+actual hosted furnished room, adventurer and animated spiders were verified.
+The atomic SQL rehearsal and all purchase/ownership scenarios passed. No catalog
+activation occurred.
+
+Tanya then said **“I approve but center the art on the fireplace.”** This
+explicitly approves the requested 24-hour project-scoped Supabase Database Read
++ Migrations Write token and its GitHub Actions storage. No repeated credential
+approval is needed for that exact scope. The token is not yet created.
+
+The placement correction anchors Hallowed Hearth's left-wall art to source
+point (568,179.2), the chimney centerline, using the background's cover crop.
+Canonical frame size and other room/slot anchors are unchanged. The correction
+applies in the shared account renderer and the review, without changing any art
+bytes or catalog records. Fresh CI and independent visual review are pending
+before activation.
