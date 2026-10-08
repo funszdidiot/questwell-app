@@ -452,7 +452,7 @@ void main() {
     await tester.tap(later);
     await tester.pumpAndSettle();
     expect(attacked, 'step-19');
-    await tester.ensureVisible(find.text('Completed attacks · 2'));
+    await tester.scrollUntilVisible(find.text('Completed attacks · 2'), 400);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Completed attacks · 2'));
     await tester.pumpAndSettle();

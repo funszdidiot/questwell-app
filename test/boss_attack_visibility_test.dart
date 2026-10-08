@@ -15,6 +15,8 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
       var writes = 0;
+      String? submittedStep;
+      Rect? arenaAtSubmission;
       final battle = QuestwellBossBattle(
           id: 'deep',
           title: 'Break the project into useful steps',
@@ -42,11 +44,9 @@ void main() {
                       onCreate: () {},
                       onAttack: (_, step) {
                         writes++;
-                        expect(step.id, 'step-19');
-                        final arena = tester
+                        submittedStep = step.id;
+                        arenaAtSubmission = tester
                             .getRect(find.byKey(const ValueKey('boss-arena')));
-                        expect(arena.top, greaterThanOrEqualTo(0));
-                        expect(arena.bottom, lessThanOrEqualTo(740));
                       })))));
       await tester.pumpAndSettle();
       await tester.scrollUntilVisible(find.text('Later attacks · 19'), 250);
@@ -65,6 +65,9 @@ void main() {
       expect(writes, 0);
       await tester.pumpAndSettle();
       expect(writes, 1);
+      expect(submittedStep, 'step-19');
+      expect(arenaAtSubmission!.top, greaterThanOrEqualTo(0));
+      expect(arenaAtSubmission!.bottom, lessThanOrEqualTo(740));
       expect(tester.takeException(), isNull);
     });
   }
