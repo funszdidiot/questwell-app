@@ -1071,6 +1071,17 @@ enum QuestwellHearthSetting {
       this == emberglassConservatory;
   String get asset => 'assets/images/questwell/hearth/$file.webp';
 
+  /// The left gallery position sits on the Halloween chimney centerline.
+  /// Preserve canonical frame size and follow the room crop on narrow screens.
+  Offset? wallArtAnchor(Size scene, String slot) {
+    if (this != hallowedHearth || slot != 'wall_left') return null;
+    final scale = math.max(scene.width / 1536, scene.height / 1024);
+    return Offset(
+      568 * scale + (scene.width - 1536 * scale) / 2,
+      179.2 * scale + (scene.height - 1024 * scale) * .52,
+    );
+  }
+
   /// Source-art mantel contact point follows the same cover crop as the room.
   /// Other rooms retain their established surface anchors.
   Offset? mantelAnchor(Size scene) {
@@ -1298,6 +1309,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                         side: side,
                         scene: Size(sceneWidth, sceneHeight),
                         library: roomSetting.compactGallery,
+                        anchor: roomSetting.wallArtAnchor(
+                            Size(sceneWidth, sceneHeight), side),
                         renderSpec: hearthRenderBySlug[art],
                       ),
                 if (equippedSlugs['room:window'] == 'rainy-window')
