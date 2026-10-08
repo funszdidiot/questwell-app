@@ -1,5 +1,14 @@
 # Questwell Production Dashboard
 
+## App-wide Hearth standard — October 7, 2026 (America/Chicago)
+
+**BUILDING / QA**. Tanya explicitly directed the entire app to follow the accepted
+Hearth standard. Shared chrome, materials, navigation, typography, icons, inputs,
+buttons and feedback now form one presentation system across the main screens
+and account flows. Required CI and independent delivered review are pending.
+See `APP_VISUAL_STANDARD.md`; the delivery PR records final evidence.
+
+
 ## Hallowed Hearth Halloween collection — October 8, 2026
 
 **QA — fireplace alignment correction.** Six designs, 740 total coins,
@@ -15,7 +24,9 @@ avatar assets are unchanged. See `../qa/HALLOWED_HEARTH.md` and
 
 ## Hearth icon and empty-state consistency — October 8, 2026
 
-**QA**. The furnished-home review found the room composition successful, with
+**DEV DEPLOYED** via PR #74 at `20a71d6`, Preview `37716661788`.
+913 Flutter / 397 Chrome tests passed; independent visual review accepted the
+390px mastered empty state and 320px/200% Campfire controls. The furnished-home review found the room composition successful, with
 remaining inconsistencies in small artwork and state wording. Home class badges,
 coins, XP gems and empty clipboard now share the shaded illustration style.
 Empty boards use “A FRESH PAGE”; active and Campfire headings remain contextual.

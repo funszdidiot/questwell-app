@@ -1,3 +1,5 @@
+import 'questwell_hearth_material.dart';
+import 'questwell_app_style.dart';
 import 'package:flutter/material.dart';
 import '../services/questwell_cosmetic_models.dart';
 import '../services/questwell_equipment_policy.dart';
@@ -119,9 +121,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                       onPressed: () => Navigator.pop(ctx, false),
                       child: Text('Cancel')),
                   FilledButton(
-                      style: FilledButton.styleFrom(
-                          textStyle: QuestwellTypography.control(),
-                          minimumSize: const Size(48, 48)),
+                      style: QuestwellAppStyle.primaryButton(),
                       onPressed: () => Navigator.pop(ctx, true),
                       child: Text(i.price == 0 ? 'Claim item' : 'Buy item'))
                 ]));
@@ -223,9 +223,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                                   color: gold, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 20),
                           FilledButton(
-                              style: FilledButton.styleFrom(
-                                  textStyle: QuestwellTypography.control(),
-                                  minimumSize: const Size(48, 48)),
+                              style: QuestwellAppStyle.primaryButton(),
                               onPressed: canAct(item)
                                   ? () => Navigator.pop(ctx, 'activate')
                                   : null,
@@ -349,12 +347,8 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
             ]));
   }
 
-  Widget _browseControls() => Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-          color: const Color(0xFF14272A),
-          border: Border.all(color: const Color(0xFF344C46)),
-          borderRadius: BorderRadius.circular(10)),
+  Widget _browseControls() => QuestwellHearthFrame(
+      padding: const EdgeInsets.all(16),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         TextField(
             controller: searchController,
@@ -530,13 +524,10 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                 Text(label),
               ])));
 
-  Widget card(QuestwellCosmetic item) => Container(
+  Widget card(QuestwellCosmetic item) => QuestwellHearthFrame(
       key: ValueKey('market-${item.slug}'),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-          color: cream,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: const Color(0xFFCDBB96))),
+      parchment: true,
+      padding: const EdgeInsets.all(18),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         InkWell(
             onTap: () => details(item),
@@ -569,11 +560,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                             fontWeight: FontWeight.w600)),
                     const SizedBox(height: 4),
                     Text(item.name,
-                        style: QuestwellTypography.body(
-                            color: ink,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700,
-                            height: 1.35)),
+                        style: QuestwellHearthMaterial.serif(18, color: ink)),
                     const SizedBox(height: 7),
                     Text(
                         item.owned
@@ -621,12 +608,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                   child: Text('Preview')),
               FilledButton(
                   onPressed: canAct(item) ? () => _activateItem(item) : null,
-                  style: FilledButton.styleFrom(
-                      textStyle: QuestwellTypography.control(),
-                      backgroundColor: ink,
-                      foregroundColor: cream,
-                      disabledBackgroundColor: const Color(0xFFDDD4BE),
-                      disabledForegroundColor: const Color(0xFF656B5D)),
+                  style: QuestwellAppStyle.primaryButton(),
                   child: Text(action(item))),
             ]),
       ]));

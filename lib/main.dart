@@ -1,3 +1,4 @@
+import 'widgets/questwell_app_style.dart';
 import 'dart:async';
 import 'dart:ui';
 import 'dart:ui' as ui show TextDirection;
@@ -201,8 +202,8 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('en', '')],
-      theme: ThemeData(brightness: Brightness.light, useMaterial3: false),
-      darkTheme: ThemeData(brightness: Brightness.dark, useMaterial3: false),
+      theme: QuestwellAppStyle.theme(),
+      darkTheme: QuestwellAppStyle.theme(),
       themeMode: _themeMode,
       routerConfig: _router,
     );

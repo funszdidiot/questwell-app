@@ -233,7 +233,7 @@ class QuestwellHomeMomentum extends StatelessWidget {
             tooltip: 'Open Chronicle',
             onPressed: onOpen,
             constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-            icon: const QuestwellNavPixelIcon(kind: 'chronicle', size: 22)),
+            icon: const QuestwellHearthIcon(kind: 'chronicle', size: 22)),
       ]));
 }
 
@@ -277,7 +277,7 @@ class QuestwellHomeCampfireControl extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(children: [
-                  const QuestwellNavPixelIcon(kind: 'campfire', size: 36),
+                  const QuestwellHearthIcon(kind: 'campfire', size: 36),
                   const SizedBox(width: 12),
                   Expanded(child: title),
                 ]),
@@ -290,7 +290,7 @@ class QuestwellHomeCampfireControl extends StatelessWidget {
               ]);
         }
         return Row(children: [
-          const QuestwellNavPixelIcon(kind: 'campfire', size: 36),
+          const QuestwellHearthIcon(kind: 'campfire', size: 36),
           const SizedBox(width: 12),
           Expanded(
               child: Column(

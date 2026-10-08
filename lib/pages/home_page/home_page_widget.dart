@@ -1,3 +1,6 @@
+import '../../widgets/questwell_hearth_icon.dart';
+import '../../widgets/questwell_hearth_material.dart';
+import '../../widgets/questwell_app_style.dart';
 import '/widgets/questwell_home_quest.dart';
 import '/widgets/questwell_app_navigation.dart';
 import '/auth/supabase_auth/auth_util.dart';
@@ -372,10 +375,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           future: _homeSnapshotFuture,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
-              return QuestwellRetroPanel(
+              return QuestwellHearthFrame(
                 padding: const EdgeInsets.all(14),
-                accent: const Color(0xFFE87947),
-                background: const Color(0xFF1A1512),
                 child: Row(
                   children: [
                     Icon(Icons.cloud_off_outlined, color: theme.primary),
@@ -399,9 +400,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             }
 
             if (!snapshot.hasData) {
-              return const QuestwellRetroPanel(
+              return const QuestwellHearthFrame(
                 padding: EdgeInsets.all(20),
-                accent: Color(0xFF8E6B35),
                 child: SizedBox(
                   height: 64,
                   child: Center(child: CircularProgressIndicator()),
@@ -513,7 +513,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         FocusScope.of(context).unfocus();
         FocusManager.instance.primaryFocus?.unfocus();
       },
-      child: Scaffold(
+      child: QuestwellScaffold(
         bottomNavigationBar: const QuestwellAppNavigation(
           current: QuestwellDestination.hearth,
         ),
@@ -583,10 +583,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return focusLayout(
-                        QuestwellRetroPanel(
+                        QuestwellHearthFrame(
                           padding: const EdgeInsets.all(14),
-                          accent: const Color(0xFFE87947),
-                          background: const Color(0xFF1A1512),
                           child: Row(
                             children: [
                               Icon(
@@ -740,9 +738,9 @@ class _RewardChip extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           icon == Icons.monetization_on_outlined
-              ? const QuestwellCurrencyPixelIcon(kind: 'coin', size: 17)
+              ? const QuestwellHearthIcon(kind: 'coin', size: 17)
               : icon == Icons.auto_awesome
-                  ? const QuestwellCurrencyPixelIcon(kind: 'xp', size: 17)
+                  ? const QuestwellHearthIcon(kind: 'xp', size: 17)
                   : Icon(icon, size: 16, color: theme.primary),
           const SizedBox(width: 6),
           Flexible(
