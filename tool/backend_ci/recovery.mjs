@@ -19,6 +19,16 @@ export function assertMissingRecoveryFile(response, objectPath, version) {
     ? response.data.message.match(/^ENOENT: no such file or directory, stat '([^']+)'$/)?.[1] : undefined;
   const missing = response.status === 500 && response.data?.code === 'InternalError' &&
     typeof filename === 'string' && filename.endsWith(physicalSuffix);
+  if (!missing && response.status === 500) console.error(JSON.stringify({
+    recovery_missing_file_diagnostic: true,
+    code_internal: response.data?.code === 'InternalError',
+    error_internal: response.data?.error === 'InternalError',
+    message_enoent: typeof response.data?.message === 'string' && /\bENOENT\b/.test(response.data.message),
+    filename_parsed: typeof filename === 'string',
+    expected_suffix: typeof filename === 'string' && filename.endsWith(physicalSuffix),
+    object_path_present: typeof response.data?.message === 'string' && response.data.message.includes(objectPath),
+    version_present: typeof response.data?.message === 'string' && typeof version === 'string' && response.data.message.includes(version),
+  }));
   assert.ok(missing || ([400,404].includes(response.status) && response.data?.code === 'NoSuchKey'),
     `Expected specific missing-file error; received HTTP ${response.status}`);
 }
