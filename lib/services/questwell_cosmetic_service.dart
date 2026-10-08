@@ -144,9 +144,24 @@ class QuestwellCosmeticService {
         .where((item) => !QuestwellEquipmentPolicy.isRetired(item.slug))
         .toList();
 
+    final namesById = {for (final item in cosmetics) item.id: item.name};
+    final hearthOccupants = <String, RoomOccupant>{};
+    for (final row in ownedRows) {
+      final slot = row['room_slot']?.toString();
+      final id = row['cosmetic_id']?.toString();
+      if (row['equipped'] == true &&
+          slot != null &&
+          slot.isNotEmpty &&
+          id != null &&
+          id.isNotEmpty) {
+        hearthOccupants[slot] =
+            RoomOccupant(id, namesById[id] ?? 'Stored Hearth item');
+      }
+    }
     return QuestwellCosmeticsSnapshot(
       profile: profile,
       cosmetics: cosmetics,
+      hearthOccupants: hearthOccupants,
     );
   }
 

@@ -87,7 +87,8 @@ class _MarketPageWidgetState extends State<MarketPageWidget> {
             occupants: {
               for (final i
                   in equipped.where((i) => i.category == cosmetic.category))
-                i.roomSlot ?? 'right': RoomOccupant(i.id, i.name)
+                i.roomSlot ?? 'right': RoomOccupant(i.id, i.name),
+              ...data.hearthOccupants
             },
             placementChoices: cosmetic.hearthPlacements.isEmpty
                 ? null
