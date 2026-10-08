@@ -21,7 +21,14 @@ generated marker and absent target-name checks guard switching.
 
 Before switching services, it compares schema/functions/RLS/grants and content
 hashes/counts for public/private tables, Auth users/identities and Storage
-objects/buckets. Fresh password sign-ins then verify both owners, isolated quests,
+objects/buckets. PostgreSQL reparses source CHECK constraints on empty temporary
+LIKE tables inside rolled-back transactions before comparison: logical restore
+flattens nested AND nodes. No parentheses are stripped and no constraint is
+excluded; source tables and historical catalog gates remain unchanged.
+A real target-side negative control replaces one CHECK with `CHECK (true)` inside
+a rolled-back transaction, requires comparison to reject it, then verifies normal
+catalog parity again.
+Fresh password sign-ins then verify both owners, isolated quests,
 balances, reward consistency, boss steps and feedback. Exactly the newly created
 image is removed through Storage's API to simulate lost bytes. The restored
 metadata must NOT make that image downloadable. Restoring the saved bytes must

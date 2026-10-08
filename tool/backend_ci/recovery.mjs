@@ -58,7 +58,7 @@ export async function rehearseRecovery(status) {
     assert.ok(['postgres', 'template1', 'questwell_restore_ci'].includes(database));
     return docker(['exec', '-i', dbContainer, 'psql', '--host=/var/run/postgresql',
       '--username=supabase_admin', `--dbname=${database}`, '--no-password', '-X',
-      '--tuples-only', '--no-align', '--set=ON_ERROR_STOP=1', '--file=-'], statement).trim();
+      '--quiet', '--tuples-only', '--no-align', '--set=ON_ERROR_STOP=1', '--file=-'], statement).trim();
   };
   const request = async (path, owner, method = 'GET', body, headers = {}) => {
     const r = await localRequest(status, path, {method,
@@ -116,6 +116,30 @@ export async function rehearseRecovery(status) {
   assert.equal(sha256(backupFile.bytes), sha256(originalBytes));
   const catalogSql = readFileSync(new URL('./catalog.sql', import.meta.url), 'utf8');
   const expectedCatalog = JSON.parse(sql(catalogSql));
+  // Logical restore reparses CHECK expressions and flattens nested AND nodes.
+  // Have PostgreSQL reparse each source CHECK on an empty temporary LIKE table;
+  // never strip parentheses in JavaScript or skip constraint comparisons.
+  // ROLLBACK discards every temporary DDL change; source tables are untouched.
+  const quoteIdent = value => `"${value.replaceAll('"', '""')}"`;
+  const checkGroups = new Map();
+  for (const constraint of expectedCatalog.constraints.filter(c => c.type === 'c')) {
+    const table = `${quoteIdent(constraint.schema)}.${quoteIdent(constraint.table_name)}`;
+    if (!checkGroups.has(table)) checkGroups.set(table, []);
+    checkGroups.get(table).push(constraint);
+  }
+  for (const [table, constraints] of checkGroups) {
+    const canonical = JSON.parse(sql(`begin; set local search_path=pg_catalog;
+      create temporary table recovery_check_parser (like ${table});
+      ${constraints.map(c => `alter table pg_temp.recovery_check_parser add constraint ${quoteIdent(c.name)} ${c.definition};`).join('\n')}
+      select jsonb_object_agg(conname,pg_get_constraintdef(oid,false)) from pg_constraint
+        where conrelid='pg_temp.recovery_check_parser'::regclass and contype='c';
+      rollback;`));
+    assert.equal(Object.keys(canonical).length, constraints.length);
+    for (const c of constraints) {
+      assert.equal(typeof canonical[c.name], 'string');
+      c.definition = canonical[c.name];
+    }
+  }
   const tables = JSON.parse(sql(`select jsonb_agg(format('%I.%I', schemaname, tablename) order by schemaname, tablename)
     from pg_tables where schemaname in ('public','private')
     or (schemaname='auth' and tablename in ('users','identities'))
@@ -145,6 +169,15 @@ export async function rehearseRecovery(status) {
     '--username=supabase_admin', '--dbname=questwell_restore_ci', '--no-password',
     '--exit-on-error', '--single-transaction'], archive);
   requireMarker('questwell_restore_ci');
+  assertCatalogMatches(expectedCatalog, JSON.parse(sql(catalogSql, 'questwell_restore_ci')));
+  // Real negative control: a weakened restored CHECK must still fail parity.
+  // Capture its catalog inside a transaction, then undo it before proceeding.
+  const weakenedCatalog = JSON.parse(sql(`begin;
+    alter table public.beta_feedback drop constraint beta_feedback_build_check;
+    alter table public.beta_feedback add constraint beta_feedback_build_check check (true);
+    ${catalogSql}
+    rollback;`, 'questwell_restore_ci'));
+  assert.throws(() => assertCatalogMatches(expectedCatalog, weakenedCatalog), /Catalog mismatch: constraints/);
   assertCatalogMatches(expectedCatalog, JSON.parse(sql(catalogSql, 'questwell_restore_ci')));
   assert.deepEqual(fingerprint('questwell_restore_ci'), expectedRows, 'Restored row counts/content differ');
   console.log(`Recovery: separate empty database restored; ${tables.length} table counts/content hashes and application schema/grants/RLS match.`);
