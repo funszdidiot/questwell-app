@@ -49,6 +49,25 @@ void main() {
         expect(find.text('Hearth'), findsWidgets);
         expect(tester.takeException(), isNull,
             reason: '$screen must preserve layout with the common navigation');
+        if (screen == 'Quests' && setting.$2 == 2) {
+          final action = find.text('Complete quest').first;
+          await tester.ensureVisible(action);
+          await tester.pump();
+          final label = tester.renderObject<RenderParagraph>(action);
+          for (final range in [(0, 8), (9, 14)]) {
+            expect(
+                label.getBoxesForSelection(TextSelection(
+                    baseOffset: range.$1, extentOffset: range.$2)),
+                hasLength(1),
+                reason: 'The completion icon must not split enlarged words');
+          }
+          expect(label.textScaler.scale(17), 34);
+          expect(action.hitTestable(), findsOneWidget);
+          await tester.tap(action);
+          await tester.pump();
+          expect(find.text('Send the email you have been putting off'),
+              findsNothing);
+        }
         if (screen == 'Market' && setting.$2 == 2) {
           await tester.scrollUntilVisible(find.text('Business Suit'), 200,
               scrollable: find.byType(Scrollable).first);

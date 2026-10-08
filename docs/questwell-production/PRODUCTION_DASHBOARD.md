@@ -5,11 +5,12 @@
 **DEV DEPLOYED / QA**. Tanya explicitly directed the entire app to follow the accepted
 Hearth standard. Shared chrome, materials, navigation, typography, icons, inputs,
 buttons and feedback now form one presentation system across the main screens
-and account flows. PR #77 deployed at `b01aa00a`, Preview `37724181383`, with
-946 Flutter / 397 Chrome tests and all required checks passing. Independent
-review accepted the shared materials across all main destinations. A follow-up
-corrects four enlarged-text wrapping defects and Market detail typography.
-Those corrections remain in QA; real account settings still need a signed-in
+and account flows. PR #77 established the shared rollout; PR #82 deployed the
+large-text and typography corrections at `0a49ecf`, Preview `37729581654`.
+950 Flutter / 398 Chrome tests and all required checks passed. Independent
+review verified all main destinations, the delivered corrections and successful
+quest creation/editing. A final completion-button reflow is tracked by its
+follow-up delivery PR. Real account settings still need a signed-in
 visual check. See `APP_VISUAL_STANDARD.md` and
 `../qa/APP_WIDE_HEARTH.md` for the exact scope and limitations.
 
