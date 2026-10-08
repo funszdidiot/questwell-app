@@ -88,8 +88,8 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
   Future<void> _edit(BuildContext context, int i) async {
     final quest = _quests[i];
     final friction = switch (quest.effort) {
-      'Easy' => 1,
-      'Low Energy' || 'Annoying' => 2,
+      'Easy' || 'Low Energy' => 1,
+      'Annoying' => 2,
       'Hard to Start' => 3,
       _ => 4,
     };
@@ -129,7 +129,7 @@ class _QuestBoardReviewAppState extends State<QuestBoardReviewApp> {
       _quests.add((
         title: title,
         effort: switch (friction) {
-          1 => 'Low Energy',
+          1 => 'Easy',
           2 => 'Annoying',
           3 => 'Hard to Start',
           _ => 'Brain Says Absolutely Not',

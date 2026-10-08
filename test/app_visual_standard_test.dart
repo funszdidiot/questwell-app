@@ -4,6 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_momentum/preview/mobile_review.dart';
+import 'package:project_momentum/preview/quest_board_review.dart';
+import 'package:project_momentum/add_task_page/add_task_page_widget.dart';
+import 'package:project_momentum/widgets/questwell_quest_card.dart';
 import 'package:project_momentum/preview/market_catalog.dart';
 import 'package:project_momentum/services/questwell_cosmetic_models.dart';
 import 'package:project_momentum/widgets/questwell_market_view.dart';
@@ -106,6 +109,37 @@ void main() {
       });
     }
   }
+
+  testWidgets('Preview retains chosen effort from creation through editing',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(390, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+        const QuestBoardReviewApp(openNewQuest: true, initialQuests: []));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextFormField), 'Put one book away');
+    FocusManager.instance.primaryFocus?.unfocus();
+    for (final action in ['Easy', 'Post to Quest Board']) {
+      await tester.ensureVisible(find.text(action));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(action));
+      await tester.pumpAndSettle();
+    }
+    final card =
+        tester.widget<QuestwellQuestCard>(find.byType(QuestwellQuestCard));
+    expect(card.effort, 'Easy');
+    expect((card.xp, card.coins), (10, 5));
+    await tester.ensureVisible(find.text('Edit quest'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Edit quest'));
+    await tester.pumpAndSettle();
+    final edit =
+        tester.widget<AddTaskPageWidget>(find.byType(AddTaskPageWidget));
+    expect(edit.initialTitle, 'Put one book away');
+    expect(
+        (edit.initialFriction, edit.initialXp, edit.initialCoins), (1, 10, 5));
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets('Market preserves whole words with nonlinear enlarged text',
       (tester) async {
