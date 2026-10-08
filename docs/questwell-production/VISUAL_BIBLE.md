@@ -22,8 +22,9 @@ World/decor production still follows the existing 64-bit-era art quality and
 canonical slot/scale rules. In-world artwork and small inventory icons retain
 their established distinct resolution roles.
 
-The generated Hearth concept establishes a direction to develop, not a replacement
-sprite sheet, exact mobile layout, new room template or final art lock. Begin with
+Historical first-pass scope (superseded by the full-reference clarification below):
+the generated concept began as a material direction, not a replacement sprite sheet
+or new art lock. The first implementation used
 shared timber/brass Hearth panels, evergreen actions and coordinated Campfire
 controls. Preserve the wordmark, pixel headings and readable Roboto body text.
 Keep decoration outside text and hit targets. Validate at 320/390/430 px, desktop
@@ -77,3 +78,15 @@ Once a body-specific robe geometry is founder-approved, class robes for that bod
 Judge actual runtime assets, not concept art alone. Inspect full figure and close detail at native/app scale, including shoulders, neck, wrists, hands, waist, hips, crotch/inseam, legs, heels/soles, seams, transparency, rear/front overlap and equipment intersections. Also inspect portrait/card/mobile contexts.
 
 A build/test pass proves technical health; it does not constitute visual approval.
+
+## Founder-selected full Hearth reference — October 7, 2026
+
+Tanya clarified that the entire portrait concept governs the home page: background,
+layout, buttons, navigation and all surface treatments. The hierarchy is immersive
+room with integrated logo → compact progress strip → parchment next quest with
+timber plaque and evergreen action → Campfire → timber navigation. Preserve this
+sequence on desktop, use serif type for major content/actions and pixel type for
+short game labels. Secondary destinations remain accessible without competing with
+the next quest. This supersedes the prior restrained material-only direction and
+side-by-side desktop overview. Existing avatar and decorating geometry locks remain
+in force. QA/integration evidence: `../qa/HEARTH_FULL_HOME.md`.

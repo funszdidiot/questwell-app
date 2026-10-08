@@ -12,6 +12,13 @@ abstract final class QuestwellHearthMaterial {
     borderRadius: BorderRadius.all(Radius.circular(3)),
   );
 
+  static TextStyle serif(double size, {Color color = ink}) => TextStyle(
+      fontFamily: 'HearthSerif',
+      fontSize: size,
+      height: 1.25,
+      fontWeight: FontWeight.w700,
+      color: color);
+
   static ButtonStyle primaryButton() => FilledButton.styleFrom(
         backgroundColor: evergreen,
         foregroundColor: ink,
@@ -63,7 +70,7 @@ class QuestwellHearthFrame extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: parchment
-                    ? const [Color(0xFFF0E0BA), Color(0xFFE7D3A7)]
+                    ? const [Color(0xFFF4E4BC), Color(0xFFE2C78E)]
                     : warm
                         ? const [Color(0xFF33271F), Color(0xFF231E1D)]
                         : const [Color(0xFF202D37), Color(0xFF17212B)],
@@ -88,9 +95,9 @@ class _HearthFramePainter extends CustomPainter {
     // Paint rails inside the existing margin without reducing layout width.
     paint
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 6
+      ..strokeWidth = 9
       ..color = QuestwellHearthMaterial.timber;
-    canvas.drawRect(bounds.deflate(3), paint);
+    canvas.drawRect(bounds.deflate(4.5), paint);
     // Stepped highlights suggest carved rails without texture behind text.
     paint
       ..style = PaintingStyle.stroke
@@ -100,16 +107,16 @@ class _HearthFramePainter extends CustomPainter {
     paint.color = const Color(0xFF241B18);
     canvas.drawRect(bounds.deflate(4.5), paint);
     paint.color = const Color(0xFF90744B);
-    canvas.drawRect(bounds.deflate(6.5), paint);
+    canvas.drawRect(bounds.deflate(9.5), paint);
     paint.style = PaintingStyle.fill;
     for (final corner in [
       const Offset(1, 1),
-      Offset(size.width - 9, 1),
-      Offset(1, size.height - 9),
-      Offset(size.width - 9, size.height - 9),
+      Offset(size.width - 11, 1),
+      Offset(1, size.height - 11),
+      Offset(size.width - 11, size.height - 11),
     ]) {
       paint.color = QuestwellHearthMaterial.brass;
-      canvas.drawRect(corner & const Size(8, 8), paint);
+      canvas.drawRect(corner & const Size(10, 10), paint);
       paint.color = const Color(0xFFF1D394);
       canvas.drawRect((corner + const Offset(1, 1)) & const Size(6, 1), paint);
       paint.color = const Color(0xFF694925);
@@ -120,4 +127,119 @@ class _HearthFramePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _HearthFramePainter oldDelegate) => false;
+}
+
+/// Bundled serif means the Hearth never depends on a network font request.
+class QuestwellHearthButton extends StatelessWidget {
+  const QuestwellHearthButton({super.key, required this.label, this.onPressed});
+  final String label;
+  final VoidCallback? onPressed;
+  @override
+  Widget build(BuildContext context) => DecoratedBox(
+        decoration: const BoxDecoration(boxShadow: [
+          BoxShadow(
+              color: Color(0x55261B0D), blurRadius: 3, offset: Offset(0, 3)),
+        ]),
+        child: CustomPaint(
+            foregroundPainter: const _HearthButtonPainter(),
+            child: FilledButton(
+                onPressed: onPressed,
+                style: QuestwellHearthMaterial.primaryButton().copyWith(
+                    textStyle: WidgetStatePropertyAll(
+                        QuestwellHearthMaterial.serif(21))),
+                child: Text(label, textAlign: TextAlign.center))),
+      );
+}
+
+class _HearthButtonPainter extends CustomPainter {
+  const _HearthButtonPainter();
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+    p.color = const Color(0xFF927A45);
+    canvas.drawRect((Offset.zero & size).deflate(3), p);
+    p.color = const Color(0x663F8B6F);
+    canvas.drawLine(const Offset(6, 6), Offset(size.width - 6, 6), p);
+    p.style = PaintingStyle.fill;
+    for (final x in [5.0, size.width - 8]) {
+      for (final y in [5.0, size.height - 8]) {
+        p.color = const Color(0xFFE7C277);
+        canvas.drawRect(Rect.fromLTWH(x, y, 3, 3), p);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _HearthButtonPainter oldDelegate) => false;
+}
+
+class QuestwellHearthQuestFrame extends StatelessWidget {
+  const QuestwellHearthQuestFrame(
+      {super.key, required this.child, required this.label});
+  final Widget child;
+  final String label;
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Flow measures the entire plaque at any text scale before the card starts.
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: QuestwellHearthFrame(
+                  warm: true,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                  child: Text(label,
+                      textAlign: TextAlign.center,
+                      style: QuestwellTypography.sectionHeading(size: 10)))),
+          Transform.translate(
+              offset: const Offset(0, -5),
+              child: QuestwellHearthFrame(
+                  parchment: true,
+                  padding: const EdgeInsets.fromLTRB(22, 22, 22, 20),
+                  child: child)),
+        ],
+      );
+}
+
+/// A deterministic carved timber surface, painted behind readable controls.
+class QuestwellHearthTimber extends StatelessWidget {
+  const QuestwellHearthTimber({super.key, required this.child});
+  final Widget child;
+  @override
+  Widget build(BuildContext context) =>
+      CustomPaint(painter: const _HearthTimberPainter(), child: child);
+}
+
+class _HearthTimberPainter extends CustomPainter {
+  const _HearthTimberPainter();
+  @override
+  void paint(Canvas canvas, Size size) {
+    final bounds = Offset.zero & size;
+    final p = Paint()
+      ..shader = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFF483024), Color(0xFF251C18), Color(0xFF3D291F)],
+      ).createShader(bounds);
+    canvas.drawRect(bounds, p);
+    p.shader = null;
+    for (double y = 0; y < size.height; y += 36) {
+      p.color = const Color(0xFF1D1512);
+      canvas.drawRect(Rect.fromLTWH(0, y, size.width, 2), p);
+      p.color = const Color(0xFF65422C);
+      canvas.drawRect(Rect.fromLTWH(0, y + 2, size.width, 1), p);
+      for (var i = 0; i < 6; i++) {
+        p.color = i.isEven ? const Color(0x256F482E) : const Color(0x3518100D);
+        final x = ((y * 7 + i * 71) % 113) - 30;
+        canvas.drawRect(
+            Rect.fromLTWH(x, y + 6 + i * 4, size.width * .78, 1), p);
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _HearthTimberPainter oldDelegate) => false;
 }

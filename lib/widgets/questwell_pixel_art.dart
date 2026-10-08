@@ -69,7 +69,6 @@ class QuestwellPixelPalette {
   }
 }
 
-
 class QuestwellLayeredAdventurerArt extends StatelessWidget {
   const QuestwellLayeredAdventurerArt({
     super.key,
@@ -81,8 +80,7 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
     this.previewWoodlandLayers,
   });
 
-  static const _maleBase =
-      'assets/images/questwell/avatar/base/base_male.webp';
+  static const _maleBase = 'assets/images/questwell/avatar/base/base_male.webp';
   static const _femaleBase =
       'assets/images/questwell/avatar/base/base_female.webp';
   static const _neutralBase =
@@ -221,36 +219,46 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final equippedSlugs = Map<String, String>.of(this.equippedSlugs)
-      ..removeWhere((_, slug) => QuestwellEquipmentPolicy.isRetired(slug) ||
+      ..removeWhere((_, slug) =>
+          QuestwellEquipmentPolicy.isRetired(slug) ||
           !QuestwellEquipmentPolicy.supportsBody(slug, avatarBodyType));
     if (QuestwellCloak.supports(equippedSlugs['chest'])) {
       equippedSlugs.remove('hands');
     }
     final chest = equippedSlugs['chest'];
     final harvestCoat = chest == 'midnight-harvest-coat';
-    final harvestBody = ['male', 'female'].contains(avatarBodyType) ? avatarBodyType : 'neutral';
-    final fittedBody = const {'female', 'neutral', 'male'}.contains(harvestBody);
+    final harvestBody = ['male', 'female'].contains(avatarBodyType)
+        ? avatarBodyType
+        : 'neutral';
+    final fittedBody =
+        const {'female', 'neutral', 'male'}.contains(harvestBody);
     final legacyChest = chest != null &&
         QuestwellLegacyChestFoundation.supported.contains(chest);
-    final woodland = fittedBody && (previewWoodlandLayers != null ||
-        chest == 'woodland-scout-outfit');
+    final woodland = fittedBody &&
+        (previewWoodlandLayers != null || chest == 'woodland-scout-outfit');
     final fittedDefault = fittedBody &&
         (harvestBody == 'male' ||
-          const {'scout', 'alchemist', 'scholar', 'guardian', 'wanderer'}.contains(archetype)) &&
+            const {'scout', 'alchemist', 'scholar', 'guardian', 'wanderer'}
+                .contains(archetype)) &&
         (chest == null || (harvestBody == 'male' && !legacyChest)) &&
-        previewWoodlandLayers == null && !woodland;
-    final scoutLayers = previewScoutLayers ?? (fittedBody &&
-        equippedSlugs['chest'] == 'everyday-adventurer-outfit'
-        ? const {'top', 'trousers', 'boots'}
-        : fittedDefault ? const {'top', 'trousers', 'boots', 'robe'} : null);
+        previewWoodlandLayers == null &&
+        !woodland;
+    final scoutLayers = previewScoutLayers ??
+        (fittedBody && equippedSlugs['chest'] == 'everyday-adventurer-outfit'
+            ? const {'top', 'trousers', 'boots'}
+            : fittedDefault
+                ? const {'top', 'trousers', 'boots', 'robe'}
+                : null);
     final woodlandLayers = previewWoodlandLayers ?? const {'outfit'};
     final modular = scoutLayers != null || woodland;
     String fittedRobeAsset(String part) {
       if (harvestBody == 'neutral' || harvestBody == 'male') {
-        return QuestwellScoutWardrobeFoundation.asset(
-            harvestBody, part, archetype: archetype);
+        return QuestwellScoutWardrobeFoundation.asset(harvestBody, part,
+            archetype: archetype);
       }
-      if (harvestBody == 'female' && const {'alchemist', 'scholar', 'guardian', 'wanderer'}.contains(archetype)) {
+      if (harvestBody == 'female' &&
+          const {'alchemist', 'scholar', 'guardian', 'wanderer'}
+              .contains(archetype)) {
         final version = switch (archetype) {
           'alchemist' => 'v7',
           'guardian' => 'v4',
@@ -260,48 +268,63 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
       }
       return QuestwellScoutWardrobeFoundation.asset(harvestBody, part);
     }
-    final classOverlay = woodland ? null : modular
-        ? (scoutLayers!.contains('robe') ? fittedRobeAsset('robe') : null)
-        : harvestCoat
-        ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v8.webp'
-        : legacyChest ? null
-        : chest == 'starter-business-suit' ? null : _classOverlayAsset;
+
+    final classOverlay = woodland
+        ? null
+        : modular
+            ? (scoutLayers!.contains('robe') ? fittedRobeAsset('robe') : null)
+            : harvestCoat
+                ? 'assets/images/questwell/avatar/harvest_coat_${harvestBody}_v8.webp'
+                : legacyChest
+                    ? null
+                    : chest == 'starter-business-suit'
+                        ? null
+                        : _classOverlayAsset;
     final rearRevision = archetype == 'wanderer' ? 'short_v1' : 'v1';
     final body = ['male', 'female'].contains(avatarBodyType)
-        ? avatarBodyType : 'neutral';
+        ? avatarBodyType
+        : 'neutral';
     final paperDollFemale = (modular || legacyChest) && body == 'female';
     final paperDollNeutral = (modular || legacyChest) && body == 'neutral';
     final paperDollMale = (modular || legacyChest) && body == 'male';
     final paperDoll = paperDollFemale || paperDollNeutral || paperDollMale;
 
-
     Widget classLayer(String asset) {
       final image = modular && !paperDoll
-          ? ClipPath(clipper: ScoutWardrobeClipper(body, 'robe'), child: _assetLayer(asset))
-          : !modular && !harvestCoat && archetype == 'scholar' &&
-              !QuestwellCloak.supports(equippedSlugs['chest'])
-          ? ClipPath(clipper: ScholarCuffReplacementClipper(body), child: _assetLayer(asset))
-          : _assetLayer(asset);
+          ? ClipPath(
+              clipper: ScoutWardrobeClipper(body, 'robe'),
+              child: _assetLayer(asset))
+          : !modular &&
+                  !harvestCoat &&
+                  archetype == 'scholar' &&
+                  !QuestwellCloak.supports(equippedSlugs['chest'])
+              ? ClipPath(
+                  clipper: ScholarCuffReplacementClipper(body),
+                  child: _assetLayer(asset))
+              : _assetLayer(asset);
       return QuestwellCloak.supports(equippedSlugs['chest'])
-          ? ClipPath(clipper: QuestwellCloakUnderlayerClipper(body), child: image)
+          ? ClipPath(
+              clipper: QuestwellCloakUnderlayerClipper(body), child: image)
           : image;
     }
 
     Widget foundation() => legacyChest
         ? QuestwellLegacyChestFoundation(body: body, slug: chest!)
         : woodland
-        ? (harvestBody == 'male'
-            ? QuestwellMaleWoodland(
-                showOutfit: woodlandLayers.contains('outfit'),
-                includeIdentity: false)
-            : harvestBody == 'neutral'
-            ? QuestwellNeutralScout(layers: woodlandLayers)
-            : QuestwellWoodlandScoutFoundation(layers: woodlandLayers))
-        : modular
-        ? QuestwellScoutWardrobeFoundation(body: body, layers: scoutLayers!)
-        : chest == 'starter-business-suit'
-        ? _assetLayer(_baseAsset)
-        : QuestwellCleanBase(body: body, withTrousers: classOverlay != null);
+            ? (harvestBody == 'male'
+                ? QuestwellMaleWoodland(
+                    showOutfit: woodlandLayers.contains('outfit'),
+                    includeIdentity: false)
+                : harvestBody == 'neutral'
+                    ? QuestwellNeutralScout(layers: woodlandLayers)
+                    : QuestwellWoodlandScoutFoundation(layers: woodlandLayers))
+            : modular
+                ? QuestwellScoutWardrobeFoundation(
+                    body: body, layers: scoutLayers!)
+                : chest == 'starter-business-suit'
+                    ? _assetLayer(_baseAsset)
+                    : QuestwellCleanBase(
+                        body: body, withTrousers: classOverlay != null);
 
     Widget baseImage() => foundation();
 
@@ -316,16 +339,20 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
           if (QuestwellCloak.supports(chest))
             QuestwellCloak(slug: chest!, bodyType: body, rear: true),
           if (harvestCoat)
-            _assetLayer('assets/images/questwell/avatar/harvest_coat_rear_${body}_v8.webp'),
+            _assetLayer(
+                'assets/images/questwell/avatar/harvest_coat_rear_${body}_v8.webp'),
           if (modular && classOverlay != null)
             _assetLayer(fittedRobeAsset('robe_rear')),
           if (classOverlay != null && !harvestCoat && !modular)
-            classLayer('assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
-          QuestwellCatalogEquipment(equipment: equippedSlugs, body: body, rear: true),
+            classLayer(
+                'assets/images/questwell/avatar/classes/$archetype/${archetype}_rear_${body}_wrap_$rearRevision.webp'),
+          QuestwellCatalogEquipment(
+              equipment: equippedSlugs, body: body, rear: true),
           if (modular || legacyChest)
             baseLayer()
           else if (harvestCoat)
-            ClipPath(clipper: WandererUnderlayerClipper(body), child: baseLayer())
+            ClipPath(
+                clipper: WandererUnderlayerClipper(body), child: baseLayer())
           else if (equippedSlugs['chest'] == 'starter-business-suit')
             baseLayer()
           else if (archetype == 'scholar')
@@ -357,28 +384,36 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             baseLayer(),
           if (classOverlay != null) classLayer(classOverlay),
           if (harvestCoat)
-            ClipPath(clipper: HarvestCoatHandsClipper(body),
-              child: _assetLayer(body == 'male' ? QuestwellMalePaperDoll.baseAsset
-                : body == 'female' ? QuestwellScoutWardrobeFoundation.femaleBaseAsset
-                : QuestwellNeutralPaperDoll.baseAsset)),
+            ClipPath(
+                clipper: HarvestCoatHandsClipper(body),
+                child: _assetLayer(body == 'male'
+                    ? QuestwellMalePaperDoll.baseAsset
+                    : body == 'female'
+                        ? QuestwellScoutWardrobeFoundation.femaleBaseAsset
+                        : QuestwellNeutralPaperDoll.baseAsset)),
           // This overlay contains only the fixed base's head/hair pixels.
           // It restores hair in front of collars without rebuilding anatomy.
           if (paperDollFemale && (!legacyChest || harvestCoat))
             _assetLayer(QuestwellScoutWardrobeFoundation.femaleIdentityAsset)
           else if (paperDollNeutral && (!legacyChest || harvestCoat))
             harvestCoat
-              ? ClipPath(clipper: QuestwellCloakHairClipper(body),
-                  child: _assetLayer(QuestwellNeutralPaperDoll.identityAsset))
-              : _assetLayer(QuestwellNeutralPaperDoll.identityAsset)
+                ? ClipPath(
+                    clipper: QuestwellCloakHairClipper(body),
+                    child: _assetLayer(QuestwellNeutralPaperDoll.identityAsset))
+                : _assetLayer(QuestwellNeutralPaperDoll.identityAsset)
           else if (paperDollMale && (!legacyChest || harvestCoat))
             const QuestwellMaleIdentity()
-          else if (modular) ClipPath(clipper: classOverlay != null
-              ? ScoutWardrobeClipper(body, 'identityHead')
-              : CleanBaseClipper(body, 'identity'),
-            child: QuestwellCleanBase(body: body)),
+          else if (modular)
+            ClipPath(
+                clipper: classOverlay != null
+                    ? ScoutWardrobeClipper(body, 'identityHead')
+                    : CleanBaseClipper(body, 'identity'),
+                child: QuestwellCleanBase(body: body)),
           // The fitted collar covers only garment pixels in the identity
           // layer. Its authored mask preserves the fixed hair and neckline.
-          if (modular && (paperDollNeutral || paperDollMale) && classOverlay != null)
+          if (modular &&
+              (paperDollNeutral || paperDollMale) &&
+              classOverlay != null)
             _assetLayer(fittedRobeAsset('robe_collar')),
           // Neckwear is tucked beneath a closed cloak, keeping its clasp clear.
           if (QuestwellCloak.supports(equippedSlugs['chest']) &&
@@ -389,8 +424,9 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             // Restore original hair above cloth, without repainting a square
             // neutral neck over the collar. The complete body stays underneath.
             if (paperDollNeutral)
-              ClipPath(clipper: QuestwellCloakHairClipper(body),
-                child: _assetLayer(QuestwellNeutralPaperDoll.identityAsset))
+              ClipPath(
+                  clipper: QuestwellCloakHairClipper(body),
+                  child: _assetLayer(QuestwellNeutralPaperDoll.identityAsset))
             else if (paperDollMale)
               const QuestwellMaleIdentity()
             else if (paperDollFemale)
@@ -404,9 +440,12 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             else
               QuestwellLeatherSatchel(bodyType: body),
             if (!QuestwellCloak.supports(chest)) ...[
-              ClipPath(clipper: SatchelForearmClipper(body), child: baseLayer()),
+              ClipPath(
+                  clipper: SatchelForearmClipper(body), child: baseLayer()),
               if (classOverlay != null)
-                ClipPath(clipper: SatchelForearmClipper(body), child: classLayer(classOverlay)),
+                ClipPath(
+                    clipper: SatchelForearmClipper(body),
+                    child: classLayer(classOverlay)),
             ],
           ],
           if (equippedSlugs['hands'] == QuestwellAnnotatedGrimoire.slug)
@@ -415,11 +454,16 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
             QuestwellBrassLantern(bodyType: body),
             ClipPath(clipper: LanternHandClipper(body), child: baseLayer()),
             if (classOverlay != null)
-              ClipPath(clipper: LanternHandClipper(body), child: classLayer(classOverlay)),
+              ClipPath(
+                  clipper: LanternHandClipper(body),
+                  child: classLayer(classOverlay)),
           ],
           if (modular && classOverlay != null)
             _assetLayer(fittedRobeAsset('robe_cuff_front')),
-          if (!modular && !harvestCoat && archetype == 'scholar' && classOverlay != null &&
+          if (!modular &&
+              !harvestCoat &&
+              archetype == 'scholar' &&
+              classOverlay != null &&
               !QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellScholarCuffs(body: body),
           if (equippedSlugs['accessory'] == QuestwellMoonstoneBrooch.slug)
@@ -428,11 +472,15 @@ class QuestwellLayeredAdventurerArt extends StatelessWidget {
               !QuestwellCloak.supports(equippedSlugs['chest']))
             QuestwellEmeraldScarf(bodyType: body),
           if (equippedSlugs['face'] == 'round-scholar-glasses')
-            QuestwellScholarGlasses(bodyType: body,
-                headOffset: paperDollNeutral ? const Offset(4, 0) : Offset.zero),
+            QuestwellScholarGlasses(
+                bodyType: body,
+                headOffset:
+                    paperDollNeutral ? const Offset(4, 0) : Offset.zero),
           if (equippedSlugs['head'] == 'tiny-wizard-hat')
-            QuestwellWizardHat(bodyType: body,
-                headOffset: paperDollNeutral ? const Offset(4, 0) : Offset.zero),
+            QuestwellWizardHat(
+                bodyType: body,
+                headOffset:
+                    paperDollNeutral ? const Offset(4, 0) : Offset.zero),
           if (equippedSlugs['familiar'] != null)
             QuestwellFamiliarLayer(slug: equippedSlugs['familiar']!),
         ],
@@ -483,24 +531,23 @@ class QuestwellBrandWordmark extends StatelessWidget {
           ),
         ),
         if (showSubtitle) ...[
-        const SizedBox(height: 3),
-        Text(
-          subtitle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.roboto(
-            fontSize: compact ? 12 : 14,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xFFB9D8EA),
-            letterSpacing: .05,
+          const SizedBox(height: 3),
+          Text(
+            subtitle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.roboto(
+              fontSize: compact ? 12 : 14,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFFB9D8EA),
+              letterSpacing: .05,
+            ),
           ),
-        ),
         ],
       ],
     );
   }
 }
-
 
 class QuestwellPixelDivider extends StatelessWidget {
   const QuestwellPixelDivider({
@@ -676,9 +723,7 @@ class QuestwellRetroMenuButton extends StatelessWidget {
           height: compact ? 44 : 50,
           padding: EdgeInsets.symmetric(horizontal: compact ? 10 : 14),
           decoration: BoxDecoration(
-            color: enabled
-                ? const Color(0xFF15141B)
-                : const Color(0xFF26262B),
+            color: enabled ? const Color(0xFF15141B) : const Color(0xFF26262B),
             border: Border.all(
               color: enabled ? accent : const Color(0xFF55565C),
               width: 2,
@@ -746,9 +791,7 @@ class QuestwellPixelToggle extends StatelessWidget {
           decoration: BoxDecoration(
             color: const Color(0xFF0D0C11),
             border: Border.all(
-              color: value
-                  ? const Color(0xFFF1C75B)
-                  : const Color(0xFF5A5B62),
+              color: value ? const Color(0xFFF1C75B) : const Color(0xFF5A5B62),
               width: 2,
             ),
           ),
@@ -929,11 +972,13 @@ class QuestwellPixelFrame extends StatelessWidget {
     required this.child,
     this.height = 180,
     this.background = const Color(0xFF15141B),
+    this.borderless = false,
   });
 
   final Widget child;
   final double height;
   final Color background;
+  final bool borderless;
 
   @override
   Widget build(BuildContext context) {
@@ -941,19 +986,26 @@ class QuestwellPixelFrame extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         color: background,
-        border: Border.all(color: const Color(0xFF8E6B35), width: 2),
-        boxShadow: const [
-          BoxShadow(color: Color(0x55000000), blurRadius: 0, offset: Offset(4, 4)),
-        ],
+        border: borderless
+            ? null
+            : Border.all(color: const Color(0xFF8E6B35), width: 2),
+        boxShadow: borderless
+            ? null
+            : const [
+                BoxShadow(
+                    color: Color(0x55000000),
+                    blurRadius: 0,
+                    offset: Offset(4, 4)),
+              ],
       ),
       child: Stack(
         fit: StackFit.expand,
         children: [
           Positioned.fill(child: child),
-          const _PixelCorner(alignment: Alignment.topLeft),
-          const _PixelCorner(alignment: Alignment.topRight),
-          const _PixelCorner(alignment: Alignment.bottomLeft),
-          const _PixelCorner(alignment: Alignment.bottomRight),
+          if (!borderless) const _PixelCorner(alignment: Alignment.topLeft),
+          if (!borderless) const _PixelCorner(alignment: Alignment.topRight),
+          if (!borderless) const _PixelCorner(alignment: Alignment.bottomLeft),
+          if (!borderless) const _PixelCorner(alignment: Alignment.bottomRight),
         ],
       ),
     );
@@ -978,30 +1030,41 @@ class _PixelCorner extends StatelessWidget {
 }
 
 enum QuestwellHearthSetting {
-  original('Original Hearth', 'hearth_environment_v2'),
+  original('Original Hearth', 'hearth_environment_v3'),
   woodlandCottage('Woodland Cottage', 'woodland_cottage_v1'),
   midnightHarvest('Midnight Harvest', 'midnight_harvest_v1'),
   enchantedLibrary('Enchanted Library', 'enchanted_library_v1'),
   midnightObservatory('Midnight Observatory', 'midnight_observatory_v1'),
   alchemistsWorkshop('Alchemist’s Workshop', 'alchemists_workshop_v1'),
   astralSanctuary('Astral Sanctuary', 'astral_sanctuary_v1'),
-  emberglassConservatory('Emberglass Conservatory', 'emberglass_conservatory_v1');
+  emberglassConservatory(
+      'Emberglass Conservatory', 'emberglass_conservatory_v1');
 
   const QuestwellHearthSetting(this.label, this.file);
   final String label;
   final String file;
   static QuestwellHearthSetting fromSlug(String? slug) => switch (slug) {
-    'woodland-cottage' => woodlandCottage,
-    'midnight-harvest' => midnightHarvest,
-    'enchanted-library' => enchantedLibrary,
-    'midnight-observatory' => midnightObservatory,
-    'alchemists-workshop' => alchemistsWorkshop,
-    'astral-sanctuary' => astralSanctuary,
-    'emberglass-conservatory' => emberglassConservatory,
-    _ => original,
-  };
-  static bool supports(String slug) => slug == 'woodland-cottage' || slug == 'midnight-harvest' || slug == 'enchanted-library' || slug == 'midnight-observatory' || slug == 'alchemists-workshop' || slug == 'astral-sanctuary' || slug == 'emberglass-conservatory';
-  bool get compactGallery => this == enchantedLibrary || this == astralSanctuary || this == emberglassConservatory;
+        'woodland-cottage' => woodlandCottage,
+        'midnight-harvest' => midnightHarvest,
+        'enchanted-library' => enchantedLibrary,
+        'midnight-observatory' => midnightObservatory,
+        'alchemists-workshop' => alchemistsWorkshop,
+        'astral-sanctuary' => astralSanctuary,
+        'emberglass-conservatory' => emberglassConservatory,
+        _ => original,
+      };
+  static bool supports(String slug) =>
+      slug == 'woodland-cottage' ||
+      slug == 'midnight-harvest' ||
+      slug == 'enchanted-library' ||
+      slug == 'midnight-observatory' ||
+      slug == 'alchemists-workshop' ||
+      slug == 'astral-sanctuary' ||
+      slug == 'emberglass-conservatory';
+  bool get compactGallery =>
+      this == enchantedLibrary ||
+      this == astralSanctuary ||
+      this == emberglassConservatory;
   String get asset => 'assets/images/questwell/hearth/$file.webp';
 }
 
@@ -1017,6 +1080,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
     this.hearthRenderBySlug = const {},
     this.showRelic = false,
     this.showAvatar = true,
+    this.immersive = false,
   });
 
   final QuestwellHearthSetting? setting;
@@ -1029,267 +1093,311 @@ class QuestwellHearthPixelScene extends StatelessWidget {
   final Map<String, QuestwellHearthRenderSpec> hearthRenderBySlug;
   final bool showRelic;
   final bool showAvatar;
+  final bool immersive;
 
   @override
   Widget build(BuildContext context) {
     final palette = QuestwellPixelPalette.forClass(archetype);
 
     return Column(mainAxisSize: MainAxisSize.min, children: [
-      Padding(padding: const EdgeInsets.fromLTRB(4, 0, 4, 8), child: Row(children: [
-        Expanded(child: Text('THE HEARTH', style: GoogleFonts.pressStart2p(
-          fontSize: 8, color: const Color(0xFFFFD978), height: 1.4))),
-        QuestwellClassEmblem(archetype: archetype, size: 22),
-        const SizedBox(width: 6),
-        Text(archetype.toUpperCase(), style: GoogleFonts.pressStart2p(
-          fontSize: 7, color: const Color(0xFFF6E5B8), height: 1.4)),
-        if (showRelic) const Padding(padding: EdgeInsets.only(left: 6),
-          child: Icon(Icons.star, size: 14, color: Color(0xFFFFD978))),
-      ])),
+      if (!immersive)
+        Padding(
+            padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
+            child: Row(children: [
+              Expanded(
+                  child: Text('THE HEARTH',
+                      style: GoogleFonts.pressStart2p(
+                          fontSize: 8,
+                          color: const Color(0xFFFFD978),
+                          height: 1.4))),
+              QuestwellClassEmblem(archetype: archetype, size: 22),
+              const SizedBox(width: 6),
+              Text(archetype.toUpperCase(),
+                  style: GoogleFonts.pressStart2p(
+                      fontSize: 7,
+                      color: const Color(0xFFF6E5B8),
+                      height: 1.4)),
+              if (showRelic)
+                const Padding(
+                    padding: EdgeInsets.only(left: 6),
+                    child:
+                        Icon(Icons.star, size: 14, color: Color(0xFFFFD978))),
+            ])),
       QuestwellPixelFrame(
-      key: const ValueKey('hearth-room-bounds'),
-      height: height,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final sceneWidth = constraints.maxWidth;
-          final sceneHeight = constraints.maxHeight;
-          final compact = sceneWidth < 430;
-          final roomSetting = setting ?? QuestwellHearthSetting.fromSlug(equippedSlugs['room:setting']);
-          final floorSlug = equippedSlugs['room:floor'];
+        key: const ValueKey('hearth-room-bounds'),
+        borderless: immersive,
+        height: height,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final sceneWidth = constraints.maxWidth;
+            final sceneHeight = constraints.maxHeight;
+            final compact = sceneWidth < 430;
+            final roomSetting = setting ??
+                QuestwellHearthSetting.fromSlug(equippedSlugs['room:setting']);
+            final floorSlug = equippedSlugs['room:floor'];
 
-          // Keep the authored 3:4 canvas ratio, so BoxFit.contain cannot
-          // silently shrink the character inside a narrow mobile rectangle.
-          final avatarHeight = math.min(sceneHeight * .76, sceneWidth * .62 * 4 / 3);
-          final avatarWidth = avatarHeight * 3 / 4;
-          final avatarLeft = (sceneWidth - avatarWidth) / 2;
-          final footY = sceneHeight * .88;
-          // Frozen boots end near row 310 on the shared 320 px canvas.
-          final avatarTop = footY - avatarHeight * 310 / 320;
+            // Keep the authored 3:4 canvas ratio, so BoxFit.contain cannot
+            // silently shrink the character inside a narrow mobile rectangle.
+            final avatarHeight =
+                math.min(sceneHeight * .76, sceneWidth * .62 * 4 / 3);
+            final avatarWidth = avatarHeight * 3 / 4;
+            final avatarLeft = (sceneWidth - avatarWidth) / 2;
+            final footY = sceneHeight * .88;
+            // Frozen boots end near row 310 on the shared 320 px canvas.
+            final avatarTop = footY - avatarHeight * 310 / 320;
 
-          return Stack(
-            fit: StackFit.expand,
-            children: [
-              Positioned.fill(
-                child: Image.asset(
-                  roomSetting.asset,
-                  fit: BoxFit.cover,
-                  alignment: const Alignment(0, .04),
-                  filterQuality: FilterQuality.medium,
-                  gaplessPlayback: true,
-                  errorBuilder: (_, __, ___) => const DecoratedBox(
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                Positioned.fill(
+                  child: Image.asset(
+                    roomSetting.asset,
+                    fit: BoxFit.cover,
+                    alignment: const Alignment(0, .04),
+                    filterQuality: FilterQuality.medium,
+                    gaplessPlayback: true,
+                    errorBuilder: (_, __, ___) => const DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFF27344A),
+                            Color(0xFF1A1718),
+                            Color(0xFF0E0B0D),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                if (roomSetting == QuestwellHearthSetting.astralSanctuary ||
+                    roomSetting ==
+                        QuestwellHearthSetting.emberglassConservatory)
+                  Positioned.fill(
+                      child: QuestwellSettingMotion(
+                          astral: roomSetting ==
+                              QuestwellHearthSetting.astralSanctuary)),
+                Positioned.fill(
+                  child: DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Color(0xFF27344A),
-                          Color(0xFF1A1718),
-                          Color(0xFF0E0B0D),
+                          const Color(0x202A1920),
+                          const Color(0x0CDB9855),
+                          const Color(0x12B8753E),
+                          const Color(0x24261913),
                         ],
+                        stops: const [0, .34, .70, 1],
                       ),
                     ),
                   ),
                 ),
-              ),
-              if (roomSetting == QuestwellHearthSetting.astralSanctuary ||
-                  roomSetting == QuestwellHearthSetting.emberglassConservatory)
-                Positioned.fill(child: QuestwellSettingMotion(
-                  astral: roomSetting == QuestwellHearthSetting.astralSanctuary)),
-              Positioned.fill(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        const Color(0x202A1920),
-                        const Color(0x0CDB9855),
-                        const Color(0x12B8753E),
-                        const Color(0x24261913),
-                      ],
-                      stops: const [0, .34, .70, 1],
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: -sceneWidth * .08,
-                top: sceneHeight * .28,
-                width: sceneWidth * .60,
-                height: sceneHeight * .66,
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        center: const Alignment(-.45, .05),
-                        radius: .95,
-                        colors: [
-                          const Color(0x41FFB84C),
-                          const Color(0x1DE87947),
-                          const Color(0x00E87947),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                key: const ValueKey('hearth-woven-rug'),
-                child: floorSlug != null
-                    ? (hearthRenderBySlug[floorSlug]?.renderKind == 'floor_sprite'
-                        ? QuestwellHearthFloorSprite(
-                            spec: hearthRenderBySlug[floorSlug]!,
-                          )
-                        : QuestwellWovenRug(
-                            emerald:
-                                floorSlug == QuestwellWovenRugPainter.slug,
-                          ))
-                    : const QuestwellWovenRug(emerald: false),
-              ),
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: CustomPaint(
-                    painter: _HearthAtmospherePainter(
-                      accent: palette.last,
-                      compact: compact,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: avatarLeft - sceneWidth * .06,
-                top: footY - sceneHeight * .09,
-                width: avatarWidth + sceneWidth * .12,
-                height: sceneHeight * .18,
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        radius: .78,
-                        colors: [
-                          palette.last.withValues(alpha: .11),
-                          const Color(0x12E87947),
-                          const Color(0x00E87947),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              if (equippedSlugs['wall_art'] case final String art)
-                if (hearthRenderBySlug[art]?.renderKind == 'wall_art_sprite' ||
-                    art == QuestwellWallArt.slug)
-                  QuestwellHearthDecor.wallArtPositioned(
-                    slug: art,
-                    side: 'wall_center',
-                    scene: Size(sceneWidth, sceneHeight),
-                    library: roomSetting.compactGallery,
-                    renderSpec: hearthRenderBySlug[art],
-                  ),
-              for (final side in ['wall_left', 'wall_right'])
-                if (equippedSlugs['wall_art:$side'] case final String art)
-                  if (hearthRenderBySlug[art]?.renderKind == 'wall_art_sprite' ||
-                      QuestwellWallArt.isSide(art))
-                    QuestwellHearthDecor.wallArtPositioned(
-                      slug: art,
-                      side: side,
-                      scene: Size(sceneWidth, sceneHeight),
-                      library: roomSetting.compactGallery,
-                      renderSpec: hearthRenderBySlug[art],
-                    ),
-              if (equippedSlugs['room:window'] == 'rainy-window')
-                const Positioned.fill(key: ValueKey('hearth-rainy-window-bounds'),
-                  child: QuestwellRainyWindow()),
-              for (final slot in QuestwellHearthDecor.backToFront(
-                equippedSlugs,
-                profileBySlug: hearthProfileBySlug,
-              ))
-                if ((equippedSlugs['room:$slot'] ?? (slot == 'right' ? equippedSlugs['room'] : null)) case final String slug)
-                  if (hearthRenderBySlug[slug]?.renderKind == 'static_sprite' ||
-                      slug == QuestwellAutumnLantern.slug ||
-                      QuestwellMasteryRelic.supports(slug) ||
-                      slug == QuestwellBookshelf.slug ||
-                      slug == QuestwellFern.slug ||
-                      slug == QuestwellReadingChair.slug ||
-                      slug == QuestwellReadingTable.slug ||
-                      slug == QuestwellHarvestDisplay.slug ||
-                      slug == QuestwellPotionWorkbench.slug ||
-                      slug == 'warding-lantern')
-                    QuestwellHearthDecor.positioned(
-                      slug: slug,
-                      slot: slot,
-                      equipment: equippedSlugs,
-                      scene: Size(sceneWidth, sceneHeight),
-                      profileKey: hearthProfileBySlug[slug],
-                      renderSpec: hearthRenderBySlug[slug],
-                    ),
-              for (final surface in ['mantel', 'bookshelf_top'])
-                if ((QuestwellMilestoneReward.isTrophy(equippedSlugs['room:$surface']) ||
-                    QuestwellMasteryRelic.supports(equippedSlugs['room:$surface'])) &&
-                  (surface == 'mantel' || equippedSlugs['room:left'] == QuestwellBookshelf.slug || equippedSlugs['room:right'] == QuestwellBookshelf.slug))
-                  if (QuestwellMasteryRelic.supports(equippedSlugs['room:$surface']))
-                    QuestwellHearthDecor.relicSurfacePositioned(slot: surface, slug: equippedSlugs['room:$surface']!,
-                      scene: Size(sceneWidth, sceneHeight), equipment: equippedSlugs)
-                  else QuestwellHearthDecor.trophyPositioned(slot: surface, slug: equippedSlugs['room:$surface']!,
-                    scene: Size(sceneWidth, sceneHeight), equipment: equippedSlugs),
-              if (showAvatar) Positioned(
-                key: const ValueKey('hearth-contact-shadow'),
-                left: avatarLeft,
-                top: avatarTop,
-                width: avatarWidth,
-                height: avatarHeight,
-                child: IgnorePointer(
-                  child: CustomPaint(
-                    painter: QuestwellContactShadowPainter(avatarBodyType)),
-                ),
-              ),
-              if (showAvatar) Positioned(
-                key: const ValueKey('hearth-avatar-bounds'),
-                left: avatarLeft,
-                top: avatarTop,
-                width: avatarWidth,
-                height: avatarHeight,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    DecoratedBox(
+                Positioned(
+                  left: -sceneWidth * .08,
+                  top: sceneHeight * .28,
+                  width: sceneWidth * .60,
+                  height: sceneHeight * .66,
+                  child: IgnorePointer(
+                    child: DecoratedBox(
                       decoration: BoxDecoration(
                         gradient: RadialGradient(
-                          center: const Alignment(0, -.15),
-                          radius: .72,
+                          center: const Alignment(-.45, .05),
+                          radius: .95,
                           colors: [
-                            palette.last.withValues(alpha: .22),
-                            palette[1].withValues(alpha: .08),
-                            const Color(0x00FFFFFF),
+                            const Color(0x41FFB84C),
+                            const Color(0x1DE87947),
+                            const Color(0x00E87947),
                           ],
                         ),
                       ),
                     ),
-                    QuestwellLayeredAdventurerArt(
-                      archetype: archetype,
-                      avatarBodyType: avatarBodyType,
-                      equippedSlugs: equippedSlugs,
-                      showRelic: showRelic,
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color(0x774A2D1B),
-                        width: 1,
+                Positioned.fill(
+                  key: const ValueKey('hearth-woven-rug'),
+                  child: floorSlug != null
+                      ? (hearthRenderBySlug[floorSlug]?.renderKind ==
+                              'floor_sprite'
+                          ? QuestwellHearthFloorSprite(
+                              spec: hearthRenderBySlug[floorSlug]!,
+                            )
+                          : QuestwellWovenRug(
+                              emerald:
+                                  floorSlug == QuestwellWovenRugPainter.slug,
+                            ))
+                      : const QuestwellWovenRug(emerald: false),
+                ),
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: CustomPaint(
+                      painter: _HearthAtmospherePainter(
+                        accent: palette.last,
+                        compact: compact,
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+                Positioned(
+                  left: avatarLeft - sceneWidth * .06,
+                  top: footY - sceneHeight * .09,
+                  width: avatarWidth + sceneWidth * .12,
+                  height: sceneHeight * .18,
+                  child: IgnorePointer(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: RadialGradient(
+                          radius: .78,
+                          colors: [
+                            palette.last.withValues(alpha: .11),
+                            const Color(0x12E87947),
+                            const Color(0x00E87947),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                if (equippedSlugs['wall_art'] case final String art)
+                  if (hearthRenderBySlug[art]?.renderKind ==
+                          'wall_art_sprite' ||
+                      art == QuestwellWallArt.slug)
+                    QuestwellHearthDecor.wallArtPositioned(
+                      slug: art,
+                      side: 'wall_center',
+                      scene: Size(sceneWidth, sceneHeight),
+                      library: roomSetting.compactGallery,
+                      renderSpec: hearthRenderBySlug[art],
+                    ),
+                for (final side in ['wall_left', 'wall_right'])
+                  if (equippedSlugs['wall_art:$side'] case final String art)
+                    if (hearthRenderBySlug[art]?.renderKind ==
+                            'wall_art_sprite' ||
+                        QuestwellWallArt.isSide(art))
+                      QuestwellHearthDecor.wallArtPositioned(
+                        slug: art,
+                        side: side,
+                        scene: Size(sceneWidth, sceneHeight),
+                        library: roomSetting.compactGallery,
+                        renderSpec: hearthRenderBySlug[art],
+                      ),
+                if (equippedSlugs['room:window'] == 'rainy-window')
+                  const Positioned.fill(
+                      key: ValueKey('hearth-rainy-window-bounds'),
+                      child: QuestwellRainyWindow()),
+                for (final slot in QuestwellHearthDecor.backToFront(
+                  equippedSlugs,
+                  profileBySlug: hearthProfileBySlug,
+                ))
+                  if ((equippedSlugs['room:$slot'] ??
+                          (slot == 'right' ? equippedSlugs['room'] : null))
+                      case final String slug)
+                    if (hearthRenderBySlug[slug]?.renderKind ==
+                            'static_sprite' ||
+                        slug == QuestwellAutumnLantern.slug ||
+                        QuestwellMasteryRelic.supports(slug) ||
+                        slug == QuestwellBookshelf.slug ||
+                        slug == QuestwellFern.slug ||
+                        slug == QuestwellReadingChair.slug ||
+                        slug == QuestwellReadingTable.slug ||
+                        slug == QuestwellHarvestDisplay.slug ||
+                        slug == QuestwellPotionWorkbench.slug ||
+                        slug == 'warding-lantern')
+                      QuestwellHearthDecor.positioned(
+                        slug: slug,
+                        slot: slot,
+                        equipment: equippedSlugs,
+                        scene: Size(sceneWidth, sceneHeight),
+                        profileKey: hearthProfileBySlug[slug],
+                        renderSpec: hearthRenderBySlug[slug],
+                      ),
+                for (final surface in ['mantel', 'bookshelf_top'])
+                  if ((QuestwellMilestoneReward.isTrophy(
+                              equippedSlugs['room:$surface']) ||
+                          QuestwellMasteryRelic.supports(
+                              equippedSlugs['room:$surface'])) &&
+                      (surface == 'mantel' ||
+                          equippedSlugs['room:left'] ==
+                              QuestwellBookshelf.slug ||
+                          equippedSlugs['room:right'] ==
+                              QuestwellBookshelf.slug))
+                    if (QuestwellMasteryRelic.supports(
+                        equippedSlugs['room:$surface']))
+                      QuestwellHearthDecor.relicSurfacePositioned(
+                          slot: surface,
+                          slug: equippedSlugs['room:$surface']!,
+                          scene: Size(sceneWidth, sceneHeight),
+                          equipment: equippedSlugs)
+                    else
+                      QuestwellHearthDecor.trophyPositioned(
+                          slot: surface,
+                          slug: equippedSlugs['room:$surface']!,
+                          scene: Size(sceneWidth, sceneHeight),
+                          equipment: equippedSlugs),
+                if (showAvatar)
+                  Positioned(
+                    key: const ValueKey('hearth-contact-shadow'),
+                    left: avatarLeft,
+                    top: avatarTop,
+                    width: avatarWidth,
+                    height: avatarHeight,
+                    child: IgnorePointer(
+                      child: CustomPaint(
+                          painter:
+                              QuestwellContactShadowPainter(avatarBodyType)),
+                    ),
+                  ),
+                if (showAvatar)
+                  Positioned(
+                    key: const ValueKey('hearth-avatar-bounds'),
+                    left: avatarLeft,
+                    top: avatarTop,
+                    width: avatarWidth,
+                    height: avatarHeight,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: RadialGradient(
+                              center: const Alignment(0, -.15),
+                              radius: .72,
+                              colors: [
+                                palette.last.withValues(alpha: .22),
+                                palette[1].withValues(alpha: .08),
+                                const Color(0x00FFFFFF),
+                              ],
+                            ),
+                          ),
+                        ),
+                        QuestwellLayeredAdventurerArt(
+                          archetype: archetype,
+                          avatarBodyType: avatarBodyType,
+                          equippedSlugs: equippedSlugs,
+                          showRelic: showRelic,
+                        ),
+                      ],
+                    ),
+                  ),
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color(0x774A2D1B),
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
-    ),
     ]);
   }
 }
@@ -1345,9 +1453,7 @@ class QuestwellParchmentPanel extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFF0E2BD),
         border: Border.all(
-          color: selected
-              ? const Color(0xFFF1C75B)
-              : const Color(0xFF9A7B50),
+          color: selected ? const Color(0xFFF1C75B) : const Color(0xFF9A7B50),
           width: selected ? 3 : 2,
         ),
         boxShadow: const [
@@ -1399,9 +1505,7 @@ class QuestwellPixelMeter extends StatelessWidget {
           for (var i = 0; i < segments; i++) ...[
             Expanded(
               child: Container(
-                color: i < active
-                    ? activeColor
-                    : const Color(0xFF2B2A31),
+                color: i < active ? activeColor : const Color(0xFF2B2A31),
               ),
             ),
             if (i != segments - 1) const SizedBox(width: 2),
@@ -1757,7 +1861,8 @@ class QuestwellEquippedAvatar extends StatelessWidget {
             child: FractionallySizedBox(
               widthFactor: .90,
               heightFactor: equippedSlugs['head'] == 'tiny-wizard-hat'
-                  ? math.min(artHeightFactor, .88) : artHeightFactor,
+                  ? math.min(artHeightFactor, .88)
+                  : artHeightFactor,
               alignment: Alignment.bottomCenter,
               child: QuestwellLayeredAdventurerArt(
                 archetype: archetype,
@@ -1847,19 +1952,23 @@ class QuestwellItemPixelArt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (QuestwellMasteryRelic.supports(slug)) {
-      return QuestwellMasteryRelic(archetype: QuestwellMasteryRelic.classFor(slug), size: size);
+      return QuestwellMasteryRelic(
+          archetype: QuestwellMasteryRelic.classFor(slug), size: size);
     }
     // Earned trophies keep their approved reward artwork; shop icons share
     // the 16-bit catalog treatment.
     if (slug == QuestwellStarlitOrrery.slug) {
-      return SizedBox.square(dimension: size, child: const QuestwellStarlitOrrery());
+      return SizedBox.square(
+          dimension: size, child: const QuestwellStarlitOrrery());
     }
     if (slug == QuestwellFirstJourney.slug) {
-      return SizedBox.square(dimension: size, child: const QuestwellFirstJourney());
+      return SizedBox.square(
+          dimension: size, child: const QuestwellFirstJourney());
     }
     return QuestwellItemIcon(slug: slug, size: size, locked: locked);
   }
 }
+
 class QuestwellMarketPixelScene extends StatelessWidget {
   const QuestwellMarketPixelScene({
     super.key,
@@ -1950,7 +2059,11 @@ class _Pixel64 {
   ) {
     for (var i = 3; i >= 1; i--) {
       final r = radius * i / 3;
-      final alpha = i == 3 ? .10 : i == 2 ? .16 : .24;
+      final alpha = i == 3
+          ? .10
+          : i == 2
+              ? .16
+              : .24;
       rect(
         canvas,
         paint,
@@ -2002,9 +2115,14 @@ class _Pixel64 {
     required List<Color> palette,
     required String archetype,
   }) {
-    void r(double x, double y, double w, double h, Color color) =>
-        rect(canvas, paint, origin.dx + x * scale, origin.dy + y * scale,
-            w * scale, h * scale, color);
+    void r(double x, double y, double w, double h, Color color) => rect(
+        canvas,
+        paint,
+        origin.dx + x * scale,
+        origin.dy + y * scale,
+        w * scale,
+        h * scale,
+        color);
 
     final skin = const Color(0xFFD6A16D);
     final skinHi = const Color(0xFFEBC18E);
@@ -2131,10 +2249,12 @@ class _HearthPainter extends CustomPainter {
     );
 
     // Floor with perspective strips.
-    r(0, size.height * .60, size.width, size.height * .40, const Color(0xFF3F281B));
+    r(0, size.height * .60, size.width, size.height * .40,
+        const Color(0xFF3F281B));
     for (var i = 0; i < 9; i++) {
       final y = size.height * (.62 + i * .043);
-      r(0, y, size.width, 2, i.isEven ? const Color(0xFF6F4830) : const Color(0xFF261812));
+      r(0, y, size.width, 2,
+          i.isEven ? const Color(0xFF6F4830) : const Color(0xFF261812));
     }
     for (var i = 0; i < 14; i++) {
       final x = size.width * (i / 14);
@@ -2145,13 +2265,16 @@ class _HearthPainter extends CustomPainter {
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .67, size.height * .075, size.width * .27, size.height * .39),
+      Rect.fromLTWH(size.width * .67, size.height * .075, size.width * .27,
+          size.height * .39),
       const Color(0xFF18243A),
       const Color(0xFF385B7B),
       const Color(0xFF09111E),
     );
-    r(size.width * .69, size.height * .10, size.width * .23, size.height * .32, const Color(0xFF254E78));
-    r(size.width * .80, size.height * .10, 5, size.height * .32, const Color(0xFF173451));
+    r(size.width * .69, size.height * .10, size.width * .23, size.height * .32,
+        const Color(0xFF254E78));
+    r(size.width * .80, size.height * .10, 5, size.height * .32,
+        const Color(0xFF173451));
     _Pixel64.stepGlow(
       canvas,
       p,
@@ -2167,14 +2290,17 @@ class _HearthPainter extends CustomPainter {
       r(x, y, 2, 9, const Color(0xFF87C7E4));
       r(x + 2, y + 7, 2, 5, const Color(0xFF4D8EB2));
     }
-    r(size.width * .66, size.height * .44, size.width * .29, 9, const Color(0xFF6A4328));
-    r(size.width * .67, size.height * .44, size.width * .27, 3, const Color(0xFFA7794C));
+    r(size.width * .66, size.height * .44, size.width * .29, 9,
+        const Color(0xFF6A4328));
+    r(size.width * .67, size.height * .44, size.width * .27, 3,
+        const Color(0xFFA7794C));
 
     // Fireplace body with brick texture and depth.
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .035, size.height * .17, size.width * .36, size.height * .66),
+      Rect.fromLTWH(size.width * .035, size.height * .17, size.width * .36,
+          size.height * .66),
       const Color(0xFF65432F),
       const Color(0xFF916547),
       const Color(0xFF38231A),
@@ -2198,7 +2324,8 @@ class _HearthPainter extends CustomPainter {
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .095, size.height * .36, size.width * .245, size.height * .31),
+      Rect.fromLTWH(size.width * .095, size.height * .36, size.width * .245,
+          size.height * .31),
       const Color(0xFF1B1110),
       const Color(0xFF3A2018),
       const Color(0xFF080707),
@@ -2210,10 +2337,14 @@ class _HearthPainter extends CustomPainter {
       34,
       const Color(0xFFF08A32),
     );
-    r(size.width * .12, size.height * .61, size.width * .20, size.height * .055, const Color(0xFF733A20));
-    r(size.width * .15, size.height * .53, size.width * .14, size.height * .11, const Color(0xFFF17828));
-    r(size.width * .18, size.height * .45, size.width * .08, size.height * .18, const Color(0xFFF6B83F));
-    r(size.width * .205, size.height * .40, size.width * .035, size.height * .20, const Color(0xFFFFE37C));
+    r(size.width * .12, size.height * .61, size.width * .20, size.height * .055,
+        const Color(0xFF733A20));
+    r(size.width * .15, size.height * .53, size.width * .14, size.height * .11,
+        const Color(0xFFF17828));
+    r(size.width * .18, size.height * .45, size.width * .08, size.height * .18,
+        const Color(0xFFF6B83F));
+    r(size.width * .205, size.height * .40, size.width * .035,
+        size.height * .20, const Color(0xFFFFE37C));
     r(size.width * .145, size.height * .49, 4, 4, const Color(0xFFFFC44E));
     r(size.width * .292, size.height * .46, 3, 3, const Color(0xFFFFE37C));
 
@@ -2221,7 +2352,8 @@ class _HearthPainter extends CustomPainter {
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .44, size.height * .15, size.width * .17, size.height * .48),
+      Rect.fromLTWH(size.width * .44, size.height * .15, size.width * .17,
+          size.height * .48),
       const Color(0xFF4B2C1C),
       const Color(0xFF7A4D2D),
       const Color(0xFF241711),
@@ -2238,11 +2370,13 @@ class _HearthPainter extends CustomPainter {
     ];
     for (var row = 0; row < 3; row++) {
       final sy = size.height * (.20 + row * .14);
-      r(size.width * .455, sy + size.height * .09, size.width * .14, 4, const Color(0xFFB9854B));
+      r(size.width * .455, sy + size.height * .09, size.width * .14, 4,
+          const Color(0xFFB9854B));
       for (var book = 0; book < 7; book++) {
         final bx = size.width * (.46 + book * .019);
         final bh = size.height * (.055 + ((book + row) % 4) * .010);
-        r(bx, sy + size.height * .025, size.width * .014, bh, books[(book + row * 2) % books.length]);
+        r(bx, sy + size.height * .025, size.width * .014, bh,
+            books[(book + row * 2) % books.length]);
         r(bx + 1, sy + size.height * .028, 2, bh - 5, const Color(0x44FFFFFF));
       }
     }
@@ -2254,7 +2388,8 @@ class _HearthPainter extends CustomPainter {
     r(size.width * .545, size.height * .12, 16, 8, palette.last);
 
     // Perspective rug with patterned center.
-    final rug = Rect.fromLTWH(size.width * .42, size.height * .73, size.width * .32, size.height * .16);
+    final rug = Rect.fromLTWH(size.width * .42, size.height * .73,
+        size.width * .32, size.height * .16);
     _Pixel64.bevel(
       canvas,
       p,
@@ -2263,7 +2398,8 @@ class _HearthPainter extends CustomPainter {
       const Color(0xFF3B786D),
       const Color(0xFF102B28),
     );
-    r(size.width * .45, size.height * .755, size.width * .26, size.height * .11, const Color(0xFF2D665D));
+    r(size.width * .45, size.height * .755, size.width * .26, size.height * .11,
+        const Color(0xFF2D665D));
     for (var i = 0; i < 7; i++) {
       final x = size.width * (.46 + i * .035);
       r(x, size.height * .77, 4, 4, const Color(0xFFE1B75A));
@@ -2317,17 +2453,20 @@ class _HearthPainter extends CustomPainter {
     r(size.width * .605, size.height * .778, 4, 4, const Color(0xFFF5DB82));
 
     // Class banner and trophy shelf.
-    r(size.width * .815, size.height * .49, size.width * .12, 7, const Color(0xFF6A4328));
+    r(size.width * .815, size.height * .49, size.width * .12, 7,
+        const Color(0xFF6A4328));
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .84, size.height * .30, size.width * .07, size.height * .17),
+      Rect.fromLTWH(size.width * .84, size.height * .30, size.width * .07,
+          size.height * .17),
       palette[1],
       palette.last,
       palette.first,
     );
     r(size.width * .862, size.height * .345, 8, 8, palette.last);
-    r(size.width * .455, size.height * .665, size.width * .14, 5, const Color(0xFF8E6B35));
+    r(size.width * .455, size.height * .665, size.width * .14, 5,
+        const Color(0xFF8E6B35));
     p.color = const Color(0xFFF1C75B);
     canvas.drawCircle(Offset(size.width * .48, size.height * .645), 5, p);
     canvas.drawCircle(Offset(size.width * .565, size.height * .645), 5, p);
@@ -2336,18 +2475,24 @@ class _HearthPainter extends CustomPainter {
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .72, size.height * .68, size.width * .23, size.height * .11),
+      Rect.fromLTWH(size.width * .72, size.height * .68, size.width * .23,
+          size.height * .11),
       const Color(0xFF5B3825),
       const Color(0xFF8A5A38),
       const Color(0xFF281913),
     );
-    r(size.width * .75, size.height * .71, size.width * .045, size.height * .05, const Color(0xFFD8C7A3));
-    r(size.width * .805, size.height * .705, size.width * .032, size.height * .055, const Color(0xFF3D8F86));
-    r(size.width * .848, size.height * .70, size.width * .06, size.height * .06, const Color(0xFF6A337C));
-    r(size.width * .86, size.height * .685, size.width * .035, size.height * .018, const Color(0xFFE7C96A));
+    r(size.width * .75, size.height * .71, size.width * .045, size.height * .05,
+        const Color(0xFFD8C7A3));
+    r(size.width * .805, size.height * .705, size.width * .032,
+        size.height * .055, const Color(0xFF3D8F86));
+    r(size.width * .848, size.height * .70, size.width * .06, size.height * .06,
+        const Color(0xFF6A337C));
+    r(size.width * .86, size.height * .685, size.width * .035,
+        size.height * .018, const Color(0xFFE7C96A));
 
     // Layered foreground shadowing and warm bounce light.
-    r(0, size.height * .91, size.width, size.height * .09, const Color(0x66201018));
+    r(0, size.height * .91, size.width, size.height * .09,
+        const Color(0x66201018));
     _Pixel64.stepGlow(
       canvas,
       p,
@@ -2358,7 +2503,8 @@ class _HearthPainter extends CustomPainter {
     _Pixel64.dither(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .02, size.height * .62, size.width * .36, size.height * .25),
+      Rect.fromLTWH(size.width * .02, size.height * .62, size.width * .36,
+          size.height * .25),
       const Color(0x337E4B2D),
       7,
     );
@@ -2367,7 +2513,8 @@ class _HearthPainter extends CustomPainter {
     for (var i = 0; i < 24; i++) {
       final x = size.width * (.04 + ((i * 37) % 92) / 100);
       final y = size.height * (.61 + ((i * 19) % 28) / 100);
-      r(x, y, 2, 2, i.isEven ? const Color(0xFF8A5B3A) : const Color(0xFFB07A4B));
+      r(x, y, 2, 2,
+          i.isEven ? const Color(0xFF8A5B3A) : const Color(0xFFB07A4B));
     }
 
     // Lantern pools.
@@ -2413,6 +2560,41 @@ class _NavIconPainter extends CustomPainter {
     final paper = const Color(0xFFD8C7A3);
 
     switch (kind) {
+      case 'hearth':
+        final roof = Path()
+          ..moveTo(size.width * .08, size.height * .43)
+          ..lineTo(size.width * .5, size.height * .06)
+          ..lineTo(size.width * .92, size.height * .43)
+          ..close();
+        p.color = const Color(0xFF9A653A);
+        canvas.drawPath(roof, p);
+        p.color = const Color(0xFFF1C778);
+        canvas.drawPath(roof.shift(Offset(0, size.height * .045)), p);
+        rect(size.width * .22, size.height * .40, size.width * .56,
+            size.height * .48, gold);
+        rect(size.width * .29, size.height * .44, size.width * .42,
+            size.height * .39, paper);
+        rect(size.width * .43, size.height * .57, size.width * .17,
+            size.height * .31, const Color(0xFF805638));
+        rect(size.width * .46, size.height * .61, size.width * .10,
+            size.height * .22, const Color(0xFFFFD886));
+        break;
+      case 'quests':
+        rect(size.width * .19, size.height * .12, size.width * .64,
+            size.height * .79, const Color(0xFF67432B));
+        rect(size.width * .25, size.height * .17, size.width * .52,
+            size.height * .66, paper);
+        rect(size.width * .39, size.height * .07, size.width * .26,
+            size.height * .16, const Color(0xFF997449));
+        rect(size.width * .44, size.height * .06, size.width * .16,
+            size.height * .10, gold);
+        for (var i = 0; i < 3; i++) {
+          rect(size.width * .33, size.height * (.33 + i * .16),
+              size.width * .06, size.height * .05, const Color(0xFF795332));
+          rect(size.width * .46, size.height * (.33 + i * .16),
+              size.width * .23, size.height * .04, const Color(0xFF917B56));
+        }
+        break;
       case 'campfire':
         // A 16-pixel grid keeps the flame crisp beside the retro controls.
         const rows = [
@@ -2434,15 +2616,18 @@ class _NavIconPainter extends CustomPainter {
           '................',
         ];
         const colors = {
-          'r': Color(0xFFCB603D), 'o': Color(0xFFF29A44),
-          'y': Color(0xFFFFE19A), 'b': Color(0xFF69452E),
+          'r': Color(0xFFCB603D),
+          'o': Color(0xFFF29A44),
+          'y': Color(0xFFFFE19A),
+          'b': Color(0xFF69452E),
           'l': Color(0xFFAC7646),
         };
         for (var y = 0; y < rows.length; y++) {
           for (var x = 0; x < rows[y].length; x++) {
             final color = colors[rows[y][x]];
-            if (color != null) rect(x * size.width / 16, y * size.height / 16,
-              size.width / 16, size.height / 16, color);
+            if (color != null)
+              rect(x * size.width / 16, y * size.height / 16, size.width / 16,
+                  size.height / 16, color);
           }
         }
         break;
@@ -2456,28 +2641,38 @@ class _NavIconPainter extends CustomPainter {
           ..close();
         p.color = teal;
         canvas.drawPath(mountain, p);
-        rect(size.width * .43, size.height * .53, size.width * .08, size.height * .36, gold);
+        rect(size.width * .43, size.height * .53, size.width * .08,
+            size.height * .36, gold);
         break;
       case 'boss':
-        rect(size.width * .18, size.height * .28, size.width * .64, size.height * .44, ember);
-        rect(size.width * .28, size.height * .20, size.width * .12, size.height * .14, ember);
-        rect(size.width * .60, size.height * .20, size.width * .12, size.height * .14, ember);
+        rect(size.width * .18, size.height * .28, size.width * .64,
+            size.height * .44, ember);
+        rect(size.width * .28, size.height * .20, size.width * .12,
+            size.height * .14, ember);
+        rect(size.width * .60, size.height * .20, size.width * .12,
+            size.height * .14, ember);
         rect(size.width * .32, size.height * .42, 4, 4, paper);
         rect(size.width * .62, size.height * .42, 4, 4, paper);
         break;
       case 'chronicle':
-        rect(size.width * .18, size.height * .16, size.width * .64, size.height * .68, violet);
-        rect(size.width * .27, size.height * .22, size.width * .08, size.height * .56, gold);
+        rect(size.width * .18, size.height * .16, size.width * .64,
+            size.height * .68, violet);
+        rect(size.width * .27, size.height * .22, size.width * .08,
+            size.height * .56, gold);
         rect(size.width * .42, size.height * .33, size.width * .30, 4, paper);
         rect(size.width * .42, size.height * .48, size.width * .24, 4, paper);
         rect(size.width * .42, size.height * .63, size.width * .28, 4, paper);
         break;
       case 'adventurer':
         p.color = const Color(0xFFD9A56E);
-        canvas.drawCircle(Offset(size.width * .50, size.height * .32), size.width * .16, p);
-        rect(size.width * .30, size.height * .48, size.width * .40, size.height * .36, teal);
-        rect(size.width * .22, size.height * .52, size.width * .10, size.height * .25, teal);
-        rect(size.width * .68, size.height * .52, size.width * .10, size.height * .25, teal);
+        canvas.drawCircle(
+            Offset(size.width * .50, size.height * .32), size.width * .16, p);
+        rect(size.width * .30, size.height * .48, size.width * .40,
+            size.height * .36, teal);
+        rect(size.width * .22, size.height * .52, size.width * .10,
+            size.height * .25, teal);
+        rect(size.width * .68, size.height * .52, size.width * .10,
+            size.height * .25, teal);
         break;
       case 'market':
         for (var i = 0; i < 4; i++) {
@@ -2489,13 +2684,18 @@ class _NavIconPainter extends CustomPainter {
             i.isEven ? ember : paper,
           );
         }
-        rect(size.width * .14, size.height * .34, size.width * .72, size.height * .48, const Color(0xFF7B4F2B));
-        rect(size.width * .28, size.height * .47, size.width * .18, size.height * .20, gold);
-        rect(size.width * .56, size.height * .47, size.width * .18, size.height * .20, teal);
+        rect(size.width * .14, size.height * .34, size.width * .72,
+            size.height * .48, const Color(0xFF7B4F2B));
+        rect(size.width * .28, size.height * .47, size.width * .18,
+            size.height * .20, gold);
+        rect(size.width * .56, size.height * .47, size.width * .18,
+            size.height * .20, teal);
         break;
       default:
-        rect(size.width * .46, size.height * .10, size.width * .08, size.height * .80, gold);
-        rect(size.width * .10, size.height * .46, size.width * .80, size.height * .08, gold);
+        rect(size.width * .46, size.height * .10, size.width * .08,
+            size.height * .80, gold);
+        rect(size.width * .10, size.height * .46, size.width * .80,
+            size.height * .08, gold);
     }
   }
 
@@ -2529,7 +2729,8 @@ class _CurrencyPainter extends CustomPainter {
         size.shortestSide * .25,
         p,
       );
-      rect(size.width * .46, size.height * .25, size.width * .08, size.height * .50, const Color(0xFFF7DB7D));
+      rect(size.width * .46, size.height * .25, size.width * .08,
+          size.height * .50, const Color(0xFFF7DB7D));
     } else {
       final crystal = Path()
         ..moveTo(size.width * .50, size.height * .04)
@@ -2576,25 +2777,37 @@ class _StatusBadgePainter extends CustomPainter {
 
     if (kind == 'momentum') {
       // Rising stair + spark.
-      rect(size.width * .18, size.height * .63, size.width * .15, size.height * .16, violet);
-      rect(size.width * .36, size.height * .49, size.width * .15, size.height * .30, violet);
-      rect(size.width * .54, size.height * .33, size.width * .15, size.height * .46, violet);
-      rect(size.width * .72, size.height * .20, size.width * .09, size.height * .59, violet);
+      rect(size.width * .18, size.height * .63, size.width * .15,
+          size.height * .16, violet);
+      rect(size.width * .36, size.height * .49, size.width * .15,
+          size.height * .30, violet);
+      rect(size.width * .54, size.height * .33, size.width * .15,
+          size.height * .46, violet);
+      rect(size.width * .72, size.height * .20, size.width * .09,
+          size.height * .59, violet);
       rect(size.width * .68, size.height * .12, 4, 9, gold);
       rect(size.width * .57, size.height * .20, 9, 4, gold);
       rect(size.width * .77, size.height * .20, 9, 4, gold);
     } else if (kind == 'campfire') {
       // Logs + layered pixel flame.
-      rect(size.width * .20, size.height * .68, size.width * .60, size.height * .10, const Color(0xFF7A4A2E));
-      rect(size.width * .29, size.height * .58, size.width * .42, size.height * .12, const Color(0xFF9B6236));
-      rect(size.width * .34, size.height * .34, size.width * .32, size.height * .34, ember);
-      rect(size.width * .42, size.height * .20, size.width * .18, size.height * .42, gold);
-      rect(size.width * .47, size.height * .32, size.width * .09, size.height * .28, const Color(0xFFFFE39A));
+      rect(size.width * .20, size.height * .68, size.width * .60,
+          size.height * .10, const Color(0xFF7A4A2E));
+      rect(size.width * .29, size.height * .58, size.width * .42,
+          size.height * .12, const Color(0xFF9B6236));
+      rect(size.width * .34, size.height * .34, size.width * .32,
+          size.height * .34, ember);
+      rect(size.width * .42, size.height * .20, size.width * .18,
+          size.height * .42, gold);
+      rect(size.width * .47, size.height * .32, size.width * .09,
+          size.height * .28, const Color(0xFFFFE39A));
     } else {
       // Generic quest star.
-      rect(size.width * .46, size.height * .14, size.width * .08, size.height * .72, gold);
-      rect(size.width * .14, size.height * .46, size.width * .72, size.height * .08, gold);
-      rect(size.width * .28, size.height * .28, size.width * .44, size.height * .44, violet);
+      rect(size.width * .46, size.height * .14, size.width * .08,
+          size.height * .72, gold);
+      rect(size.width * .14, size.height * .46, size.width * .72,
+          size.height * .08, gold);
+      rect(size.width * .28, size.height * .28, size.width * .44,
+          size.height * .44, violet);
     }
 
     // Pixel border.
@@ -2660,7 +2873,8 @@ class _QuestBoardPainter extends CustomPainter {
       _Pixel64.bevel(
         canvas,
         p,
-        Rect.fromLTWH(x, size.height * .12, size.width * .11, size.height * .46),
+        Rect.fromLTWH(
+            x, size.height * .12, size.width * .11, size.height * .46),
         const Color(0xFF4A2E20),
         const Color(0xFF724B31),
         const Color(0xFF23160F),
@@ -2679,7 +2893,8 @@ class _QuestBoardPainter extends CustomPainter {
       final baseX = side == 0 ? size.width * .045 : size.width * .875;
       for (var row = 0; row < 3; row++) {
         final y = size.height * (.18 + row * .12);
-        r(baseX, y + size.height * .075, size.width * .07, 3, const Color(0xFF9B6B41));
+        r(baseX, y + size.height * .075, size.width * .07, 3,
+            const Color(0xFF9B6B41));
         for (var i = 0; i < 4; i++) {
           final bx = baseX + i * size.width * .017;
           final bh = size.height * (.045 + ((row + i) % 3) * .010);
@@ -2700,15 +2915,18 @@ class _QuestBoardPainter extends CustomPainter {
         size.height * .12,
         const Color(0xFFFFC85A),
       );
-      r(x - 7, size.height * .12, 14, size.height * .15, const Color(0xFF9E672B));
-      r(x - 4, size.height * .145, 8, size.height * .085, const Color(0xFFFFE294));
+      r(x - 7, size.height * .12, 14, size.height * .15,
+          const Color(0xFF9E672B));
+      r(x - 4, size.height * .145, 8, size.height * .085,
+          const Color(0xFFFFE294));
     }
 
     // Main quest board, thick carved frame + parchment center.
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .15, size.height * .12, size.width * .70, size.height * .60),
+      Rect.fromLTWH(size.width * .15, size.height * .12, size.width * .70,
+          size.height * .60),
       const Color(0xFF5B3825),
       const Color(0xFF8B5C39),
       const Color(0xFF2A1A12),
@@ -2716,7 +2934,8 @@ class _QuestBoardPainter extends CustomPainter {
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .18, size.height * .16, size.width * .64, size.height * .52),
+      Rect.fromLTWH(size.width * .18, size.height * .16, size.width * .64,
+          size.height * .52),
       const Color(0xFF9B6D3E),
       const Color(0xFFC28F56),
       const Color(0xFF5B3B24),
@@ -2728,16 +2947,19 @@ class _QuestBoardPainter extends CustomPainter {
     _Pixel64.dither(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .205, size.height * .19, size.width * .59, size.height * .46),
+      Rect.fromLTWH(size.width * .205, size.height * .19, size.width * .59,
+          size.height * .46),
       const Color(0x22745431),
       8,
     );
-    r(size.width * .22, size.height * .205, size.width * .56, 3, const Color(0xFFB99059));
-    r(size.width * .22, size.height * .62, size.width * .56, 3, const Color(0xFF8D6740));
+    r(size.width * .22, size.height * .205, size.width * .56, 3,
+        const Color(0xFFB99059));
+    r(size.width * .22, size.height * .62, size.width * .56, 3,
+        const Color(0xFF8D6740));
 
     if (clear) {
-      r(size.width * .36, size.height * .30, size.width * .28, size.height * .22,
-          const Color(0xFFE6D8B8));
+      r(size.width * .36, size.height * .30, size.width * .28,
+          size.height * .22, const Color(0xFFE6D8B8));
       r(size.width * .40, size.height * .36, size.width * .19, 3,
           const Color(0xFF9C7850));
       r(size.width * .40, size.height * .42, size.width * .15, 3,
@@ -2773,7 +2995,8 @@ class _QuestBoardPainter extends CustomPainter {
     for (var i = 0; i < 16; i++) {
       final x = size.width * (.10 + ((i * 17) % 80) / 100);
       final y = size.height * (.07 + ((i * 11) % 10) / 100);
-      r(x, y, 5, 8, i.isEven ? const Color(0xFF2F6B3F) : const Color(0xFF4C8C4D));
+      r(x, y, 5, 8,
+          i.isEven ? const Color(0xFF2F6B3F) : const Color(0xFF4C8C4D));
       if (i % 3 == 0) r(x + 4, y + 3, 4, 6, const Color(0xFF6FAE58));
     }
 
@@ -2794,7 +3017,8 @@ class _QuestBoardPainter extends CustomPainter {
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .66, size.height * .77, size.width * .27, size.height * .12),
+      Rect.fromLTWH(size.width * .66, size.height * .77, size.width * .27,
+          size.height * .12),
       const Color(0xFF58351F),
       const Color(0xFF8A5A35),
       const Color(0xFF28180F),
@@ -2816,7 +3040,8 @@ class _QuestBoardPainter extends CustomPainter {
     for (var i = 0; i < 18; i++) {
       final x = size.width * (.07 + ((i * 29) % 86) / 100);
       final y = size.height * (.72 + ((i * 17) % 20) / 100);
-      r(x, y, 2, 2, i.isEven ? const Color(0xFF9B6A43) : const Color(0xFFD6A84B));
+      r(x, y, 2, 2,
+          i.isEven ? const Color(0xFF9B6A43) : const Color(0xFFD6A84B));
     }
   }
 
@@ -2945,7 +3170,8 @@ class _VictoryPainter extends CustomPainter {
       size.height * .12,
       p,
     );
-    rect(size.width * .255, size.height * .43, size.width * .03, size.height * .20, const Color(0xFFF1C75B));
+    rect(size.width * .255, size.height * .43, size.width * .03,
+        size.height * .20, const Color(0xFFF1C75B));
 
     // XP crystal / defeated boss crest.
     if (bossVictory) {
@@ -2959,8 +3185,10 @@ class _VictoryPainter extends CustomPainter {
         ..close();
       p.color = const Color(0xFFB64735);
       canvas.drawPath(shield, p);
-      rect(size.width * .655, size.height * .42, size.width * .05, size.height * .20, const Color(0xFFF1C75B));
-      rect(size.width * .61, size.height * .49, size.width * .14, size.height * .05, const Color(0xFFF1C75B));
+      rect(size.width * .655, size.height * .42, size.width * .05,
+          size.height * .20, const Color(0xFFF1C75B));
+      rect(size.width * .61, size.height * .49, size.width * .14,
+          size.height * .05, const Color(0xFFF1C75B));
     } else {
       final crystal = Path()
         ..moveTo(size.width * .68, size.height * .24)
@@ -2970,7 +3198,8 @@ class _VictoryPainter extends CustomPainter {
         ..close();
       p.color = const Color(0xFF8D65D6);
       canvas.drawPath(crystal, p);
-      rect(size.width * .665, size.height * .32, size.width * .03, size.height * .32, const Color(0xFFDCC9FF));
+      rect(size.width * .665, size.height * .32, size.width * .03,
+          size.height * .32, const Color(0xFFDCC9FF));
     }
   }
 
@@ -2989,11 +3218,14 @@ class _ChroniclePainter extends CustomPainter {
     }
 
     rect(0, 0, size.width, size.height, const Color(0xFF17151A));
-    rect(0, size.height * .72, size.width, size.height * .28, const Color(0xFF4B2E1F));
+    rect(0, size.height * .72, size.width, size.height * .28,
+        const Color(0xFF4B2E1F));
 
     // Shelves.
-    rect(size.width * .05, size.height * .30, size.width * .90, 7, const Color(0xFF8E6B35));
-    rect(size.width * .05, size.height * .66, size.width * .90, 7, const Color(0xFF8E6B35));
+    rect(size.width * .05, size.height * .30, size.width * .90, 7,
+        const Color(0xFF8E6B35));
+    rect(size.width * .05, size.height * .66, size.width * .90, 7,
+        const Color(0xFF8E6B35));
 
     // Chronicle books.
     final bookColors = [
@@ -3006,20 +3238,26 @@ class _ChroniclePainter extends CustomPainter {
     for (var i = 0; i < 10; i++) {
       final x = size.width * (.09 + i * .075);
       final h = size.height * (.18 + (i % 3) * .035);
-      rect(x, size.height * .30 - h, size.width * .045, h, bookColors[i % bookColors.length]);
-      rect(x + 3, size.height * .30 - h + 5, size.width * .028, 3, const Color(0xFFD8B464));
+      rect(x, size.height * .30 - h, size.width * .045, h,
+          bookColors[i % bookColors.length]);
+      rect(x + 3, size.height * .30 - h + 5, size.width * .028, 3,
+          const Color(0xFFD8B464));
     }
 
     // Trophy / boss skull.
-    rect(size.width * .70, size.height * .40, size.width * .12, size.height * .16, const Color(0xFFD8C7A3));
-    rect(size.width * .72, size.height * .54, size.width * .08, size.height * .08, const Color(0xFF8E6B35));
+    rect(size.width * .70, size.height * .40, size.width * .12,
+        size.height * .16, const Color(0xFFD8C7A3));
+    rect(size.width * .72, size.height * .54, size.width * .08,
+        size.height * .08, const Color(0xFF8E6B35));
     rect(size.width * .725, size.height * .44, 5, 5, const Color(0xFF17151A));
     rect(size.width * .77, size.height * .44, 5, 5, const Color(0xFF17151A));
 
     // Coins and XP spark.
     p.color = const Color(0xFFF1C75B);
-    canvas.drawCircle(Offset(size.width * .18, size.height * .53), size.height * .08, p);
-    canvas.drawCircle(Offset(size.width * .25, size.height * .56), size.height * .06, p);
+    canvas.drawCircle(
+        Offset(size.width * .18, size.height * .53), size.height * .08, p);
+    canvas.drawCircle(
+        Offset(size.width * .25, size.height * .56), size.height * .06, p);
     for (var i = 0; i < 7; i++) {
       final a = i * math.pi * 2 / 7;
       rect(
@@ -3051,7 +3289,8 @@ class _ExpeditionPainter extends CustomPainter {
     }
 
     rect(0, 0, size.width, size.height, const Color(0xFF101827));
-    rect(0, size.height * .68, size.width, size.height * .32, const Color(0xFF203A2D));
+    rect(0, size.height * .68, size.width, size.height * .32,
+        const Color(0xFF203A2D));
 
     // Moon / sun.
     p.color = campfire ? const Color(0xFFE7D67A) : const Color(0xFFF4CB67);
@@ -3115,9 +3354,12 @@ class _ExpeditionPainter extends CustomPainter {
     canvas.drawPath(trail, p);
 
     if (campfire) {
-      rect(size.width * .15, size.height * .75, size.width * .12, 7, const Color(0xFF6B4528));
-      rect(size.width * .19, size.height * .68, size.width * .06, size.height * .13, const Color(0xFFF09A2A));
-      rect(size.width * .205, size.height * .63, size.width * .03, size.height * .14, const Color(0xFFFFD35A));
+      rect(size.width * .15, size.height * .75, size.width * .12, 7,
+          const Color(0xFF6B4528));
+      rect(size.width * .19, size.height * .68, size.width * .06,
+          size.height * .13, const Color(0xFFF09A2A));
+      rect(size.width * .205, size.height * .63, size.width * .03,
+          size.height * .14, const Color(0xFFFFD35A));
     }
 
     // Stars.
@@ -3198,8 +3440,7 @@ class _ClassMiniPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _ClassMiniPainter oldDelegate) =>
-      oldDelegate.archetype != archetype ||
-      oldDelegate.palette != palette;
+      oldDelegate.archetype != archetype || oldDelegate.palette != palette;
 }
 
 class _ClassPortraitPainter extends CustomPainter {
@@ -3240,35 +3481,41 @@ class _ClassPortraitPainter extends CustomPainter {
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .08, size.height * .10, size.width * .84, size.height * .62),
+      Rect.fromLTWH(size.width * .08, size.height * .10, size.width * .84,
+          size.height * .62),
       const Color(0xFF2B2B31),
       const Color(0xFF55505C),
       const Color(0xFF111217),
     );
-    r(size.width * .12, size.height * .14, size.width * .76, size.height * .54, const Color(0xFF11151D));
+    r(size.width * .12, size.height * .14, size.width * .76, size.height * .54,
+        const Color(0xFF11151D));
 
     // Class banner.
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .12, size.height * .17, size.width * .16, size.height * .30),
+      Rect.fromLTWH(size.width * .12, size.height * .17, size.width * .16,
+          size.height * .30),
       palette[1],
       palette.last,
       palette.first,
     );
-    r(size.width * .17, size.height * .24, size.width * .06, size.height * .08, palette.last);
+    r(size.width * .17, size.height * .24, size.width * .06, size.height * .08,
+        palette.last);
 
     // Character platform.
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .28, size.height * .70, size.width * .44, size.height * .12),
+      Rect.fromLTWH(size.width * .28, size.height * .70, size.width * .44,
+          size.height * .12),
       const Color(0xFF3B3025),
       const Color(0xFF7B6447),
       const Color(0xFF17130F),
     );
     for (var i = 0; i < 5; i++) {
-      r(size.width * (.34 + i * .075), size.height * .75, 5, 5, const Color(0xFFD6A84B));
+      r(size.width * (.34 + i * .075), size.height * .75, 5, 5,
+          const Color(0xFFD6A84B));
     }
 
     // Full 64-bit Adventurer sprite.
@@ -3287,49 +3534,63 @@ class _ClassPortraitPainter extends CustomPainter {
         _Pixel64.bevel(
           canvas,
           p,
-          Rect.fromLTWH(size.width * .70, size.height * .42, size.width * .16, size.height * .17),
+          Rect.fromLTWH(size.width * .70, size.height * .42, size.width * .16,
+              size.height * .17),
           const Color(0xFF613778),
           const Color(0xFF9569B2),
           const Color(0xFF2E183A),
         );
-        r(size.width * .735, size.height * .455, size.width * .09, 4, const Color(0xFFE5D6B7));
-        r(size.width * .735, size.height * .50, size.width * .07, 4, const Color(0xFFE5D6B7));
+        r(size.width * .735, size.height * .455, size.width * .09, 4,
+            const Color(0xFFE5D6B7));
+        r(size.width * .735, size.height * .50, size.width * .07, 4,
+            const Color(0xFFE5D6B7));
         break;
       case 'scout':
-        r(size.width * .77, size.height * .32, 4, size.height * .32, palette.last);
+        r(size.width * .77, size.height * .32, 4, size.height * .32,
+            palette.last);
         for (var i = 0; i < 4; i++) {
-          r(size.width * .745, size.height * (.35 + i * .06), 11, 3, const Color(0xFFD8C7A3));
+          r(size.width * .745, size.height * (.35 + i * .06), 11, 3,
+              const Color(0xFFD8C7A3));
         }
         break;
       case 'alchemist':
         for (var i = 0; i < 3; i++) {
           final x = size.width * (.72 + i * .055);
           r(x, size.height * .45, 8, 22, const Color(0xFFB8EAF1));
-          r(x - 2, size.height * .55, 12, 14, i == 0
-              ? const Color(0xFF75D65D)
-              : i == 1
-                  ? const Color(0xFF8D65D6)
-                  : const Color(0xFFE87947));
+          r(
+              x - 2,
+              size.height * .55,
+              12,
+              14,
+              i == 0
+                  ? const Color(0xFF75D65D)
+                  : i == 1
+                      ? const Color(0xFF8D65D6)
+                      : const Color(0xFFE87947));
         }
         break;
       case 'guardian':
         _Pixel64.bevel(
           canvas,
           p,
-          Rect.fromLTWH(size.width * .71, size.height * .37, size.width * .16, size.height * .24),
+          Rect.fromLTWH(size.width * .71, size.height * .37, size.width * .16,
+              size.height * .24),
           const Color(0xFF8F3B2D),
           const Color(0xFFD8754A),
           const Color(0xFF4A211C),
         );
-        r(size.width * .765, size.height * .43, 8, size.height * .11, palette.last);
+        r(size.width * .765, size.height * .43, 8, size.height * .11,
+            palette.last);
         break;
       default:
-        r(size.width * .77, size.height * .30, 4, size.height * .36, palette.last);
+        r(size.width * .77, size.height * .30, 4, size.height * .36,
+            palette.last);
         r(size.width * .745, size.height * .30, 22, 6, palette.last);
         _Pixel64.bevel(
           canvas,
           p,
-          Rect.fromLTWH(size.width * .70, size.height * .50, size.width * .13, size.height * .14),
+          Rect.fromLTWH(size.width * .70, size.height * .50, size.width * .13,
+              size.height * .14),
           const Color(0xFF6A5031),
           const Color(0xFF9A7748),
           const Color(0xFF342619),
@@ -3340,7 +3601,8 @@ class _ClassPortraitPainter extends CustomPainter {
     for (var i = 0; i < 12; i++) {
       final x = size.width * (.15 + ((i * 17) % 70) / 100);
       final y = size.height * (.18 + ((i * 23) % 45) / 100);
-      r(x, y, i.isEven ? 3 : 2, i.isEven ? 3 : 2, palette.last.withValues(alpha: .75));
+      r(x, y, i.isEven ? 3 : 2, i.isEven ? 3 : 2,
+          palette.last.withValues(alpha: .75));
     }
 
     if (showRelic) {
@@ -3458,8 +3720,8 @@ class _EquippedAvatarPainter extends CustomPainter {
         pr(68, 10, 29, 31, const Color(0xFF173450));
         pr(71, 13, 23, 25, const Color(0xFF28547B));
         for (var i = 0; i < 6; i++) {
-          pr(73 + ((i * 7) % 18).toDouble(), 15 + ((i * 5) % 18).toDouble(), 1, 5,
-              const Color(0xFF9DD6EA));
+          pr(73 + ((i * 7) % 18).toDouble(), 15 + ((i * 5) % 18).toDouble(), 1,
+              5, const Color(0xFF9DD6EA));
         }
       } else if ((room ?? '').contains('lantern')) {
         glow(84, 28, 12, const Color(0xFFFFD76A));
@@ -3468,8 +3730,8 @@ class _EquippedAvatarPainter extends CustomPainter {
       } else if ((room ?? '').contains('map')) {
         pr(70, 12, 25, 22, const Color(0xFF263E5B));
         for (var i = 0; i < 6; i++) {
-          pr(73 + ((i * 11) % 18).toDouble(), 15 + ((i * 7) % 13).toDouble(), 2, 2,
-              const Color(0xFFFFDF78));
+          pr(73 + ((i * 11) % 18).toDouble(), 15 + ((i * 7) % 13).toDouble(), 2,
+              2, const Color(0xFFFFDF78));
         }
       }
     }
@@ -3559,8 +3821,10 @@ class _EquippedAvatarPainter extends CustomPainter {
     // Arms and hands.
     pr(28, 50, 9, 27, deepest);
     pr(69, 50, 9, 27, deepest);
-    pr(30, 52, 6, 21, outfitSlug.contains('starter-business-suit') ? suit : palette[1]);
-    pr(70, 52, 6, 21, outfitSlug.contains('starter-business-suit') ? suit : palette[1]);
+    pr(30, 52, 6, 21,
+        outfitSlug.contains('starter-business-suit') ? suit : palette[1]);
+    pr(70, 52, 6, 21,
+        outfitSlug.contains('starter-business-suit') ? suit : palette[1]);
     pr(30, 72, 7, 7, skinShadow);
     pr(69, 72, 7, 7, skinShadow);
     pr(31, 71, 5, 5, skin);
@@ -3726,8 +3990,7 @@ class _EquippedAvatarPainter extends CustomPainter {
         p,
       );
       p.style = PaintingStyle.fill;
-    } else if (handsSlug.contains('phial') ||
-        handsSlug.contains('tonic')) {
+    } else if (handsSlug.contains('phial') || handsSlug.contains('tonic')) {
       pr(74, 63, 6, 13, const Color(0xFFB9EAF3));
       pr(72, 75, 10, 8, const Color(0xFF48C96A));
       pr(75, 76, 4, 3, const Color(0xFFD2FFDB));
@@ -3792,9 +4055,9 @@ class _EquippedAvatarPainter extends CustomPainter {
 }
 
 class _RelicPainter extends QuestwellMasteryRelicPainter {
-  _RelicPainter({required String archetype, required List<Color> palette}) : super(archetype);
+  _RelicPainter({required String archetype, required List<Color> palette})
+      : super(archetype);
 }
-
 
 class _MarketPainter extends CustomPainter {
   _MarketPainter({required this.palette});
@@ -3807,7 +4070,8 @@ class _MarketPainter extends CustomPainter {
         _Pixel64.rect(canvas, p, x, y, w, h, color);
 
     r(0, 0, size.width, size.height, const Color(0xFF10131A));
-    r(0, size.height * .70, size.width, size.height * .30, const Color(0xFF3E291D));
+    r(0, size.height * .70, size.width, size.height * .30,
+        const Color(0xFF3E291D));
     _Pixel64.dither(
       canvas,
       p,
@@ -3823,26 +4087,31 @@ class _MarketPainter extends CustomPainter {
       _Pixel64.bevel(
         canvas,
         p,
-        Rect.fromLTWH(x, size.height * .06, size.width * .115, size.height * .17),
+        Rect.fromLTWH(
+            x, size.height * .06, size.width * .115, size.height * .17),
         stripe,
         stripe.withValues(alpha: .92),
         const Color(0xFF5A402A),
       );
     }
-    r(size.width * .045, size.height * .225, size.width * .92, 7, const Color(0xFF8E6B35));
-    r(size.width * .06, size.height * .245, size.width * .89, 3, const Color(0xFFD2A656));
+    r(size.width * .045, size.height * .225, size.width * .92, 7,
+        const Color(0xFF8E6B35));
+    r(size.width * .06, size.height * .245, size.width * .89, 3,
+        const Color(0xFFD2A656));
 
     // Back shelves with stacked goods.
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .08, size.height * .29, size.width * .34, size.height * .36),
+      Rect.fromLTWH(size.width * .08, size.height * .29, size.width * .34,
+          size.height * .36),
       const Color(0xFF4D2E20),
       const Color(0xFF7B4C2F),
       const Color(0xFF281812),
     );
     for (var row = 0; row < 3; row++) {
-      r(size.width * .10, size.height * (.37 + row * .095), size.width * .30, 5, const Color(0xFFB58049));
+      r(size.width * .10, size.height * (.37 + row * .095), size.width * .30, 5,
+          const Color(0xFFB58049));
     }
     final goods = [
       const Color(0xFF75D7C5),
@@ -3887,19 +4156,23 @@ class _MarketPainter extends CustomPainter {
       archetype: 'wanderer',
     );
     // Apron overlay.
-    r(size.width * .625, size.height * .46, size.width * .09, size.height * .18, const Color(0xFF6B5034));
-    r(size.width * .642, size.height * .49, size.width * .055, size.height * .13, const Color(0xFF8B6A43));
+    r(size.width * .625, size.height * .46, size.width * .09, size.height * .18,
+        const Color(0xFF6B5034));
+    r(size.width * .642, size.height * .49, size.width * .055,
+        size.height * .13, const Color(0xFF8B6A43));
 
     // Counter, display cloth, and sparkle.
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .44, size.height * .59, size.width * .47, size.height * .14),
+      Rect.fromLTWH(size.width * .44, size.height * .59, size.width * .47,
+          size.height * .14),
       const Color(0xFF74482B),
       const Color(0xFFA16A3E),
       const Color(0xFF3B2419),
     );
-    r(size.width * .48, size.height * .62, size.width * .14, size.height * .07, palette.first);
+    r(size.width * .48, size.height * .62, size.width * .14, size.height * .07,
+        palette.first);
     r(size.width * .49, size.height * .63, size.width * .12, 3, palette.last);
 
     // Coin stacks and gem.
@@ -3910,7 +4183,8 @@ class _MarketPainter extends CustomPainter {
         5,
         p,
       );
-      r(size.width * (.80 + i * .018) - 2, size.height * (.56 - i * .013) - 3, 3, 3, const Color(0xFFFFE69B));
+      r(size.width * (.80 + i * .018) - 2, size.height * (.56 - i * .013) - 3,
+          3, 3, const Color(0xFFFFE69B));
     }
     final gem = Path()
       ..moveTo(size.width * .735, size.height * .53)
@@ -3925,13 +4199,15 @@ class _MarketPainter extends CustomPainter {
     _Pixel64.bevel(
       canvas,
       p,
-      Rect.fromLTWH(size.width * .20, size.height * .78, size.width * .58, size.height * .13),
+      Rect.fromLTWH(size.width * .20, size.height * .78, size.width * .58,
+          size.height * .13),
       const Color(0xFF21433F),
       const Color(0xFF3A6A62),
       const Color(0xFF102320),
     );
     for (var i = 0; i < 8; i++) {
-      r(size.width * (.235 + i * .065), size.height * .815, 5, 5, const Color(0xFFD4AA55));
+      r(size.width * (.235 + i * .065), size.height * .815, 5, 5,
+          const Color(0xFFD4AA55));
     }
 
     // Lantern glow.
@@ -3942,9 +4218,12 @@ class _MarketPainter extends CustomPainter {
       24,
       const Color(0xFFFFC95C),
     );
-    r(size.width * .905, size.height * .16, 4, size.height * .18, const Color(0xFF7B4A2A));
-    r(size.width * .875, size.height * .34, size.width * .075, size.height * .16, const Color(0xFFB77A2D));
-    r(size.width * .891, size.height * .375, size.width * .043, size.height * .085, const Color(0xFFFFE39A));
+    r(size.width * .905, size.height * .16, 4, size.height * .18,
+        const Color(0xFF7B4A2A));
+    r(size.width * .875, size.height * .34, size.width * .075,
+        size.height * .16, const Color(0xFFB77A2D));
+    r(size.width * .891, size.height * .375, size.width * .043,
+        size.height * .085, const Color(0xFFFFE39A));
   }
 
   @override
@@ -3972,29 +4251,40 @@ class _BossSigilPainter extends CustomPainter {
 
     switch (bossType) {
       case 'meeting_mimic':
-        rect(size.width * .20, size.height * .24, size.width * .60, size.height * .52, violet);
-        rect(size.width * .30, size.height * .35, size.width * .14, size.height * .14, paper);
-        rect(size.width * .56, size.height * .35, size.width * .14, size.height * .14, paper);
+        rect(size.width * .20, size.height * .24, size.width * .60,
+            size.height * .52, violet);
+        rect(size.width * .30, size.height * .35, size.width * .14,
+            size.height * .14, paper);
+        rect(size.width * .56, size.height * .35, size.width * .14,
+            size.height * .14, paper);
         rect(size.width * .43, size.height * .58, size.width * .14, 5, ember);
         break;
       case 'spreadsheet_slime':
         p.color = teal;
-        canvas.drawCircle(Offset(size.width * .50, size.height * .56), size.width * .25, p);
-        rect(size.width * .25, size.height * .58, size.width * .50, size.height * .15, teal);
+        canvas.drawCircle(
+            Offset(size.width * .50, size.height * .56), size.width * .25, p);
+        rect(size.width * .25, size.height * .58, size.width * .50,
+            size.height * .15, teal);
         rect(size.width * .37, size.height * .48, 5, 5, paper);
         rect(size.width * .58, size.height * .48, 5, 5, paper);
         break;
       case 'calendar_kraken':
-        rect(size.width * .22, size.height * .18, size.width * .56, size.height * .58, const Color(0xFF8A5A35));
-        rect(size.width * .28, size.height * .30, size.width * .44, size.height * .32, paper);
+        rect(size.width * .22, size.height * .18, size.width * .56,
+            size.height * .58, const Color(0xFF8A5A35));
+        rect(size.width * .28, size.height * .30, size.width * .44,
+            size.height * .32, paper);
         for (var i = 0; i < 4; i++) {
-          rect(size.width * (.33 + (i % 2) * .20), size.height * (.36 + (i ~/ 2) * .14), 6, 6, ember);
+          rect(size.width * (.33 + (i % 2) * .20),
+              size.height * (.36 + (i ~/ 2) * .14), 6, 6, ember);
         }
         break;
       case 'printer_poltergeist':
-        rect(size.width * .20, size.height * .30, size.width * .60, size.height * .38, const Color(0xFF5E6670));
-        rect(size.width * .30, size.height * .14, size.width * .40, size.height * .28, paper);
-        rect(size.width * .30, size.height * .62, size.width * .40, size.height * .20, paper);
+        rect(size.width * .20, size.height * .30, size.width * .60,
+            size.height * .38, const Color(0xFF5E6670));
+        rect(size.width * .30, size.height * .14, size.width * .40,
+            size.height * .28, paper);
+        rect(size.width * .30, size.height * .62, size.width * .40,
+            size.height * .20, paper);
         rect(size.width * .64, size.height * .43, 6, 6, ember);
         break;
       case 'notification_swarm':
@@ -4005,7 +4295,8 @@ class _BossSigilPainter extends CustomPainter {
         }
         break;
       case 'ticket_troll':
-        rect(size.width * .24, size.height * .24, size.width * .52, size.height * .52, const Color(0xFF4A5D3C));
+        rect(size.width * .24, size.height * .24, size.width * .52,
+            size.height * .52, const Color(0xFF4A5D3C));
         rect(size.width * .31, size.height * .37, 6, 6, paper);
         rect(size.width * .61, size.height * .37, 6, 6, paper);
         rect(size.width * .40, size.height * .58, size.width * .20, 5, ember);
@@ -4027,8 +4318,10 @@ class _BossSigilPainter extends CustomPainter {
         // Inbox Hydra - three paper heads.
         for (var i = 0; i < 3; i++) {
           final x = size.width * (.18 + i * .24);
-          rect(x, size.height * (.25 + (i % 2) * .10), size.width * .18, size.height * .34, paper);
-          rect(x + size.width * .05, size.height * (.43 + (i % 2) * .10), 5, 5, ember);
+          rect(x, size.height * (.25 + (i % 2) * .10), size.width * .18,
+              size.height * .34, paper);
+          rect(x + size.width * .05, size.height * (.43 + (i % 2) * .10), 5, 5,
+              ember);
         }
     }
   }
@@ -4056,16 +4349,21 @@ class _BossPainter extends CustomPainter {
     final paper = const Color(0xFFD8C7A3);
 
     if (bossType == 'inbox_hydra') {
-      rect(size.width * .25, size.height * .35, size.width * .50, size.height * .48, const Color(0xFF44362E));
+      rect(size.width * .25, size.height * .35, size.width * .50,
+          size.height * .48, const Color(0xFF44362E));
       for (var i = 0; i < 3; i++) {
-        rect(size.width * (.26 + i * .18), size.height * (.18 + (i % 2) * .06), 26, 50, paper);
-        rect(size.width * (.29 + i * .18), size.height * (.29 + (i % 2) * .06), 8, 8, ember);
+        rect(size.width * (.26 + i * .18), size.height * (.18 + (i % 2) * .06),
+            26, 50, paper);
+        rect(size.width * (.29 + i * .18), size.height * (.29 + (i % 2) * .06),
+            8, 8, ember);
       }
-      rect(size.width * .36, size.height * .50, size.width * .28, 14, const Color(0xFF1A1010));
+      rect(size.width * .36, size.height * .50, size.width * .28, 14,
+          const Color(0xFF1A1010));
       rect(size.width * .40, size.height * .53, 9, 7, ember);
       rect(size.width * .56, size.height * .53, 9, 7, ember);
     } else if (bossType == 'meeting_mimic') {
-      rect(size.width * .31, size.height * .16, size.width * .38, size.height * .67, violet);
+      rect(size.width * .31, size.height * .16, size.width * .38,
+          size.height * .67, violet);
       for (var i = 0; i < 6; i++) {
         final x = size.width * (.12 + (i % 3) * .30);
         final y = size.height * (.17 + (i ~/ 3) * .38);
@@ -4075,23 +4373,30 @@ class _BossPainter extends CustomPainter {
       rect(size.width * .43, size.height * .42, 9, 9, const Color(0xFFE94A6B));
       rect(size.width * .55, size.height * .42, 9, 9, const Color(0xFFE94A6B));
     } else if (bossType == 'calendar_kraken') {
-      rect(size.width * .31, size.height * .15, size.width * .38, size.height * .67, const Color(0xFF7A4D2B));
-      rect(size.width * .34, size.height * .22, size.width * .32, size.height * .35, paper);
+      rect(size.width * .31, size.height * .15, size.width * .38,
+          size.height * .67, const Color(0xFF7A4D2B));
+      rect(size.width * .34, size.height * .22, size.width * .32,
+          size.height * .35, paper);
       for (var i = 0; i < 9; i++) {
-        rect(size.width * (.37 + (i % 3) * .09), size.height * (.28 + (i ~/ 3) * .09), 9, 9, ember);
+        rect(size.width * (.37 + (i % 3) * .09),
+            size.height * (.28 + (i ~/ 3) * .09), 9, 9, ember);
       }
       p.color = const Color(0xFF22242B);
       canvas.drawCircle(Offset(size.width * .50, size.height * .69), 22, p);
       p.color = paper;
-      canvas.drawLine(Offset(size.width * .50, size.height * .69), Offset(size.width * .50, size.height * .56), p..strokeWidth = 3);
-      canvas.drawLine(Offset(size.width * .50, size.height * .69), Offset(size.width * .61, size.height * .69), p);
+      canvas.drawLine(Offset(size.width * .50, size.height * .69),
+          Offset(size.width * .50, size.height * .56), p..strokeWidth = 3);
+      canvas.drawLine(Offset(size.width * .50, size.height * .69),
+          Offset(size.width * .61, size.height * .69), p);
     } else if (bossType == 'notification_swarm') {
       for (var i = 0; i < 14; i++) {
         final x = size.width * ((i * 37 % 91) / 100 + .04);
         final y = size.height * ((i * 29 % 73) / 100 + .08);
-        rect(x, y, 16, 16, i.isEven ? const Color(0xFFE94A6B) : const Color(0xFF4B8DE8));
+        rect(x, y, 16, 16,
+            i.isEven ? const Color(0xFFE94A6B) : const Color(0xFF4B8DE8));
       }
-      rect(size.width * .39, size.height * .28, size.width * .22, size.height * .52, const Color(0xFF22142E));
+      rect(size.width * .39, size.height * .28, size.width * .22,
+          size.height * .52, const Color(0xFF22142E));
       rect(size.width * .44, size.height * .42, 8, 8, const Color(0xFFF064AF));
       rect(size.width * .55, size.height * .42, 8, 8, const Color(0xFFF064AF));
     } else if (bossType == 'spreadsheet_slime') {
@@ -4103,20 +4408,32 @@ class _BossPainter extends CustomPainter {
         42,
         const Color(0xFF45B7A8),
       );
-      rect(size.width * .24, size.height * .39, size.width * .52, size.height * .34, const Color(0xFF236C68));
-      rect(size.width * .28, size.height * .33, size.width * .44, size.height * .34, const Color(0xFF3EA89C));
+      rect(size.width * .24, size.height * .39, size.width * .52,
+          size.height * .34, const Color(0xFF236C68));
+      rect(size.width * .28, size.height * .33, size.width * .44,
+          size.height * .34, const Color(0xFF3EA89C));
       for (var row = 0; row < 3; row++) {
         for (var col = 0; col < 5; col++) {
           final x = size.width * (.31 + col * .075);
           final y = size.height * (.38 + row * .075);
-          rect(x, y, 10, 8, (row + col).isEven ? const Color(0xFF9DE1C8) : const Color(0xFF267C75));
+          rect(
+              x,
+              y,
+              10,
+              8,
+              (row + col).isEven
+                  ? const Color(0xFF9DE1C8)
+                  : const Color(0xFF267C75));
         }
       }
       rect(size.width * .36, size.height * .46, 8, 8, const Color(0xFFF7E58E));
       rect(size.width * .60, size.height * .46, 8, 8, const Color(0xFFF7E58E));
-      rect(size.width * .44, size.height * .61, size.width * .12, 6, const Color(0xFF16433F));
-      rect(size.width * .30, size.height * .70, size.width * .08, size.height * .13, const Color(0xFF2E8D84));
-      rect(size.width * .62, size.height * .70, size.width * .07, size.height * .10, const Color(0xFF2E8D84));
+      rect(size.width * .44, size.height * .61, size.width * .12, 6,
+          const Color(0xFF16433F));
+      rect(size.width * .30, size.height * .70, size.width * .08,
+          size.height * .13, const Color(0xFF2E8D84));
+      rect(size.width * .62, size.height * .70, size.width * .07,
+          size.height * .10, const Color(0xFF2E8D84));
     } else if (bossType == 'printer_poltergeist') {
       // Haunted office printer with spectral paper trail.
       _Pixel64.stepGlow(
@@ -4129,16 +4446,22 @@ class _BossPainter extends CustomPainter {
       _Pixel64.bevel(
         canvas,
         p,
-        Rect.fromLTWH(size.width * .28, size.height * .31, size.width * .44, size.height * .38),
+        Rect.fromLTWH(size.width * .28, size.height * .31, size.width * .44,
+            size.height * .38),
         const Color(0xFF5E6670),
         const Color(0xFF8A949E),
         const Color(0xFF2C3138),
       );
-      rect(size.width * .35, size.height * .16, size.width * .30, size.height * .25, paper);
-      rect(size.width * .38, size.height * .20, size.width * .22, 5, const Color(0xFF7C7466));
-      rect(size.width * .38, size.height * .28, size.width * .18, 5, const Color(0xFF7C7466));
-      rect(size.width * .34, size.height * .61, size.width * .32, size.height * .20, paper);
-      rect(size.width * .39, size.height * .66, size.width * .22, 4, const Color(0xFF8A8170));
+      rect(size.width * .35, size.height * .16, size.width * .30,
+          size.height * .25, paper);
+      rect(size.width * .38, size.height * .20, size.width * .22, 5,
+          const Color(0xFF7C7466));
+      rect(size.width * .38, size.height * .28, size.width * .18, 5,
+          const Color(0xFF7C7466));
+      rect(size.width * .34, size.height * .61, size.width * .32,
+          size.height * .20, paper);
+      rect(size.width * .39, size.height * .66, size.width * .22, 4,
+          const Color(0xFF8A8170));
       rect(size.width * .62, size.height * .42, 8, 8, const Color(0xFFE87947));
       rect(size.width * .37, size.height * .46, 7, 7, const Color(0xFF8D65D6));
       rect(size.width * .56, size.height * .46, 7, 7, const Color(0xFF8D65D6));
@@ -4156,17 +4479,22 @@ class _BossPainter extends CustomPainter {
       _Pixel64.bevel(
         canvas,
         p,
-        Rect.fromLTWH(size.width * .30, size.height * .30, size.width * .40, size.height * .45),
+        Rect.fromLTWH(size.width * .30, size.height * .30, size.width * .40,
+            size.height * .45),
         const Color(0xFF40523B),
         const Color(0xFF6C805F),
         const Color(0xFF202B1E),
       );
-      rect(size.width * .25, size.height * .39, size.width * .08, size.height * .26, const Color(0xFF6B5034));
-      rect(size.width * .67, size.height * .39, size.width * .08, size.height * .26, const Color(0xFF6B5034));
-      rect(size.width * .36, size.height * .20, size.width * .28, size.height * .17, const Color(0xFF5D704F));
+      rect(size.width * .25, size.height * .39, size.width * .08,
+          size.height * .26, const Color(0xFF6B5034));
+      rect(size.width * .67, size.height * .39, size.width * .08,
+          size.height * .26, const Color(0xFF6B5034));
+      rect(size.width * .36, size.height * .20, size.width * .28,
+          size.height * .17, const Color(0xFF5D704F));
       rect(size.width * .39, size.height * .26, 8, 8, const Color(0xFFF7E58E));
       rect(size.width * .58, size.height * .26, 8, 8, const Color(0xFFF7E58E));
-      rect(size.width * .43, size.height * .52, size.width * .14, 7, const Color(0xFF1B1715));
+      rect(size.width * .43, size.height * .52, size.width * .14, 7,
+          const Color(0xFF1B1715));
       for (var i = 0; i < 6; i++) {
         final x = size.width * (.13 + (i % 3) * .30);
         final y = size.height * (.12 + (i ~/ 3) * .60);
@@ -4202,15 +4530,20 @@ class _BossPainter extends CustomPainter {
       p.color = const Color(0xFF8E2F2B);
       canvas.drawPath(leftWing, p);
       canvas.drawPath(rightWing, p);
-      rect(size.width * .40, size.height * .30, size.width * .20, size.height * .42, const Color(0xFFB44735));
-      rect(size.width * .43, size.height * .24, size.width * .14, size.height * .15, const Color(0xFFD56242));
+      rect(size.width * .40, size.height * .30, size.width * .20,
+          size.height * .42, const Color(0xFFB44735));
+      rect(size.width * .43, size.height * .24, size.width * .14,
+          size.height * .15, const Color(0xFFD56242));
       rect(size.width * .45, size.height * .29, 7, 7, const Color(0xFFFFE07A));
       rect(size.width * .55, size.height * .29, 7, 7, const Color(0xFFFFE07A));
       for (var i = 0; i < 4; i++) {
-        rect(size.width * .44, size.height * (.44 + i * .055), size.width * .12, 5, i < 3 ? const Color(0xFFF1C75B) : const Color(0xFF5B3127));
+        rect(size.width * .44, size.height * (.44 + i * .055), size.width * .12,
+            5, i < 3 ? const Color(0xFFF1C75B) : const Color(0xFF5B3127));
       }
-      rect(size.width * .47, size.height * .72, 6, size.height * .12, const Color(0xFF7D2A26));
-      rect(size.width * .55, size.height * .72, 6, size.height * .12, const Color(0xFF7D2A26));
+      rect(size.width * .47, size.height * .72, 6, size.height * .12,
+          const Color(0xFF7D2A26));
+      rect(size.width * .55, size.height * .72, 6, size.height * .12,
+          const Color(0xFF7D2A26));
       // Tiny flame / update spark.
       rect(size.width * .62, size.height * .42, 9, 7, const Color(0xFFF4A13A));
       rect(size.width * .66, size.height * .39, 7, 5, const Color(0xFFFFDF78));
@@ -4218,9 +4551,11 @@ class _BossPainter extends CustomPainter {
       // Fallback backlog monster.
       for (var i = 0; i < 10; i++) {
         final w = size.width * (.22 + (i % 3) * .03);
-        rect(size.width * (.18 + (i % 4) * .16), size.height * (.12 + i * .055), w, 13, paper);
+        rect(size.width * (.18 + (i % 4) * .16), size.height * (.12 + i * .055),
+            w, 13, paper);
       }
-      rect(size.width * .40, size.height * .55, size.width * .20, size.height * .28, const Color(0xFF382B26));
+      rect(size.width * .40, size.height * .55, size.width * .20,
+          size.height * .28, const Color(0xFF382B26));
       rect(size.width * .44, size.height * .63, 8, 8, ember);
       rect(size.width * .55, size.height * .63, 8, 8, ember);
     }
