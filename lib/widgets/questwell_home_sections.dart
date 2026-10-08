@@ -75,10 +75,11 @@ class QuestwellHomeFocusLayout extends StatelessWidget {
       this.remainingQuests = const [],
       this.emphasizeAddQuest = false,
       this.campfire,
+      this.reward,
       this.secondary,
       this.gentle = false});
   final Widget nextWin, overview;
-  final Widget? campfire, secondary;
+  final Widget? campfire, reward, secondary;
   final ValueChanged<String> onOpen;
   final List<Widget> remainingQuests;
   final bool emphasizeAddQuest, gentle;
@@ -103,6 +104,7 @@ class QuestwellHomeFocusLayout extends StatelessWidget {
                     ],
                   ])),
           if (campfire != null) ...[const SizedBox(height: 5), campfire!],
+          if (reward != null) reward!,
           const SizedBox(height: 16),
           Theme(
               data:

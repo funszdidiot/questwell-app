@@ -86,3 +86,8 @@ at least 8px above fixed navigation and work without scrolling. Existing enlarge
 text, pending completion, notes, Campfire and navigation tests remain intact.
 Status: QA; required checks, independent source review and delivered aesthetic
 comparison pending. No measured retention claim or new artwork lock is implied.
+
+The existing server-derived milestone reward now sits directly below Campfire,
+so users need not expand More to discover their next unlock. Its selection,
+eligibility and empty behavior are unchanged; no new reward or economy rule is
+introduced. Weekly momentum and secondary actions remain in More.

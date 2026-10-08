@@ -140,7 +140,8 @@ void main() {
                 nextWin: Text(empty ? 'Empty board' : 'Featured quest'),
                 overview: const Text('Your adventurer'),
                 campfire: const Text('Campfire control'),
-                secondary: const Text('Next reward'),
+                reward: const Text('Next reward'),
+                secondary: const Text('Weekly momentum'),
                 remainingQuests: empty
                     ? const []
                     : const [Text('Second quest'), Text('Third quest')],
@@ -155,6 +156,9 @@ void main() {
                 .getTopLeft(find.text(empty ? 'Empty board' : 'Featured quest'))
                 .dy));
         expect(find.text('Second quest'), findsNothing);
+        expect(find.text('Next reward'), findsOneWidget,
+            reason: 'The next reward must not require expanding More');
+        expect(find.text('Weekly momentum'), findsNothing);
         if (empty) {
           await tester.tap(find.widgetWithText(FilledButton, 'Add quest'));
           expect(opened, ['quests']);
@@ -164,6 +168,7 @@ void main() {
         await tester.tap(find.text('More at the Hearth'));
         await tester.pumpAndSettle();
         expect(find.text('Next reward'), findsOneWidget);
+        expect(find.text('Weekly momentum'), findsOneWidget);
         if (!empty) {
           expect(find.text('Second quest'), findsOneWidget);
           expect(find.text('Third quest'), findsOneWidget);
