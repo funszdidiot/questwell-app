@@ -2,15 +2,17 @@
 
 ## Hallowed Hearth Halloween collection — October 8, 2026
 
-**QA — fireplace alignment correction.** Six designs, 740 total coins,
-purchases through November 8 Chicago time and permanent ownership are approved.
-PR #75 passed independent source/visual review, all client/backend checks and
-atomic activation rehearsal; development delivery at `7bd70a9` is verified.
-Tanya approved the scoped 24-hour activation credential and requested the print
-be centered on the fireplace. That narrow room-anchor correction is in QA.
-Catalog activation awaits the corrected delivered client and approved credential
-setup. No live catalog mutation has occurred. Existing Harvest items and locked
-avatar assets are unchanged. See `../qa/HALLOWED_HEARTH.md` and
+**LOCKED / DEV DEPLOYED — catalog active.** Six approved designs total 740
+coins. PR #79 centers the print over the fireplace in wide and portrait layouts.
+Revision `973f496` is served; all six asset hashes and the furnished browser
+preview were verified. Independent review, 928 Flutter / 397 Chrome tests,
+native builds and backend gates passed. Preview `37722573952` succeeded.
+
+Approved scoped activation `37723523792` succeeded as migration
+`20261008033653`. Read-only checks confirm six active items, five render entries,
+the November 8 Chicago purchase cutoff and permanent ownership. Existing
+catalog/schema and 51 prior history entries are unchanged (52 total now).
+No main/flutterflow promotion. See `../qa/HALLOWED_HEARTH.md` and
 `../qa/HALLOWED_HEARTH_FORWARD_DEPLOYMENT.md`.
 
 ## Hearth icon and empty-state consistency — October 8, 2026

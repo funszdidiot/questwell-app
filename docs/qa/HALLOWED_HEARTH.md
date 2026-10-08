@@ -1,5 +1,13 @@
 # Hallowed Hearth — October 7, 2026
 
+## Verified active release — October 8 UTC
+
+PR #79 centered the print over the fireplace and merged as `973f49642eb779543e2b4df1a65ac7085bb8917e`. Independent source and wide/mobile visual review passed. All required checks passed: 928 Flutter tests, 397 Chrome tests, coverage, Android, iOS and backend rehearsal. Preview `37722573952` and backend `37722573519` passed; the served revision and six asset hashes matched. Actual hosted furnishings, avatar and animated spiders were verified.
+
+The approved 24-hour project-scoped credential was created and stored. Reviewed activation workflow `37723523792`, job `113136402518`, succeeded at 03:36:53 UTC as migration `20261008033653`. Read-only post-verification found six active, nonpremium, all-class items at 220/140/100/160/60/60 coins and five exact render entries. Purchases close at `2026-11-09T06:00:00Z`; ownership and placement remain permanent. Keep the rows active after cutoff. Existing catalog, schema and 51 prior history records retain their exact protected hashes; there is one matching new forward record (52 total).
+
+Purchase boundaries, single charging, owned retries after cutoff and placement/restoration were verified with synthetic accounts in the isolated harness. No real-account purchase was made for this release verification. No main/flutterflow promotion occurred. Earlier pending/blocker statements below are historical and superseded for this approved release.
+
 ## Authority and scope
 
 Tanya approved the generated Halloween room with: “Add some animated spiders and we’re a go.” This scopes the seasonal room art and two ambient spiders. It does not approve price, dates, account activation or production launch. No schema, ownership, currency or auth changes.
