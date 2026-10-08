@@ -2,11 +2,12 @@
 
 ## Full Hearth reference composition — October 7, 2026
 
-**QA** on `feat/hearth-room-materials`. Tanya explicitly selected the entire
-reference home: room, layout, typography, controls and navigation. Implemented
-candidate uses immersive room/logo, compact status strip, parchment next-quest
-panel, Campfire below and timber navigation. Required CI and delivered visual
-checks pending. Locked avatars and canonical decorating geometry preserved.
+**DEV DEPLOYED** via PR #71 at `f88f070`, Preview `37708222571`. Tanya's full
+reference composition is implemented: immersive room/logo, compact progress,
+parchment next quest, Campfire below and timber Home navigation. 905 Flutter / 397
+Chrome tests and required native/backend gates passed. Live sample completion is
+verified. A scoped follow-up restores visible purple XP fill and reserves the attached
+header above the scene to keep equipped wall art clear. No avatar or decorating geometry locks changed.
 See `../qa/HEARTH_FULL_HOME.md`.
 
 ## Intentional 90s Hearth materials — October 7, 2026
