@@ -91,6 +91,10 @@ void main() {
           expectWholeAction('Begin');
           await tester.tap(find.text('Begin'));
           await tester.pump();
+          // Starting changes the panel height; reach its new button position.
+          await tester.ensureVisible(find.text('Pause'));
+          await tester.pump();
+          expect(find.text('Pause').hitTestable(), findsOneWidget);
           await tester.tap(find.text('Pause'));
           await tester.pump();
           expectWholeAction('Resume');
