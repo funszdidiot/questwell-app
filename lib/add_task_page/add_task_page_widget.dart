@@ -4,7 +4,6 @@ import '../widgets/questwell_app_style.dart';
 import '/services/questwell_task_creation.dart';
 import '/services/questwell_task_service.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/widgets/questwell_pixel_art.dart';
 import '/widgets/questwell_quest_card.dart';
 import '/widgets/questwell_typography.dart';
 import '/widgets/questwell_app_navigation.dart';
@@ -272,6 +271,7 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                                     color: const Color(0xFF67543E))),
                             const SizedBox(height: 14),
                             TextFormField(
+                              cursorColor: const Color(0xFF244C3E),
                               controller: _model.taskTitleFieldTextController,
                               focusNode: _model.taskTitleFieldFocusNode,
                               enabled: !_fieldsLocked,

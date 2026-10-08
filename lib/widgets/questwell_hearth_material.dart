@@ -84,7 +84,19 @@ class QuestwellHearthFrame extends StatelessWidget {
             ),
             child: CustomPaint(
                 painter: parchment ? const _ParchmentPainter() : null,
-                child: Padding(padding: padding, child: child)),
+                child: Padding(
+                    padding: padding,
+                    child: parchment
+                        ? Theme(
+                            data: Theme.of(context).copyWith(
+                                textSelectionTheme:
+                                    const TextSelectionThemeData(
+                                        cursorColor: Color(0xFF244C3E),
+                                        selectionColor: Color(0x55386C54),
+                                        selectionHandleColor:
+                                            Color(0xFF244C3E))),
+                            child: child)
+                        : child)),
           ),
         ),
       ));

@@ -4,7 +4,6 @@ import 'questwell_app_style.dart';
 import 'package:flutter/material.dart';
 import '../models/questwell_boss.dart';
 import 'questwell_boss_encounter.dart';
-import 'questwell_pixel_art.dart';
 import 'questwell_typography.dart';
 
 const questwellBossNames = {

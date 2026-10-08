@@ -150,6 +150,11 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
         focusedBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.zero,
             borderSide: BorderSide(color: Color(0xFF326F69), width: 2)),
+        errorStyle: const TextStyle(color: Color(0xFF8C302B), fontSize: 13),
+        errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFF8C302B))),
+        focusedErrorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFF8C302B), width: 2)),
         errorMaxLines: 3,
       );
 
@@ -236,6 +241,9 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                                                   const SizedBox(height: 24),
                                                   if (!recovering) ...[
                                                     TextFormField(
+                                                        cursorColor:
+                                                            const Color(
+                                                                0xFF244C3E),
                                                         controller: _email,
                                                         enabled: !_busy,
                                                         keyboardType:
@@ -274,6 +282,8 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                                                           recovering) &&
                                                       !_invalidRecovery) ...[
                                                     TextFormField(
+                                                        cursorColor: const Color(
+                                                            0xFF244C3E),
                                                         controller: _password,
                                                         enabled: !_busy,
                                                         obscureText: !_visible,
@@ -306,8 +316,8 @@ class _AuthPageWidgetState extends State<AuthPageWidget> {
                                                                     _visible
                                                                         ? 'Hide'
                                                                         : 'Show',
-                                                                    style: const TextStyle(
-                                                                        color: Color(0xFF326F69))))),
+                                                                    style:
+                                                                        const TextStyle(color: Color(0xFF326F69))))),
                                                         validator: (v) => v == null || v.isEmpty
                                                             ? 'Enter your password.'
                                                             : (_creating || recovering) && v.length < 8

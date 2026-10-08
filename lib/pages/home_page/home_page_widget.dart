@@ -401,7 +401,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             if (!snapshot.hasData) {
               return const QuestwellHearthFrame(
                 padding: EdgeInsets.all(20),
-                accent: Color(0xFF8E6B35),
                 child: SizedBox(
                   height: 64,
                   child: Center(child: CircularProgressIndicator()),
