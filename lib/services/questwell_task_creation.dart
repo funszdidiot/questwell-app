@@ -1,3 +1,5 @@
+import 'questwell_content_policy.dart';
+
 class QuestwellCreationAccountChanged implements Exception {
   const QuestwellCreationAccountChanged();
 }
@@ -31,7 +33,9 @@ class QuestwellTaskCreation {
   Future<String> save(String title, int friction) async {
     _checkOwner();
     final normalizedTitle = title.trim();
-    if (normalizedTitle.isEmpty || friction < 1 || friction > 4) {
+    if (QuestwellContentPolicy.titleError(normalizedTitle) != null ||
+        friction < 1 ||
+        friction > 4) {
       throw ArgumentError('A quest needs a title and difficulty.');
     }
     final existing = _params;

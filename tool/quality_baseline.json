@@ -342,7 +342,6 @@
     "lib/generated_art/adventurer_scarf_data.dart": "7a46c28c6055af55b97206a809684b36beaaf6b905b238113e9027f3fb2fbe5f",
     "lib/generated_art/hearth_environment_data.dart": "720de857b8af1e14f6ba32b1265a4aab3f9ea833bd009aca826e09fbe4797a06",
     "lib/index.dart": "33b3b78910982086ab124d5f8896f0479042078dc91f7946994f96e44e552976",
-    "lib/models/questwell_boss.dart": "f158100037cd5efa7461c2ca4de1f25b3d64d110f3eb63ec60241c0ea5a95d23",
     "lib/models/questwell_boss_unlocks.dart": "5753bcd6b3ad3f966f708138b473b7372ebfcd11dd659c33144100a8f9c7a98b",
     "lib/preview/autumn_lantern_review.dart": "8584ecef013257477127ebb70fc2f32add21ee815ef236f4dbbfd3bf8ecef11b",
     "lib/preview/clean_base_review.dart": "bb6438788ce20c6e0a187919b90aa354040f8e98978af8908b6856bd6772f0ef",

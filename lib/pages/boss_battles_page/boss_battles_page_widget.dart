@@ -1,4 +1,5 @@
 import '../../widgets/questwell_app_style.dart';
+import '/services/questwell_content_policy.dart';
 import 'package:uuid/uuid.dart';
 
 import '/widgets/questwell_app_navigation.dart';
@@ -284,7 +285,10 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                   ],
                   const SizedBox(height: 10),
                   OutlinedButton.icon(
-                    onPressed: submitting || uncertain
+                    onPressed: submitting ||
+                            uncertain ||
+                            stepControllers.length >=
+                                QuestwellContentPolicy.bossStepLimit
                         ? null
                         : () => setSheetState(() {
                               stepControllers.add(TextEditingController());
@@ -319,6 +323,13 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                                 () => errorMessage =
                                     'Add a boss title and at least two attack steps.',
                               );
+                              return;
+                            }
+
+                            final contentError =
+                                QuestwellContentPolicy.bossError(title, steps);
+                            if (contentError != null) {
+                              setSheetState(() => errorMessage = contentError);
                               return;
                             }
 

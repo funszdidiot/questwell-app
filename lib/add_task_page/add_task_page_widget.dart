@@ -1,3 +1,4 @@
+import '/services/questwell_content_policy.dart';
 import '../widgets/questwell_hearth_material.dart';
 import '../widgets/questwell_hearth_icon.dart';
 import '../widgets/questwell_app_style.dart';
@@ -83,6 +84,12 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
 
     if (title.isEmpty) {
       setState(() => _feedback = 'Give this quest a name first.');
+      return;
+    }
+
+    final titleError = QuestwellContentPolicy.titleError(title);
+    if (titleError != null) {
+      setState(() => _feedback = titleError);
       return;
     }
 
@@ -286,6 +293,8 @@ class _AddTaskPageWidgetState extends State<AddTaskPageWidget> {
                                   fontWeight: FontWeight.w600,
                                   color: const Color(0xFF34291F)),
                               decoration: InputDecoration(
+                                helperText:
+                                    '1–120 characters. Existing text is never shortened.',
                                 labelText: 'Quest name',
                                 hintText: 'Reply to Jordan',
                                 labelStyle: QuestwellTypography.body(

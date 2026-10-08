@@ -1,3 +1,5 @@
+import '../services/questwell_content_policy.dart';
+
 /// One reward per completed battle, never multiplied by its task steps.
 class QuestwellBossRewards {
   const QuestwellBossRewards._();
@@ -21,7 +23,10 @@ class QuestwellBossStep {
   factory QuestwellBossStep.fromJson(Map<String, dynamic> json) {
     return QuestwellBossStep(
       id: json['id']?.toString() ?? '',
-      title: json['title']?.toString() ?? 'Step',
+      title: QuestwellContentPolicy.displayTitle(
+        json['title']?.toString(),
+        'Untitled step',
+      ),
       position: (json['position'] as num?)?.toInt() ?? 0,
       completed: json['completed'] == true,
     );
@@ -63,9 +68,13 @@ class QuestwellBossBattle {
   ) {
     return QuestwellBossBattle(
       id: json['id']?.toString() ?? '',
-      title: json['title']?.toString() ?? 'Boss Battle',
+      title: QuestwellContentPolicy.displayTitle(
+        json['title']?.toString(),
+        'Untitled boss',
+      ),
       status: json['status']?.toString() ?? 'open',
-      rewardXp: (json['reward_xp'] as num?)?.toInt() ?? QuestwellBossRewards.victoryXp,
+      rewardXp: (json['reward_xp'] as num?)?.toInt() ??
+          QuestwellBossRewards.victoryXp,
       rewardCoins: (json['reward_coins'] as num?)?.toInt() ?? 50,
       bossType: json['boss_type']?.toString() ?? 'inbox_hydra',
       steps: steps,
