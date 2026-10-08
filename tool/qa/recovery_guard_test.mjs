@@ -25,16 +25,13 @@ test('recovery error diagnostics never return server text or row values', () => 
   assert.deepEqual(recoveryFailureCategories(`ERROR: schema secret already exists\n${secrets}`), ['already_exists']);
   assert.deepEqual(recoveryFailureCategories(secrets), []);
 });
-test('missing bytes require a specific object error, never a generic outage or denial', () => {
-  const path = 'synthetic-owner/recovery.png';
-  const missing = {status: 500, data: {code: 'InternalError', message: `ENOENT: no such file or directory, stat '/storage/beta-feedback/${path}-$v-version'`}};
-  assert.doesNotThrow(() => assertMissingRecoveryFile(missing, path, 'version'));
-  assert.doesNotThrow(() => assertMissingRecoveryFile({status: 404, data: {code: 'NoSuchKey'}}, path));
-  for (const r of [{status: 200}, {status: 502}, {status: 403}, {status: 500},
-    {...missing, data: {...missing.data, message: 'Database unavailable'}},
-    {...missing, data: {...missing.data, message: `ENOENT: no such file or directory, stat '/storage/beta-feedback/${path}.unrelated-$v-version'`}},
-    {...missing, data: {...missing.data, message: `ENOENT: no such file or directory, stat '/storage/beta-feedback/${path}-$v-other'`}},
-    {...missing, data: {...missing.data, message: 'ENOENT: stat other-owner/recovery.png'}}]) {
-    assert.throws(() => assertMissingRecoveryFile(r, path, 'version'));
+test('missing bytes require independent disk evidence and the expected Storage response', () => {
+  const missing = {status: 500, data: {code: 'InternalError'}};
+  assert.doesNotThrow(() => assertMissingRecoveryFile(missing, true));
+  assert.doesNotThrow(() => assertMissingRecoveryFile({status: 404, data: {code: 'NoSuchKey'}}, true));
+  for (const absent of [false, undefined, null]) assert.throws(() => assertMissingRecoveryFile(missing, absent));
+  for (const response of [{status: 200}, {status: 502}, {status: 403}, {status: 500},
+    {status: 500, data: {code: 'DatabaseUnavailable'}}]) {
+    assert.throws(() => assertMissingRecoveryFile(response, true));
   }
 });

@@ -10,27 +10,13 @@ const dbContainer = 'supabase_db_questwell-disposable-ci';
 const services = ['auth', 'rest', 'storage'].map(s => `supabase_${s}_questwell-disposable-ci`);
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
-export function assertMissingRecoveryFile(response, objectPath, version) {
-  // The local file adapter reports stat ENOENT as InternalError/500 when the
-  // restored metadata exists but its bytes do not. Never accept arbitrary 5xx,
-  // authentication failures or a different missing path as recovery evidence.
-  const physicalSuffix = `/beta-feedback/${objectPath}${version ? `-$v-${version}` : ''}`;
-  const filename = typeof response.data?.message === 'string'
-    ? response.data.message.match(/^ENOENT: no such file or directory, stat '([^']+)'$/)?.[1] : undefined;
-  const missing = response.status === 500 && response.data?.code === 'InternalError' &&
-    typeof filename === 'string' && filename.endsWith(physicalSuffix);
-  if (!missing && response.status === 500) console.error(JSON.stringify({
-    recovery_missing_file_diagnostic: true,
-    code_internal: response.data?.code === 'InternalError',
-    error_internal: response.data?.error === 'InternalError',
-    message_enoent: typeof response.data?.message === 'string' && /\bENOENT\b/.test(response.data.message),
-    filename_parsed: typeof filename === 'string',
-    expected_suffix: typeof filename === 'string' && filename.endsWith(physicalSuffix),
-    object_path_present: typeof response.data?.message === 'string' && response.data.message.includes(objectPath),
-    version_present: typeof response.data?.message === 'string' && typeof version === 'string' && response.data.message.includes(version),
-  }));
-  assert.ok(missing || ([400,404].includes(response.status) && response.data?.code === 'NoSuchKey'),
-    `Expected specific missing-file error; received HTTP ${response.status}`);
+export function assertMissingRecoveryFile(response, absentOnDisk) {
+  // Storage hides filesystem error details. Absence must be independently
+  // proven at the exact pre-loss, hash-verified path; HTTP 500 alone is no proof.
+  assert.equal(absentOnDisk, true, 'Exact synthetic file absence must be verified');
+  assert.ok((response.status === 500 && response.data?.code === 'InternalError') ||
+    ([400,404].includes(response.status) && response.data?.code === 'NoSuchKey'),
+    `Expected missing-file response with disk evidence; received HTTP ${response.status}`);
 }
 
 // Deliberately return fixed labels, never fragments of SQL, COPY rows or secrets.
@@ -121,6 +107,13 @@ export async function rehearseRecovery(status) {
   ok(await request(`/storage/v1/object/beta-feedback/${objectPath}`, a, 'POST', originalBytes, {'content-type': 'image/png'}));
   const objectVersion = JSON.parse(sql(`select to_jsonb(version) from storage.objects where bucket_id='beta-feedback' and name='${objectPath}';`));
   assert.ok(objectVersion === null || /^[0-9a-f-]{36}$/.test(objectVersion));
+  // Match the pinned adapter's actual configuration; print no other environment.
+  const fileVersionSeparator = docker(['exec', 'supabase_storage_questwell-disposable-ci', 'node', '-e',
+    "process.stdout.write(process.env.TUS_USE_FILE_VERSION_SEPARATOR === 'true' ? '-$v-' : '/')"]);
+  assert.ok(['/', '-$v-'].includes(fileVersionSeparator));
+  const probeScript = readFileSync(new URL('./recovery-file-probe.mjs', import.meta.url), 'utf8');
+  const fileProbe = input => JSON.parse(docker(['exec', '-i', 'supabase_storage_questwell-disposable-ci',
+    'node', '--input-type=module', '-e', probeScript], JSON.stringify(input)));
   const feedbackId = randomUUID();
   ok(await request('/rest/v1/beta_feedback', a, 'POST', {
     id: feedbackId, user_id: a.id, category: 'bug', goal: 'Synthetic recovery',
@@ -139,6 +132,10 @@ export async function rehearseRecovery(status) {
   const downloadPath = `/storage/v1/object/authenticated/beta-feedback/${objectPath}`;
   const backupFile = await request(downloadPath, a); ok(backupFile);
   assert.equal(sha256(backupFile.bytes), sha256(originalBytes));
+  const sourceFile = fileProbe({mode: 'discover', objectPath, version: objectVersion, separator: fileVersionSeparator});
+  assert.equal(sourceFile.bytes, backupFile.bytes.length);
+  assert.equal(sourceFile.sha256, sha256(backupFile.bytes));
+  const requireAbsentFile = () => assert.deepEqual(fileProbe({mode: 'absent', relativePath: sourceFile.relativePath}), {absent: true});
   const catalogSql = readFileSync(new URL('./catalog.sql', import.meta.url), 'utf8');
   const expectedCatalog = JSON.parse(sql(catalogSql));
   // Logical restore reparses CHECK expressions and flattens nested AND nodes.
@@ -211,6 +208,7 @@ export async function rehearseRecovery(status) {
   // delete metadata with SQL. Existing hosted accounts/objects are unreachable.
   ok(await request('/storage/v1/object/beta-feedback', a, 'DELETE', {prefixes: [objectPath]}));
   denied(await request(downloadPath, a));
+  requireAbsentFile();
   requireMarker();
   docker(['stop', ...services]);
   // Redirect the fixed local services to the restored DB, retaining the source
@@ -250,7 +248,8 @@ export async function rehearseRecovery(status) {
   const steps = await request('/rest/v1/boss_steps?select=id', a); ok(steps); assert.equal(steps.data.length, 2);
   // Database metadata is present, but bytes must still be missing after restore.
   assert.equal(sql(`select count(*) from storage.objects where bucket_id='beta-feedback' and name='${objectPath}';`), '1');
-  assertMissingRecoveryFile(await request(downloadPath, a), objectPath, objectVersion);
+  requireAbsentFile();
+  assertMissingRecoveryFile(await request(downloadPath, a), true);
   // Use the real owner API, not a service-role upsert that can lose owner_id.
   // Existing policies deliberately grant no UPDATE. Recreate exactly this new
   // synthetic object; feedback references its stable path, not its internal ID.

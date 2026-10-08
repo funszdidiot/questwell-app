@@ -31,10 +31,14 @@ catalog parity again.
 Fresh password sign-ins then verify both owners, isolated quests,
 balances, reward consistency, boss steps and feedback. Exactly the newly created
 image is removed through Storage's API to simulate lost bytes. The restored
-metadata must NOT make that image downloadable. The failed download must
-report a specific missing-object error, not a generic outage or authorization
-failure. The local file adapter's HTTP 500 is accepted only with InternalError,
-ENOENT and the exact synthetic object key/version filename; other-owner denials stay strict.
+metadata must NOT make that image downloadable. Storage hides the underlying filesystem error. A bounded read-only probe in the
+fixed disposable Storage container discovers the exact object/version file and
+verifies its byte length/hash before loss. It rejects symlinks and duplicate
+matches. After API deletion and again after database restore, lstat must prove
+that retained exact path absent. Only with this independent disk evidence may
+HTTP 500/InternalError (or specific NoSuchKey) establish missing bytes; a generic
+outage alone cannot pass. No filesystem writes occur and paths stay out of logs.
+Other-owner and anonymous denials remain strict.
 Restoring the saved bytes must
 produce the same byte length/SHA-256, with other-owner and anonymous access denied.
 The freshly authenticated owner recreates only this synthetic path through
