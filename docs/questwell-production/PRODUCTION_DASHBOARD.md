@@ -1,5 +1,24 @@
 # Questwell Production Dashboard
 
+## Halloween collection expansion — October 7, 2026
+
+**BUILDING.** Tanya approved five matching furnishings with “I love them!”;
+the Hallowed Hearth room was previously approved. Five lossless exports and two
+validated manifests are prepared. Proposed six-piece pricing totals 740 coins;
+economy/date decision and full runtime/activation remain pending. Preserve four
+featured legacy items plus the alternative Midnight Harvest room.
+See `../releases/hallowed-hearth-2026/RELEASE_BRIEF.md`.
+
+## Hallowed Hearth — October 7, 2026
+
+**BUILDING / publication BLOCKED.** Founder approved the Halloween concept with
+animated spiders. Local room asset, isolated paint-only motion, shared-renderer
+review route and test coverage are prepared. Local SDK setup and GitHub publication
+were blocked by automatic approval review; no Flutter pass, PR or deployment is
+claimed. The app review route will be `?review=hallowed-hearth` after authorized
+publishing and checks. Account activation/economy remain separate.
+See `../qa/HALLOWED_HEARTH.md`.
+
 ## Hearth craftsmanship and first useful view — October 7, 2026
 
 **QA**. Tanya's holistic independent review found that the cozy direction works,

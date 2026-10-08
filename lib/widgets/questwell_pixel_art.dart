@@ -1,3 +1,4 @@
+import 'questwell_hallowed_spiders.dart';
 import 'questwell_scout_wardrobe.dart';
 import 'questwell_neutral_paper_doll.dart';
 import 'questwell_male_paper_doll.dart';
@@ -1031,6 +1032,7 @@ class _PixelCorner extends StatelessWidget {
 
 enum QuestwellHearthSetting {
   original('Original Hearth', 'hearth_environment_v3'),
+  hallowedHearth('The Hallowed Hearth', 'hallowed_hearth_v1'),
   woodlandCottage('Woodland Cottage', 'woodland_cottage_v1'),
   midnightHarvest('Midnight Harvest', 'midnight_harvest_v1'),
   enchantedLibrary('Enchanted Library', 'enchanted_library_v1'),
@@ -1044,6 +1046,7 @@ enum QuestwellHearthSetting {
   final String label;
   final String file;
   static QuestwellHearthSetting fromSlug(String? slug) => switch (slug) {
+        'hallowed-hearth' => hallowedHearth,
         'woodland-cottage' => woodlandCottage,
         'midnight-harvest' => midnightHarvest,
         'enchanted-library' => enchantedLibrary,
@@ -1054,6 +1057,7 @@ enum QuestwellHearthSetting {
         _ => original,
       };
   static bool supports(String slug) =>
+      slug == 'hallowed-hearth' ||
       slug == 'woodland-cottage' ||
       slug == 'midnight-harvest' ||
       slug == 'enchanted-library' ||
@@ -1066,6 +1070,17 @@ enum QuestwellHearthSetting {
       this == astralSanctuary ||
       this == emberglassConservatory;
   String get asset => 'assets/images/questwell/hearth/$file.webp';
+
+  /// Source-art mantel contact point follows the same cover crop as the room.
+  /// Other rooms retain their established surface anchors.
+  Offset? mantelAnchor(Size scene) {
+    if (this != hallowedHearth) return null;
+    final scale = math.max(scene.width / 1536, scene.height / 1024);
+    return Offset(
+      676 * scale + (scene.width - 1536 * scale) / 2,
+      287 * scale + (scene.height - 1024 * scale) * .52,
+    );
+  }
 }
 
 class QuestwellHearthPixelScene extends StatelessWidget {
@@ -1171,6 +1186,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (roomSetting == QuestwellHearthSetting.hallowedHearth)
+                  const Positioned.fill(child: QuestwellHallowedSpiders()),
                 if (roomSetting == QuestwellHearthSetting.astralSanctuary ||
                     roomSetting ==
                         QuestwellHearthSetting.emberglassConservatory)
@@ -1309,6 +1326,7 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                         slug: slug,
                         slot: slot,
                         equipment: equippedSlugs,
+                        profileBySlug: hearthProfileBySlug,
                         scene: Size(sceneWidth, sceneHeight),
                         profileKey: hearthProfileBySlug[slug],
                         renderSpec: hearthRenderBySlug[slug],
@@ -1326,12 +1344,16 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                     if (QuestwellMasteryRelic.supports(
                         equippedSlugs['room:$surface']))
                       QuestwellHearthDecor.relicSurfacePositioned(
+                          mantelAnchor: roomSetting
+                              .mantelAnchor(Size(sceneWidth, sceneHeight)),
                           slot: surface,
                           slug: equippedSlugs['room:$surface']!,
                           scene: Size(sceneWidth, sceneHeight),
                           equipment: equippedSlugs)
                     else
                       QuestwellHearthDecor.trophyPositioned(
+                          mantelAnchor: roomSetting
+                              .mantelAnchor(Size(sceneWidth, sceneHeight)),
                           slot: surface,
                           slug: equippedSlugs['room:$surface']!,
                           scene: Size(sceneWidth, sceneHeight),

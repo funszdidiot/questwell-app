@@ -82,8 +82,10 @@ abstract final class QuestwellHearthLayout {
     final profile = fallbackProfileBySlug[slug];
     if (profile == null) return null;
     return switch (profile) {
-      'large_furniture' || 'pedestal_light' =>
-        const {'left': 'Back left', 'right': 'Back right'},
+      'large_furniture' || 'pedestal_light' => const {
+          'left': 'Back left',
+          'right': 'Back right'
+        },
       'seating' => const {'front': 'Left floor', 'right': 'Right floor'},
       'plant' => const {
           'left': 'Back left',
@@ -102,7 +104,8 @@ abstract final class QuestwellHearthLayout {
     };
   }
 
-  static double floorDepthFor(String profileKey, String slot) => switch (profileKey) {
+  static double floorDepthFor(String profileKey, String slot) =>
+      switch (profileKey) {
         'large_furniture' => .69,
         'pedestal_light' => .72,
         'side_table' => .89,
@@ -120,6 +123,7 @@ abstract final class QuestwellHearthLayout {
     required String slot,
     required Size scene,
     Map<String, String> equipment = const {},
+    Map<String, String> profileBySlug = const {},
     QuestwellHearthRenderSpec? renderSpec,
   }) {
     final fallback = assetSpecs[slug];
@@ -147,10 +151,16 @@ abstract final class QuestwellHearthLayout {
     final height = avatarHeight * heightFactor;
     final width = height * aspectRatio;
 
-    final hasTable = equipment['room:side'] == 'walnut-reading-table';
+    String? profileAt(String slot) {
+      final occupant = equipment['room:$slot'];
+      return occupant == null
+          ? null
+          : resolvedProfile(occupant, profileBySlug[occupant]);
+    }
+
+    final hasTable = profileAt('side') == 'side_table';
     final chairOnLeft =
-        equipment['room:front'] == 'burgundy-reading-chair' ||
-        equipment['room:left'] == 'burgundy-reading-chair';
+        profileAt('front') == 'seating' || profileAt('left') == 'seating';
 
     final center = switch (profileKey) {
       'large_furniture' => slot == 'right'
@@ -159,13 +169,19 @@ abstract final class QuestwellHearthLayout {
       'pedestal_light' => scene.width * (slot == 'left' ? .22 : .80),
       'side_table' => scene.width * (chairOnLeft ? .18 : .82),
       'seating' => scene.width *
-          (slot == 'right'
-              ? (hasTable ? .64 : .73)
-              : (hasTable ? .36 : .27)),
+          (slot == 'right' ? (hasTable ? .64 : .73) : (hasTable ? .36 : .27)),
       'plant' => scene.width *
-          (slot == 'front' ? .20 : slot == 'left' ? .28 : .81),
+          (slot == 'front'
+              ? .20
+              : slot == 'left'
+                  ? .28
+                  : .81),
       'relic_display' => scene.width *
-          (slot == 'front' ? .18 : slot == 'left' ? .24 : .81),
+          (slot == 'front'
+              ? .18
+              : slot == 'left'
+                  ? .24
+                  : .81),
       _ => scene.width * .50,
     };
 
