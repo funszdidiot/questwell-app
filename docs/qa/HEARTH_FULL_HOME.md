@@ -52,3 +52,9 @@ dialog (restored byte-for-byte), enlarged reward-label overflow (flexible wrappi
 and Campfire scroll reset (stable content key). Wooden navigation is intentionally
 limited to Home so other screens retain their tested viewport layout. Existing tests
 were preserved, and switch hit testing now verifies the scroll position survives.
+
+Furnished live QA additionally found the overlaid logo/rule crossing the canonical
+center-wall painting at 390px. The same correction reserves an attached header
+strip above the scene; room coordinates and artwork remain untouched. Regression
+checks require the header to end before the room bounds at all tested widths and
+text scales. This is a safe space for the logo, not a moved decor slot.

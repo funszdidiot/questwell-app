@@ -22,6 +22,11 @@ void main() {
         expect(tester.takeException(), isNull);
         final hero = tester.getRect(find.byType(QuestwellHomeHero));
         final status = tester.getRect(find.byType(QuestwellHomeCharacter));
+        final room =
+            tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
+        expect(tester.getBottomLeft(find.byType(QuestwellHomeHeader)).dy,
+            lessThanOrEqualTo(room.top),
+            reason: 'The header must never cover equipped wall art');
         final quest = tester.getRect(find.byType(QuestwellHearthQuestFrame));
         final campfire =
             tester.getRect(find.byType(QuestwellHomeCampfireControl));

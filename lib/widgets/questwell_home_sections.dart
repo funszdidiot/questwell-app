@@ -27,25 +27,28 @@ class QuestwellHomeCanvas extends StatelessWidget {
       );
 }
 
-/// The logo is part of the room, not a separate toolbar above a framed thumbnail.
+/// An attached header strip keeps the logo clear of every canonical decor slot.
 class QuestwellHomeHero extends StatelessWidget {
   const QuestwellHomeHero({super.key, required this.room});
   final Widget room;
   @override
-  Widget build(BuildContext context) => Stack(children: [
-        room,
-        Positioned(
-            left: 20,
-            right: 20,
-            top: 8,
-            child: IgnorePointer(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                  const QuestwellHomeHeader(),
-                  const QuestwellPixelDivider(accent: Color(0xFFD6A84B))
-                ]))),
-      ]);
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Color(0xFF17222A), Color(0xFF201A18)])),
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+              child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    QuestwellHomeHeader(),
+                    QuestwellPixelDivider(accent: Color(0xFFD6A84B))
+                  ])),
+          room,
+        ],
+      );
 }
 
 class QuestwellHomeRoomFrame extends StatelessWidget {

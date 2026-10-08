@@ -6,8 +6,8 @@
 reference composition is implemented: immersive room/logo, compact progress,
 parchment next quest, Campfire below and timber Home navigation. 905 Flutter / 397
 Chrome tests and required native/backend gates passed. Live sample completion is
-verified. A scoped follow-up restores visible purple fill in the compact XP meter;
-its source review passed. No avatar or decorating geometry locks changed.
+verified. A scoped follow-up restores visible purple XP fill and reserves the attached
+header above the scene to keep equipped wall art clear. No avatar or decorating geometry locks changed.
 See `../qa/HEARTH_FULL_HOME.md`.
 
 ## Intentional 90s Hearth materials — October 7, 2026
