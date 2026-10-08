@@ -125,13 +125,16 @@ void main() {
       await tester.tap(find.text(action));
       await tester.pumpAndSettle();
     }
-    final card =
-        tester.widget<QuestwellQuestCard>(find.byType(QuestwellQuestCard));
+    final createdCard = find.byWidgetPredicate((widget) =>
+        widget is QuestwellQuestCard && widget.title == 'Put one book away');
+    final card = tester.widget<QuestwellQuestCard>(createdCard);
     expect(card.effort, 'Easy');
     expect((card.xp, card.coins), (10, 5));
-    await tester.ensureVisible(find.text('Edit quest'));
+    final editAction =
+        find.descendant(of: createdCard, matching: find.text('Edit quest'));
+    await tester.ensureVisible(editAction);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Edit quest'));
+    await tester.tap(editAction);
     await tester.pumpAndSettle();
     final edit =
         tester.widget<AddTaskPageWidget>(find.byType(AddTaskPageWidget));
