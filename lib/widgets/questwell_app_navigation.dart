@@ -75,10 +75,7 @@ class QuestwellAppNavigation extends StatelessWidget {
                   Row(children: [
                     Expanded(
                         child: Text('Explore Questwell',
-                            style: QuestwellTypography.body(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                                color: const Color(0xFFF0E5CC)))),
+                            style: QuestwellHearthMaterial.serif(22))),
                     IconButton(
                         tooltip: 'Close Explore',
                         onPressed: () => Navigator.pop(sheetContext),
@@ -92,7 +89,7 @@ class QuestwellAppNavigation extends StatelessWidget {
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 4),
                           leading:
-                              Icon(item.icon, color: const Color(0xFFE4C586)),
+                              QuestwellHearthIcon(kind: item.name, size: 30),
                           title: Text(item.label,
                               style: QuestwellTypography.control(
                                   color: const Color(0xFFF0E5CC))),
@@ -133,9 +130,7 @@ class QuestwellAppNavigation extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) => current == QuestwellDestination.hearth
-      ? _hearthNavigation(context)
-      : _legacyNavigation(context);
+  Widget build(BuildContext context) => _hearthNavigation(context);
 
   Widget _hearthNavigation(BuildContext context) => Material(
         color: const Color(0xFF251C18),
@@ -238,61 +233,4 @@ class QuestwellAppNavigation extends StatelessWidget {
         QuestwellHearthTabSurface(selected: selected, child: button);
     return stacked ? surface : Expanded(child: surface);
   }
-
-  Widget _legacyNavigation(BuildContext context) => Material(
-        color: const Color(0xFF101C29),
-        child: SafeArea(
-            top: false,
-            child: Container(
-              decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(color: Color(0xFF665538)))),
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                _legacyTab(
-                    'Hearth',
-                    Icons.home_outlined,
-                    current == QuestwellDestination.hearth,
-                    () => _open(context, QuestwellDestination.hearth)),
-                _legacyTab(
-                    'Quests',
-                    Icons.assignment_outlined,
-                    current == QuestwellDestination.quests,
-                    () => _open(context, QuestwellDestination.quests)),
-                _legacyTab(
-                    'Explore',
-                    Icons.explore_outlined,
-                    ![QuestwellDestination.hearth, QuestwellDestination.quests]
-                        .contains(current),
-                    () => _explore(context)),
-              ]),
-            )),
-      );
-
-  Widget _legacyTab(
-          String label, IconData icon, bool selected, VoidCallback onTap) =>
-      Expanded(
-        child: Semantics(
-            selected: selected,
-            child: TextButton(
-              onPressed: onTap,
-              style: TextButton.styleFrom(
-                  minimumSize: const Size(48, 56),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-                  foregroundColor: selected
-                      ? const Color(0xFFE4C586)
-                      : const Color(0xFFB9C7D7),
-                  backgroundColor:
-                      selected ? const Color(0xFF243343) : Colors.transparent),
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Icon(icon, size: 22),
-                const SizedBox(height: 4),
-                Text(label,
-                    textAlign: TextAlign.center,
-                    style: QuestwellTypography.body(
-                        fontSize: 12, fontWeight: FontWeight.w700)),
-              ]),
-            )),
-      );
 }

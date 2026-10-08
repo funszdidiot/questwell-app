@@ -135,14 +135,30 @@ jobs:
         run: python3 -m unittest discover -s tool/qa -p coverage_report_test.py -v
       - name: Measure critical client coverage separately
         timeout-minutes: 10
-        run: >-
-          flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
-          --coverage --branch-coverage --concurrency=1
-          test/open_task_list_test.dart test/boss_list_test.dart
-          test/boss_creation_recovery_test.dart test/purchase_recovery_test.dart
-          test/delete_account_test.dart test/auth_flow_test.dart
-          test/questwell_network_test.dart test/startup_bootstrap_test.dart
-          test/widget_test.dart test/client_service_adapters_test.dart test/auth_catalog_adapters_test.dart test/feedback_account_isolation_test.dart
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Isolate the pinned VM coverage collector between test files. A shared
+          # collection session can crash after otherwise successful tests.
+          mkdir -p coverage/parts
+          reports=()
+          for test_file in \
+            test/open_task_list_test.dart test/boss_list_test.dart \
+            test/boss_creation_recovery_test.dart test/purchase_recovery_test.dart \
+            test/delete_account_test.dart test/auth_flow_test.dart \
+            test/questwell_network_test.dart test/startup_bootstrap_test.dart \
+            test/widget_test.dart test/client_service_adapters_test.dart \
+            test/auth_catalog_adapters_test.dart test/feedback_account_isolation_test.dart; do
+            report="coverage/parts/$(basename "$test_file" .dart).info"
+            flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test \
+              --coverage --branch-coverage --concurrency=1 \
+              --coverage-path="$report" "$test_file"
+            test -s "$report"
+            reports+=("$report")
+          done
+          # The existing parser merges repeated source coordinates without
+          # inflating denominators. Never report partial or stale collections.
+          cat "${reports[@]}" > coverage/lcov.info
 
       - name: Report critical client coverage
         run: |

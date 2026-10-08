@@ -1,3 +1,5 @@
+import '../widgets/questwell_app_style.dart';
+import '../widgets/questwell_hearth_material.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -76,34 +78,28 @@ class _QuestwellStartupState extends State<QuestwellStartup> {
     final title = failed
         ? 'Questwell couldn’t open'
         : _slow
-        ? 'Taking longer than expected'
-        : 'Opening Questwell…';
+            ? 'Taking longer than expected'
+            : 'Opening Questwell…';
     final message = canRetry
         ? 'Your local settings couldn’t load. Try again to continue.'
         : failed
-        ? 'Close and reopen Questwell. In a browser, reload this page. If you opened a sign-in link, you may need to open it again.'
-        : _slow
-        ? 'You can keep waiting, or close and reopen Questwell. In a browser, reload this page.'
-        : 'Getting your adventure ready.';
+            ? 'Close and reopen Questwell. In a browser, reload this page. If you opened a sign-in link, you may need to open it again.'
+            : _slow
+                ? 'You can keep waiting, or close and reopen Questwell. In a browser, reload this page.'
+                : 'Getting your adventure ready.';
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Questwell',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF17251F),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFD6B875),
-          brightness: Brightness.dark,
-        ),
-      ),
-      home: Scaffold(
+      theme: QuestwellAppStyle.fallbackTheme(),
+      home: QuestwellScaffold(
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 440),
-                child: Column(
+                child: QuestwellHearthFrame(
+                    child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (!failed && !_slow) ...[
@@ -129,7 +125,7 @@ class _QuestwellStartupState extends State<QuestwellStartup> {
                       ),
                     ],
                   ],
-                ),
+                )),
               ),
             ),
           ),
