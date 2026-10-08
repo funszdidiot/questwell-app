@@ -68,6 +68,8 @@ class QuestwellBossBoard extends StatefulWidget {
 class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
   String? _selected;
   final _scroll = ScrollController();
+  final _encounterAnchor = GlobalKey();
+  bool _revealingAttack = false;
   @override
   void initState() {
     super.initState();
@@ -103,6 +105,57 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
         _scroll.animateTo(0,
             duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
       }
+    }
+  }
+
+  Future<void> _attackAfterReveal(
+      QuestwellBossBattle battle, QuestwellBossStep step) async {
+    if (_revealingAttack ||
+        widget.loading ||
+        widget.failed ||
+        widget.busyStepId != null) return;
+    setState(() {
+      _revealingAttack = true;
+      _selected = battle.id;
+    });
+    try {
+      // Bring a lazily built encounter back before requesting a server result.
+      // Otherwise a fast response can finish its animation below the viewport.
+      if (_scroll.hasClients) {
+        if (MediaQuery.disableAnimationsOf(context)) {
+          _scroll.jumpTo(0);
+        } else {
+          await _scroll.animateTo(0,
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.easeOut);
+        }
+      }
+      await WidgetsBinding.instance.endOfFrame;
+      if (!mounted) return;
+      final anchor = _encounterAnchor.currentContext;
+      if (anchor != null) {
+        await Scrollable.ensureVisible(anchor,
+            alignment: 0,
+            duration: Duration(
+                milliseconds:
+                    MediaQuery.disableAnimationsOf(context) ? 0 : 150));
+      }
+      if (!mounted ||
+          widget.loading ||
+          widget.failed ||
+          widget.busyStepId != null) return;
+      // Re-check the current snapshot after asynchronous scrolling.
+      for (final current in widget.battles) {
+        if (current.id != battle.id || current.completed) continue;
+        for (final currentStep in current.steps) {
+          if (currentStep.id == step.id && !currentStep.completed) {
+            widget.onAttack(current, currentStep);
+            return;
+          }
+        }
+      }
+    } finally {
+      if (mounted) setState(() => _revealingAttack = false);
     }
   }
 
@@ -225,16 +278,18 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
             Text(_strategies[battle.bossType] ?? 'One useful step at a time.',
                 style: QuestwellTypography.body(color: _muted)),
             const SizedBox(height: 12),
-            QuestwellBossEncounter(
-                key: ValueKey('encounter-${battle.id}'),
-                encounterId: battle.id,
-                bossType: battle.bossType,
-                progress: battle.progress,
-                defeated: battle.completed,
-                persistEntrance: !widget.practice,
-                archetype: widget.archetype,
-                body: widget.body,
-                equipment: widget.equipment),
+            SizedBox(
+                key: _encounterAnchor,
+                child: QuestwellBossEncounter(
+                    key: ValueKey('encounter-${battle.id}'),
+                    encounterId: battle.id,
+                    bossType: battle.bossType,
+                    progress: battle.progress,
+                    defeated: battle.completed,
+                    persistEntrance: !widget.practice,
+                    archetype: widget.archetype,
+                    body: widget.body,
+                    equipment: widget.equipment)),
             const SizedBox(height: 16),
             if (battle.completed) ...[
               QuestwellBossVictoryPanel(
@@ -339,17 +394,13 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
         : Semantics(
             label: 'Complete attack: ${step.title}',
             child: FilledButton(
-                onPressed: widget.loading ||
+                onPressed: _revealingAttack ||
+                        widget.loading ||
                         widget.failed ||
                         widget.busyStepId != null ||
                         battle.completed
                     ? null
-                    : () {
-                        // Keep the battle being completed in view, but do not pin an automatic
-                        // history default across refreshes that contain a newer victory.
-                        setState(() => _selected = battle.id);
-                        widget.onAttack(battle, step);
-                      },
+                    : () => _attackAfterReveal(battle, step),
                 style: QuestwellAppStyle.primaryButton(),
                 child: busy
                     ? const SizedBox(

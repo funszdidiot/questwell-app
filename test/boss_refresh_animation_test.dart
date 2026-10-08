@@ -75,7 +75,10 @@ void main() {
         await tester.ensureVisible(attack.first);
         await tester.tap(attack.first);
         await tester.pump();
-        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pump(const Duration(milliseconds: 300));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 200));
+        await tester.pump();
         expect(reads, 2);
         expect(writes, 1);
         expect(tester.state(encounter), same(state));

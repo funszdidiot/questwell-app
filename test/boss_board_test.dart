@@ -11,105 +11,217 @@ import '../lib/widgets/questwell_boss_encounter.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
-  QuestwellBossBattle battle(String id, {bool won = false, DateTime? createdAt, DateTime? completedAt}) => QuestwellBossBattle(id: id,
-    createdAt: createdAt, completedAt: completedAt,
-    title: 'Challenge $id', bossType: id == 'a' ? 'inbox_hydra' : 'meeting_mimic',
-    status: won ? 'completed' : 'open', rewardXp: 100, rewardCoins: 50,
-    steps: [QuestwellBossStep(id: '$id-1', title: 'Finish the first action', position: 0, completed: won),
-      QuestwellBossStep(id: '$id-2', title: 'Close the loop', position: 1, completed: won)]);
+  QuestwellBossBattle battle(String id,
+          {bool won = false, DateTime? createdAt, DateTime? completedAt}) =>
+      QuestwellBossBattle(
+          id: id,
+          createdAt: createdAt,
+          completedAt: completedAt,
+          title: 'Challenge $id',
+          bossType: id == 'a' ? 'inbox_hydra' : 'meeting_mimic',
+          status: won ? 'completed' : 'open',
+          rewardXp: 100,
+          rewardCoins: 50,
+          steps: [
+            QuestwellBossStep(
+                id: '$id-1',
+                title: 'Finish the first action',
+                position: 0,
+                completed: won),
+            QuestwellBossStep(
+                id: '$id-2',
+                title: 'Close the loop',
+                position: 1,
+                completed: won)
+          ]);
   int homes = 0, attacks = 0, creates = 0;
-  Widget page(List<QuestwellBossBattle> data, {bool failed = false, bool loading = false, String? busy, String? selected}) => MaterialApp(
-    home: MediaQuery(data: const MediaQueryData(disableAnimations: true), child: Scaffold(
-      body: QuestwellBossBoard(battles: data, practice: true, failed: failed, loading: loading,
-        busyStepId: busy, initialBattleId: selected, onHome: () => homes++, onCreate: () => creates++,
-        onAttack: (_, __) => attacks++, onRetry: () {}))));
-  test('Battle decoding retains completion time and tolerates missing dates', () {
-    final b = QuestwellBossBattle.fromJson({'id': 'a', 'created_at': '2026-10-01T10:00:00Z',
-      'completed_at': '2026-10-02T09:00:00-05:00'}, []);
+  Widget page(List<QuestwellBossBattle> data,
+          {bool failed = false,
+          bool loading = false,
+          String? busy,
+          String? selected}) =>
+      MaterialApp(
+          home: MediaQuery(
+              data: const MediaQueryData(disableAnimations: true),
+              child: Scaffold(
+                  body: QuestwellBossBoard(
+                      battles: data,
+                      practice: true,
+                      failed: failed,
+                      loading: loading,
+                      busyStepId: busy,
+                      initialBattleId: selected,
+                      onHome: () => homes++,
+                      onCreate: () => creates++,
+                      onAttack: (_, __) => attacks++,
+                      onRetry: () {}))));
+  test('Battle decoding retains completion time and tolerates missing dates',
+      () {
+    final b = QuestwellBossBattle.fromJson({
+      'id': 'a',
+      'created_at': '2026-10-01T10:00:00Z',
+      'completed_at': '2026-10-02T09:00:00-05:00'
+    }, []);
     expect(b.completedAt, DateTime.utc(2026, 10, 2, 14));
     expect(b.createdAt, DateTime.utc(2026, 10, 1, 10));
     expect(QuestwellBossBattle.fromJson({}, []).completedAt, isNull);
   });
-  testWidgets('Reopening completed battles features latest victory, not creation order', (tester) async {
-    final older = battle('a', won: true, createdAt: DateTime.utc(2026, 9, 29), completedAt: DateTime.utc(2026, 10, 1));
-    final newer = battle('b', won: true, createdAt: DateTime.utc(2026, 9, 28), completedAt: DateTime.utc(2026, 10, 2));
+  testWidgets(
+      'Reopening completed battles features latest victory, not creation order',
+      (tester) async {
+    final older = battle('a',
+        won: true,
+        createdAt: DateTime.utc(2026, 9, 29),
+        completedAt: DateTime.utc(2026, 10, 1));
+    final newer = battle('b',
+        won: true,
+        createdAt: DateTime.utc(2026, 9, 28),
+        completedAt: DateTime.utc(2026, 10, 2));
     await tester.pumpWidget(page([older]));
     await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'a');
     await tester.pumpWidget(page([older, newer]));
     await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'b');
     await tester.pumpWidget(const SizedBox());
     await tester.pumpWidget(page([newer, older]));
     await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'b');
     // Explicit history selection still takes precedence over the default.
     await tester.pumpWidget(page([older, newer], selected: 'a'));
     await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'a');
   });
-  testWidgets('Undated victories fall back to creation date; active battles remain first', (tester) async {
+  testWidgets(
+      'Undated victories fall back to creation date; active battles remain first',
+      (tester) async {
     final old = battle('a', won: true);
     final recent = battle('b', won: true, createdAt: DateTime.utc(2026, 10, 2));
     await tester.pumpWidget(page([old, recent]));
     await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'b');
     await tester.pumpWidget(const SizedBox());
     await tester.pumpWidget(page([old, recent, battle('c')]));
     await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'c');
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'c');
   });
-  testWidgets('Illustrated arenas follow their boss at phone and wide widths', (tester) async {
+  testWidgets('Illustrated arenas follow their boss at phone and wide widths',
+      (tester) async {
     tester.view.physicalSize = const Size(600, 1700);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     const stages = {
-      'inbox_hydra': ['hydra-mailroom-arena', 'questwell_hydra_mailroom_v1.webp'],
-      'meeting_mimic': ['mimic-conference-arena', 'questwell_mimic_conference_v1.webp'],
-      'spreadsheet_slime': ['slime-archive-arena', 'questwell_slime_archive_v1.webp'],
-      'calendar_kraken': ['kraken-observatory-arena', 'questwell_kraken_observatory_v1.webp'],
-      'printer_poltergeist': ['printer-printworks-arena', 'questwell_printer_printworks_v1.webp'],
-      'notification_swarm': ['swarm-belltower-arena', 'questwell_swarm_belltower_v1.webp'],
+      'inbox_hydra': [
+        'hydra-mailroom-arena',
+        'questwell_hydra_mailroom_v1.webp'
+      ],
+      'meeting_mimic': [
+        'mimic-conference-arena',
+        'questwell_mimic_conference_v1.webp'
+      ],
+      'spreadsheet_slime': [
+        'slime-archive-arena',
+        'questwell_slime_archive_v1.webp'
+      ],
+      'calendar_kraken': [
+        'kraken-observatory-arena',
+        'questwell_kraken_observatory_v1.webp'
+      ],
+      'printer_poltergeist': [
+        'printer-printworks-arena',
+        'questwell_printer_printworks_v1.webp'
+      ],
+      'notification_swarm': [
+        'swarm-belltower-arena',
+        'questwell_swarm_belltower_v1.webp'
+      ],
       'ticket_troll': ['troll-cavern-arena', 'questwell_troll_cavern_v1.webp'],
-      'update_dragon': ['dragon-citadel-arena', 'questwell_dragon_citadel_v1.webp'],
+      'update_dragon': [
+        'dragon-citadel-arena',
+        'questwell_dragon_citadel_v1.webp'
+      ],
     };
     for (final width in [320.0, 560.0]) {
       for (final type in [...stages.keys, 'unknown_boss']) {
-        await tester.pumpWidget(MaterialApp(home: MediaQuery(
-          data: const MediaQueryData(disableAnimations: true, textScaler: TextScaler.linear(1.5)),
-          child: Center(child: SizedBox(width: width, child: QuestwellBossEncounter(
-            key: ValueKey('$type-$width'), encounterId: '$type-$width',
-            bossType: type, persistEntrance: false))))));
+        await tester.pumpWidget(MaterialApp(
+            home: MediaQuery(
+                data: const MediaQueryData(
+                    disableAnimations: true,
+                    textScaler: TextScaler.linear(1.5)),
+                child: Center(
+                    child: SizedBox(
+                        width: width,
+                        child: QuestwellBossEncounter(
+                            key: ValueKey('$type-$width'),
+                            encounterId: '$type-$width',
+                            bossType: type,
+                            persistEntrance: false))))));
         await tester.pumpAndSettle();
         for (final entry in stages.entries) {
           final art = find.byKey(ValueKey(entry.value[0]));
           if (entry.key == type) {
             expect(art, findsOneWidget);
-            expect(tester.widget<Image>(art).image,
-              isA<AssetImage>().having((asset) => asset.assetName, 'asset',
-                'assets/images/${entry.value[1]}'));
+            expect(
+                tester.widget<Image>(art).image,
+                isA<AssetImage>().having((asset) => asset.assetName, 'asset',
+                    'assets/images/${entry.value[1]}'));
           } else {
             expect(art, findsNothing);
           }
         }
-        expect(tester.getRect(find.byKey(const ValueKey('boss-dialogue'))).bottom,
-          lessThanOrEqualTo(tester.getTopLeft(find.byKey(const ValueKey('boss-arena'))).dy));
-        if (type == 'notification_swarm' || type == 'ticket_troll' || type == 'update_dragon') {
-          final boss = find.byWidgetPredicate((widget) => widget is Image &&
-            widget.semanticLabel == (type == 'update_dragon'
-              ? 'Update Dragon, a copper dragon guarding brass gears and upgrade scrolls'
-              : type == 'ticket_troll'
-              ? 'Ticket Troll, a grumpy mossy stone clerk holding a stamp and a stack of requests'
-              : 'Notification Swarm, mischievous winged bells and sealed messages'));
-          expect(tester.getTopLeft(boss).dy,
-            greaterThanOrEqualTo(tester.getTopLeft(find.byKey(const ValueKey('boss-arena'))).dy));
+        expect(
+            tester.getRect(find.byKey(const ValueKey('boss-dialogue'))).bottom,
+            lessThanOrEqualTo(tester
+                .getTopLeft(find.byKey(const ValueKey('boss-arena')))
+                .dy));
+        if (type == 'notification_swarm' ||
+            type == 'ticket_troll' ||
+            type == 'update_dragon') {
+          final boss = find.byWidgetPredicate((widget) =>
+              widget is Image &&
+              widget.semanticLabel ==
+                  (type == 'update_dragon'
+                      ? 'Update Dragon, a copper dragon guarding brass gears and upgrade scrolls'
+                      : type == 'ticket_troll'
+                          ? 'Ticket Troll, a grumpy mossy stone clerk holding a stamp and a stack of requests'
+                          : 'Notification Swarm, mischievous winged bells and sealed messages'));
+          expect(
+              tester.getTopLeft(boss).dy,
+              greaterThanOrEqualTo(tester
+                  .getTopLeft(find.byKey(const ValueKey('boss-arena')))
+                  .dy));
         }
         expect(tester.takeException(), isNull);
       }
     }
   });
-  testWidgets('Approved arenas follow the selected boss at narrow width', (tester) async {
+  testWidgets('Approved arenas follow the selected boss at narrow width',
+      (tester) async {
     tester.view.physicalSize = const Size(320, 1700);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -118,9 +230,10 @@ void main() {
     await tester.pumpAndSettle();
     final background = find.byKey(const ValueKey('hydra-mailroom-arena'));
     expect(background, findsOneWidget);
-    expect(tester.widget<Image>(background).image,
-      isA<AssetImage>().having((asset) => asset.assetName, 'asset',
-        'assets/images/questwell_hydra_mailroom_v1.webp'));
+    expect(
+        tester.widget<Image>(background).image,
+        isA<AssetImage>().having((asset) => asset.assetName, 'asset',
+            'assets/images/questwell_hydra_mailroom_v1.webp'));
     expect(tester.takeException(), isNull);
     await tester.ensureVisible(find.byKey(const ValueKey('select-b')));
     await tester.pumpAndSettle();
@@ -129,44 +242,74 @@ void main() {
     expect(background, findsNothing);
     final conference = find.byKey(const ValueKey('mimic-conference-arena'));
     expect(conference, findsOneWidget);
-    expect(tester.widget<Image>(conference).image,
-      isA<AssetImage>().having((asset) => asset.assetName, 'asset',
-        'assets/images/questwell_mimic_conference_v1.webp'));
-    expect(tester.getRect(find.byKey(const ValueKey('boss-dialogue'))).bottom,
-      lessThanOrEqualTo(tester.getTopLeft(find.byKey(const ValueKey('boss-arena'))).dy));
+    expect(
+        tester.widget<Image>(conference).image,
+        isA<AssetImage>().having((asset) => asset.assetName, 'asset',
+            'assets/images/questwell_mimic_conference_v1.webp'));
+    expect(
+        tester.getRect(find.byKey(const ValueKey('boss-dialogue'))).bottom,
+        lessThanOrEqualTo(
+            tester.getTopLeft(find.byKey(const ValueKey('boss-arena'))).dy));
     await tester.pumpWidget(page([battle('a'), battle('b', won: true)]));
     await tester.pumpAndSettle();
     expect(conference, findsOneWidget);
     expect(find.byKey(const ValueKey('boss-dialogue')), findsNothing);
     expect(tester.takeException(), isNull);
   });
-  testWidgets('Only selected battle owns an arena; queue selection changes focus', (tester) async {
-    tester.view.physicalSize = const Size(390, 1700); tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize); addTearDown(tester.view.resetDevicePixelRatio);
-    await tester.pumpWidget(page([battle('a'), battle('b')])); await tester.pumpAndSettle();
+  testWidgets(
+      'Only selected battle owns an arena; queue selection changes focus',
+      (tester) async {
+    tester.view.physicalSize = const Size(390, 1700);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(page([battle('a'), battle('b')]));
+    await tester.pumpAndSettle();
     expect(find.byType(QuestwellBossEncounter), findsOneWidget);
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'a');
     await tester.ensureVisible(find.byKey(const ValueKey('select-b')));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('select-b'))); await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
-    await tester.pumpWidget(page([battle('a'), battle('b', won: true)])); await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'b');
+    await tester.tap(find.byKey(const ValueKey('select-b')));
+    await tester.pumpAndSettle();
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'b');
+    await tester.pumpWidget(page([battle('a'), battle('b', won: true)]));
+    await tester.pumpAndSettle();
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'b');
     expect(find.byType(QuestwellBossVictoryPanel), findsOneWidget);
     await tester.ensureVisible(find.text('Choose next battle'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Choose next battle')); await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
+    await tester.tap(find.text('Choose next battle'));
+    await tester.pumpAndSettle();
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'a');
     expect(tester.takeException(), isNull);
   });
-  testWidgets('Newly created battle opens after refresh and returns to the arena', (tester) async {
+  testWidgets(
+      'Newly created battle opens after refresh and returns to the arena',
+      (tester) async {
     tester.view.physicalSize = const Size(390, 844);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(page([battle('a'), battle('b')]));
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(find.byKey(const ValueKey('select-b')), 200);
+    await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('select-b')), 200);
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('select-b')));
     await tester.pumpAndSettle();
@@ -176,36 +319,58 @@ void main() {
     // FutureBuilder may retain the old list while the create refresh is pending.
     await tester.pumpWidget(page([battle('a'), battle('b')], selected: 'c'));
     await tester.pumpAndSettle();
-    await tester.pumpWidget(page([battle('a'), battle('b'), battle('c')], selected: 'c'));
+    await tester.pumpWidget(
+        page([battle('a'), battle('b'), battle('c')], selected: 'c'));
     await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'c');
-    expect(tester.getTopLeft(find.byType(QuestwellBossEncounter)).dy, greaterThanOrEqualTo(0));
-    expect(tester.getBottomRight(find.byType(QuestwellBossEncounter)).dy, lessThan(844));
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'c');
+    expect(tester.getTopLeft(find.byType(QuestwellBossEncounter)).dy,
+        greaterThanOrEqualTo(0));
+    expect(tester.getBottomRight(find.byType(QuestwellBossEncounter)).dy,
+        lessThan(844));
 
     // A later refresh must respect a manual selection, not reopen the created battle.
-    await tester.scrollUntilVisible(find.byKey(const ValueKey('select-a')), 200);
+    await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('select-a')), 200);
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const ValueKey('select-a')));
     await tester.pumpAndSettle();
-    await tester.pumpWidget(page([battle('a'), battle('b'), battle('c')], selected: 'c'));
+    await tester.pumpWidget(
+        page([battle('a'), battle('b'), battle('c')], selected: 'c'));
     await tester.pumpAndSettle();
-    expect(tester.widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter)).encounterId, 'a');
+    expect(
+        tester
+            .widget<QuestwellBossEncounter>(find.byType(QuestwellBossEncounter))
+            .encounterId,
+        'a');
     expect(tester.takeException(), isNull);
   });
-  testWidgets('Home and create remain reachable in empty, loading and error states', (tester) async {
+  testWidgets(
+      'Home and create remain reachable in empty, loading and error states',
+      (tester) async {
     for (final state in ['empty', 'loading', 'error']) {
-      await tester.pumpWidget(page([], loading: state == 'loading', failed: state == 'error'));
+      await tester.pumpWidget(
+          page([], loading: state == 'loading', failed: state == 'error'));
       await tester.pump();
       await tester.tap(find.byTooltip('Back to the Hearth'));
       await tester.tap(find.text('Start a battle'));
       expect(tester.takeException(), isNull);
     }
-    expect(homes, 3); expect(creates, 3);
+    expect(homes, 3);
+    expect(creates, 3);
   });
-  testWidgets('Busy attack disables every other attack and preserves completed rows', (tester) async {
-    tester.view.physicalSize = const Size(390, 1700); tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize); addTearDown(tester.view.resetDevicePixelRatio);
-    await tester.pumpWidget(page([battle('a')], busy: 'a-1')); await tester.pump();
+  testWidgets(
+      'Busy attack disables every other attack and preserves completed rows',
+      (tester) async {
+    tester.view.physicalSize = const Size(390, 1700);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(page([battle('a')], busy: 'a-1'));
+    await tester.pump();
     await tester.ensureVisible(find.text('Later attacks · 1'));
     await tester.pump();
     await tester.tap(find.text('Later attacks · 1'));
@@ -213,27 +378,50 @@ void main() {
     final attack = find.widgetWithText(FilledButton, 'Attack');
     expect(tester.widget<FilledButton>(attack).onPressed, isNull);
     expect(attacks, 0);
-    await tester.pumpWidget(page([battle('a')])); await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(FilledButton, 'Attack').first); await tester.pump();
-    expect(attacks, 1); expect(tester.takeException(), isNull);
+    await tester.pumpWidget(page([battle('a')]));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, 'Attack').first);
+    await tester.pumpAndSettle();
+    expect(attacks, 1);
+    expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Long plans focus the next step and keep later and completed steps reachable', (tester) async {
+  testWidgets(
+      'Long plans focus the next step and keep later and completed steps reachable',
+      (tester) async {
     tester.view.physicalSize = const Size(320, 1700);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     String? attacked;
-    QuestwellBossBattle plan(int done) => QuestwellBossBattle(id: 'long-plan',
-      title: 'Break a large project into small steps', bossType: 'inbox_hydra',
-      status: 'open', rewardXp: 25, rewardCoins: 50,
-      steps: [for (var i = 0; i < 20; i++) QuestwellBossStep(id: 'step-$i',
-        title: 'Action $i: review the details and identify one useful change',
-        position: i, completed: i < done)]);
-    Widget focused(int done, {bool campfire = false}) => MaterialApp(home: MediaQuery(
-      data: const MediaQueryData(disableAnimations: true, textScaler: TextScaler.linear(1.5)),
-      child: Scaffold(body: QuestwellBossBoard(battles: [plan(done)], practice: true,
-        campfire: campfire, onHome: () {}, onCreate: () {}, onAttack: (_, step) => attacked = step.id))));
+    QuestwellBossBattle plan(int done) => QuestwellBossBattle(
+            id: 'long-plan',
+            title: 'Break a large project into small steps',
+            bossType: 'inbox_hydra',
+            status: 'open',
+            rewardXp: 25,
+            rewardCoins: 50,
+            steps: [
+              for (var i = 0; i < 20; i++)
+                QuestwellBossStep(
+                    id: 'step-$i',
+                    title:
+                        'Action $i: review the details and identify one useful change',
+                    position: i,
+                    completed: i < done)
+            ]);
+    Widget focused(int done, {bool campfire = false}) => MaterialApp(
+        home: MediaQuery(
+            data: const MediaQueryData(
+                disableAnimations: true, textScaler: TextScaler.linear(1.5)),
+            child: Scaffold(
+                body: QuestwellBossBoard(
+                    battles: [plan(done)],
+                    practice: true,
+                    campfire: campfire,
+                    onHome: () {},
+                    onCreate: () {},
+                    onAttack: (_, step) => attacked = step.id))));
     await tester.pumpWidget(focused(1));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('attack-step-1')), findsOneWidget);
@@ -244,6 +432,7 @@ void main() {
     await tester.ensureVisible(primary);
     await tester.pumpAndSettle();
     await tester.tap(primary);
+    await tester.pumpAndSettle();
     expect(attacked, 'step-1');
     await tester.pumpWidget(focused(2));
     await tester.pumpAndSettle();
@@ -253,23 +442,32 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Later attacks · 17'));
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(find.byKey(const ValueKey('attack-step-19')), 400);
-    final later = find.descendant(of: find.byKey(const ValueKey('attack-step-19')), matching: find.byType(FilledButton));
+    await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('attack-step-19')), 400);
+    final later = find.descendant(
+        of: find.byKey(const ValueKey('attack-step-19')),
+        matching: find.byType(FilledButton));
     await tester.ensureVisible(later);
     await tester.pumpAndSettle();
     await tester.tap(later);
+    await tester.pumpAndSettle();
     expect(attacked, 'step-19');
     await tester.ensureVisible(find.text('Completed attacks · 2'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Completed attacks · 2'));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('attack-step-0')), findsOneWidget);
-    expect(find.descendant(of: find.byKey(const ValueKey('attack-step-0')), matching: find.byType(FilledButton)), findsNothing);
+    expect(
+        find.descendant(
+            of: find.byKey(const ValueKey('attack-step-0')),
+            matching: find.byType(FilledButton)),
+        findsNothing);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(focused(2, campfire: true));
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('later-attacks-long-plan')), findsNothing);
-    expect(find.byKey(const ValueKey('completed-attacks-long-plan')), findsNothing);
+    expect(find.byKey(const ValueKey('completed-attacks-long-plan')),
+        findsNothing);
     expect(find.byKey(const ValueKey('attack-step-2')), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -280,9 +478,12 @@ void main() {
     expect(QuestwellProgression.levelForXp(25 * 3), 1);
     expect(QuestwellProgression.levelForXp(25 * 4), 2);
     for (final count in [2, 3, 20]) {
-      final b = QuestwellBossBattle.fromJson({'id': 'test'}, [
+      final b = QuestwellBossBattle.fromJson({
+        'id': 'test'
+      }, [
         for (var i = 0; i < count; i++)
-          QuestwellBossStep(id: '$i', title: 'Step', position: i, completed: false),
+          QuestwellBossStep(
+              id: '$i', title: 'Step', position: i, completed: false),
       ]);
       expect(b.rewardXp, 25);
     }
@@ -290,51 +491,76 @@ void main() {
     expect(QuestwellBossBattle.fromJson({'reward_xp': 100}, []).rewardXp, 100);
   });
   test('Every boss unlocks exactly at its approved level', () {
-    expect(QuestwellBossUnlocks.levels.values.toList(), [1, 3, 5, 7, 10, 13, 16, 20]);
+    expect(QuestwellBossUnlocks.levels.values.toList(),
+        [1, 3, 5, 7, 10, 13, 16, 20]);
     for (final entry in QuestwellBossUnlocks.levels.entries) {
-      expect(QuestwellBossUnlocks.available(entry.key, entry.value - 1), isFalse);
+      expect(
+          QuestwellBossUnlocks.available(entry.key, entry.value - 1), isFalse);
       expect(QuestwellBossUnlocks.available(entry.key, entry.value), isTrue);
-      expect(QuestwellBossUnlocks.xpRemaining(entry.key,
-        QuestwellProgression.totalAtLevel(entry.value), 0), 0);
+      expect(
+          QuestwellBossUnlocks.xpRemaining(
+              entry.key, QuestwellProgression.totalAtLevel(entry.value), 0),
+          0);
     }
     expect(QuestwellBossUnlocks.available('unknown', 100), isFalse);
     expect(QuestwellBossUnlocks.next(1), 'meeting_mimic');
     expect(QuestwellBossUnlocks.next(20), isNull);
     expect(QuestwellBossUnlocks.xpRemaining('meeting_mimic', 0, 100), 115);
-    expect(QuestwellBossUnlocks.progress('meeting_mimic', 0, 100), closeTo(100 / 215, .001));
+    expect(QuestwellBossUnlocks.progress('meeting_mimic', 0, 100),
+        closeTo(100 / 215, .001));
   });
-  testWidgets('Picker exposes locked bosses but rejects selecting them', (tester) async {
+  testWidgets('Picker exposes locked bosses but rejects selecting them',
+      (tester) async {
     String selected = 'inbox_hydra';
-    await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellBossPicker(
-      value: selected, level: 1, onChanged: (value) => selected = value))));
-    final picker = tester.widget<DropdownButtonFormField<String>>(find.byType(DropdownButtonFormField<String>));
-    final menu = tester.widget<DropdownButton<String>>(find.byType(DropdownButton<String>));
+    await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+            body: QuestwellBossPicker(
+                value: selected,
+                level: 1,
+                onChanged: (value) => selected = value))));
+    final picker = tester.widget<DropdownButtonFormField<String>>(
+        find.byType(DropdownButtonFormField<String>));
+    final menu = tester
+        .widget<DropdownButton<String>>(find.byType(DropdownButton<String>));
     expect(menu.items!.length, 8);
-    expect(menu.items!.where((item) => item.enabled).map((item) => item.value), ['inbox_hydra']);
+    expect(menu.items!.where((item) => item.enabled).map((item) => item.value),
+        ['inbox_hydra']);
     picker.onChanged!('update_dragon');
     expect(selected, 'inbox_hydra');
-    await tester.pumpWidget(MaterialApp(home: Scaffold(body: QuestwellBossPicker(
-      value: selected, level: 3, onChanged: (value) => selected = value))));
-    final unlocked = tester.widget<DropdownButtonFormField<String>>(find.byType(DropdownButtonFormField<String>));
-    final updatedMenu = tester.widget<DropdownButton<String>>(find.byType(DropdownButton<String>));
+    await tester.pumpWidget(MaterialApp(
+        home: Scaffold(
+            body: QuestwellBossPicker(
+                value: selected,
+                level: 3,
+                onChanged: (value) => selected = value))));
+    final unlocked = tester.widget<DropdownButtonFormField<String>>(
+        find.byType(DropdownButtonFormField<String>));
+    final updatedMenu = tester
+        .widget<DropdownButton<String>>(find.byType(DropdownButton<String>));
     expect(updatedMenu.items!.where((item) => item.enabled).length, 2);
     unlocked.onChanged!('meeting_mimic');
     expect(selected, 'meeting_mimic');
     expect(tester.takeException(), isNull);
   });
-  testWidgets('Unlock progress fits narrow screens and honors legacy XP', (tester) async {
+  testWidgets('Unlock progress fits narrow screens and honors legacy XP',
+      (tester) async {
     tester.view.physicalSize = const Size(320, 844);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-    await tester.pumpWidget(MaterialApp(home: MediaQuery(
-      data: const MediaQueryData(textScaler: TextScaler.linear(1.5)),
-      child: const Scaffold(body: Padding(padding: EdgeInsets.all(18),
-        child: QuestwellBossUnlockProgress(level: 2, totalXp: 0, offset: 100))))));
+    await tester.pumpWidget(MaterialApp(
+        home: MediaQuery(
+            data: const MediaQueryData(textScaler: TextScaler.linear(1.5)),
+            child: const Scaffold(
+                body: Padding(
+                    padding: EdgeInsets.all(18),
+                    child: QuestwellBossUnlockProgress(
+                        level: 2, totalXp: 0, offset: 100))))));
     expect(find.text('115 XP to unlock'), findsOneWidget);
     expect(tester.takeException(), isNull);
-    await tester.pumpWidget(const MaterialApp(home: Scaffold(
-      body: QuestwellBossUnlockProgress(level: 20, totalXp: 4465))));
+    await tester.pumpWidget(const MaterialApp(
+        home: Scaffold(
+            body: QuestwellBossUnlockProgress(level: 20, totalXp: 4465))));
     expect(find.text('Level 20 · All eight bosses unlocked'), findsOneWidget);
     expect(find.byType(LinearProgressIndicator), findsNothing);
   });
