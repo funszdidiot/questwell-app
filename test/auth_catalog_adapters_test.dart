@@ -303,99 +303,6 @@ void main() {
       QuestwellCosmetic.fromJson(catalogRow('owned', slug),
           owned: owned, equipped: false);
 
-  testWidgets('Market replaces a hidden saved rug only after confirmation',
-      (tester) async {
-    GoogleFonts.config.allowRuntimeFetching = false;
-    await tester.binding.setSurfaceSize(const Size(390, 900));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-    var placed = false;
-    respond = (request) async {
-      switch (request.url.path) {
-        case '/rest/v1/cosmetics':
-          return json([
-            {
-              ...catalogRow('moonweb', 'moonweb-rug'),
-              'name': 'Moonweb Rug',
-              'category': 'room',
-              'hearth_profile_key': 'floor_rug',
-              'price': 60,
-            }
-          ]);
-        case '/rest/v1/user_cosmetics':
-          return json([
-            {
-              'cosmetic_id': 'moonweb',
-              'equipped': placed,
-              'room_slot': placed ? 'floor' : null
-            },
-            {
-              'cosmetic_id': 'hidden-emerald',
-              'equipped': !placed,
-              'room_slot': placed ? null : 'floor'
-            },
-          ]);
-        case '/rest/v1/hearth_profile_slots':
-          return json([
-            {
-              'profile_key': 'floor_rug',
-              'slot_key': 'floor',
-              'placement_label': 'Beneath the adventurer',
-              'sort_order': 10
-            }
-          ]);
-        case '/rest/v1/hearth_render_registry':
-          return json([]);
-        case '/rest/v1/rpc/place_hearth_cosmetic':
-          expect(body(request), {
-            'p_cosmetic_id': 'moonweb',
-            'p_slot': 'floor',
-            'p_expected_occupant': 'hidden-emerald',
-          });
-          placed = true;
-          return http.Response('', 204);
-        default:
-          return catalog(request);
-      }
-    };
-    await tester.pumpWidget(MaterialApp(
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(disableAnimations: true),
-        child: child!,
-      ),
-      home: const MarketPageWidget(),
-    ));
-    await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Place in Hearth'));
-    await tester.tap(find.text('Place in Hearth'));
-    await tester.pumpAndSettle();
-    expect(find.text('Replaces Stored Hearth item'), findsOneWidget);
-    await tester.tap(find.text('Save placement'));
-    await tester.pumpAndSettle();
-    expect(find.text('Replace Stored Hearth item?'), findsOneWidget);
-    await tester.tap(find.text('Keep current item'));
-    await tester.pumpAndSettle();
-    expect(placed, isFalse);
-    expect(requests.where((r) => r.url.path.endsWith('place_hearth_cosmetic')),
-        isEmpty);
-    await tester.tap(find.text('Save placement'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Replace item'));
-    await tester.pumpAndSettle();
-    expect(placed, isTrue);
-    expect(requests.where((r) => r.url.path.endsWith('place_hearth_cosmetic')),
-        hasLength(1));
-    expect(find.text('Moonweb Rug placed in your Hearth.'), findsOneWidget);
-    expect(find.text('Could not save your equipment. Refresh and try again.'),
-        findsNothing);
-    // A reload reconstructs the newly saved floor slot from persisted ownership.
-    final saved = await QuestwellCosmeticService.load();
-    expect(saved.hearthOccupants['floor']!.id, 'moonweb');
-    expect(saved.cosmetics.single.equipped, isTrue);
-    expect(saved.cosmetics.single.roomSlot, 'floor');
-    expect(tester.takeException(), isNull);
-    await tester.pumpWidget(const SizedBox.shrink());
-  });
-
   group('catalog adapter', () {
     test(
         'joins ownership, placements and renderer metadata while filtering retired items',
@@ -722,5 +629,98 @@ void main() {
       expect(requests.map((r) => r.url.path),
           ['/rest/v1/boss_battles', '/rest/v1/boss_steps']);
     });
+  });
+  testWidgets('Market replaces a hidden saved rug only after confirmation',
+      (tester) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
+    await tester.binding.setSurfaceSize(const Size(390, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    var placed = false;
+    respond = (request) async {
+      switch (request.url.path) {
+        case '/rest/v1/cosmetics':
+          return json([
+            {
+              ...catalogRow('moonweb', 'moonweb-rug'),
+              'name': 'Moonweb Rug',
+              'category': 'room',
+              'hearth_profile_key': 'floor_rug',
+              'price': 60,
+            }
+          ]);
+        case '/rest/v1/user_cosmetics':
+          return json([
+            {
+              'cosmetic_id': 'moonweb',
+              'equipped': placed,
+              'room_slot': placed ? 'floor' : null
+            },
+            {
+              'cosmetic_id': 'hidden-emerald',
+              'equipped': !placed,
+              'room_slot': placed ? null : 'floor'
+            },
+          ]);
+        case '/rest/v1/hearth_profile_slots':
+          return json([
+            {
+              'profile_key': 'floor_rug',
+              'slot_key': 'floor',
+              'placement_label': 'Beneath the adventurer',
+              'sort_order': 10
+            }
+          ]);
+        case '/rest/v1/hearth_render_registry':
+          return json([]);
+        case '/rest/v1/rpc/place_hearth_cosmetic':
+          expect(body(request), {
+            'p_cosmetic_id': 'moonweb',
+            'p_slot': 'floor',
+            'p_expected_occupant': 'hidden-emerald',
+          });
+          placed = true;
+          return http.Response('', 204);
+        default:
+          return catalog(request);
+      }
+    };
+    await tester.pumpWidget(MaterialApp(
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(disableAnimations: true),
+        child: child!,
+      ),
+      home: const MarketPageWidget(),
+    ));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Place in Hearth'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Place in Hearth'));
+    await tester.pumpAndSettle();
+    expect(find.text('Replaces Stored Hearth item'), findsOneWidget);
+    await tester.tap(find.text('Save placement'));
+    await tester.pumpAndSettle();
+    expect(find.text('Replace Stored Hearth item?'), findsOneWidget);
+    await tester.tap(find.text('Keep current item'));
+    await tester.pumpAndSettle();
+    expect(placed, isFalse);
+    expect(requests.where((r) => r.url.path.endsWith('place_hearth_cosmetic')),
+        isEmpty);
+    await tester.tap(find.text('Save placement'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Replace item'));
+    await tester.pumpAndSettle();
+    expect(placed, isTrue);
+    expect(requests.where((r) => r.url.path.endsWith('place_hearth_cosmetic')),
+        hasLength(1));
+    expect(find.text('Moonweb Rug placed in your Hearth.'), findsOneWidget);
+    expect(find.text('Could not save your equipment. Refresh and try again.'),
+        findsNothing);
+    // A reload reconstructs the newly saved floor slot from persisted ownership.
+    final saved = await tester.runAsync(QuestwellCosmeticService.load);
+    expect(saved!.hearthOccupants['floor']!.id, 'moonweb');
+    expect(saved.cosmetics.single.equipped, isTrue);
+    expect(saved.cosmetics.single.roomSlot, 'floor');
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox.shrink());
   });
 }
