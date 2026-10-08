@@ -1,6 +1,6 @@
 import {spawn, spawnSync} from 'node:child_process';
 import assert from 'node:assert/strict';
-import {copyFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, realpathSync} from 'node:fs';
+import {copyFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync, realpathSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {assertDisposableCi, assertLocalStatus} from './guard.mjs';
