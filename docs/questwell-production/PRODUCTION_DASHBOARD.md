@@ -1,5 +1,17 @@
 # Questwell Production Dashboard
 
+## Four-space beta soundtrack — October 9, 2026
+
+**BLOCKED before build/deployment.** Four music and two ambience tracks generated
+and prepared as versioned MP3 candidates. Draft optional playback, saved controls,
+lifecycle/routing owner, review route and twelve regression tests are prepared
+on `feat/questwell-beta-music-20261009`. No remote publication, dependency lock,
+Flutter test pass or deployed music is claimed. Automatic review blocked local
+Flutter execution for metadata-endpoint credential risk, and blocked GitHub push
+pending clearer external-publication authorization. Next: founder confirmation
+to push this feature branch to `funszdidiot/questwell-app`, then vetted hosted
+dependency resolution and CI. Evidence: `../qa/BETA_AUDIO.md`.
+
 ## Hollow Harvest seasonal selection — October 8, 2026
 
 **QA.** The corrected connected-head preview is deployed at `24eab12` (PR #98).

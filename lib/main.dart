@@ -1,4 +1,5 @@
 import 'widgets/questwell_app_style.dart';
+import 'widgets/questwell_audio_controls.dart';
 import 'dart:async';
 import 'dart:ui';
 import 'dart:ui' as ui show TextDirection;
@@ -206,6 +207,13 @@ class _MyAppState extends State<MyApp> {
       darkTheme: QuestwellAppStyle.theme(),
       themeMode: _themeMode,
       routerConfig: _router,
+      builder: (context, child) => QuestwellAudioHost(
+        router: _router,
+        isHomeRoot: () =>
+            _appStateNotifier.loggedIn &&
+            !QuestwellAuthCallback.needsAuthScreen,
+        child: child ?? const SizedBox.shrink(),
+      ),
     );
   }
 }
