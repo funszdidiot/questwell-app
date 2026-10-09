@@ -384,3 +384,8 @@ is verified with exact recorded payload, unchanged prior history and correct
 permissions. PR #102 passed independent review and all CI. The development web
 build is being enabled; staging/native remain gated. Status: **QA / DEV DEPLOYING**.
 Hosted signed-in and physical-device acceptance remain pending.
+
+
+## Hollow Harvest finale — 2026-10-09
+
+**QA** — Founder approved lantern flicker and pumpkin-pile defeat. Implementation preserves approved idle/arena art and season/rewards. Independent source review provisionally passed; CI and delivered runtime review pending. See `docs/qa/HOLLOW_HARVEST_FINALE.md`; the delivery PR will record final deployment evidence.
