@@ -15,15 +15,15 @@ class QuestwellItemIcon extends StatelessWidget {
   final bool locked;
   @override
   Widget build(BuildContext context) => Semantics(
-    label: '${slug.replaceAll('-', ' ')} icon',
-    image: true,
-    child: SizedBox.square(
-      dimension: size,
-      child: CustomPaint(
-        painter: QuestwellItemIconPainter(slug, locked: locked),
-      ),
-    ),
-  );
+        label: '${slug.replaceAll('-', ' ')} icon',
+        image: true,
+        child: SizedBox.square(
+          dimension: size,
+          child: CustomPaint(
+            painter: QuestwellItemIconPainter(slug, locked: locked),
+          ),
+        ),
+      );
 }
 
 class QuestwellItemIconPainter extends CustomPainter {
@@ -298,8 +298,8 @@ class QuestwellItemIconPainter extends CustomPainter {
           x == 9
               ? green
               : x == 17
-              ? red
-              : gold,
+                  ? red
+                  : gold,
         );
         r(x - 1, 7, 1, 2, cream);
       }
@@ -376,10 +376,10 @@ class QuestwellItemIconPainter extends CustomPainter {
       final wall = harvest
           ? const Color(0xFF704333)
           : alchemy
-          ? redDark
-          : sky
-          ? purpleDark
-          : greenDark;
+              ? redDark
+              : sky
+                  ? purpleDark
+                  : greenDark;
       panel(2, 3, 28, 27, wood, woodLight, woodDark);
       r(5, 6, 22, 19, wall);
       r(4, 25, 24, 4, wood);
@@ -837,13 +837,13 @@ class QuestwellItemIconPainter extends CustomPainter {
       final c = suit
           ? const Color(0xFF626D7F)
           : guardian
-          ? red
-          : green;
+              ? red
+              : green;
       final dark = suit
           ? const Color(0xFF35404D)
           : guardian
-          ? redDark
-          : greenDark;
+              ? redDark
+              : greenDark;
       r(10, 4, 12, 3, ink);
       r(7, 7, 18, 5, ink);
       r(5, 12, 22, 15, ink);
@@ -861,8 +861,8 @@ class QuestwellItemIconPainter extends CustomPainter {
         suit
             ? blue
             : guardian
-            ? const Color(0xFFCC7881)
-            : mint,
+                ? const Color(0xFFCC7881)
+                : mint,
       );
       r(15, 11, 2, 17, ink);
       r(12, 6, 8, 3, suit ? cream : gold);

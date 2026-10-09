@@ -39,14 +39,14 @@ abstract final class QuestwellPetMotion {
   ];
 
   static List<(int, int)> _sequence(String slug) => switch (slug) {
-    'boston-terrier' => _dog,
-    'hearth-cat' => _cat,
-    _ => throw ArgumentError.value(slug, 'slug', 'Unknown pet'),
-  };
+        'boston-terrier' => _dog,
+        'hearth-cat' => _cat,
+        _ => throw ArgumentError.value(slug, 'slug', 'Unknown pet'),
+      };
 
   static Duration duration(String slug) => Duration(
-    milliseconds: _sequence(slug).fold(0, (total, step) => total + step.$2),
-  );
+        milliseconds: _sequence(slug).fold(0, (total, step) => total + step.$2),
+      );
 
   static int frame(String slug, double phase) {
     if (!phase.isFinite || phase < 0 || phase > 1) {

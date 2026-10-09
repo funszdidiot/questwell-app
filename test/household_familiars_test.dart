@@ -78,23 +78,24 @@ void main() {
         bool reduced = false,
         bool active = true,
         bool equipped = true,
-      }) => MaterialApp(
-        home: MediaQuery(
-          data: MediaQueryData(disableAnimations: reduced),
-          child: TickerMode(
-            enabled: active,
-            child: Center(
-              child: SizedBox(
-                width: 240,
-                height: 320,
-                child: equipped
-                    ? QuestwellFamiliarLayer(slug: slug)
-                    : const SizedBox.shrink(),
+      }) =>
+          MaterialApp(
+            home: MediaQuery(
+              data: MediaQueryData(disableAnimations: reduced),
+              child: TickerMode(
+                enabled: active,
+                child: Center(
+                  child: SizedBox(
+                    width: 240,
+                    height: 320,
+                    child: equipped
+                        ? QuestwellFamiliarLayer(slug: slug)
+                        : const SizedBox.shrink(),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      );
+          );
       await tester.pumpWidget(scene());
       await tester.pump();
       await tester.pump(

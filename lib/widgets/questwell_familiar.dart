@@ -43,36 +43,36 @@ class QuestwellFamiliarLayer extends StatelessWidget {
           final width = pet
               ? 54.0
               : pumpkin
-              ? 64.0
-              : dragon
-              ? 72.0
-              : hovering
-              ? 57.0
-              : 56.0;
+                  ? 64.0
+                  : dragon
+                      ? 72.0
+                      : hovering
+                          ? 57.0
+                          : 56.0;
           final height = pet
               ? 72.0
               : pumpkin
-              ? 64.0
-              : dragon
-              ? 80.0
-              : hovering
-              ? 54.0
-              : slug == 'glass-slime'
-              ? 43.0
-              : 67.0;
+                  ? 64.0
+                  : dragon
+                      ? 80.0
+                      : hovering
+                          ? 54.0
+                          : slug == 'glass-slime'
+                              ? 43.0
+                              : 67.0;
           final x = pumpkin
               ? 170.0
               : dragon
-              ? 164.0
-              : 178.0;
+                  ? 164.0
+                  : 178.0;
           // Pumpkin feet end at 1186/1254 of its transparent canvas.
           final bottom = pet
               ? 307.0 + 72 * (1 - 498 / 512)
               : pumpkin
-              ? 307.0 + 64 * (1 - 1186 / 1254)
-              : hovering
-              ? 151.0
-              : 307.0;
+                  ? 307.0 + 64 * (1 - 1186 / 1254)
+                  : hovering
+                      ? 151.0
+                      : 307.0;
           return Stack(
             clipBehavior: Clip.none,
             children: [
@@ -104,9 +104,8 @@ class QuestwellFamiliarLayer extends StatelessWidget {
                     asset(slug),
                     fit: BoxFit.contain,
                     alignment: Alignment.bottomCenter,
-                    filterQuality: pet
-                        ? FilterQuality.none
-                        : FilterQuality.medium,
+                    filterQuality:
+                        pet ? FilterQuality.none : FilterQuality.medium,
                     semanticLabel: allNames[slug],
                   ),
                 ),
@@ -154,64 +153,64 @@ class _FamiliarIdleState extends State<_FamiliarIdle>
 
   @override
   Widget build(BuildContext context) => RepaintBoundary(
-    child: AnimatedBuilder(
-      animation: _clock,
-      child: widget.child,
-      builder: (context, child) {
-        if (QuestwellPetMotion.names.containsKey(widget.slug)) {
-          return QuestwellPetFrame(
-            frame: QuestwellPetMotion.frame(widget.slug, _clock.value),
-            sheet: child!,
-          );
-        }
-        final wave = math.sin(_clock.value * math.pi * 2);
-        final hover = widget.slug == 'moss-moth';
-        final slime = widget.slug == 'glass-slime';
-        return Transform.translate(
-          offset: Offset(0, hover ? wave * 3 : 0),
-          child: Transform.scale(
-            alignment: Alignment.bottomCenter,
-            scaleX:
-                1 +
-                wave *
-                    (hover
-                        ? .05
-                        : slime
-                        ? .035
-                        : .006),
-            scaleY: 1 + wave * (slime ? -.04 : .018),
-            child: widget.slug == 'emerald-dragon'
-                ? Stack(
-                    clipBehavior: Clip.none,
-                    fit: StackFit.expand,
-                    children: [
-                      child!,
-                      IgnorePointer(
-                        child: CustomPaint(
-                          painter: QuestwellDragonSmokePainter(
-                            phase: _clock.value,
+        child: AnimatedBuilder(
+          animation: _clock,
+          child: widget.child,
+          builder: (context, child) {
+            if (QuestwellPetMotion.names.containsKey(widget.slug)) {
+              return QuestwellPetFrame(
+                frame: QuestwellPetMotion.frame(widget.slug, _clock.value),
+                sheet: child!,
+              );
+            }
+            final wave = math.sin(_clock.value * math.pi * 2);
+            final hover = widget.slug == 'moss-moth';
+            final slime = widget.slug == 'glass-slime';
+            return Transform.translate(
+              offset: Offset(0, hover ? wave * 3 : 0),
+              child: Transform.scale(
+                alignment: Alignment.bottomCenter,
+                scaleX: 1 +
+                    wave *
+                        (hover
+                            ? .05
+                            : slime
+                                ? .035
+                                : .006),
+                scaleY: 1 + wave * (slime ? -.04 : .018),
+                child: widget.slug == 'emerald-dragon'
+                    ? Stack(
+                        clipBehavior: Clip.none,
+                        fit: StackFit.expand,
+                        children: [
+                          child!,
+                          IgnorePointer(
+                            child: CustomPaint(
+                              painter: QuestwellDragonSmokePainter(
+                                phase: _clock.value,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
-                  )
-                : hover
-                ? Stack(
-                    clipBehavior: Clip.none,
-                    fit: StackFit.expand,
-                    children: [
-                      CustomPaint(
-                        painter: QuestwellMothMagicPainter(phase: _clock.value),
-                      ),
-                      child!,
-                    ],
-                  )
-                : child,
-          ),
-        );
-      },
-    ),
-  );
+                        ],
+                      )
+                    : hover
+                        ? Stack(
+                            clipBehavior: Clip.none,
+                            fit: StackFit.expand,
+                            children: [
+                              CustomPaint(
+                                painter: QuestwellMothMagicPainter(
+                                    phase: _clock.value),
+                              ),
+                              child!,
+                            ],
+                          )
+                        : child,
+              ),
+            );
+          },
+        ),
+      );
 }
 
 /// Staggered golden wing-dust: drifts outward and falls away as the moth hovers.
@@ -230,8 +229,7 @@ class QuestwellMothMagicPainter extends CustomPainter {
       final side = i.isEven ? -1.0 : 1.0;
       final shimmer = math.sin(age * math.pi);
       final opacity = math.pow(shimmer, .7).toDouble() * .95;
-      final x =
-          28.5 +
+      final x = 28.5 +
           side * (16 + i % 3 * 3 + age * 5) +
           math.sin((age + i * .17) * math.pi * 2) * 3;
       final y = 12 + i % 4 * 7 + age * 24;
