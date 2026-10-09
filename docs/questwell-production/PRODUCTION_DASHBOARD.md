@@ -386,3 +386,11 @@ is verified with exact recorded payload, unchanged prior history and correct
 permissions. PR #102 passed independent review and all CI. The development web
 build is being enabled; staging/native remain gated. Status: **QA / DEV DEPLOYING**.
 Hosted signed-in and physical-device acceptance remain pending.
+
+### Hearth room composition — October 9, 2026 · QA
+
+Tanya approved stronger furniture composition. Room-specific floor anchors,
+paired chair/table spacing and a clearer center passed independent source and
+rendered review. Furniture sizes and locked artwork stay fixed. All 27 fixture
+scenes passed visual QA at 390×280; development merge/deployment verification
+remains pending. Evidence: `docs/qa/HEARTH_COMPOSITION.md`.
