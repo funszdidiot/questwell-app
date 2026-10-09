@@ -82,7 +82,16 @@ jobs:
         run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
 
       - name: Verify gated Hearth decorator
-        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --dart-define=QUESTWELL_DECORATE_HEARTH=true test/decorate_hearth_test.dart test/hearth_layout_contract_test.dart
+        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --dart-define=QUESTWELL_DECORATE_HEARTH=true test/decorate_hearth_test.dart test/hearth_layout_contract_test.dart test/hearth_composition_test.dart
+
+      - name: Retain Hearth composition review images
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: hearth-composition-${{ github.sha }}
+          path: build/hearth-composition/
+          retention-days: 7
+          if-no-files-found: warn
 
       - name: Retain rendered Halloween review images
         if: always()

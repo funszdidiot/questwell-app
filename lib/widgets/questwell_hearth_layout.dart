@@ -48,12 +48,8 @@ abstract final class QuestwellHearthLayout {
     'burgundy-reading-chair': QuestwellHearthAssetSpec(
       aspectRatio: 1312 / 1199,
     ),
-    'hearth-fern': QuestwellHearthAssetSpec(
-      aspectRatio: 1244 / 1264,
-    ),
-    'walnut-reading-table': QuestwellHearthAssetSpec(
-      aspectRatio: 1213 / 1296,
-    ),
+    'hearth-fern': QuestwellHearthAssetSpec(aspectRatio: 1244 / 1264),
+    'walnut-reading-table': QuestwellHearthAssetSpec(aspectRatio: 1213 / 1296),
   };
 
   /// Compatibility only for review routes/tests that do not load Supabase.
@@ -132,8 +128,10 @@ abstract final class QuestwellHearthLayout {
     final visibleBase = renderSpec?.visibleBase ?? fallback?.visibleBase;
     if (aspectRatio == null || visibleBase == null) return Rect.zero;
 
-    final avatarHeight =
-        math.min(scene.height * .76, scene.width * .62 * 4 / 3);
+    final avatarHeight = math.min(
+      scene.height * .76,
+      scene.width * .62 * 4 / 3,
+    );
 
     final heightFactor = switch (profileKey) {
       'large_furniture' => .50,
@@ -163,10 +161,16 @@ abstract final class QuestwellHearthLayout {
     final chairOnLeft =
         profileAt('front') == 'seating' || profileAt('left') == 'seating';
 
+    final plan = QuestwellHearthRoomPlan.forSetting(equipment['room:setting']);
     final center = QuestwellHearthRoomPlan.enabled
         ? scene.width *
-            QuestwellHearthRoomPlan.forSetting(equipment['room:setting'])
-                .center(profileKey, slot, chairOnLeft: chairOnLeft)
+            plan.center(
+              profileKey,
+              slot,
+              chairOnLeft: chairOnLeft,
+              chairOnRight: profileAt('right') == 'seating',
+              largeOnRight: profileAt('right') == 'large_furniture',
+            )
         : switch (profileKey) {
             'large_furniture' => slot == 'right'
                 ? scene.width * .98 - width / 2
@@ -193,9 +197,13 @@ abstract final class QuestwellHearthLayout {
           };
 
     final roomSide = math.max(scene.width, scene.height);
-    final floor = profileKey == 'relic_display' && slot != 'front'
-        ? roomSide * .68 + (scene.height - roomSide) * .52
-        : scene.height * floorDepthFor(profileKey, slot);
+    final plannedFloor =
+        QuestwellHearthRoomPlan.enabled ? plan.floor(profileKey, slot) : null;
+    final floor = plannedFloor != null
+        ? scene.height * plannedFloor
+        : profileKey == 'relic_display' && slot != 'front'
+            ? roomSide * .68 + (scene.height - roomSide) * .52
+            : scene.height * floorDepthFor(profileKey, slot);
 
     return Rect.fromLTWH(
       center - width / 2,
