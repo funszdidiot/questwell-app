@@ -3,12 +3,12 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../lib/widgets/questwell_amberfall_window.dart';
+import '../lib/widgets/questwell_window_geometry.dart';
+import '../lib/widgets/questwell_pixel_art.dart';
 
-Future<Uint8List> frame(double phase, Size size, bool hallowed,
-    {bool enchantedLibrary = false}) async {
+Future<Uint8List> frame(double phase, Size size, String roomFile) async {
   final recorder = ui.PictureRecorder();
-  AmberfallLeafPainter(AlwaysStoppedAnimation(phase),
-          hallowed: hallowed, enchantedLibrary: enchantedLibrary)
+  AmberfallLeafPainter(AlwaysStoppedAnimation(phase), roomFile: roomFile)
       .paint(Canvas(recorder), size);
   final picture = recorder.endRecording();
   final image = await picture.toImage(size.width.toInt(), size.height.toInt());
@@ -20,22 +20,36 @@ Future<Uint8List> frame(double phase, Size size, bool hallowed,
 }
 
 void main() {
+  test('every room has explicit glass registration and preserved leading', () {
+    expect(QuestwellWindowGeometry.rooms.toSet(),
+        QuestwellHearthSetting.values.map((r) => r.file).toSet());
+    expect(() => QuestwellWindowGeometry.glass('unknown'), throwsArgumentError);
+    final workshop = QuestwellWindowGeometry.glass('alchemists_workshop_v1');
+    expect(workshop.contains(const Offset(1203, 203)), isFalse);
+    // Segment plus rounded joint must not cancel under nonzero winding.
+    expect(workshop.contains(const Offset(1202, 202)), isFalse);
+    expect(workshop.contains(const Offset(1204, 204)), isFalse);
+    expect(workshop.contains(const Offset(1205, 215)), isTrue);
+    final observatory =
+        QuestwellWindowGeometry.glass('midnight_observatory_v1');
+    expect(observatory.contains(const Offset(1210, 148)), isFalse);
+    expect(observatory.contains(const Offset(1210, 120)), isTrue);
+  });
   testWidgets('leaves move, loop exactly and stay inside existing glass',
       (tester) async {
-    for (final variant in [0, 1, 2]) {
-      final hallowed = variant == 1;
-      final enchantedLibrary = variant == 2;
-      for (final size in [const Size(390, 420), const Size(960, 640)]) {
-        final a = await tester.runAsync(
-            () => frame(0, size, hallowed, enchantedLibrary: enchantedLibrary));
-        final b = await tester.runAsync(() =>
-            frame(.31, size, hallowed, enchantedLibrary: enchantedLibrary));
-        final end = await tester.runAsync(
-            () => frame(1, size, hallowed, enchantedLibrary: enchantedLibrary));
+    for (final setting in QuestwellHearthSetting.values) {
+      final roomFile = setting.file;
+      for (final size in [
+        const Size(390, 390),
+        const Size(390, 420),
+        const Size(360, 253),
+        const Size(960, 640)
+      ]) {
+        final a = await tester.runAsync(() => frame(0, size, roomFile));
+        final b = await tester.runAsync(() => frame(.31, size, roomFile));
+        final end = await tester.runAsync(() => frame(1, size, roomFile));
         expect(a, orderedEquals(end!));
-        final glass = AmberfallGlassClipper(
-                hallowed: hallowed, enchantedLibrary: enchantedLibrary)
-            .getClip(size);
+        final glass = AmberfallGlassClipper(roomFile: roomFile).getClip(size);
         var painted = 0;
         for (var y = 0; y < size.height.toInt(); y++) {
           for (var x = 0; x < size.width.toInt(); x++) {
@@ -51,7 +65,7 @@ void main() {
             ].any(
                 (p) => glass.contains(Offset(x.toDouble(), y.toDouble()) + p));
             expect(inside, isTrue,
-                reason: '$hallowed $size ($x,$y) escaped glass');
+                reason: '$roomFile $size ($x,$y) escaped glass');
           }
         }
         // The authored standard room window is cropped off at some wide ratios.
@@ -73,7 +87,8 @@ void main() {
                 child: const SizedBox(
                     width: 390,
                     height: 420,
-                    child: QuestwellAmberfallWindow(hallowed: true))),
+                    child: QuestwellAmberfallWindow(
+                        roomFile: QuestwellWindowGeometry.hallowed))),
           ),
         );
     await tester.pumpWidget(host());
@@ -110,7 +125,9 @@ void main() {
               behavior: HitTestBehavior.opaque,
               onTap: () => taps++,
               child: const ColoredBox(color: Colors.black))),
-      const Positioned.fill(child: QuestwellAmberfallWindow(hallowed: true)),
+      const Positioned.fill(
+          child: QuestwellAmberfallWindow(
+              roomFile: QuestwellWindowGeometry.hallowed)),
     ])));
     await tester.tapAt(const Offset(100, 100));
     expect(taps, 1);

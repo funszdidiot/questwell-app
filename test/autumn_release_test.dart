@@ -76,51 +76,67 @@ void main() {
                 find.byType(QuestwellAmberfallWindow))
             .enchantedLibrary,
         isTrue);
-    await show('amberfall-window', QuestwellHearthSetting.woodlandCottage);
-    expect(find.byType(QuestwellAmberfallWindow), findsNothing);
-    expect(tester.takeException(), isNull);
-  });
-  testWidgets('saved library window survives Market preview and reload',
-      (tester) async {
-    final window = decor('amberfall-window',
-        equipped: true, slot: 'window', profile: 'window', slots: ['window']);
-    final library = decor('enchanted-library', equipped: true, slot: 'setting');
-    final snapshot = QuestwellCosmeticsSnapshot(
-        profile: QuestwellProfile.fromJson({}), cosmetics: [library, window]);
-    final preview = QuestwellMarketPreview.equipment(snapshot, window)!;
-    expect(preview, {
-      'room:setting': 'enchanted-library',
-      'room:window': 'amberfall-window'
-    });
-    for (final equipment in [
-      preview,
-      {for (final item in snapshot.cosmetics) item.renderKey: item.slug}
-    ]) {
-      await tester.pumpWidget(MaterialApp(
-          home: TickerMode(
-              enabled: false,
-              child: Center(
-                  child: SizedBox(
-                      width: 360,
-                      child: QuestwellHearthPixelScene(
-                          height: 360 * .68 + 8,
-                          immersive: true,
-                          showAvatar: false,
-                          equippedSlugs: equipment))))));
-      await tester.pump();
+    for (final room in QuestwellHearthSetting.values) {
+      await show('amberfall-window', room);
+      expect(find.byType(QuestwellAmberfallWindow), findsOneWidget);
       expect(
           tester
               .widget<QuestwellAmberfallWindow>(
                   find.byType(QuestwellAmberfallWindow))
-              .enchantedLibrary,
-          isTrue);
-      final scene = tester.widget<QuestwellHearthPixelScene>(
-          find.byType(QuestwellHearthPixelScene));
-      expect(scene.equippedSlugs['room:setting'], 'enchanted-library');
-      await tester.pumpWidget(const SizedBox());
+              .roomFile,
+          room.file);
+      await show(null, room);
+      expect(find.byType(QuestwellAmberfallWindow), findsNothing);
     }
-    expect(window.equipped, isTrue);
-    expect(window.roomSlot, 'window');
+    expect(tester.takeException(), isNull);
+  });
+  testWidgets('every saved room window survives Market preview and reload',
+      (tester) async {
+    final slugs = <QuestwellHearthSetting, String>{
+      QuestwellHearthSetting.original: 'original-hearth',
+      QuestwellHearthSetting.hallowedHearth: 'hallowed-hearth',
+      QuestwellHearthSetting.enchantedLibrary: 'enchanted-library',
+      QuestwellHearthSetting.woodlandCottage: 'woodland-cottage',
+      QuestwellHearthSetting.midnightHarvest: 'midnight-harvest',
+      QuestwellHearthSetting.midnightObservatory: 'midnight-observatory',
+      QuestwellHearthSetting.alchemistsWorkshop: 'alchemists-workshop',
+      QuestwellHearthSetting.astralSanctuary: 'astral-sanctuary',
+      QuestwellHearthSetting.emberglassConservatory: 'emberglass-conservatory',
+    };
+    expect(slugs.keys.toSet(), QuestwellHearthSetting.values.toSet());
+    for (final room in slugs.entries) {
+      final window = decor('amberfall-window',
+          equipped: true, slot: 'window', profile: 'window', slots: ['window']);
+      final setting = decor(room.value, equipped: true, slot: 'setting');
+      final snapshot = QuestwellCosmeticsSnapshot(
+          profile: QuestwellProfile.fromJson({}), cosmetics: [setting, window]);
+      final saved = {for (final i in snapshot.cosmetics) i.renderKey: i.slug};
+      final preview = QuestwellMarketPreview.equipment(snapshot, window)!;
+      expect(preview, saved);
+      for (final equipment in [preview, saved]) {
+        await tester.pumpWidget(MaterialApp(
+            home: TickerMode(
+                enabled: false,
+                child: Center(
+                    child: SizedBox(
+                        width: 360,
+                        child: QuestwellHearthPixelScene(
+                            height: 360 * .68 + 8,
+                            immersive: true,
+                            showAvatar: false,
+                            equippedSlugs: equipment))))));
+        await tester.pump();
+        expect(
+            tester
+                .widget<QuestwellAmberfallWindow>(
+                    find.byType(QuestwellAmberfallWindow))
+                .roomFile,
+            room.key.file);
+        await tester.pumpWidget(const SizedBox());
+      }
+      expect(window.equipped, isTrue);
+      expect(window.roomSlot, 'window');
+    }
     expect(tester.takeException(), isNull);
   });
   testWidgets('release registry renders the four approved floor pieces',

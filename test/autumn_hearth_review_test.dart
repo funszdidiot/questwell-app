@@ -105,4 +105,50 @@ void main() {
       }
     }
   });
+  testWidgets(
+      'capture every room with fitted Amberfall at Hearth and Market sizes',
+      (tester) async {
+    GoogleFonts.config.allowRuntimeFetching = false;
+    final key = GlobalKey();
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    for (final setting in QuestwellHearthSetting.values) {
+      for (final size in [const Size(390, 390), const Size(960, 653)]) {
+        await tester.binding.setSurfaceSize(size);
+        await tester.pumpWidget(MaterialApp(
+            home: RepaintBoundary(
+                key: key,
+                child: TickerMode(
+                    enabled: false,
+                    child: AutumnHearthScene(
+                        height: size.height,
+                        setting: setting,
+                        avatar: false,
+                        decor: false)))));
+        await tester.runAsync(() async {
+          await Future.wait(tester
+              .widgetList<Image>(find.byType(Image))
+              .map((image) => precacheImage(image.image, key.currentContext!)));
+        });
+        await tester.pump();
+        expect(
+            tester
+                .widget<QuestwellAmberfallWindow>(
+                    find.byType(QuestwellAmberfallWindow))
+                .roomFile,
+            setting.file);
+        expect(tester.takeException(), isNull);
+        await tester.runAsync(() async {
+          final boundary =
+              key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+          final image = await boundary.toImage(pixelRatio: 1);
+          final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
+          final file = File(
+              'build/hearth-composition/amberfall-${setting.file}-${size.width.toInt()}.png');
+          await file.parent.create(recursive: true);
+          await file.writeAsBytes(bytes!.buffer.asUint8List());
+          image.dispose();
+        });
+      }
+    }
+  });
 }
