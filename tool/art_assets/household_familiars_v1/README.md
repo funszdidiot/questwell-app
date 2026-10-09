@@ -1,4 +1,4 @@
-# Boston Terrier and Hearth Cat — v1 candidates
+# Boston Terrier and Hearth Cat — v1
 
 Tanya approved the two-character concept on October 9, 2026 and asked to continue
 with idle animation. The black-and-white Boston terrier keeps its moss bandana
@@ -29,7 +29,8 @@ node tool/art_assets/household_familiars_v1/export.cjs
 The existing pinned Flutter **3.44.6** renders one cached sheet with clipped
 tiles and nearest-neighbor filtering. The existing familiar clock pauses for
 reduced motion and disabled TickerMode. These are presentation-only effects.
-No new runtime dependency, account capability, price or database write.
+No new runtime dependency. Release authorization and catalog integration follow
+`docs/qa/HOUSEHOLD_FAMILIARS_RELEASE.md`.
 
 The existing code-native 32px icon painter provides smaller inventory-style
 icons with matching markings and accessories, separate from in-world sprites.
@@ -37,9 +38,9 @@ icons with matching markings and accessories, separate from in-world sprites.
 ## Integration scope
 
 Development route: `?review=companions`, defaulting to Boston Terrier. Both new
-pets can be tried beside all three bodies and in the usual Hearth. Candidate
-names are separate from released names; neither appears in Market fixtures or
-the render-ready account allowlist. The review explicitly says release pending.
+pets can be tried beside all three bodies and in the usual Hearth. Tanya later
+authorized pricing and release; both are now in Market samples and the
+render-ready allowlist. Actual availability remains server-authoritative.
 
 `preview.gif` samples the runtime timing at 100ms for a portable art preview.
 It is not a recording of the Flutter renderer or evidence of deployment.
@@ -53,17 +54,19 @@ It is not a recording of the Flutter renderer or evidence of deployment.
 - PASS: Dart formatting and `git diff --check`.
 - Visual inspection caught and corrected extra tail and clipped-terrier defects.
 - Added widget tests for three-body rendering, small/wide bounds, animation
-  advancement, reduced motion, TickerMode, removal and Market isolation.
+  advancement, reduced motion, TickerMode, removal and Market pricing.
 - Local Flutter startup was blocked by automatic approval review because it
   attempted cloud-instance metadata access. No retry or bypass was made.
-  Widget tests/analyzer must run in repository CI before merge.
+  Widget tests/analyzer, browser and native builds passed repository CI on
+  `1d95b223`; the pricing/release changes require fresh checks.
 - Tanya explicitly authorized publishing the branch and opening its review on
   October 9, 2026. The earlier publication hold is resolved; CI and delivery
   are tracked in the pull request.
-- Pending: delivered Flutter visual review, physical iPhone acceptance, pricing,
+- Pending: delivered Flutter visual review, physical iPhone acceptance,
   catalog activation, purchase/equip/persistence verification. No live claims.
 
-Rollback: revert this scoped commit. No migrations or account data to reverse.
+Rollback: revert client before catalog activation. After activation, hide the
+two catalog entries in a reviewed forward change; preserve purchased ownership.
 
 Official APIs checked: api.flutter.dev docs for AnimatedBuilder, AssetImage,
 FittedBox, ClipRect, OverflowBox and Transform.translate; sharp.pixelplumbing.com

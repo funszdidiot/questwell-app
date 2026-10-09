@@ -2,16 +2,14 @@
 
 ## Boston Terrier and Hearth Cat — October 9, 2026
 
-**QA / candidate development preview.** Tanya approved the concept and idle
-animation direction. Transparent registered sheets, species-specific idle loops
-and separate 32px icons are implemented for `?review=companions`. Existing
-reduced-motion/TickerMode behavior is retained. Market/account capability and
-pricing remain unchanged. Local timing/asset/format checks pass; Flutter widget
-tests await CI because local tool startup was blocked by automatic approval
-review for cloud-metadata access. Tanya subsequently authorized public branch publishing
-and opening the review; follow its PR for CI results.
-No deployment or account persistence result is
-claimed. Evidence: `../../tool/art_assets/household_familiars_v1/README.md`.
+**QA / release authorized.** Tanya directed “Price them and push them” on
+October 9. Boston Terrier and Hearth Cat are each 180 coins, rare, non-premium,
+permanent, all classes/bodies. Client capability, Market samples and a guarded,
+data-only forward migration are prepared. Prior animation head passed full
+Flutter, browser, native and backend CI. Release checks are pending. Live catalog
+activation requires a dedicated 24-hour deployment credential; existing scoped
+collection secrets are not reused. No live purchase or delivery claim.
+Evidence: `../qa/HOUSEHOLD_FAMILIARS_RELEASE.md`.
 
 ## Hollow Harvest seasonal selection — October 8, 2026
 
@@ -421,3 +419,8 @@ remains pending. Evidence: `docs/qa/HEARTH_COMPOSITION.md`.
 ## Amberfall library visibility correction — 2026-10-09
 
 **QA** — Founder reported placed Amberfall invisible in Enchanted Library. Added the library glass registration to the shared Hearth/Market renderer; approved artwork, prices and ownership unchanged. Evidence and delivery follow-up: `docs/qa/AMBERFALL_LIBRARY_FIX.md`.
+
+
+## Amberfall all-room compatibility — 2026-10-09
+
+**QA** — All nine current rooms explicitly registered. Full-room visual exports and saved-loadout regression checks added. Approved artwork, ownership and pricing unchanged. `docs/qa/AMBERFALL_ALL_ROOMS.md`.

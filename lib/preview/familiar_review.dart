@@ -125,9 +125,7 @@ class _FamiliarReviewAppState extends State<FamiliarReviewApp> {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        QuestwellFamiliarLayer.previewNames.containsKey(_slug)
-                            ? 'New companion preview · Market release pending.'
-                            : 'Sample try-on · find this companion in the Market.',
+                        'Sample try-on · Market availability follows the live catalog.',
                         style: const TextStyle(
                           color: Color(0xFFB9C6BD),
                           fontSize: 13,

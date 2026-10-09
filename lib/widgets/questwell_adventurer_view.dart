@@ -1,3 +1,4 @@
+import 'questwell_cosmetic_copy.dart';
 import 'questwell_destination_entrance.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_app_style.dart';
@@ -537,7 +538,8 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       ]),
       if (item.description.isNotEmpty) ...[
         const SizedBox(height: 10),
-        Text(item.description, style: _text(14, color: _muted)),
+        Text(QuestwellCosmeticCopy.description(item.slug, item.description),
+            style: _text(14, color: _muted)),
       ],
       if (outfit && item.equipped) ...[
         const SizedBox(height: 8),

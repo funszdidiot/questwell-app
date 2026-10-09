@@ -8,6 +8,8 @@ abstract final class QuestwellEquipmentPolicy {
   static bool isRetired(String slug) => retiredSlugs.contains(slug);
 
   static const renderReadySlugs = <String>{
+    'boston-terrier',
+    'hearth-cat',
     'midnight-masquerade',
     'pumpkin-court',
     'hallowed-hearth',

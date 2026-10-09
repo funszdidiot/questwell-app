@@ -11,7 +11,7 @@ import '../lib/widgets/questwell_pixel_art.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
-  testWidgets('Both candidates use the shared renderer with all three bodies', (
+  testWidgets('Both companions use the shared renderer with all three bodies', (
     tester,
   ) async {
     for (final slug in QuestwellPetMotion.names.keys) {
@@ -40,12 +40,20 @@ void main() {
       }
     }
   });
-  test('Candidate art does not activate shop or account capability', () {
+  test('Both companions are ready at the same standard familiar price', () {
     for (final slug in QuestwellPetMotion.names.keys) {
       expect(QuestwellFamiliarLayer.allNames, contains(slug));
-      expect(QuestwellFamiliarLayer.names, isNot(contains(slug)));
-      expect(QuestwellEquipmentPolicy.isReady(slug, 'familiar'), isFalse);
-      expect(marketReviewCatalog.any((item) => item['slug'] == slug), isFalse);
+      expect(QuestwellFamiliarLayer.names, contains(slug));
+      expect(QuestwellEquipmentPolicy.isReady(slug, 'familiar'), isTrue);
+      final item =
+          marketReviewCatalog.singleWhere((item) => item['slug'] == slug);
+      expect(item['price'], 180);
+      expect(item['rarity'], 'rare');
+      expect(item['premium'], isFalse);
+      expect(item['required_archetype'], isNull);
+      for (final body in ['female', 'male', 'neutral']) {
+        expect(QuestwellEquipmentPolicy.supportsBody(slug, body), isTrue);
+      }
     }
   });
 

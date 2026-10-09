@@ -8,6 +8,7 @@ class QuestwellFamiliarLayer extends StatelessWidget {
   const QuestwellFamiliarLayer({super.key, required this.slug});
   final String slug;
   static const names = <String, String>{
+    ...QuestwellPetMotion.names,
     'pumpkin-sprite': 'Pumpkin Sprite',
     'emerald-dragon': 'Emerald Dragon',
     'mushroom-familiar': 'Mushroom Familiar',
@@ -17,17 +18,15 @@ class QuestwellFamiliarLayer extends StatelessWidget {
     'signal-fox': 'Signal Fox',
     'moss-moth': 'Moss Moth',
   };
-  // Preview candidates stay separate from released Market familiars.
-  static const previewNames = QuestwellPetMotion.names;
-  static const allNames = {...names, ...previewNames};
-  static String asset(String slug) => previewNames.containsKey(slug)
+  static const allNames = names;
+  static String asset(String slug) => QuestwellPetMotion.names.containsKey(slug)
       ? QuestwellPetMotion.asset(slug)
       : 'assets/images/questwell_familiar_${slug}_v1.webp';
 
   @override
   Widget build(BuildContext context) {
     if (!allNames.containsKey(slug)) return const SizedBox.shrink();
-    final pet = previewNames.containsKey(slug);
+    final pet = QuestwellPetMotion.names.containsKey(slug);
     final hovering = slug == 'moss-moth';
     final dragon = slug == 'emerald-dragon';
     final pumpkin = slug == 'pumpkin-sprite';
