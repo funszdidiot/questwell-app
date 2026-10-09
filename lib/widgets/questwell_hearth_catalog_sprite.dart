@@ -1,3 +1,4 @@
+import 'questwell_hearth_assets.dart';
 import 'package:flutter/material.dart';
 import '../services/questwell_cosmetic_models.dart';
 
@@ -14,8 +15,7 @@ class QuestwellHearthCatalogSprite extends StatelessWidget {
   final QuestwellHearthRenderSpec spec;
 
   Widget _image() {
-    final quality =
-        spec.pixelated ? FilterQuality.none : FilterQuality.high;
+    final quality = spec.pixelated ? FilterQuality.none : FilterQuality.high;
     if (spec.assetSource == 'network') {
       return Image.network(
         spec.assetPath,
@@ -26,7 +26,7 @@ class QuestwellHearthCatalogSprite extends StatelessWidget {
       );
     }
     return Image.asset(
-      spec.assetPath,
+      QuestwellHearthAssets.resolve(spec.assetPath),
       fit: BoxFit.contain,
       filterQuality: quality,
       gaplessPlayback: true,
@@ -75,7 +75,7 @@ class QuestwellHearthFloorSprite extends StatelessWidget {
                     errorBuilder: (_, __, ___) => const SizedBox.shrink(),
                   )
                 : Image.asset(
-                    spec.assetPath,
+                    QuestwellHearthAssets.resolve(spec.assetPath),
                     fit: BoxFit.fill,
                     filterQuality: quality,
                     gaplessPlayback: true,

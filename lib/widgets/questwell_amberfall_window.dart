@@ -1,3 +1,4 @@
+import 'questwell_hearth_assets.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'questwell_window_geometry.dart';
@@ -73,7 +74,9 @@ class _AmberfallState extends State<QuestwellAmberfallWindow>
                 Positioned.fromRect(
                   rect: bounds,
                   child: RepaintBoundary(
-                    child: Image.asset(QuestwellAmberfallWindow.asset,
+                    child: Image.asset(
+                        QuestwellHearthAssets.resolve(
+                            QuestwellAmberfallWindow.asset),
                         fit: BoxFit.cover,
                         filterQuality: FilterQuality.none,
                         excludeFromSemantics: true),
