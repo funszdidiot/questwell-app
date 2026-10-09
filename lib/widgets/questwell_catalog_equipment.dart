@@ -146,16 +146,9 @@ class QuestwellRainyWindowOverlay extends CustomPainter {
   const QuestwellRainyWindowOverlay({this.phase = 0, this.hallowed = false});
   final double phase;
   final bool hallowed;
-  @override
-  void paint(Canvas canvas, Size size) {
-    final source = hallowed ? const Size(1536, 1024) : const Size(768, 768);
-    final scale =
-        math.max(size.width / source.width, size.height / source.height);
-    canvas.save();
-    canvas.clipRect(Offset.zero & size);
-    canvas.translate((size.width - source.width * scale) / 2,
-        (size.height - source.height * scale) * .52);
-    canvas.scale(scale);
+
+  /// Authored glass only; shared by rain and preview-only autumn effects.
+  static Path panesFor(bool hallowed) {
     final panes = Path();
     void pane(List<Offset> points) {
       panes.addPolygon(points, true);
@@ -250,7 +243,20 @@ class QuestwellRainyWindowOverlay extends CustomPainter {
         Offset(759, 373)
       ]);
     }
-    canvas.clipPath(panes);
+    return panes;
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final source = hallowed ? const Size(1536, 1024) : const Size(768, 768);
+    final scale =
+        math.max(size.width / source.width, size.height / source.height);
+    canvas.save();
+    canvas.clipRect(Offset.zero & size);
+    canvas.translate((size.width - source.width * scale) / 2,
+        (size.height - source.height * scale) * .52);
+    canvas.scale(scale);
+    canvas.clipPath(panesFor(hallowed));
     final p = Paint()..color = const Color(0x99435762);
     canvas.drawRect(
         hallowed
