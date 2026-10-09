@@ -1,5 +1,15 @@
 # Questwell Production Dashboard
 
+## Room preview and exit — October 9, 2026
+
+**QA; publication approved.** Immediate room-selection
+preview, explicit Close/X, and Save and close pass 20 targeted tests and independent
+code/phone-render review; all 1,024 client tests pass. The quality gate reports
+no new findings. Tanya explicitly approved publishing the branch and opening its PR;
+remote CI is the next gate.
+Development delivery and physical-device acceptance remain pending.
+Evidence: `../qa/HEARTH_PREVIEW_EXIT.md`.
+
 ## Boston Terrier and Hearth Cat — October 9, 2026
 
 **QA / release authorized.** Tanya directed “Price them and push them” on
