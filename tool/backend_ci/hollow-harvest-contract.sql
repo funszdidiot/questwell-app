@@ -54,7 +54,12 @@ begin
   select total_xp,coin_balance into xp_before,coins_before from public.users where id=owner_id;
   for step_id in select s.id from public.boss_steps s where s.boss_id=hollow_harvest_contract.boss_id loop
     perform public.complete_boss_step(step_id);
-    perform public.complete_boss_step(step_id);
+    begin
+      perform public.complete_boss_step(step_id);
+      raise exception 'Duplicate step accepted' using errcode='XX000';
+    exception when raise_exception then
+      if sqlerrm <> 'Boss step already completed' then raise; end if;
+    end;
   end loop;
   if not exists(select 1 from public.boss_battles where id=hollow_harvest_contract.boss_id and status='completed') then
     raise exception 'Saved Harvest battle cannot complete after close';
