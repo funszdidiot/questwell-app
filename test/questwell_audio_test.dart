@@ -127,7 +127,7 @@ void main() {
   });
 
   test(
-    'all four routes map correctly; auth and unknown routes stay silent',
+    'all app destinations map correctly; auth and unknown routes stay silent',
     () {
       expect(
         QuestwellSoundscape.forPath('/homePage'),
@@ -145,10 +145,37 @@ void main() {
         QuestwellSoundscape.forPath('/boss-battles'),
         QuestwellSoundscape.boss,
       );
+      expect(QuestwellSoundscape.forPath('/quest-board'),
+          QuestwellSoundscape.expeditionMusic);
+      for (final path in ['/adventurer', '/chronicle']) {
+        expect(
+            QuestwellSoundscape.forPath(path), QuestwellSoundscape.hearthMusic);
+      }
       expect(QuestwellSoundscape.forPath('/authPage'), isNull);
       expect(QuestwellSoundscape.forPath('/unknown'), isNull);
     },
   );
+
+  test('reading pages retain the Hearth track without fireplace ambience',
+      () async {
+    await audio.initialize();
+    audio.setScene(QuestwellSoundscape.hearth);
+    audio.update(
+        audio.preferences.copyWith(musicEnabled: true, ambienceEnabled: true));
+    await audio.settled;
+    audio.setScene(QuestwellSoundscape.forPath('/adventurer'));
+    await audio.settled;
+    audio.setScene(QuestwellSoundscape.forPath('/chronicle'));
+    await audio.settled;
+    expect(music.starts, 1);
+    expect(music.playing, isTrue);
+    expect(ambience.playing, isFalse);
+    audio.setScene(QuestwellSoundscape.forPath('/quest-board'));
+    await audio.settled;
+    expect(music.loads.last, 'audios/expedition_v1.mp3');
+    expect(music.playing, isTrue);
+    expect(ambience.playing, isFalse);
+  });
 
   test('same scene rebuild cannot reload or restart the track', () async {
     await audio.initialize();

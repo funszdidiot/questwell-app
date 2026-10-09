@@ -12,14 +12,16 @@ activation requires a dedicated 24-hour deployment credential; existing scoped
 collection secrets are not reused. No live purchase or delivery claim.
 Evidence: `../qa/HOUSEHOLD_FAMILIARS_RELEASE.md`.
 
-## Four-space beta soundtrack — October 9, 2026
+## Approved beta soundtrack — October 9, 2026
 
-**QA.** Four music and two ambience candidates are published in PR #111.
-Tanya authorized feature publication and requested independent on/off and volume
-controls in Settings. Hosted resolution produced the reviewed dependency lock;
-initial run passed 12 checks and exposed a large-text test scroll issue, corrected
-with a track-restart regression fix. Full CI and delivered beta verification are
-pending. Physical iPhone and listening acceptance remain separate.
+**DEV DEPLOYED / founder approved.** Four music and two ambience tracks delivered
+at `0d575d0`, PR #111, Preview `37972845687`. All required CI passed; live browser
+controls, saved preferences and six delivered hashes verified. Tanya: “I love
+them.” Physical iPhone acceptance remains separate.
+
+**QA follow-up:** Tanya reported silent Quests, Adventurer and Chronicle pages.
+Add Quiet Trail to Quests and Hearthlight to Adventurer/Chronicle, preserving
+room-only ambience and saved controls. Follow-up CI/deployment pending.
 Evidence: `../qa/BETA_AUDIO.md`.
 
 ## Hollow Harvest seasonal selection — October 8, 2026

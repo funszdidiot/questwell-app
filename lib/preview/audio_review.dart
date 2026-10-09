@@ -31,12 +31,20 @@ class QuestwellAudioReview extends StatelessWidget {
                             spacing: 8,
                             runSpacing: 8,
                             children: [
-                              for (final scene in QuestwellSoundscape.values)
+                              for (final scene in const [
+                                QuestwellSoundscape.hearth,
+                                QuestwellSoundscape.market,
+                                QuestwellSoundscape.expedition,
+                                QuestwellSoundscape.boss,
+                              ])
                                 ChoiceChip(
                                   label: Text(switch (scene) {
-                                    QuestwellSoundscape.hearth => 'Hearth',
+                                    QuestwellSoundscape.hearth ||
+                                    QuestwellSoundscape.hearthMusic =>
+                                      'Hearth',
                                     QuestwellSoundscape.market => 'Marketplace',
-                                    QuestwellSoundscape.expedition =>
+                                    QuestwellSoundscape.expedition ||
+                                    QuestwellSoundscape.expeditionMusic =>
                                       'Expedition',
                                     QuestwellSoundscape.boss => 'Boss Battles',
                                   }),

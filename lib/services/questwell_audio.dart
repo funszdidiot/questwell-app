@@ -6,7 +6,9 @@ enum QuestwellSoundscape {
   hearth('Hearthlight', 'hearth_v1.mp3', 'embers_v1.mp3'),
   market('Little Wonders Market', 'marketplace_v1.mp3', null),
   expedition('Quiet Trail', 'expedition_v1.mp3', 'woodland_v1.mp3'),
-  boss('A Little Courage', 'boss_v1.mp3', null);
+  boss('A Little Courage', 'boss_v1.mp3', null),
+  hearthMusic('Hearthlight', 'hearth_v1.mp3', null),
+  expeditionMusic('Quiet Trail', 'expedition_v1.mp3', null);
 
   const QuestwellSoundscape(this.title, this.music, this.ambience);
   final String title, music;
@@ -14,6 +16,8 @@ enum QuestwellSoundscape {
 
   static QuestwellSoundscape? forPath(String path) => switch (path) {
         '/homePage' || '/account' => hearth,
+        '/adventurer' || '/chronicle' => hearthMusic,
+        '/quest-board' => expeditionMusic,
         '/market' => market,
         '/expedition' => expedition,
         '/boss-battles' => boss,

@@ -1,6 +1,6 @@
 # Beta audio — October 9, 2026
 
-Status: QA — PR #111; hosted checks in progress.
+Status: DEV DEPLOYED at `0d575d0` (PR #111); missing-page follow-up in QA.
 Tanya requested all four soundscapes now for beta feedback.
 Development implementation is authorized; production promotion is excluded.
 
@@ -8,7 +8,8 @@ Development implementation is authorized; production promotion is excluded.
 
 - Hearth: Hearthlight, plus separately controlled fireplace ambience.
 - Market: Little Wonders Market. Expedition: Quiet Trail, plus woodland ambience.
-- Boss Battles: A Little Courage. Other destinations are quiet; Account uses
+- Boss Battles: A Little Courage. Quests uses Quiet Trail; Adventurer and Chronicle use Hearthlight, without
+  room ambience on those three pages. Account uses
   Hearth for auditioning controls. Auth and unknown routes are always quiet.
 - Music and ambience start disabled, with independent volume and enable settings.
   Preferences are local to this installation, not a cloud/account promise.
@@ -82,3 +83,19 @@ silence. No backend rollback or data deletion is needed.
 - Installed FFmpeg help for loudness normalization and audio encoding.
 
 - Published `audioplayers_web-5.3.0` source verified GainNode volume and context reuse.
+
+## Founder acceptance and missing-page follow-up — October 9
+
+Tanya approved all four themes and both ambience tracks with “I love them.”
+Initial delivery passed 1,033 Flutter tests, 412 Chrome tests, native builds and
+backend gates. Preview run `37972845687` deployed `0d575d0`; served revision and
+all six asset hashes matched. Live browser controls, four selections, independent
+volumes and persisted preferences passed. Physical iPhone acceptance remains
+separate from musical approval.
+
+Tanya then reported silence on Quests, Adventurer and Chronicle. These routes
+were omitted from the first four-space mapping. The follow-up adds Quiet Trail
+to Quests and Hearthlight to Adventurer/Chronicle. Room ambience stays restricted
+to Hearth and Expedition. A regression checks continuous music between the two
+reading pages, no extra music start, and silence of the ambience channel there.
+Follow-up CI and deployment are pending; no audio assets are changed.
