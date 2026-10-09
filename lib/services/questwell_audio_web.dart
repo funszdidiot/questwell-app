@@ -1,8 +1,22 @@
 import 'dart:async';
 import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 import 'package:flutter/services.dart';
 import 'package:web/web.dart' as web;
 import 'questwell_audio.dart';
+
+@JS('navigator.audioSession')
+external JSObject? get _browserAudioSession;
+
+void _useMediaPlayback() {
+  // Safari 17+: selected music uses media volume, not the ringer switch.
+  // Browsers without AudioSession retain their normal Web Audio behavior.
+  try {
+    _browserAudioSession?.setProperty('type'.toJS, 'playback'.toJS);
+  } catch (_) {
+    // An optional browser API must never prevent playback elsewhere.
+  }
+}
 
 QuestwellAudioChannel createQuestwellAudioChannel() =>
     QuestwellWebAudioChannel();
@@ -22,6 +36,7 @@ class QuestwellWebAudioChannel
   @override
   void unlock() {
     if (_closed) return;
+    _useMediaPlayback();
     final context = _context ??= web.AudioContext();
     if (_gain == null) {
       _gain = context.createGain();
@@ -65,6 +80,7 @@ class QuestwellWebAudioChannel
     final context = _context;
     final buffer = _buffer;
     if (_closed || context == null || buffer == null) return;
+    _useMediaPlayback();
     if (context.state != 'running') {
       await context.resume().toDart.timeout(const Duration(seconds: 3));
     }
@@ -88,6 +104,7 @@ class QuestwellWebAudioChannel
     _source = null;
     source.stop();
     source.disconnect();
+    await _context!.suspend().toDart.timeout(const Duration(seconds: 3));
   }
 
   @override

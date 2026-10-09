@@ -13,6 +13,10 @@ The web adapter now unlocks a Web Audio context synchronously inside the gesture
 before loading/decoding the approved MP3. This avoids losing Safari activation
 across the plugin's asynchronous load. Looped buffers retain position on pause;
 GainNodes retain independent volumes. Native playback stays on audioplayers.
+Safari's optional AudioSession API selects media playback for enabled music,
+addressing the Silent Mode icon in the report. Paused sources suspend their
+context. WebKit documents this behavior and remedy in bug 237322, comment 6:
+https://bugs.webkit.org/show_bug.cgi?id=237322#c6
 No audio assets or account data changed. Tests cover root-session restoration,
 menu continuity, push/pop navigation, logout silence, first-tap activation,
 disabled/background silence and existing playback races. Hosted CI and beta
