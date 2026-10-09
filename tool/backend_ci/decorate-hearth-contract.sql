@@ -3,7 +3,7 @@ do $test$
 declare
   owner_id uuid := gen_random_uuid(); other_id uuid := gen_random_uuid();
   furniture uuid := gen_random_uuid(); chair uuid := gen_random_uuid(); setting uuid := gen_random_uuid();
-  relic uuid := gen_random_uuid(); outfit uuid := gen_random_uuid();
+  relic uuid := gen_random_uuid(); outfit uuid := gen_random_uuid(); shelf uuid := gen_random_uuid();
   state jsonb; original jsonb; target jsonb; saved jsonb;
 begin
   insert into auth.users(id,email) values(owner_id,'decorator-a@example.test'),(other_id,'decorator-b@example.test');
@@ -12,10 +12,14 @@ begin
       (chair,'decorator-fixture-chair','Chair','room','common','fixture',0,'seating'),
       (setting,'decorator-fixture-room','Room','room','common','fixture',0,'hearth_setting'),
       (relic,'decorator-fixture-relic','Relic','room','common','fixture',0,'relic_display'),
-      (outfit,'decorator-fixture-outfit','Outfit','chest','common','fixture',0,null);
+      (outfit,'decorator-fixture-outfit','Outfit','chest','common','fixture',0,null),
+      (shelf,'walnut-bookshelf','Fixture bookcase','room','common','fixture',0,'large_furniture');
+  -- The seasonal fixture intentionally omits legacy bookshelf dependencies.
+  insert into public.hearth_profile_slots(profile_key,slot_key,placement_label,sort_order,required_equipped_slug)
+    values('relic_display','bookshelf_top','On the bookcase',50,'walnut-bookshelf');
   insert into public.user_cosmetics(user_id,cosmetic_id,source,equipped)
     values(owner_id,furniture,'shop',false),(owner_id,chair,'shop',false),(owner_id,setting,'shop',false),
-      (owner_id,relic,'shop',false),(owner_id,outfit,'shop',false);
+      (owner_id,relic,'shop',false),(owner_id,outfit,'shop',false),(owner_id,shelf,'shop',false);
   perform set_config('questwell.test_owner',owner_id::text,true);
   perform set_config('request.jwt.claim.sub',owner_id::text,true);
   state := public.read_hearth_layouts();
@@ -66,6 +70,11 @@ begin
     perform public.save_hearth_layout(original,3,jsonb_build_object('right',outfit::text));
     raise exception 'outfit placed';
   exception when others then if sqlerrm <> 'decoration not owned' then raise; end if; end;
+  begin
+    state := public.save_hearth_layout(original,3,jsonb_build_object('bookshelf_top',relic::text,'right',shelf::text));
+    if state->'current'->>'bookshelf_top' <> relic::text then raise exception 'supported relic not placed'; end if;
+    raise exception 'rollback supported layout fixture';
+  exception when others then if sqlerrm <> 'rollback supported layout fixture' then raise; end if; end;
   update public.cosmetics set required_archetype='guardian' where id=furniture;
   begin
     perform public.save_hearth_layout(original,3,jsonb_build_object('left',furniture::text));
