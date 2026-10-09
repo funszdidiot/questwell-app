@@ -23,4 +23,9 @@ are pointer-transparent and confined to their authored layer.
 
 Validation: painter motion/quiet windows/face clearance/static-pose tests, existing
 familiar lifecycle/all-body tests, and real-renderer CI captures in `magic-review`.
-CI, exported image inspection and delivered runtime verification are pending.
+The initial head 1f28d7a passed all seven workflows. Dark enlarged composites
+were inspected for all three bodies and Tanya approved the delivered preview
+on October 9. Expanded captures cover light/dark at native/enlarged scale.
+Combined music-base CI and expanded image inspection remain pending; no live
+runtime delivery is claimed. Proposed avatar effect price is 150 coins each,
+matching Victory Sparkle; this proposal is not catalog activation approval.

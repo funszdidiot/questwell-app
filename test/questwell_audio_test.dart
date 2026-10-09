@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_momentum/services/questwell_audio.dart';
 import 'package:project_momentum/services/questwell_audio_player.dart';
@@ -23,10 +24,14 @@ class MemoryStore implements QuestwellAudioStore {
   }
 }
 
-class RecordingChannel implements QuestwellAudioChannel {
+class RecordingChannel
+    implements QuestwellAudioChannel, QuestwellGestureAudioChannel {
   final loads = <String>[];
   bool playing = false, closed = false, failLoad = false;
   int starts = 0;
+  int unlocks = 0;
+  @override
+  void unlock() => unlocks++;
   double level = 0;
   Completer<void>? loading;
   @override
@@ -111,7 +116,8 @@ void main() {
     expect(ambience.loads, isEmpty);
   });
 
-  test('saved preference needs an explicit gesture each session', () async {
+  test('saved preference resumes on a normal interaction without changing it',
+      () async {
     store.value = const QuestwellAudioPreferences(
       musicEnabled: true,
       musicVolume: .2,
@@ -120,10 +126,97 @@ void main() {
     audio.setScene(QuestwellSoundscape.hearth);
     await audio.settled;
     expect(music.playing, isFalse);
-    audio.activate();
+    audio.activateOnInteraction();
+    expect(music.unlocks, 1);
+    expect(ambience.unlocks, 0);
     await audio.settled;
     expect(music.playing, isTrue);
     expect(music.level, closeTo(.2, .001));
+    audio.activateOnInteraction();
+    await audio.settled;
+    expect(music.starts, 1);
+    expect(store.value.musicVolume, .2);
+  });
+
+  test('ordinary taps never enable disabled sound or play in background',
+      () async {
+    audio.activateOnInteraction();
+    await audio.initialize();
+    audio.setScene(QuestwellSoundscape.hearth);
+    audio.activateOnInteraction();
+    await audio.settled;
+    expect(music.unlocks, 0);
+    expect(music.loads, isEmpty);
+    audio.preferences = const QuestwellAudioPreferences(musicEnabled: true);
+    audio.setForeground(false);
+    audio.activateOnInteraction();
+    await audio.settled;
+    expect(music.unlocks, 0);
+  });
+
+  testWidgets('root auth restoration and Sound menu retain the Hearth scene',
+      (tester) async {
+    // Construct queued futures inside the widget test's fake async zone.
+    final audio = QuestwellAudio(
+      store: store,
+      music: music,
+      ambience: ambience,
+      fadeStep: Duration.zero,
+    );
+    store.value = const QuestwellAudioPreferences(musicEnabled: true);
+    final signedIn = ValueNotifier(false);
+    final router = GoRouter(
+      initialLocation: '/',
+      refreshListenable: signedIn,
+      routes: [
+        GoRoute(
+            path: '/',
+            builder: (context, _) => Scaffold(
+                  body: TextButton(
+                    onPressed: () =>
+                        QuestwellAudioControls.open(context, audio),
+                    child: const Text('Open sound'),
+                  ),
+                )),
+        GoRoute(path: '/market', builder: (_, __) => const Scaffold()),
+      ],
+    );
+    await tester.pumpWidget(MaterialApp.router(
+      routerConfig: router,
+      builder: (_, child) => QuestwellAudioHost(
+        router: router,
+        audio: audio,
+        sessionChanges: signedIn,
+        isHomeRoot: () => signedIn.value,
+        child: child!,
+      ),
+    ));
+    await tester.pumpAndSettle();
+    expect(audio.scene, isNull);
+    signedIn.value = true;
+    await tester.pumpAndSettle();
+    expect(audio.scene, QuestwellSoundscape.hearth);
+    expect(music.playing, isFalse);
+    await tester.tap(find.text('Open sound'));
+    await tester.pumpAndSettle();
+    expect(find.text('Here: Hearthlight'), findsOneWidget);
+    expect(music.playing, isTrue);
+    expect(music.starts, 1);
+    router.pop();
+    await tester.pumpAndSettle();
+    unawaited(router.push('/market'));
+    await tester.pumpAndSettle();
+    expect(audio.scene, QuestwellSoundscape.market);
+    router.pop();
+    await tester.pumpAndSettle();
+    expect(audio.scene, QuestwellSoundscape.hearth);
+    signedIn.value = false;
+    await tester.pumpAndSettle();
+    expect(audio.scene, isNull);
+    expect(music.playing, isFalse);
+    await tester.pumpWidget(const SizedBox());
+    router.dispose();
+    signedIn.dispose();
   });
 
   test(
