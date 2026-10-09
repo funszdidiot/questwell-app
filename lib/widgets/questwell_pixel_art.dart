@@ -1329,10 +1329,13 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       ),
                 if (equippedSlugs['room:window'] == 'amberfall-window' &&
                     (roomSetting == QuestwellHearthSetting.original ||
-                        roomSetting == QuestwellHearthSetting.hallowedHearth))
+                        roomSetting == QuestwellHearthSetting.hallowedHearth ||
+                        roomSetting == QuestwellHearthSetting.enchantedLibrary))
                   Positioned.fill(
                       key: const ValueKey('hearth-amberfall-window-bounds'),
                       child: QuestwellAmberfallWindow(
+                          enchantedLibrary: roomSetting ==
+                              QuestwellHearthSetting.enchantedLibrary,
                           hallowed: roomSetting ==
                               QuestwellHearthSetting.hallowedHearth)),
                 if (equippedSlugs['room:window'] == 'rainy-window')

@@ -5,8 +5,10 @@ import 'questwell_catalog_equipment.dart';
 
 /// Approved autumn scenery and leaves, clipped to the authored window glass.
 class QuestwellAmberfallWindow extends StatefulWidget {
-  const QuestwellAmberfallWindow({super.key, this.hallowed = false});
+  const QuestwellAmberfallWindow(
+      {super.key, this.hallowed = false, this.enchantedLibrary = false});
   final bool hallowed;
+  final bool enchantedLibrary;
   static const asset =
       'assets/images/questwell/hearth/amberfall_scenery_candidate_v1.png';
 
@@ -63,7 +65,9 @@ class _AmberfallState extends State<QuestwellAmberfallWindow>
         child: RepaintBoundary(
           child: LayoutBuilder(builder: (context, constraints) {
             final size = constraints.biggest;
-            final clipper = AmberfallGlassClipper(hallowed: widget.hallowed);
+            final clipper = AmberfallGlassClipper(
+                hallowed: widget.hallowed,
+                enchantedLibrary: widget.enchantedLibrary);
             final bounds = clipper.getClip(size).getBounds();
             return ClipPath(
               clipper: clipper,
@@ -79,8 +83,9 @@ class _AmberfallState extends State<QuestwellAmberfallWindow>
                 ),
                 RepaintBoundary(
                   child: CustomPaint(
-                    painter:
-                        AmberfallLeafPainter(_wind, hallowed: widget.hallowed),
+                    painter: AmberfallLeafPainter(_wind,
+                        hallowed: widget.hallowed,
+                        enchantedLibrary: widget.enchantedLibrary),
                   ),
                 ),
               ]),
@@ -91,17 +96,25 @@ class _AmberfallState extends State<QuestwellAmberfallWindow>
 }
 
 class AmberfallGlassClipper extends CustomClipper<Path> {
-  const AmberfallGlassClipper({this.hallowed = false});
+  const AmberfallGlassClipper(
+      {this.hallowed = false, this.enchantedLibrary = false});
   final bool hallowed;
+  final bool enchantedLibrary;
 
   @override
   Path getClip(Size size) {
-    final source = hallowed ? const Size(1536, 1024) : const Size(768, 768);
+    final source = enchantedLibrary
+        ? const Size(1254, 1254)
+        : hallowed
+            ? const Size(1536, 1024)
+            : const Size(768, 768);
     final scale =
         math.max(size.width / source.width, size.height / source.height);
     final dx = (size.width - source.width * scale) / 2;
     final dy = (size.height - source.height * scale) * .52;
-    return QuestwellRainyWindowOverlay.panesFor(hallowed).transform(
+    return amberfallGlass(
+            hallowed: hallowed, enchantedLibrary: enchantedLibrary)
+        .transform(
       Float64List.fromList([
         scale,
         0,
@@ -125,15 +138,18 @@ class AmberfallGlassClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(covariant AmberfallGlassClipper oldClipper) =>
-      oldClipper.hallowed != hallowed;
+      oldClipper.hallowed != hallowed ||
+      oldClipper.enchantedLibrary != enchantedLibrary;
 }
 
 /// Only the leaf layer repaints. The scene and window plate stay cached.
 class AmberfallLeafPainter extends CustomPainter {
-  AmberfallLeafPainter(this.phase, {this.hallowed = false})
+  AmberfallLeafPainter(this.phase,
+      {this.hallowed = false, this.enchantedLibrary = false})
       : super(repaint: phase);
   final Animation<double> phase;
   final bool hallowed;
+  final bool enchantedLibrary;
   static const _leaf = ['..x..', 'x.xxx', 'xxxxx', '.xxx.', '..x..', '..x..'];
   static const _colors = [
     Color(0xFFFFCA60),
@@ -143,7 +159,11 @@ class AmberfallLeafPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final source = hallowed ? const Size(1536, 1024) : const Size(768, 768);
+    final source = enchantedLibrary
+        ? const Size(1254, 1254)
+        : hallowed
+            ? const Size(1536, 1024)
+            : const Size(768, 768);
     final scale =
         math.max(size.width / source.width, size.height / source.height);
     canvas.save();
@@ -151,7 +171,8 @@ class AmberfallLeafPainter extends CustomPainter {
     canvas.translate((size.width - source.width * scale) / 2,
         (size.height - source.height * scale) * .52);
     canvas.scale(scale);
-    final glass = QuestwellRainyWindowOverlay.panesFor(hallowed);
+    final glass =
+        amberfallGlass(hallowed: hallowed, enchantedLibrary: enchantedLibrary);
     canvas.clipPath(glass);
     final bounds = glass.getBounds();
     final paint = Paint()..isAntiAlias = false;
@@ -165,7 +186,7 @@ class AmberfallLeafPainter extends CustomPainter {
           bounds.width * ((i * .381966) % 1) +
           math.sin(angle) * (hallowed ? 12 : 5);
       final y = bounds.top - 24 + t * (bounds.height + 48);
-      final pixel = near ? 2.5 : 1.5;
+      final pixel = (near ? 2.5 : 1.5) * (enchantedLibrary ? 1254 / 768 : 1);
       canvas.save();
       canvas.translate(x, y);
       canvas.rotate(math.sin(angle) * .7);
@@ -187,5 +208,66 @@ class AmberfallLeafPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant AmberfallLeafPainter oldDelegate) =>
-      oldDelegate.phase != phase || oldDelegate.hallowed != hallowed;
+      oldDelegate.phase != phase ||
+      oldDelegate.hallowed != hallowed ||
+      oldDelegate.enchantedLibrary != enchantedLibrary;
+}
+
+/// Glass traced in the Enchanted Library's own 1254px source canvas.
+/// Keep the room's curved frame and all mullions uncovered.
+Path amberfallGlass({bool hallowed = false, bool enchantedLibrary = false}) {
+  if (!enchantedLibrary) return QuestwellRainyWindowOverlay.panesFor(hallowed);
+  final panes = Path();
+  void pane(List<Offset> points) => panes.addPolygon(points, true);
+  pane(const [
+    Offset(1183, 252),
+    Offset(1186, 210),
+    Offset(1195, 176),
+    Offset(1209, 147),
+    Offset(1223, 130),
+    Offset(1223, 240)
+  ]);
+  pane(const [
+    Offset(1238, 118),
+    Offset(1254, 105),
+    Offset(1254, 230),
+    Offset(1238, 235)
+  ]);
+  pane(const [
+    Offset(1183, 273),
+    Offset(1223, 258),
+    Offset(1223, 362),
+    Offset(1183, 369)
+  ]);
+  pane(const [
+    Offset(1238, 253),
+    Offset(1254, 248),
+    Offset(1254, 358),
+    Offset(1238, 360)
+  ]);
+  pane(const [
+    Offset(1183, 387),
+    Offset(1223, 380),
+    Offset(1223, 484),
+    Offset(1183, 485)
+  ]);
+  pane(const [
+    Offset(1238, 378),
+    Offset(1254, 375),
+    Offset(1254, 483),
+    Offset(1238, 484)
+  ]);
+  pane(const [
+    Offset(1183, 501),
+    Offset(1223, 501),
+    Offset(1223, 605),
+    Offset(1183, 602)
+  ]);
+  pane(const [
+    Offset(1238, 501),
+    Offset(1254, 501),
+    Offset(1254, 608),
+    Offset(1238, 607)
+  ]);
+  return panes;
 }
