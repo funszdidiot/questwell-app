@@ -26,13 +26,16 @@ class _HollowHarvestReviewState extends State<HollowHarvestReview> {
                     const Text(
                         'Seasonal encounter preview · No account changes'),
                     const SizedBox(height: 12),
-                    QuestwellBossEncounter(
-                        key: ValueKey(replay),
-                        encounterId: 'harvest-preview-$replay',
-                        bossType: 'hollow_harvest',
-                        persistEntrance: false,
-                        progress: steps / 3,
-                        defeated: steps == 3),
+                    Center(
+                        child: SizedBox(
+                            width: 600,
+                            child: QuestwellBossEncounter(
+                                key: ValueKey(replay),
+                                encounterId: 'harvest-preview-$replay',
+                                bossType: 'hollow_harvest',
+                                persistEntrance: false,
+                                progress: steps / 3,
+                                defeated: steps == 3))),
                     Wrap(spacing: 12, children: [
                       FilledButton(
                           onPressed:

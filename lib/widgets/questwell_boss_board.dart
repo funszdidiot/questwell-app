@@ -104,8 +104,12 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
     if (!mounted || _selected != id || !_scroll.hasClients) return false;
     // A tall arrival at enlarged text can keep the encounter outside the lazy
     // list's cache. Walk toward it until its real anchor has been laid out.
-    _scroll.jumpTo(0);
-    await WidgetsBinding.instance.endOfFrame;
+    // Normal attacks already have a laid-out encounter. Resetting the scroll
+    // here flashes the arrival header before every hit.
+    if (_encounterAnchor.currentContext == null) {
+      _scroll.jumpTo(0);
+      await WidgetsBinding.instance.endOfFrame;
+    }
     while (mounted &&
         _selected == id &&
         _scroll.hasClients &&
