@@ -1,6 +1,6 @@
 # Halloween complete outfits — v1
 
-Status: QA. Shared runtime integration prepared; activation waits for client delivery and checks.
+Status: DEV DEPLOYED / catalog active. Delivery evidence: https://github.com/funszdidiot/questwell-app/pull/94. Revision d74492a2997a4dd3e41c084fe450a694920d6f06, Preview 37824576161 and Backend 37824575215 passed. Exact catalog payload applied as halloween_costumes_2026 / 20261008184056; two active 180-coin rows verified. All 34 served asset hashes match and the live six-fit review passed. Prior 53 migration rows, other catalog and equipment functions remain unchanged.
 
 Tanya approved the two design studies and requested integrated blouses and masks, then authorized production fitting and development integration. Each costume is one outfit, intended for all classes and female, neutral and male bodies. Tanya subsequently directed pricing and app rollout under the same Halloween collection rules. Both rare, nonpremium outfits cost 180 coins, matching the existing Midnight Harvest Coat, and join midnight-harvest through November 8 Chicago with permanent ownership. Activation is authorized subject to required checks.
 
@@ -18,6 +18,6 @@ Independent reviewer `/root/halloween_review` passed all six native and enlarged
 
 Dedicated route: `?review=halloween-costumes`. Supports complete-outfit and dark-backdrop toggles for all six fits. The universal gallery deliberately rejects layered robes; the release manifest therefore omits single-overlay wearable metadata. `exports.json` is the layered asset preflight record.
 
-Tests cover all 34 runtime assets decoding at 240×320 and preservation of all six bodies through equip/unequip and backdrop changes at 320px and 1200px. CI execution and served-render verification are pending. No local Flutter setup was attempted after the earlier automatic approval rejection. A pre-existing standalone Dart formatter was used.
+Tests cover all 34 runtime assets decoding at 240×320 and preservation of all six bodies through equip/unequip and backdrop changes at 320px and 1200px. CI and served-render verification passed. No local Flutter setup was attempted after the earlier automatic approval rejection. A pre-existing standalone Dart formatter was used.
 
-Shared runtime and renderer capability support both chest outfits. The exact catalog-only activate.sql adds two rows without altering existing catalog, schema or ownership. It copies the Hallowed Hearth start/end, stops on window drift/closure, and validates idempotent retries. CI tests all class/body purchase/equip/unequip/restoration and post-cutoff owned retries. Live execution and served verification remain pending.
+Shared runtime and renderer capability support both chest outfits. The exact catalog-only activate.sql adds two rows without altering existing catalog, schema or ownership. It copies the Hallowed Hearth start/end, stops on window drift/closure, and validates idempotent retries. CI tests all class/body purchase/equip/unequip/restoration and post-cutoff owned retries. Live execution and served verification passed; browser was signed out, so no signed-in purchase or physical-device acceptance is claimed.
