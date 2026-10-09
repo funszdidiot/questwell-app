@@ -61,6 +61,12 @@ silence. No backend rollback or data deletion is needed.
   a cloud metadata endpoint with credential risk. Hosted CI is used instead.
 - Tanya explicitly authorized feature publication and requested Settings toggle
   and volume. PR #111 supersedes the earlier publication authorization blocker.
+- At `9d28392`, hosted lock enforcement (including an empty package cache),
+  analyzer/formatting, critical coverage and unsigned iOS release compilation
+  passed. A widget-test cleanup hang exposed a fake-async zone mismatch; its
+  controller now lives inside the widget test with a bounded timeout.
+- Audio Chrome checks now run in the permanent Flutter workflow; the temporary
+  dependency-resolution candidate workflow has been removed.
 - Full required CI, delivered runtime and physical-device checks remain pending.
   Initial checks alone do not establish a build or listening pass.
 - Remaining beta acceptance: Safari/iPhone first-start and interruptions, own-music
