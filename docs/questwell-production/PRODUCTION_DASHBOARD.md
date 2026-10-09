@@ -13,14 +13,16 @@ No user battle or inventory is created by rollout. The source release is
 independent review, remote CI, scoped database activation and client deployment
 must pass before calling seasonal selection live. No historical migration replay.
 
-## Autumn Hearth — October 8, 2026
+## Autumn Hearth — October 9, 2026
 
-**QA / local development preview.** Amberfall leaves plus Maple Hearth Rug,
-Mooncap Grove, Harvest Lanterns and Sage's Rest use the existing room/slot
-geometry. Cushion halo removed. 24 relevant tests pass; eight room/width captures
-generated. No backend or inventory changes, prices or release activation.
-Route after deployment: `?review=autumn-hearth`. Standard-room narrow-window crop
-remains a documented limitation. Hosted/device verification pending.
+**DEV DEPLOYED preview / usual-room correction in QA.** PR #99 deployed at
+`644ac8f`; served revision, five artwork hashes and leaf pause/resume verified.
+Tanya corrected the default: use the usual Hearth, not the Halloween room.
+Both defaults now select the usual room; the square review viewport shows its
+whole authored layout without changing room geometry or furniture positions.
+Halloween is explicit opt-in. Regression coverage added; correction CI and
+hosted verification pending. No catalog, pricing or inventory changes.
+Route: `?review=autumn-hearth`. Physical-device acceptance remains pending.
 Evidence: `../qa/AUTUMN_HEARTH.md`.
 
 ## Hollow Harvest entrance — October 8, 2026
