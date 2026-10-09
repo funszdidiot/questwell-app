@@ -49,12 +49,11 @@ void main() {
             find.byKey(const ValueKey('hearth-wall_right-art-bounds')));
         expect(leftArt.width, closeTo(rightArt.width, .01));
         expect(leftArt.height, closeTo(rightArt.height, .01));
-        expect(leftArt.center.dy, closeTo(center.center.dy, .01));
-        expect(rightArt.center.dy, closeTo(center.center.dy, .01));
+        expect(leftArt.center.dy, closeTo(rightArt.center.dy, .01));
         expect(center.left - leftArt.right,
             closeTo(rightArt.left - center.right, .01));
-        // The frame clears the visible head (the avatar canvas has top padding).
-        expect(center.bottom, lessThan(avatar.top + avatar.height * .15));
+        // Locked male silhouette starts at row 9 in the 320px avatar canvas.
+        expect(center.bottom, lessThan(avatar.top + avatar.height * 9 / 320));
         expect(find.byType(QuestwellClassEmblem), findsOneWidget);
         final emblem = tester.getRect(find.byType(QuestwellClassEmblem));
         expect(emblem.bottom, lessThan(frame.top));

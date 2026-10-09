@@ -142,7 +142,7 @@ class QuestwellHearthDecor {
           : slot == 'wall_right'
               ? 683
               : 568;
-      y = 160;
+      y = 118;
       width = center ? 138 : 58;
     } else {
       // The open back wall is shared by every Original Hearth surface variant.
@@ -155,11 +155,25 @@ class QuestwellHearthDecor {
       y = source.height * .23;
       width = source.width * (center ? .14 : .065);
     }
+    var frameCenter = origin + Offset(x, y) * scale;
+    var frameWidth = width * scale;
+    var frameHeight = frameWidth / (center ? 1.4 : .58);
+    if (!hallowed && center) {
+      // Tall views bring the avatar's head closer to the gallery. Raise only
+      // the landscape; keep the portraits readable beside the head. The
+      // earliest locked body silhouette begins at row 9 of the 320px canvas.
+      final avatarHeight =
+          math.min(scene.height * .76, scene.width * .62 * 4 / 3);
+      final headTop = scene.height * .88 - avatarHeight * (310 - 9) / 320;
+      final ceiling = headTop - 3;
+      final wallTop = math.max(3.0, origin.dy + source.height * .07 * scale);
+      frameHeight = math.min(frameHeight, math.max(1.0, ceiling - wallTop));
+      frameWidth = frameHeight * 1.4;
+      frameCenter = Offset(
+          frameCenter.dx, math.min(frameCenter.dy, ceiling - frameHeight / 2));
+    }
     return Rect.fromCenter(
-      center: origin + Offset(x, y) * scale,
-      width: width * scale,
-      height: width * scale / (center ? 1.4 : .58),
-    );
+        center: frameCenter, width: frameWidth, height: frameHeight);
   }
 
   static Positioned wallArtPositioned({
