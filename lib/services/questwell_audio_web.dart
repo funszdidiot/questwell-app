@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:js_interop';
-import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:web/web.dart' as web;
 import 'questwell_audio.dart';
@@ -36,6 +35,7 @@ class QuestwellWebAudioChannel
         .timeout(const Duration(seconds: 3))
         .catchError((Object _) {
       // resume() below checks state and surfaces a retry through the controls.
+      return null;
     });
   }
 
@@ -49,7 +49,7 @@ class QuestwellWebAudioChannel
     final bytes = Uint8List.fromList(data.buffer.asUint8List(
       data.offsetInBytes,
       data.lengthInBytes,
-    )).toJS.buffer;
+    )).buffer.toJS;
     final buffer = await context
         .decodeAudioData(bytes)
         .toDart
