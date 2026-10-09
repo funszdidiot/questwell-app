@@ -40,6 +40,12 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
     super.dispose();
   }
 
+  // Capability copy follows this client renderer; older clients retain their
+  // narrower server-provided compatibility description.
+  String description(QuestwellCosmetic item) => item.slug == 'amberfall-window'
+      ? 'Falling amber leaves beyond the glass. Fits the windows in every Hearth room.'
+      : item.description;
+
   bool affordable = false, owned = false, myClass = false;
   String get collectionLabel => collection == 'All'
       ? 'All collections'
@@ -243,7 +249,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                                   style: QuestwellTypography.body(
                                       color: muted, fontSize: 12)),
                               const SizedBox(height: 16),
-                              Text(item.description,
+                              Text(description(item),
                                   style: QuestwellTypography.body(
                                       color: cream, height: 1.5)),
                               const SizedBox(height: 12),
@@ -657,7 +663,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                   ]);
             })),
         const SizedBox(height: 10),
-        Text(item.description,
+        Text(description(item),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: QuestwellTypography.body(

@@ -408,3 +408,8 @@ remains pending. Evidence: `docs/qa/HEARTH_COMPOSITION.md`.
 ## Amberfall library visibility correction — 2026-10-09
 
 **QA** — Founder reported placed Amberfall invisible in Enchanted Library. Added the library glass registration to the shared Hearth/Market renderer; approved artwork, prices and ownership unchanged. Evidence and delivery follow-up: `docs/qa/AMBERFALL_LIBRARY_FIX.md`.
+
+
+## Amberfall all-room compatibility — 2026-10-09
+
+**QA** — All nine current rooms explicitly registered. Full-room visual exports and saved-loadout regression checks added. Approved artwork, ownership and pricing unchanged. `docs/qa/AMBERFALL_ALL_ROOMS.md`.
