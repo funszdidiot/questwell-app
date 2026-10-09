@@ -57,11 +57,13 @@ class AutumnHearthScene extends StatelessWidget {
       {super.key,
       required this.height,
       this.hallowed = false,
+      this.enchantedLibrary = false,
       this.avatar = true,
       this.decor = true,
       this.body = 'neutral'});
   final double height;
   final bool hallowed;
+  final bool enchantedLibrary;
   final bool avatar;
   final bool decor;
   final String body;
@@ -75,7 +77,11 @@ class AutumnHearthScene extends StatelessWidget {
             immersive: true,
             showAvatar: avatar,
             avatarBodyType: body,
-            setting: hallowed ? QuestwellHearthSetting.hallowedHearth : null,
+            setting: enchantedLibrary
+                ? QuestwellHearthSetting.enchantedLibrary
+                : hallowed
+                    ? QuestwellHearthSetting.hallowedHearth
+                    : null,
             equippedSlugs: decor
                 ? const {
                     'room:window': 'amberfall-window',
@@ -100,6 +106,7 @@ class AutumnHearthReviewApp extends StatefulWidget {
 
 class _AutumnReviewState extends State<AutumnHearthReviewApp> {
   bool _hallowed = false;
+  bool _enchantedLibrary = false;
   bool _avatar = true;
   bool _decor = true;
   bool _paused = false;
@@ -120,9 +127,19 @@ class _AutumnReviewState extends State<AutumnHearthReviewApp> {
                 'Approved Autumn Hearth artwork. Account-free visual review.'),
             Wrap(spacing: 8, children: [
               FilterChip(
+                  label: const Text('Enchanted Library'),
+                  selected: _enchantedLibrary,
+                  onSelected: (value) => setState(() {
+                        _enchantedLibrary = value;
+                        _hallowed = false;
+                      })),
+              FilterChip(
                   label: const Text('Halloween room (optional)'),
                   selected: _hallowed,
-                  onSelected: (value) => setState(() => _hallowed = value)),
+                  onSelected: (value) => setState(() {
+                        _hallowed = value;
+                        _enchantedLibrary = false;
+                      })),
               FilterChip(
                   label: const Text('Avatar'),
                   selected: _avatar,
@@ -154,6 +171,7 @@ class _AutumnReviewState extends State<AutumnHearthReviewApp> {
                                   ? 420
                                   : constraints.maxWidth / 1.5,
                           hallowed: _hallowed,
+                          enchantedLibrary: _enchantedLibrary,
                           avatar: _avatar,
                           decor: _decor,
                           body: _body,

@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../lib/widgets/questwell_amberfall_window.dart';
 
-Future<Uint8List> frame(double phase, Size size, bool hallowed) async {
+Future<Uint8List> frame(double phase, Size size, bool hallowed,
+    {bool enchantedLibrary = false}) async {
   final recorder = ui.PictureRecorder();
-  AmberfallLeafPainter(AlwaysStoppedAnimation(phase), hallowed: hallowed)
+  AmberfallLeafPainter(AlwaysStoppedAnimation(phase),
+          hallowed: hallowed, enchantedLibrary: enchantedLibrary)
       .paint(Canvas(recorder), size);
   final picture = recorder.endRecording();
   final image = await picture.toImage(size.width.toInt(), size.height.toInt());
@@ -20,13 +22,20 @@ Future<Uint8List> frame(double phase, Size size, bool hallowed) async {
 void main() {
   testWidgets('leaves move, loop exactly and stay inside existing glass',
       (tester) async {
-    for (final hallowed in [false, true]) {
+    for (final variant in [0, 1, 2]) {
+      final hallowed = variant == 1;
+      final enchantedLibrary = variant == 2;
       for (final size in [const Size(390, 420), const Size(960, 640)]) {
-        final a = await tester.runAsync(() => frame(0, size, hallowed));
-        final b = await tester.runAsync(() => frame(.31, size, hallowed));
-        final end = await tester.runAsync(() => frame(1, size, hallowed));
+        final a = await tester.runAsync(
+            () => frame(0, size, hallowed, enchantedLibrary: enchantedLibrary));
+        final b = await tester.runAsync(() =>
+            frame(.31, size, hallowed, enchantedLibrary: enchantedLibrary));
+        final end = await tester.runAsync(
+            () => frame(1, size, hallowed, enchantedLibrary: enchantedLibrary));
         expect(a, orderedEquals(end!));
-        final glass = AmberfallGlassClipper(hallowed: hallowed).getClip(size);
+        final glass = AmberfallGlassClipper(
+                hallowed: hallowed, enchantedLibrary: enchantedLibrary)
+            .getClip(size);
         var painted = 0;
         for (var y = 0; y < size.height.toInt(); y++) {
           for (var x = 0; x < size.width.toInt(); x++) {

@@ -403,3 +403,8 @@ remains pending. Evidence: `docs/qa/HEARTH_COMPOSITION.md`.
 ## Autumn Hearth catalog release — October 9
 
 **QA**: founder-approved artwork, five prices totaling 660 coins, runtime window integration and scoped forward catalog activation. Release evidence: `../qa/AUTUMN_HEARTH_RELEASE.md`. Existing art remains approved; account activation awaits verified client delivery and guarded deployment.
+
+
+## Amberfall library visibility correction — 2026-10-09
+
+**QA** — Founder reported placed Amberfall invisible in Enchanted Library. Added the library glass registration to the shared Hearth/Market renderer; approved artwork, prices and ownership unchanged. Evidence and delivery follow-up: `docs/qa/AMBERFALL_LIBRARY_FIX.md`.
