@@ -1,3 +1,4 @@
+import {exerciseDecorateHearthForward} from './decorate-hearth-forward.mjs';
 import {spawn, spawnSync} from 'node:child_process';
 import assert from 'node:assert/strict';
 import {copyFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync, realpathSync} from 'node:fs';
@@ -523,6 +524,7 @@ try {
   runHardeningPayload(resolve(source, '../../docs/releases/hollow-harvest-2026/activate.sql'));
   runHardeningPayload(join(source, 'hollow-harvest-contract.sql'));
   console.log('Harvest seasonal boundaries, regular boss gates, saved battles and fixed rewards passed.');
+  exerciseDecorateHearthForward({source, workdir, run, runPayload: runHardeningPayload});
   const decoratorFixture = join(workdir, 'decorate-hearth.sql');
   writeFileSync(decoratorFixture,
     readFileSync(resolve(source, '../../supabase/migrations/20261009044431_decorate_hearth_layouts.sql'), 'utf8') +

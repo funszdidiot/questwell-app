@@ -53,3 +53,25 @@ root migration replay/reset or reuse unrelated rollout credentials.
 
 Rollback: disable the feature flag; keep stored layouts and ownership intact.
 Do not drop saved user layouts as a routine rollback.
+
+## Concrete forward rollout — pending G3 approval
+
+The reviewed candidate is rendered offline by
+`node tool/deploy/render-decorate-hearth.mjs`. It pins the source and catalog
+query hashes and the metadata-only live snapshot in
+`tool/deploy/decorate-hearth-reviewed-state.json` (55 migration records; target
+`bdzcazkyypopbanbjnud`; new objects absent). It checks the whole prior schema and
+history, locks the relevant catalog/inventory tables, adds only the new objects,
+checks protected metadata and permissions, and refreshes the API schema cache.
+Drift, postcondition failure, timeout and repeated execution are rehearsed only
+in disposable CI. No live SQL has been applied and no credential was created.
+
+After scoped approval and a current verified backup, submit this exact rendered
+SQL once using the migration-recording API under `decorate_hearth_layouts_live`.
+Do not replay root migrations or repair history. If the outcome is unknown,
+inspect schema/history and reconcile the recorded payload before any retry.
+Verify the old 55 records remain byte-identical and exactly one new record stores
+the rendered payload. Verify authenticated read/save and restored arrangements
+on the development account, then enable `QUESTWELL_DECORATE_HEARTH` in the
+development build, run its gates and verify the delivered app. No production
+branch promotion is included. On any mismatch leave the feature disabled.
