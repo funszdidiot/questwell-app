@@ -70,14 +70,18 @@ class _AmberfallState extends State<QuestwellAmberfallWindow>
               child: Stack(fit: StackFit.expand, children: [
                 Positioned.fromRect(
                   rect: bounds,
-                  child: Image.asset(QuestwellAmberfallWindow.asset,
-                      fit: BoxFit.cover,
-                      filterQuality: FilterQuality.none,
-                      excludeFromSemantics: true),
+                  child: RepaintBoundary(
+                    child: Image.asset(QuestwellAmberfallWindow.asset,
+                        fit: BoxFit.cover,
+                        filterQuality: FilterQuality.none,
+                        excludeFromSemantics: true),
+                  ),
                 ),
-                CustomPaint(
-                  painter:
-                      AmberfallLeafPainter(_wind, hallowed: widget.hallowed),
+                RepaintBoundary(
+                  child: CustomPaint(
+                    painter:
+                        AmberfallLeafPainter(_wind, hallowed: widget.hallowed),
+                  ),
                 ),
               ]),
             );
