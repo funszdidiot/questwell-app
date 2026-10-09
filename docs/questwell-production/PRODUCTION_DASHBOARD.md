@@ -376,3 +376,11 @@ atomic persistence are under review; feature flag defaults off. Existing rooms
 remain unchanged. See `docs/qa/DECORATE_HEARTH.md`. No live data migration or
 delivered-device acceptance is claimed.
 
+
+### Decorate Hearth activation — October 9, 2026
+
+Tanya approved the scoped live database rollout. Migration `20261009051815`
+is verified with exact recorded payload, unchanged prior history and correct
+permissions. PR #102 passed independent review and all CI. The development web
+build is being enabled; staging/native remain gated. Status: **QA / DEV DEPLOYING**.
+Hosted signed-in and physical-device acceptance remain pending.

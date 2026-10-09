@@ -54,7 +54,7 @@ root migration replay/reset or reuse unrelated rollout credentials.
 Rollback: disable the feature flag; keep stored layouts and ownership intact.
 Do not drop saved user layouts as a routine rollback.
 
-## Concrete forward rollout — pending G3 approval
+## Prepared forward rollout — historical plan, approved below
 
 The reviewed candidate is rendered offline by
 `node tool/deploy/render-decorate-hearth.mjs`. It pins the source and catalog
@@ -64,14 +64,36 @@ query hashes and the metadata-only live snapshot in
 history, locks the relevant catalog/inventory tables, adds only the new objects,
 checks protected metadata and permissions, and refreshes the API schema cache.
 Drift, postcondition failure, timeout and repeated execution are rehearsed only
-in disposable CI. No live SQL has been applied and no credential was created.
+in disposable CI. At preparation time no live SQL had been applied and no credential was created.
 
 After scoped approval and a current verified backup, submit this exact rendered
 SQL once using the migration-recording API under `decorate_hearth_layouts_live`.
 Do not replay root migrations or repair history. If the outcome is unknown,
 inspect schema/history and reconcile the recorded payload before any retry.
 Verify the old 55 records remain byte-identical and exactly one new record stores
-the rendered payload. Verify authenticated read/save and restored arrangements
-on the development account, then enable `QUESTWELL_DECORATE_HEARTH` in the
-development build, run its gates and verify the delivered app. No production
+the rendered payload. After backend verification, enable `QUESTWELL_DECORATE_HEARTH` in the
+development build and run its gates. Verify authenticated read/save and restored
+arrangements on the development account before recording hosted acceptance. No production
 branch promotion is included. On any mismatch leave the feature disabled.
+
+## Approved live database rollout — October 9, 2026
+
+Tanya explicitly approved the scoped rollout after PR #102 passed independent
+review and all five CI workflows. Applied the exact guarded payload to
+`bdzcazkyypopbanbjnud` with migration `20261009051815`, named
+`decorate_hearth_layouts_live`. Payload SHA256:
+`3a48d6e886444f0662fd807c8f892b39eb89af305f9ae52cae3d1ceb4c0dc504`.
+Read-back confirms one matching recorded statement, the original 55 history rows
+unchanged, empty initial layout storage, RLS enabled, authenticated RPC access,
+and no anonymous RPC or direct authenticated table access. Existing inventories
+were not changed. The verified backup evidence from October 8 remains within its
+recorded 24-hour window. No new credentials or history repair was needed.
+
+The development live-beta web build now explicitly enables the flag. Staging
+and default/native builds retain the disabled default until their own server
+is verified. Activation CI and hosted signed-in/device acceptance remain pending.
+
+Live authenticated-role RPC smoke verification passed for an empty synthetic
+identity: read returned the empty layout and save rejected the missing profile.
+The transaction rolled back and touched no account data. This verifies callable
+permissions; it is not a signed-in existing-account persistence test.

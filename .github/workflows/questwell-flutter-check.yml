@@ -98,7 +98,7 @@ jobs:
 
       - name: Build proposed development app without deploying
         if: github.event_name == 'pull_request'
-        run: flutter build web --release --dart-define=QUESTWELL_ENVIRONMENT=live_beta --target lib/main_monitored_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA"
+        run: flutter build web --release --dart-define=QUESTWELL_ENVIRONMENT=live_beta --dart-define=QUESTWELL_DECORATE_HEARTH=true --target lib/main_monitored_preview.dart --base-href "/questwell-app/" --pwa-strategy=none --dart-define=QUESTWELL_BUILD="$GITHUB_SHA"
 
       - name: Compile and package staging without telemetry
         run: |
