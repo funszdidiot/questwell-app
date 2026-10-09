@@ -64,6 +64,8 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
 
   String _bossName(String type) {
     switch (type) {
+      case 'hollow_harvest':
+        return 'The Hollow Harvest';
       case 'meeting_mimic':
         return 'Meeting Mimic';
       case 'spreadsheet_slime':
@@ -315,10 +317,19 @@ class _QuestBoardPageWidgetState extends State<QuestBoardPageWidget> {
                                     ),
                                   ),
                                   const SizedBox(height: 10),
-                                  QuestwellBossPixelArt(
-                                    bossType: boss.bossType,
-                                    height: 205,
-                                  ),
+                                  if (boss.bossType == 'hollow_harvest')
+                                    Image.asset(
+                                      'assets/images/questwell/hollow_harvest/idle.png',
+                                      height: 205,
+                                      fit: BoxFit.contain,
+                                      semanticLabel:
+                                          'The Hollow Harvest and his spider sidekick',
+                                    )
+                                  else
+                                    QuestwellBossPixelArt(
+                                      bossType: boss.bossType,
+                                      height: 205,
+                                    ),
                                   const SizedBox(height: 12),
                                   Text(
                                     _bossName(boss.bossType),
