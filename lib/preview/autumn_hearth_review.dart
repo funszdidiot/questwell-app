@@ -57,7 +57,7 @@ class AutumnHearthScene extends StatelessWidget {
   const AutumnHearthScene(
       {super.key,
       required this.height,
-      this.hallowed = true,
+      this.hallowed = false,
       this.avatar = true,
       this.decor = true,
       this.body = 'neutral'});
@@ -100,7 +100,7 @@ class AutumnHearthReviewApp extends StatefulWidget {
 }
 
 class _AutumnReviewState extends State<AutumnHearthReviewApp> {
-  bool _hallowed = true;
+  bool _hallowed = false;
   bool _avatar = true;
   bool _decor = true;
   bool _paused = false;
@@ -121,7 +121,7 @@ class _AutumnReviewState extends State<AutumnHearthReviewApp> {
                 'Development candidates. No purchases or account changes.'),
             Wrap(spacing: 8, children: [
               FilterChip(
-                  label: const Text('Hallowed room'),
+                  label: const Text('Halloween room (optional)'),
                   selected: _hallowed,
                   onSelected: (value) => setState(() => _hallowed = value)),
               FilterChip(
@@ -148,9 +148,12 @@ class _AutumnReviewState extends State<AutumnHearthReviewApp> {
                   builder: (context, constraints) => TickerMode(
                         enabled: !_paused,
                         child: AutumnHearthScene(
-                          height: constraints.maxWidth < 500
-                              ? 420
-                              : constraints.maxWidth / 1.5,
+                          // Preserve the usual room's square layout and window.
+                          height: !_hallowed
+                              ? constraints.maxWidth
+                              : constraints.maxWidth < 500
+                                  ? 420
+                                  : constraints.maxWidth / 1.5,
                           hallowed: _hallowed,
                           avatar: _avatar,
                           decor: _decor,
