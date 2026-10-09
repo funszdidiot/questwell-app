@@ -309,6 +309,13 @@ void main() {
   testWidgets('controls remain usable at 320px with large text', (
     tester,
   ) async {
+    // Create queued futures inside the widget test's fake-async zone.
+    final audio = QuestwellAudio(
+      store: MemoryStore(),
+      music: RecordingChannel(),
+      ambience: RecordingChannel(),
+      fadeStep: Duration.zero,
+    );
     await audio.initialize();
     tester.view.physicalSize = const Size(320, 720);
     tester.view.devicePixelRatio = 1;
@@ -334,5 +341,6 @@ void main() {
     expect(audio.preferences.musicEnabled, isTrue);
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox.shrink());
-  });
+    await audio.close();
+  }, timeout: const Timeout(Duration(seconds: 30)));
 }
