@@ -28,6 +28,8 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
       QuestwellHearthDraft(widget.layouts.current, rooms: widget.layouts.rooms);
   String? selectedId;
   bool saving = false;
+  bool saved = false;
+  bool confirmingClose = false;
   String? error;
   List<QuestwellCosmetic> get owned => widget.snapshot.cosmetics
       .where((i) =>
@@ -67,8 +69,9 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
   }
 
   Future<void> close() async {
-    if (saving) return;
-    if (draft.dirty) {
+    if (saving || confirmingClose) return;
+    if (!saved && draft.dirty) {
+      confirmingClose = true;
       final discard = await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
@@ -82,6 +85,7 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                         onPressed: () => Navigator.pop(ctx, true),
                         child: const Text('Discard changes'))
                   ]));
+      confirmingClose = false;
       if (discard != true || !mounted) return;
     }
     if (mounted) Navigator.pop(context);
@@ -95,7 +99,9 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
     });
     try {
       await widget.onSave(draft.layout);
-      if (mounted) Navigator.pop(context, true);
+      if (!mounted) return;
+      setState(() => saved = true);
+      Navigator.pop(context, true);
     } catch (_) {
       if (mounted)
         setState(() => error =
@@ -118,14 +124,14 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
               ? (entry.key == 'wall_center'
                   ? 'wall_art'
                   : 'wall_art:${entry.key}')
-              : 'room:${entry.key}'): item.slug,
+              : 'room:${entry.key}'): item.slug
     };
     final problems = draft.problems(widget.snapshot.cosmetics);
     final item = selected;
     final choices =
         item?.hearthPlacements ?? const <QuestwellHearthPlacementOption>[];
-    return PopScope(
-        canPop: false,
+    return PopScope<bool>(
+        canPop: saved || (!saving && !draft.dirty),
         onPopInvokedWithResult: (didPop, _) {
           if (!didPop) close();
         },
@@ -142,11 +148,23 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
-                                    Text('Decorate Hearth',
-                                        style:
-                                            QuestwellHearthMaterial.serif(24)),
+                                    Row(children: [
+                                      Expanded(
+                                          child: Text('Decorate Hearth',
+                                              style:
+                                                  QuestwellHearthMaterial.serif(
+                                                      MediaQuery.sizeOf(context)
+                                                                  .width <
+                                                              360
+                                                          ? 20
+                                                          : 24))),
+                                      IconButton(
+                                          tooltip: 'Close room editor',
+                                          onPressed: saving ? null : close,
+                                          icon: const Icon(Icons.close))
+                                    ]),
                                     const Text(
-                                        'Try a spot in the room. Nothing changes until you save.'),
+                                        'Preview a room or decoration. Save when you’re ready.'),
                                     const SizedBox(height: 12),
                                     LayoutBuilder(
                                         builder: (context, constraints) {
@@ -213,7 +231,7 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                                                       ? null
                                                                       : () => place(
                                                                           item, choice.slot),
-                                                                  child: Icon(draft.layout[choice.slot] == item.id ? Icons.check : Icons.add_location_alt))))),
+                                                                  child: Icon(draft.layout[choice.slot] == item.id ? Icons.check : Icons.add_location_alt)))))
                                           ]));
                                     }),
                                     const SizedBox(height: 12),
@@ -232,24 +250,35 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                         ],
                                         onChanged: saving
                                             ? null
-                                            : (value) => setState(
-                                                () => selectedId = value)),
+                                            : (value) => setState(() {
+                                                  selectedId = value;
+                                                  final selection = selected;
+                                                  if (selection != null &&
+                                                      selection.hearthPlacements
+                                                          .any((p) =>
+                                                              p.slot ==
+                                                              'setting')) {
+                                                    draft.switchRoom(
+                                                        selection.id);
+                                                  }
+                                                })),
                                     if (owned.isEmpty)
                                       const Text(
                                           'Your owned decorations will appear here.'),
                                     if (item != null) ...[
                                       const SizedBox(height: 8),
                                       for (final choice in choices)
-                                        Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 6),
-                                            child: OutlinedButton(
-                                                onPressed: saving
-                                                    ? null
-                                                    : () => place(
-                                                        item, choice.slot),
-                                                child: Text(
-                                                    '${choice.label} · ${_spotDetail(item, choice.slot)}'))),
+                                        if (choice.slot != 'setting')
+                                          Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 6),
+                                              child: OutlinedButton(
+                                                  onPressed: saving
+                                                      ? null
+                                                      : () => place(
+                                                          item, choice.slot),
+                                                  child: Text(
+                                                      '${choice.label} · ${_spotDetail(item, choice.slot)}')))
                                     ],
                                     const SizedBox(height: 12),
                                     const Text('In this preview',
@@ -267,8 +296,13 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                                   : 'Return to inventory',
                                               onPressed: saving
                                                   ? null
-                                                  : () => setState(() =>
-                                                      draft.remove(entry.key)),
+                                                  : () => setState(() {
+                                                        draft.remove(entry.key);
+                                                        if (entry.key ==
+                                                            'setting') {
+                                                          selectedId = null;
+                                                        }
+                                                      }),
                                               icon: const Icon(Icons
                                                   .remove_circle_outline))),
                                     for (final problem in problems)
@@ -280,7 +314,7 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                           liveRegion: true,
                                           child: Text(error!)),
                                     const Text(
-                                        'Each background remembers its own saved arrangement. Save applies only the room shown. Other previews are not saved. Undo changes before saving; Cancel keeps your saved room.'),
+                                        'Each room remembers its saved arrangement. Save and close keeps only the room shown. Other previews are not saved.')
                                   ])))),
                   SafeArea(
                       top: false,
@@ -296,8 +330,9 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                             error != null
                                         ? null
                                         : save,
-                                    child: Text(
-                                        saving ? 'Saving room…' : 'Save room')),
+                                    child: Text(saving
+                                        ? 'Saving room…'
+                                        : 'Save and close')),
                                 Wrap(
                                     alignment: WrapAlignment.center,
                                     spacing: 16,
@@ -305,13 +340,29 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                       TextButton(
                                           onPressed: saving || !draft.canUndo
                                               ? null
-                                              : () => setState(draft.undo),
+                                              : () => setState(() {
+                                                    final previousRoom =
+                                                        draft.room;
+                                                    final roomSelected = selected
+                                                            ?.hearthPlacements
+                                                            .any((p) =>
+                                                                p.slot ==
+                                                                'setting') ??
+                                                        false;
+                                                    draft.undo();
+                                                    if (roomSelected ||
+                                                        draft.room !=
+                                                            previousRoom) {
+                                                      selectedId = draft
+                                                          .layout['setting'];
+                                                    }
+                                                  }),
                                           child: const Text('Undo change')),
                                       TextButton(
                                           onPressed: saving ? null : close,
-                                          child: const Text('Cancel')),
-                                    ]),
-                              ]))),
+                                          child: const Text('Close'))
+                                    ])
+                              ])))
                 ]))));
   }
 
@@ -358,7 +409,7 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
         'window' => const Alignment(.75, -.4),
         'bookshelf_top' => const Alignment(-.65, -.25),
         'mantel' => const Alignment(-.2, -.35),
-        _ => const Alignment(0, .8),
+        _ => const Alignment(0, .8)
       };
 
   Alignment _marker(QuestwellCosmetic item, String slot,
