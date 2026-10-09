@@ -156,6 +156,13 @@ void main() {
 
   testWidgets('root auth restoration and Sound menu retain the Hearth scene',
       (tester) async {
+    // Construct queued futures inside the widget test's fake async zone.
+    final audio = QuestwellAudio(
+      store: store,
+      music: music,
+      ambience: ambience,
+      fadeStep: Duration.zero,
+    );
     store.value = const QuestwellAudioPreferences(musicEnabled: true);
     final signedIn = ValueNotifier(false);
     final router = GoRouter(
