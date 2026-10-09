@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../services/questwell_audio.dart';
-import '../services/questwell_audio_player.dart';
+import '../services/questwell_audio_player.dart' show QuestwellLocalAudioStore;
+import '../services/questwell_audio_channel.dart';
 import 'questwell_hearth_material.dart';
 
 class QuestwellAudioScope extends InheritedNotifier<QuestwellAudio> {
@@ -24,11 +25,13 @@ class QuestwellAudioHost extends StatefulWidget {
     this.router,
     this.audio,
     this.isHomeRoot,
+    this.sessionChanges,
   });
   final Widget child;
   final GoRouter? router;
   final QuestwellAudio? audio;
   final bool Function()? isHomeRoot;
+  final Listenable? sessionChanges;
   @override
   State<QuestwellAudioHost> createState() => _QuestwellAudioHostState();
 }
@@ -42,8 +45,8 @@ class _QuestwellAudioHostState extends State<QuestwellAudioHost>
     audio = widget.audio ??
         QuestwellAudio(
           store: QuestwellLocalAudioStore(),
-          music: QuestwellAssetAudioChannel(),
-          ambience: QuestwellAssetAudioChannel(),
+          music: createQuestwellAudioChannel(),
+          ambience: createQuestwellAudioChannel(),
         );
     WidgetsBinding.instance.addObserver(this);
     audio.setForeground(
@@ -51,8 +54,30 @@ class _QuestwellAudioHostState extends State<QuestwellAudioHost>
           WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed,
     );
     widget.router?.routerDelegate.addListener(_routeChanged);
+    widget.sessionChanges?.addListener(_routeChanged);
     _routeChanged();
     unawaited(audio.initialize());
+  }
+
+  @override
+  void didUpdateWidget(covariant QuestwellAudioHost oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.router != widget.router) {
+      oldWidget.router?.routerDelegate.removeListener(_routeChanged);
+      widget.router?.routerDelegate.addListener(_routeChanged);
+    }
+    if (oldWidget.sessionChanges != widget.sessionChanges) {
+      oldWidget.sessionChanges?.removeListener(_routeChanged);
+      widget.sessionChanges?.addListener(_routeChanged);
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _routeChanged();
+    });
+  }
+
+  void _interacted() {
+    _routeChanged();
+    audio.activateOnInteraction();
   }
 
   void _routeChanged() {
@@ -74,14 +99,28 @@ class _QuestwellAudioHostState extends State<QuestwellAudioHost>
   @override
   void dispose() {
     widget.router?.routerDelegate.removeListener(_routeChanged);
+    widget.sessionChanges?.removeListener(_routeChanged);
     WidgetsBinding.instance.removeObserver(this);
     unawaited(audio.close());
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) =>
-      QuestwellAudioScope(audio: audio, child: widget.child);
+  Widget build(BuildContext context) => QuestwellAudioScope(
+        audio: audio,
+        child: Listener(
+          behavior: HitTestBehavior.translucent,
+          onPointerUp: (_) => _interacted(),
+          child: Focus(
+            canRequestFocus: false,
+            onKeyEvent: (_, event) {
+              _interacted();
+              return KeyEventResult.ignored;
+            },
+            child: widget.child,
+          ),
+        ),
+      );
 }
 
 class QuestwellAudioControls extends StatelessWidget {

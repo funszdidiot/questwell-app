@@ -3,6 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'questwell_audio.dart';
 
+QuestwellAudioChannel createQuestwellAudioChannel() =>
+    QuestwellAssetAudioChannel();
+
 class QuestwellLocalAudioStore implements QuestwellAudioStore {
   static const _prefix = 'questwell.audio.v1.';
 
