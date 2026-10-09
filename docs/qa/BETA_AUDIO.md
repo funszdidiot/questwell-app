@@ -1,6 +1,6 @@
 # Beta audio — October 9, 2026
 
-Status: BLOCKED before dependency lock, compilation, CI and deployment.
+Status: QA — PR #111; hosted checks in progress.
 Tanya requested all four soundscapes now for beta feedback.
 Development implementation is authorized; production promotion is excluded.
 
@@ -51,23 +51,21 @@ silence. No backend rollback or data deletion is needed.
 - Draft implementation: shared audio owner, route changes, independent controls
   in Explore and Account, lifecycle pausing, local preference persistence,
   explicit session activation, account-free `?review=audio` listening room.
-- Twelve Flutter tests authored, NOT EXECUTED. Source parsing/formatting passed
-  with Dart's formatter. This is NOT an analyzer/build pass.
-- `audioplayers: 6.5.1` verified on pub.dev and its published source. Dependency
-  lock is unchanged: resolve and review it before CI/merge. Existing pins remain.
+- Initial hosted candidate run `37970399846`: 12 tests passed; the large-text
+  widget test needed scrolling before tapping its offscreen switch. Corrected.
+  Added regression coverage for volume/ambience changes preserving track position.
+- Hosted dependency resolution supplied the reviewed lock. Main package stays
+  exactly `audioplayers: 6.5.1`; locked web adapter `5.3.0` includes GainNode
+  volume control and Safari AudioContext reuse. No other package was upgraded.
 - Automatic approval review rejected local Flutter execution because it accessed
-  a cloud metadata endpoint with credential risk. No retry/bypass. Use a vetted
-  hosted runner for dependency resolution, analyzer, compilation and tests.
-- Automatic approval review rejected the feature-branch git push as external
-  publication not sufficiently authorized. No alternate push route was used.
-  Inspected remote: `https://github.com/funszdidiot/questwell-app.git`.
-  Founder confirmation to push `feat/questwell-beta-music-20261009` is required.
-- No successful remote publication, PR, CI, deployment, signed-in runtime or
-  physical-device pass is claimed. This is a reviewable implementation draft.
-- Remaining risks: browser gesture restrictions after asynchronous loading;
-  native audio interruption; MP3 loop timing; listening/musical fit; load-error
-  recovery across platforms; dependency compatibility. Keep out of the beta
-  runtime until required checks pass.
+  a cloud metadata endpoint with credential risk. Hosted CI is used instead.
+- Tanya explicitly authorized feature publication and requested Settings toggle
+  and volume. PR #111 supersedes the earlier publication authorization blocker.
+- Full required CI, delivered runtime and physical-device checks remain pending.
+  Initial checks alone do not establish a build or listening pass.
+- Remaining beta acceptance: Safari/iPhone first-start and interruptions, own-music
+  coexistence, full-track musical fit and loop seams. Playback failures surface a
+  retry control; no audible autoplay occurs from saved preferences alone.
 
 ## Sources checked
 
@@ -76,3 +74,5 @@ silence. No backend rollback or data deletion is needed.
   `audioplayers_platform_interface-7.1.1`: player and context APIs.
 - Existing pins `shared_preferences: 2.5.3`, `go_router: 12.1.3`.
 - Installed FFmpeg help for loudness normalization and audio encoding.
+
+- Published `audioplayers_web-5.3.0` source verified GainNode volume and context reuse.

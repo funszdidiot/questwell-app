@@ -58,12 +58,14 @@ class AutumnHearthScene extends StatelessWidget {
       required this.height,
       this.hallowed = false,
       this.enchantedLibrary = false,
+      this.setting,
       this.avatar = true,
       this.decor = true,
       this.body = 'neutral'});
   final double height;
   final bool hallowed;
   final bool enchantedLibrary;
+  final QuestwellHearthSetting? setting;
   final bool avatar;
   final bool decor;
   final String body;
@@ -77,11 +79,12 @@ class AutumnHearthScene extends StatelessWidget {
             immersive: true,
             showAvatar: avatar,
             avatarBodyType: body,
-            setting: enchantedLibrary
-                ? QuestwellHearthSetting.enchantedLibrary
-                : hallowed
-                    ? QuestwellHearthSetting.hallowedHearth
-                    : null,
+            setting: setting ??
+                (enchantedLibrary
+                    ? QuestwellHearthSetting.enchantedLibrary
+                    : hallowed
+                        ? QuestwellHearthSetting.hallowedHearth
+                        : null),
             equippedSlugs: decor
                 ? const {
                     'room:window': 'amberfall-window',
@@ -105,6 +108,7 @@ class AutumnHearthReviewApp extends StatefulWidget {
 }
 
 class _AutumnReviewState extends State<AutumnHearthReviewApp> {
+  QuestwellHearthSetting? _otherSetting;
   bool _hallowed = false;
   bool _enchantedLibrary = false;
   bool _avatar = true;
@@ -126,10 +130,28 @@ class _AutumnReviewState extends State<AutumnHearthReviewApp> {
             const Text(
                 'Approved Autumn Hearth artwork. Account-free visual review.'),
             Wrap(spacing: 8, children: [
+              for (final room in QuestwellHearthSetting.values.where((r) =>
+                  r != QuestwellHearthSetting.hallowedHearth &&
+                  r != QuestwellHearthSetting.enchantedLibrary))
+                ChoiceChip(
+                    label: Text(room.label),
+                    selected: !_hallowed &&
+                        !_enchantedLibrary &&
+                        (_otherSetting ?? QuestwellHearthSetting.original) ==
+                            room,
+                    onSelected: (_) => setState(() {
+                          _otherSetting =
+                              room == QuestwellHearthSetting.original
+                                  ? null
+                                  : room;
+                          _hallowed = false;
+                          _enchantedLibrary = false;
+                        })),
               FilterChip(
                   label: const Text('Enchanted Library'),
                   selected: _enchantedLibrary,
                   onSelected: (value) => setState(() {
+                        _otherSetting = null;
                         _enchantedLibrary = value;
                         _hallowed = false;
                       })),
@@ -137,6 +159,7 @@ class _AutumnReviewState extends State<AutumnHearthReviewApp> {
                   label: const Text('Halloween room (optional)'),
                   selected: _hallowed,
                   onSelected: (value) => setState(() {
+                        _otherSetting = null;
                         _hallowed = value;
                         _enchantedLibrary = false;
                       })),
@@ -170,6 +193,7 @@ class _AutumnReviewState extends State<AutumnHearthReviewApp> {
                               : constraints.maxWidth < 500
                                   ? 420
                                   : constraints.maxWidth / 1.5,
+                          setting: _otherSetting,
                           hallowed: _hallowed,
                           enchantedLibrary: _enchantedLibrary,
                           avatar: _avatar,

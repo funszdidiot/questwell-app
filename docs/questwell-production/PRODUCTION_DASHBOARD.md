@@ -2,15 +2,13 @@
 
 ## Four-space beta soundtrack — October 9, 2026
 
-**BLOCKED before build/deployment.** Four music and two ambience tracks generated
-and prepared as versioned MP3 candidates. Draft optional playback, saved controls,
-lifecycle/routing owner, review route and twelve regression tests are prepared
-on `feat/questwell-beta-music-20261009`. No remote publication, dependency lock,
-Flutter test pass or deployed music is claimed. Automatic review blocked local
-Flutter execution for metadata-endpoint credential risk, and blocked GitHub push
-pending clearer external-publication authorization. Next: founder confirmation
-to push this feature branch to `funszdidiot/questwell-app`, then vetted hosted
-dependency resolution and CI. Evidence: `../qa/BETA_AUDIO.md`.
+**QA.** Four music and two ambience candidates are published in PR #111.
+Tanya authorized feature publication and requested independent on/off and volume
+controls in Settings. Hosted resolution produced the reviewed dependency lock;
+initial run passed 12 checks and exposed a large-text test scroll issue, corrected
+with a track-restart regression fix. Full CI and delivered beta verification are
+pending. Physical iPhone and listening acceptance remain separate.
+Evidence: `../qa/BETA_AUDIO.md`.
 
 ## Hollow Harvest seasonal selection — October 8, 2026
 
@@ -420,3 +418,8 @@ remains pending. Evidence: `docs/qa/HEARTH_COMPOSITION.md`.
 ## Amberfall library visibility correction — 2026-10-09
 
 **QA** — Founder reported placed Amberfall invisible in Enchanted Library. Added the library glass registration to the shared Hearth/Market renderer; approved artwork, prices and ownership unchanged. Evidence and delivery follow-up: `docs/qa/AMBERFALL_LIBRARY_FIX.md`.
+
+
+## Amberfall all-room compatibility — 2026-10-09
+
+**QA** — All nine current rooms explicitly registered. Full-room visual exports and saved-loadout regression checks added. Approved artwork, ownership and pricing unchanged. `docs/qa/AMBERFALL_ALL_ROOMS.md`.

@@ -16,17 +16,11 @@ jobs:
       - uses: ./.github/actions/flutter
         with:
           flutter-version: '3.44.6'
-      - name: Resolve candidate dependency lock
-        run: flutter pub get
-      - name: Export candidate lock for review
-        run: |
-          python3 - <<'PY'
-          import base64, pathlib
-          print('AUDIO_LOCK_BEGIN')
-          print(base64.b64encode(pathlib.Path('pubspec.lock').read_bytes()).decode())
-          print('AUDIO_LOCK_END')
-          PY
+      - name: Verify locked dependencies
+        run: flutter pub get --enforce-lockfile
       - name: Focused audio regression tests
         run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test test/questwell_audio_test.dart
       - name: Analyze audio files
         run: dart analyze lib/services/questwell_audio.dart lib/services/questwell_audio_player.dart lib/widgets/questwell_audio_controls.dart lib/preview/audio_review.dart test/questwell_audio_test.dart
+      - name: Audio controls in Chrome
+        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --platform chrome test/questwell_audio_test.dart

@@ -80,6 +80,7 @@ class QuestwellAudio extends ChangeNotifier {
   bool activated = false;
   bool foreground = true;
   bool _closed = false;
+  bool _musicPlaying = false, _ambiencePlaying = false;
   int _revision = 0;
   String? _musicAsset, _ambienceAsset;
   double _musicLevel = 0, _ambienceLevel = 0;
@@ -188,8 +189,10 @@ class QuestwellAudio extends ChangeNotifier {
       }
       await channel.pause();
       if (isMusic) {
+        _musicPlaying = false;
         _musicLevel = 0;
       } else {
+        _ambiencePlaying = false;
         _ambienceLevel = 0;
       }
       if (asset == null || _closed || revision != _revision) return;
@@ -202,7 +205,23 @@ class QuestwellAudio extends ChangeNotifier {
       }
     }
     if (_closed || revision != _revision) return;
-    await channel.resume();
+    if (!(isMusic ? _musicPlaying : _ambiencePlaying)) {
+      await channel.resume();
+      if (isMusic) {
+        _musicPlaying = true;
+      } else {
+        _ambiencePlaying = true;
+      }
+      if (_closed || revision != _revision) {
+        await channel.pause();
+        if (isMusic) {
+          _musicPlaying = false;
+        } else {
+          _ambiencePlaying = false;
+        }
+        return;
+      }
+    }
     await _fade(
       channel,
       isMusic ? _musicLevel : _ambienceLevel,
@@ -237,6 +256,8 @@ class QuestwellAudio extends ChangeNotifier {
         issue = QuestwellAudioIssue.cleanup;
       }
     }
+    _musicPlaying = false;
+    _ambiencePlaying = false;
     _musicLevel = 0;
     _ambienceLevel = 0;
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_momentum/services/questwell_audio.dart';
 import 'package:project_momentum/services/questwell_audio_player.dart';
@@ -60,6 +61,7 @@ class RecordingChannel implements QuestwellAudioChannel {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  GoogleFonts.config.allowRuntimeFetching = false;
   late MemoryStore store;
   late RecordingChannel music, ambience;
   late QuestwellAudio audio;
@@ -283,6 +285,27 @@ void main() {
     },
   );
 
+  test('volume and ambience changes never restart playing music', () async {
+    await audio.initialize();
+    audio.setScene(QuestwellSoundscape.hearth);
+    audio.update(audio.preferences.copyWith(musicEnabled: true));
+    await audio.settled;
+    audio.update(audio.preferences.copyWith(musicVolume: .7));
+    await audio.settled;
+    expect(music.starts, 1);
+    expect(music.level, .7);
+    audio.update(audio.preferences.copyWith(ambienceEnabled: true));
+    await audio.settled;
+    audio.update(audio.preferences.copyWith(ambienceVolume: .4));
+    await audio.settled;
+    expect(music.starts, 1);
+    expect(ambience.starts, 1);
+    audio.update(audio.preferences.copyWith(musicEnabled: false));
+    await audio.settled;
+    expect(music.playing, isFalse);
+    expect(ambience.starts, 1);
+  });
+
   testWidgets('controls remain usable at 320px with large text', (
     tester,
   ) async {
@@ -304,6 +327,8 @@ void main() {
       ),
     );
     expect(find.text('Sound & music'), findsOneWidget);
+    await tester.ensureVisible(find.byType(SwitchListTile).first);
+    await tester.pumpAndSettle();
     await tester.tap(find.byType(SwitchListTile).first);
     await tester.pump();
     expect(audio.preferences.musicEnabled, isTrue);
