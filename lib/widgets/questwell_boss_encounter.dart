@@ -214,7 +214,12 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
     return AnimatedBuilder(
         animation: Listenable.merge([_intro, _impact]),
         builder: (context, _) {
-          final t = _ready ? _intro.value : 0.0;
+          // A one-step victory may arrive before the entrance completes.
+          final t = _harvest && widget.defeated
+              ? 1.0
+              : _ready
+                  ? _intro.value
+                  : 0.0;
           final arriving = t < 1;
           final slide = _harvest
               ? 1.0

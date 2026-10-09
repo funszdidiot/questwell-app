@@ -172,4 +172,32 @@ void main() {
     expect(tester.binding.hasScheduledFrame, isFalse);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('Early victory completes the entrance before revealing the pile',
+      (tester) async {
+    Widget early(bool won) => MaterialApp(
+        home: Scaffold(
+            body: QuestwellBossEncounter(
+                encounterId: 'harvest-early-victory',
+                persistEntrance: false,
+                bossType: 'hollow_harvest',
+                progress: won ? 1 : 0,
+                defeated: won)));
+    await tester.pumpWidget(early(false));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(
+        tester
+            .widget<QuestwellHollowHarvest>(find.byType(QuestwellHollowHarvest))
+            .phase,
+        lessThan(1));
+    await tester.pumpWidget(early(true));
+    await tester.pump(const Duration(milliseconds: 900));
+    final figure = tester
+        .widget<QuestwellHollowHarvest>(find.byType(QuestwellHollowHarvest));
+    expect(figure.phase, 1);
+    expect(figure.defeatPhase, 1);
+    expect(find.byKey(const ValueKey('skip-boss-entrance')), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
 }
