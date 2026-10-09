@@ -20,7 +20,7 @@ QuestwellCosmetic decor(
           'id': id,
           'slug': slug,
           'name': slug.replaceAll('-', ' '),
-          'category': 'room',
+          'category': profile == 'wall_art_side' ? 'wall_art' : 'room',
           'hearth_profile_key': profile
         },
         owned: true,
@@ -30,6 +30,8 @@ QuestwellCosmetic decor(
                 slot: slot, label: slot, sortOrder: 0)
         ]);
 final decorations = [
+  decor(
+      'moon', 'celestial-study', 'wall_art_side', ['wall_left', 'wall_right']),
   decor('chair', 'burgundy-reading-chair', 'seating', ['front', 'right']),
   decor('shelf', 'walnut-bookshelf', 'large_furniture', ['left', 'right']),
   decor('table', 'walnut-reading-table', 'side_table', ['side']),
@@ -78,6 +80,61 @@ void main() {
     draft.switchRoom(null);
     expect(draft.layout, saved);
   });
+  test(
+    'wall art carries across saved rooms, including removals and reopening',
+    () {
+      final remembered = {
+        'original': {
+          'wall_left': 'old-left',
+          'wall_right': 'old-right',
+          'left': 'shelf',
+        },
+        'astral': {
+          'setting': 'astral',
+          'wall_center': 'old-center',
+          'right': 'cabinet',
+        },
+      };
+      final draft = QuestwellHearthDraft({
+        'left': 'shelf',
+        'wall_left': 'moon',
+      }, rooms: remembered);
+      draft.switchRoom('astral');
+      expect(draft.layout, {
+        'setting': 'astral',
+        'right': 'cabinet',
+        'wall_left': 'moon',
+      });
+      draft.place('landscape', 'wall_center');
+      draft.remove('wall_left');
+      draft.switchRoom(null);
+      expect(draft.layout, {'left': 'shelf', 'wall_center': 'landscape'});
+      draft.undo();
+      expect(draft.layout, {
+        'setting': 'astral',
+        'right': 'cabinet',
+        'wall_center': 'landscape',
+      });
+      draft.undo();
+      expect(draft.layout['wall_left'], 'moon');
+      // A save/reopen seeds the next draft from current equipped inventory; old
+      // room snapshots must never resurrect removed or replaced wall hangings.
+      final reopened = QuestwellHearthDraft(draft.layout, rooms: remembered);
+      reopened.place('new-moon', 'wall_left');
+      reopened.switchRoom(null);
+      expect(reopened.layout, {
+        'left': 'shelf',
+        'wall_left': 'new-moon',
+        'wall_center': 'landscape',
+      });
+      reopened.remove('wall_left');
+      reopened.remove('wall_center');
+      reopened.switchRoom('astral');
+      expect(reopened.layout, {'setting': 'astral', 'right': 'cabinet'});
+      expect(remembered['original']!['wall_right'], 'old-right');
+    },
+  );
+
   test('crowded furniture and unsupported surface cannot be saved', () {
     expect(
         QuestwellHearthDraft({'left': 'shelf', 'front': 'chair'})
@@ -144,6 +201,39 @@ void main() {
     await tester.tap(find.text('Open'));
     await tester.pumpAndSettle();
   }
+
+  testWidgets(
+    'wall spot outlines match rendered frames in both standards',
+    (tester) async {
+      for (final width in [320.0, 390.0]) {
+        for (final room in [null, 'hallowed-hearth']) {
+          await open(
+            tester,
+            (_) async {},
+            width: width,
+            current: {'wall_left': 'moon', if (room != null) 'setting': room},
+          );
+          final picker = find.byType(DropdownButtonFormField<String>);
+          await tester.tap(picker);
+          await tester.pumpAndSettle();
+          await tester.tap(find.text('celestial study').last);
+          await tester.pumpAndSettle();
+          final button = find.byKey(const ValueKey('wall-marker-wall_left'));
+          final frame =
+              find.byKey(const ValueKey('hearth-wall_left-art-bounds'));
+          expect(
+            tester.getCenter(button).dx,
+            closeTo(tester.getCenter(frame).dx, .01),
+          );
+          expect(
+            tester.getCenter(button).dy,
+            closeTo(tester.getCenter(frame).dy, .01),
+          );
+          await tester.pumpWidget(const SizedBox());
+        }
+      }
+    },
+  );
 
   Future<void> selectChair(WidgetTester tester) async {
     final picker = find.byType(DropdownButtonFormField<String>);

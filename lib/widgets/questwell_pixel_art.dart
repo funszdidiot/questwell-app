@@ -1080,22 +1080,7 @@ enum QuestwellHearthSetting {
       slug == 'alchemists-workshop' ||
       slug == 'astral-sanctuary' ||
       slug == 'emberglass-conservatory';
-  bool get compactGallery =>
-      this == enchantedLibrary ||
-      this == astralSanctuary ||
-      this == emberglassConservatory;
   String get asset => 'assets/images/questwell/hearth/$file.webp';
-
-  /// The left gallery position sits on the Halloween chimney centerline.
-  /// Preserve canonical frame size and follow the room crop on narrow screens.
-  Offset? wallArtAnchor(Size scene, String slot) {
-    if (this != hallowedHearth || slot != 'wall_left') return null;
-    final scale = math.max(scene.width / 1536, scene.height / 1024);
-    return Offset(
-      568 * scale + (scene.width - 1536 * scale) / 2,
-      179.2 * scale + (scene.height - 1024 * scale) * .52,
-    );
-  }
 
   /// Source-art mantel contact point follows the same cover crop as the room.
   /// Other rooms retain their established surface anchors.
@@ -1314,7 +1299,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                           slug: art,
                           side: 'wall_center',
                           scene: Size(sceneWidth, sceneHeight),
-                          library: roomSetting.compactGallery,
+                          hallowed: roomSetting ==
+                              QuestwellHearthSetting.hallowedHearth,
                           renderSpec: hearthRenderBySlug[art],
                         ),
                     for (final side in ['wall_left', 'wall_right'])
@@ -1326,9 +1312,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                             slug: art,
                             side: side,
                             scene: Size(sceneWidth, sceneHeight),
-                            library: roomSetting.compactGallery,
-                            anchor: roomSetting.wallArtAnchor(
-                                Size(sceneWidth, sceneHeight), side),
+                            hallowed: roomSetting ==
+                                QuestwellHearthSetting.hallowedHearth,
                             renderSpec: hearthRenderBySlug[art],
                           ),
                     if (equippedSlugs['room:window'] == 'amberfall-window')
