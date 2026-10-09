@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../lib/widgets/questwell_boss_encounter.dart';
+import '../lib/preview/hollow_harvest_review.dart';
 import '../lib/widgets/questwell_hollow_harvest.dart';
 
 void main() {
@@ -19,6 +20,22 @@ void main() {
                           encounterId: 'harvest-test-$reduced',
                           bossType: 'hollow_harvest',
                           progress: progress))))));
+
+  testWidgets('Desktop preview keeps the complete boss within the arena',
+      (tester) async {
+    tester.view.physicalSize = const Size(1366, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpWidget(const HollowHarvestReview());
+    await tester.pumpAndSettle();
+    final arena = tester.getRect(find.byKey(const ValueKey('boss-arena')));
+    final boss = tester.getRect(find.byType(QuestwellHollowHarvest));
+    expect(arena.width, lessThanOrEqualTo(600));
+    expect(boss.top, greaterThanOrEqualTo(arena.top));
+    expect(boss.bottom, lessThanOrEqualTo(arena.bottom));
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets(
       'Assembly completes once and does not restart on strikes or remount',
