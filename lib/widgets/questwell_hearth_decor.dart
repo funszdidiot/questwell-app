@@ -158,6 +158,11 @@ class QuestwellHearthDecor {
     var frameCenter = origin + Offset(x, y) * scale;
     var frameWidth = width * scale;
     var frameHeight = frameWidth / (center ? 1.4 : .58);
+    if (!hallowed && !center) {
+      // The legacy relic picker has a shorter camera: keep frame tops visible.
+      frameCenter =
+          Offset(frameCenter.dx, math.max(frameCenter.dy, frameHeight / 2 + 3));
+    }
     if (!hallowed && center) {
       // Tall views bring the avatar's head closer to the gallery. Raise only
       // the landscape; keep the portraits readable beside the head. The

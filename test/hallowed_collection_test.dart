@@ -105,6 +105,15 @@ void main() {
         closeTo(390 * .340 - 130 * .52, .001));
   });
 
+  test('Original gallery remains visible in the short relic-picker camera', () {
+    const scene = Size(394, 256);
+    for (final slot in ['wall_left', 'wall_center', 'wall_right']) {
+      final frame = QuestwellHearthDecor.wallArtBounds(scene, slot);
+      expect(frame.top, greaterThan(0));
+      expect(frame.bottom, lessThan(scene.height));
+    }
+  });
+
   test('all three Hallowed frames stay on the chimney across cover crops', () {
     for (final scene in [
       const Size(960, 640),
