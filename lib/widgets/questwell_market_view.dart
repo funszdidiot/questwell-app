@@ -244,7 +244,9 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                                   style: QuestwellTypography.body(
                                       color: muted, fontSize: 12)),
                               const SizedBox(height: 16),
-                              Text(QuestwellCosmeticCopy.description(item),
+                              Text(
+                                  QuestwellCosmeticCopy.description(
+                                      item.slug, item.description),
                                   style: QuestwellTypography.body(
                                       color: cream, height: 1.5)),
                               const SizedBox(height: 12),
@@ -658,7 +660,7 @@ class _QuestwellMarketViewState extends State<QuestwellMarketView> {
                   ]);
             })),
         const SizedBox(height: 10),
-        Text(QuestwellCosmeticCopy.description(item),
+        Text(QuestwellCosmeticCopy.description(item.slug, item.description),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: QuestwellTypography.body(

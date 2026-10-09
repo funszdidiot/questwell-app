@@ -538,7 +538,7 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
       ]),
       if (item.description.isNotEmpty) ...[
         const SizedBox(height: 10),
-        Text(QuestwellCosmeticCopy.description(item),
+        Text(QuestwellCosmeticCopy.description(item.slug, item.description),
             style: _text(14, color: _muted)),
       ],
       if (outfit && item.equipped) ...[
