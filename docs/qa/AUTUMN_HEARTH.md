@@ -1,5 +1,20 @@
 # Autumn Hearth development preview
 
+## October 9 correction: usual Hearth first
+
+Tanya identified spiders/webs from the incorrect Halloween default. Both the
+scene and review app now default to the usual Hearth; Halloween is explicitly
+optional. The usual-room review uses the original square aspect ratio so the
+far-right window is not cropped away. Room artwork, pane masks, canonical
+furniture positions, avatars and all five autumn assets are unchanged.
+Regression coverage checks both defaults, square framing at four widths and
+opting into/out of Halloween. CI and delivered correction verification pending.
+
+Historical PR #99 delivery: merged/deployed `644ac8f`, workflow `37878567919`.
+Hosted revision, all five art hashes, rendering and leaf pause/resume verified.
+Earlier publication-only and hosted-pending notes below describe that earlier
+handoff, not current authorization. No pricing/catalog/account activation.
+
 Date: 2026-10-08 America/Chicago. Status: QA, not deployed or catalog-active.
 
 Founder approved the Autumn Hearth concept and requested completion of cleanup,
