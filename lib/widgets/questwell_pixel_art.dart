@@ -1,4 +1,5 @@
 import 'questwell_halloween_costume.dart';
+import 'questwell_scene_load.dart';
 import 'questwell_hallowed_spiders.dart';
 import 'questwell_scout_wardrobe.dart';
 import 'questwell_neutral_paper_doll.dart';
@@ -1186,271 +1187,274 @@ class QuestwellHearthPixelScene extends StatelessWidget {
             // Frozen boots end near row 310 on the shared 320 px canvas.
             final avatarTop = footY - avatarHeight * 310 / 320;
 
-            return Stack(
-              fit: StackFit.expand,
-              children: [
-                Positioned.fill(
-                  child: Image.asset(
-                    roomSetting.asset,
-                    fit: BoxFit.cover,
-                    alignment: const Alignment(0, .04),
-                    filterQuality: FilterQuality.medium,
-                    gaplessPlayback: true,
-                    errorBuilder: (_, __, ___) => const DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color(0xFF27344A),
-                            Color(0xFF1A1718),
-                            Color(0xFF0E0B0D),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                if (roomSetting == QuestwellHearthSetting.hallowedHearth)
-                  const Positioned.fill(child: QuestwellHallowedSpiders()),
-                if (roomSetting == QuestwellHearthSetting.astralSanctuary ||
-                    roomSetting ==
-                        QuestwellHearthSetting.emberglassConservatory)
-                  Positioned.fill(
-                      child: QuestwellSettingMotion(
-                          astral: roomSetting ==
-                              QuestwellHearthSetting.astralSanctuary)),
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          const Color(0x202A1920),
-                          const Color(0x0CDB9855),
-                          const Color(0x12B8753E),
-                          const Color(0x24261913),
-                        ],
-                        stops: const [0, .34, .70, 1],
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: -sceneWidth * .08,
-                  top: sceneHeight * .28,
-                  width: sceneWidth * .60,
-                  height: sceneHeight * .66,
-                  child: IgnorePointer(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: RadialGradient(
-                          center: const Alignment(-.45, .05),
-                          radius: .95,
-                          colors: [
-                            const Color(0x41FFB84C),
-                            const Color(0x1DE87947),
-                            const Color(0x00E87947),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned.fill(
-                  key: const ValueKey('hearth-woven-rug'),
-                  child: floorSlug != null
-                      ? (hearthRenderBySlug[floorSlug]?.renderKind ==
-                              'floor_sprite'
-                          ? QuestwellHearthFloorSprite(
-                              spec: hearthRenderBySlug[floorSlug]!,
-                            )
-                          : QuestwellWovenRug(
-                              emerald:
-                                  floorSlug == QuestwellWovenRugPainter.slug,
-                            ))
-                      : const QuestwellWovenRug(emerald: false),
-                ),
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: CustomPaint(
-                      painter: _HearthAtmospherePainter(
-                        accent: palette.last,
-                        compact: compact,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: avatarLeft - sceneWidth * .06,
-                  top: footY - sceneHeight * .09,
-                  width: avatarWidth + sceneWidth * .12,
-                  height: sceneHeight * .18,
-                  child: IgnorePointer(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: RadialGradient(
-                          radius: .78,
-                          colors: [
-                            palette.last.withValues(alpha: .11),
-                            const Color(0x12E87947),
-                            const Color(0x00E87947),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                if (equippedSlugs['wall_art'] case final String art)
-                  if (hearthRenderBySlug[art]?.renderKind ==
-                          'wall_art_sprite' ||
-                      art == QuestwellWallArt.slug)
-                    QuestwellHearthDecor.wallArtPositioned(
-                      slug: art,
-                      side: 'wall_center',
-                      scene: Size(sceneWidth, sceneHeight),
-                      library: roomSetting.compactGallery,
-                      renderSpec: hearthRenderBySlug[art],
-                    ),
-                for (final side in ['wall_left', 'wall_right'])
-                  if (equippedSlugs['wall_art:$side'] case final String art)
-                    if (hearthRenderBySlug[art]?.renderKind ==
-                            'wall_art_sprite' ||
-                        QuestwellWallArt.isSide(art))
-                      QuestwellHearthDecor.wallArtPositioned(
-                        slug: art,
-                        side: side,
-                        scene: Size(sceneWidth, sceneHeight),
-                        library: roomSetting.compactGallery,
-                        anchor: roomSetting.wallArtAnchor(
-                            Size(sceneWidth, sceneHeight), side),
-                        renderSpec: hearthRenderBySlug[art],
-                      ),
-                if (equippedSlugs['room:window'] == 'amberfall-window')
-                  Positioned.fill(
-                      key: const ValueKey('hearth-amberfall-window-bounds'),
-                      child:
-                          QuestwellAmberfallWindow(roomFile: roomSetting.file)),
-                if (equippedSlugs['room:window'] == 'rainy-window')
-                  Positioned.fill(
-                      key: ValueKey('hearth-rainy-window-bounds'),
-                      child: QuestwellRainyWindow(
-                          hallowed: roomSetting ==
-                              QuestwellHearthSetting.hallowedHearth)),
-                for (final slot in QuestwellHearthDecor.backToFront(
-                  equippedSlugs,
-                  profileBySlug: hearthProfileBySlug,
-                ))
-                  if ((equippedSlugs['room:$slot'] ??
-                          (slot == 'right' ? equippedSlugs['room'] : null))
-                      case final String slug)
-                    if (hearthRenderBySlug[slug]?.renderKind ==
-                            'static_sprite' ||
-                        slug == QuestwellAutumnLantern.slug ||
-                        QuestwellMasteryRelic.supports(slug) ||
-                        slug == QuestwellBookshelf.slug ||
-                        slug == QuestwellFern.slug ||
-                        slug == QuestwellReadingChair.slug ||
-                        slug == QuestwellReadingTable.slug ||
-                        slug == QuestwellHarvestDisplay.slug ||
-                        slug == QuestwellPotionWorkbench.slug ||
-                        slug == 'warding-lantern')
-                      QuestwellHearthDecor.positioned(
-                        slug: slug,
-                        slot: slot,
-                        equipment: equippedSlugs,
-                        profileBySlug: hearthProfileBySlug,
-                        scene: Size(sceneWidth, sceneHeight),
-                        profileKey: hearthProfileBySlug[slug],
-                        renderSpec: hearthRenderBySlug[slug],
-                      ),
-                for (final surface in ['mantel', 'bookshelf_top'])
-                  if ((QuestwellMilestoneReward.isTrophy(
-                              equippedSlugs['room:$surface']) ||
-                          QuestwellMasteryRelic.supports(
-                              equippedSlugs['room:$surface'])) &&
-                      (surface == 'mantel' ||
-                          equippedSlugs['room:left'] ==
-                              QuestwellBookshelf.slug ||
-                          equippedSlugs['room:right'] ==
-                              QuestwellBookshelf.slug))
-                    if (QuestwellMasteryRelic.supports(
-                        equippedSlugs['room:$surface']))
-                      QuestwellHearthDecor.relicSurfacePositioned(
-                          mantelAnchor: roomSetting
-                              .mantelAnchor(Size(sceneWidth, sceneHeight)),
-                          slot: surface,
-                          slug: equippedSlugs['room:$surface']!,
-                          scene: Size(sceneWidth, sceneHeight),
-                          equipment: equippedSlugs)
-                    else
-                      QuestwellHearthDecor.trophyPositioned(
-                          mantelAnchor: roomSetting
-                              .mantelAnchor(Size(sceneWidth, sceneHeight)),
-                          slot: surface,
-                          slug: equippedSlugs['room:$surface']!,
-                          scene: Size(sceneWidth, sceneHeight),
-                          equipment: equippedSlugs),
-                if (showAvatar)
-                  Positioned(
-                    key: const ValueKey('hearth-contact-shadow'),
-                    left: avatarLeft,
-                    top: avatarTop,
-                    width: avatarWidth,
-                    height: avatarHeight,
-                    child: IgnorePointer(
-                      child: CustomPaint(
-                          painter:
-                              QuestwellContactShadowPainter(avatarBodyType)),
-                    ),
-                  ),
-                if (showAvatar)
-                  Positioned(
-                    key: const ValueKey('hearth-avatar-bounds'),
-                    left: avatarLeft,
-                    top: avatarTop,
-                    width: avatarWidth,
-                    height: avatarHeight,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        DecoratedBox(
+            return QuestwellSceneLoad(
+                image: AssetImage(roomSetting.asset),
+                label: roomSetting.label,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Positioned.fill(
+                      child: Image.asset(
+                        roomSetting.asset,
+                        fit: BoxFit.cover,
+                        alignment: const Alignment(0, .04),
+                        filterQuality: FilterQuality.medium,
+                        gaplessPlayback: false,
+                        errorBuilder: (_, __, ___) => const DecoratedBox(
                           decoration: BoxDecoration(
-                            gradient: RadialGradient(
-                              center: const Alignment(0, -.15),
-                              radius: .72,
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
                               colors: [
-                                palette.last.withValues(alpha: .22),
-                                palette[1].withValues(alpha: .08),
-                                const Color(0x00FFFFFF),
+                                Color(0xFF27344A),
+                                Color(0xFF1A1718),
+                                Color(0xFF0E0B0D),
                               ],
                             ),
                           ),
                         ),
-                        QuestwellLayeredAdventurerArt(
-                          archetype: archetype,
-                          avatarBodyType: avatarBodyType,
-                          equippedSlugs: equippedSlugs,
-                          showRelic: showRelic,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color(0x774A2D1B),
-                          width: 1,
+                    if (roomSetting == QuestwellHearthSetting.hallowedHearth)
+                      const Positioned.fill(child: QuestwellHallowedSpiders()),
+                    if (roomSetting == QuestwellHearthSetting.astralSanctuary ||
+                        roomSetting ==
+                            QuestwellHearthSetting.emberglassConservatory)
+                      Positioned.fill(
+                          child: QuestwellSettingMotion(
+                              astral: roomSetting ==
+                                  QuestwellHearthSetting.astralSanctuary)),
+                    Positioned.fill(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              const Color(0x202A1920),
+                              const Color(0x0CDB9855),
+                              const Color(0x12B8753E),
+                              const Color(0x24261913),
+                            ],
+                            stops: const [0, .34, .70, 1],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ],
-            );
+                    Positioned(
+                      left: -sceneWidth * .08,
+                      top: sceneHeight * .28,
+                      width: sceneWidth * .60,
+                      height: sceneHeight * .66,
+                      child: IgnorePointer(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: RadialGradient(
+                              center: const Alignment(-.45, .05),
+                              radius: .95,
+                              colors: [
+                                const Color(0x41FFB84C),
+                                const Color(0x1DE87947),
+                                const Color(0x00E87947),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned.fill(
+                      key: const ValueKey('hearth-woven-rug'),
+                      child: floorSlug != null
+                          ? (hearthRenderBySlug[floorSlug]?.renderKind ==
+                                  'floor_sprite'
+                              ? QuestwellHearthFloorSprite(
+                                  spec: hearthRenderBySlug[floorSlug]!,
+                                )
+                              : QuestwellWovenRug(
+                                  emerald: floorSlug ==
+                                      QuestwellWovenRugPainter.slug,
+                                ))
+                          : const QuestwellWovenRug(emerald: false),
+                    ),
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: CustomPaint(
+                          painter: _HearthAtmospherePainter(
+                            accent: palette.last,
+                            compact: compact,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: avatarLeft - sceneWidth * .06,
+                      top: footY - sceneHeight * .09,
+                      width: avatarWidth + sceneWidth * .12,
+                      height: sceneHeight * .18,
+                      child: IgnorePointer(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: RadialGradient(
+                              radius: .78,
+                              colors: [
+                                palette.last.withValues(alpha: .11),
+                                const Color(0x12E87947),
+                                const Color(0x00E87947),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (equippedSlugs['wall_art'] case final String art)
+                      if (hearthRenderBySlug[art]?.renderKind ==
+                              'wall_art_sprite' ||
+                          art == QuestwellWallArt.slug)
+                        QuestwellHearthDecor.wallArtPositioned(
+                          slug: art,
+                          side: 'wall_center',
+                          scene: Size(sceneWidth, sceneHeight),
+                          library: roomSetting.compactGallery,
+                          renderSpec: hearthRenderBySlug[art],
+                        ),
+                    for (final side in ['wall_left', 'wall_right'])
+                      if (equippedSlugs['wall_art:$side'] case final String art)
+                        if (hearthRenderBySlug[art]?.renderKind ==
+                                'wall_art_sprite' ||
+                            QuestwellWallArt.isSide(art))
+                          QuestwellHearthDecor.wallArtPositioned(
+                            slug: art,
+                            side: side,
+                            scene: Size(sceneWidth, sceneHeight),
+                            library: roomSetting.compactGallery,
+                            anchor: roomSetting.wallArtAnchor(
+                                Size(sceneWidth, sceneHeight), side),
+                            renderSpec: hearthRenderBySlug[art],
+                          ),
+                    if (equippedSlugs['room:window'] == 'amberfall-window')
+                      Positioned.fill(
+                          key: const ValueKey('hearth-amberfall-window-bounds'),
+                          child: QuestwellAmberfallWindow(
+                              roomFile: roomSetting.file)),
+                    if (equippedSlugs['room:window'] == 'rainy-window')
+                      Positioned.fill(
+                          key: ValueKey('hearth-rainy-window-bounds'),
+                          child: QuestwellRainyWindow(
+                              hallowed: roomSetting ==
+                                  QuestwellHearthSetting.hallowedHearth)),
+                    for (final slot in QuestwellHearthDecor.backToFront(
+                      equippedSlugs,
+                      profileBySlug: hearthProfileBySlug,
+                    ))
+                      if ((equippedSlugs['room:$slot'] ??
+                              (slot == 'right' ? equippedSlugs['room'] : null))
+                          case final String slug)
+                        if (hearthRenderBySlug[slug]?.renderKind ==
+                                'static_sprite' ||
+                            slug == QuestwellAutumnLantern.slug ||
+                            QuestwellMasteryRelic.supports(slug) ||
+                            slug == QuestwellBookshelf.slug ||
+                            slug == QuestwellFern.slug ||
+                            slug == QuestwellReadingChair.slug ||
+                            slug == QuestwellReadingTable.slug ||
+                            slug == QuestwellHarvestDisplay.slug ||
+                            slug == QuestwellPotionWorkbench.slug ||
+                            slug == 'warding-lantern')
+                          QuestwellHearthDecor.positioned(
+                            slug: slug,
+                            slot: slot,
+                            equipment: equippedSlugs,
+                            profileBySlug: hearthProfileBySlug,
+                            scene: Size(sceneWidth, sceneHeight),
+                            profileKey: hearthProfileBySlug[slug],
+                            renderSpec: hearthRenderBySlug[slug],
+                          ),
+                    for (final surface in ['mantel', 'bookshelf_top'])
+                      if ((QuestwellMilestoneReward.isTrophy(
+                                  equippedSlugs['room:$surface']) ||
+                              QuestwellMasteryRelic.supports(
+                                  equippedSlugs['room:$surface'])) &&
+                          (surface == 'mantel' ||
+                              equippedSlugs['room:left'] ==
+                                  QuestwellBookshelf.slug ||
+                              equippedSlugs['room:right'] ==
+                                  QuestwellBookshelf.slug))
+                        if (QuestwellMasteryRelic.supports(
+                            equippedSlugs['room:$surface']))
+                          QuestwellHearthDecor.relicSurfacePositioned(
+                              mantelAnchor: roomSetting
+                                  .mantelAnchor(Size(sceneWidth, sceneHeight)),
+                              slot: surface,
+                              slug: equippedSlugs['room:$surface']!,
+                              scene: Size(sceneWidth, sceneHeight),
+                              equipment: equippedSlugs)
+                        else
+                          QuestwellHearthDecor.trophyPositioned(
+                              mantelAnchor: roomSetting
+                                  .mantelAnchor(Size(sceneWidth, sceneHeight)),
+                              slot: surface,
+                              slug: equippedSlugs['room:$surface']!,
+                              scene: Size(sceneWidth, sceneHeight),
+                              equipment: equippedSlugs),
+                    if (showAvatar)
+                      Positioned(
+                        key: const ValueKey('hearth-contact-shadow'),
+                        left: avatarLeft,
+                        top: avatarTop,
+                        width: avatarWidth,
+                        height: avatarHeight,
+                        child: IgnorePointer(
+                          child: CustomPaint(
+                              painter: QuestwellContactShadowPainter(
+                                  avatarBodyType)),
+                        ),
+                      ),
+                    if (showAvatar)
+                      Positioned(
+                        key: const ValueKey('hearth-avatar-bounds'),
+                        left: avatarLeft,
+                        top: avatarTop,
+                        width: avatarWidth,
+                        height: avatarHeight,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            DecoratedBox(
+                              decoration: BoxDecoration(
+                                gradient: RadialGradient(
+                                  center: const Alignment(0, -.15),
+                                  radius: .72,
+                                  colors: [
+                                    palette.last.withValues(alpha: .22),
+                                    palette[1].withValues(alpha: .08),
+                                    const Color(0x00FFFFFF),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            QuestwellLayeredAdventurerArt(
+                              archetype: archetype,
+                              avatarBodyType: avatarBodyType,
+                              equippedSlugs: equippedSlugs,
+                              showRelic: showRelic,
+                            ),
+                          ],
+                        ),
+                      ),
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: const Color(0x774A2D1B),
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ));
           },
         ),
       ),
