@@ -73,6 +73,22 @@ void main() {
       expect(submittedStep, 'step-19');
       expect(arenaAtSubmission!.top, greaterThanOrEqualTo(0));
       expect(arenaAtSubmission!.bottom, lessThanOrEqualTo(740));
+      // Once the arena is revealed, another attack must never flash the top
+      // of the board, even for a single frame before returning to the arena.
+      final list = tester.widget<ListView>(find.byType(ListView).first);
+      final controller = list.controller!;
+      final settledOffset = controller.offset;
+      expect(settledOffset, greaterThan(0));
+      final offsets = <double>[];
+      void recordOffset() => offsets.add(controller.offset);
+      controller.addListener(recordOffset);
+      callback();
+      await tester.pumpAndSettle();
+      controller.removeListener(recordOffset);
+      expect(writes, 2);
+      for (final offset in offsets) {
+        expect(offset, closeTo(settledOffset, 1));
+      }
       expect(tester.takeException(), isNull);
     });
   }
