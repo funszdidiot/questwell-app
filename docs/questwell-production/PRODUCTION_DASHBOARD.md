@@ -10,6 +10,28 @@ remote CI is the next gate.
 Development delivery and physical-device acceptance remain pending.
 Evidence: `../qa/HEARTH_PREVIEW_EXIT.md`.
 
+## Boston Terrier and Hearth Cat — October 9, 2026
+
+**QA / release authorized.** Tanya directed “Price them and push them” on
+October 9. Boston Terrier and Hearth Cat are each 180 coins, rare, non-premium,
+permanent, all classes/bodies. Client capability, Market samples and a guarded,
+data-only forward migration are prepared. Release head `7efdfbfd` passed full
+Flutter, browser, native and backend CI, including authenticated purchase,
+equipment and ownership checks. Combined audio-base checks are pending. Live catalog
+activation requires a dedicated 24-hour deployment credential; existing scoped
+collection secrets are not reused. No live purchase or delivery claim.
+Evidence: `../qa/HOUSEHOLD_FAMILIARS_RELEASE.md`.
+
+## Four-space beta soundtrack — October 9, 2026
+
+**QA.** Four music and two ambience candidates are published in PR #111.
+Tanya authorized feature publication and requested independent on/off and volume
+controls in Settings. Hosted resolution produced the reviewed dependency lock;
+initial run passed 12 checks and exposed a large-text test scroll issue, corrected
+with a track-restart regression fix. Full CI and delivered beta verification are
+pending. Physical iPhone and listening acceptance remain separate.
+Evidence: `../qa/BETA_AUDIO.md`.
+
 ## Hollow Harvest seasonal selection — October 8, 2026
 
 **QA.** The corrected connected-head preview is deployed at `24eab12` (PR #98).

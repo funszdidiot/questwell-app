@@ -1,0 +1,48 @@
+{
+  "release_id": "household-familiars-2026",
+  "approval": "Tanya: Price them and push them (2026-10-09). Pricing delegated: 180 coins each, matching existing rare familiars.",
+  "collection_key": null,
+  "availability": {
+    "ends_at": null
+  },
+  "items": [
+    {
+      "slug": "boston-terrier",
+      "name": "Boston Terrier",
+      "category": "familiar",
+      "rarity": "rare",
+      "description": "A bright-eyed companion with a green bandana, perky ears and a wiggle for every small win.",
+      "price": 180,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "asset_key": "familiar_boston_terrier",
+      "hearth": {
+        "profile_key": null
+      },
+      "provenance": {
+        "source_art_ref": "assets/images/questwell_familiar_boston-terrier_idle_v1.webp"
+      }
+    },
+    {
+      "slug": "hearth-cat",
+      "name": "Hearth Cat",
+      "category": "familiar",
+      "rarity": "rare",
+      "description": "A moon-collared companion with golden eyes, slow blinks and a cozy place beside your adventurer.",
+      "price": 180,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "asset_key": "familiar_hearth_cat",
+      "hearth": {
+        "profile_key": null
+      },
+      "provenance": {
+        "source_art_ref": "assets/images/questwell_familiar_hearth-cat_idle_v1.webp"
+      }
+    }
+  ]
+}

@@ -1,26 +1,238 @@
-const marketReviewCatalog = <Map<String,dynamic>>[
-  {"id":"review-woodland-scout-outfit","slug":"woodland-scout-outfit","name":"Woodland Scout Outfit","category":"chest","rarity":"uncommon","description":"Moss leather, an ivory rolled-sleeve shirt, reinforced trousers and travel boots. Available for female, neutral and male Scouts.","price":120,"premium":false,"required_archetype":"scout","collection_key":"woodland-scout","unlock_method":"shop"},
-  {"id":"review-everyday-adventurer-outfit","slug":"everyday-adventurer-outfit","name":"Everyday Adventurer Outfit","category":"chest","rarity":"common","description":"A simple ivory shirt, brown trousers and sturdy boots. Available for every body and class.","price":40,"premium":false,"required_archetype":null,"unlock_method":"shop"},
-  {"id": "review-autumn-ember-lantern", "slug": "autumn-ember-lantern", "name": "Autumn Ember Lantern", "category": "room", "rarity": "rare", "description": "A copper lantern with flickering amber light and swirling autumn leaves. A warm welcome for either side of your Hearth.", "price": 240, "premium": false, "asset_key": "room_autumn_ember_lantern", "required_archetype": null, "unlock_method": "shop"},
-  {"id": "review-harvest-apothecary-display", "slug": "harvest-apothecary-display", "name": "Harvest Apothecary Display", "category": "room", "rarity": "uncommon", "description": "Autumn pumpkins, jewel-toned potions and a burgundy recipe book on a walnut stand. A little harvest warmth for either side of your Hearth.", "price": 140, "premium": false, "asset_key": "room_harvest_apothecary_display", "required_archetype": null, "unlock_method": "shop"},
-  {"id":"review-midnight-harvest-coat","slug":"midnight-harvest-coat","name":"Midnight Harvest Coat","category":"chest","rarity":"rare","description":"Burgundy wool, moss-green lapels and copper oak-leaf clasps. An autumn layer for every adventurer.","price":180,"premium":false,"required_archetype":null,"unlock_method":"shop"},
-  {"id": "review-pumpkin-sprite", "slug": "pumpkin-sprite", "name": "Pumpkin Sprite", "category": "familiar", "rarity": "rare", "description": "A bright-eyed little harvest spirit with curling vines and a warm amber glow. Your next small win has company.", "price": 180, "premium": false, "asset_key": "familiar_pumpkin_sprite", "required_archetype": null, "unlock_method": "shop"},
-  {"id": "review-copper-potion-workbench", "slug": "copper-potion-workbench", "name": "Copper Potion Workbench", "category": "room", "rarity": "uncommon", "description": "A walnut apothecary cabinet with a copper distiller, jewel-toned potions and herb drawers. Place on either side of your Hearth.", "price": 120, "premium": false, "asset_key": "room_copper_potion_workbench", "required_archetype": null, "unlock_method": "shop"},
-  {"id": "review-midnight-observatory", "slug": "midnight-observatory", "name": "Midnight Observatory", "category": "room", "rarity": "uncommon", "description": "Indigo walls, brass celestial trim and a star-filled window. Changes your Hearth setting; keeps your furniture.", "price": 120, "premium": false, "asset_key": "room_midnight_observatory", "required_archetype": null, "unlock_method": "shop"},
-  {"id": "review-alchemists-workshop", "slug": "alchemists-workshop", "name": "Alchemist’s Workshop", "category": "room", "rarity": "uncommon", "description": "Plum walls, copper pipes, potion shelves and hanging herbs. Changes your Hearth setting; keeps your furniture.", "price": 120, "premium": false, "asset_key": "room_alchemists_workshop", "required_archetype": null, "unlock_method": "shop"},
-  {"id": "review-astral-sanctuary", "slug": "astral-sanctuary", "name": "Astral Sanctuary", "category": "room", "rarity": "rare", "description": "Animated crystal shimmer and drifting starlight in a violet sanctuary. Changes your Hearth setting; keeps your furniture.", "price": 300, "premium": false, "asset_key": "room_astral_sanctuary", "required_archetype": null, "unlock_method": "shop"},
-  {"id": "review-emberglass-conservatory", "slug": "emberglass-conservatory", "name": "Emberglass Conservatory", "category": "room", "rarity": "rare", "description": "Animated golden fireflies among copper glasswork and climbing greenery. Changes your Hearth setting; keeps your furniture.", "price": 300, "premium": false, "asset_key": "room_emberglass_conservatory", "required_archetype": null, "unlock_method": "shop"},
-  {"id": "review-enchanted-library", "slug": "enchanted-library", "name": "Enchanted Library", "category": "room", "rarity": "uncommon", "description": "Emerald walls, walnut shelves and warm brass lamps for a quiet reading retreat. Changes your Hearth setting; keeps your furniture.", "price": 120, "premium": false, "asset_key": "room_enchanted_library", "required_archetype": null, "unlock_method": "shop"},
-  {"id": "review-woodland-cottage", "slug": "woodland-cottage", "name": "Woodland Cottage", "category": "room", "rarity": "uncommon", "description": "A moss-green cottage with climbing ivy, warm oak beams and a forest view. Changes your Hearth setting; keeps your furniture.", "price": 120, "premium": false, "asset_key": "room_woodland_cottage", "required_archetype": null, "unlock_method": "shop"},
-  {"id": "review-midnight-harvest", "slug": "midnight-harvest", "name": "Midnight Harvest", "category": "room", "rarity": "uncommon", "description": "Copper leaves, amber firelight and a moonlit autumn forest. Changes your Hearth setting; keeps your furniture.", "price": 120, "premium": false, "asset_key": "room_midnight_harvest", "required_archetype": null, "unlock_method": "shop"},
-
+const marketReviewCatalog = <Map<String, dynamic>>[
+  {
+    "slug": "boston-terrier",
+    "name": "Boston Terrier",
+    "category": "familiar",
+    "rarity": "rare",
+    "description":
+        "A bright-eyed companion with a green bandana, perky ears and a wiggle for every small win.",
+    "price": 180,
+    "premium": false,
+    "required_archetype": null,
+    "unlock_method": "shop",
+    "milestone_level": null,
+    "asset_key": "familiar_boston_terrier",
+    "id": "review-boston-terrier",
+    "edition_type": "standard"
+  },
+  {
+    "slug": "hearth-cat",
+    "name": "Hearth Cat",
+    "category": "familiar",
+    "rarity": "rare",
+    "description":
+        "A moon-collared companion with golden eyes, slow blinks and a cozy place beside your adventurer.",
+    "price": 180,
+    "premium": false,
+    "required_archetype": null,
+    "unlock_method": "shop",
+    "milestone_level": null,
+    "asset_key": "familiar_hearth_cat",
+    "id": "review-hearth-cat",
+    "edition_type": "standard"
+  },
+  {
+    "id": "review-woodland-scout-outfit",
+    "slug": "woodland-scout-outfit",
+    "name": "Woodland Scout Outfit",
+    "category": "chest",
+    "rarity": "uncommon",
+    "description":
+        "Moss leather, an ivory rolled-sleeve shirt, reinforced trousers and travel boots. Available for female, neutral and male Scouts.",
+    "price": 120,
+    "premium": false,
+    "required_archetype": "scout",
+    "collection_key": "woodland-scout",
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-everyday-adventurer-outfit",
+    "slug": "everyday-adventurer-outfit",
+    "name": "Everyday Adventurer Outfit",
+    "category": "chest",
+    "rarity": "common",
+    "description":
+        "A simple ivory shirt, brown trousers and sturdy boots. Available for every body and class.",
+    "price": 40,
+    "premium": false,
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-autumn-ember-lantern",
+    "slug": "autumn-ember-lantern",
+    "name": "Autumn Ember Lantern",
+    "category": "room",
+    "rarity": "rare",
+    "description":
+        "A copper lantern with flickering amber light and swirling autumn leaves. A warm welcome for either side of your Hearth.",
+    "price": 240,
+    "premium": false,
+    "asset_key": "room_autumn_ember_lantern",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-harvest-apothecary-display",
+    "slug": "harvest-apothecary-display",
+    "name": "Harvest Apothecary Display",
+    "category": "room",
+    "rarity": "uncommon",
+    "description":
+        "Autumn pumpkins, jewel-toned potions and a burgundy recipe book on a walnut stand. A little harvest warmth for either side of your Hearth.",
+    "price": 140,
+    "premium": false,
+    "asset_key": "room_harvest_apothecary_display",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-midnight-harvest-coat",
+    "slug": "midnight-harvest-coat",
+    "name": "Midnight Harvest Coat",
+    "category": "chest",
+    "rarity": "rare",
+    "description":
+        "Burgundy wool, moss-green lapels and copper oak-leaf clasps. An autumn layer for every adventurer.",
+    "price": 180,
+    "premium": false,
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-pumpkin-sprite",
+    "slug": "pumpkin-sprite",
+    "name": "Pumpkin Sprite",
+    "category": "familiar",
+    "rarity": "rare",
+    "description":
+        "A bright-eyed little harvest spirit with curling vines and a warm amber glow. Your next small win has company.",
+    "price": 180,
+    "premium": false,
+    "asset_key": "familiar_pumpkin_sprite",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-copper-potion-workbench",
+    "slug": "copper-potion-workbench",
+    "name": "Copper Potion Workbench",
+    "category": "room",
+    "rarity": "uncommon",
+    "description":
+        "A walnut apothecary cabinet with a copper distiller, jewel-toned potions and herb drawers. Place on either side of your Hearth.",
+    "price": 120,
+    "premium": false,
+    "asset_key": "room_copper_potion_workbench",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-midnight-observatory",
+    "slug": "midnight-observatory",
+    "name": "Midnight Observatory",
+    "category": "room",
+    "rarity": "uncommon",
+    "description":
+        "Indigo walls, brass celestial trim and a star-filled window. Changes your Hearth setting; keeps your furniture.",
+    "price": 120,
+    "premium": false,
+    "asset_key": "room_midnight_observatory",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-alchemists-workshop",
+    "slug": "alchemists-workshop",
+    "name": "Alchemist’s Workshop",
+    "category": "room",
+    "rarity": "uncommon",
+    "description":
+        "Plum walls, copper pipes, potion shelves and hanging herbs. Changes your Hearth setting; keeps your furniture.",
+    "price": 120,
+    "premium": false,
+    "asset_key": "room_alchemists_workshop",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-astral-sanctuary",
+    "slug": "astral-sanctuary",
+    "name": "Astral Sanctuary",
+    "category": "room",
+    "rarity": "rare",
+    "description":
+        "Animated crystal shimmer and drifting starlight in a violet sanctuary. Changes your Hearth setting; keeps your furniture.",
+    "price": 300,
+    "premium": false,
+    "asset_key": "room_astral_sanctuary",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-emberglass-conservatory",
+    "slug": "emberglass-conservatory",
+    "name": "Emberglass Conservatory",
+    "category": "room",
+    "rarity": "rare",
+    "description":
+        "Animated golden fireflies among copper glasswork and climbing greenery. Changes your Hearth setting; keeps your furniture.",
+    "price": 300,
+    "premium": false,
+    "asset_key": "room_emberglass_conservatory",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-enchanted-library",
+    "slug": "enchanted-library",
+    "name": "Enchanted Library",
+    "category": "room",
+    "rarity": "uncommon",
+    "description":
+        "Emerald walls, walnut shelves and warm brass lamps for a quiet reading retreat. Changes your Hearth setting; keeps your furniture.",
+    "price": 120,
+    "premium": false,
+    "asset_key": "room_enchanted_library",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-woodland-cottage",
+    "slug": "woodland-cottage",
+    "name": "Woodland Cottage",
+    "category": "room",
+    "rarity": "uncommon",
+    "description":
+        "A moss-green cottage with climbing ivy, warm oak beams and a forest view. Changes your Hearth setting; keeps your furniture.",
+    "price": 120,
+    "premium": false,
+    "asset_key": "room_woodland_cottage",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
+  {
+    "id": "review-midnight-harvest",
+    "slug": "midnight-harvest",
+    "name": "Midnight Harvest",
+    "category": "room",
+    "rarity": "uncommon",
+    "description":
+        "Copper leaves, amber firelight and a moonlit autumn forest. Changes your Hearth setting; keeps your furniture.",
+    "price": 120,
+    "premium": false,
+    "asset_key": "room_midnight_harvest",
+    "required_archetype": null,
+    "unlock_method": "shop"
+  },
   {
     "id": "review-emerald-wayfarer-rug",
     "slug": "emerald-wayfarer-rug",
     "name": "Emerald Wayfarer Rug",
     "category": "room",
     "rarity": "common",
-    "description": "Deep green threads, a woven gold border, and a compass rose. A soft place to begin your next adventure.",
+    "description":
+        "Deep green threads, a woven gold border, and a compass rose. A soft place to begin your next adventure.",
     "price": 20,
     "premium": false,
     "asset_key": "room_emerald_wayfarer_rug",
@@ -57,7 +269,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Brass Lantern",
     "category": "hands",
     "rarity": "uncommon",
-    "description": "A warm amber light for the next small step. Brass, candlelight, and a little courage.",
+    "description":
+        "A warm amber light for the next small step. Brass, candlelight, and a little courage.",
     "price": 60,
     "premium": false,
     "required_archetype": null,
@@ -69,7 +282,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Emerald Scholar Scarf",
     "category": "neck",
     "rarity": "uncommon",
-    "description": "A deep emerald scarf with warm gold trim for the Hearth adventurer.",
+    "description":
+        "A deep emerald scarf with warm gold trim for the Hearth adventurer.",
     "price": 60,
     "premium": false,
     "required_archetype": null,
@@ -93,7 +307,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Moonstone Brooch",
     "category": "accessory",
     "rarity": "uncommon",
-    "description": "A little moonlight for the road ahead. Icy blue stone framed in antique gold.",
+    "description":
+        "A little moonlight for the road ahead. Icy blue stone framed in antique gold.",
     "price": 60,
     "premium": false,
     "required_archetype": null,
@@ -117,7 +332,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Burgundy Reading Chair",
     "category": "room",
     "rarity": "uncommon",
-    "description": "Burgundy upholstery, walnut legs, and brass studs. Settle in with a good book.",
+    "description":
+        "Burgundy upholstery, walnut legs, and brass studs. Settle in with a good book.",
     "price": 120,
     "premium": false,
     "required_archetype": null,
@@ -129,7 +345,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Celestial Study",
     "category": "wall_art",
     "rarity": "uncommon",
-    "description": "A golden crescent and constellations against midnight blue. Hang on the left or right wall.",
+    "description":
+        "A golden crescent and constellations against midnight blue. Hang on the left or right wall.",
     "price": 120,
     "premium": false,
     "required_archetype": null,
@@ -141,7 +358,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Fern Study",
     "category": "wall_art",
     "rarity": "uncommon",
-    "description": "A green fern on warm parchment, framed in walnut and gold. Hang on the left or right wall.",
+    "description":
+        "A green fern on warm parchment, framed in walnut and gold. Hang on the left or right wall.",
     "price": 120,
     "premium": false,
     "required_archetype": null,
@@ -153,7 +371,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Hearth Fern",
     "category": "room",
     "rarity": "uncommon",
-    "description": "Lush green fronds in an aged brass planter. A little life for your Hearth.",
+    "description":
+        "Lush green fronds in an aged brass planter. A little life for your Hearth.",
     "price": 120,
     "premium": false,
     "required_archetype": null,
@@ -165,7 +384,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Moonlit Woodland",
     "category": "wall_art",
     "rarity": "uncommon",
-    "description": "A moonlit forest and a warmly lit cottage, framed in walnut and gold. Hang in the center, with room for smaller paintings on either side.",
+    "description":
+        "A moonlit forest and a warmly lit cottage, framed in walnut and gold. Hang in the center, with room for smaller paintings on either side.",
     "price": 120,
     "premium": false,
     "required_archetype": null,
@@ -189,7 +409,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Walnut Bookshelf",
     "category": "room",
     "rarity": "uncommon",
-    "description": "Warm walnut, worn jewel-toned books, and brass details. A quiet corner for your Hearth.",
+    "description":
+        "Warm walnut, worn jewel-toned books, and brass details. A quiet corner for your Hearth.",
     "price": 120,
     "premium": false,
     "required_archetype": null,
@@ -201,7 +422,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Walnut Reading Table",
     "category": "room",
     "rarity": "uncommon",
-    "description": "Worn books, warm walnut, and candlelight. A quiet companion for your reading chair.",
+    "description":
+        "Worn books, warm walnut, and candlelight. A quiet companion for your reading chair.",
     "price": 120,
     "premium": false,
     "required_archetype": null,
@@ -237,7 +459,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Annotated Grimoire",
     "category": "hands",
     "rarity": "rare",
-    "description": "A margin-filled field guide for people who weaponize footnotes.",
+    "description":
+        "A margin-filled field guide for people who weaponize footnotes.",
     "price": 160,
     "premium": false,
     "required_archetype": "scholar",
@@ -249,7 +472,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Focus Tonic",
     "category": "effect",
     "rarity": "rare",
-    "description": "A suspiciously sparkly reminder that momentum can be brewed.",
+    "description":
+        "A suspiciously sparkly reminder that momentum can be brewed.",
     "price": 160,
     "premium": false,
     "required_archetype": "alchemist",
@@ -261,7 +485,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Hearthguard Mantle",
     "category": "chest",
     "rarity": "rare",
-    "description": "Heavy enough to feel protected. Soft enough for a desk chair.",
+    "description":
+        "Heavy enough to feel protected. Soft enough for a desk chair.",
     "price": 160,
     "premium": false,
     "required_archetype": "guardian",
@@ -321,7 +546,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Glass Slime",
     "category": "familiar",
     "rarity": "epic",
-    "description": "A tiny lab assistant with excellent viscosity and no inbox.",
+    "description":
+        "A tiny lab assistant with excellent viscosity and no inbox.",
     "price": 280,
     "premium": false,
     "required_archetype": "alchemist",
@@ -357,7 +583,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Warding Lantern",
     "category": "room",
     "rarity": "epic",
-    "description": "Keeps the room warm and the unnecessary meeting invites out.",
+    "description":
+        "Keeps the room warm and the unnecessary meeting invites out.",
     "price": 280,
     "premium": false,
     "required_archetype": "guardian",
@@ -369,7 +596,8 @@ const marketReviewCatalog = <Map<String,dynamic>>[
     "name": "Emerald Dragon",
     "category": "familiar",
     "rarity": "epic",
-    "description": "A small emerald companion with golden horns and a talent for guarding your next small win.",
+    "description":
+        "A small emerald companion with golden horns and a talent for guarding your next small win.",
     "price": 320,
     "premium": false,
     "required_archetype": null,

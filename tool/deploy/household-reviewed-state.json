@@ -1,0 +1,17 @@
+{
+  "before": {
+    "records": [],
+    "new_count": 0,
+    "live_valid": false,
+    "render_count": 0,
+    "history_count": 57,
+    "schema_sha256": "23a2159990b3954a335b8918ac660effd549e2ba6448a402f4afe2f3bdd99d65",
+    "catalog_sha256": "4bfc1a13005ee259f19b6591fed964155fcfc50287b870082bc1a9571fb066c9",
+    "history_sha256": "2d7cb90094fda09712da131b76927a0cd000fe8365a19b59370561c833817280",
+    "purchase_sha256": "9896f3fc420f06eb5d529ed1c967b2f8f827fd11c8141678bfe778a0bb5d94da"
+  },
+  "source_sha256": "83e2663f9dfa897410dcc503c1aae2fed1c50188b85dd1e7e9d1d18dfcba627b",
+  "activation_sha256": "e6466bfa872e374b95b1cf62a2f6cd4d5feb687d9a0054a3a4d87822a650eb90",
+  "catalog_sql_sha256": "a9a98f3066496014fac1d403f5c0104c2deafd365602a3a2fffe787cbd2b86ef",
+  "manifest_sha256": "5145d2414e8041caee4f37cda5499f3b3710de0dd63f304eba71468d4db56562"
+}
