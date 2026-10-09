@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'questwell_hollow_harvest.dart';
 import 'package:flutter/material.dart';
 import 'questwell_typography.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,9 +7,16 @@ import 'questwell_pixel_art.dart';
 
 /// Detailed boss encounters. This layer never writes progress or awards rewards.
 class QuestwellBossEncounter extends StatefulWidget {
-  const QuestwellBossEncounter({super.key, required this.encounterId,
-    this.bossType = 'inbox_hydra', this.progress = 0, this.defeated = false, this.persistEntrance = true,
-    this.archetype = 'wanderer', this.body = 'neutral', this.equipment = const {}});
+  const QuestwellBossEncounter(
+      {super.key,
+      required this.encounterId,
+      this.bossType = 'inbox_hydra',
+      this.progress = 0,
+      this.defeated = false,
+      this.persistEntrance = true,
+      this.archetype = 'wanderer',
+      this.body = 'neutral',
+      this.equipment = const {}});
   final String encounterId;
   final String bossType;
   final double progress;
@@ -23,6 +31,7 @@ class QuestwellBossEncounter extends StatefulWidget {
 
 class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
     with TickerProviderStateMixin {
+  bool get _harvest => widget.bossType == 'hollow_harvest';
   bool get _hydra => widget.bossType == 'inbox_hydra';
   bool get _dragon => widget.bossType == 'update_dragon';
   bool get _troll => widget.bossType == 'ticket_troll';
@@ -31,177 +40,536 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
   bool get _kraken => widget.bossType == 'calendar_kraken';
   bool get _slime => widget.bossType == 'spreadsheet_slime';
   bool get _mimic => widget.bossType == 'meeting_mimic';
-  String get _name => _dragon ? 'UPDATE DRAGON' : _troll ? 'TICKET TROLL' : _swarm ? 'NOTIFICATION SWARM' : _printer ? 'PRINTER POLTERGEIST' : _kraken ? 'CALENDAR KRAKEN' : _slime ? 'SPREADSHEET SLIME' : _mimic ? 'MEETING MIMIC' : 'INBOX HYDRA';
-  String get taunt => _dragon ? 'Just one quick restart.' : _troll ? 'Have you tried opening another ticket?' : _swarm ? 'Just one more ping.' : _printer ? 'Paper jam. Naturally.' : _kraken ? 'I found a gap in your calendar.' : _slime ? 'It worked in the other tab.' : _mimic ? 'This could have been an email.' : 'You said you’d do it tomorrow.';
+  String get _name => _harvest
+      ? 'THE HOLLOW HARVEST'
+      : _dragon
+          ? 'UPDATE DRAGON'
+          : _troll
+              ? 'TICKET TROLL'
+              : _swarm
+                  ? 'NOTIFICATION SWARM'
+                  : _printer
+                      ? 'PRINTER POLTERGEIST'
+                      : _kraken
+                          ? 'CALENDAR KRAKEN'
+                          : _slime
+                              ? 'SPREADSHEET SLIME'
+                              : _mimic
+                                  ? 'MEETING MIMIC'
+                                  : 'INBOX HYDRA';
+  String get taunt => _harvest
+      ? 'A few unfinished tasks? How delicious.'
+      : _dragon
+          ? 'Just one quick restart.'
+          : _troll
+              ? 'Have you tried opening another ticket?'
+              : _swarm
+                  ? 'Just one more ping.'
+                  : _printer
+                      ? 'Paper jam. Naturally.'
+                      : _kraken
+                          ? 'I found a gap in your calendar.'
+                          : _slime
+                              ? 'It worked in the other tab.'
+                              : _mimic
+                                  ? 'This could have been an email.'
+                                  : 'You said you’d do it tomorrow.';
   static final _seen = <String>{};
   late final AnimationController _intro = AnimationController(
-    vsync: this, duration: const Duration(milliseconds: 3200))
-    ..addStatusListener((status) { if (status == AnimationStatus.completed) _remember(); });
+      vsync: this, duration: const Duration(milliseconds: 3200))
+    ..addStatusListener((status) {
+      if (status == AnimationStatus.completed) _remember();
+    });
   bool _started = false;
   bool _ready = false;
   bool _reduced = false;
   bool _active = true;
   late final AnimationController _impact = AnimationController(
-    vsync: this, duration: const Duration(milliseconds: 850), value: 1);
+      vsync: this, duration: const Duration(milliseconds: 850), value: 1);
   double _previousHealth = 1;
   @override
   void didUpdateWidget(covariant QuestwellBossEncounter oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.progress > oldWidget.progress || (widget.defeated && !oldWidget.defeated)) {
-      _previousHealth = oldWidget.defeated ? 0 : (1 - oldWidget.progress).clamp(0.0, 1.0);
-      if (_reduced || !_active) { _impact.value = 1; }
-      else { _impact.forward(from: 0); }
+    if (widget.progress > oldWidget.progress ||
+        (widget.defeated && !oldWidget.defeated)) {
+      _previousHealth =
+          oldWidget.defeated ? 0 : (1 - oldWidget.progress).clamp(0.0, 1.0);
+      if (_reduced || !_active) {
+        _impact.value = 1;
+      } else {
+        _impact.forward(from: 0);
+      }
     }
   }
+
   String get _storageKey => 'questwell.boss.intro.v1.${widget.encounterId}';
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _reduced = MediaQuery.disableAnimationsOf(context);
     _active = TickerMode.of(context);
-    if (_reduced) { _impact.value = 1; }
-    else if (!_active) { _impact.stop(); }
-    else if (_impact.value < 1 && !_impact.isAnimating) { _impact.forward(); }
-    if (!_started) { _started = true; _begin(); }
-    else if (_ready) {
-      if (_reduced) { _intro.value = 1; }
-      else if (!_active) { _intro.stop(); }
-      else if (_intro.value < 1) { _intro.forward(); }
+    if (_reduced) {
+      _impact.value = 1;
+    } else if (!_active) {
+      _impact.stop();
+    } else if (_impact.value < 1 && !_impact.isAnimating) {
+      _impact.forward();
+    }
+    if (!_started) {
+      _started = true;
+      _begin();
+    } else if (_ready) {
+      if (_reduced) {
+        _intro.value = 1;
+      } else if (!_active) {
+        _intro.stop();
+      } else if (_intro.value < 1) {
+        _intro.forward();
+      }
     }
   }
+
   Future<void> _begin() async {
-    var seen = widget.progress > 0 || widget.defeated || _seen.contains(_storageKey);
+    var seen =
+        widget.progress > 0 || widget.defeated || _seen.contains(_storageKey);
     if (widget.persistEntrance && !seen) {
-      try { seen = (await SharedPreferences.getInstance()).getBool(_storageKey) ?? false; }
-      catch (_) { /* Entrance still works when local storage is unavailable. */ }
+      try {
+        seen = (await SharedPreferences.getInstance()).getBool(_storageKey) ??
+            false;
+      } catch (_) {
+        /* Entrance still works when local storage is unavailable. */
+      }
     }
     if (!mounted) return;
     setState(() => _ready = true);
-    if (seen || _reduced) { _intro.value = 1; }
-    else if (_active) { _intro.forward(); }
+    if (seen || _reduced) {
+      _intro.value = 1;
+    } else if (_active) {
+      _intro.forward();
+    }
   }
+
   Future<void> _remember() async {
     if (!widget.persistEntrance) return;
     _seen.add(_storageKey);
-    try { await (await SharedPreferences.getInstance()).setBool(_storageKey, true); }
-    catch (_) { /* Session-level suppression remains available. */ }
+    try {
+      await (await SharedPreferences.getInstance()).setBool(_storageKey, true);
+    } catch (_) {/* Session-level suppression remains available. */}
   }
-  void _skip() { _intro.value = 1; }
+
+  void _skip() {
+    _intro.value = 1;
+  }
+
   @override
-  void dispose() { _intro.dispose(); _impact.dispose(); super.dispose(); }
+  void dispose() {
+    _intro.dispose();
+    _impact.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final sprite = RepaintBoundary(child: Transform.flip(flipX: _dragon, child: Image.asset(_dragon ? 'assets/images/questwell_update_dragon_v1.webp' : _troll ? 'assets/images/questwell_ticket_troll_v2.webp' : _swarm ? 'assets/images/questwell_notification_swarm_v2.webp' : _printer ? 'assets/images/questwell_printer_poltergeist_v1.webp' : _kraken ? 'assets/images/questwell_calendar_kraken_v1.webp' : _slime ? 'assets/images/questwell_spreadsheet_slime_v1.webp' : _mimic ? 'assets/images/questwell_meeting_mimic_v1.webp' : 'assets/images/questwell_inbox_hydra_v1.webp',
-      fit: BoxFit.contain, semanticLabel: _dragon ? 'Update Dragon, a copper dragon guarding brass gears and upgrade scrolls' : _troll ? 'Ticket Troll, a grumpy mossy stone clerk holding a stamp and a stack of requests' : _swarm ? 'Notification Swarm, mischievous winged bells and sealed messages' : _printer ? 'Printer Poltergeist, a haunted brass and wood printer trailing ghostly paper' : _kraken ? 'Calendar Kraken, a violet tentacled creature clutching appointment scrolls and a brass watch' : _slime ? 'Spreadsheet Slime, an emerald jelly creature tangled in parchment grids' : _mimic
-        ? 'Meeting Mimic, an enchanted burgundy conference chair with a toothy grin'
-        : 'Inbox Hydra, a three-headed serpent guarding a pile of letters')));
-    final avatar = RepaintBoundary(child: QuestwellLayeredAdventurerArt(
-      archetype: widget.archetype, avatarBodyType: widget.body, equippedSlugs: widget.equipment));
-    return AnimatedBuilder(animation: Listenable.merge([_intro, _impact]), builder: (context, _) {
-      final t = _ready ? _intro.value : 0.0;
-      final arriving = t < 1;
-      final slide = Curves.easeOutCubic.transform(((t - .15) / .28).clamp(0.0, 1.0));
-      final land = ((t - .43) / .13).clamp(0.0, 1.0);
-      final lift = _reduced ? 0.0 : _dragon ? -math.sin(land * math.pi) * 20 : _troll
-        ? -math.sin(slide * math.pi * 2).abs() * (1 - slide) * 18 - math.sin(land * math.pi) * 4
-        : -math.sin(land * math.pi) * (_mimic ? 25 : 9);
-      final wobble = _reduced ? 0.0 : _dragon
-        ? -(1 - slide) * .18 + math.sin(land * math.pi * 2) * (1 - land) * .06 : _troll
-        ? math.sin(land * math.pi * 4) * (1 - land) * .04 : _swarm
-        ? math.sin(slide * math.pi * 4) * (1 - slide) * .12 + math.sin(land * math.pi * 4) * (1 - land) * .055 : _printer
-        ? math.sin(land * math.pi * 6) * (1 - land) * .045 : _kraken
-        ? (1 - slide) * .18 + math.sin(land * math.pi * 2) * (1 - land) * .09
-        : _mimic ? math.sin(land * math.pi * 3) * (1 - land) * .07 : 0.0;
-      final squash = _reduced || !_slime ? 0.0 : math.sin(land * math.pi * 2) * (1 - land) * .22;
-      final letters = (((t - .53) / .30).clamp(0.0, 1.0) * taunt.length).floor();
-      final hp = widget.defeated ? 0.0 : (1 - widget.progress).clamp(0.0, 1.0);
-      final fill = ((t - .82) / .16).clamp(0.0, 1.0);
-      final impact = _impact.value;
-      final recoil = _reduced ? 0.0 : math.sin(impact * math.pi * 4) * (1 - impact) * 13;
-      final displayedHp = _previousHealth + (hp - _previousHealth) * Curves.easeOutCubic.transform(impact);
-      return Container(decoration: BoxDecoration(border: Border.all(color: const Color(0xFFB99855), width: 2)),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Container(padding: const EdgeInsets.all(12), color: const Color(0xFF1E2029),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Text(widget.defeated ? '$_name · DEFEATED' : _name,
-              style: QuestwellTypography.sectionHeading(size: 11, color: const Color(0xFFF1D79B))),
-            const SizedBox(height: 9),
-            Semantics(label: 'Boss health ${(hp * 100).round()} percent',
-              child: QuestwellPixelMeter(value: displayedHp * fill, kind: 'hp', height: 14, segments: 12)),
-          ])),
-        // Dialogue owns its own layout space, never the fighters' paint area.
-        if (!widget.defeated)
-          Container(key: const ValueKey('boss-dialogue'),
-            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-            color: const Color(0xFF1E2029),
-            child: Container(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              decoration: BoxDecoration(color: const Color(0xFFF1E5C6),
-                border: Border.all(color: const Color(0xFF9E7B46), width: 2)),
-              child: Semantics(label: t >= .53 ? taunt : 'Boss approaching',
-                child: ExcludeSemantics(child: Stack(children: [
-                  // Reserve the complete wrapped height throughout the typewriter reveal.
-                  Opacity(opacity: 0, child: RichText(textScaler: MediaQuery.textScalerOf(context), text: TextSpan(text: taunt,
-                    style: QuestwellTypography.body(color: const Color(0xFF30271E), fontSize: 16, height: 1.3, fontWeight: FontWeight.w700)))),
-                  Text(t >= .53 ? taunt.substring(0, letters) : '',
-                    style: QuestwellTypography.body(color: const Color(0xFF30271E), fontSize: 16, height: 1.3, fontWeight: FontWeight.w700)),
-                ]))))),
-        LayoutBuilder(builder: (context, constraints) {
-          final width = constraints.maxWidth;
-          final arenaHeight = width < 400 ? 300.0 : 330.0;
-          // Bottom-aligned cover keeps each illustrated stage beneath the fighters.
-          final stageBottom = (_hydra || _mimic || _slime || _kraken || _printer || _swarm || _troll || _dragon)
-            ? math.max(arenaHeight, width / 1.5) * (_swarm ? .28 : _troll ? .26 : _printer ? .24 : _dragon ? .23 : .20) : 24.0;
-          return Semantics(label: arriving ? 'Boss entrance. Tap to skip.' : 'Boss encounter',
-            child: GestureDetector(onTap: arriving ? _skip : null,
-              child: Container(key: const ValueKey('boss-arena'), height: arenaHeight, clipBehavior: Clip.hardEdge,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter,
-                    colors: [Color(0xFF10222A), Color(0xFF242133), Color(0xFF392A28)])),
-                child: Stack(children: [
-                  if (_hydra || _mimic || _slime || _kraken || _printer || _swarm || _troll || _dragon)
-                    Positioned.fill(child: RepaintBoundary(child: Image.asset(
-                      _dragon ? 'assets/images/questwell_dragon_citadel_v1.webp'
-                        : _troll ? 'assets/images/questwell_troll_cavern_v1.webp'
-                        : _swarm ? 'assets/images/questwell_swarm_belltower_v1.webp'
-                        : _printer ? 'assets/images/questwell_printer_printworks_v1.webp'
-                        : _kraken ? 'assets/images/questwell_kraken_observatory_v1.webp'
-                        : _slime ? 'assets/images/questwell_slime_archive_v1.webp'
-                        : _mimic ? 'assets/images/questwell_mimic_conference_v1.webp'
-                        : 'assets/images/questwell_hydra_mailroom_v1.webp',
-                      key: ValueKey(_dragon ? 'dragon-citadel-arena' : _troll ? 'troll-cavern-arena' : _swarm ? 'swarm-belltower-arena' : _printer ? 'printer-printworks-arena' : _kraken ? 'kraken-observatory-arena' : _slime ? 'slime-archive-arena' : _mimic ? 'mimic-conference-arena' : 'hydra-mailroom-arena'),
-                      fit: BoxFit.cover, alignment: Alignment.bottomCenter,
-                      excludeFromSemantics: true, filterQuality: FilterQuality.low,
-                      errorBuilder: (_, __, ___) => CustomPaint(painter: _ArenaPainter(dust: land)))))
-                  else
-                    Positioned.fill(child: CustomPaint(painter: _ArenaPainter(dust: land))),
-                  Positioned(left: width * .03, bottom: stageBottom, width: width * .42, height: 190, child: avatar),
-                  Positioned(right: width * .01, bottom: stageBottom - 1, width: width * .59,
-                    height: (_swarm || _troll) ? math.min(230.0, arenaHeight - stageBottom) : 230,
-                    child: Transform.translate(offset: Offset(recoil + (1 - slide) * (_dragon ? 0 : _kraken ? 65 : width + 40),
-                      lift + (_dragon ? -(1 - slide) * 390 : _swarm ? -math.sin(slide * math.pi * 2) * 35 : _printer ? -(1 - slide) * 80 : _kraken ? (1 - slide) * 290 : 0)),
-                      child: AnimatedOpacity(duration: Duration(milliseconds: _reduced ? 0 : 650),
-                        opacity: widget.defeated ? .15 : 1, child: Transform.rotate(angle: wobble, child: Transform.scale(
-                          scaleX: 1 + squash, scaleY: 1 - squash, alignment: Alignment.bottomCenter, child: sprite))))),
-                  if (impact < 1 && !_reduced)
-                    Positioned.fill(child: IgnorePointer(child: CustomPaint(
-                      painter: _ImpactPainter(progress: impact, victory: widget.defeated)))),
-                  if (t < .32 && !widget.defeated)
-                    Positioned.fill(child: ColoredBox(color: const Color(0x88101922), child: Center(
-                      child: Container(padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 10),
-                        width: double.infinity, color: const Color(0xEE211A24), child: Text('BOSS APPROACHING',
-                          textAlign: TextAlign.center, style: QuestwellTypography.sectionHeading(size: 12,
-                            color: const Color(0xFFF2D594))))))),
-                  Positioned(bottom: 6, left: 0, right: 0, child: Text(widget.defeated ? 'VICTORY' : arriving ? 'Tap to skip' : 'YOUR MOVE',
-                    textAlign: TextAlign.center, style: arriving
-                      ? QuestwellTypography.body(fontSize: 12, color: const Color(0xFFD9D2BE))
-                      : QuestwellTypography.sectionHeading(size: 10, color: const Color(0xFFF3D998)))),
-                  if (arriving) Positioned(top: 0, right: 0, child: TextButton(
-                    key: const ValueKey('skip-boss-entrance'), onPressed: _skip,
-                    style: TextButton.styleFrom(textStyle: QuestwellTypography.control()), child: const Text('Skip'))),
-                ]))));
-        }),
-      ]));
-    });
+    final sprite = RepaintBoundary(
+        child: Transform.flip(
+            flipX: _dragon,
+            child: Image.asset(
+                _dragon
+                    ? 'assets/images/questwell_update_dragon_v1.webp'
+                    : _troll
+                        ? 'assets/images/questwell_ticket_troll_v2.webp'
+                        : _swarm
+                            ? 'assets/images/questwell_notification_swarm_v2.webp'
+                            : _printer
+                                ? 'assets/images/questwell_printer_poltergeist_v1.webp'
+                                : _kraken
+                                    ? 'assets/images/questwell_calendar_kraken_v1.webp'
+                                    : _slime
+                                        ? 'assets/images/questwell_spreadsheet_slime_v1.webp'
+                                        : _mimic
+                                            ? 'assets/images/questwell_meeting_mimic_v1.webp'
+                                            : 'assets/images/questwell_inbox_hydra_v1.webp',
+                fit: BoxFit.contain,
+                semanticLabel: _dragon
+                    ? 'Update Dragon, a copper dragon guarding brass gears and upgrade scrolls'
+                    : _troll
+                        ? 'Ticket Troll, a grumpy mossy stone clerk holding a stamp and a stack of requests'
+                        : _swarm
+                            ? 'Notification Swarm, mischievous winged bells and sealed messages'
+                            : _printer
+                                ? 'Printer Poltergeist, a haunted brass and wood printer trailing ghostly paper'
+                                : _kraken
+                                    ? 'Calendar Kraken, a violet tentacled creature clutching appointment scrolls and a brass watch'
+                                    : _slime
+                                        ? 'Spreadsheet Slime, an emerald jelly creature tangled in parchment grids'
+                                        : _mimic
+                                            ? 'Meeting Mimic, an enchanted burgundy conference chair with a toothy grin'
+                                            : 'Inbox Hydra, a three-headed serpent guarding a pile of letters')));
+    final avatar = RepaintBoundary(
+        child: QuestwellLayeredAdventurerArt(
+            archetype: widget.archetype,
+            avatarBodyType: widget.body,
+            equippedSlugs: widget.equipment));
+    return AnimatedBuilder(
+        animation: Listenable.merge([_intro, _impact]),
+        builder: (context, _) {
+          final t = _ready ? _intro.value : 0.0;
+          final arriving = t < 1;
+          final slide = _harvest
+              ? 1.0
+              : Curves.easeOutCubic
+                  .transform(((t - .15) / .28).clamp(0.0, 1.0));
+          final land = ((t - .43) / .13).clamp(0.0, 1.0);
+          final lift = (_reduced || _harvest)
+              ? 0.0
+              : _dragon
+                  ? -math.sin(land * math.pi) * 20
+                  : _troll
+                      ? -math.sin(slide * math.pi * 2).abs() *
+                              (1 - slide) *
+                              18 -
+                          math.sin(land * math.pi) * 4
+                      : -math.sin(land * math.pi) * (_mimic ? 25 : 9);
+          final wobble = _reduced
+              ? 0.0
+              : _dragon
+                  ? -(1 - slide) * .18 +
+                      math.sin(land * math.pi * 2) * (1 - land) * .06
+                  : _troll
+                      ? math.sin(land * math.pi * 4) * (1 - land) * .04
+                      : _swarm
+                          ? math.sin(slide * math.pi * 4) * (1 - slide) * .12 +
+                              math.sin(land * math.pi * 4) * (1 - land) * .055
+                          : _printer
+                              ? math.sin(land * math.pi * 6) * (1 - land) * .045
+                              : _kraken
+                                  ? (1 - slide) * .18 +
+                                      math.sin(land * math.pi * 2) *
+                                          (1 - land) *
+                                          .09
+                                  : _mimic
+                                      ? math.sin(land * math.pi * 3) *
+                                          (1 - land) *
+                                          .07
+                                      : 0.0;
+          final squash = _reduced || !_slime
+              ? 0.0
+              : math.sin(land * math.pi * 2) * (1 - land) * .22;
+          final letters =
+              (((t - .53) / .30).clamp(0.0, 1.0) * taunt.length).floor();
+          final hp =
+              widget.defeated ? 0.0 : (1 - widget.progress).clamp(0.0, 1.0);
+          final fill = ((t - .82) / .16).clamp(0.0, 1.0);
+          final impact = _impact.value;
+          final recoil = _reduced
+              ? 0.0
+              : math.sin(impact * math.pi * 4) * (1 - impact) * 13;
+          final displayedHp = _previousHealth +
+              (hp - _previousHealth) * Curves.easeOutCubic.transform(impact);
+          return Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xFFB99855), width: 2)),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.all(12),
+                        color: const Color(0xFF1E2029),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                  widget.defeated ? '$_name · DEFEATED' : _name,
+                                  style: QuestwellTypography.sectionHeading(
+                                      size: 11,
+                                      color: const Color(0xFFF1D79B))),
+                              const SizedBox(height: 9),
+                              Semantics(
+                                  label:
+                                      'Boss health ${(hp * 100).round()} percent',
+                                  child: QuestwellPixelMeter(
+                                      value: displayedHp * fill,
+                                      kind: 'hp',
+                                      height: 14,
+                                      segments: 12)),
+                            ])),
+                    // Dialogue owns its own layout space, never the fighters' paint area.
+                    if (!widget.defeated)
+                      Container(
+                          key: const ValueKey('boss-dialogue'),
+                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                          color: const Color(0xFF1E2029),
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 10),
+                              decoration: BoxDecoration(
+                                  color: const Color(0xFFF1E5C6),
+                                  border: Border.all(
+                                      color: const Color(0xFF9E7B46),
+                                      width: 2)),
+                              child: Semantics(
+                                  label: t >= .53 ? taunt : 'Boss approaching',
+                                  child: ExcludeSemantics(
+                                      child: Stack(children: [
+                                    // Reserve the complete wrapped height throughout the typewriter reveal.
+                                    Opacity(
+                                        opacity: 0,
+                                        child: RichText(
+                                            textScaler: MediaQuery.textScalerOf(
+                                                context),
+                                            text: TextSpan(
+                                                text: taunt,
+                                                style: QuestwellTypography.body(
+                                                    color:
+                                                        const Color(0xFF30271E),
+                                                    fontSize: 16,
+                                                    height: 1.3,
+                                                    fontWeight:
+                                                        FontWeight.w700)))),
+                                    Text(
+                                        t >= .53
+                                            ? taunt.substring(0, letters)
+                                            : '',
+                                        style: QuestwellTypography.body(
+                                            color: const Color(0xFF30271E),
+                                            fontSize: 16,
+                                            height: 1.3,
+                                            fontWeight: FontWeight.w700)),
+                                  ]))))),
+                    LayoutBuilder(builder: (context, constraints) {
+                      final width = constraints.maxWidth;
+                      final arenaHeight = width < 400 ? 300.0 : 330.0;
+                      // Bottom-aligned cover keeps each illustrated stage beneath the fighters.
+                      final stageBottom = (_harvest ||
+                              _hydra ||
+                              _mimic ||
+                              _slime ||
+                              _kraken ||
+                              _printer ||
+                              _swarm ||
+                              _troll ||
+                              _dragon)
+                          ? math.max(arenaHeight, width / 1.5) *
+                              (_swarm
+                                  ? .28
+                                  : _troll
+                                      ? .26
+                                      : _printer
+                                          ? .24
+                                          : _dragon
+                                              ? .23
+                                              : .20)
+                          : 24.0;
+                      return Semantics(
+                          label: arriving
+                              ? 'Boss entrance. Tap to skip.'
+                              : 'Boss encounter',
+                          child: GestureDetector(
+                              onTap: arriving ? _skip : null,
+                              child: Container(
+                                  key: const ValueKey('boss-arena'),
+                                  height: arenaHeight,
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: const BoxDecoration(
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                        Color(0xFF10222A),
+                                        Color(0xFF242133),
+                                        Color(0xFF392A28)
+                                      ])),
+                                  child: Stack(children: [
+                                    if (_harvest ||
+                                        _hydra ||
+                                        _mimic ||
+                                        _slime ||
+                                        _kraken ||
+                                        _printer ||
+                                        _swarm ||
+                                        _troll ||
+                                        _dragon)
+                                      Positioned.fill(
+                                          child: RepaintBoundary(
+                                              child: Image.asset(
+                                                  _harvest
+                                                      ? 'assets/images/questwell/hollow_harvest/arena.png'
+                                                      : _dragon
+                                                          ? 'assets/images/questwell_dragon_citadel_v1.webp'
+                                                          : _troll
+                                                              ? 'assets/images/questwell_troll_cavern_v1.webp'
+                                                              : _swarm
+                                                                  ? 'assets/images/questwell_swarm_belltower_v1.webp'
+                                                                  : _printer
+                                                                      ? 'assets/images/questwell_printer_printworks_v1.webp'
+                                                                      : _kraken
+                                                                          ? 'assets/images/questwell_kraken_observatory_v1.webp'
+                                                                          : _slime
+                                                                              ? 'assets/images/questwell_slime_archive_v1.webp'
+                                                                              : _mimic
+                                                                                  ? 'assets/images/questwell_mimic_conference_v1.webp'
+                                                                                  : 'assets/images/questwell_hydra_mailroom_v1.webp',
+                                                  key: ValueKey(_harvest
+                                                      ? 'harvest-clearing-arena'
+                                                      : _dragon
+                                                          ? 'dragon-citadel-arena'
+                                                          : _troll
+                                                              ? 'troll-cavern-arena'
+                                                              : _swarm
+                                                                  ? 'swarm-belltower-arena'
+                                                                  : _printer
+                                                                      ? 'printer-printworks-arena'
+                                                                      : _kraken
+                                                                          ? 'kraken-observatory-arena'
+                                                                          : _slime
+                                                                              ? 'slime-archive-arena'
+                                                                              : _mimic
+                                                                                  ? 'mimic-conference-arena'
+                                                                                  : 'hydra-mailroom-arena'),
+                                                  fit: BoxFit.cover,
+                                                  alignment: Alignment
+                                                      .bottomCenter,
+                                                  excludeFromSemantics: true,
+                                                  filterQuality: FilterQuality
+                                                      .low,
+                                                  errorBuilder: (_, __, ___) =>
+                                                      CustomPaint(
+                                                          painter:
+                                                              _ArenaPainter(
+                                                                  dust:
+                                                                      land)))))
+                                    else
+                                      Positioned.fill(
+                                          child: CustomPaint(
+                                              painter:
+                                                  _ArenaPainter(dust: land))),
+                                    Positioned(
+                                        left: width * .03,
+                                        bottom: stageBottom,
+                                        width: width * .42,
+                                        height: 190,
+                                        child: avatar),
+                                    Positioned(
+                                        right: width * .01,
+                                        bottom: stageBottom - 1,
+                                        width: width * .59,
+                                        height: (_swarm || _troll)
+                                            ? math.min(230.0,
+                                                arenaHeight - stageBottom)
+                                            : 230,
+                                        child: Transform.translate(
+                                            offset: Offset(
+                                                recoil +
+                                                    (1 - slide) *
+                                                        (_dragon
+                                                            ? 0
+                                                            : _kraken
+                                                                ? 65
+                                                                : width + 40),
+                                                lift +
+                                                    (_dragon
+                                                        ? -(1 - slide) * 390
+                                                        : _swarm
+                                                            ? -math.sin(slide * math.pi * 2) *
+                                                                35
+                                                            : _printer
+                                                                ? -(1 - slide) *
+                                                                    80
+                                                                : _kraken
+                                                                    ? (1 - slide) *
+                                                                        290
+                                                                    : 0)),
+                                            child: AnimatedOpacity(
+                                                duration: Duration(
+                                                    milliseconds:
+                                                        _reduced ? 0 : 650),
+                                                opacity:
+                                                    widget.defeated ? .15 : 1,
+                                                child: Transform.rotate(
+                                                    angle: wobble,
+                                                    child: Transform.scale(
+                                                        scaleX: 1 + squash,
+                                                        scaleY: 1 - squash,
+                                                        alignment: Alignment
+                                                            .bottomCenter,
+                                                        child: _harvest
+                                                            ? (_reduced
+                                                                ? TweenAnimationBuilder<double>(
+                                                                    tween: Tween(
+                                                                        begin: 0,
+                                                                        end: 1),
+                                                                    duration: const Duration(milliseconds: 250),
+                                                                    builder: (_, opacity, child) => Opacity(opacity: opacity, child: child),
+                                                                    child: const QuestwellHollowHarvest(phase: 1))
+                                                                : QuestwellHollowHarvest(phase: t))
+                                                            : sprite))))),
+                                    if (impact < 1 && !_reduced)
+                                      Positioned.fill(
+                                          child: IgnorePointer(
+                                              child: CustomPaint(
+                                                  painter: _ImpactPainter(
+                                                      progress: impact,
+                                                      victory:
+                                                          widget.defeated)))),
+                                    if (t < .32 && !widget.defeated && !_harvest)
+                                      Positioned.fill(
+                                          child: ColoredBox(
+                                              color: const Color(0x88101922),
+                                              child: Center(
+                                                  child: Container(
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                              vertical: 17,
+                                                              horizontal: 10),
+                                                      width: double.infinity,
+                                                      color: const Color(
+                                                          0xEE211A24),
+                                                      child: Text(
+                                                          'BOSS APPROACHING',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: QuestwellTypography
+                                                              .sectionHeading(
+                                                                  size: 12,
+                                                                  color: const Color(
+                                                                      0xFFF2D594))))))),
+                                    Positioned(
+                                        bottom: 6,
+                                        left: 0,
+                                        right: 0,
+                                        child: Text(
+                                            widget.defeated
+                                                ? 'VICTORY'
+                                                : arriving
+                                                    ? 'Tap to skip'
+                                                    : 'YOUR MOVE',
+                                            textAlign: TextAlign.center,
+                                            style: arriving
+                                                ? QuestwellTypography.body(
+                                                    fontSize: 12,
+                                                    color:
+                                                        const Color(0xFFD9D2BE))
+                                                : QuestwellTypography
+                                                    .sectionHeading(
+                                                        size: 10,
+                                                        color: const Color(
+                                                            0xFFF3D998)))),
+                                    if (arriving)
+                                      Positioned(
+                                          top: 0,
+                                          right: 0,
+                                          child: TextButton(
+                                              key: const ValueKey(
+                                                  'skip-boss-entrance'),
+                                              onPressed: _skip,
+                                              style: TextButton.styleFrom(
+                                                  textStyle: QuestwellTypography
+                                                      .control()),
+                                              child: const Text('Skip'))),
+                                  ]))));
+                    }),
+                  ]));
+        });
   }
 }
 
@@ -210,7 +578,9 @@ class _ArenaPainter extends CustomPainter {
   final double dust;
   @override
   void paint(Canvas c, Size s) {
-    final p = Paint()..color = const Color(0x334F6670)..strokeWidth = 1;
+    final p = Paint()
+      ..color = const Color(0x334F6670)
+      ..strokeWidth = 1;
     final floor = s.height - 72;
     for (var row = 0; row < 6; row++) {
       final y = row * 42.0;
@@ -222,20 +592,27 @@ class _ArenaPainter extends CustomPainter {
     }
     // Recessed arch, side piers, and a perspective stone floor.
     p.color = const Color(0x44101922);
-    c.drawRRect(RRect.fromRectAndCorners(Rect.fromLTWH(s.width * .32, 42, s.width * .36, floor - 42),
-      topLeft: const Radius.circular(72), topRight: const Radius.circular(72)), p);
+    c.drawRRect(
+        RRect.fromRectAndCorners(
+            Rect.fromLTWH(s.width * .32, 42, s.width * .36, floor - 42),
+            topLeft: const Radius.circular(72),
+            topRight: const Radius.circular(72)),
+        p);
     p.color = const Color(0x553D454C);
     c.drawRect(Rect.fromLTWH(8, 0, 20, floor), p);
     c.drawRect(Rect.fromLTWH(s.width - 28, 0, 20, floor), p);
     p.color = const Color(0x554F6670);
     c.drawLine(Offset(0, floor), Offset(s.width, floor), p);
     for (var i = 0; i < 6; i++) {
-      c.drawLine(Offset(s.width * .5 + (i - 2.5) * 36, floor), Offset(i * s.width / 5, s.height), p);
+      c.drawLine(Offset(s.width * .5 + (i - 2.5) * 36, floor),
+          Offset(i * s.width / 5, s.height), p);
     }
     c.drawLine(Offset(0, s.height - 35), Offset(s.width, s.height - 35), p);
     p.color = const Color(0x88090F16);
-    c.drawOval(Rect.fromLTWH(s.width * .13, s.height - 42, s.width * .23, 16), p);
-    c.drawOval(Rect.fromLTWH(s.width * .51, s.height - 43, s.width * .41, 19), p);
+    c.drawOval(
+        Rect.fromLTWH(s.width * .13, s.height - 42, s.width * .23, 16), p);
+    c.drawOval(
+        Rect.fromLTWH(s.width * .51, s.height - 43, s.width * .41, 19), p);
     if (dust > 0 && dust < 1) {
       p.color = Color.fromRGBO(222, 185, 118, (1 - dust) * .8);
       for (var i = 0; i < 14; i++) {
@@ -245,8 +622,10 @@ class _ArenaPainter extends CustomPainter {
       }
     }
   }
+
   @override
-  bool shouldRepaint(covariant _ArenaPainter oldDelegate) => oldDelegate.dust != dust;
+  bool shouldRepaint(covariant _ArenaPainter oldDelegate) =>
+      oldDelegate.dust != dust;
 }
 
 /// Short, bounded paint-only feedback; never changes task or reward state.
@@ -263,16 +642,23 @@ class _ImpactPainter extends CustomPainter {
     for (var i = 0; i < count; i++) {
       final angle = i * math.pi * 2 / count;
       final radius = 10 + progress * (victory ? 145 : 65);
-      final point = origin + Offset(math.cos(angle) * radius,
-        math.sin(angle) * radius + (victory ? progress * progress * 45 : 0));
-      c.drawRect(Rect.fromCenter(center: point, width: i.isEven ? 5 : 3, height: i.isEven ? 5 : 3), p);
+      final point = origin +
+          Offset(
+              math.cos(angle) * radius,
+              math.sin(angle) * radius +
+                  (victory ? progress * progress * 45 : 0));
+      c.drawRect(
+          Rect.fromCenter(
+              center: point, width: i.isEven ? 5 : 3, height: i.isEven ? 5 : 3),
+          p);
     }
     if (progress < .25) {
       p.color = Color.fromRGBO(255, 239, 196, (1 - progress / .25) * .18);
       c.drawRect(Offset.zero & s, p);
     }
   }
+
   @override
   bool shouldRepaint(covariant _ImpactPainter oldDelegate) =>
-    oldDelegate.progress != progress || oldDelegate.victory != victory;
+      oldDelegate.progress != progress || oldDelegate.victory != victory;
 }
