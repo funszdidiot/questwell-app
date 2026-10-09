@@ -516,13 +516,14 @@ void main() {
         home: Scaffold(
             body: QuestwellBossPicker(
                 value: selected,
+                now: DateTime.utc(2026, 12),
                 level: 1,
                 onChanged: (value) => selected = value))));
     final picker = tester.widget<DropdownButtonFormField<String>>(
         find.byType(DropdownButtonFormField<String>));
     final menu = tester
         .widget<DropdownButton<String>>(find.byType(DropdownButton<String>));
-    expect(menu.items!.length, 8);
+    expect(menu.items!.length, 9);
     expect(menu.items!.where((item) => item.enabled).map((item) => item.value),
         ['inbox_hydra']);
     picker.onChanged!('update_dragon');
@@ -531,6 +532,7 @@ void main() {
         home: Scaffold(
             body: QuestwellBossPicker(
                 value: selected,
+                now: DateTime.utc(2026, 12),
                 level: 3,
                 onChanged: (value) => selected = value))));
     final unlocked = tester.widget<DropdownButtonFormField<String>>(

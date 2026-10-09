@@ -520,6 +520,9 @@ try {
   if (contentResult.stderr) console.error(redact(contentResult.stderr));
   assert.equal(contentResult.status, 0, 'Content-limit Auth/REST scenarios failed');
   console.log(run(['db','lint','--local','--schema','public,private','--level','warning','--fail-on','error']));
+  runHardeningPayload(resolve(source, '../../docs/releases/hollow-harvest-2026/activate.sql'));
+  runHardeningPayload(join(source, 'hollow-harvest-contract.sql'));
+  console.log('Harvest seasonal boundaries, regular boss gates, saved battles and fixed rewards passed.');
   // Fresh HTTP pool after preceding database/API resets; never retry signup writes.
   const recoveryResult = spawnSync(process.execPath, [join(source,'recovery-run.mjs')], {
     input: JSON.stringify(status), env, encoding:'utf8', timeout:300000, maxBuffer:1024*1024,

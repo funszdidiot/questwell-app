@@ -16,6 +16,7 @@ const questwellBossNames = {
   'notification_swarm': 'Notification Swarm',
   'ticket_troll': 'Ticket Troll',
   'update_dragon': 'Update Dragon',
+  'hollow_harvest': 'The Hollow Harvest',
 };
 const _bossVersions = {'notification_swarm': 2, 'ticket_troll': 2};
 const _strategies = {
@@ -27,6 +28,7 @@ const _strategies = {
   'notification_swarm': 'Quiet the noise. Choose what matters.',
   'ticket_troll': 'Define done, then close one useful request.',
   'update_dragon': 'Small checkpoints. One safe upgrade.',
+  'hollow_harvest': 'Gather your courage. Clear one tangled task at a time.',
 };
 const _gold = Color(0xFFE4C586);
 const _muted = Color(0xFFB7C4C9);
@@ -494,7 +496,9 @@ class _QuestwellBossBoardState extends State<QuestwellBossBoard> {
                         border: Border.all(color: const Color(0xFF53615B))),
                     child: Row(children: [
                       Image.asset(
-                          'assets/images/questwell_${type}_v${_bossVersions[type] ?? 1}.webp',
+                          type == 'hollow_harvest'
+                              ? 'assets/images/questwell/hollow_harvest/idle.png'
+                              : 'assets/images/questwell_${type}_v${_bossVersions[type] ?? 1}.webp',
                           width: 64,
                           height: 64,
                           fit: BoxFit.contain,

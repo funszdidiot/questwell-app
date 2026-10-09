@@ -1,5 +1,19 @@
 # Questwell Production Dashboard
 
+## Hollow Harvest seasonal selection — October 8, 2026
+
+**QA.** The corrected connected-head preview is deployed at `24eab12` (PR #98).
+The next release adds Hollow Harvest as a level-1 seasonal choice using the
+collection window: October 8 at 03:36:53.444481 UTC through November 9 at
+06:00 UTC (end exclusive; November 8 is the final Central-time day).
+The server checks new creation; saved battles and successful request retries
+remain usable after close. Fixed rewards remain 25 XP / 50 coins once per victory.
+No user battle or inventory is created by rollout. The source release is
+`docs/releases/hollow-harvest-2026/activate.sql`; isolated boundary/reward tests,
+independent review, remote CI, scoped database activation and client deployment
+must pass before calling seasonal selection live. No historical migration replay.
+
+
 ## Hollow Harvest entrance — October 8, 2026
 
 **DEV DEPLOYED preview / head correction in QA (PR #98).** PRs #95 and #97

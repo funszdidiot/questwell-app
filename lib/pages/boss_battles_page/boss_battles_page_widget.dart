@@ -333,10 +333,11 @@ class _BossBattlesPageWidgetState extends State<BossBattlesPageWidget> {
                               return;
                             }
 
-                            if (!QuestwellBossUnlocks.available(
-                              bossType,
-                              level,
-                            )) {
+                            if (!uncertain &&
+                                !QuestwellBossUnlocks.available(
+                                  bossType,
+                                  level,
+                                )) {
                               setSheetState(
                                 () => errorMessage = 'Choose an unlocked boss.',
                               );
