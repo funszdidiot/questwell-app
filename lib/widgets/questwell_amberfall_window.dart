@@ -126,7 +126,9 @@ class AmberfallLeafPainter extends CustomPainter {
     canvas.clipRect(Offset.zero & size);
     canvas.transform(QuestwellWindowGeometry.transform(roomFile, size));
     final glass = QuestwellWindowGeometry.glass(roomFile);
-    canvas.clipPath(glass);
+    // Pixel-art leaves use a hard glass clip: antialiased clip coverage can
+    // leak a fractional pixel beyond the pane at scaled room boundaries.
+    canvas.clipPath(glass, doAntiAlias: false);
     final bounds = glass.getBounds();
     final paint = Paint()..isAntiAlias = false;
     final count = hallowed ? 24 : 14;
