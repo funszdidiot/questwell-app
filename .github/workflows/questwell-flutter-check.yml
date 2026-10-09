@@ -45,6 +45,7 @@ jobs:
           node tool/validate_seasonal_release_manifest.cjs assets/jsons/seasonal_review_fixture.json
           node tool/validate_seasonal_release_manifest.cjs docs/releases/hallowed-hearth-2026/manifest.proposed.json
           node tool/validate_seasonal_release_manifest.cjs assets/jsons/hallowed_hearth_decor_2026.json
+          node tool/validate_seasonal_release_manifest.cjs docs/releases/autumn-hearth-2026/manifest.json
           node --test tool/qa/seasonal_manifest_test.cjs
 
 

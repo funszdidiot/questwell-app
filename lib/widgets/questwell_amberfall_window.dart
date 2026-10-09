@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'questwell_catalog_equipment.dart';
 
-/// Development candidate: no catalog registration or account capability.
+/// Approved autumn scenery and leaves, clipped to the authored window glass.
 class QuestwellAmberfallWindow extends StatefulWidget {
   const QuestwellAmberfallWindow({super.key, this.hallowed = false});
   final bool hallowed;

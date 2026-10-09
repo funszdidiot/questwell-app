@@ -1,0 +1,238 @@
+{
+  "schema_version": "questwell.seasonal-release/v1",
+  "release_id": "autumn-hearth-2026",
+  "display_name": "Autumn Hearth",
+  "release_type": "seasonal",
+  "collection_key": "autumn-hearth",
+  "theme": {
+    "summary": "Falling leaves and cozy floor décor in the usual Hearth.",
+    "palette": [
+      "amber",
+      "maple red",
+      "sage green",
+      "warm gold"
+    ],
+    "materials": [
+      "woven wool",
+      "aged brass",
+      "glass"
+    ],
+    "motifs": [
+      "falling leaves",
+      "mushrooms",
+      "lanterns"
+    ]
+  },
+  "availability": {
+    "status": "planned",
+    "starts_at": null,
+    "ends_at": null,
+    "ownership_persists_after_archive": true
+  },
+  "approval": {
+    "brief_status": "approved",
+    "visual_status": "approved",
+    "economy_status": "approved",
+    "activation_status": "authorized",
+    "founder_decision_ref": "2026-10-09 America/Chicago: Love it; Price it and push it out; Yes to listed prices and scoped 24-hour rollout credential."
+  },
+  "items": [
+    {
+      "slug": "amberfall-window",
+      "name": "Amberfall Window",
+      "category": "room",
+      "rarity": "uncommon",
+      "description": "Falling amber leaves beyond the glass. Designed for the Original and Hallowed Hearth windows.",
+      "price": 120,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "window_feature",
+      "asset_state": "approved",
+      "hearth": {
+        "profile_key": "window_feature"
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Founder-approved Autumn Hearth artwork",
+        "version": 1,
+        "method": "Approved PR99 artwork; usual Hearth correction PR104",
+        "source_art_ref": "assets/images/questwell/hearth/amberfall_scenery_candidate_v1.png"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "pass"
+      }
+    },
+    {
+      "slug": "maple-hearth-rug",
+      "name": "Maple Hearth Rug",
+      "category": "room",
+      "rarity": "uncommon",
+      "description": "A warm woven maple rug for the floor beneath your adventurer.",
+      "price": 60,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "floor_rug",
+      "asset_state": "approved",
+      "hearth": {
+        "profile_key": "floor_rug",
+        "render": {
+          "render_kind": "floor_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/maple_rug_candidate_v1.png",
+          "canvas_width": 1816,
+          "canvas_height": 866,
+          "visible_base": 1,
+          "shadow_profile": "none",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Founder-approved Autumn Hearth artwork",
+        "version": 1,
+        "method": "Approved PR99 artwork; usual Hearth correction PR104",
+        "source_art_ref": "assets/images/questwell/hearth/maple_rug_candidate_v1.png"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "pass"
+      }
+    },
+    {
+      "slug": "mooncap-grove",
+      "name": "Mooncap Grove",
+      "category": "room",
+      "rarity": "uncommon",
+      "description": "A little grove of moonlit mushrooms to brighten a cozy corner.",
+      "price": 120,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "plant",
+      "asset_state": "approved",
+      "hearth": {
+        "profile_key": "plant",
+        "render": {
+          "render_kind": "static_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/mooncap_grove_candidate_v1.png",
+          "canvas_width": 1254,
+          "canvas_height": 1254,
+          "visible_base": 0.9170653907496013,
+          "shadow_profile": "plant",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Founder-approved Autumn Hearth artwork",
+        "version": 1,
+        "method": "Approved PR99 artwork; usual Hearth correction PR104",
+        "source_art_ref": "assets/images/questwell/hearth/mooncap_grove_candidate_v1.png"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "pass"
+      }
+    },
+    {
+      "slug": "harvest-lanterns",
+      "name": "Harvest Lanterns",
+      "category": "room",
+      "rarity": "rare",
+      "description": "A pair of warm harvest lanterns for long autumn evenings.",
+      "price": 240,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "pedestal_light",
+      "asset_state": "approved",
+      "hearth": {
+        "profile_key": "pedestal_light",
+        "render": {
+          "render_kind": "static_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/harvest_lanterns_candidate_v1.png",
+          "canvas_width": 1254,
+          "canvas_height": 1254,
+          "visible_base": 0.9433811802232854,
+          "shadow_profile": "pedestal",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Founder-approved Autumn Hearth artwork",
+        "version": 1,
+        "method": "Approved PR99 artwork; usual Hearth correction PR104",
+        "source_art_ref": "assets/images/questwell/hearth/harvest_lanterns_candidate_v1.png"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "pass"
+      }
+    },
+    {
+      "slug": "sages-rest",
+      "name": "Sage’s Rest",
+      "category": "room",
+      "rarity": "uncommon",
+      "description": "Layered cushions for a quiet pause beside the hearth.",
+      "price": 120,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "visual_family": "seating",
+      "asset_state": "approved",
+      "hearth": {
+        "profile_key": "seating",
+        "render": {
+          "render_kind": "static_sprite",
+          "asset_source": "bundle",
+          "asset_path": "assets/images/questwell/hearth/sages_rest_candidate_v1.png",
+          "canvas_width": 1254,
+          "canvas_height": 1254,
+          "visible_base": 0.8261562998405104,
+          "shadow_profile": "seating",
+          "effect_profile": null,
+          "filter_mode": "pixel",
+          "asset_revision": 1,
+          "min_client_build": null
+        }
+      },
+      "wearable": null,
+      "provenance": {
+        "source": "Founder-approved Autumn Hearth artwork",
+        "version": 1,
+        "method": "Approved PR99 artwork; usual Hearth correction PR104",
+        "source_art_ref": "assets/images/questwell/hearth/sages_rest_candidate_v1.png"
+      },
+      "qa": {
+        "preflight": "not_run",
+        "runtime": "not_run",
+        "visual": "pass"
+      }
+    }
+  ]
+}

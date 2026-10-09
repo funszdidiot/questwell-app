@@ -1,5 +1,7 @@
 # Autumn Hearth development preview
 
+Latest: Tanya approved the usual-room result and authorized pricing/catalog rollout on October 9. See `AUTUMN_HEARTH_RELEASE.md` for the current delivery record. The no-activation statements below describe the historical preview scope.
+
 ## October 9 correction: usual Hearth first
 
 Tanya identified spiders/webs from the incorrect Halloween default. Both the

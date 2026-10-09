@@ -1,0 +1,17 @@
+{
+  "before": {
+    "records": [],
+    "new_count": 0,
+    "live_valid": false,
+    "render_count": 0,
+    "history_count": 56,
+    "schema_sha256": "23a2159990b3954a335b8918ac660effd549e2ba6448a402f4afe2f3bdd99d65",
+    "catalog_sha256": "2dd76ea3dee16624b98763a42f6902d03dd8aa24d9330a4026742b92f30a2f93",
+    "history_sha256": "974a6da5a76d4057cbeae33c2f88c22ee69b235f1cb11f85817f4a5d3c7b7058",
+    "purchase_sha256": "9896f3fc420f06eb5d529ed1c967b2f8f827fd11c8141678bfe778a0bb5d94da"
+  },
+  "source_sha256": "8ed56fc01a0e3ef803ff894cad33b6c6a0b2e7db9fb47a86318b1cd2cc16a04e",
+  "activation_sha256": "c310c571f51b95eae2e3bd331f4a0461fc56a482e5c649f0e702011bcaee208a",
+  "catalog_sql_sha256": "a9a98f3066496014fac1d403f5c0104c2deafd365602a3a2fffe787cbd2b86ef",
+  "manifest_sha256": "2538f8bb6c2a034a0fa7aa013a5ebfca58f617961d8dfedd77fd0ef6e9b27509"
+}

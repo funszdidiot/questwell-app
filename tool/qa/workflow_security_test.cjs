@@ -101,3 +101,12 @@ test('content privileged job requires its exact branch and never gains token wri
   }
   assert.ok(validate(text.replace('checks: read','checks: write'),file).length>0);
 });
+
+test('Autumn privileged job requires the exact deployment branch and push event',()=> {
+  const file='.github/workflows/questwell-autumn-forward.yml';
+  const text=fs.readFileSync(path.join(root,file),'utf8');
+  const guard="github.event_name == 'push' && github.ref == 'refs/heads/deploy/autumn-hearth-approved'";
+  for(const replacement of ['true',"github.event_name == 'push'","github.ref == 'refs/heads/deploy/autumn-hearth-approved'"]) {
+    assert.ok(validate(text.replace(guard,replacement),file).length>0);
+  }
+});
