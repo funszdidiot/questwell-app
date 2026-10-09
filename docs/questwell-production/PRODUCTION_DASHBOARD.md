@@ -13,6 +13,15 @@ No user battle or inventory is created by rollout. The source release is
 independent review, remote CI, scoped database activation and client deployment
 must pass before calling seasonal selection live. No historical migration replay.
 
+## Autumn Hearth — October 8, 2026
+
+**QA / local development preview.** Amberfall leaves plus Maple Hearth Rug,
+Mooncap Grove, Harvest Lanterns and Sage's Rest use the existing room/slot
+geometry. Cushion halo removed. 24 relevant tests pass; eight room/width captures
+generated. No backend or inventory changes, prices or release activation.
+Route after deployment: `?review=autumn-hearth`. Standard-room narrow-window crop
+remains a documented limitation. Hosted/device verification pending.
+Evidence: `../qa/AUTUMN_HEARTH.md`.
 
 ## Hollow Harvest entrance — October 8, 2026
 

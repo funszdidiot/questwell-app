@@ -1,3 +1,4 @@
+import 'preview/autumn_hearth_review.dart';
 import 'preview/hollow_harvest_review.dart';
 import 'preview/halloween_costumes_review.dart';
 import 'preview/quest_completion_review.dart';
@@ -42,7 +43,10 @@ import 'preview/scarf_fit_review.dart';
 // Only the development preview workflow targets this entry point.
 // The visual fixture uses no account, profile writes, or authentication bypass.
 void main() {
-  if (Uri.base.queryParameters['review'] == 'hollow-harvest') {
+  if (Uri.base.queryParameters['review'] == 'autumn-hearth') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const AutumnHearthReviewApp());
+  } else if (Uri.base.queryParameters['review'] == 'hollow-harvest') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const HollowHarvestReview());
   } else if (Uri.base.queryParameters['review'] == 'halloween-costumes') {
