@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../services/questwell_cosmetic_models.dart';
+import 'questwell_hearth_room_plan.dart';
 
 /// Visual geometry for backend-defined Hearth layout profiles.
 ///
@@ -162,28 +163,34 @@ abstract final class QuestwellHearthLayout {
     final chairOnLeft =
         profileAt('front') == 'seating' || profileAt('left') == 'seating';
 
-    final center = switch (profileKey) {
-      'large_furniture' => slot == 'right'
-          ? scene.width * .98 - width / 2
-          : scene.width * .14 + width / 2,
-      'pedestal_light' => scene.width * (slot == 'left' ? .22 : .80),
-      'side_table' => scene.width * (chairOnLeft ? .18 : .82),
-      'seating' => scene.width *
-          (slot == 'right' ? (hasTable ? .64 : .73) : (hasTable ? .36 : .27)),
-      'plant' => scene.width *
-          (slot == 'front'
-              ? .20
-              : slot == 'left'
-                  ? .28
-                  : .81),
-      'relic_display' => scene.width *
-          (slot == 'front'
-              ? .18
-              : slot == 'left'
-                  ? .24
-                  : .81),
-      _ => scene.width * .50,
-    };
+    final center = QuestwellHearthRoomPlan.enabled
+        ? scene.width *
+            QuestwellHearthRoomPlan.forSetting(equipment['room:setting'])
+                .center(profileKey, slot, chairOnLeft: chairOnLeft)
+        : switch (profileKey) {
+            'large_furniture' => slot == 'right'
+                ? scene.width * .98 - width / 2
+                : scene.width * .14 + width / 2,
+            'pedestal_light' => scene.width * (slot == 'left' ? .22 : .80),
+            'side_table' => scene.width * (chairOnLeft ? .18 : .82),
+            'seating' => scene.width *
+                (slot == 'right'
+                    ? (hasTable ? .64 : .73)
+                    : (hasTable ? .36 : .27)),
+            'plant' => scene.width *
+                (slot == 'front'
+                    ? .20
+                    : slot == 'left'
+                        ? .28
+                        : .81),
+            'relic_display' => scene.width *
+                (slot == 'front'
+                    ? .18
+                    : slot == 'left'
+                        ? .24
+                        : .81),
+            _ => scene.width * .50,
+          };
 
     final roomSide = math.max(scene.width, scene.height);
     final floor = profileKey == 'relic_display' && slot != 'front'

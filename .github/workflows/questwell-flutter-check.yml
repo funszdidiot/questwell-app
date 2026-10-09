@@ -81,6 +81,9 @@ jobs:
       - name: Run complete Flutter regression suite
         run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
 
+      - name: Verify gated Hearth decorator
+        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --dart-define=QUESTWELL_DECORATE_HEARTH=true test/decorate_hearth_test.dart test/hearth_layout_contract_test.dart
+
       - name: Retain rendered Halloween review images
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

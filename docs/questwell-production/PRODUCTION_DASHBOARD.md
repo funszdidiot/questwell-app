@@ -368,3 +368,11 @@ Neck-overlap regression follow-up (PR #13): preserve the delivered `339cc49` bod
 ## Superseding individual fits — 2026-10-05
 
 Tanya rejected the earlier widened coat/cloak/mantle shapes. The historical legacy/neckline delivery records above establish technical delivery only, not current visual acceptance. Nine separately authored individual fits are now **DEV DEPLOYED** at `0546cb4`; no new founder lock. Cloak/mantle cover complete arms/hands with cloth; coat preserves the exact original hands in front. Complete locked bodies and existing catalog/equipment rules are unchanged. Full technical and independent delivered visual QA passed. See `../qa/LEGACY_INDIVIDUAL_REFIT.md`. No founder decision blocks this completed development integration.
+# Decorate Hearth candidate — October 9, 2026 UTC
+
+**QA / activation blocked by scoped G3 rollout.** Founder approved guided
+decoration, previews/undo and per-background layouts. Implementation and candidate
+atomic persistence are under review; feature flag defaults off. Existing rooms
+remain unchanged. See `docs/qa/DECORATE_HEARTH.md`. No live data migration or
+delivered-device acceptance is claimed.
+
