@@ -55,7 +55,10 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Inventory · 3'));
     await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(ChoiceChip, 'Hearth'));
+    final hearthTab = find.widgetWithText(ChoiceChip, 'Hearth');
+    await tester.ensureVisible(hearthTab);
+    await tester.pumpAndSettle();
+    await tester.tap(hearthTab);
     await tester.pumpAndSettle();
     final room =
         tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
