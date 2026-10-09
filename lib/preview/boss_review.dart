@@ -22,6 +22,7 @@ class _BossReviewAppState extends State<BossReviewApp> {
   final _done = <String>{};
   final _extra = <QuestwellBossBattle>[];
   static const _titles = {
+    'hollow_harvest': 'Untangle the autumn backlog',
     'inbox_hydra': 'Tame the inbox backlog',
     'meeting_mimic': 'Make the planning meeting count',
     'spreadsheet_slime': 'Clean up the project tracker',
@@ -32,6 +33,11 @@ class _BossReviewAppState extends State<BossReviewApp> {
     'update_dragon': 'Finish the overdue upgrade',
   };
   static const _steps = {
+    'hollow_harvest': [
+      'Choose one task you have been avoiding',
+      'Finish the smallest useful step',
+      'Clear the last loose end'
+    ],
     'inbox_hydra': [
       'Sort the three threads that matter',
       'Send one useful reply',
