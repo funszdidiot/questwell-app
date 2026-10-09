@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'questwell_typography.dart';
 import 'questwell_feedback.dart';
+import 'questwell_audio_controls.dart';
 
 enum QuestwellDestination {
   hearth('Hearth', 'HomePage', Icons.home_outlined),
@@ -106,6 +107,16 @@ class QuestwellAppNavigation extends StatelessWidget {
                           onTap: () => Navigator.pop(sheetContext, item),
                         )),
                   const Divider(color: Color(0xFF65563D)),
+                  if (QuestwellAudioScope.maybeOf(context) != null)
+                    ListTile(
+                      leading: const Icon(Icons.music_note_outlined,
+                          color: Color(0xFFE4C586)),
+                      title: Text('Sound & music',
+                          style: QuestwellTypography.control(
+                              color: const Color(0xFFF0E5CC))),
+                      subtitle: const Text('Choose your cozy soundtrack'),
+                      onTap: () => Navigator.pop(sheetContext, 'audio'),
+                    ),
                   ListTile(
                       leading: const Icon(Icons.chat_bubble_outline,
                           color: Color(0xFFE4C586)),
@@ -122,6 +133,9 @@ class QuestwellAppNavigation extends StatelessWidget {
     if (!context.mounted) return;
     if (destination is QuestwellDestination) {
       _open(context, destination);
+    } else if (destination == 'audio') {
+      final audio = QuestwellAudioScope.maybeOf(context);
+      if (audio != null) await QuestwellAudioControls.open(context, audio);
     } else if (destination == 'feedback') {
       await QuestwellFeedback.open(context,
           screen: current.label,

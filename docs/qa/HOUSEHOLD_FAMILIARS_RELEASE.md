@@ -59,3 +59,15 @@ After ambiguous write failure, reconcile records/state before any retry.
 Rollback after activation is a reviewed forward change that hides only these
 two rows, preserving IDs, ownership and purchase history. Do not delete rows or
 replay the incomplete root migration chain.
+
+## Release-head CI evidence
+
+`7efdfbfd1cd46f87b6ecff27b801bd461f70474a` passed Flutter run `37971800686`
+(full regressions, Chrome, coverage, analyzer/format, web/staging, iOS/Android)
+and backend run `37971800313`. The latter explicitly passed the household
+activation/rollback/purchase/equipment rehearsal at 18:19:33 UTC. All forward
+guard jobs passed. One old 44-item artwork-count expectation was updated to 46.
+
+PR #111 landed before merge, creating only a dashboard-content conflict. Both
+entries are preserved; fresh combined-revision checks are required. No pet art,
+pricing, catalog SQL or account API changed during reconciliation.
