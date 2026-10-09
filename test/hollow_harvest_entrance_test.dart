@@ -5,21 +5,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../lib/widgets/questwell_boss_encounter.dart';
 import '../lib/preview/hollow_harvest_review.dart';
 import '../lib/widgets/questwell_hollow_harvest.dart';
+import '../lib/widgets/questwell_harvest_lanterns.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
-  Widget scene({double progress = 0, bool reduced = false}) => MaterialApp(
-      home: MediaQuery(
-          data: MediaQueryData(disableAnimations: reduced),
-          child: Scaffold(
-              body: SingleChildScrollView(
-                  child: SizedBox(
-                      width: 320,
-                      child: QuestwellBossEncounter(
-                          encounterId: 'harvest-test-$reduced',
-                          bossType: 'hollow_harvest',
-                          progress: progress))))));
+  Widget scene(
+          {double progress = 0,
+          bool reduced = false,
+          bool defeated = false,
+          bool active = true}) =>
+      MaterialApp(
+          home: MediaQuery(
+              data: MediaQueryData(disableAnimations: reduced),
+              child: Scaffold(
+                  body: SingleChildScrollView(
+                      child: SizedBox(
+                          width: 320,
+                          child: TickerMode(
+                              enabled: active,
+                              child: QuestwellBossEncounter(
+                                  encounterId: 'harvest-test-$reduced',
+                                  bossType: 'hollow_harvest',
+                                  progress: progress,
+                                  defeated: defeated)))))));
 
   testWidgets('Desktop preview keeps the complete boss within the arena',
       (tester) async {
@@ -28,7 +37,9 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(const HollowHarvestReview());
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 4));
+    await tester.pump();
     final arena = tester.getRect(find.byKey(const ValueKey('boss-arena')));
     final boss = tester.getRect(find.byType(QuestwellHollowHarvest));
     expect(arena.width, lessThanOrEqualTo(600));
@@ -42,7 +53,9 @@ void main() {
       (tester) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(scene());
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 4));
+    await tester.pump();
     expect(
         find.byKey(const ValueKey('harvest-clearing-arena')), findsOneWidget);
     expect(
@@ -59,7 +72,9 @@ void main() {
             .phase,
         1);
     expect(find.byKey(const ValueKey('skip-boss-entrance')), findsNothing);
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 4));
+    await tester.pump();
     expect(
         (await SharedPreferences.getInstance())
             .getBool('questwell.boss.intro.v1.harvest-test-false'),
@@ -81,7 +96,9 @@ void main() {
       (tester) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(scene(reduced: true));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 4));
+    await tester.pump();
     expect(
         tester
             .widget<QuestwellHollowHarvest>(find.byType(QuestwellHollowHarvest))
@@ -89,6 +106,98 @@ void main() {
         1);
     expect(find.byKey(const ValueKey('skip-boss-entrance')), findsNothing);
     expect(tester.binding.hasScheduledFrame, isFalse);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Victory leaves an opaque pile and restores it without replay',
+      (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    await tester.pumpWidget(scene(progress: .5));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 4));
+    await tester.pumpWidget(scene(progress: 1, defeated: true));
+    await tester.pump(const Duration(milliseconds: 400));
+    final during = tester
+        .widget<QuestwellHollowHarvest>(find.byType(QuestwellHollowHarvest));
+    expect(during.defeatPhase, inExclusiveRange(0, 1));
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.byKey(const ValueKey('harvest-body')), findsNothing);
+    expect(find.byKey(const ValueKey('harvest-spider')), findsOneWidget);
+    expect(
+        tester
+            .widget<Opacity>(find.byKey(const ValueKey('harvest-pumpkin-pile')))
+            .opacity,
+        1);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pumpWidget(scene(progress: 1, defeated: true));
+    await tester.pump();
+    expect(
+        tester
+            .widget<QuestwellHollowHarvest>(find.byType(QuestwellHollowHarvest))
+            .defeatPhase,
+        1);
+    expect(find.byKey(const ValueKey('skip-boss-entrance')), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Reduced motion settles victory immediately and stops lanterns',
+      (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    await tester.pumpWidget(scene(progress: .5));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 4));
+    HarvestLanternGlow glow() => tester
+        .widgetList<CustomPaint>(find.byType(CustomPaint))
+        .map((w) => w.painter)
+        .whereType<HarvestLanternGlow>()
+        .single;
+    final before = glow().phase.value;
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(glow().phase.value, isNot(before));
+    await tester.pumpWidget(scene(progress: 1, defeated: true, reduced: true));
+    await tester.pumpAndSettle();
+    expect(
+        tester
+            .widget<QuestwellHollowHarvest>(find.byType(QuestwellHollowHarvest))
+            .defeatPhase,
+        1);
+    expect(glow().phase.value, 0);
+    expect(tester.binding.hasScheduledFrame, isFalse);
+    // Re-enable motion, then mute the offstage route and confirm no light ticks.
+    await tester.pumpWidget(scene(progress: 1, defeated: true));
+    await tester.pump(const Duration(milliseconds: 500));
+    await tester.pumpWidget(scene(progress: 1, defeated: true, active: false));
+    await tester.pumpAndSettle();
+    expect(glow().phase.value, 0);
+    expect(tester.binding.hasScheduledFrame, isFalse);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('Early victory completes the entrance before revealing the pile',
+      (tester) async {
+    Widget early(bool won) => MaterialApp(
+        home: Scaffold(
+            body: QuestwellBossEncounter(
+                encounterId: 'harvest-early-victory',
+                persistEntrance: false,
+                bossType: 'hollow_harvest',
+                progress: won ? 1 : 0,
+                defeated: won)));
+    await tester.pumpWidget(early(false));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(
+        tester
+            .widget<QuestwellHollowHarvest>(find.byType(QuestwellHollowHarvest))
+            .phase,
+        lessThan(1));
+    await tester.pumpWidget(early(true));
+    await tester.pump(const Duration(milliseconds: 900));
+    final figure = tester
+        .widget<QuestwellHollowHarvest>(find.byType(QuestwellHollowHarvest));
+    expect(figure.phase, 1);
+    expect(figure.defeatPhase, 1);
+    expect(find.byKey(const ValueKey('skip-boss-entrance')), findsNothing);
     expect(tester.takeException(), isNull);
   });
 }

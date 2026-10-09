@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 
 /// Visual layer only: phase is supplied by the encounter's persistent intro.
 class QuestwellHollowHarvest extends StatelessWidget {
-  const QuestwellHollowHarvest({super.key, required this.phase});
+  const QuestwellHollowHarvest(
+      {super.key, required this.phase, this.defeatPhase = 0});
   final double phase;
+  final double defeatPhase;
   static const sprite = 'assets/images/questwell/hollow_harvest/idle.png';
 
   double _part(double start, double end) => Curves.easeOutCubic
@@ -32,16 +34,40 @@ class QuestwellHollowHarvest extends StatelessWidget {
                               height: size,
                               fit: BoxFit.fill,
                               excludeFromSemantics: true))));
-          final body = _part(.12, .73);
+          final victory = defeatPhase.clamp(0.0, 1.0);
+          final body = _part(.12, .73) * (1 - (victory / .65).clamp(0.0, 1.0));
+          final pile = ((victory - .25) / .60).clamp(0.0, 1.0);
           final spider = _part(.76, .96);
           return Semantics(
-              label: 'The Hollow Harvest and his spider sidekick',
+              label: victory == 1
+                  ? 'The Hollow Harvest rests as a pumpkin pile beside his spider'
+                  : 'The Hollow Harvest and his spider sidekick',
               child: Stack(fit: StackFit.expand, children: [
-                piece('body', body, Offset.zero),
+                if (body > 0) piece('body', body, Offset.zero),
+                if (pile > 0)
+                  Positioned(
+                      right: 0,
+                      bottom: 0,
+                      width: size * .74,
+                      height: size * .74,
+                      child: Opacity(
+                          key: const ValueKey('harvest-pumpkin-pile'),
+                          opacity: pile,
+                          child: Transform.translate(
+                              offset: Offset(
+                                  0, -size * .035 * math.sin(pile * math.pi)),
+                              child: Image.asset(
+                                  'assets/images/questwell/hollow_harvest/defeated_v1.png',
+                                  fit: BoxFit.contain,
+                                  excludeFromSemantics: true)))),
                 piece('spider', spider, Offset(size * .30, 0)),
-                if (phase < .84)
+                if (phase < .84 && victory == 0)
                   IgnorePointer(
                       child: CustomPaint(painter: _HarvestLeaves(phase))),
+                if (victory > 0 && victory < 1)
+                  IgnorePointer(
+                      child:
+                          CustomPaint(painter: _HarvestLeaves(victory * .84))),
               ]));
         }),
       ));

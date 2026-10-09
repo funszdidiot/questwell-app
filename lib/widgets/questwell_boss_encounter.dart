@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'questwell_hollow_harvest.dart';
+import 'questwell_harvest_lanterns.dart';
 import 'package:flutter/material.dart';
 import 'questwell_typography.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -213,7 +214,12 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
     return AnimatedBuilder(
         animation: Listenable.merge([_intro, _impact]),
         builder: (context, _) {
-          final t = _ready ? _intro.value : 0.0;
+          // A one-step victory may arrive before the entrance completes.
+          final t = _harvest && widget.defeated
+              ? 1.0
+              : _ready
+                  ? _intro.value
+                  : 0.0;
           final arriving = t < 1;
           final slide = _harvest
               ? 1.0
@@ -443,6 +449,9 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                                           child: CustomPaint(
                                               painter:
                                                   _ArenaPainter(dust: land))),
+                                    if (_harvest)
+                                      const Positioned.fill(
+                                          child: QuestwellHarvestLanterns()),
                                     Positioned(
                                         left: width * .03,
                                         bottom: stageBottom,
@@ -484,7 +493,9 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                                                     milliseconds:
                                                         _reduced ? 0 : 650),
                                                 opacity:
-                                                    widget.defeated ? .15 : 1,
+                                                    widget.defeated && !_harvest
+                                                        ? .15
+                                                        : 1,
                                                 child: Transform.rotate(
                                                     angle: wobble,
                                                     child: Transform.scale(
@@ -495,13 +506,11 @@ class _QuestwellBossEncounterState extends State<QuestwellBossEncounter>
                                                         child: _harvest
                                                             ? (_reduced
                                                                 ? TweenAnimationBuilder<double>(
-                                                                    tween: Tween(
-                                                                        begin: 0,
-                                                                        end: 1),
+                                                                    tween: Tween(begin: 0, end: 1),
                                                                     duration: const Duration(milliseconds: 250),
                                                                     builder: (_, opacity, child) => Opacity(opacity: opacity, child: child),
-                                                                    child: const QuestwellHollowHarvest(phase: 1))
-                                                                : QuestwellHollowHarvest(phase: t))
+                                                                    child: QuestwellHollowHarvest(phase: 1, defeatPhase: widget.defeated ? 1 : 0))
+                                                                : QuestwellHollowHarvest(phase: t, defeatPhase: widget.defeated ? impact : 0))
                                                             : sprite))))),
                                     if (impact < 1 && !_reduced)
                                       Positioned.fill(
