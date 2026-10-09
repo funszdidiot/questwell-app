@@ -2,15 +2,24 @@
 
 ## Hollow Harvest entrance — October 8, 2026
 
-**QA / development preview deployment.** Approved boss and Moonlit Harvest
-Clearing are integrated into the shared encounter renderer. A roots-up body
-reveal, separately masked falling head, leaves and spider arrival use the
-existing 3.2-second intro and persistence. Reduced motion respects system
-settings. Account-free route: `?review=hollow-harvest`; three sample strikes
-and replay controls. No boss-selection/backend activation or reward changes.
-13 entrance regressions pass. Independent review identified and corrected
-rectangular-mask fragments and OS reduced-motion override. Hosted verification
-will follow the required CI deployment gates.
+**DEV DEPLOYED preview / head correction in QA (PR #98).** PRs #95 and #97
+deployed revision `50591bd5`, verified in the hosted preview with full desktop
+silhouette, sample strikes and replay. The boss and Moonlit Harvest Clearing
+use the shared encounter renderer; seasonal boss selection is not activated.
+
+Tanya reported a floating head during entrance. The correction keeps the
+pumpkin, neck and collar connected: the complete boss fades in through swirling
+leaves, followed by the spider's separate arrival. This supersedes the earlier
+roots-up reveal and separately falling head. The existing 3.2-second intro,
+once-per-encounter persistence and system reduced-motion support remain.
+Account-free route: `?review=hollow-harvest`; three sample strikes and replay.
+No backend activation, account writes or reward changes.
+
+Three Hollow Harvest regressions pass, including desktop containment, entrance
+persistence and reduced motion. Independent actual-Flutter visual review at
+phases .4 and .65 confirms no neck/collar gap. All code checks passed on
+`0ecbd9f8`; this documentation correction and hosted deployment still require
+their release gates. Lantern flicker and pumpkin-pile defeat are not implemented.
 
 
 ## Halloween complete costumes — October 8, 2026
