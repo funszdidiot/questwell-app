@@ -51,7 +51,7 @@ begin
   exception when raise_exception then
     if sqlerrm <> 'The Hollow Harvest is outside the Halloween season.' then raise; end if;
   end;
-  select total_xp,coins into xp_before,coins_before from public.users where id=owner_id;
+  select total_xp,coin_balance into xp_before,coins_before from public.users where id=owner_id;
   for step_id in select s.id from public.boss_steps s where s.boss_id=hollow_harvest_contract.boss_id loop
     perform public.complete_boss_step(step_id);
     perform public.complete_boss_step(step_id);
@@ -59,7 +59,7 @@ begin
   if not exists(select 1 from public.boss_battles where id=hollow_harvest_contract.boss_id and status='completed') then
     raise exception 'Saved Harvest battle cannot complete after close';
   end if;
-  if not exists(select 1 from public.users where id=owner_id and total_xp=xp_before+25 and coins=coins_before+50) then
+  if not exists(select 1 from public.users where id=owner_id and total_xp=xp_before+25 and coin_balance=coins_before+50) then
     raise exception 'Harvest victory reward was not paid exactly once';
   end if;
   perform public.create_boss_battle('Regular boss after close',array['One','Two'],25,50,'inbox_hydra');
