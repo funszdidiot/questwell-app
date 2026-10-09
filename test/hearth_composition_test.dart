@@ -118,7 +118,8 @@ void main() {
                 const Size(272, 192.96),
                 const Size(390, 280),
                 const Size(284, 342),
-                const Size(354, 342)
+                const Size(354, 342),
+                const Size(600, 416)
               ]
             : [const Size(390, 280)]) {
           tester.view.physicalSize = size;
