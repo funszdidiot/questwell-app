@@ -119,55 +119,76 @@ class QuestwellHearthDecor {
       });
   }
 
-  /// A single gallery composition: common centerline and equal frame-edge gaps.
-  /// Furniture and the foreground avatar can overlap it without shifting the art.
-  static Rect wallArtBounds(Size scene, String slot,
-      {bool library = false, Offset? anchor}) {
-    if (library) {
-      // Keep the gallery inside the emerald arch, following the square room's
-      // BoxFit.cover crop instead of the generic room's wider wall anchors.
-      final roomSide = math.max(scene.width, scene.height);
-      final origin =
-          Offset((scene.width - roomSide) / 2, (scene.height - roomSide) * .52);
-      final center = slot == 'wall_center';
-      final width = roomSide * (center ? .14 : .065);
-      final x = slot == 'wall_left'
-          ? .365
+  /// Two founder-selected architectural standards, in source-art coordinates.
+  /// Both use the background's cover crop and preserve each frame aspect ratio.
+  static Rect wallArtBounds(Size scene, String slot, {bool hallowed = false}) {
+    final center = slot == 'wall_center';
+    final source = hallowed ? const Size(1536, 1024) : const Size(1024, 1024);
+    final scale = math.max(
+      scene.width / source.width,
+      scene.height / source.height,
+    );
+    final origin = Offset(
+      (scene.width - source.width * scale) / 2,
+      (scene.height - source.height * scale) * .52,
+    );
+    final double x;
+    final double y;
+    final double width;
+    if (hallowed) {
+      // All three frames fit the chimney above the mantel, clear of the window.
+      x = slot == 'wall_left'
+          ? 453
           : slot == 'wall_right'
-              ? .635
-              : .50;
-      return Rect.fromCenter(
-          center: origin + Offset(roomSide * x, roomSide * .205),
-          width: width,
-          height: width / (center ? 1.4 : .58));
+              ? 683
+              : 568;
+      y = 118;
+      width = center ? 138 : 58;
+    } else {
+      // The open back wall is shared by every Original Hearth surface variant.
+      x = source.width *
+          (slot == 'wall_left'
+              ? .365
+              : slot == 'wall_right'
+                  ? .635
+                  : .50);
+      y = source.height * .23;
+      width = source.width * (center ? .14 : .065);
     }
-    final centerWidth = math.min(scene.height * .17 * 1.4, scene.width * .21);
-    final sideHeight = math.min(scene.height * .195, scene.width * .12 / .58);
-    final sideWidth = sideHeight * .58;
-    final middle = Offset(scene.width * .54, scene.height * .175);
-    if (slot == 'wall_center') {
-      return Rect.fromCenter(
-          center: anchor ?? middle,
-          width: centerWidth,
-          height: centerWidth / 1.4);
+    var frameCenter = origin + Offset(x, y) * scale;
+    var frameWidth = width * scale;
+    var frameHeight = frameWidth / (center ? 1.4 : .58);
+    if (!hallowed && !center) {
+      // The legacy relic picker has a shorter camera: keep frame tops visible.
+      frameCenter =
+          Offset(frameCenter.dx, math.max(frameCenter.dy, frameHeight / 2 + 3));
     }
-    final offset = centerWidth / 2 + scene.width * .035 + sideWidth / 2;
+    if (!hallowed && center) {
+      // Tall views bring the avatar's head closer to the gallery. Raise only
+      // the landscape; keep the portraits readable beside the head. The
+      // earliest locked body silhouette begins at row 9 of the 320px canvas.
+      final avatarHeight =
+          math.min(scene.height * .76, scene.width * .62 * 4 / 3);
+      final headTop = scene.height * .88 - avatarHeight * (310 - 9) / 320;
+      final ceiling = headTop - 3;
+      final wallTop = math.max(3.0, origin.dy + source.height * .07 * scale);
+      frameHeight = math.min(frameHeight, math.max(1.0, ceiling - wallTop));
+      frameWidth = frameHeight * 1.4;
+      frameCenter = Offset(
+          frameCenter.dx, math.min(frameCenter.dy, ceiling - frameHeight / 2));
+    }
     return Rect.fromCenter(
-        center: anchor ??
-            middle + Offset(slot == 'wall_left' ? -offset : offset, 0),
-        width: sideWidth,
-        height: sideHeight);
+        center: frameCenter, width: frameWidth, height: frameHeight);
   }
 
   static Positioned wallArtPositioned({
     required String slug,
     required String side,
     required Size scene,
-    bool library = false,
-    Offset? anchor,
+    bool hallowed = false,
     QuestwellHearthRenderSpec? renderSpec,
   }) {
-    final rect = wallArtBounds(scene, side, library: library, anchor: anchor);
+    final rect = wallArtBounds(scene, side, hallowed: hallowed);
     return Positioned(
       key: ValueKey(side == 'wall_center'
           ? 'hearth-wall-art-bounds'

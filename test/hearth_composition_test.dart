@@ -19,6 +19,11 @@ const rooms = [
   'emberglass-conservatory',
 ];
 const arrangements = {
+  'wall-standards': {
+    'wall_art': 'moonlit-woodland',
+    'wall_art:wall_left': 'celestial-study',
+    'wall_art:wall_right': 'fern-study',
+  },
   'reading-left': {
     'room:front': 'burgundy-reading-chair',
     'room:side': 'walnut-reading-table',
@@ -108,51 +113,62 @@ void main() {
     final key = GlobalKey();
     for (final room in rooms) {
       for (final arrangement in arrangements.entries) {
-        await tester.pumpWidget(
-          MaterialApp(
-            home: RepaintBoundary(
-              key: key,
-              child: Scaffold(
-                body: MediaQuery(
-                  data: const MediaQueryData(disableAnimations: true),
-                  child: QuestwellHearthPixelScene(
-                    height: 280,
-                    immersive: true,
-                    equippedSlugs: {
-                      ...arrangement.value,
-                      if (room != 'original') 'room:setting': room,
-                    },
+        for (final size in arrangement.key == 'wall-standards'
+            ? [
+                const Size(272, 192.96),
+                const Size(390, 280),
+                const Size(284, 342),
+                const Size(354, 342),
+                const Size(600, 416)
+              ]
+            : [const Size(390, 280)]) {
+          tester.view.physicalSize = size;
+          await tester.pumpWidget(
+            MaterialApp(
+              home: RepaintBoundary(
+                key: key,
+                child: Scaffold(
+                  body: MediaQuery(
+                    data: const MediaQueryData(disableAnimations: true),
+                    child: QuestwellHearthPixelScene(
+                      height: size.height,
+                      immersive: true,
+                      equippedSlugs: {
+                        ...arrangement.value,
+                        if (room != 'original') 'room:setting': room,
+                      },
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-        await tester.runAsync(() async {
-          await Future.wait(
-            tester.widgetList<Image>(find.byType(Image)).map(
-                  (i) => precacheImage(
-                    i.image,
-                    tester.element(find.byType(Scaffold)),
+          );
+          await tester.runAsync(() async {
+            await Future.wait(
+              tester.widgetList<Image>(find.byType(Image)).map(
+                    (i) => precacheImage(
+                      i.image,
+                      tester.element(find.byType(Scaffold)),
+                    ),
                   ),
-                ),
+            );
+          });
+          await tester.pumpAndSettle();
+          expect(tester.takeException(), isNull);
+          final boundary = tester.renderObject<RenderRepaintBoundary>(
+            find.byKey(key),
           );
-        });
-        await tester.pumpAndSettle();
-        expect(tester.takeException(), isNull);
-        final boundary = tester.renderObject<RenderRepaintBoundary>(
-          find.byKey(key),
-        );
-        await tester.runAsync(() async {
-          final image = await boundary.toImage();
-          final data = await image.toByteData(format: ui.ImageByteFormat.png);
-          final file = File(
-            'build/hearth-composition/$room-${arrangement.key}.png',
-          );
-          await file.parent.create(recursive: true);
-          await file.writeAsBytes(data!.buffer.asUint8List());
-          image.dispose();
-        });
+          await tester.runAsync(() async {
+            final image = await boundary.toImage();
+            final data = await image.toByteData(format: ui.ImageByteFormat.png);
+            final file = File(
+              'build/hearth-composition/$room-${arrangement.key}-${size.width.toInt()}x${size.height.toInt()}.png',
+            );
+            await file.parent.create(recursive: true);
+            await file.writeAsBytes(data!.buffer.asUint8List());
+            image.dispose();
+          });
+        }
       }
     }
   });

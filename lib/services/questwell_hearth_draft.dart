@@ -9,6 +9,8 @@ class QuestwellHearthDraft {
         _layout = Map.of(initial),
         _rooms = {for (final e in rooms.entries) e.key: Map.of(e.value)};
 
+  static const wallSlots = {'wall_left', 'wall_center', 'wall_right'};
+
   final Map<String, String> saved;
   Map<String, Map<String, String>> _rooms;
   Map<String, String> _layout;
@@ -55,7 +57,11 @@ class QuestwellHearthDraft {
       room: Map<String, String>.of(_layout)
     };
     final next = Map<String, String>.of(rooms[id ?? 'original'] ?? _layout)
-      ..remove('setting');
+      ..remove('setting')
+      // Wall hangings follow the adventurer, including intentionally empty spots.
+      // Never restore an old painting from a room's historical arrangement.
+      ..removeWhere((slot, _) => wallSlots.contains(slot))
+      ..addEntries(_layout.entries.where((e) => wallSlots.contains(e.key)));
     if (id != null) next['setting'] = id;
     _change(next, rooms: rooms);
   }

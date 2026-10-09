@@ -201,25 +201,27 @@ class _QuestwellAdventurerViewState extends State<QuestwellAdventurerView> {
               const SizedBox(height: 16),
               _heading('YOUR HEARTH'),
               const SizedBox(height: 8),
-              QuestwellHearthPixelScene(
-                height: 260,
-                archetype: widget.archetype,
-                avatarBodyType: widget.bodyType,
-                showRelic: widget.mastered,
-                equippedSlugs: {
-                  for (final item in equipped) item.renderKey: item.slug,
-                },
-                hearthProfileBySlug: {
-                  for (final item in widget.items)
-                    if (item.hearthProfileKey != null)
-                      item.slug: item.hearthProfileKey!,
-                },
-                hearthRenderBySlug: {
-                  for (final item in widget.items)
-                    if (item.hearthRenderSpec != null)
-                      item.slug: item.hearthRenderSpec!,
-                },
-              ),
+              LayoutBuilder(
+                  builder: (context, constraints) => QuestwellHearthPixelScene(
+                        height: constraints.maxWidth * .68 + 8,
+                        archetype: widget.archetype,
+                        avatarBodyType: widget.bodyType,
+                        showRelic: widget.mastered,
+                        equippedSlugs: {
+                          for (final item in equipped)
+                            item.renderKey: item.slug,
+                        },
+                        hearthProfileBySlug: {
+                          for (final item in widget.items)
+                            if (item.hearthProfileKey != null)
+                              item.slug: item.hearthProfileKey!,
+                        },
+                        hearthRenderBySlug: {
+                          for (final item in widget.items)
+                            if (item.hearthRenderSpec != null)
+                              item.slug: item.hearthRenderSpec!,
+                        },
+                      )),
             ],
             const SizedBox(height: 10),
             _heading(_label(widget.archetype)),
