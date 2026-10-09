@@ -113,7 +113,7 @@ class QuestwellAudioControls extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 audio.scene == null
-                    ? 'A quiet corner. Music follows you into the Hearth, Market, Expedition and Boss Battles.'
+                    ? 'A quiet corner. Music follows you through Questwell.'
                     : 'Here: ${audio.scene!.title}',
               ),
               const SizedBox(height: 8),
