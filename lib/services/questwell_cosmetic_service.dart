@@ -5,12 +5,40 @@ import 'questwell_cosmetic_sync.dart';
 import 'questwell_cosmetic_models.dart';
 import 'questwell_purchase_recovery.dart';
 import 'questwell_onboarding_session.dart';
+import 'questwell_hearth_draft.dart';
 export 'questwell_cosmetic_models.dart';
 
 class QuestwellCosmeticService {
   const QuestwellCosmeticService._();
 
   static final changes = QuestwellCosmeticSync();
+
+  static Future<QuestwellHearthLayouts> loadHearthLayouts() async {
+    final uid = SupaFlow.client.auth.currentUser?.id;
+    if (uid == null) throw StateError('Authentication required.');
+    final result = await QuestwellNetwork.read(
+        () => SupaFlow.client.rpc('read_hearth_layouts'));
+    if (SupaFlow.client.auth.currentUser?.id != uid) {
+      throw StateError('Authentication changed.');
+    }
+    return QuestwellHearthLayouts.fromJson(
+        Map<String, dynamic>.from(result as Map),
+        ownerId: uid);
+  }
+
+  static Future<void> saveHearthLayout(
+          QuestwellHearthLayouts expected, Map<String, String> layout) =>
+      _write(() async {
+        if (expected.ownerId == null ||
+            SupaFlow.client.auth.currentUser?.id != expected.ownerId) {
+          throw StateError('Authentication changed.');
+        }
+        await SupaFlow.client.rpc('save_hearth_layout', params: {
+          'p_expected_current': expected.current,
+          'p_expected_revision': expected.revision,
+          'p_layout': layout,
+        });
+      });
 
   static Future<QuestwellCosmeticsSnapshot> load() {
     final uid = SupaFlow.client.auth.currentUser?.id;
@@ -232,6 +260,17 @@ class QuestwellCosmeticService {
 
   static Future<void> place(
       String id, String slot, String? expectedOccupant) async {
+    if (const bool.fromEnvironment('QUESTWELL_DECORATE_HEARTH')) {
+      final state = await loadHearthLayouts();
+      final occupant = state.current[slot];
+      if (occupant != expectedOccupant && occupant != id) {
+        throw StateError('Room changed. Reopen the decorator.');
+      }
+      final draft = QuestwellHearthDraft(state.current, rooms: state.rooms)
+        ..place(id, slot);
+      await saveHearthLayout(state, draft.layout);
+      return;
+    }
     await _write(() => SupaFlow.client.rpc('place_hearth_cosmetic', params: {
           'p_cosmetic_id': id,
           'p_slot': slot,
@@ -240,6 +279,17 @@ class QuestwellCosmeticService {
   }
 
   static Future<void> unequip(String cosmeticId) async {
+    if (const bool.fromEnvironment('QUESTWELL_DECORATE_HEARTH')) {
+      final state = await loadHearthLayouts();
+      final spot =
+          state.current.entries.where((e) => e.value == cosmeticId).firstOrNull;
+      if (spot != null) {
+        final draft = QuestwellHearthDraft(state.current, rooms: state.rooms)
+          ..remove(spot.key);
+        await saveHearthLayout(state, draft.layout);
+        return;
+      }
+    }
     await _write(() => SupaFlow.client.rpc(
           'unequip_cosmetic',
           params: {'p_cosmetic_id': cosmeticId},

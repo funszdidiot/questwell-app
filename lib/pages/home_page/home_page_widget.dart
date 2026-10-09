@@ -1,4 +1,5 @@
 import '/widgets/questwell_quest_completion.dart';
+import '/widgets/questwell_decorate_hearth.dart';
 import '../../widgets/questwell_hearth_material.dart';
 import '../../widgets/questwell_app_style.dart';
 import '/widgets/questwell_home_quest.dart';
@@ -48,6 +49,32 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  bool _openingDecorator = false;
+
+  Future<void> _decorateHearth() async {
+    if (_openingDecorator) return;
+    setState(() => _openingDecorator = true);
+    try {
+      final appearance = await widget.loadAppearance();
+      final layouts = await QuestwellCosmeticService.loadHearthLayouts();
+      if (!mounted) return;
+      await showDialog<bool>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => QuestwellDecorateHearth(
+              snapshot: appearance,
+              layouts: layouts,
+              onSave: (layout) =>
+                  QuestwellCosmeticService.saveHearthLayout(layouts, layout)));
+    } catch (_) {
+      if (mounted)
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Could not open your room. Please try again.')));
+    } finally {
+      if (mounted) setState(() => _openingDecorator = false);
+    }
+  }
+
   late HomePageModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _completingTask = false;
@@ -478,6 +505,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   },
                 ),
                 const SizedBox(height: 8),
+                if (decorateHearthEnabled)
+                  OutlinedButton.icon(
+                      onPressed: _openingDecorator ? null : _decorateHearth,
+                      icon: const Icon(Icons.chair_outlined),
+                      label: Text(_openingDecorator
+                          ? 'Opening room…'
+                          : 'Decorate Hearth')),
                 if (!_onboardingCompleted) ...[
                   const SizedBox(height: 18),
                   QuestwellOnboardingPanel(

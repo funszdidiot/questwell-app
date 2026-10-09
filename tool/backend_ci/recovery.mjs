@@ -126,6 +126,10 @@ export async function rehearseRecovery(status) {
   }), 201);
   assert.equal(sql("select count(*) from pg_database where datname in ('questwell_restore_ci','questwell_source_ci');"), '0');
   assert.equal(sql("select to_regclass('private.recovery_ci_marker') is null;"), 't');
+  // Include actual remembered-room data in the dynamic private-schema restore hashes.
+  assert.equal(sql("select to_regclass('private.hearth_saved_layouts') is not null;"), 't');
+  sql(`insert into private.hearth_saved_layouts(user_id,rooms,revision)
+    values ('${a.id}', '{"original":{}}'::jsonb, 1);`);
   const marker = randomUUID();
   sql(`create table private.recovery_ci_marker (id uuid primary key); insert into private.recovery_ci_marker values ('${marker}');`);
   const requireMarker = (database = 'postgres') => assert.equal(sql('select id from private.recovery_ci_marker;', database), marker,
