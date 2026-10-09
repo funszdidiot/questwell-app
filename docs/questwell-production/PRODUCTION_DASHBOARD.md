@@ -1,5 +1,18 @@
 # Questwell Production Dashboard
 
+## Boston Terrier and Hearth Cat — October 9, 2026
+
+**QA / candidate development preview.** Tanya approved the concept and idle
+animation direction. Transparent registered sheets, species-specific idle loops
+and separate 32px icons are implemented for `?review=companions`. Existing
+reduced-motion/TickerMode behavior is retained. Market/account capability and
+pricing remain unchanged. Local timing/asset/format checks pass; Flutter widget
+tests await CI because local tool startup was blocked by automatic approval
+review for cloud-metadata access. Tanya subsequently authorized public branch publishing
+and opening the review; follow its PR for CI results.
+No deployment or account persistence result is
+claimed. Evidence: `../../tool/art_assets/household_familiars_v1/README.md`.
+
 ## Hollow Harvest seasonal selection — October 8, 2026
 
 **QA.** The corrected connected-head preview is deployed at `24eab12` (PR #98).

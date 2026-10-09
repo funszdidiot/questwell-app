@@ -4,19 +4,26 @@ import 'package:flutter/material.dart';
 /// Shared 32-pixel artwork with the shading and limited palettes of 16-bit RPGs.
 /// Integer coordinates and no anti-aliasing keep Inventory and Market consistent.
 class QuestwellItemIcon extends StatelessWidget {
-  const QuestwellItemIcon(
-      {super.key, required this.slug, this.size = 64, this.locked = false});
+  const QuestwellItemIcon({
+    super.key,
+    required this.slug,
+    this.size = 64,
+    this.locked = false,
+  });
   final String slug;
   final double size;
   final bool locked;
   @override
   Widget build(BuildContext context) => Semantics(
-      label: '${slug.replaceAll('-', ' ')} icon',
-      image: true,
-      child: SizedBox.square(
-          dimension: size,
-          child: CustomPaint(
-              painter: QuestwellItemIconPainter(slug, locked: locked))));
+    label: '${slug.replaceAll('-', ' ')} icon',
+    image: true,
+    child: SizedBox.square(
+      dimension: size,
+      child: CustomPaint(
+        painter: QuestwellItemIconPainter(slug, locked: locked),
+      ),
+    ),
+  );
 }
 
 class QuestwellItemIconPainter extends CustomPainter {
@@ -43,14 +50,17 @@ class QuestwellItemIconPainter extends CustomPainter {
     canvas.save();
     final scale = math.min(size.width, size.height) / 32;
     canvas.translate(
-        (size.width - 32 * scale) / 2, (size.height - 32 * scale) / 2);
+      (size.width - 32 * scale) / 2,
+      (size.height - 32 * scale) / 2,
+    );
     canvas.scale(scale);
     final paint = Paint()..isAntiAlias = false;
     void r(num x, num y, num w, num h, Color c) {
       paint.color = c;
       canvas.drawRect(
-          Rect.fromLTWH(x.toDouble(), y.toDouble(), w.toDouble(), h.toDouble()),
-          paint);
+        Rect.fromLTWH(x.toDouble(), y.toDouble(), w.toDouble(), h.toDouble()),
+        paint,
+      );
     }
 
     void gem(int x, int y, Color c) {
@@ -281,15 +291,16 @@ class QuestwellItemIconPainter extends CustomPainter {
         r(x - 1, 5, 4, 2, ink);
         r(x - 2, 7, 6, 5, ink);
         r(
-            x - 1,
-            7,
-            4,
-            4,
-            x == 9
-                ? green
-                : x == 17
-                    ? red
-                    : gold);
+          x - 1,
+          7,
+          4,
+          4,
+          x == 9
+              ? green
+              : x == 17
+              ? red
+              : gold,
+        );
         r(x - 1, 7, 1, 2, cream);
       }
       const orange = Color(0xFFDA7831), pumpkinShade = Color(0xFF9A4927);
@@ -352,7 +363,7 @@ class QuestwellItemIconPainter extends CustomPainter {
       'midnight-observatory',
       'alchemists-workshop',
       'astral-sanctuary',
-      'emberglass-conservatory'
+      'emberglass-conservatory',
     ].contains(slug)) {
       // Miniature room emblems share a 32px grid, each with its own motif.
       final harvest = slug == 'midnight-harvest';
@@ -365,10 +376,10 @@ class QuestwellItemIconPainter extends CustomPainter {
       final wall = harvest
           ? const Color(0xFF704333)
           : alchemy
-              ? redDark
-              : sky
-                  ? purpleDark
-                  : greenDark;
+          ? redDark
+          : sky
+          ? purpleDark
+          : greenDark;
       panel(2, 3, 28, 27, wood, woodLight, woodDark);
       r(5, 6, 22, 19, wall);
       r(4, 25, 24, 4, wood);
@@ -430,7 +441,7 @@ class QuestwellItemIconPainter extends CustomPainter {
           const Offset(6, 7),
           const Offset(10, 5),
           const Offset(16, 6),
-          const Offset(26, 5)
+          const Offset(26, 5),
         ]) {
           r(pos.dx, pos.dy, 3, 2, harvest ? red : green);
           r(pos.dx + 1, pos.dy + 2, 2, 2, harvest ? woodLight : mint);
@@ -607,6 +618,56 @@ class QuestwellItemIconPainter extends CustomPainter {
       }
       r(4, 24, 4, 1, goldShade);
       r(24, 24, 4, 1, goldShade);
+    } else if (slug == 'boston-terrier' || slug == 'hearth-cat') {
+      const fur = Color(0xFF373137), highlight = Color(0xFF62515A);
+      const plum = Color(0xFF784659), moss = Color(0xFF617442);
+      final dog = slug == 'boston-terrier';
+      // Same 32px grid as existing familiars; distinctive silhouettes at 48px.
+      r(8, 3, 4, 9, ink);
+      r(21, 4, 4, 8, ink);
+      r(9, 5, 2, 5, plum);
+      r(22, 6, 2, 4, plum);
+      r(7, 10, 19, 11, ink);
+      r(9, 9, 15, 13, fur);
+      r(10, 10, 4, 2, highlight);
+      r(21, 11, 2, 2, highlight);
+      r(10, 21, 15, 8, ink);
+      r(12, 21, 11, 7, fur);
+      r(10, 28, 6, 2, ink);
+      r(18, 28, 7, 2, ink);
+      if (dog) {
+        r(15, 9, 3, 10, cream);
+        r(12, 17, 10, 3, cream);
+        r(14, 19, 6, 2, cream);
+        r(15, 17, 3, 2, ink);
+        r(11, 14, 3, 3, ink);
+        r(20, 14, 3, 3, ink);
+        r(12, 14, 1, 1, cream);
+        r(21, 14, 1, 1, cream);
+        r(14, 23, 6, 5, cream);
+        r(11, 28, 4, 1, cream);
+        r(19, 28, 4, 1, cream);
+        r(11, 21, 12, 2, moss);
+        r(13, 23, 6, 1, moss);
+        r(15, 24, 2, 1, moss);
+        star(22, 22, gold);
+      } else {
+        r(11, 14, 4, 3, gold);
+        r(20, 14, 4, 3, gold);
+        r(13, 14, 1, 3, ink);
+        r(21, 14, 1, 3, ink);
+        r(16, 18, 2, 1, plum);
+        r(5, 18, 7, 1, highlight);
+        r(23, 18, 5, 1, highlight);
+        r(11, 21, 12, 2, plum);
+        r(18, 23, 1, 3, gold);
+        r(19, 25, 2, 1, gold);
+        r(6, 24, 3, 4, ink);
+        r(7, 27, 5, 2, ink);
+        r(8, 26, 2, 2, fur);
+        r(9, 28, 14, 2, fur);
+        r(11, 28, 9, 1, highlight);
+      }
     } else if (slug == 'pumpkin-sprite') {
       // Same 32px grid, chunky outline and limited shading as the other familiars.
       const orange = Color(0xFFCE742C),
@@ -776,13 +837,13 @@ class QuestwellItemIconPainter extends CustomPainter {
       final c = suit
           ? const Color(0xFF626D7F)
           : guardian
-              ? red
-              : green;
+          ? red
+          : green;
       final dark = suit
           ? const Color(0xFF35404D)
           : guardian
-              ? redDark
-              : greenDark;
+          ? redDark
+          : greenDark;
       r(10, 4, 12, 3, ink);
       r(7, 7, 18, 5, ink);
       r(5, 12, 22, 15, ink);
@@ -793,15 +854,16 @@ class QuestwellItemIconPainter extends CustomPainter {
       r(10, 6, 12, 4, c);
       r(20, 10, 3, 16, dark);
       r(
-          9,
-          10,
-          2,
-          14,
-          suit
-              ? blue
-              : guardian
-                  ? const Color(0xFFCC7881)
-                  : mint);
+        9,
+        10,
+        2,
+        14,
+        suit
+            ? blue
+            : guardian
+            ? const Color(0xFFCC7881)
+            : mint,
+      );
       r(15, 11, 2, 17, ink);
       r(12, 6, 8, 3, suit ? cream : gold);
       r(14, 9, 4, 3, suit ? cream : goldShade);
@@ -833,10 +895,24 @@ class QuestwellItemIconPainter extends CustomPainter {
       r(8, 6, 3, 8, woodDark);
       r(21, 6, 3, 8, woodDark);
       r(10, 6, 2, 5, goldShade);
-      panel(4, 13, 24, 15, way ? const Color(0xFF414B2C) : wood,
-          way ? const Color(0xFF76804A) : woodLight, woodDark);
-      panel(5, 11, 22, 9, way ? const Color(0xFF626D3D) : woodLight,
-          way ? const Color(0xFFA4A66B) : gold, woodDark);
+      panel(
+        4,
+        13,
+        24,
+        15,
+        way ? const Color(0xFF414B2C) : wood,
+        way ? const Color(0xFF76804A) : woodLight,
+        woodDark,
+      );
+      panel(
+        5,
+        11,
+        22,
+        9,
+        way ? const Color(0xFF626D3D) : woodLight,
+        way ? const Color(0xFFA4A66B) : gold,
+        woodDark,
+      );
       panel(13, 17, 6, 6, gold, cream, goldShade);
       r(15, 18, 2, 3, woodDark);
       r(7, 23, 3, 1, goldShade);
@@ -854,8 +930,15 @@ class QuestwellItemIconPainter extends CustomPainter {
       }
     } else if (slug.contains('grimoire') || slug.contains('seal')) {
       final book = slug == 'annotated-grimoire';
-      panel(7, 4, 20, 24, book ? const Color(0xFF49344F) : purple,
-          book ? const Color(0xFF79586E) : purple, purpleDark);
+      panel(
+        7,
+        4,
+        20,
+        24,
+        book ? const Color(0xFF49344F) : purple,
+        book ? const Color(0xFF79586E) : purple,
+        purpleDark,
+      );
       r(8, 5, 3, 22, goldShade);
       r(11, 6, 13, 1, cream);
       r(12, 25, 12, 1, cream);
@@ -934,7 +1017,7 @@ class QuestwellItemIconPainter extends CustomPainter {
         const Offset(10, 9),
         const Offset(20, 8),
         const Offset(12, 19),
-        const Offset(21, 20)
+        const Offset(21, 20),
       ]) {
         r(pos.dx, pos.dy, 1, 3, blue);
         r(pos.dx - 1, pos.dy + 3, 1, 2, blue);
@@ -992,11 +1075,23 @@ class QuestwellItemIconPainter extends CustomPainter {
         slug == 'celestial-study' ||
         slug == 'moonlit-woodland') {
       final landscape = slug == 'moonlit-woodland';
-      panel(landscape ? 2 : 7, 4, landscape ? 28 : 18, 24, wood, woodLight,
-          woodDark);
+      panel(
+        landscape ? 2 : 7,
+        4,
+        landscape ? 28 : 18,
+        24,
+        wood,
+        woodLight,
+        woodDark,
+      );
       r(landscape ? 4 : 9, 6, landscape ? 24 : 14, 20, gold);
-      r(landscape ? 5 : 10, 7, landscape ? 22 : 12, 18,
-          slug == 'fern-study' ? cream : const Color(0xFF293B61));
+      r(
+        landscape ? 5 : 10,
+        7,
+        landscape ? 22 : 12,
+        18,
+        slug == 'fern-study' ? cream : const Color(0xFF293B61),
+      );
       if (slug == 'fern-study') {
         r(15, 9, 1, 14, greenDark);
         for (final y in [11, 15, 19]) {
@@ -1026,8 +1121,13 @@ class QuestwellItemIconPainter extends CustomPainter {
       r(15, 20, 2, 6, goldShade);
       for (var a = 0; a < 24; a++) {
         final angle = a * math.pi / 12;
-        r((16 + 10 * math.cos(angle)).round(),
-            (14 + 10 * math.sin(angle)).round(), 2, 2, goldShade);
+        r(
+          (16 + 10 * math.cos(angle)).round(),
+          (14 + 10 * math.sin(angle)).round(),
+          2,
+          2,
+          goldShade,
+        );
       }
       if (orrery) {
         r(7, 13, 20, 2, gold);

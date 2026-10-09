@@ -1,0 +1,246 @@
+{
+  "boston-terrier": [
+    {
+      "frame": 0,
+      "inputFrame": 0,
+      "sourceBounds": [
+        96,
+        86,
+        329,
+        469
+      ],
+      "offset": [
+        -21,
+        28
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 1,
+      "inputFrame": 1,
+      "sourceBounds": [
+        96,
+        84,
+        327,
+        469
+      ],
+      "offset": [
+        -20,
+        28
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 2,
+      "inputFrame": 2,
+      "sourceBounds": [
+        96,
+        86,
+        327,
+        468
+      ],
+      "offset": [
+        -20,
+        29
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 3,
+      "inputFrame": 0,
+      "sourceBounds": [
+        96,
+        86,
+        329,
+        469
+      ],
+      "offset": [
+        -21,
+        28
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 4,
+      "inputFrame": 4,
+      "sourceBounds": [
+        98,
+        50,
+        329,
+        448
+      ],
+      "offset": [
+        -22,
+        49
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 5,
+      "inputFrame": 5,
+      "sourceBounds": [
+        81,
+        48,
+        356,
+        448
+      ],
+      "offset": [
+        -27,
+        49
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 6,
+      "inputFrame": 6,
+      "sourceBounds": [
+        92,
+        54,
+        331,
+        448
+      ],
+      "offset": [
+        -20,
+        49
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 7,
+      "inputFrame": 0,
+      "sourceBounds": [
+        96,
+        86,
+        329,
+        469
+      ],
+      "offset": [
+        -21,
+        28
+      ],
+      "ground": 498
+    }
+  ],
+  "hearth-cat": [
+    {
+      "frame": 0,
+      "inputFrame": 0,
+      "sourceBounds": [
+        83,
+        77,
+        344,
+        479
+      ],
+      "offset": [
+        -22,
+        18
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 1,
+      "inputFrame": 1,
+      "sourceBounds": [
+        82,
+        79,
+        344,
+        479
+      ],
+      "offset": [
+        -22,
+        18
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 2,
+      "inputFrame": 2,
+      "sourceBounds": [
+        83,
+        79,
+        344,
+        478
+      ],
+      "offset": [
+        -22,
+        19
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 3,
+      "inputFrame": 0,
+      "sourceBounds": [
+        83,
+        77,
+        344,
+        479
+      ],
+      "offset": [
+        -22,
+        18
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 4,
+      "inputFrame": 4,
+      "sourceBounds": [
+        82,
+        60,
+        344,
+        456
+      ],
+      "offset": [
+        -22,
+        41
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 5,
+      "inputFrame": 5,
+      "sourceBounds": [
+        82,
+        58,
+        344,
+        455
+      ],
+      "offset": [
+        -22,
+        42
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 6,
+      "inputFrame": 6,
+      "sourceBounds": [
+        83,
+        58,
+        344,
+        455
+      ],
+      "offset": [
+        -22,
+        42
+      ],
+      "ground": 498
+    },
+    {
+      "frame": 7,
+      "inputFrame": 7,
+      "sourceBounds": [
+        83,
+        58,
+        344,
+        455
+      ],
+      "offset": [
+        -22,
+        42
+      ],
+      "ground": 498
+    }
+  ]
+}
