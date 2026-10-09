@@ -124,87 +124,92 @@ class _BossReviewAppState extends State<BossReviewApp> {
     final steps = List.generate(3, (_) => TextEditingController());
     var type = 'inbox_hydra';
     String? error;
+    ModalRoute<dynamic>? creationRoute;
     await showDialog<void>(
         context: context,
-        builder: (dialogContext) => StatefulBuilder(
-            builder: (context, change) => AlertDialog(
-                    title: const Text('Start a practice battle'),
-                    content: SingleChildScrollView(
-                        child:
-                            Column(mainAxisSize: MainAxisSize.min, children: [
-                      TextField(
-                          controller: title,
-                          decoration: const InputDecoration(
-                              labelText: 'Your challenge')),
-                      QuestwellBossUnlockProgress(
-                          level: _level,
-                          totalXp: QuestwellProgression.totalAtLevel(_level)),
-                      const SizedBox(height: 12),
-                      QuestwellBossPicker(
-                          value: type,
-                          level: _level,
-                          onChanged: (value) => change(() => type = value)),
-                      for (var i = 0; i < steps.length; i++)
+        builder: (dialogContext) {
+          creationRoute = ModalRoute.of(dialogContext);
+          return StatefulBuilder(
+              builder: (context, change) => AlertDialog(
+                      title: const Text('Start a practice battle'),
+                      content: SingleChildScrollView(
+                          child:
+                              Column(mainAxisSize: MainAxisSize.min, children: [
                         TextField(
-                            controller: steps[i],
-                            decoration:
-                                InputDecoration(labelText: 'Attack ${i + 1}')),
-                      const SizedBox(height: 10),
-                      OutlinedButton.icon(
-                        onPressed: () =>
-                            change(() => steps.add(TextEditingController())),
-                        icon: const Icon(Icons.add),
-                        label: const Text('Add step'),
-                      ),
-                      if (error != null)
-                        Text(error!,
-                            style: const TextStyle(color: Colors.amber)),
-                      const SizedBox(height: 8),
-                      const Text('Practice only. Your account is unchanged.'),
-                    ])),
-                    actions: [
-                      TextButton(
-                          onPressed: () => Navigator.pop(dialogContext),
-                          child: const Text('Cancel')),
-                      FilledButton(
-                          onPressed: () {
-                            final entries = steps
-                                .map((s) => s.text.trim())
-                                .where((s) => s.isNotEmpty)
-                                .toList();
-                            if (title.text.trim().isEmpty ||
-                                entries.length < 2) {
-                              change(() => error =
-                                  'Add a title and at least two attacks.');
-                              return;
-                            }
-                            if (!QuestwellBossUnlocks.available(type, _level))
-                              return;
-                            final id = 'custom-${_extra.length}';
-                            setState(() {
-                              _createdBattleId = id;
-                              _state = 'battles';
-                              _extra.add(QuestwellBossBattle(
-                                  id: id,
-                                  title: title.text.trim(),
-                                  bossType: type,
-                                  status: 'open',
-                                  rewardXp: QuestwellBossRewards.victoryXp,
-                                  rewardCoins:
-                                      QuestwellBossRewards.victoryCoins,
-                                  steps: [
-                                    for (var i = 0; i < entries.length; i++)
-                                      QuestwellBossStep(
-                                          id: '$id-$i',
-                                          title: entries[i],
-                                          position: i,
-                                          completed: false)
-                                  ]));
-                            });
-                            Navigator.pop(dialogContext);
-                          },
-                          child: const Text('Start battle')),
-                    ])));
+                            controller: title,
+                            decoration: const InputDecoration(
+                                labelText: 'Your challenge')),
+                        QuestwellBossUnlockProgress(
+                            level: _level,
+                            totalXp: QuestwellProgression.totalAtLevel(_level)),
+                        const SizedBox(height: 12),
+                        QuestwellBossPicker(
+                            value: type,
+                            level: _level,
+                            onChanged: (value) => change(() => type = value)),
+                        for (var i = 0; i < steps.length; i++)
+                          TextField(
+                              controller: steps[i],
+                              decoration: InputDecoration(
+                                  labelText: 'Attack ${i + 1}')),
+                        const SizedBox(height: 10),
+                        OutlinedButton.icon(
+                          onPressed: () =>
+                              change(() => steps.add(TextEditingController())),
+                          icon: const Icon(Icons.add),
+                          label: const Text('Add step'),
+                        ),
+                        if (error != null)
+                          Text(error!,
+                              style: const TextStyle(color: Colors.amber)),
+                        const SizedBox(height: 8),
+                        const Text('Practice only. Your account is unchanged.'),
+                      ])),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(dialogContext),
+                            child: const Text('Cancel')),
+                        FilledButton(
+                            onPressed: () {
+                              final entries = steps
+                                  .map((s) => s.text.trim())
+                                  .where((s) => s.isNotEmpty)
+                                  .toList();
+                              if (title.text.trim().isEmpty ||
+                                  entries.length < 2) {
+                                change(() => error =
+                                    'Add a title and at least two attacks.');
+                                return;
+                              }
+                              if (!QuestwellBossUnlocks.available(type, _level))
+                                return;
+                              final id = 'custom-${_extra.length}';
+                              setState(() {
+                                _createdBattleId = id;
+                                _state = 'battles';
+                                _extra.add(QuestwellBossBattle(
+                                    id: id,
+                                    title: title.text.trim(),
+                                    bossType: type,
+                                    status: 'open',
+                                    rewardXp: QuestwellBossRewards.victoryXp,
+                                    rewardCoins:
+                                        QuestwellBossRewards.victoryCoins,
+                                    steps: [
+                                      for (var i = 0; i < entries.length; i++)
+                                        QuestwellBossStep(
+                                            id: '$id-$i',
+                                            title: entries[i],
+                                            position: i,
+                                            completed: false)
+                                    ]));
+                              });
+                              Navigator.pop(dialogContext);
+                            },
+                            child: const Text('Start battle')),
+                      ]));
+        });
+    await creationRoute?.completed;
     title.dispose();
     for (final s in steps) {
       s.dispose();
