@@ -1,3 +1,4 @@
+import {exerciseHouseholdForward} from './household-forward.mjs';
 import {exerciseAutumnForward} from './autumn-forward.mjs';
 import {exerciseDecorateHearthForward} from './decorate-hearth-forward.mjs';
 import {spawn, spawnSync} from 'node:child_process';
@@ -535,6 +536,7 @@ try {
   // Keep the candidate schema in this disposable database for full backup/restore coverage.
   runHardeningPayload(resolve(source, '../../supabase/migrations/20261009044431_decorate_hearth_layouts.sql'));
   exerciseAutumnForward({source, workdir, run, runPayload: runHardeningPayload});
+  exerciseHouseholdForward({source, workdir, run, runPayload: runHardeningPayload});
   // Fresh HTTP pool after preceding database/API resets; never retry signup writes.
   const recoveryResult = spawnSync(process.execPath, [join(source,'recovery-run.mjs')], {
     input: JSON.stringify(status), env, encoding:'utf8', timeout:300000, maxBuffer:1024*1024,

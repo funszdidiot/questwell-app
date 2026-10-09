@@ -1,0 +1,49 @@
+name: Reviewed Household familiars forward migration
+
+on:
+  pull_request:
+    branches: [questwell-dev]
+  push:
+    branches: [deploy/household-familiars-approved]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: questwell-reviewed-household-forward
+  cancel-in-progress: false
+
+jobs:
+  guards:
+    name: Household familiars deployment guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout without stored credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate exact release sources and failure paths without credentials
+        run: |
+          node --test tool/qa/household_forward_test.mjs
+          node tool/deploy/household-familiars.mjs --check
+
+  apply:
+    name: Activate only the reviewed Household familiars collection
+    if: github.event_name == 'push' && github.ref == 'refs/heads/deploy/household-familiars-approved'
+    needs: guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      checks: read
+    steps:
+      - name: Checkout the reviewed revision without stored credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Verify served client and atomically activate the exact release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          QUESTWELL_HOUSEHOLD_MIGRATION_TOKEN: ${{ secrets.QUESTWELL_HOUSEHOLD_MIGRATION_TOKEN }}
+        run: node tool/deploy/household-familiars.mjs

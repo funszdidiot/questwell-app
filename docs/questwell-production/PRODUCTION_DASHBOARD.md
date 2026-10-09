@@ -1,5 +1,17 @@
 # Questwell Production Dashboard
 
+## Boston Terrier and Hearth Cat — October 9, 2026
+
+**QA / release authorized.** Tanya directed “Price them and push them” on
+October 9. Boston Terrier and Hearth Cat are each 180 coins, rare, non-premium,
+permanent, all classes/bodies. Client capability, Market samples and a guarded,
+data-only forward migration are prepared. Release head `7efdfbfd` passed full
+Flutter, browser, native and backend CI, including authenticated purchase,
+equipment and ownership checks. Combined audio-base checks are pending. Live catalog
+activation requires a dedicated 24-hour deployment credential; existing scoped
+collection secrets are not reused. No live purchase or delivery claim.
+Evidence: `../qa/HOUSEHOLD_FAMILIARS_RELEASE.md`.
+
 ## Four-space beta soundtrack — October 9, 2026
 
 **QA.** Four music and two ambience candidates are published in PR #111.

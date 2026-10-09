@@ -110,3 +110,14 @@ test('Autumn privileged job requires the exact deployment branch and push event'
     assert.ok(validate(text.replace(guard,replacement),file).length>0);
   }
 });
+
+test('Household privileged job requires its exact branch and read-only check scope',()=> {
+  const file='.github/workflows/questwell-household-forward.yml';
+  const text=fs.readFileSync(path.join(root,file),'utf8');
+  const guard="github.event_name == 'push' && github.ref == 'refs/heads/deploy/household-familiars-approved'";
+  assert.deepEqual(validate(text,file),[]);
+  for(const replacement of ['true',"github.event_name == 'push'","github.ref == 'refs/heads/deploy/household-familiars-approved'"]) {
+    assert.ok(validate(text.replace(guard,replacement),file).length>0);
+  }
+  assert.ok(validate(text.replace('checks: read','checks: write'),file).length>0);
+});

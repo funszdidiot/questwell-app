@@ -42,7 +42,7 @@ function validate(text, name) {
           ? {contents:'read', pages:'write', 'id-token':'write'}
           : name.endsWith('/questwell-preview.yml') && id === 'build'
           ? {contents:'read', pages:'read'}
-          : (name.endsWith('/questwell-woodland-forward.yml') || name.endsWith('/questwell-hallowed-forward.yml') || name.endsWith('/questwell-content-forward.yml') || name.endsWith('/questwell-autumn-forward.yml')) && id === 'apply'
+          : (name.endsWith('/questwell-woodland-forward.yml') || name.endsWith('/questwell-hallowed-forward.yml') || name.endsWith('/questwell-content-forward.yml') || name.endsWith('/questwell-autumn-forward.yml') || name.endsWith('/questwell-household-forward.yml')) && id === 'apply'
           ? {contents:'read', checks:'read'} : {contents:'read'};
         if (JSON.stringify(job.permissions) !== JSON.stringify(allowed)) errors.push(`excess permissions for ${id}`);
       }
@@ -50,6 +50,8 @@ function validate(text, name) {
           job.if !== "github.ref == 'refs/heads/questwell-dev'") errors.push('preview deployment not branch-guarded');
       if (name.endsWith('/questwell-hallowed-forward.yml') && id === 'apply' &&
           job.if !== "github.event_name == 'push' && github.ref == 'refs/heads/deploy/hallowed-hearth-approved'") errors.push('Halloween deployment not branch-guarded');
+      if (name.endsWith('/questwell-household-forward.yml') && id === 'apply' &&
+          job.if !== "github.event_name == 'push' && github.ref == 'refs/heads/deploy/household-familiars-approved'") errors.push('Household deployment not branch-guarded');
       if (name.endsWith('/questwell-autumn-forward.yml') && id === 'apply' &&
           job.if !== "github.event_name == 'push' && github.ref == 'refs/heads/deploy/autumn-hearth-approved'") errors.push('Autumn deployment not branch-guarded');
       if (name.endsWith('/questwell-content-forward.yml') && id === 'apply' &&

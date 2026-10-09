@@ -243,9 +243,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(result, isTrue);
   });
-  test('All 44 shop entries have distinct artwork and equipment routes',
+  test('All 46 shop entries have distinct artwork and equipment routes',
       () async {
-    expect(items.length, 44);
+    expect(items.length, 46);
     final fingerprints = <String>{};
     for (final item in items) {
       expect(QuestwellEquipmentPolicy.isReady(item.slug, item.category), isTrue,
