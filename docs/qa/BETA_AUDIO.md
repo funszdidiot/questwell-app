@@ -1,5 +1,27 @@
 # Beta audio — October 9, 2026
 
+## Hearth silence and returning-session fix
+
+Tanya's iPhone screenshot shows enabled music at 30% but the quiet-route label
+over the Hearth. The audio host only listened to route changes, while `/` can
+change from authentication to Hearth without changing URI. It now listens to
+session changes and rechecks the destination on interactions and host updates.
+Ordinary taps/keyboard interactions activate previously enabled sound; defaults
+remain off. The Sound menu retains its underlying scene.
+
+The web adapter now unlocks a Web Audio context synchronously inside the gesture,
+before loading/decoding the approved MP3. This avoids losing Safari activation
+across the plugin's asynchronous load. Looped buffers retain position on pause;
+GainNodes retain independent volumes. Native playback stays on audioplayers.
+Safari's optional AudioSession API selects media playback for enabled music,
+addressing the Silent Mode icon in the report. Paused sources suspend their
+context. WebKit documents this behavior and remedy in bug 237322, comment 6:
+https://bugs.webkit.org/show_bug.cgi?id=237322#c6
+No audio assets or account data changed. Tests cover root-session restoration,
+menu continuity, push/pop navigation, logout silence, first-tap activation,
+disabled/background silence and existing playback races. Hosted CI and beta
+deployment are pending; physical iPhone acceptance is not claimed.
+
 Status: DEV DEPLOYED at `0d575d0` (PR #111); missing-page follow-up in QA.
 Tanya requested all four soundscapes now for beta feedback.
 Development implementation is authorized; production promotion is excluded.

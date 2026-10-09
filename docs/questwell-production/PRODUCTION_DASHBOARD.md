@@ -1,5 +1,13 @@
 # Questwell Production Dashboard
 
+## Hearth audio and automatic resume — October 9, 2026
+
+**QA.** Tanya reported enabled sound remaining silent in the Hearth menu.
+The audio host now follows root-page session changes and resumes saved enabled
+sound on a normal interaction. Browser contexts unlock before asset loading;
+music/ambience controls and approved assets are preserved. Regression tests and
+hosted deployment are pending. Evidence: `../qa/BETA_AUDIO.md`.
+
 ## Room and page loading follow-up — October 9, 2026
 
 **QA.** Tanya reported a room switch failing to load and requested correction
