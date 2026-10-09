@@ -13,14 +13,16 @@ No user battle or inventory is created by rollout. The source release is
 independent review, remote CI, scoped database activation and client deployment
 must pass before calling seasonal selection live. No historical migration replay.
 
-## Autumn Hearth — October 8, 2026
+## Autumn Hearth — October 9, 2026
 
-**QA / local development preview.** Amberfall leaves plus Maple Hearth Rug,
-Mooncap Grove, Harvest Lanterns and Sage's Rest use the existing room/slot
-geometry. Cushion halo removed. 24 relevant tests pass; eight room/width captures
-generated. No backend or inventory changes, prices or release activation.
-Route after deployment: `?review=autumn-hearth`. Standard-room narrow-window crop
-remains a documented limitation. Hosted/device verification pending.
+**DEV DEPLOYED preview / usual-room correction in QA.** PR #99 deployed at
+`644ac8f`; served revision, five artwork hashes and leaf pause/resume verified.
+Tanya corrected the default: use the usual Hearth, not the Halloween room.
+Both defaults now select the usual room; the square review viewport shows its
+whole authored layout without changing room geometry or furniture positions.
+Halloween is explicit opt-in. Regression coverage added; correction CI and
+hosted verification pending. No catalog, pricing or inventory changes.
+Route: `?review=autumn-hearth`. Physical-device acceptance remains pending.
 Evidence: `../qa/AUTUMN_HEARTH.md`.
 
 ## Hollow Harvest entrance — October 8, 2026
@@ -388,6 +390,7 @@ Hosted signed-in and physical-device acceptance remain pending.
 ### Hearth room composition — October 9, 2026 · QA
 
 Tanya approved stronger furniture composition. Room-specific floor anchors,
-paired chair/table spacing and a clearer center are in review. Furniture sizes
-and locked artwork stay fixed. Three arrangements across all nine backgrounds
-are queued for rendered independent QA. Evidence: `docs/qa/HEARTH_COMPOSITION.md`.
+paired chair/table spacing and a clearer center passed independent source and
+rendered review. Furniture sizes and locked artwork stay fixed. All 27 fixture
+scenes passed visual QA at 390×280; development merge/deployment verification
+remains pending. Evidence: `docs/qa/HEARTH_COMPOSITION.md`.

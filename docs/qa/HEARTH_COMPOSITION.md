@@ -22,4 +22,21 @@ captures actual Flutter scenes. CI retains the pictures as a Hearth composition
 artifact for independent visual review before merge. Actual signed-in/device
 acceptance is separate from synthetic scene rendering.
 
-Status: QA. Source checks and rendered independent review are pending.
+Status: QA — independent source and rendered review passed.
+
+Evidence: PR #105, source revision `d79d27eb`, Flutter workflow `37944200278`,
+artifact `11623068910` (`hearth-composition-3e33b728...`). The complete Flutter
+suite, gated decorator tests, Chrome tests, critical coverage and Android/iOS
+compiles passed. All 27 actual 390×280 Flutter images were inspected by the
+implementing agent and independently by `decorator_review`: no blocking edge
+clipping, avatar obstruction, floating contacts or incoherent intersections.
+The foreground table partly overlaps the bookcase in display arrangements;
+both objects remain readable and the overlap establishes depth. Fireplaces
+remain recognizable. This signoff covers these fixtures and viewport, not all
+possible item combinations or taller scenes.
+
+Local Flutter setup was stopped after automatic approval review rejected an
+instance-metadata request during dependency startup. Tests and renders above
+ran through the existing credential-free CI instead; no local Flutter result
+is claimed. Development merge/deployment and served revision verification are
+pending; no production promotion or signed-in device acceptance is claimed.
