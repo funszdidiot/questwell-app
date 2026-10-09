@@ -206,11 +206,10 @@ The Emerald Wayfarer Rug is not a benchmark until founder-approved.
 **Slots:** `wall_left`, `wall_right`  
 **Render kind:** `wall_art_sprite` through the generic Hearth render registry
 
-Generic-room envelope:
-- side height: min(0.195 × scene height, 0.12 × scene width / 0.58);
-- aspect ratio target: approximately 0.58 width/height.
-
-Compact-gallery settings use a separate room-relative gallery envelope.
+Architectural envelope: use the shared Original or Hallowed gallery resolver
+in `QuestwellHearthDecor.wallArtBounds`, including its responsive cover crop.
+Side frame aspect ratio remains 0.58 width/height. Do not add theme-specific
+scale exceptions or a third compact-gallery layout.
 
 Art requirements:
 - frame is part of the wall-art asset/system;
@@ -224,9 +223,8 @@ Art requirements:
 **Slot:** `wall_center`  
 **Render kind:** `wall_art_sprite` through the generic Hearth render registry
 
-Generic-room envelope:
-- width: min(0.17 × scene height × 1.4, 0.21 × scene width);
-- aspect ratio target: approximately 1.4 width/height.
+Architectural envelope: use the same two-family gallery resolver as side art.
+Center frame aspect ratio remains 1.4 width/height.
 
 Center pieces may be wider but must not visually overpower the avatar or fireplace.
 
@@ -274,10 +272,24 @@ Settings replace the environment, not a piece of furniture.
 Requirements:
 - must preserve avatar and canonical décor readability;
 - must preserve the same functional slot map unless founder-approved otherwise;
-- gallery-specific settings may expose alternative wall-art envelope geometry;
+- use one of the two founder-selected architectural standards below;
 - motion overlays are separate from the background asset.
 
 A new setting is a higher-risk visual/system change than a new furniture skin and receives explicit runtime review.
+
+Tanya selected these standards on October 9, 2026 using the Original and Hallowed
+Hearth screenshots. Original has an open back wall, left-side fireplace and
+right-side window. Hallowed has a front-facing chimney/fireplace and arched
+right window. Original, Woodland Cottage, Midnight Harvest, Enchanted Library,
+Midnight Observatory, Alchemist’s Workshop, Astral Sanctuary and Emberglass
+Conservatory belong to the Original family. Hallowed belongs to the Hallowed
+family. Future room surfaces inherit one of these architectures; a third
+architecture requires a new founder decision. Existing assets remain intact.
+
+Equipped wall hangings carry between rooms, including empty wall slots. Other
+decorations retain their room-specific saved arrangements. Preview and saved
+Hearth rendering share the same placement geometry.
+
 
 ## Shadow profiles
 

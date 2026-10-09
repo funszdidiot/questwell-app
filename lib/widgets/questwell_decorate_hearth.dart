@@ -201,7 +201,29 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                                 }),
                                             if (item != null)
                                               for (final choice in choices)
-                                                if (choice.slot != 'setting')
+                                                if (QuestwellHearthDraft.wallSlots
+                                                    .contains(choice.slot))
+                                                  Positioned.fromRect(
+                                                    rect: _wallBounds(
+                                                        choice.slot,
+                                                        equipment,
+                                                        Size(
+                                                            constraints
+                                                                .maxWidth,
+                                                            height)),
+                                                    child: IgnorePointer(
+                                                        child: DecoratedBox(
+                                                      key: ValueKey(
+                                                          'wall-marker-${choice.slot}'),
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              color: const Color(
+                                                                  0xFFFFD978),
+                                                              width: 2)),
+                                                    )),
+                                                  )
+                                                else if (choice.slot !=
+                                                    'setting')
                                                   Align(
                                                       alignment: _marker(
                                                           item,
@@ -229,8 +251,8 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                                                               0xFF47331C)),
                                                                   onPressed: saving
                                                                       ? null
-                                                                      : () => place(
-                                                                          item, choice.slot),
+                                                                      : () =>
+                                                                          place(item, choice.slot),
                                                                   child: Icon(draft.layout[choice.slot] == item.id ? Icons.check : Icons.add_location_alt)))))
                                           ]));
                                     }),
@@ -314,7 +336,7 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                           liveRegion: true,
                                           child: Text(error!)),
                                     const Text(
-                                        'Each room remembers its saved arrangement. Save and close keeps only the room shown. Other previews are not saved.')
+                                        'Wall hangings carry across rooms. Each room remembers its other decorations. Save and close keeps this preview.')
                                   ])))),
                   SafeArea(
                       top: false,
@@ -414,6 +436,14 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
         'mantel' => const Alignment(-.2, -.35),
         _ => const Alignment(0, .8)
       };
+
+  // Wall spots are outlined in the scene. Their full-size labeled buttons
+  // below the preview remain separate even on the narrow chimney layout.
+  Rect _wallBounds(String slot, Map<String, String> equipment, Size scene) =>
+      QuestwellHearthDecor.wallArtBounds(scene, slot,
+          hallowed:
+              QuestwellHearthSetting.fromSlug(equipment['room:setting']) ==
+                  QuestwellHearthSetting.hallowedHearth);
 
   Alignment _marker(QuestwellCosmetic item, String slot,
       Map<String, String> equipment, Size scene) {

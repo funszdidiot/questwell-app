@@ -1,0 +1,42 @@
+{
+  "release_id": "avatar-magic-2026",
+  "approval": "Tanya approved the visuals and 150 coins each for release once checks pass on 2026-10-09; familiar accents included free. Dedicated 24-hour access approved and stored.",
+  "collection_key": null,
+  "availability": {
+    "ends_at": null
+  },
+  "items": [
+    {
+      "slug": "starlight-aura",
+      "name": "Starlight Aura",
+      "category": "effect",
+      "rarity": "rare",
+      "description": "Gold and lavender stars drift quietly beside your adventurer.",
+      "price": 150,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "asset_key": "effect_starlight_aura",
+      "hearth": {
+        "profile_key": null
+      }
+    },
+    {
+      "slug": "enchanted-leaves",
+      "name": "Enchanted Leaves",
+      "category": "effect",
+      "rarity": "rare",
+      "description": "A gentle emerald orbit brings a little woodland magic to your steps.",
+      "price": 150,
+      "premium": false,
+      "required_archetype": null,
+      "unlock_method": "shop",
+      "milestone_level": null,
+      "asset_key": "effect_enchanted_leaves",
+      "hearth": {
+        "profile_key": null
+      }
+    }
+  ]
+}

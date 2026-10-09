@@ -105,30 +105,33 @@ void main() {
         closeTo(390 * .340 - 130 * .52, .001));
   });
 
-  test('fireplace art stays centered across wide and cropped rooms', () {
-    for (final entry in {
-      const Size(960, 640): const Offset(355, 112),
-      const Size(390, 420): const Offset(112.96875, 73.5),
-      const Size(320, 420): const Offset(77.96875, 73.5),
-    }.entries) {
-      final anchor = QuestwellHearthSetting.hallowedHearth
-          .wallArtAnchor(entry.key, 'wall_left')!;
-      expect(anchor.dx, closeTo(entry.value.dx, .001));
-      expect(anchor.dy, closeTo(entry.value.dy, .001));
-      final legacy = QuestwellHearthDecor.wallArtBounds(entry.key, 'wall_left');
-      final centered = QuestwellHearthDecor.wallArtBounds(
-          entry.key, 'wall_left',
-          anchor: anchor);
-      expect(centered.center, anchor);
-      expect(centered.width, closeTo(legacy.width, .001));
-      expect(centered.height, closeTo(legacy.height, .001));
-      expect(
-          QuestwellHearthSetting.original.wallArtAnchor(entry.key, 'wall_left'),
-          isNull);
-      expect(
-          QuestwellHearthSetting.hallowedHearth
-              .wallArtAnchor(entry.key, 'wall_right'),
-          isNull);
+  test('Original gallery remains visible in the short relic-picker camera', () {
+    const scene = Size(394, 256);
+    for (final slot in ['wall_left', 'wall_center', 'wall_right']) {
+      final frame = QuestwellHearthDecor.wallArtBounds(scene, slot);
+      expect(frame.top, greaterThan(0));
+      expect(frame.bottom, lessThan(scene.height));
+    }
+  });
+
+  test('all three Hallowed frames stay on the chimney across cover crops', () {
+    for (final scene in [
+      const Size(960, 640),
+      const Size(390, 420),
+      const Size(320, 420),
+    ]) {
+      final frames = [
+        for (final slot in ['wall_left', 'wall_center', 'wall_right'])
+          QuestwellHearthDecor.wallArtBounds(scene, slot, hallowed: true),
+      ];
+      expect(frames[0].right, lessThan(frames[1].left));
+      expect(frames[1].right, lessThan(frames[2].left));
+      for (final rect in frames) {
+        expect(rect.left, greaterThanOrEqualTo(0));
+        expect(rect.right, lessThanOrEqualTo(scene.width));
+        expect(rect.top, greaterThanOrEqualTo(0));
+        expect(rect.center.dy, frames.first.center.dy);
+      }
     }
   });
 

@@ -124,7 +124,7 @@ class _EffectsReviewAppState extends State<EffectsReviewApp> {
                                     height: 342),
                                 const SizedBox(height: 12),
                                 const Text(
-                                    'Sample try-on only. New avatar effects await pricing and Market activation. Familiar accents are included with each pet. Your equipment and coins stay as they are.'),
+                                    'Sample try-on only. Starlight Aura and Enchanted Leaves cost 150 coins each. Familiar accents are included with each pet. Your equipment and coins stay as they are.'),
                               ])))),
             ));
       }));

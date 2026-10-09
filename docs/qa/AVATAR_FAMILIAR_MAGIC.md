@@ -1,31 +1,47 @@
 # Avatar and familiar magic — October 9, 2026
 
-Tanya approved two selectable avatar effects plus signature accents for the two
-new familiars. This is development implementation and visual review, not approval
-of new pricing, Market activation, grants, or production promotion.
+Status: QA; release authorized, not live. Tanya approved the preview, then
+150 coins each for Starlight Aura and Enchanted Leaves for release once checks
+pass. Boston Terrier Stardust Wiggle and Hearth Cat Moonlit Purr are included
+free. All classes/bodies are eligible. No new inventory grants or balance edits.
 
-- Starlight Aura: slow gold/lavender stars at the avatar margins.
-- Enchanted Leaves: seven emerald leaves circling below the clothing.
-- Boston Terrier / Stardust Wiggle: short golden sparks during the authored wiggle.
-- Hearth Cat / Moonlit Purr: crescent and silver motes during the slow blink.
+The shared renderer keeps fixed bodies and sprites unchanged. Pet accents reuse
+the existing clock. Reduced-motion and hidden-route behavior is covered by tests.
+The review route offers all four effects, both familiars and all three bodies.
+Market samples and renderer capability now include the approved avatar effects.
 
-`?review=effects` allows all four avatar effects, both pets, all three body types,
-effect removal and motion switching. New effects are preview choices only until
-pricing/catalog rollout is approved. They are intentionally absent from the live
-equipment capability allowlist and Market sample catalog. Existing avatar effect
-slots and purchase/equip services remain unchanged. Pet accents are included in
-the existing familiar renderer and need no separate item or purchase.
+## Guarded catalog delivery
 
-The pet painter shares the existing sprite clock. No new ticker, artwork download,
-body edit, sprite replacement, sound, progression or balance change is introduced.
-Reduced motion and hidden routes stop the clock; static accents remain. Effects
-are pointer-transparent and confined to their authored layer.
+The pinned CLI created `20261009221011_avatar_magic_catalog.sql`. It stages only
+two data rows; `docs/releases/avatar-magic-2026/activate.sql` activates them within
+the same guarded atomic payload. No schema, policy or purchase function changes.
+`tool/deploy/magic-reviewed-state.json` locks the reviewed live state: 58 history
+records, unchanged schema/purchase function and all unrelated catalog data.
+Any drift stops execution without a write; ambiguous writes are never retried.
 
-Validation: painter motion/quiet windows/face clearance/static-pose tests, existing
-familiar lifecycle/all-body tests, and real-renderer CI captures in `magic-review`.
-The initial head 1f28d7a passed all seven workflows. Dark enlarged composites
-were inspected for all three bodies and Tanya approved the delivered preview
-on October 9. Expanded captures cover light/dark at native/enlarged scale.
-Combined music-base CI and expanded image inspection remain pending; no live
-runtime delivery is claimed. Proposed avatar effect price is 150 coins each,
-matching Victory Sparkle; this proposal is not catalog activation approval.
+Tanya separately approved a Questwell-only, 24-hour credential with Database Read
+and Migrations Read-write, stored securely as `QUESTWELL_MAGIC_MIGRATION_TOKEN`.
+Creation and GitHub storage were verified October 9; it expires October 10.
+Other release credentials must not be reused. No secret value is recorded here.
+
+After visual review and exact-revision CI, merge to `questwell-dev` under the
+approved development release scope. Verify its served revision. The dedicated
+`deploy/avatar-magic-approved` branch triggers the reviewed forward workflow,
+which requires same-head client/backend checks and served bundle markers before
+one Management API migration. Independently verify exact prices, availability
+and one matching migration record. No root migration replay or history repair.
+No promotion to `flutterflow` or App Store/public launch is included.
+
+## Validation
+
+Initial 1f28d7a and combined 46b044b passed all seven workflows. Dark enlarged
+composites were inspected for every body and Tanya approved the preview. Expanded
+light/dark, native/enlarged captures exist in artifact 11645213977 from run
+37992007722, but the cloud browser security policy blocked downloading it.
+Expanded visual inspection remains unresolved; do not infer it from CI success.
+
+The new release checks exercise atomic rollback on pre/postcondition drift,
+authenticated purchase retry with one charge, all 15 body/class combinations,
+equip/unequip/restoration, effect replacement, ownership and purchase event counts.
+These new catalog checks require fresh CI. Local offline deployment/security tests
+passed. Actual served-app and physical iPhone verification remain separate.

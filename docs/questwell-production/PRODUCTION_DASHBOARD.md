@@ -5,7 +5,10 @@
 **QA / visual preview approved.** Tanya approved Starlight Aura, Enchanted Leaves,
 Stardust Wiggle for Boston Terrier, and Moonlit Purr for Hearth Cat. Reuses the
 effect slot and pet animation clocks; fixed avatar/sprite artwork is unchanged.
-New avatar-effect pricing and live catalog activation remain unapproved.
+Tanya approved both avatar effects at 150 coins and release after checks pass.
+Catalog integration and guarded activation are in QA; dedicated 24-hour access
+is installed. Expanded visual inspection is blocked by browser download policy.
+No live delivery is claimed.
 See `docs/qa/AVATAR_FAMILIAR_MAGIC.md` for scope and verification.
 
 ## Hearth audio and automatic resume — October 9, 2026
@@ -475,3 +478,11 @@ remains pending. Evidence: `docs/qa/HEARTH_COMPOSITION.md`.
 ## Amberfall all-room compatibility — 2026-10-09
 
 **QA** — All nine current rooms explicitly registered. Full-room visual exports and saved-loadout regression checks added. Approved artwork, ownership and pricing unchanged. `docs/qa/AMBERFALL_ALL_ROOMS.md`.
+
+## Shared wall hangings and two room standards — October 9, 2026
+
+**QA** — Tanya directed carried wall hangings and selected Original/Hallowed as
+architectural standards. Shared draft recall preserves walls and per-room furniture;
+renderer and markers share two-family geometry. Existing art and server validation
+remain intact. Tests and independent review are in progress. Evidence:
+`docs/qa/SHARED_WALL_ART_STANDARDS.md`.
