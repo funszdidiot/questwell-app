@@ -65,6 +65,11 @@ abstract interface class QuestwellAudioChannel {
   Future<void> close();
 }
 
+/// Browser channels must unlock synchronously, before asset loading awaits.
+abstract interface class QuestwellGestureAudioChannel {
+  void unlock();
+}
+
 /// One owner for the app. Commands are serialized and checked after every load;
 /// old routes cannot start music after navigation, mute or backgrounding.
 class QuestwellAudio extends ChangeNotifier {
@@ -118,10 +123,27 @@ class QuestwellAudio extends ChangeNotifier {
     if (!value) unawaited(_silence());
   }
 
-  /// Explicit gesture per app session, including when a saved preference is on.
-  /// This avoids unexpected autoplay and gives browsers a playback gesture.
+  /// A normal app interaction resumes only sound the listener already enabled.
+  void activateOnInteraction() {
+    if (!ready || !foreground || activated || _closed) return;
+    if (!preferences.musicEnabled && !preferences.ambienceEnabled) return;
+    activate();
+  }
+
+  void _unlockEnabledChannels() {
+    if (preferences.musicEnabled && music is QuestwellGestureAudioChannel) {
+      (music as QuestwellGestureAudioChannel).unlock();
+    }
+    if (preferences.ambienceEnabled &&
+        ambience is QuestwellGestureAudioChannel) {
+      (ambience as QuestwellGestureAudioChannel).unlock();
+    }
+  }
+
+  /// Called directly by the interaction, before entering the async queue.
   void activate() {
     if (!ready || _closed) return;
+    _unlockEnabledChannels();
     activated = true;
     issue = null;
     _request();
@@ -130,6 +152,7 @@ class QuestwellAudio extends ChangeNotifier {
   void update(QuestwellAudioPreferences value) {
     if (!ready || _closed) return;
     preferences = value;
+    _unlockEnabledChannels();
     activated = true;
     issue = null;
     _saveQueue = _saveQueue.then((_) async {

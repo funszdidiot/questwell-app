@@ -209,6 +209,7 @@ class _MyAppState extends State<MyApp> {
       routerConfig: _router,
       builder: (context, child) => QuestwellAudioHost(
         router: _router,
+        sessionChanges: _appStateNotifier,
         isHomeRoot: () =>
             _appStateNotifier.loggedIn &&
             !QuestwellAuthCallback.needsAuthScreen,
