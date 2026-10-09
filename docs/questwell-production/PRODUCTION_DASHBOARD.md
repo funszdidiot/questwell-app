@@ -1,5 +1,15 @@
 # Questwell Production Dashboard
 
+## Four-space beta soundtrack — October 9, 2026
+
+**QA.** Four music and two ambience candidates are published in PR #111.
+Tanya authorized feature publication and requested independent on/off and volume
+controls in Settings. Hosted resolution produced the reviewed dependency lock;
+initial run passed 12 checks and exposed a large-text test scroll issue, corrected
+with a track-restart regression fix. Full CI and delivered beta verification are
+pending. Physical iPhone and listening acceptance remain separate.
+Evidence: `../qa/BETA_AUDIO.md`.
+
 ## Hollow Harvest seasonal selection — October 8, 2026
 
 **QA.** The corrected connected-head preview is deployed at `24eab12` (PR #98).

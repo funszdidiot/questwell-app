@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'questwell_delete_account.dart';
 import 'questwell_typography.dart';
+import 'questwell_audio_controls.dart';
 
 /// Presentation only. The account page supplies the existing account actions.
 class QuestwellAccountSettings extends StatefulWidget {
@@ -76,6 +77,12 @@ class _QuestwellAccountSettingsState extends State<QuestwellAccountSettings> {
                     ),
                   ),
                   const SizedBox(height: 24),
+                  if (QuestwellAudioScope.maybeOf(context)
+                      case final audio?) ...[
+                    QuestwellHearthFrame(
+                        child: QuestwellAudioControls(audio: audio)),
+                    const SizedBox(height: 24),
+                  ],
                   _AccountPanel(
                     title: 'Sign out',
                     description:
