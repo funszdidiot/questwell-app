@@ -427,7 +427,6 @@
     "test/boss_creation_recovery_test.dart": "90a035d7d027a25fc5f4cb176294ecb83a30f9baa96249c7076830aea04726b3",
     "test/boss_creation_test.dart": "18cad2129be01b8f5140a297da54c4b80441df2efeb8b99575fad5d03af5b62e",
     "test/boss_entrance_test.dart": "d226dc0879f9398da2a2d044daf8166347072520aa325614c56e2d65411eb296",
-    "test/boss_list_test.dart": "24554998529700574fa0705c97b82b3759a4d8f32e191225b5eb84f0cae4cb5b",
     "test/campfire_background_test.dart": "c2b9a7c108b82a951990a08ea6f8ff668f1a55367a24133ccc863b7810bb57ed",
     "test/clean_base_test.dart": "e4d857b33e13657504f80d74eddf4c8fdd59dba47f6d20a502c8873ac2ea079a",
     "test/cloak_test.dart": "93a401a81fb5c49071730159d7808c2676fc6187e24548ddff99b9e19fec5b33",

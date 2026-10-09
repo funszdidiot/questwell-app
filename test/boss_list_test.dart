@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -8,28 +9,28 @@ import 'package:project_momentum/services/questwell_boss_list.dart';
 
 String id(int n) => '00000000-0000-4000-8000-${n.toString().padLeft(12, '0')}';
 Map<String, dynamic> battle(int n) => {
-  'id': id(n),
-  'user_id': 'owner-a',
-  'title': 'Boss $n',
-  'status': 'open',
-  'created_at': '2026-01-01T00:00:00.000001+00:00',
-  'reward_xp': 25,
-  'reward_coins': 50,
-  'boss_type': 'inbox_hydra',
-};
+      'id': id(n),
+      'user_id': 'owner-a',
+      'title': 'Boss $n',
+      'status': 'open',
+      'created_at': '2026-01-01T00:00:00.000001+00:00',
+      'reward_xp': 25,
+      'reward_coins': 50,
+      'boss_type': 'inbox_hydra',
+    };
 Map<String, dynamic> step(int n, int boss, int position) => {
-  'id': id(n),
-  'user_id': 'owner-a',
-  'boss_id': id(boss),
-  'title': 'Step $n',
-  'position': position,
-  'completed': position == 1,
-};
+      'id': id(n),
+      'user_id': 'owner-a',
+      'boss_id': id(boss),
+      'title': 'Step $n',
+      'position': position,
+      'completed': position == 1,
+    };
 http.Response response(Object rows, {int status = 200}) => http.Response(
-  jsonEncode(rows),
-  status,
-  headers: {'content-type': 'application/json'},
-);
+      jsonEncode(rows),
+      status,
+      headers: {'content-type': 'application/json'},
+    );
 PostgrestClient database(Future<http.Response> Function(http.Request) handle) {
   final client = MockClient((request) async {
     final result = await handle(request);
@@ -47,10 +48,11 @@ PostgrestClient database(Future<http.Response> Function(http.Request) handle) {
 QuestwellBossList loader(
   Future<http.Response> Function(http.Request) handle, {
   String? Function()? owner,
-}) => QuestwellBossList(
-  database: database(handle),
-  currentOwner: owner ?? () => 'owner-a',
-);
+}) =>
+    QuestwellBossList(
+      database: database(handle),
+      currentOwner: owner ?? () => 'owner-a',
+    );
 List<Map<String, dynamic>> page(
   http.Request r,
   List<Map<String, dynamic>> rows, {
@@ -62,20 +64,81 @@ List<Map<String, dynamic>> page(
   expect(q.containsKey('offset'), isFalse);
   final cursor = q['id'];
   if (cursor != null) expect(cursor.startsWith('gt.'), isTrue);
-  final sorted =
-      rows
-          .where(
-            (row) =>
-                cursor == null ||
-                (row['id'] as String).compareTo(cursor.substring(3)) > 0,
-          )
-          .toList()
-        ..sort((a, b) => (a['id'] as String).compareTo(b['id'] as String));
+  final sorted = rows
+      .where(
+        (row) =>
+            cursor == null ||
+            (row['id'] as String).compareTo(cursor.substring(3)) > 0,
+      )
+      .toList()
+    ..sort((a, b) => (a['id'] as String).compareTo(b['id'] as String));
   final limit = int.parse(q['limit']!);
   return sorted.take(limit < cap ? limit : cap).toList();
 }
 
 void main() {
+  test('both collections start together and publish only when complete',
+      () async {
+    final started = <String>{};
+    final bothStarted = Completer<void>();
+    final battlesReady = Completer<http.Response>();
+    final stepsReady = Completer<http.Response>();
+    final battlesFinished = Completer<void>();
+    var completed = false;
+    final result = loader((r) async {
+      final table = r.url.path.split('/').last;
+      if (r.url.queryParameters.containsKey('id')) {
+        if (table == 'boss_battles') battlesFinished.complete();
+        return response([]);
+      }
+      started.add(table);
+      if (started.length == 2) bothStarted.complete();
+      return table == 'boss_battles' ? battlesReady.future : stepsReady.future;
+    }).load().then((value) {
+      completed = true;
+      return value;
+    });
+
+    await bothStarted.future.timeout(const Duration(seconds: 2));
+    expect(started, {'boss_battles', 'boss_steps'});
+    battlesReady.complete(response([battle(1)]));
+    await battlesFinished.future;
+    expect(completed, isFalse);
+    stepsReady.complete(response([step(1, 1, 0)]));
+    final bosses = await result;
+    expect(bosses.single.id, id(1));
+    expect(bosses.single.steps.single.id, id(1));
+  });
+
+  for (final failedTable in ['boss_battles', 'boss_steps']) {
+    test('$failedTable failure surfaces while the other collection is pending',
+        () async {
+      final bothStarted = Completer<void>();
+      final pending = Completer<http.Response>();
+      var started = 0;
+      final service = loader((r) async {
+        if (++started == 2) bothStarted.complete();
+        await bothStarted.future;
+        if (r.url.path.endsWith(failedTable)) {
+          return response({'message': 'fixture failure', 'code': 'fixture'},
+              status: 503);
+        }
+        return pending.future;
+      });
+      await expectLater(
+        service.load().timeout(const Duration(seconds: 2)),
+        throwsA(isA<PostgrestException>()),
+      );
+      expect(pending.isCompleted, isFalse);
+      // A late failure is still observed by the combined future, never emitted
+      // as an unhandled error after the first failure reached the caller.
+      pending.complete(response(
+          {'message': 'late fixture failure', 'code': 'fixture'},
+          status: 503));
+      await Future<void>.delayed(Duration.zero);
+    });
+  }
+
   test('historical queries truncate battles and steps independently', () async {
     final db = database(
       (r) async => response(

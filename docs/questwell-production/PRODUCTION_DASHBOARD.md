@@ -1,13 +1,25 @@
 # Questwell Production Dashboard
 
+## Room and page loading follow-up — October 9, 2026
+
+**QA.** Tanya reported a room switch failing to load and requested correction
+of the loading issues shown in her recording. Backgrounds and destination art
+now have named loading, bounded failure and cache-aware Retry states; stale
+room frames are covered while the new room loads. Editor opening and Boss
+Battles remove avoidable serial reads, preserving owner checks and complete
+pagination. No artwork, schema or account data changes. Independent review and
+regression checks are in progress; this follow-up is not deployed.
+Evidence: `../qa/ROOM_PAGE_LOADING.md`.
+
 ## Room preview and exit — October 9, 2026
 
-**QA; publication approved.** Immediate room-selection
-preview, explicit Close/X, and Save and close pass 20 targeted tests and independent
-code/phone-render review; all 1,024 client tests pass. The quality gate reports
-no new findings. Tanya explicitly approved publishing the branch and opening its PR;
-remote CI is the next gate.
-Development delivery and physical-device acceptance remain pending.
+**DEV DEPLOYED; follow-up reported above.** PR #113 merged with Tanya's approval
+and deployed as `3bc6971607f79d736ed12d0bab8e34bb5fd2fcac`; the served version and
+Save and close / Close room editor bundle markers were verified. Immediate
+room-selection draft updates, explicit Close/X, and Save and close passed
+20 targeted tests, independent review and 1,024 client tests. All remote checks
+and deployment succeeded. This delivery did not establish physical-device
+loading acceptance; Tanya subsequently reported the unresolved loading issue.
 Evidence: `../qa/HEARTH_PREVIEW_EXIT.md`.
 
 ## Boston Terrier and Hearth Cat — October 9, 2026

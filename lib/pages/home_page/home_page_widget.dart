@@ -1,3 +1,4 @@
+import 'dart:async';
 import '/widgets/questwell_quest_completion.dart';
 import '/widgets/questwell_decorate_hearth.dart';
 import '../../widgets/questwell_hearth_material.dart';
@@ -55,8 +56,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     if (_openingDecorator) return;
     setState(() => _openingDecorator = true);
     try {
-      final appearance = await widget.loadAppearance();
-      final layouts = await QuestwellCosmeticService.loadHearthLayouts();
+      final (appearance, layouts) = await (
+        widget.loadAppearance(),
+        QuestwellCosmeticService.loadHearthLayouts(),
+      ).wait;
       if (!mounted) return;
       await showDialog<bool>(
           context: context,

@@ -54,14 +54,20 @@ class QuestwellBossList {
       }
     }
 
-    final battleRows = await collect(
-      'boss_battles',
-      'id,user_id,title,status,reward_xp,reward_coins,boss_type,created_at,completed_at',
-    );
-    final stepRows = await collect(
-      'boss_steps',
-      'id,user_id,boss_id,title,position,completed',
-    );
+    // Independent collections can load together. Publish only the complete
+    // pair, but surface a failed collection without waiting on the other one.
+    final collections = await Future.wait([
+      collect(
+        'boss_battles',
+        'id,user_id,title,status,reward_xp,reward_coins,boss_type,created_at,completed_at',
+      ),
+      collect(
+        'boss_steps',
+        'id,user_id,boss_id,title,position,completed',
+      ),
+    ], eagerError: true);
+    final battleRows = collections[0];
+    final stepRows = collections[1];
     checkOwner();
     final times = <String, BigInt>{};
     for (final row in battleRows) {

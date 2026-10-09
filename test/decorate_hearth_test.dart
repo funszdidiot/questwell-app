@@ -349,6 +349,7 @@ void main() {
     expect(find.textContaining('could not confirm'), findsOneWidget);
     await tester.tap(find.text('Undo change'));
     await tester.pumpAndSettle();
+    expect(find.text('This room is already saved.'), findsNothing);
     expect(
         tester
             .widget<FilledButton>(

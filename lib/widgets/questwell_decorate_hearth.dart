@@ -333,6 +333,9 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                     child: Text(saving
                                         ? 'Saving room…'
                                         : 'Save and close')),
+                                if (!saving && !draft.dirty && error == null)
+                                  const Text('This room is already saved.',
+                                      textAlign: TextAlign.center),
                                 Wrap(
                                     alignment: WrapAlignment.center,
                                     spacing: 16,

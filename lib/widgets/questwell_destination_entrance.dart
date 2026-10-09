@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'questwell_app_navigation.dart';
 import 'questwell_hearth_material.dart';
 import 'questwell_typography.dart';
+import 'questwell_scene_load.dart';
 
 /// A shared arrival rhythm: return link, illustrated place, live title, welcome.
 /// Scenery is decorative; text remains selectable by accessibility services.
@@ -68,39 +69,44 @@ class QuestwellDestinationEntrance extends StatelessWidget {
                                   1, constraints.maxWidth * plaqueWidth - 24));
                         final height = math.max(
                             constraints.maxWidth / 2, measure.height + 90);
+                        final asset = destination == 'market'
+                            ? 'assets/images/questwell_market_shopfront_v3.webp'
+                            : 'assets/images/questwell_${destination}_entrance_v1.webp';
                         measure.dispose();
                         return SizedBox(
                             height: height,
-                            child: Stack(children: [
-                              Positioned.fill(
-                                  child: ExcludeSemantics(
-                                      child: Image.asset(
-                                          destination == 'market'
-                                              ? 'assets/images/questwell_market_shopfront_v3.webp'
-                                              : 'assets/images/questwell_${destination}_entrance_v1.webp',
-                                          fit: BoxFit.cover,
-                                          filterQuality:
-                                              FilterQuality.medium))),
-                              if (ambience != null)
-                                Positioned.fill(child: ambience!),
-                              Positioned.fill(
-                                  child: Align(
-                                      alignment: const Alignment(0, -.25),
-                                      child: FractionallySizedBox(
-                                          widthFactor: plaqueWidth,
-                                          child: QuestwellHearthFrame(
-                                              warm: true,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
+                            child: QuestwellSceneLoad(
+                                image: AssetImage(asset),
+                                label: title,
+                                child: Stack(children: [
+                                  Positioned.fill(
+                                      child: ExcludeSemantics(
+                                          child: Image.asset(asset,
+                                              errorBuilder: (_, __, ___) =>
+                                                  const SizedBox.expand(),
+                                              fit: BoxFit.cover,
+                                              filterQuality:
+                                                  FilterQuality.medium))),
+                                  if (ambience != null)
+                                    Positioned.fill(child: ambience!),
+                                  Positioned.fill(
+                                      child: Align(
+                                          alignment: const Alignment(0, -.25),
+                                          child: FractionallySizedBox(
+                                              widthFactor: plaqueWidth,
+                                              child: QuestwellHearthFrame(
+                                                  warm: true,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
                                                       horizontal: 12,
                                                       vertical: 12),
-                                              child: Semantics(
-                                                  header: true,
-                                                  child: Text(title,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: style)))))),
-                            ]));
+                                                  child: Semantics(
+                                                      header: true,
+                                                      child: Text(title,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: style)))))),
+                                ])));
                       }),
                       Padding(
                           padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
