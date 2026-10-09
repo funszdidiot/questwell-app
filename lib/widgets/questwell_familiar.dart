@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'questwell_pet_motion.dart';
 import 'questwell_pet_frame.dart';
+import 'questwell_pet_magic.dart';
 
 /// Equipped artwork is separate from the compact, 16-bit inventory icons.
 class QuestwellFamiliarLayer extends StatelessWidget {
@@ -127,6 +128,7 @@ class _FamiliarIdle extends StatefulWidget {
 
 class _FamiliarIdleState extends State<_FamiliarIdle>
     with SingleTickerProviderStateMixin {
+  bool _still = false;
   late final AnimationController _clock = AnimationController(
     vsync: this,
     duration: QuestwellPetMotion.names.containsKey(widget.slug)
@@ -136,7 +138,8 @@ class _FamiliarIdleState extends State<_FamiliarIdle>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (MediaQuery.disableAnimationsOf(context) || !TickerMode.of(context)) {
+    _still = MediaQuery.disableAnimationsOf(context) || !TickerMode.of(context);
+    if (_still) {
       _clock.stop();
       _clock.value = 0;
     } else if (!_clock.isAnimating) {
@@ -157,9 +160,20 @@ class _FamiliarIdleState extends State<_FamiliarIdle>
           child: widget.child,
           builder: (context, child) {
             if (QuestwellPetMotion.names.containsKey(widget.slug)) {
-              return QuestwellPetFrame(
-                frame: QuestwellPetMotion.frame(widget.slug, _clock.value),
-                sheet: child!,
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  QuestwellPetFrame(
+                    frame: QuestwellPetMotion.frame(widget.slug, _clock.value),
+                    sheet: child!,
+                  ),
+                  CustomPaint(
+                      painter: QuestwellPetMagicPainter(
+                    slug: widget.slug,
+                    phase: _clock.value,
+                    still: _still,
+                  )),
+                ],
               );
             }
             final wave = math.sin(_clock.value * math.pi * 2);

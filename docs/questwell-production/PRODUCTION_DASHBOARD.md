@@ -1,5 +1,13 @@
 # Questwell Production Dashboard
 
+## Avatar and familiar magic — October 9
+
+**BUILDING / preview scope.** Tanya approved Starlight Aura, Enchanted Leaves,
+Stardust Wiggle for Boston Terrier, and Moonlit Purr for Hearth Cat. Reuses the
+effect slot and pet animation clocks; fixed avatar/sprite artwork is unchanged.
+New avatar-effect pricing and live catalog activation remain unapproved.
+See `docs/qa/AVATAR_FAMILIAR_MAGIC.md` for scope and verification.
+
 ## Room and page loading follow-up — October 9, 2026
 
 **QA.** Tanya reported a room switch failing to load and requested correction

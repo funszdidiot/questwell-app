@@ -16,7 +16,7 @@ class QuestwellCatalogEquipment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final slug = equipment['effect'];
-    if (rear || (slug != 'victory-sparkle' && slug != 'focus-tonic')) {
+    if (rear || !QuestwellCosmeticEffect.names.containsKey(slug)) {
       return const SizedBox.shrink();
     }
     return QuestwellCosmeticEffect(key: ValueKey(slug), slug: slug!);
