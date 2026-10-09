@@ -23,7 +23,7 @@ class QuestwellHollowHarvest extends StatelessWidget {
                   key: ValueKey('harvest-$name'),
                   offset: travel * (1 - amount),
                   child: Opacity(
-                      opacity: name == 'body' ? 1 : amount,
+                      opacity: amount,
                       child: ClipPath(
                           clipBehavior: Clip.hardEdge,
                           clipper: _SourceRegion(name, amount),
@@ -32,14 +32,12 @@ class QuestwellHollowHarvest extends StatelessWidget {
                               height: size,
                               fit: BoxFit.fill,
                               excludeFromSemantics: true))));
-          final body = _part(.08, .58);
-          final head = _part(.54, .73);
+          final body = _part(.12, .73);
           final spider = _part(.76, .96);
           return Semantics(
               label: 'The Hollow Harvest and his spider sidekick',
               child: Stack(fit: StackFit.expand, children: [
                 piece('body', body, Offset.zero),
-                piece('head', head, Offset(0, -size * .23)),
                 piece('spider', spider, Offset(size * .30, 0)),
                 if (phase < .84)
                   IgnorePointer(
@@ -60,24 +58,6 @@ class _SourceRegion extends CustomClipper<Path> {
         for (final p in points)
           Offset(p.dx * size.width / 1254, p.dy * size.height / 1254),
       ], true);
-    final head = polygon(const [
-      Offset(570, 15),
-      Offset(800, 15),
-      Offset(800, 165),
-      Offset(794, 230),
-      Offset(775, 272),
-      Offset(744, 297),
-      Offset(704, 310),
-      Offset(650, 313),
-      Offset(596, 298),
-      Offset(561, 277),
-      Offset(536, 250),
-      Offset(521, 217),
-      Offset(518, 176),
-      Offset(535, 137),
-      Offset(565, 113),
-      Offset(565, 65)
-    ]);
     final spider = polygon(const [
       Offset(0, 1005),
       Offset(353, 1005),
@@ -85,19 +65,11 @@ class _SourceRegion extends CustomClipper<Path> {
       Offset(330, 1205),
       Offset(0, 1205)
     ]);
-    if (region == 'head') return head;
     if (region == 'spider') return spider;
-    final body = Path.combine(
-        PathOperation.difference,
-        Path()..addRect(Offset.zero & size),
-        Path.combine(PathOperation.union, head, spider));
-    // Reveal the connected body from its roots upward, never move a cut robe strip.
+    // Keep the pumpkin, neck and cloak connected throughout the reveal. A
+    // detached head cutout exposed a crescent-shaped hole above the collar.
     return Path.combine(
-        PathOperation.intersect,
-        body,
-        Path()
-          ..addRect(Rect.fromLTRB(
-              0, size.height * (1 - amount), size.width, size.height)));
+        PathOperation.difference, Path()..addRect(Offset.zero & size), spider);
   }
 
   @override
