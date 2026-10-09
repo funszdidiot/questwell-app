@@ -45,6 +45,7 @@ import 'questwell_item_icon.dart';
 import 'questwell_first_journey.dart';
 import 'questwell_starlit_orrery.dart';
 import 'questwell_catalog_equipment.dart';
+import 'questwell_amberfall_window.dart';
 import 'questwell_hearth_catalog_sprite.dart';
 import '../services/questwell_cosmetic_models.dart';
 import 'questwell_familiar.dart';
@@ -1326,6 +1327,14 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                             Size(sceneWidth, sceneHeight), side),
                         renderSpec: hearthRenderBySlug[art],
                       ),
+                if (equippedSlugs['room:window'] == 'amberfall-window' &&
+                    (roomSetting == QuestwellHearthSetting.original ||
+                        roomSetting == QuestwellHearthSetting.hallowedHearth))
+                  Positioned.fill(
+                      key: const ValueKey('hearth-amberfall-window-bounds'),
+                      child: QuestwellAmberfallWindow(
+                          hallowed: roomSetting ==
+                              QuestwellHearthSetting.hallowedHearth)),
                 if (equippedSlugs['room:window'] == 'rainy-window')
                   Positioned.fill(
                       key: ValueKey('hearth-rainy-window-bounds'),

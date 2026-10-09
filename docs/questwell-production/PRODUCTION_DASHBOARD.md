@@ -399,3 +399,7 @@ paired chair/table spacing and a clearer center passed independent source and
 rendered review. Furniture sizes and locked artwork stay fixed. All 27 fixture
 scenes passed visual QA at 390×280; development merge/deployment verification
 remains pending. Evidence: `docs/qa/HEARTH_COMPOSITION.md`.
+
+## Autumn Hearth catalog release — October 9
+
+**QA**: founder-approved artwork, five prices totaling 660 coins, runtime window integration and scoped forward catalog activation. Release evidence: `../qa/AUTUMN_HEARTH_RELEASE.md`. Existing art remains approved; account activation awaits verified client delivery and guarded deployment.

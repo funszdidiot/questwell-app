@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../services/questwell_cosmetic_models.dart';
-import '../widgets/questwell_amberfall_window.dart';
 import '../widgets/questwell_pixel_art.dart';
 
 /// Typed local fixture only. Never used as account/catalog data.
@@ -79,16 +78,16 @@ class AutumnHearthScene extends StatelessWidget {
             setting: hallowed ? QuestwellHearthSetting.hallowedHearth : null,
             equippedSlugs: decor
                 ? const {
+                    'room:window': 'amberfall-window',
                     'room:floor': 'maple-hearth-rug',
                     'room:right': 'mooncap-grove',
                     'room:left': 'harvest-lanterns',
                     'room:front': 'sages-rest',
                   }
-                : const {},
+                : const {'room:window': 'amberfall-window'},
             hearthProfileBySlug: AutumnHearthFixture.profiles,
             hearthRenderBySlug: AutumnHearthFixture.renders,
           ),
-          QuestwellAmberfallWindow(hallowed: hallowed),
         ]),
       );
 }
@@ -118,7 +117,7 @@ class _AutumnReviewState extends State<AutumnHearthReviewApp> {
             const Text('Autumn Hearth • Development review',
                 style: TextStyle(fontSize: 22)),
             const Text(
-                'Development candidates. No purchases or account changes.'),
+                'Approved Autumn Hearth artwork. Account-free visual review.'),
             Wrap(spacing: 8, children: [
               FilterChip(
                   label: const Text('Halloween room (optional)'),

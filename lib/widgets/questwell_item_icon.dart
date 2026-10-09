@@ -74,7 +74,60 @@ class QuestwellItemIconPainter extends CustomPainter {
       r(x + 2, y + h - 2, w - 3, 1, dark);
     }
 
-    if (slug == 'midnight-masquerade' || slug == 'pumpkin-court') {
+    if (slug == 'amberfall-window') {
+      panel(5, 2, 22, 28, wood, woodLight, woodDark);
+      r(7, 4, 18, 23, blue);
+      r(8, 6, 5, 8, goldShade);
+      r(9, 5, 6, 7, gold);
+      r(20, 5, 4, 9, red);
+      r(7, 23, 18, 4, greenDark);
+      r(12, 17, 3, 2, gold);
+      r(20, 20, 2, 3, red);
+      r(15, 4, 2, 23, wood);
+      r(7, 15, 18, 2, wood);
+    } else if (slug == 'maple-hearth-rug') {
+      panel(3, 9, 26, 15, goldShade, gold, woodDark);
+      r(5, 11, 22, 11, redDark);
+      for (final x in [4, 7, 10, 13, 16, 19, 22, 25, 28]) {
+        r(x, 7, 1, 2, cream);
+        r(x, 24, 1, 2, gold);
+      }
+      r(14, 12, 4, 8, gold);
+      r(11, 14, 10, 3, gold);
+      r(12, 13, 2, 5, woodLight);
+      r(18, 13, 2, 5, woodLight);
+      r(16, 19, 1, 2, cream);
+    } else if (slug == 'mooncap-grove') {
+      r(4, 26, 24, 3, greenDark);
+      r(7, 24, 19, 3, green);
+      r(10, 12, 4, 14, cream);
+      r(7, 7, 10, 3, purple);
+      r(5, 10, 14, 5, purpleDark);
+      r(7, 10, 10, 2, purple);
+      r(9, 9, 2, 2, cream);
+      r(15, 12, 2, 1, blue);
+      r(21, 19, 3, 8, cream);
+      r(20, 15, 5, 3, purple);
+      r(18, 18, 9, 3, purpleDark);
+      r(20, 17, 2, 2, cream);
+    } else if (slug == 'harvest-lanterns') {
+      for (final origin in [const Offset(3, 8), const Offset(18, 14)]) {
+        final x = origin.dx.toInt(), y = origin.dy.toInt();
+        panel(x + 3, y - 5, 6, 5, woodDark, gold, ink);
+        panel(x, y, 12, 17, goldShade, gold, woodDark);
+        r(x + 2, y + 3, 8, 11, woodDark);
+        r(x + 4, y + 6, 4, 7, gold);
+        r(x + 5, y + 5, 2, 6, cream);
+        r(x + 1, y + 15, 10, 1, gold);
+      }
+    } else if (slug == 'sages-rest') {
+      panel(3, 20, 26, 9, redDark, red, woodDark);
+      panel(6, 14, 22, 8, goldShade, gold, woodDark);
+      panel(4, 8, 21, 8, greenDark, green, woodDark);
+      r(7, 10, 15, 1, gold);
+      r(7, 13, 15, 1, goldShade);
+      gem(13, 9, gold);
+    } else if (slug == 'midnight-masquerade' || slug == 'pumpkin-court') {
       final pumpkin = slug == 'pumpkin-court';
       final cloth = pumpkin ? woodLight : purpleDark;
       final facing = pumpkin ? greenDark : ink;
