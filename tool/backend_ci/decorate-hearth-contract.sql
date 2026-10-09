@@ -16,13 +16,15 @@ begin
   insert into public.user_cosmetics(user_id,cosmetic_id,source,equipped)
     values(owner_id,furniture,'shop',false),(owner_id,chair,'shop',false),(owner_id,setting,'shop',false),
       (owner_id,relic,'shop',false),(owner_id,outfit,'shop',false);
+  perform set_config('questwell.test_owner',owner_id::text,true);
   perform set_config('request.jwt.claim.sub',owner_id::text,true);
   state := public.read_hearth_layouts();
   original := jsonb_build_object('right',furniture::text,'front',chair::text);
   saved := public.save_hearth_layout(state->'current',0,original);
   if saved->'current' <> original or (saved->>'revision')::int <> 1 then raise exception 'save failed'; end if;
   target := jsonb_build_object('setting',setting::text,'left',furniture::text);
-  saved := public.save_hearth_layout(original,1,target);
+  saved := public.save_hearth_layout(original,1,jsonb_build_object('setting',upper(setting::text),'left',furniture::text));
+  if saved->'current' <> target then raise exception 'UUID normalization failed'; end if;
   if saved->'rooms'->'original' <> original then raise exception 'original layout lost'; end if;
   saved := public.save_hearth_layout(target,2,saved->'rooms'->'original');
   if saved->'current' <> original or saved->'rooms'->setting::text <> target then raise exception 'room recall failed'; end if;
@@ -38,6 +40,10 @@ begin
   begin
     perform public.save_hearth_layout(original,3,jsonb_build_object('left',furniture::text,'right',furniture::text));
     raise exception 'duplicate accepted';
+  exception when others then if sqlerrm <> 'an item can occupy only one spot' then raise; end if; end;
+  begin
+    perform public.save_hearth_layout(original,3,jsonb_build_object('left',furniture::text,'right',upper(furniture::text)));
+    raise exception 'mixed-case duplicate accepted';
   exception when others then if sqlerrm <> 'an item can occupy only one spot' then raise; end if; end;
   begin
     perform public.save_hearth_layout(original,3,jsonb_build_object('right',gen_random_uuid()::text));
@@ -95,4 +101,18 @@ begin
     raise exception 'anonymous read';
   exception when others then if sqlerrm <> 'authentication required' then raise; end if; end;
 end $test$;
+-- Exercise the public wrappers with the actual client database role.
+set local role authenticated;
+select set_config('request.jwt.claim.sub', current_setting('questwell.test_owner'), true);
+do $client$
+declare state jsonb; saved jsonb;
+begin
+  state := public.read_hearth_layouts();
+  saved := public.save_hearth_layout(state->'current', (state->>'revision')::bigint, state->'current');
+  if saved->'current' <> state->'current'
+    or (saved->>'revision')::bigint <> (state->>'revision')::bigint + 1 then
+    raise exception 'authenticated wrapper contract failed';
+  end if;
+end $client$;
+reset role;
 rollback;

@@ -34,6 +34,16 @@ final decorations = [
   decor('cabinet', 'copper-potion-workbench', 'large_furniture',
       ['left', 'right']),
   decor('astral', 'astral-sanctuary', 'hearth_setting', ['setting']),
+  for (final slug in [
+    'hallowed-hearth',
+    'woodland-cottage',
+    'midnight-harvest',
+    'enchanted-library',
+    'midnight-observatory',
+    'alchemists-workshop',
+    'emberglass-conservatory'
+  ])
+    decor(slug, slug, 'hearth_setting', ['setting']),
 ];
 
 void main() {
@@ -214,16 +224,31 @@ void main() {
             ..addFont(rootBundle.load('assets/fonts/${entry.value}')))
           .load();
     }
-    for (final width in [390.0, 320.0]) {
+    final captures = [
+      for (final room in [
+        'astral',
+        'original',
+        'hallowed-hearth',
+        'woodland-cottage',
+        'midnight-harvest',
+        'enchanted-library',
+        'midnight-observatory',
+        'alchemists-workshop',
+        'emberglass-conservatory'
+      ])
+        (390.0, room),
+      (320.0, 'astral'),
+    ];
+    for (final (width, room) in captures) {
       await open(tester, (_) async {},
           themed: true,
           width: width,
           scale: width == 320 ? 2 : 1,
-          current: const {
+          current: {
             'front': 'chair',
             'side': 'table',
             'right': 'cabinet',
-            'setting': 'astral'
+            if (room != 'original') 'setting': room
           });
       await tester.runAsync(() async {
         await Future.wait(tester.widgetList<Image>(find.byType(Image)).map(
@@ -232,7 +257,7 @@ void main() {
       });
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
-      for (final phase in ['overview', 'spots']) {
+      for (final phase in ['overview', if (room == 'astral') 'spots']) {
         if (phase == 'spots') {
           final picker = find.byType(DropdownButtonFormField<String>);
           await tester.ensureVisible(picker);
@@ -250,7 +275,7 @@ void main() {
           final image = await boundary.toImage();
           final data = await image.toByteData(format: ui.ImageByteFormat.png);
           final file = File(
-              'build/decorate-hearth/decorator-${width.toInt()}-$phase.png');
+              'build/decorate-hearth/decorator-${width.toInt()}-${room == 'astral' ? '' : '$room-'}$phase.png');
           await file.parent.create(recursive: true);
           await file.writeAsBytes(data!.buffer.asUint8List());
           image.dispose();

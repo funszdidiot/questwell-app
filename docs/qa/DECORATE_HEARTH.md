@@ -41,14 +41,14 @@ root migration replay/reset or reuse unrelated rollout credentials.
   normal and 200% text, save/cancel, unknown outcomes, undo room-memory and scale.
 - Actual widget captures: `build/decorate-hearth/decorator-{390,320}-{overview,spots}.png`;
   these are synthetic fixtures, not signed-in evidence. Independent source and
-  pictured Astral visual review approved the feature-disabled candidate.
+  pictured visual review approved the feature-disabled candidate across all nine
+  backgrounds for the chair/table/right-cabinet arrangement.
 - The disposable backend harness applies the exact candidate, exercises atomic
   per-room recall and invalid/stale/foreign/class/retired/duplicate/dependency
   requests, verifies privileges and rolls everything back before recovery tests.
-- CI pending. Each background needs rendered
-  acceptance before activation; initial captures cover Astral Sanctuary only.
-- Add saved-layout coverage to operational export/recovery procedures before
-  broad rollout. Live migration, delivered browser and physical-device acceptance
+- CI pending. Other furniture combinations still need placement acceptance.
+- Recovery rehearsals include the candidate private table and remembered-room
+  data in the existing complete public/private schema backup and content hashes. Live migration, delivered browser and physical-device acceptance
   remain pending. No new art lock or production promotion is established.
 
 Rollback: disable the feature flag; keep stored layouts and ownership intact.

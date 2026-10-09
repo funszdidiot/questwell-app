@@ -36,6 +36,12 @@ begin
     or p_expected_current is null or jsonb_typeof(p_expected_current) <> 'object'
     or p_expected_revision is null then raise exception 'invalid layout'; end if;
   if (select count(*) from jsonb_each(p_layout)) > 12 then raise exception 'invalid layout'; end if;
+  -- UUID spellings must not create duplicate items or alternate room keys.
+  if exists (select 1 from jsonb_each(p_layout) where jsonb_typeof(value) <> 'string') then
+    raise exception 'invalid item';
+  end if;
+  select coalesce(jsonb_object_agg(key, (value::uuid)::text), '{}'::jsonb)
+    into p_layout from jsonb_each_text(p_layout);
   -- Existing profile mutations take this lock. Also lock inventory rows so
   -- legacy unequip operations cannot interleave with the compare-and-save.
   perform 1 from public.users where id = v_uid for update;

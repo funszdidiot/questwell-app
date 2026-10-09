@@ -529,6 +529,8 @@ try {
     '\n' + readFileSync(join(source, 'decorate-hearth-contract.sql'), 'utf8'));
   runHardeningPayload(decoratorFixture);
   console.log('Decorator atomic saves, per-room recall, stale/ownership/slot rejection and rollback passed.');
+  // Keep the candidate schema in this disposable database for full backup/restore coverage.
+  runHardeningPayload(resolve(source, '../../supabase/migrations/20261009044431_decorate_hearth_layouts.sql'));
   // Fresh HTTP pool after preceding database/API resets; never retry signup writes.
   const recoveryResult = spawnSync(process.execPath, [join(source,'recovery-run.mjs')], {
     input: JSON.stringify(status), env, encoding:'utf8', timeout:300000, maxBuffer:1024*1024,
