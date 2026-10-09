@@ -12,8 +12,8 @@ insert into public.cosmetics(slug,name,category,rarity,description,price,premium
 insert into public.hearth_render_registry(cosmetic_id,render_kind,asset_source,asset_path,canvas_width,canvas_height,visible_base,shadow_profile,effect_profile,filter_mode,asset_revision,min_client_build)
 select c.id,r.render_kind,r.asset_source,r.asset_path,r.canvas_width,r.canvas_height,r.visible_base,r.shadow_profile,r.effect_profile,r.filter_mode,r.asset_revision,r.min_client_build::integer from (values
   ('maple-hearth-rug','floor_sprite','bundle','assets/images/questwell/hearth/maple_rug_candidate_v1.png',1816,866,1,'none',null,'pixel',1,null),
-  ('mooncap-grove','static_sprite','bundle','assets/images/questwell/hearth/mooncap_grove_candidate_v1.png',1254,1254,0.9170653907496013,'plant',null,'pixel',1,null),
-  ('harvest-lanterns','static_sprite','bundle','assets/images/questwell/hearth/harvest_lanterns_candidate_v1.png',1254,1254,0.9433811802232854,'pedestal',null,'pixel',1,null),
-  ('sages-rest','static_sprite','bundle','assets/images/questwell/hearth/sages_rest_candidate_v1.png',1254,1254,0.8261562998405104,'seating',null,'pixel',1,null)
+  ('mooncap-grove','static_sprite','bundle','assets/images/questwell/hearth/mooncap_grove_candidate_v1.png',1254,1254,0.91707,'plant',null,'pixel',1,null),
+  ('harvest-lanterns','static_sprite','bundle','assets/images/questwell/hearth/harvest_lanterns_candidate_v1.png',1254,1254,0.94338,'pedestal',null,'pixel',1,null),
+  ('sages-rest','static_sprite','bundle','assets/images/questwell/hearth/sages_rest_candidate_v1.png',1254,1254,0.82616,'seating',null,'pixel',1,null)
 ) as r(slug,render_kind,asset_source,asset_path,canvas_width,canvas_height,visible_base,shadow_profile,effect_profile,filter_mode,asset_revision,min_client_build) join public.cosmetics c using(slug);
 commit;

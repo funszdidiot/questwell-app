@@ -10,8 +10,8 @@
     "history_sha256": "974a6da5a76d4057cbeae33c2f88c22ee69b235f1cb11f85817f4a5d3c7b7058",
     "purchase_sha256": "9896f3fc420f06eb5d529ed1c967b2f8f827fd11c8141678bfe778a0bb5d94da"
   },
-  "source_sha256": "8ed56fc01a0e3ef803ff894cad33b6c6a0b2e7db9fb47a86318b1cd2cc16a04e",
+  "source_sha256": "b60f1620dd8dae1eded0513aadfd833cb7e29544f8dcea5ef802c14cbc4c0704",
   "activation_sha256": "c310c571f51b95eae2e3bd331f4a0461fc56a482e5c649f0e702011bcaee208a",
   "catalog_sql_sha256": "a9a98f3066496014fac1d403f5c0104c2deafd365602a3a2fffe787cbd2b86ef",
-  "manifest_sha256": "2538f8bb6c2a034a0fa7aa013a5ebfca58f617961d8dfedd77fd0ef6e9b27509"
+  "manifest_sha256": "4be25b82b9357c04da9313c7a7a35866a4737e8e0acbacb2370f0b8c43552a71"
 }

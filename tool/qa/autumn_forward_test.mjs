@@ -40,3 +40,10 @@ test('recorded success requires exact state and a single matching digest',()=>{
   assert.throws(()=>verifyApplied({...done,records:[...done.records,...done.records]},plan.after,plan.sourceDigest));
   assert.throws(()=>verifyApplied({...done,records:[{version:'20261008023000',statements:['wrong']}]},plan.after,plan.sourceDigest));
 });
+
+test('renderer contact values fit the database numeric(6,5) scale',()=>{
+  for(const item of manifest.items){
+    const value=item.hearth.render?.visible_base;
+    if(value!==undefined) assert.equal(value,Number(value.toFixed(5)));
+  }
+});
