@@ -31,3 +31,24 @@ Use existing GitHub CI for Flutter. Local Flutter startup was rejected earlier;
 no retry is required. Required CI, independent rendered review and hosted
 revision verification must pass before claiming deployment. Founder design
 acceptance remains separate from technical QA. No production promotion.
+
+
+## Independent rendered review — passed
+
+Head `8e5751a`, Flutter Check `38021548251`, artifact `11658386634`:
+all 288 compositions plus 18 window captures passed independent visual review.
+Native 760/284 checks confirm standard cabinets clear the fireplace/post and
+sit against the wall. Partial foreground-avatar occlusion leaves readable
+furniture frontage. Hallowed cabinet/bookshelf positions clear the fire. Tables
+sit outside chair arms with clear seats and legs; cushions remain on the floor.
+All 252 non-reported compositions and 18 window captures are byte-identical to
+the preceding source-identical run. The 36 reported captures now use Pumpkin
+Court through the correct chest slot.
+
+CI passed 1,075 full tests, 27 feature-enabled decorator checks, 418 Chrome tests,
+analyzer/format, native builds, both web packages, backend and six guard workflows.
+A concurrent familiar-visibility merge required combining `fadaf96`; only the
+dashboard text conflicted, and both entries were retained. Furniture code/art
+is unchanged. Fresh combined CI and hosted review are still required. PR #126
+is the delivery record for the final head, deploy run and hosted verification;
+this snapshot does not claim physical iPhone or signed-in acceptance.

@@ -2,13 +2,26 @@
 
 ## Two architectural furniture maps — October 9 follow-up
 
-**QA.** Tanya clarified shared placement across skins in each of two structural
+**QA / independent visual review passed.** Tanya clarified shared placement across skins in each of two structural
 layouts. Cabinets move onto suitable wall space; tables leave seating clear;
 all source-space geometry now follows the room camera. No artwork, accounts,
 slot IDs or economy changes. Prior perspective-registration acceptance did not
-establish natural room arrangement. Independent source review informed the maps;
-288 actual scene renders and hosted verification remain required.
+establish natural room arrangement. All 288 room compositions and 18 window
+captures passed independent review on 8e5751a; 1,075 regression, 27 decorator
+and 418 Chrome tests plus all native/web/backend checks passed. The concurrent
+familiar update is preserved. Fresh combined checks and hosted verification
+are required; PR #126 records the final delivered revision and result.
 Evidence: `../qa/ROOM_SPATIAL_MAPS.md`.
+
+## Familiar magic visibility — October 9, 2026
+
+**QA.** Tanya approved persistent pet magic after reporting the accents were
+not visible. Boston Terrier now retains gold sparkles and Hearth Cat retains
+a moon and silver motes throughout their idle loops, with action-linked shimmer.
+Reduced motion remains static. Renderer, pixel regression tests and light/dark
+all-body captures updated; CI and delivered-runtime verification pending.
+No artwork, catalog, account, pricing or database change.
+Evidence: `../qa/FAMILIAR_MAGIC_VISIBILITY.md`.
 
 ## Room perspective and window alignment — October 9, 2026
 
