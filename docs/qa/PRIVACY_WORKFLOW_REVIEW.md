@@ -135,3 +135,23 @@ Run: `node --test tool/qa/data_policy_test.mjs tool/qa/privacy_workflow_test.mjs
   `STAGING_EXPORT_TEST_PASSWORD`. The fixture must have a feedback attachment.
   No production password, service-role key or recovery credential is requested.
   Missing secrets are reported as BLOCKED, never a passing test.
+
+
+## Replacement-account hosted attempt — 2026-10-10 05:59 UTC
+
+- Verified the approved replacement synthetic account exists, is confirmed, and
+  has its public profile. Created one synthetic feedback record referencing the
+  fixed test PNG path; no production records were changed.
+- Runner commit `2548f0e4624b9914010af16a6aeff192f400c273` restricts fixture upload
+  to that account, never overwrites an existing object, and requires the expected
+  attachment SHA256 in the exported response.
+- Hosted run https://github.com/funszdidiot/questwell-app/actions/runs/38029351167
+  failed at sign-in: HTTP 400, `invalid_credentials`. Both secret variables were
+  nonempty, but the saved pair did not authenticate. No attachment upload or
+  export occurred in this run; download, throttling and logout checks remain open.
+- The user must save the replacement account email and its matching password in
+  the two repository secrets. No password values were retrieved or logged.
+- Local Python compilation passed; the available local privacy/endpoint suites
+  reported 18 passing tests. This is not a hosted-success claim.
+- Rollback: revert the runner commit on this branch. The synthetic staging report
+  remains for the next approved retry; no live export or retention activation.
