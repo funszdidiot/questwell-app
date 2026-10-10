@@ -101,6 +101,9 @@ Future<void> _mount(WidgetTester tester, Widget app) async {
 
 void main() {
   GoogleFonts.config.allowRuntimeFetching = false;
+  // Keep this shared queue and all fixture writes outside individual tests'
+  // FakeAsync zones so a later test never depends on an inactive test clock.
+  final cosmeticChanges = QuestwellCosmeticService.changes;
 
   for (final failure in [false, true]) {
     testWidgets(
@@ -113,7 +116,7 @@ void main() {
           ? () async => throw StateError('private appearance error')
           : () => Completer<QuestwellCosmeticsSnapshot>().future;
       // Local sync notification only: this fixture writes no account data.
-      await QuestwellCosmeticService.changes.write(() async {});
+      await tester.runAsync(() => cosmeticChanges.write(() async {}));
       await _frames(tester);
       await tester.pumpWidget(h.app());
       await _frames(tester);
@@ -316,7 +319,7 @@ void main() {
     final next = Completer<List<TasksRow>>();
     h.owner = 'B';
     h.tasks = () => next.future;
-    await QuestwellCosmeticService.changes.write(() async {});
+    await tester.runAsync(() => cosmeticChanges.write(() async {}));
     await _frames(tester);
     expect(find.text('A quest'), findsNothing);
     expect(h.reads, 2);
