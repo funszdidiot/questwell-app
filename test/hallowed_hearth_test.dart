@@ -47,8 +47,8 @@ void main() {
       for (var x = 0; x < 390; x++) {
         if (later[(y * 390 + x) * 4 + 3] == 0) continue;
         painted++;
-        expect(x, inInclusiveRange(247, 313));
-        expect(y, inInclusiveRange(43, 113));
+        expect(x, inInclusiveRange(247, 314));
+        expect(y, inInclusiveRange(33, 115));
       }
     }
     expect(painted, greaterThan(500));

@@ -126,3 +126,12 @@ Every Hearth item, including seasonal and limited releases, must pass the locked
 8. Keep catalog activation/economy changes separate from art approval.
 
 If an item cannot fit an existing family without changing the room layout, stop for founder review rather than hiding a new layout behavior inside the asset.
+
+## Room-space correction — October 9, 2026
+
+Rear family contacts use source-art wall/floor coordinates transformed with the
+same cover crop as the room image. Hallowed has a 1536×1024 source; the standard
+room family is square. Midnight Harvest belongs to the square standard.
+Back-row family envelopes recede uniformly; perspective may change by depth,
+never by individual item. Foreground seating/table use the visible floor span.
+Canonical saved slot IDs carry between rooms and are never rewritten for layout.

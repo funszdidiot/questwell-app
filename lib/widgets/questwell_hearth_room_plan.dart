@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'questwell_room_geometry.dart';
 
-/// Room architecture sets anchors; family geometry keeps every sprite its size.
+/// Normalized source-art anchors, before the room cover crop.
+/// Family scale and contact metadata remain independent of item artwork.
 class QuestwellHearthRoomPlan {
   const QuestwellHearthRoomPlan(
     this.left,
@@ -15,64 +17,62 @@ class QuestwellHearthRoomPlan {
 
   static QuestwellHearthRoomPlan forSetting(String? slug) => switch (slug) {
         'astral-sanctuary' => const QuestwellHearthRoomPlan(
-            .19,
-            .84,
+            .25,
+            .78,
             .25,
             .75,
-            .75,
-            .76,
+            .64,
+            .65,
           ),
         'enchanted-library' => const QuestwellHearthRoomPlan(
-            .18,
-            .83,
+            .25,
+            .78,
             .25,
             .75,
-            .74,
-            .75,
+            .64,
+            .65,
           ),
         'emberglass-conservatory' => const QuestwellHearthRoomPlan(
-            .18,
-            .83,
+            .25,
+            .78,
             .25,
             .75,
-            .75,
-            .76,
+            .64,
+            .65,
           ),
-        'hallowed-hearth' ||
-        'midnight-harvest' =>
-          const QuestwellHearthRoomPlan(
+        'hallowed-hearth' => const QuestwellHearthRoomPlan(
             .18,
-            .84,
+            .77,
             .25,
             .75,
-            .75,
-            .77,
+            .63,
+            .63,
           ),
         'woodland-cottage' => const QuestwellHearthRoomPlan(
-            .18,
-            .82,
+            .25,
+            .78,
             .25,
             .75,
-            .74,
-            .75,
+            .64,
+            .65,
           ),
         'alchemists-workshop' => const QuestwellHearthRoomPlan(
-            .19,
-            .83,
+            .25,
+            .78,
             .25,
             .75,
-            .75,
-            .76,
+            .64,
+            .65,
           ),
         'midnight-observatory' => const QuestwellHearthRoomPlan(
-            .19,
-            .82,
+            .25,
+            .78,
             .25,
             .75,
-            .74,
-            .75,
+            .64,
+            .65,
           ),
-        _ => const QuestwellHearthRoomPlan(.18, .83, .25, .75, .74, .75),
+        _ => const QuestwellHearthRoomPlan(.25, .78, .25, .75, .64, .65),
       };
 
   double center(
@@ -100,12 +100,38 @@ class QuestwellHearthRoomPlan {
                 : left,
       };
 
-  double? floor(String profile, String slot) => switch (profile) {
-        'large_furniture' => slot == 'right' ? rearRightFloor : rearLeftFloor,
-        'seating' => .88,
-        'side_table' => .91,
-        _ => null,
-      };
+  bool isRear(String profile, String slot) =>
+      profile == 'large_furniture' ||
+      profile == 'pedestal_light' ||
+      ((profile == 'plant' || profile == 'relic_display') && slot != 'front');
+
+  double floor(String profile, String slot) => isRear(profile, slot)
+      ? (slot == 'right' ? rearRightFloor : rearLeftFloor)
+      : profile == 'side_table'
+          ? .91
+          : .88;
+
+  /// Wall fixtures follow the room's actual source crop. Floor seating is
+  /// composed inside the visible floor, so portrait crops cannot lose a chair.
+  Offset anchor(
+    String profile,
+    String slot,
+    Size scene,
+    String? setting, {
+    required double centerX,
+  }) {
+    final geometry = QuestwellRoomGeometry.forSetting(setting, scene);
+    final source = QuestwellRoomGeometry.sourceForSetting(setting);
+    if (isRear(profile, slot)) {
+      return geometry.point(
+        Offset(centerX * source.width, floor(profile, slot) * source.height),
+      );
+    }
+    final wall = geometry.point(Offset(0, .60 * source.height)).dy;
+    final contact =
+        wall + (scene.height - wall) * (profile == 'side_table' ? .79 : .70);
+    return Offset(scene.width * centerX, contact);
+  }
 
   static const enabled = bool.fromEnvironment('QUESTWELL_DECORATE_HEARTH');
   static Alignment marker(Rect bounds, Size scene) => Alignment(

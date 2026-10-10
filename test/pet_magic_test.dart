@@ -23,17 +23,24 @@ void main() {
     }
 
     test(
-        '$slug accent is synchronized, quiet between actions, and still when reduced',
+        '$slug magic remains visible throughout the loop and still when reduced',
         () async {
       final active = slug == 'boston-terrier' ? .90 : .37;
       expect(QuestwellPetMagicPainter.progress(slug, .2), -1);
       expect(QuestwellPetMagicPainter.progress(slug, active), greaterThan(0));
-      expect((await pixels(.2)).every((v) => v == 0), isTrue);
+      for (final phase in [0.0, .1, .2, .5, .8, .99, 1.0]) {
+        final frame = await pixels(phase);
+        final alpha = [for (var i = 3; i < frame.length; i += 4) frame[i]];
+        expect(alpha.where((a) => a >= 100).length, greaterThan(15),
+            reason: '$slug must remain visible at phase $phase');
+      }
       final a = await pixels(active);
       expect(a.any((v) => v != 0), isTrue);
       expect(a, isNot(equals(await pixels(active + .025))));
       expect(
           await pixels(.1, still: true), equals(await pixels(.9, still: true)));
+      expect(await pixels(0), equals(await pixels(1)),
+          reason: 'Ambient loop must have no reset flash');
       // Eyes, face and collar occupy the center. Magic stays in the margins.
       for (var y = 0; y < 55; y++) {
         for (var x = 15; x < 40; x++) {

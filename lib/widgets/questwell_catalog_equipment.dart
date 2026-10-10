@@ -155,42 +155,85 @@ class QuestwellRainyWindowOverlay extends CustomPainter {
     }
 
     if (hallowed) {
-      // Approved arched glass panes; exclude every wooden mullion and frame.
+      // Source-art tracing, including the uninterrupted tall central pane.
+      // The old mask invented a horizontal mullion through that pane and
+      // stopped short of the arch, leaving purple scenery around the autumn.
+      panes.addPath(
+        Path()
+          ..moveTo(979, 264)
+          ..quadraticBezierTo(980, 223, 1008, 189)
+          ..lineTo(1021, 203)
+          ..lineTo(1033, 218)
+          ..lineTo(1033, 316)
+          ..lineTo(979, 316)
+          ..close(),
+        Offset.zero,
+      );
+      pane(const [Offset(1017, 181), Offset(1033, 165), Offset(1033, 201)]);
+      pane(const [Offset(1054, 154), Offset(1068, 164), Offset(1054, 186)]);
+      panes.addPath(
+        Path()
+          ..moveTo(1053, 222)
+          ..quadraticBezierTo(1054, 201, 1074, 178)
+          ..quadraticBezierTo(1096, 200, 1098, 221)
+          ..lineTo(1098, 316)
+          ..lineTo(1053, 316)
+          ..close(),
+        Offset.zero,
+      );
+      panes.addPath(
+        Path()
+          ..moveTo(1114, 229)
+          ..quadraticBezierTo(1114, 184, 1164, 152)
+          ..quadraticBezierTo(1183, 165, 1198, 181)
+          ..lineTo(1198, 450)
+          ..lineTo(1114, 450)
+          ..close(),
+        Offset.zero,
+      );
+      panes.addPath(
+        Path()
+          ..moveTo(1211, 207)
+          ..quadraticBezierTo(1233, 237, 1233, 266)
+          ..lineTo(1233, 314)
+          ..lineTo(1211, 318)
+          ..close(),
+        Offset.zero,
+      );
       pane(const [
-        Offset(978, 252),
-        Offset(988, 226),
-        Offset(1016, 196),
-        Offset(1043, 179),
-        Offset(1043, 307),
-        Offset(978, 307)
+        Offset(979, 329),
+        Offset(1033, 329),
+        Offset(1033, 445),
+        Offset(979, 445),
       ]);
       pane(const [
-        Offset(1067, 200),
-        Offset(1096, 174),
-        Offset(1096, 307),
-        Offset(1067, 307)
+        Offset(1053, 330),
+        Offset(1098, 330),
+        Offset(1098, 446),
+        Offset(1053, 446),
       ]);
       pane(const [
-        Offset(1121, 174),
-        Offset(1150, 188),
-        Offset(1185, 213),
-        Offset(1185, 307),
-        Offset(1121, 307)
+        Offset(1211, 332),
+        Offset(1233, 327),
+        Offset(1233, 443),
+        Offset(1211, 440),
       ]);
-      pane(const [
-        Offset(1208, 234),
-        Offset(1230, 265),
-        Offset(1230, 307),
-        Offset(1208, 307)
-      ]);
-      for (final edges in [
-        const Offset(978, 1043),
-        const Offset(1067, 1096),
-        const Offset(1121, 1185),
-        const Offset(1208, 1230)
-      ]) {
-        panes.addRect(Rect.fromLTRB(edges.dx, 330, edges.dy, 444));
-      }
+      // Small tracery lights above the two pointed arches.
+      pane(const [Offset(1073, 144), Offset(1090, 134), Offset(1083, 153)]);
+      pane(const [Offset(1123, 135), Offset(1140, 145), Offset(1130, 151)]);
+      panes.addPath(
+        Path()
+          ..moveTo(1105, 133)
+          ..quadraticBezierTo(1117, 147, 1108, 152)
+          ..quadraticBezierTo(1125, 156, 1109, 163)
+          ..lineTo(1107, 177)
+          ..lineTo(1101, 167)
+          ..lineTo(1100, 160)
+          ..quadraticBezierTo(1084, 158, 1099, 152)
+          ..quadraticBezierTo(1093, 144, 1105, 133)
+          ..close(),
+        Offset.zero,
+      );
     } else {
       pane(const [
         Offset(725, 151),
