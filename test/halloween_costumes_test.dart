@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,32 @@ import '../lib/widgets/questwell_halloween_costume.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  test('male Pumpkin Court surface repair preserves every fitted alpha pixel',
+      () async {
+    Future<ByteData> pixels(String asset) async {
+      final data = await rootBundle.load(asset);
+      final codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
+      final frame = await codec.getNextFrame();
+      final rgba =
+          (await frame.image.toByteData(format: ui.ImageByteFormat.rawRgba))!;
+      frame.image.dispose();
+      codec.dispose();
+      return rgba;
+    }
+
+    for (final layer in ['front', 'collar', 'cuffs']) {
+      final original = await pixels(
+          'assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/$layer.webp');
+      final repaired = await pixels(
+          QuestwellHalloweenCostume.assetPath('pumpkin_court', 'male', layer));
+      expect(repaired.lengthInBytes, original.lengthInBytes);
+      for (var offset = 3; offset < original.lengthInBytes; offset += 4) {
+        expect(repaired.getUint8(offset), original.getUint8(offset),
+            reason: '$layer alpha at pixel ${offset ~/ 4}');
+      }
+    }
+  });
 
   test('all six costume bundles decode at their registered size', () async {
     for (final costume in QuestwellHalloweenCostume.costumes.keys) {
@@ -23,7 +50,7 @@ void main() {
           if (body != 'female') 'collar',
         ]) {
           final data = await rootBundle.load(
-            'assets/images/questwell/avatar/halloween_v1/$costume/$body/$layer.webp',
+            QuestwellHalloweenCostume.assetPath(costume, body, layer),
           );
           final codec = await ui.instantiateImageCodec(
             data.buffer.asUint8List(),
@@ -73,6 +100,9 @@ void main() {
                   name.endsWith('/mask.webp')),
               hasLength(1));
           expect(images.where((name) => name.contains('/classes/')), isEmpty);
+          final repaired = images.where((name) => name.endsWith('_v2.webp'));
+          expect(repaired,
+              hasLength(body == 'male' && costume == 'pumpkin_court' ? 3 : 0));
           expect(
               images.where((name) =>
                   name.contains('/base/') && !name.contains('identity')),
@@ -80,6 +110,41 @@ void main() {
         }
       }
     }
+  });
+
+  testWidgets(
+      'male Pumpkin Court keeps its locked body across equip and reload',
+      (tester) async {
+    Future<List<String>> render(bool equipped, int revision) async {
+      await tester.pumpWidget(MaterialApp(
+        home: SizedBox(
+          width: 240,
+          height: 320,
+          child: QuestwellHalloweenCostume(
+            key: ValueKey(revision),
+            body: 'male',
+            costume: 'pumpkin_court',
+            equipped: equipped,
+          ),
+        ),
+      ));
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      return tester
+          .widgetList<Image>(find.byType(Image))
+          .map((image) => (image.image as AssetImage).assetName)
+          .toList();
+    }
+
+    const base = 'assets/images/questwell/avatar/base/paper_doll_male_v3.webp';
+    final equipped = await render(true, 1);
+    expect(
+        equipped.where(
+            (path) => path.contains('/base/') && !path.contains('identity')),
+        [base]);
+    expect(equipped.where((path) => path.endsWith('_v2.webp')), hasLength(3));
+    expect(await render(false, 2), [base]);
+    expect(await render(true, 3), equipped);
   });
 
   for (final width in [320.0, 1200.0]) {

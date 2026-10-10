@@ -1,0 +1,29 @@
+{
+  "status": "independent_visual_review_pending",
+  "canvas": [
+    240,
+    320
+  ],
+  "sourceSha256": "6fd55baa24cdce200d695a9996c08d7522be062ea5ea8b94eb0f67c8e80a2d81",
+  "layers": {
+    "front": {
+      "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/front_v2.webp",
+      "sha256": "568fc5d87f68f0101b46182eac2e163473e2c5e3eb124d8b7194f64cce0058cf",
+      "alphaSha256": "f8727a06d3b1925ff0ab9f627174d7daf02fe856819588ba42531bf8165bec23"
+    },
+    "collar": {
+      "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/collar_v2.webp",
+      "sha256": "07f28a6163119464963fe104b82d686cd96a99ad2dc8277f25134fa88bd705c7",
+      "alphaSha256": "991ca8658f17b8a0038026778f8a672902fc147b8ee6cdfb13cc57b6bc74aa02"
+    },
+    "cuffs": {
+      "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/cuffs_v2.webp",
+      "sha256": "b9045257a0aff6b59100a30f01ecb5c08ac1120d3dbbf1f4bcdc5d59a1ad0432",
+      "alphaSha256": "948b5e9ba4f9d8799254c39ba87c496cfadf00f609472e274325a96afab4897b"
+    }
+  },
+  "existingAssetCount": 304,
+  "existingAssetsUnchanged": true,
+  "bodySha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+  "identitySha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a"
+}
