@@ -19,7 +19,7 @@ function transport({state=before,checkData=checks,writeFailure=false}={}){
  };
  return {fn,writes:()=>writes,calls:()=>calls};
 }
-test('pending approval cannot make any network call',async()=>{const t=transport();await assert.rejects(run({sources,manifest:original,env,transport:t.fn,clock:()=>now}));assert.equal(t.calls(),0);});
+test('pending approval cannot make any network call',async()=>{const t=transport();await assert.rejects(run({sources,manifest:{...original,status:'pending'},env,transport:t.fn,clock:()=>now}));assert.equal(t.calls(),0);});
 test('changed source or target rejects before network',async()=>{for(const options of [{sources:[sources[0]+'\n',sources[1]],manifest:approved()},{sources,manifest:{...approved(),project:'other'}}]){const t=transport();await assert.rejects(run({...options,env,transport:t.fn,clock:()=>now}));assert.equal(t.calls(),0);}});
 test('wrong ref, absent credentials, expiry and target overrides reject',()=>{const p=plan(sources,approved());for(const e of [{...env,GITHUB_REF:'refs/heads/questwell-dev'},{...env,QUESTWELL_EXPORT_MIGRATION_TOKEN:''},{...env,SUPABASE_URL:'other'}])assert.throws(()=>approve(approved(),p,e,now));assert.throws(()=>approve({...approved(),valid_until:'2026-10-10T06:30:00Z'},p,env,now));});
 test('failed checks block database requests',async()=>{const t=transport({checkData:{...checks,check_runs:[]}});await assert.rejects(run({sources,manifest:approved(),env,transport:t.fn,clock:()=>now}));assert.equal(t.calls(),2);assert.equal(t.writes(),0);});

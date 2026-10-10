@@ -347,3 +347,33 @@ Production schema application still needs explicit founder approval for the
 session safeguards, credential setup, current required checks and refreshed backup
 evidence. The endpoint stays disabled in this schema-only step. No retention
 purge, endpoint activation or app release is included.
+
+
+## Approved schema-only continuation — 2026-10-10 15:10 UTC
+
+Tanya explicitly approved installing the tested session safeguards with "Saved
+and approved", confirmed the token was added, and continued with "Next".
+This approval covers only the two hash-pinned additive export migrations through
+the guarded CI path. It does not enable the endpoint, publish an app release,
+delete retention data, expand credentials or repair historical migrations.
+
+GitHub run 38031713126, retry job 114242424726, reported the dedicated credential
+PRESENT and nine guard tests passing. This verifies presence, not token scopes.
+The production dashboard visibly lists a PHYSICAL database backup at
+2026-10-10T08:02:00Z; checked at approximately 15:05 UTC. The approval expires at
+2026-10-11T08:02:00Z. The approved runner must still validate the token with its
+read-only state request and pass exact-revision checks before any write.
+
+Read-only production inspection confirmed export limits and snapshot remain
+absent and the account deletion fence exists. The endpoint remains disabled.
+
+The workflow correction uses the existing reviewed checkout SHA in all three
+privacy/export workflows. The security validator allows only contents:read and
+checks:read for the exact export apply job and enforces its exact push/branch
+condition. Negative tests reject broadened permissions, weakened conditions and
+the old checkout pin. Other workflow allowances were not changed.
+
+The pending-approval test now explicitly supplies pending status, independently
+of the real approval record. Rollback for CI changes is reverting the scoped
+commits; for an applied additive schema, retain it and keep export disabled while
+investigating. Latest full CI and production application remain pending.
