@@ -24,44 +24,33 @@ export function createBackend({url,publicKey,token,fetcher=fetch}) {
   const request=async (path)=>fetcher(new URL(path,base),{method:'GET',redirect:'error',signal,
     headers:{apikey:publicKey,Authorization:`Bearer ${token}`,Prefer:'count=exact'}});
   const json=async path=>JSON.parse(new TextDecoder().decode(await boundedBytes(await request(path),2*1024*1024)));
-  const rpc=async name=>{
+  const rpc=async (name,limit=1024)=>{
     const response=await fetcher(new URL('/rest/v1/rpc/'+name,base),{method:'POST',redirect:'error',signal,
       headers:{apikey:publicKey,Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:'{}'});
-    return JSON.parse(new TextDecoder().decode(await boundedBytes(response,1024)))===true;
+    return JSON.parse(new TextDecoder().decode(await boundedBytes(response,limit)));
   };
   return {
-    sessionAllowed:()=>rpc('account_export_session_allowed'),
-    claimExport:()=>rpc('claim_account_export'),
+    sessionAllowed:async()=>await rpc('account_export_session_allowed')===true,
+    claimExport:async()=>await rpc('claim_account_export')===true,
     async verifyUser(){const user=await json('/auth/v1/user');return user;},
-    async collect(id){
-      const tables={},complete={};let totalBytes=0;
-      for(const [name,fields] of Object.entries(exportFields)) {
-        const rows=[];let finished=false;let expected=null;
-        for(let offset=0;offset<=10000;offset+=250) {
-          const query=new URLSearchParams({select:fields.join(','),
-            [name==='users'?'id':'user_id']:`eq.${id}`,
-            order:name==='user_cosmetics'?'cosmetic_id.asc':'id.asc',limit:'250',offset:String(offset)});
-          const response=await request(`/rest/v1/${name}?${query}`);
-          const range=response.headers.get('content-range')??'';
-          const count=/\/(\d+)$/.exec(range);
-          if(!count)throw Error('Exact count required');
-          const current=Number(count[1]);
-          if(!Number.isSafeInteger(current)||current>10000 || (expected!==null&&current!==expected))throw Error('Inventory changed');
-          expected=current;
-          const page=JSON.parse(new TextDecoder().decode(await boundedBytes(response,2*1024*1024)));
-          if(!Array.isArray(page)||page.length>250)throw Error('Invalid page');
-          if(page.length!==Math.min(250,expected-offset))throw Error('Truncated page');
-          totalBytes+=JSON.stringify(page).length;
-          if(totalBytes>8*1024*1024 || rows.length+page.length>10000)throw Error('Record limit');
-          rows.push(...page);
-          if(rows.length===expected){finished=true;break;}
-        }
-        if(!finished)throw Error('Incomplete pagination');tables[name]=rows;complete[name]=true;
+    async collect(_id){
+      const snapshot=await rpc('account_export_snapshot',8*1024*1024);
+      if(!snapshot || !snapshot.tables || !Array.isArray(snapshot.objects))throw Error('Invalid snapshot');
+      for(const name of Object.keys(exportFields)) {
+        if(!Array.isArray(snapshot.tables[name]) || snapshot.tables[name].length>10000)throw Error('Incomplete snapshot');
       }
-      return {tables,complete,collectedAt:new Date().toISOString()};
+      if(snapshot.objects.length>100)throw Error('Object limit');
+      return {...snapshot,complete:Object.fromEntries(Object.keys(exportFields).map(name=>[name,true]))};
     },
-    async readAttachment(path,limit){
-      return boundedBytes(await request('/storage/v1/object/authenticated/beta-feedback/'+path.split('/').map(encodeURIComponent).join('/')),limit);
+    async readAttachment(path,limit,expected){
+      const response=await request('/storage/v1/object/authenticated/beta-feedback/'+path.split('/').map(encodeURIComponent).join('/'));
+      const etag=response.headers.get('etag');
+      if(!etag || etag.replace(/^"|"$/g,'')!==expected.etag.replace(/^"|"$/g,'')) {
+        await response.body?.cancel();throw Error('Attachment version changed');
+      }
+      const bytes=await boundedBytes(response,limit);
+      if(bytes.length!==expected.size)throw Error('Attachment size changed');
+      return bytes;
     },
   };
 }

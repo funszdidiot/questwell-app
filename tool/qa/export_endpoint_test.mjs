@@ -6,7 +6,7 @@ import {exportFields} from '../support/data_policy.mjs';
 const id='10000000-0000-4000-8000-000000000001';
 const other='10000000-0000-4000-8000-000000000002';
 const row=(name,extra={})=>({...Object.fromEntries(exportFields[name].map(k=>[k,null])),...extra});
-const snapshot=()=>({collectedAt:'2026-10-10T05:00:00Z',complete:Object.fromEntries(Object.keys(exportFields).map(k=>[k,true])),tables:Object.fromEntries(Object.keys(exportFields).map(k=>[k,k==='users'?[row(k,{id,email:'test@example.invalid'})]:[]]))});
+const snapshot=()=>({objects:[],collectedAt:'2026-10-10T05:00:00Z',complete:Object.fromEntries(Object.keys(exportFields).map(k=>[k,true])),tables:Object.fromEntries(Object.keys(exportFields).map(k=>[k,k==='users'?[row(k,{id,email:'test@example.invalid'})]:[]]))});
 const request=(opts={})=>new Request('https://example.invalid/export-account',{method:'POST',headers:{authorization:'Bearer synthetic-token'},...opts});
 function fixture(overrides={}){let reads=0; const backend={verifyUser:async()=>({id}),sessionAllowed:async()=>true,claimExport:async()=>true,collect:async()=>snapshot(),readAttachment:async()=>{reads++;return new Uint8Array([1,2,3]);},...overrides};return {handler:createExportHandler(()=>backend,{enabled:true,origins:['https://allowed.invalid']}),reads:()=>reads};}
 test('authenticated direct download excludes secrets and has no-store attachment headers',async()=>{
@@ -21,6 +21,7 @@ test('disabled, unauthenticated, anonymous and caller-controlled identity reques
 });
 test('attachments round trip; all paths checked before any download',async()=>{
  const s=snapshot();s.tables.beta_feedback=[row('beta_feedback',{id:other,user_id:id,attachment_path:id+'/test.png',attachment_paths:[]})];
+ s.objects=[{id:other,path:id+'/test.png',owner_id:id,version:'v1',etag:'tag1',size:3}];
  let f=fixture({collect:async()=>s});let res=await f.handler(request());assert.equal(res.status,200);assert.equal((await res.json()).attachments[0].data,'AQID');
  s.tables.beta_feedback[0].attachment_paths=[other+'/private.png'];f=fixture({collect:async()=>s});res=await f.handler(request());assert.equal(res.status,503);assert.equal(f.reads(),0);
 });
@@ -35,17 +36,19 @@ test('bounded streaming rejects oversized announced and unannounced data',async(
  await assert.rejects(()=>boundedBytes(new Response('private',{status:403}),100),/failed/);
  assert.equal((await boundedBytes(new Response('1234'),4)).length,4);
 });
-test('REST adapter uses requester token, explicit allowlists, exact counts and no redirects',async()=>{
- const calls=[];const backend=createBackend({url:'https://project.supabase.co',publicKey:'public-key',token:'user-token',fetcher:async(url,options)=>{
- calls.push({url,options});if(url.pathname==='/auth/v1/user')return Response.json({id});
- const name=url.pathname.split('/').at(-1);const s=snapshot();return Response.json(s.tables[name],{headers:{'content-range':`0-0/${s.tables[name].length}`}});
- }});
- assert.equal((await backend.verifyUser()).id,id);const s=await backend.collect(id);assert.equal(s.tables.users.length,1);
- for(const {url,options} of calls){assert.equal(options.headers.Authorization,'Bearer user-token');assert.equal(options.redirect,'error');if(url.pathname.startsWith('/rest/')){assert.ok(!url.searchParams.get('select').includes('*'));assert.equal(url.searchParams.get(url.pathname.endsWith('/users')?'id':'user_id'),`eq.${id}`);}}
+test('snapshot RPC uses requester token, no owner parameter and rejects missing groups',async()=>{
+ const calls=[];const backend=createBackend({url:'https://project.supabase.co',publicKey:'public',token:'caller',fetcher:async(url,options)=>{calls.push({url,options});return Response.json(snapshot());}});
+ const s=await backend.collect(id);assert.equal(s.tables.users[0].id,id);
+ assert.equal(calls.length,1);assert.equal(calls[0].url.pathname,'/rest/v1/rpc/account_export_snapshot');assert.equal(calls[0].options.body,'{}');assert.equal(calls[0].options.headers.Authorization,'Bearer caller');
+ const missing=snapshot();delete missing.tables.tasks;
+ const invalid=createBackend({url:'https://project.supabase.co',publicKey:'public',token:'caller',fetcher:async()=>Response.json(missing)});
+ await assert.rejects(()=>invalid.collect(id),/Incomplete/);
 });
-test('server page caps and absent counts cannot silently truncate an export',async()=>{
- for(const headers of [{},{'content-range':'0-0/300'}]){
- const backend=createBackend({url:'https://project.supabase.co',publicKey:'public',token:'token',fetcher:async()=>Response.json([{}],{headers})});await assert.rejects(()=>backend.collect(id),/count|Truncated/);
+test('download rejects changed ETag or size and accepts matching content',async()=>{
+ for(const [etag,size,pass] of [['tag',3,true],['other',3,false],['tag',4,false]]){
+ const backend=createBackend({url:'https://project.supabase.co',publicKey:'public',token:'caller',fetcher:async()=>new Response('abc',{headers:{etag}})});
+ const operation=()=>backend.readAttachment(id+'/file.png',10,{etag:'tag',size});
+ if(pass)assert.equal((await operation()).length,3);else await assert.rejects(operation,/changed/);
  }
 });
 test('revoked sessions and rate denial prevent collection; revocation during export prevents delivery',async()=>{
@@ -63,4 +66,9 @@ test('guard RPCs use caller identity and deny non-boolean/error responses',async
  assert.equal(await backend.sessionAllowed(),true);assert.equal(await backend.claimExport(),true);
  for(const {url,options} of calls){assert.match(url.pathname,/\/rest\/v1\/rpc\//);assert.equal(options.method,'POST');assert.equal(options.body,'{}');assert.equal(options.headers.Authorization,'Bearer caller');}
  const invalid=createBackend({url:'https://project.supabase.co',publicKey:'public',token:'caller',fetcher:async()=>Response.json('true')});assert.equal(await invalid.claimExport(),false);
+});
+
+test('Storage generation change during export prevents delivery',async()=>{
+ let calls=0;const f=fixture({collect:async()=>{const s=snapshot();s.objects=[{id:other,path:id+'/file',owner_id:id,version:String(calls++),etag:'tag',size:3}];return s;}});
+ assert.equal((await f.handler(request())).status,503);
 });

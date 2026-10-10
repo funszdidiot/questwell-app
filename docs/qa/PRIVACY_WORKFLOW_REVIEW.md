@@ -56,7 +56,7 @@ performs deletion, even when a plan has no blockers.
   records, orphaned uploads and device-local settings remain outside this scope.
 - The new `supabase/functions/export-account` adapter verifies identity via
   Auth `/auth/v1/user`, reads only allowlisted fields under the caller's JWT/RLS,
-  requires exact page counts, bounds streamed responses, and returns JSON directly
+  collects a single database snapshot, bounds streamed responses, and returns JSON directly
   to that requester with no-store/attachment headers. It never uses service-role
   credentials, emails data, writes files or creates a public download URL.
 - Direct authenticated response is the candidate delivery approach; the earlier
@@ -85,14 +85,19 @@ performs deletion, even when a plan has no blockers.
   Reference: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy
 - Before enabling: hosted two-account HTTP export, real sign-out with the old JWT,
   concurrent claim/load tests, and snapshot/file consistency tests remain.
-- Re-reading all record groups detects visible drift but is NOT a transactional
-  database snapshot. Referenced attachments are fetched under Storage RLS and
-  hashed on receipt; the adapter does NOT yet prove immutable-version consistency.
-  Establish that guarantee before treating it as a complete point-in-time export.
-- Limits: 10,000 rows/group, 250-row exact-count pages, 2 MiB/page, 8 MiB serialized
-  record characters, 100 referenced attachments, 5 MiB/file and 25 MiB total
-  attachment bytes, 25-second upstream request deadline. Over-limit requests fail
-  without returning a partial export; larger-account handling remains pending.
+- Migration `20261010052354_account_export_snapshot.sql` applied only to staging.
+  The STABLE, SECURITY INVOKER function reads all eight allowlisted record groups
+  plus caller-owned beta-feedback object ID/version/ETag/size at the calling SQL
+  query snapshot. It accepts no user ID. Hosted authenticated-role verification
+  confirmed all eight groups and owner scoping without returning account content.
+- The HTTP adapter compares downloaded ETag and byte length to that snapshot and
+  rechecks record/file metadata before delivery. Changed versions, missing ETags,
+  changed sizes or changed records fail closed. SHA256 of delivered bytes remains
+  in the package. Actual hosted Storage ETag behavior still needs end-to-end testing;
+  synthetic tests alone do not prove the provider's consistency guarantees.
+- Limits: 10,000 rows/group, 8 MiB database/HTTP snapshot, 100 owned file metadata
+  entries, 100 referenced attachments, 5 MiB/file, 25 MiB total attachment bytes,
+  25-second upstream deadline. Larger exports fail without returning partial data.
 - Shared catalog labels may improve readability of cosmetic IDs later; neither
   passwords/tokens nor internal feedback triage notes belong in this export.
 - Build the reviewed retention executor with a durable journal and conditional

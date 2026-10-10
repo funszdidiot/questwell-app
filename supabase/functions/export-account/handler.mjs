@@ -40,16 +40,29 @@ export function createExportHandler(makeBackend, {enabled=false, origins=[]}={})
       const paths=[...new Set(records.tables.beta_feedback.flatMap(row=>
         [row.attachment_path,...(row.attachment_paths??[])].filter(p=>p!==null)))];
       if(paths.length>100 || paths.some(p=>!validPath(p,user.id))) throw Error('Invalid attachment inventory');
+      if(!Array.isArray(snapshot.objects))throw Error('Missing Storage snapshot');
+      const objects=new Map();
+      for(const object of snapshot.objects) {
+        if(objects.has(object.path))throw Error('Duplicate object');
+        objects.set(object.path,object);
+      }
+      for(const path of paths) {
+        const o=objects.get(path);
+        if(!o || o.owner_id!==user.id || !o.id || !o.version || typeof o.etag!=='string' || !o.etag ||
+          !Number.isSafeInteger(o.size)||o.size<0||o.size>5*1024*1024)throw Error('Invalid object snapshot');
+      }
       const attachments=[];let total=0;
       for(const path of paths) {
-        const bytes=await backend.readAttachment(path,Math.min(5*1024*1024,25*1024*1024-total));
+        const bytes=await backend.readAttachment(path,Math.min(5*1024*1024,25*1024*1024-total),objects.get(path));
         total+=bytes.length;
         if(total>25*1024*1024) throw Error('Attachment limit');
         attachments.push({path,size:bytes.length,sha256:digest(bytes),encoding:'base64',data:Buffer.from(bytes).toString('base64')});
       }
-      // Detect visible edits during collection. This is not a transactional snapshot.
-      const again=accountExport({...await backend.collect(user.id),verifiedOwnerId:user.id});
+      // Each RPC is internally consistent; reject changes visible during file reads.
+      const finalSnapshot=await backend.collect(user.id);
+      const again=accountExport({...finalSnapshot,verifiedOwnerId:user.id});
       if(JSON.stringify(records.tables)!==JSON.stringify(again.tables)) throw Error('Account changed');
+      if(JSON.stringify(snapshot.objects)!==JSON.stringify(finalSnapshot.objects))throw Error('Storage changed');
       const finalUser=await backend.verifyUser();
       if(finalUser?.id!==user.id || finalUser.is_anonymous) throw Error('Authentication changed');
       if(!await backend.sessionAllowed()) throw Error('Session ended');
