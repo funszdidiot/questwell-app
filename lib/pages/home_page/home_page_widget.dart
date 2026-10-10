@@ -85,7 +85,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   late HomePageModel _model;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  var scaffoldKey = GlobalKey<ScaffoldState>();
   bool _completingTask = false;
   QuestwellAccountDialogFlow? _completionFlow;
   var _homeMessenger = GlobalKey<ScaffoldMessengerState>();
@@ -128,6 +128,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     if (!mounted || _owner == widget.currentOwner()) return;
     _completionFlow?.cancel();
     _completionFlow = null;
+    scaffoldKey = GlobalKey<ScaffoldState>();
     _homeMessenger = GlobalKey<ScaffoldMessengerState>();
     setState(() {
       _owner = widget.currentOwner();
