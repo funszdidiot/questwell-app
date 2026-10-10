@@ -1,0 +1,9 @@
+{
+  "tool": "built-in image_gen",
+  "useCase": "precise-object-edit",
+  "femaleEditTarget": "image-edit-target-b845d5783cdca722.png (exact user-selected screenshot)",
+  "neutralEditTarget": "tool/art_assets/halloween_costumes_v1/midnight_masquerade/neutral/light.png",
+  "maleEditTarget": "tool/art_assets/halloween_costumes_v1/midnight_masquerade/male/light.png",
+  "request": "Repair excessive near-black shoulder caps, outer sleeve borders, distorted cuff corners/rims and blunt lower front/side hems. Use coherent plum-purple cloth and thin natural contours, preserving intentional charcoal facings and original gold moon/bat/vine motifs. Restore continuous narrow gold cuff/hem finish. Preserve each original body, face, hair, mask, exposed hands, wrist openings, silhouette, drape, pose, blouse, trousers, boots, rear lining and framing. Female also preserves the exact room, cat, furniture and rug. No redesign, anatomy change or annotations.",
+  "productionUse": "Only selected garment RGB is imported; original geometry/alpha and all body/identity pixels remain fixed."
+}

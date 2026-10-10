@@ -1,0 +1,13 @@
+{
+  "tool": "built-in image_gen",
+  "useCase": "precise-object-edit",
+  "female": {
+    "inputRole": "exact user-selected edit target image-edit-target-ab7035cfe570930c.png",
+    "request": "Remove excessive heavy dark bands from female Pumpkin Court shoulders, outer sleeves, cuffs and lower hem. Preserve orange cloth, green/gold embroidered facings and fine trim; preserve exact body, face, hair, mask, hands, silhouette, blouse, trousers, boots, room, rug and framing. Color-only localized edge cleanup."
+  },
+  "neutral": {
+    "inputRole": "actual original exported neutral/light.png composite",
+    "request": "Remove thick near-black garment edging while preserving every other element of the neutral Pumpkin Court composite. Keep orange coat, green/gold embroidery, cuff design, fine contours, locked body, hands, mask, hair, blouse, trousers, boots, pale background and full figure framing.",
+    "exportScope": "Cuff and front/side hem only; thin shoulder outline and rear lining retained per independent review."
+  }
+}

@@ -1,5 +1,31 @@
 # Questwell Production Dashboard
 
+## Halloween wrists and hip drape — October 10 follow-up
+
+**QA / independent visual review passed.** Tanya rejected the remaining female cuff joins, neutral side rectangles and hip waviness. All six source-traced garment repairs now pass independent native/enlarged light/dark review. Foundations, original hands, underlays, masks, availability and prices remain unchanged. CI and delivered runtime verification pending. No new art lock. Evidence: `../qa/HALLOWEEN_WRIST_HIP_FIT.md`.
+
+## Midnight Masquerade edges — October 10, 2026
+
+**DEV DEPLOYED / fit findings superseded by the follow-up above.** PR #135 deployed `cba00be` through Preview `38031914698`; served revision, eight hashes and hosted light/dark/off-on verified. All three bodies: front/cuff RGB cleanup,
+plus neutral/male collar edge cleanup. Fixed bodies and every alpha value preserved.
+The earlier color-only review did not establish complete cuff/hip acceptance.
+Evidence: `../qa/MIDNIGHT_MASQUERADE_EDGE_REGISTRATION.md`.
+
+## Female and neutral Pumpkin Court edges — October 10, 2026
+
+**DEV DEPLOYED / fit findings superseded by the follow-up above.** PR #134 deployed `ccb8a85` through Preview `38031093435`; four served hashes and hosted light/dark/off-on verified. Exact alpha and bodies
+are preserved. Female shoulder/sleeve, cuff and hem; neutral cuff/hem only.
+Evidence: `../qa/PUMPKIN_COURT_FAMILY_EDGES.md`.
+
+## Male Pumpkin Court dark bands — October 10, 2026
+
+**DEV DEPLOYED / TANYA REVIEW.** PR #130 deployed `f7d6576` through Preview
+`38028925416`. Served revision and both repaired hashes match. Hosted light/dark
+inspection and outfit off/on passed. PR CI passed 1,076 regression, 27 decorator
+and 418 Chrome tests plus native/backend gates. Signed-in/device acceptance
+remains unclaimed. Exact garment alpha and locked bodies are preserved.
+Evidence: `../qa/PUMPKIN_COURT_DARK_BANDS.md`.
+
 ## Two architectural furniture maps — October 9 follow-up
 
 **QA / independent visual review passed.** Tanya clarified shared placement across skins in each of two structural

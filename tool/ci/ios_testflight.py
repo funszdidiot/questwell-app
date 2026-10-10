@@ -177,6 +177,36 @@ def verify_app(app, build_number, expected_uuid):
     require(validate_profile(profile) == expected_uuid, "Embedded provisioning profile changed.")
 
 
+def collect_review_evidence(app, output):
+    """Inventory the exported app; this is evidence for review, not a compliance claim."""
+    lock = ROOT / "ios/Podfile.lock"
+    require(lock.is_file() and not lock.is_symlink(), "Native dependency lockfile is missing.")
+    lock_bytes = lock.read_bytes()
+    require(0 < len(lock_bytes) < 1024 * 1024, "Invalid native dependency lockfile size.")
+    (output / "Podfile.lock").write_bytes(lock_bytes)
+    manifests = []
+    for path in sorted(app.rglob("PrivacyInfo.xcprivacy")):
+        require(not path.is_symlink(), "Symlinked privacy manifest requires review.")
+        data = path.read_bytes()
+        value = plistlib.loads(data)
+        require(isinstance(value, dict), "Invalid privacy manifest.")
+        manifests.append({"path": path.relative_to(app).as_posix(),
+                          "sha256": hashlib.sha256(data).hexdigest(), "declarations": value})
+    info = plistlib.loads((app / "Info.plist").read_bytes())
+    inventory = {"privacy_manifests": manifests,
+                 "permission_descriptions": {k: v for k, v in info.items()
+                                             if k.startswith("NS") and k.endswith("UsageDescription")},
+                 "url_types": info.get("CFBundleURLTypes", []),
+                 "flutter_deep_linking_enabled": info.get("FlutterDeepLinkingEnabled"),
+                 "export_encryption_declaration": info.get("ITSAppUsesNonExemptEncryption"),
+                 "frameworks": sorted(p.relative_to(app).as_posix() for p in app.rglob("*.framework")),
+                 "review_complete": False}
+    payload = (json.dumps(inventory, indent=2, sort_keys=True) + "\n").encode()
+    (output / "native-review.json").write_bytes(payload)
+    return {"podfile_lock_sha256": hashlib.sha256(lock_bytes).hexdigest(),
+            "native_review_sha256": hashlib.sha256(payload).hexdigest()}
+
+
 def build_signed_archive(sha, build_number, material):
     require(sys.platform == "darwin", "Signing requires a GitHub-hosted macOS runner.")
     require(run(["git", "rev-parse", "HEAD"]).decode().strip() == sha, "Checkout revision mismatch.")
@@ -260,9 +290,13 @@ def build_signed_archive(sha, build_number, material):
                         "xcode": "26.3 / 17C529", "sdk": "26.2", "flutter": "3.44.6",
                         "cocoapods": "1.17.0", "ipa_sha256": hashlib.sha256(ipas[0].read_bytes()).hexdigest(),
                         "certificate_sha1": identity, "profile_uuid": uuid,
+                        "github_run_id": os.environ.get("GITHUB_RUN_ID"),
+                        "github_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
                         "native_auth_verified": False, "device_acceptance_verified": False}
             output = ROOT / "build/ios-signing-evidence"
             output.mkdir(parents=True, exist_ok=True)
+            evidence.update(collect_review_evidence(apps[0], output))
+            (output / "altool-help.txt").write_bytes(run(["xcrun", "altool", "--help"]))
             (output / "validation.json").write_text(json.dumps(evidence, indent=2) + "\n")
         finally:
             project_path.write_bytes(original)

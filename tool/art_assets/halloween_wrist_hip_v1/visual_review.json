@@ -1,0 +1,164 @@
+{
+  "status": "PASS",
+  "reviewer": "independent AI outfit_wrist_hip_audit",
+  "scope": "all six actual exported composites; native/enlarged light/dark; wrists, hip drape, shoulders, neck, hands and hems",
+  "findings": "Smooth hips; coherent cuffs; neutral patches removed; no pale fringe, clipped shoulders, new skin exposure or generated-hand leakage.",
+  "founderLock": false,
+  "exports": [
+    {
+      "outfit": "midnight_masquerade",
+      "body": "female",
+      "sourceSha256": "45bca671ee6ebdcc259ecf64ff98c1ec225ae14b90a8fb062ed75caf1bed6e24",
+      "bodySha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a",
+      "identitySha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e",
+      "underlaySha256": "f31258b9e97cb16b7193204f34f244439c27adf5235edff2a5968a221c020cc4",
+      "protectedHandPixels": 577,
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/front_fit_v4.webp",
+          "sha256": "57837b6089668d113842a6d4c280d6c1a53c08e17f09e3184a00d8ab8c3e1bdf"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/rear_fit_v4.webp",
+          "sha256": "c21069404891f29bdddfbd6cf1570d9d7c6c4543dd44439df683891aeae4017c"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/cuffs_fit_v4.webp",
+          "sha256": "eba2106c606a0d00f08f304dd18b764a980ce5561e5ca42c365dd2bd098212b4"
+        }
+      }
+    },
+    {
+      "outfit": "pumpkin_court",
+      "body": "female",
+      "sourceSha256": "66b98f5e7c86d7b35742aa0755123f4e004c8847a3eb497275a75563f51bd381",
+      "bodySha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a",
+      "identitySha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e",
+      "underlaySha256": "26b136eae1f7c2b5a1c804e5ce78478daf9ae73b8109b2dd59e1575b4971516d",
+      "protectedHandPixels": 577,
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/front_fit_v4.webp",
+          "sha256": "43e71ac52c036d5c76669c0daa46e7bd80682c97b8b58d059e496faf69c06c17"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/rear_fit_v4.webp",
+          "sha256": "c3e269df1d415645ae653c91ea3f1fc9afe1573134f41b98d23368b03017061a"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/cuffs_fit_v4.webp",
+          "sha256": "eba2106c606a0d00f08f304dd18b764a980ce5561e5ca42c365dd2bd098212b4"
+        }
+      }
+    },
+    {
+      "outfit": "midnight_masquerade",
+      "body": "neutral",
+      "sourceSha256": "c363dbdd5d5ee4ba4878b974bbb0981c4bde756fa74a2f0a259d236e86a8bdfd",
+      "bodySha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "identitySha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "underlaySha256": "b44bdd9954b9c7c27d22b29e9c23486e3fa9308f806c370bec20120eee9a2bb1",
+      "protectedHandPixels": 758,
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/front_fit_v4.webp",
+          "sha256": "63d6f34245d6005c5fa1bd4cada37a42e3bfc14f3d57e953f58ffd25047541b5"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/rear_fit_v4.webp",
+          "sha256": "5ac9aa4c21668bbed0f86bb8298c64132cf757941bc2a17aec88bca43091d9c3"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/cuffs_fit_v4.webp",
+          "sha256": "eba2106c606a0d00f08f304dd18b764a980ce5561e5ca42c365dd2bd098212b4"
+        },
+        "collar": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/collar_fit_v4.webp",
+          "sha256": "3dc7d69b3433cb67a03eba63e6bdf0629111cd081fbd4cc5cb7b750a7485dbbd"
+        }
+      }
+    },
+    {
+      "outfit": "pumpkin_court",
+      "body": "neutral",
+      "sourceSha256": "937b79405455019da0d96e2534b066dc3580529978f53575fd5a11c8903d32f9",
+      "bodySha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "identitySha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "underlaySha256": "9f2acb4837cf1eb7e62f52b58a8b7c57f2f05cedcffedf3daabf0cdf52f48511",
+      "protectedHandPixels": 758,
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/front_fit_v4.webp",
+          "sha256": "42a4e014e0104173317dc46f87b85562c37562189b1710c4907511c3c6ce044f"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/rear_fit_v4.webp",
+          "sha256": "2c69f4936b59e96d060fb7534b32ab6046c45d5d9d5d79538e17d48766742cac"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/cuffs_fit_v4.webp",
+          "sha256": "eba2106c606a0d00f08f304dd18b764a980ce5561e5ca42c365dd2bd098212b4"
+        },
+        "collar": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/collar_fit_v4.webp",
+          "sha256": "d990c439cf689e509e20883ac131ff85dccde35d97c4e047df127f07297d823f"
+        }
+      }
+    },
+    {
+      "outfit": "midnight_masquerade",
+      "body": "male",
+      "sourceSha256": "910954bae949db03b32d1942e74bbea1b10c44a4335cf4e6b6832c3365232870",
+      "bodySha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "identitySha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "underlaySha256": "bca6a5973b8cd2f411eace862cf48a978863afa3cd08ec869e96196a87569143",
+      "protectedHandPixels": 1015,
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/front_fit_v4.webp",
+          "sha256": "2ae1839aac315b7122c47dffab1342fe2bf61cf754cf349c45842b26573ae491"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/rear_fit_v4.webp",
+          "sha256": "c45adcfbde3cd05a0d6a5c7e74f1c9f5463c03bc3488b7cabe4c570706a671cd"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/cuffs_fit_v4.webp",
+          "sha256": "eba2106c606a0d00f08f304dd18b764a980ce5561e5ca42c365dd2bd098212b4"
+        },
+        "collar": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/collar_fit_v4.webp",
+          "sha256": "a4a653a90139008d3e5794243be83c6e144ca2ce643cc2fbb5bf01e4e1374f29"
+        }
+      }
+    },
+    {
+      "outfit": "pumpkin_court",
+      "body": "male",
+      "sourceSha256": "6dc8cc2d05d64f87e0336469790f6c4f7d20a9e47afaa773c098aaa675dff685",
+      "bodySha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "identitySha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "underlaySha256": "f5212992004d651c0d39586e128948fcb95098432ab5b71a8d0695e0e5d181e5",
+      "protectedHandPixels": 1015,
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/front_fit_v4.webp",
+          "sha256": "618de83bc9ee372ef27d6cdcfa1d744d8a0cf65f8907f24e0cb9064ac781afc8"
+        },
+        "rear": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/rear_fit_v4.webp",
+          "sha256": "b2279e8b80f2533a766370bd6a92b7cf708c499e0c3de617c8372d5a86b54689"
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/cuffs_fit_v4.webp",
+          "sha256": "eba2106c606a0d00f08f304dd18b764a980ce5561e5ca42c365dd2bd098212b4"
+        },
+        "collar": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/collar_fit_v4.webp",
+          "sha256": "972d4e9794c5bedea047ce01b17c8540fc1147eb571c47d7be1edbd4d8bbc196"
+        }
+      }
+    }
+  ],
+  "followup": "PR136 identified neutral rear-side hem fragments missed in the initial PASS. Full-height rear-side cleanup removes them. Independent follow-up inspected all eight regenerated neutral composites: PASS; fragments gone, continuous center lining, no new wrist/hip/hem holes or body clipping. Other four variants unchanged."
+}
