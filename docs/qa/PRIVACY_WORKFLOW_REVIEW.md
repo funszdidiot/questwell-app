@@ -226,3 +226,59 @@ Production activation and retention deletion remain disabled.
 Rollback: revert `9993427d2d58701f8e7f8fca26ea33f5cb8ef72f` to remove the test
 and workflow step. No schema or auth-policy rollback is needed; the synthetic
 profile was restored.
+
+
+## Production rollout scope for founder approval — 2026-10-10
+
+Production preflight (read-only) verified eight required application tables and
+`private.account_deletion_fences`. Export limits/snapshot and `export-account`
+are not installed in production. Production has not been changed.
+
+Reviewed implementation scope:
+- `supabase/migrations/20261010052031_account_export_guard.sql`: additive private
+  rate-limit table, session/deletion checks and caller-only wrappers.
+- `supabase/migrations/20261010052354_account_export_snapshot.sql`: additive,
+  caller-scoped snapshot RPC, using existing RLS rather than bypassing it.
+- `supabase/functions/export-account/{index.ts,handler.mjs,backend.mjs}` and
+  `supabase/functions/_shared/data_policy.mjs`: authenticated bounded download.
+- The production rollout workflow/runner must be prepared on this branch and
+  reviewed/tested before applying the versioned migrations through CI. Do not
+  substitute untracked dashboard/SQL edits. No such production runner exists yet.
+
+Rollout sequence after explicit approval of the authentication-sensitive change:
+1. Prepare narrowly scoped CI runner, pinned payload/checks, and rollback gate.
+2. Pass the PR checks and merge through the reviewed branch workflow.
+3. Apply only the two versioned migrations through CI; verify grants and RLS.
+4. Deploy production entrypoint with JWT verification and export disabled first.
+5. Verify unauthorized denial and configuration, then enable authenticated API
+   delivery. Browser origin allowlist must use verified app origins; no wildcard.
+6. Verify a consenting production requester's download, limits and logout denial.
+   Activation alone is not a completed production acceptance check.
+
+Immediate rollback: set `QUESTWELL_EXPORT_ENABLED=false`; retain the additive
+schema for investigation. No data deletion or auth-policy weakening is required.
+The app's user-facing download entry and platform save behavior still require
+integration/acceptance before calling self-service export fully delivered.
+
+Limits: this endpoint exports allowlisted application data and referenced
+feedback attachments; it excludes Auth records and orphaned uploads. It is not
+a claim of comprehensive legal subject-access coverage. Four-way concurrency
+is verified, not broad load certification. Administrative file replacement and
+delete/recreate races remain outside the hosted tests; synthetic version checks
+are evidence of logic behavior, not proof of every provider race.
+
+Retention stays a dry-run planner; neither the 97-day proposal nor any live
+purge, backup lifecycle change or cleanup of recovery copies is authorized here.
+
+
+## Hosted overwrite restriction PASSED — 2026-10-10
+
+Run https://github.com/funszdidiot/questwell-app/actions/runs/38030386584
+on `a31df8ecd14dc125bd19cbedc84dc72e2cf63c46` passed. An authenticated
+same-path upsert of the synthetic file was denied under existing Storage RLS.
+The following export verified its original bytes by SHA256. The upsert used the
+same fixture bytes so unexpected permission changes would not corrupt data.
+Independent policy inspection found no permissive UPDATE policy; the session
+policy is restrictive, not an alternate grant. No policies were changed to make
+a replacement test possible. Hosted isolation/concurrency/logout checks and the
+live-profile mutation/cleanup integration also passed in that run.
