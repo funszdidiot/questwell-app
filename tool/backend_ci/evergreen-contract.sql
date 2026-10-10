@@ -30,9 +30,9 @@ begin
       denied := true;
     end;
     if not denied then raise exception 'Inactive item purchased'; end if;
-    if item.price <> case when item.category='wall_art' then 120 else 300 end
+    if item.price <> (case when item.category='wall_art' then 120 else 300 end)
       or item.required_archetype is distinct from
-        case when item.slug='guardians-oath-tapestry' then 'guardian'::text else null::text end then
+        (case when item.slug='guardians-oath-tapestry' then 'guardian'::text else null::text end) then
       raise exception 'Candidate pricing or eligibility changed';
     end if;
     foreach body in array array['female','neutral','male'] loop
@@ -91,9 +91,9 @@ begin
     saved := public.save_hearth_layout(saved->'current',(saved->>'revision')::bigint,layout);
     if public.read_hearth_layouts()->'current' <> layout then raise exception 'Room gallery reload differs'; end if;
   end loop;
-  layout := saved->'rooms'->lab_id::text;
+  layout := saved->'rooms'->(lab_id::text);
   saved := public.save_hearth_layout(saved->'current',(saved->>'revision')::bigint,layout);
-  if saved->'current' <> gallery || jsonb_build_object('setting',lab_id::text) then
+  if saved->'current' <> (gallery || jsonb_build_object('setting',lab_id::text)) then
     raise exception 'Lab gallery recall differs';
   end if;
   -- Class change must not allow either placement API to re-equip Guardian art.
