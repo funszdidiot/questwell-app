@@ -27,3 +27,16 @@ is available and does not start Flutter.
 
 Rollback: revert this room-only commit. No migrations or saved data conversion.
 Visual and delivered-device results will be recorded after CI, not inferred.
+
+
+## Rendered review correction
+
+CI 38014997335 passed tests and native builds, but its portrait fixtures revealed
+that the Hallowed left wall is cropped away. Clamping its bookshelf visibly
+blocked the fireplace. The followup caps room height at its source aspect ratio
+so narrow views keep the authored room width (square standard or 3:2 Hallowed).
+It changes the scene's height, with no letterbox bars, body/asset distortion or
+saved-slot rewrite. The decorator's marker canvas uses the same effective
+height. Explicit `setting` previews now pass the resolved setting to furniture
+and dependent surfaces, addressing the PR review's override mismatch. Actual
+updated CI scenes and regression checks are required before delivery.

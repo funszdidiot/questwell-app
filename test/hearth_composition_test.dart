@@ -159,6 +159,17 @@ void main() {
     );
     expect(wide.point(const Offset(768, 614.4)), const Offset(300, 240));
   });
+  test('portrait camera retains both authored side walls', () {
+    for (final room in rooms) {
+      final height = QuestwellRoomGeometry.framedHeight(room, 284, 342);
+      final geometry =
+          QuestwellRoomGeometry.forSetting(room, Size(284, height));
+      final source = QuestwellRoomGeometry.sourceForSetting(room);
+      expect(geometry.point(Offset.zero).dx, closeTo(0, 1e-9));
+      expect(geometry.point(Offset(source.width, 0)).dx, closeTo(284, 1e-9));
+      expect(height, lessThanOrEqualTo(342));
+    }
+  });
   testWidgets('capture complete room compositions for visual review', (
     tester,
   ) async {
@@ -184,10 +195,15 @@ void main() {
                     data: const MediaQueryData(disableAnimations: true),
                     child: QuestwellHearthPixelScene(
                       height: size.height,
+                      setting: arrangement.key == 'autumn-window'
+                          ? QuestwellHearthSetting.fromSlug(room)
+                          : null,
                       immersive: true,
                       equippedSlugs: {
                         ...arrangement.value,
-                        if (room != 'original') 'room:setting': room,
+                        if (room != 'original' &&
+                            arrangement.key != 'autumn-window')
+                          'room:setting': room,
                       },
                     ),
                   ),

@@ -20,6 +20,11 @@ class QuestwellRoomGeometry {
       ? const Size(1536, 1024)
       : const Size(1254, 1254);
 
+  /// A portrait viewport must not crop away the room's usable side walls.
+  /// Cap the scene itself rather than adding bars or stretching the artwork.
+  static double framedHeight(String? setting, double width, double requested) =>
+      math.min(requested, width / sourceForSetting(setting).aspectRatio);
+
   factory QuestwellRoomGeometry.forSetting(String? setting, Size scene) =>
       QuestwellRoomGeometry(sourceForSetting(setting), scene);
 
