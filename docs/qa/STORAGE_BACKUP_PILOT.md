@@ -1,4 +1,34 @@
-# Storage backup pilot — prepared, source access not approved
+# Storage backup pilot — verified one-time live copy
+
+## Verified pilot result
+
+Tanya explicitly approved the dedicated Storage source credential, its GitHub
+secret storage, and one copy of the private feedback files into the existing
+B2 bucket. She confirmed both source secrets saved. Environment deployment
+access is restricted to branch `questwell-b2-connection-check-20261010`.
+
+GitHub run 38016744265, attempt 2, job 114112568614 passed at
+2026-10-10 02:44:17 UTC (October 9, 10:44 PM EDT), executing commit
+`ecf013f0b503ba691f28bb5452312051eb8ea0ca`.
+All 15 synthetic tests passed, and the actual live transfer step passed.
+
+- Files: 11
+- Source bytes: 11,188,632
+- Archive bytes: 9,881,367
+- Source before/after listing stable: true
+- Full archive readback and per-file hashes: passed
+- Snapshot: `20261010T024417Z-9129f3e518c846bbb307b3588b94c56b`
+- Archive SHA-256: `5eaf712e79f55b4c44c2ad6268d2a00bc7ca9fdd0504d6417e962519815a2f3b`
+- Destination: private B2 bucket `questwell-backups-20261009`,
+  prefix `questwell/file-backups/live/`; SSE-B2 AES256 requested and checked.
+- No source deletion, scheduled backup, or full application recovery performed.
+
+Follow-up: resetting `QUESTWELL_LIVE_BACKUP_APPROVED` from true to false
+encountered GitHub's Confirm access dialog. The reset is NOT yet verified.
+Complete account verification and verify the saved false value before any
+further workflow-changing push. No additional live backup is authorized.
+
+Evidence: https://github.com/funszdidiot/questwell-app/actions/runs/38016744265
 
 ## Verified destination and source inventory
 
