@@ -5,6 +5,7 @@ import 'questwell_pixel_art.dart';
 import 'questwell_hearth_decor.dart';
 import 'questwell_hearth_room_plan.dart';
 import 'questwell_hearth_material.dart';
+import 'questwell_room_geometry.dart';
 
 /// Kept off until the reviewed atomic-layout RPC is deployed and verified.
 const decorateHearthEnabled = bool.fromEnvironment('QUESTWELL_DECORATE_HEARTH');
@@ -169,7 +170,10 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                     LayoutBuilder(
                                         builder: (context, constraints) {
                                       final height =
-                                          constraints.maxWidth * .68 + 8;
+                                          QuestwellRoomGeometry.framedHeight(
+                                              equipment['room:setting'],
+                                              constraints.maxWidth,
+                                              constraints.maxWidth * .68 + 8);
                                       return SizedBox(
                                           height: height,
                                           child: Stack(children: [

@@ -1,5 +1,18 @@
 # Questwell Production Dashboard
 
+## Room perspective and window alignment — October 9, 2026
+
+**QA / visual review passed.** PR #120 follows source-art wall/floor
+geometry across both room designs and corrects Hallowed window clipping. It also
+includes the independently reviewed male Pumpkin Court surface repair from
+PR #121. All 135 feature-enabled scene fixtures passed independent review
+(nine rooms, five arrangements, three viewports). Checks passed through full
+regression, decorator, Chrome, Android/iOS and backend on 48af378; final web
+packaging and integration with the concurrent magic release remain required.
+The PR records final delivery revision, hosted verification and check results.
+Saved slots, ownership, locked bodies and other outfits are preserved.
+Evidence: `../qa/ROOM_PERSPECTIVE_REGISTRATION.md`.
+
 ## Avatar and familiar magic — October 9
 
 **QA / visual preview approved.** Tanya approved Starlight Aura, Enchanted Leaves,

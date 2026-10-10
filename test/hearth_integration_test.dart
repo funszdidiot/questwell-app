@@ -64,7 +64,7 @@ void main() {
   });
 
   testWidgets(
-      'Settings preserve avatar anchors and original-room galleries at phone widths',
+      'Settings preserve avatar proportions, floor contact and square-room anchors',
       (tester) async {
     for (final width in [320.0, 390.0]) {
       for (final body in ['female', 'male', 'neutral']) {
@@ -98,11 +98,24 @@ void main() {
               .getRect(find.byKey(const ValueKey('hearth-avatar-bounds')));
           final w = tester
               .getRect(find.byKey(const ValueKey('hearth-wall-art-bounds')));
-          if (avatar != null) expect(a, avatar);
-          if (wall != null && setting != QuestwellHearthSetting.hallowedHearth)
-            expect(w, wall);
-          avatar = a;
-          if (setting != QuestwellHearthSetting.hallowedHearth) wall = w;
+          final frame =
+              tester.getRect(find.byKey(const ValueKey('hearth-room-bounds')));
+          final shadow = tester
+              .getRect(find.byKey(const ValueKey('hearth-contact-shadow')));
+          expect(a.width / a.height, closeTo(.75, .001));
+          expect(a.center.dx, closeTo(frame.center.dx, .001));
+          expect(frame.contains(a.topLeft), isTrue);
+          expect(frame.contains(a.bottomRight), isTrue);
+          expect(shadow, a,
+              reason: 'Boots retain their authored floor contact');
+          // Wide Hallowed now keeps its side walls by using a shorter frame.
+          // Square rooms still share identical avatar and gallery anchors.
+          if (setting != QuestwellHearthSetting.hallowedHearth) {
+            if (avatar != null) expect(a, avatar);
+            if (wall != null) expect(w, wall);
+            avatar = a;
+            wall = w;
+          }
         }
       }
     }

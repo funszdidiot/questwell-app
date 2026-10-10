@@ -1,7 +1,7 @@
-import 'dart:math' as math;
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'questwell_catalog_equipment.dart';
+import 'questwell_room_geometry.dart';
 
 /// Authored window registration, independent of equipment and account state.
 /// Source coordinates preserve each room's frame, mullions and leading.
@@ -31,29 +31,8 @@ abstract final class QuestwellWindowGeometry {
   }
 
   /// Exactly the background's BoxFit.cover and Alignment(0, .04).
-  static Float64List transform(String room, Size size) {
-    final authored = source(room);
-    final scale =
-        math.max(size.width / authored.width, size.height / authored.height);
-    return Float64List.fromList([
-      scale,
-      0,
-      0,
-      0,
-      0,
-      scale,
-      0,
-      0,
-      0,
-      0,
-      1,
-      0,
-      (size.width - authored.width * scale) / 2,
-      (size.height - authored.height * scale) * .52,
-      0,
-      1
-    ]);
-  }
+  static Float64List transform(String room, Size size) =>
+      QuestwellRoomGeometry(source(room), size).matrix;
 
   static final _glassCache = <String, Path>{};
   static Path glass(String room) =>

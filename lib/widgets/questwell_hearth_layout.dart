@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../services/questwell_cosmetic_models.dart';
 import 'questwell_hearth_room_plan.dart';
+import 'questwell_room_geometry.dart';
 
 /// Visual geometry for backend-defined Hearth layout profiles.
 ///
@@ -147,7 +148,18 @@ abstract final class QuestwellHearthLayout {
     // wider. That guarantees a stable visual scale when users swap items.
     // Artwork must be authored to the family's envelope instead of forcing the
     // room to compensate for an oversized sprite.
-    final height = avatarHeight * heightFactor;
+    final plan = QuestwellHearthRoomPlan.forSetting(equipment['room:setting']);
+    // Rear family envelopes are authored relative to the room, not the
+    // avatar's viewport-dependent fit. One cover scale preserves perspective.
+    final rear =
+        QuestwellHearthRoomPlan.enabled && plan.isRear(profileKey, slot);
+    final geometry =
+        QuestwellRoomGeometry.forSetting(equipment['room:setting'], scene);
+    final source =
+        QuestwellRoomGeometry.sourceForSetting(equipment['room:setting']);
+    final height = rear
+        ? source.height * geometry.scale * .62 * heightFactor * .82
+        : avatarHeight * heightFactor;
     final width = height * aspectRatio;
 
     String? profileAt(String slot) {
@@ -161,7 +173,6 @@ abstract final class QuestwellHearthLayout {
     final chairOnLeft =
         profileAt('front') == 'seating' || profileAt('left') == 'seating';
 
-    final plan = QuestwellHearthRoomPlan.forSetting(equipment['room:setting']);
     final center = QuestwellHearthRoomPlan.enabled
         ? scene.width *
             plan.center(
@@ -196,14 +207,31 @@ abstract final class QuestwellHearthLayout {
             _ => scene.width * .50,
           };
 
+    if (QuestwellHearthRoomPlan.enabled) {
+      final anchor = plan.anchor(
+        profileKey,
+        slot,
+        scene,
+        equipment['room:setting'],
+        centerX: center / scene.width,
+      );
+      // Cropping may remove a side wall. Keep the whole family envelope inside
+      // the nearest visible wall zone, without stretching or rescaling it.
+      final safeCenter = anchor.dx.clamp(
+        width / 2 + 3,
+        scene.width - width / 2 - 3,
+      );
+      return Rect.fromLTWH(
+        safeCenter - width / 2,
+        anchor.dy - height * visibleBase,
+        width,
+        height,
+      );
+    }
     final roomSide = math.max(scene.width, scene.height);
-    final plannedFloor =
-        QuestwellHearthRoomPlan.enabled ? plan.floor(profileKey, slot) : null;
-    final floor = plannedFloor != null
-        ? scene.height * plannedFloor
-        : profileKey == 'relic_display' && slot != 'front'
-            ? roomSide * .68 + (scene.height - roomSide) * .52
-            : scene.height * floorDepthFor(profileKey, slot);
+    final floor = profileKey == 'relic_display' && slot != 'front'
+        ? roomSide * .68 + (scene.height - roomSide) * .52
+        : scene.height * floorDepthFor(profileKey, slot);
 
     return Rect.fromLTWH(
       center - width / 2,
