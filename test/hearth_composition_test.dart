@@ -280,6 +280,71 @@ void main() {
       expect(height, lessThanOrEqualTo(342));
     }
   });
+  testWidgets('Witchlight replacement meets both room cameras and slots',
+      (tester) async {
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final spec = renders['witchlight-bookcase']!;
+    expect(spec.assetRevision, 3);
+    expect(spec.assetPath, endsWith('witchlight_bookcase_front_v3.webp'));
+    for (final room in [
+      'original',
+      'hallowed-hearth',
+      'mad-alchemists-lab',
+      'guardians-keep'
+    ]) {
+      for (final slot in ['left', 'right']) {
+        for (final width in [390.0, 760.0]) {
+          for (final avatar in [false, true]) {
+            final size = Size(width, width * .68 + 8);
+            tester.view.physicalSize = size;
+            final key = GlobalKey();
+            await tester.pumpWidget(MaterialApp(
+                home: Scaffold(
+              body: RepaintBoundary(
+                  key: key,
+                  child: MediaQuery(
+                    data: const MediaQueryData(disableAnimations: true),
+                    child: QuestwellHearthPixelScene(
+                      height: size.height,
+                      immersive: true,
+                      showAvatar: avatar,
+                      avatarBodyType: 'male',
+                      hearthProfileBySlug: profiles,
+                      hearthRenderBySlug: renders,
+                      equippedSlugs: {
+                        'room:setting': room,
+                        'room:$slot': 'witchlight-bookcase'
+                      },
+                    ),
+                  )),
+            )));
+            await tester.runAsync(() async {
+              await Future.wait(tester
+                  .widgetList<Image>(find.byType(Image))
+                  .map((i) => precacheImage(
+                      i.image, tester.element(find.byType(Scaffold)))));
+            });
+            await tester.pumpAndSettle();
+            expect(tester.takeException(), isNull);
+            final boundary =
+                tester.renderObject<RenderRepaintBoundary>(find.byKey(key));
+            await tester.runAsync(() async {
+              final image = await boundary.toImage();
+              final data =
+                  await image.toByteData(format: ui.ImageByteFormat.png);
+              final file = File(
+                  'build/hearth-composition/witchlight-$room-$slot-${width.toInt()}-${avatar ? 'avatar' : 'empty'}.png');
+              await file.parent.create(recursive: true);
+              await file.writeAsBytes(data!.buffer.asUint8List());
+              image.dispose();
+            });
+          }
+        }
+      }
+    }
+  });
   testWidgets('capture complete room compositions for visual review', (
     tester,
   ) async {

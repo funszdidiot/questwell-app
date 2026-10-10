@@ -90,20 +90,40 @@ class QuestwellHearthRenderSpec {
   double get aspectRatio => canvasWidth / canvasHeight;
   bool get pixelated => filterMode == 'pixel';
 
-  factory QuestwellHearthRenderSpec.fromJson(Map<String, dynamic> json) =>
-      QuestwellHearthRenderSpec(
-        renderKind: json['render_kind']?.toString() ?? 'static_sprite',
-        assetSource: json['asset_source']?.toString() ?? 'bundle',
-        assetPath: json['asset_path']?.toString() ?? '',
-        canvasWidth: (json['canvas_width'] as num?)?.toInt() ?? 1,
-        canvasHeight: (json['canvas_height'] as num?)?.toInt() ?? 1,
-        visibleBase: (json['visible_base'] as num?)?.toDouble() ?? 1,
-        shadowProfile: json['shadow_profile']?.toString(),
-        effectProfile: json['effect_profile']?.toString(),
-        filterMode: json['filter_mode']?.toString() ?? 'pixel',
-        assetRevision: (json['asset_revision'] as num?)?.toInt() ?? 1,
-        minClientBuild: (json['min_client_build'] as num?)?.toInt(),
-      );
+  factory QuestwellHearthRenderSpec.fromJson(Map<String, dynamic> json) {
+    // Old catalog rows remain valid on older clients. New clients resolve an
+    // explicitly versioned bundle replacement before both layout and painting,
+    // so visible floor contact cannot disagree with the image being drawn.
+    // Network assets and newer backend revisions remain authoritative.
+    final revision = (json['asset_revision'] as num?)?.toInt() ?? 1;
+    if ((json['asset_source'] ?? 'bundle') == 'bundle' &&
+        revision == 1 &&
+        json['asset_path'] ==
+            'assets/images/questwell/hearth/witchlight_bookcase_v1.webp') {
+      json = {
+        ...json,
+        'asset_path':
+            'assets/images/questwell/hearth/witchlight_bookcase_front_v3.webp',
+        'canvas_width': 1182,
+        'canvas_height': 1330,
+        'visible_base': 1279 / 1330,
+        'asset_revision': 3,
+      };
+    }
+    return QuestwellHearthRenderSpec(
+      renderKind: json['render_kind']?.toString() ?? 'static_sprite',
+      assetSource: json['asset_source']?.toString() ?? 'bundle',
+      assetPath: json['asset_path']?.toString() ?? '',
+      canvasWidth: (json['canvas_width'] as num?)?.toInt() ?? 1,
+      canvasHeight: (json['canvas_height'] as num?)?.toInt() ?? 1,
+      visibleBase: (json['visible_base'] as num?)?.toDouble() ?? 1,
+      shadowProfile: json['shadow_profile']?.toString(),
+      effectProfile: json['effect_profile']?.toString(),
+      filterMode: json['filter_mode']?.toString() ?? 'pixel',
+      assetRevision: (json['asset_revision'] as num?)?.toInt() ?? 1,
+      minClientBuild: (json['min_client_build'] as num?)?.toInt(),
+    );
+  }
 }
 
 class QuestwellCosmetic {
