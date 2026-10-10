@@ -24,7 +24,14 @@ export function createBackend({url,publicKey,token,fetcher=fetch}) {
   const request=async (path)=>fetcher(new URL(path,base),{method:'GET',redirect:'error',signal,
     headers:{apikey:publicKey,Authorization:`Bearer ${token}`,Prefer:'count=exact'}});
   const json=async path=>JSON.parse(new TextDecoder().decode(await boundedBytes(await request(path),2*1024*1024)));
+  const rpc=async name=>{
+    const response=await fetcher(new URL('/rest/v1/rpc/'+name,base),{method:'POST',redirect:'error',signal,
+      headers:{apikey:publicKey,Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:'{}'});
+    return JSON.parse(new TextDecoder().decode(await boundedBytes(response,1024)))===true;
+  };
   return {
+    sessionAllowed:()=>rpc('account_export_session_allowed'),
+    claimExport:()=>rpc('claim_account_export'),
     async verifyUser(){const user=await json('/auth/v1/user');return user;},
     async collect(id){
       const tables={},complete={};let totalBytes=0;

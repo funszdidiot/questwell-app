@@ -8,7 +8,7 @@ const other='10000000-0000-4000-8000-000000000002';
 const row=(name,extra={})=>({...Object.fromEntries(exportFields[name].map(k=>[k,null])),...extra});
 const snapshot=()=>({collectedAt:'2026-10-10T05:00:00Z',complete:Object.fromEntries(Object.keys(exportFields).map(k=>[k,true])),tables:Object.fromEntries(Object.keys(exportFields).map(k=>[k,k==='users'?[row(k,{id,email:'test@example.invalid'})]:[]]))});
 const request=(opts={})=>new Request('https://example.invalid/export-account',{method:'POST',headers:{authorization:'Bearer synthetic-token'},...opts});
-function fixture(overrides={}){let reads=0; const backend={verifyUser:async()=>({id}),collect:async()=>snapshot(),readAttachment:async()=>{reads++;return new Uint8Array([1,2,3]);},...overrides};return {handler:createExportHandler(()=>backend,{enabled:true,origins:['https://allowed.invalid']}),reads:()=>reads};}
+function fixture(overrides={}){let reads=0; const backend={verifyUser:async()=>({id}),sessionAllowed:async()=>true,claimExport:async()=>true,collect:async()=>snapshot(),readAttachment:async()=>{reads++;return new Uint8Array([1,2,3]);},...overrides};return {handler:createExportHandler(()=>backend,{enabled:true,origins:['https://allowed.invalid']}),reads:()=>reads};}
 test('authenticated direct download excludes secrets and has no-store attachment headers',async()=>{
  const {handler}=fixture();const res=await handler(request());assert.equal(res.status,200);assert.match(res.headers.get('cache-control'),/no-store/);assert.match(res.headers.get('content-disposition'),/attachment/);assert.equal((await res.json()).tables.users[0].id,id);
 });
@@ -47,4 +47,20 @@ test('server page caps and absent counts cannot silently truncate an export',asy
  for(const headers of [{},{'content-range':'0-0/300'}]){
  const backend=createBackend({url:'https://project.supabase.co',publicKey:'public',token:'token',fetcher:async()=>Response.json([{}],{headers})});await assert.rejects(()=>backend.collect(id),/count|Truncated/);
  }
+});
+test('revoked sessions and rate denial prevent collection; revocation during export prevents delivery',async()=>{
+ let collected=0;
+ for(const [overrides,status] of [[{sessionAllowed:async()=>false},401],[{claimExport:async()=>false},429]]){
+ const f=fixture({...overrides,collect:async()=>{collected++;return snapshot();}});
+ assert.equal((await f.handler(request())).status,status);
+ }
+ assert.equal(collected,0);
+ let checks=0;const f=fixture({sessionAllowed:async()=>++checks===1});
+ assert.equal((await f.handler(request())).status,503);assert.equal(checks,2);
+});
+test('guard RPCs use caller identity and deny non-boolean/error responses',async()=>{
+ const calls=[];const backend=createBackend({url:'https://project.supabase.co',publicKey:'public',token:'caller',fetcher:async(url,options)=>{calls.push({url,options});return Response.json(true);}});
+ assert.equal(await backend.sessionAllowed(),true);assert.equal(await backend.claimExport(),true);
+ for(const {url,options} of calls){assert.match(url.pathname,/\/rest\/v1\/rpc\//);assert.equal(options.method,'POST');assert.equal(options.body,'{}');assert.equal(options.headers.Authorization,'Bearer caller');}
+ const invalid=createBackend({url:'https://project.supabase.co',publicKey:'public',token:'caller',fetcher:async()=>Response.json('true')});assert.equal(await invalid.claimExport(),false);
 });

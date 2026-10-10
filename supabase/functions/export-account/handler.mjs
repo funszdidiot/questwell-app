@@ -33,6 +33,8 @@ export function createExportHandler(makeBackend, {enabled=false, origins=[]}={})
       const backend=makeBackend(authorization.slice(7));
       const user=await backend.verifyUser();
       if(!user?.id || user.is_anonymous) return reply(401,{error:'Sign in required'});
+      if(!await backend.sessionAllowed()) return reply(401,{error:'Sign in again'});
+      if(!await backend.claimExport()) return reply(429,{error:'Please wait before requesting another export'});
       const snapshot=await backend.collect(user.id);
       const records=accountExport({...snapshot,verifiedOwnerId:user.id});
       const paths=[...new Set(records.tables.beta_feedback.flatMap(row=>
@@ -50,6 +52,7 @@ export function createExportHandler(makeBackend, {enabled=false, origins=[]}={})
       if(JSON.stringify(records.tables)!==JSON.stringify(again.tables)) throw Error('Account changed');
       const finalUser=await backend.verifyUser();
       if(finalUser?.id!==user.id || finalUser.is_anonymous) throw Error('Authentication changed');
+      if(!await backend.sessionAllowed()) throw Error('Session ended');
       records.scope='Account-owned public application records and referenced feedback attachments. Shared catalog definitions, device-local settings, Auth records and internal support fields are excluded.';
       return new Response(JSON.stringify({...records,attachments}),{status:200,headers:{...h,
         'Content-Disposition':'attachment; filename="questwell-account-export.json"'}});

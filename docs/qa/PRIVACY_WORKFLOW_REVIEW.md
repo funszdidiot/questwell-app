@@ -64,10 +64,27 @@ performs deletion, even when a plan has no blockers.
   does not claim single-use ticket redemption or store a copy requiring expiry.
 - Deployment defaults OFF (`QUESTWELL_EXPORT_ENABLED`). Explicit exact origins
   are configured through `QUESTWELL_EXPORT_ORIGINS`; requests without Origin
-  still require a valid bearer token. No deployment or secret change performed.
-- Before enabling: add verified active-session/deletion-fence enforcement,
-  durable request rate limits, and hosted two-account/revoked-session/load tests.
-  Auth user verification alone is not evidence of immediate logout revocation.
+  still require a valid bearer token. No Edge Function deployment or secret change performed.
+- Session/deletion-fence checks and a database-backed 60-second per-account
+  start limit are implemented. The session must exist, belong to the JWT subject,
+  be within its not_after deadline, and not belong to an anonymous/deleting user.
+  Check immediately before collection and immediately before delivery. The final
+  check does not cancel bytes already sent after a later logout.
+- Migration `20261010052031_account_export_guard.sql` applied ONLY to synthetic
+  staging `hpjzfytwivlpsdhiupyd`. Production and recovery databases unchanged.
+  The atomic upsert serializes claims; failed exports still consume the interval.
+  No service-role token is used by the endpoint. Private definer functions expose
+  only booleans; public wrappers are invokers; anonymous execute is revoked.
+- Hosted SQL tests passed with the authenticated role: active session accepted,
+  first claim accepted/second denied, nonexistent session denied, anonymous denied,
+  deletion fence denied. All test writes rolled back; no user files were read.
+  This is database integration evidence, not an end-to-end HTTP export test.
+- Security advisor reported only informational private-table RLS-without-policy
+  findings. The new limits table intentionally has no caller grants or policies;
+  access is through the narrowly scoped private function.
+  Reference: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy
+- Before enabling: hosted two-account HTTP export, real sign-out with the old JWT,
+  concurrent claim/load tests, and snapshot/file consistency tests remain.
 - Re-reading all record groups detects visible drift but is NOT a transactional
   database snapshot. Referenced attachments are fetched under Storage RLS and
   hashed on receipt; the adapter does NOT yet prove immutable-version consistency.
