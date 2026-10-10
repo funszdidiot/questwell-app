@@ -64,7 +64,7 @@ performs deletion, even when a plan has no blockers.
   does not claim single-use ticket redemption or store a copy requiring expiry.
 - Deployment defaults OFF (`QUESTWELL_EXPORT_ENABLED`). Explicit exact origins
   are configured through `QUESTWELL_EXPORT_ORIGINS`; requests without Origin
-  still require a valid bearer token. No Edge Function deployment or secret change performed.
+  still require a valid bearer token. Staging-only deployment described below; no production deployment or secret change performed.
 - Session/deletion-fence checks and a database-backed 60-second per-account
   start limit are implemented. The session must exist, belong to the JWT subject,
   be within its not_after deadline, and not belong to an anonymous/deleting user.
@@ -119,3 +119,19 @@ records/authentication, streaming caps, user-scoped REST requests and exact-coun
 pagination failures. These use synthetic transports, not live credentials.
 
 Run: `node --test tool/qa/data_policy_test.mjs tool/qa/privacy_workflow_test.mjs tool/qa/export_endpoint_test.mjs`
+
+## Hosted HTTP test readiness — 2026-10-10
+
+- `export-account` deployed to synthetic staging with JWT gateway verification.
+  `staging.ts` enables only the exact staging project URL; all browser origins
+  are denied. Production `index.ts` remains opt-in and was not deployed.
+- Hosted missing-token and invalid-token requests both returned HTTP 401.
+- `tool/qa/hosted_export_test.py` and the hosted staging export workflow exercise
+  sign-in, owner scoping, nonempty attachment SHA256 validation, no-store,
+  repeat-request throttling and old-token denial after local test-session logout.
+  The response stays in memory; no export/token artifact or payload logging.
+- Positive hosted testing requires the existing synthetic staging account email
+  and password in repository Actions secrets `STAGING_EXPORT_TEST_EMAIL` and
+  `STAGING_EXPORT_TEST_PASSWORD`. The fixture must have a feedback attachment.
+  No production password, service-role key or recovery credential is requested.
+  Missing secrets are reported as BLOCKED, never a passing test.

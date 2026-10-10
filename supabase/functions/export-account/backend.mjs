@@ -32,7 +32,11 @@ export function createBackend({url,publicKey,token,fetcher=fetch}) {
   return {
     sessionAllowed:async()=>await rpc('account_export_session_allowed')===true,
     claimExport:async()=>await rpc('claim_account_export')===true,
-    async verifyUser(){const user=await json('/auth/v1/user');return user;},
+    async verifyUser(){
+      const response=await request('/auth/v1/user');
+      if(response.status===401 || response.status===403){await response.body?.cancel();return null;}
+      return JSON.parse(new TextDecoder().decode(await boundedBytes(response,2*1024*1024)));
+    },
     async collect(_id){
       const snapshot=await rpc('account_export_snapshot',8*1024*1024);
       if(!snapshot || !snapshot.tables || !Array.isArray(snapshot.objects))throw Error('Invalid snapshot');

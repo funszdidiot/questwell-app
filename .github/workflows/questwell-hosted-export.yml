@@ -1,0 +1,22 @@
+name: Questwell hosted staging export
+on:
+  push:
+    branches: [questwell-privacy-workflows-20261010]
+    paths:
+      - 'tool/qa/hosted_export_test.py'
+      - '.github/workflows/questwell-hosted-export.yml'
+permissions:
+  contents: read
+jobs:
+  staging:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Test synthetic staging export without logging private content
+        env:
+          STAGING_EXPORT_TEST_EMAIL: ${{ secrets.STAGING_EXPORT_TEST_EMAIL }}
+          STAGING_EXPORT_TEST_PASSWORD: ${{ secrets.STAGING_EXPORT_TEST_PASSWORD }}
+        run: python tool/qa/hosted_export_test.py
