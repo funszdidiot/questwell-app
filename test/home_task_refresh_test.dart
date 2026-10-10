@@ -373,6 +373,10 @@ void main() {
               builder: _builder,
               routerConfig: router));
       if (destination == 'chronicle') {
+        final more = find.text('More at the Hearth');
+        await tester.ensureVisible(more);
+        await tester.tap(more);
+        await tester.pumpAndSettle();
         tester
             .widget<QuestwellHomeMomentum>(find.byType(QuestwellHomeMomentum))
             .onOpen();
