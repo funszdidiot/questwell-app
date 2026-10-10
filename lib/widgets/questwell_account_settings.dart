@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'questwell_delete_account.dart';
 import 'questwell_typography.dart';
 import 'questwell_audio_controls.dart';
+import 'questwell_export_panel.dart';
+import '/services/questwell_export_client.dart';
 
 /// Presentation only. The account page supplies the existing account actions.
 class QuestwellAccountSettings extends StatefulWidget {
@@ -14,11 +16,13 @@ class QuestwellAccountSettings extends StatefulWidget {
     required this.onDelete,
     required this.onDeleted,
     this.onBack,
+    this.onPrepareExport,
   });
 
   final Future<void> Function() onSignOut, onDelete;
   final VoidCallback onDeleted;
   final VoidCallback? onBack;
+  final Future<PreparedAccountExport> Function()? onPrepareExport;
 
   @override
   State<QuestwellAccountSettings> createState() =>
@@ -27,9 +31,10 @@ class QuestwellAccountSettings extends StatefulWidget {
 
 class _QuestwellAccountSettingsState extends State<QuestwellAccountSettings> {
   bool _signingOut = false;
+  bool _exportBusy = false;
 
   Future<void> _signOut() async {
-    if (_signingOut) return;
+    if (_signingOut || _exportBusy) return;
     setState(() => _signingOut = true);
     try {
       // The existing owner callback handles authentication, errors and routing.
@@ -80,7 +85,8 @@ class _QuestwellAccountSettingsState extends State<QuestwellAccountSettings> {
                   if (QuestwellAudioScope.maybeOf(context)
                       case final audio?) ...[
                     QuestwellHearthFrame(
-                        child: QuestwellAudioControls(audio: audio)),
+                      child: QuestwellAudioControls(audio: audio),
+                    ),
                     const SizedBox(height: 24),
                   ],
                   _AccountPanel(
@@ -88,7 +94,7 @@ class _QuestwellAccountSettingsState extends State<QuestwellAccountSettings> {
                     description:
                         'Leave this session without deleting your account or progress.',
                     child: OutlinedButton(
-                      onPressed: _signingOut ? null : _signOut,
+                      onPressed: _signingOut || _exportBusy ? null : _signOut,
                       style: OutlinedButton.styleFrom(
                         foregroundColor: const Color(0xFFF2D9A0),
                         side: const BorderSide(color: Color(0xFF9E7546)),
@@ -102,6 +108,15 @@ class _QuestwellAccountSettingsState extends State<QuestwellAccountSettings> {
                       child: Text(_signingOut ? 'Signing out…' : 'Sign out'),
                     ),
                   ),
+                  if (widget.onPrepareExport != null) ...[
+                    const SizedBox(height: 24),
+                    QuestwellExportPanel(
+                      prepare: widget.onPrepareExport!,
+                      enabled: !_signingOut,
+                      onBusyChanged: (busy) =>
+                          setState(() => _exportBusy = busy),
+                    ),
+                  ],
                   const SizedBox(height: 32),
                   _AccountPanel(
                     title: 'Permanent deletion',
@@ -110,7 +125,7 @@ class _QuestwellAccountSettingsState extends State<QuestwellAccountSettings> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: QuestwellDeleteAccountButton(
-                        enabled: !_signingOut,
+                        enabled: !_signingOut && !_exportBusy,
                         onDelete: widget.onDelete,
                         onDeleted: widget.onDeleted,
                       ),
