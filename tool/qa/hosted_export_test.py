@@ -4,8 +4,9 @@ from concurrent.futures import ThreadPoolExecutor
 from threading import Barrier
 BASE='https://hpjzfytwivlpsdhiupyd.supabase.co'
 KEY='sb_publishable_XhQBsZ28qqCnZkLzo4WMOg_948v9PIz'
-def request(path, token=None, payload=None, raw=None, method="POST"):
+def request(path, token=None, payload=None, raw=None, method="POST", upsert=False):
     headers={'apikey':KEY}
+    if upsert: headers['x-upsert']='true'
     if token: headers['Authorization']='Bearer '+token
     if payload is not None: headers['Content-Type']='application/json'
     if raw is not None: headers['Content-Type']='image/png'
@@ -45,6 +46,10 @@ def run():
         status,_,_=request('/storage/v1/object/beta-feedback/'+owner+'/export-probe-20261010.png',token,raw=png)
         if status not in (200,201,400,409):raise RuntimeError('fixture upload failed')
         # Existing objects are never overwritten. Export validates the exact fixture hash below.
+        step='overwrite-denial'
+        status,_,_=request('/storage/v1/object/beta-feedback/'+owner+'/export-probe-20261010.png',token,raw=png,upsert=True)
+        if status not in (400,403):raise RuntimeError('overwrite was not denied')
+        # Same bytes are used so an unexpected permission change cannot corrupt the fixture.
         step='cross-account-records'
         other='76f2234e-4c3d-482c-bc9f-8d55cc0e4d2c'
         for table,column in [('users','id'),('beta_feedback','user_id')]:
@@ -87,7 +92,7 @@ def run():
         status,_,_=request('/functions/v1/export-account',token)
         if status not in (401,403):raise RuntimeError('old-token denial not verified')
         token=None
-        print('PASS: foreign records and file denied; injected owner rejected; four concurrent requests produced one export and three rate denials; eight owner-scoped groups; attachment checksums; no-store; repeat denial; old-token denial.')
+        print('PASS: existing-file overwrite denied; original fixture checksum preserved; foreign records and file denied; injected owner rejected; four concurrent requests produced one export and three rate denials; eight owner-scoped groups; attachment checksums; no-store; repeat denial; old-token denial.')
         return 0
     except Exception as error:
         # Never emit HTTP bodies, account identifiers, tokens, paths or export data.
