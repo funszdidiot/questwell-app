@@ -62,12 +62,14 @@ def run(env, transport=request):
     if not key_id or not key:
         raise CheckFailed("required B2 environment secrets are missing")
     basic = "Basic " + base64.b64encode(f"{key_id}:{key}".encode()).decode()
+    print("B2 stage: authorize saved key", flush=True)
     auth = json.loads(transport("https://api.backblazeb2.com/b2api/v4/b2_authorize_account", basic))
     storage = auth["apiInfo"]["storageApi"]
     check_scope(storage)
     api = validate_url(storage["apiUrl"])
     download = validate_url(storage["downloadUrl"])
     token = auth["authorizationToken"]
+    print("B2 stage: get upload URL (key authorization and scope passed)", flush=True)
     upload = json.loads(transport(api + "/b2api/v4/b2_get_upload_url?" +
                                  urllib.parse.urlencode({"bucketId": BUCKET_ID}), token))
     if upload["bucketId"] != BUCKET_ID:
@@ -77,6 +79,7 @@ def run(env, transport=request):
     payload = json.dumps({"purpose": "Questwell synthetic backup connection check",
                           "nonce": uuid.uuid4().hex}, sort_keys=True).encode() + b"\n"
     sha1 = hashlib.sha1(payload).hexdigest()
+    print("B2 stage: upload synthetic object", flush=True)
     stored = json.loads(transport(upload["uploadUrl"], upload["authorizationToken"], payload, {
         "X-Bz-File-Name": urllib.parse.quote(name, safe="/"),
         "Content-Type": "application/json", "Content-Length": str(len(payload)),
@@ -87,6 +90,7 @@ def run(env, transport=request):
     encryption = stored.get("serverSideEncryption") or {}
     if encryption.get("mode") != "SSE-B2" or encryption.get("algorithm") != "AES256":
         raise CheckFailed("upload encryption not confirmed")
+    print("B2 stage: download and compare synthetic object", flush=True)
     restored = transport(download + "/b2api/v4/b2_download_file_by_id?" +
                          urllib.parse.urlencode({"fileId": stored["fileId"]}), token,
                          limit=len(payload))
