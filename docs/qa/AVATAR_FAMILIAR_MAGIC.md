@@ -1,6 +1,6 @@
 # Avatar and familiar magic — October 9, 2026
 
-Status: QA; release authorized, not live. Tanya approved the preview, then
+Status: QA passed for effects; refreshed combined-revision CI in progress, not live. Tanya approved the preview, then
 150 coins each for Starlight Aura and Enchanted Leaves for release once checks
 pass. Boston Terrier Stardust Wiggle and Hearth Cat Moonlit Purr are included
 free. All classes/bodies are eligible. No new inventory grants or balance edits.
@@ -35,13 +35,17 @@ No promotion to `flutterflow` or App Store/public launch is included.
 ## Validation
 
 Initial 1f28d7a and combined 46b044b passed all seven workflows. Dark enlarged
-composites were inspected for every body and Tanya approved the preview. Expanded
-light/dark, native/enlarged captures exist in artifact 11645213977 from run
-37992007722, but the cloud browser security policy blocked downloading it.
-Expanded visual inspection remains unresolved; do not infer it from CI success.
+composites were inspected for every body and Tanya approved the preview. Tanya supplied the expanded review ZIP directly after browser download was blocked.
+All 12 actual renderer captures (three bodies, light/dark, 1x/2x) were visually
+inspected on October 9 America/Chicago: faces/hands stay clear, leaf orbit stays
+at the feet, familiar silhouettes remain readable, and no effect clipping was
+found. Light-background sparkles are intentionally subtle in reduced motion.
+Uploaded archive SHA-256: `27d03cfe10fd164c59b3187b5c664637ecb4386634eefac8a461bafcbdff8d99`.
+This records the supplied archive, not a claim that it matches an API digest.
 
 The new release checks exercise atomic rollback on pre/postcondition drift,
 authenticated purchase retry with one charge, all 15 body/class combinations,
 equip/unequip/restoration, effect replacement, ownership and purchase event counts.
-These new catalog checks require fresh CI. Local offline deployment/security tests
-passed. Actual served-app and physical iPhone verification remain separate.
+All eight workflows passed head `69f972f`, including the isolated catalog checks.
+The newer iOS registered-identity change from `13230d5` is now integrated; fresh
+combined-revision CI is required. Local offline deployment/security tests passed. Actual served-app and physical iPhone verification remain separate.

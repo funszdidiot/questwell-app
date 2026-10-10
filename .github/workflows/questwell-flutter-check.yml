@@ -29,6 +29,9 @@ jobs:
           node --test tool/qa/workflow_security_test.cjs
           node tool/ci/workflow-security.cjs
 
+      - name: Verify registered iOS identity
+        run: python3 tool/qa/ios_identity_test.py
+
       - name: Verify staging packaging isolation
         run: python3 tool/qa/staging_package_test.py
 
