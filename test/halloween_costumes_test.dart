@@ -61,7 +61,7 @@ void main() {
         }
         expect(changed, greaterThan(0));
       }
-      for (final layer in ['rear', 'underlay', 'mask']) {
+      for (final layer in ['underlay', 'mask']) {
         expect(
             QuestwellHalloweenCostume.assetPath(
                 'midnight_masquerade', body, layer),
@@ -117,7 +117,7 @@ void main() {
         }
         expect(changed, greaterThan(0));
       }
-      for (final layer in ['rear', 'underlay', 'mask', 'collar']) {
+      for (final layer in ['underlay', 'mask']) {
         expect(
           QuestwellHalloweenCostume.assetPath('pumpkin_court', body, layer),
           endsWith('/$body/$layer.webp'),
@@ -195,7 +195,8 @@ void main() {
           'assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/$layer.webp',
         );
         final repaired = await pixels(
-          QuestwellHalloweenCostume.assetPath('pumpkin_court', 'male', layer),
+          'assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/'
+          '$layer${const {'front', 'rear'}.contains(layer) ? '_v3' : '_v2'}.webp',
         );
         expect(repaired.lengthInBytes, original.lengthInBytes);
         for (var offset = 3; offset < original.lengthInBytes; offset += 4) {
@@ -277,19 +278,9 @@ void main() {
               hasLength(1),
             );
             expect(images.where((name) => name.contains('/classes/')), isEmpty);
-            final repaired = body == 'male' && costume == 'pumpkin_court';
             expect(
-              images.where((name) => name.endsWith('_v2.webp')),
-              hasLength(
-                  costume == 'midnight_masquerade' && body != 'female' ? 3 : 2),
-            );
-            expect(
-              images.where(
-                (name) =>
-                    name.endsWith('_v3.webp') &&
-                    name.contains('/halloween_v1/'),
-              ),
-              hasLength(repaired ? 2 : 0),
+              images.where((name) => name.endsWith('_fit_v4.webp')),
+              hasLength(body == 'female' ? 3 : 4),
             );
             expect(
               images.where(
@@ -338,13 +329,9 @@ void main() {
         ),
         [base],
       );
-      expect(equipped.where((path) => path.endsWith('_v2.webp')), hasLength(2));
       expect(
-        equipped.where(
-          (path) =>
-              path.endsWith('_v3.webp') && path.contains('/halloween_v1/'),
-        ),
-        hasLength(2),
+        equipped.where((path) => path.endsWith('_fit_v4.webp')),
+        hasLength(4),
       );
       expect(await render(false, 2), [base]);
       expect(await render(true, 3), equipped);
