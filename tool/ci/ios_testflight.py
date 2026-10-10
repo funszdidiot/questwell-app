@@ -63,6 +63,23 @@ def credentials(env):
     return decoded[0], env[SECRET_NAMES[1]], decoded[1]
 
 
+def validate_staging_request(env):
+    """A separate, exact-source gate; never inherit live-beta upload approval."""
+    sha, number = validate_request(env)
+    require(env.get("GITHUB_WORKFLOW_REF") ==
+            "funszdidiot/questwell-app/.github/workflows/questwell-ios-staging.yml@refs/heads/questwell-dev",
+            "Staging signing requires the dedicated development workflow.")
+    require(env.get("IOS_STAGING_APPROVED_SHA") == sha,
+            "This exact source has not been approved for a staging archive.")
+    require(env.get("GITHUB_RUN_ATTEMPT") == "1",
+            "Staging signing requires a fresh approved dispatch.")
+    require(env.get("IOS_UPLOAD_REQUESTED") == "false" and
+            not env.get("IOS_UPLOAD_APPROVED_SHA") and
+            not env.get("ASC_API_PRIVATE_KEY"),
+            "Staging archive must not receive upload approval or Apple API credentials.")
+    return sha, number
+
+
 def validate_profile(profile, now=None):
     require(isinstance(profile, dict), "Provisioning profile is not a dictionary.")
     ent = profile.get("Entitlements", {})
@@ -139,7 +156,8 @@ def run(args, *, visible=False):
     return result.stdout or b""
 
 
-def validate_build_settings(settings, uuid, identity, sha):
+def validate_build_settings(settings, uuid, identity, sha, environment="live_beta"):
+    require(environment in ("live_beta", "staging"), "Unsupported signed build environment.")
     runners = [item.get("buildSettings", {}) for item in settings if item.get("target") == "Runner"]
     require(len(runners) == 1, "Expected one effective Runner build configuration.")
     values = runners[0]
@@ -152,7 +170,7 @@ def validate_build_settings(settings, uuid, identity, sha):
                    for item in values.get("DART_DEFINES", "").split(",")]
     except (ValueError, UnicodeError, binascii.Error):
         raise SigningError("Effective Dart build configuration is invalid.") from None
-    for expected in ("QUESTWELL_ENVIRONMENT=live_beta", "QUESTWELL_DECORATE_HEARTH=true",
+    for expected in (f"QUESTWELL_ENVIRONMENT={environment}", "QUESTWELL_DECORATE_HEARTH=true",
                      f"QUESTWELL_BUILD={sha}"):
         key = expected.split("=", 1)[0] + "="
         require([d for d in defines if d.startswith(key)] == [expected],
@@ -207,7 +225,11 @@ def collect_review_evidence(app, output):
             "native_review_sha256": hashlib.sha256(payload).hexdigest()}
 
 
-def build_signed_archive(sha, build_number, material):
+def build_signed_archive(sha, build_number, material, environment="live_beta"):
+    require(environment in ("live_beta", "staging"), "Unsupported signed build environment.")
+    if environment == "staging":
+        require(validate_staging_request(os.environ) == (sha, build_number),
+                "Staging archive request changed.")
     require(sys.platform == "darwin", "Signing requires a GitHub-hosted macOS runner.")
     require(run(["git", "rev-parse", "HEAD"]).decode().strip() == sha, "Checkout revision mismatch.")
     run(["git", "diff", "--exit-code", "HEAD", "--", "ios", "pubspec.yaml", "pubspec.lock"])
@@ -259,11 +281,11 @@ def build_signed_archive(sha, build_number, material):
             installed = destination
             options = tmp / "ExportOptions.plist"
             options.write_bytes(plistlib.dumps(export_options(uuid, identity)))
-            print("Building signed live_beta archive; upload is disabled.", flush=True)
+            print(f"Building signed {environment} archive; upload is disabled.", flush=True)
             run(["flutter", "build", "ios", "--config-only", "--no-codesign",
                  "--release", "--no-pub", "--target", "lib/main.dart",
                  "--build-name=1.0.0", f"--build-number={build_number}",
-                 "--dart-define=QUESTWELL_ENVIRONMENT=live_beta",
+                 f"--dart-define=QUESTWELL_ENVIRONMENT={environment}",
                  "--dart-define=QUESTWELL_DECORATE_HEARTH=true",
                  f"--dart-define=QUESTWELL_BUILD={sha}"], visible=True)
             project_path.write_text(signed_project(project_path.read_text(), uuid, identity))
@@ -271,7 +293,7 @@ def build_signed_archive(sha, build_number, material):
                           "-configuration", "Release", "-sdk", "iphoneos",
                           "-destination", "generic/platform=iOS"]
             effective = json.loads(run([*xcode_args, "-showBuildSettings", "-json"]))
-            validate_build_settings(effective, uuid, identity, sha)
+            validate_build_settings(effective, uuid, identity, sha, environment)
             run([*xcode_args, "-archivePath", archive, "archive"], visible=True)
             run(["xcodebuild", "-exportArchive", "-archivePath", archive,
                  "-exportPath", ipa_dir, "-exportOptionsPlist", options], visible=True)
@@ -286,7 +308,7 @@ def build_signed_archive(sha, build_number, material):
             verify_app(apps[0], build_number, uuid)
             evidence = {"source_sha": sha, "bundle_id": BUNDLE, "team_id": TEAM,
                         "app_store_id": APP_ID, "build_number": build_number,
-                        "version": "1.0.0", "environment": "live_beta", "uploaded": False,
+                        "version": "1.0.0", "environment": environment, "uploaded": False,
                         "xcode": "26.3 / 17C529", "sdk": "26.2", "flutter": "3.44.6",
                         "cocoapods": "1.17.0", "ipa_sha256": hashlib.sha256(ipas[0].read_bytes()).hexdigest(),
                         "certificate_sha1": identity, "profile_uuid": uuid,
@@ -307,14 +329,16 @@ def build_signed_archive(sha, build_number, material):
     run(["git", "diff", "--exit-code", "HEAD", "--", "ios/Runner.xcodeproj/project.pbxproj", "pubspec.yaml", "pubspec.lock"])
 
 
-def main():
+def main(environment="live_beta"):
     try:
-        sha, build_number = validate_request(os.environ)
+        require(environment in ("live_beta", "staging"), "Unsupported signed build environment.")
+        sha, build_number = (validate_staging_request(os.environ) if environment == "staging"
+                             else validate_request(os.environ))
         material = credentials(os.environ)
         # Remove secrets before invoking any child process.
         for name in SECRET_NAMES:
             os.environ.pop(name, None)
-        build_signed_archive(sha, build_number, material)
+        build_signed_archive(sha, build_number, material, environment)
     except SigningError as error:
         print(f"iOS signing stopped: {error}", file=sys.stderr)
         return 1
@@ -327,3 +351,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+

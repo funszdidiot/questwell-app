@@ -38,8 +38,8 @@ def request():
             "IOS_SOURCE_SHA": SHA, "IOS_BUILD_NUMBER": "1.0.1", "IOS_SIGNING_ENABLED": "true"}
 
 
-def build_settings():
-    defines = ("QUESTWELL_ENVIRONMENT=live_beta", "QUESTWELL_DECORATE_HEARTH=true", f"QUESTWELL_BUILD={SHA}")
+def build_settings(environment="live_beta"):
+    defines = (f"QUESTWELL_ENVIRONMENT={environment}", "QUESTWELL_DECORATE_HEARTH=true", f"QUESTWELL_BUILD={SHA}")
     return [{"target": "Runner", "buildSettings": {"PRODUCT_BUNDLE_IDENTIFIER": signing.BUNDLE,
              "DEVELOPMENT_TEAM": signing.TEAM, "CODE_SIGN_STYLE": "Manual", "CODE_SIGN_IDENTITY": IDENTITY,
              "PROVISIONING_PROFILE_SPECIFIER": UUID,
@@ -192,7 +192,7 @@ class SigningValidationTest(unittest.TestCase):
 class SigningOrchestrationTest(unittest.TestCase):
     """Exercise a complete synthetic archive/export plus failures through cleanup."""
 
-    def exercise(self, failure=None):
+    def exercise(self, failure=None, environment="live_beta"):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "repo"
             project = root / "ios/Runner.xcodeproj/project.pbxproj"
@@ -221,7 +221,7 @@ class SigningOrchestrationTest(unittest.TestCase):
                 if args[:2] == ["codesign", "--verify"] and failure == "verify":
                     raise signing.SigningError("Synthetic signature failure")
                 if args[0] == "xcodebuild" and "-showBuildSettings" in args:
-                    return json.dumps(build_settings()).encode()
+                    return json.dumps(build_settings(environment)).encode()
                 if args[0] == "xcodebuild" and args[-1] == "archive":
                     if failure == "build": raise signing.SigningError("Synthetic build failure")
                     app = root / "build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app"
@@ -239,13 +239,16 @@ class SigningOrchestrationTest(unittest.TestCase):
             help_text = " ".join((*signing.export_options("", "").keys(), "app-store-connect")).encode()
             with patch.object(signing, "ROOT", root), patch.object(signing.sys, "platform", "darwin"), \
                  patch.object(signing, "run", side_effect=fake_run), patch.object(Path, "home", return_value=Path(tmp)), \
-                 patch.dict(os.environ, {"RUNNER_TEMP": tmp}), \
+                 patch.dict(os.environ, request() | {"RUNNER_TEMP": tmp,
+                     "GITHUB_WORKFLOW_REF": "funszdidiot/questwell-app/.github/workflows/questwell-ios-staging.yml@refs/heads/questwell-dev",
+                     "IOS_STAGING_APPROVED_SHA": SHA, "GITHUB_RUN_ATTEMPT": "1",
+                     "IOS_UPLOAD_REQUESTED": "false"}, clear=True), \
                  patch.object(signing.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, help_text, b"")):
                 if failure:
                     with self.assertRaises(signing.SigningError):
-                        signing.build_signed_archive(SHA, "1.0.1", (b"fixture", "password", b"fixture"))
+                        signing.build_signed_archive(SHA, "1.0.1", (b"fixture", "password", b"fixture"), environment)
                 else:
-                    signing.build_signed_archive(SHA, "1.0.1", (b"fixture", "password", b"fixture"))
+                    signing.build_signed_archive(SHA, "1.0.1", (b"fixture", "password", b"fixture"), environment)
             self.assertEqual(project.read_bytes(), original)
             self.assertFalse(list(Path(tmp).rglob("*.mobileprovision")))
             self.assertFalse(list(Path(tmp).glob("questwell-signing-*")))
@@ -256,7 +259,10 @@ class SigningOrchestrationTest(unittest.TestCase):
                 evidence = json.loads(report.read_text())
                 self.assertEqual(evidence["source_sha"], SHA)
                 self.assertFalse(evidence["uploaded"])
+                self.assertEqual(evidence["environment"], environment)
                 self.assertNotIn("password", report.read_text())
+                flutter_build = next(c for c in calls if c[:3] == ["flutter", "build", "ios"])
+                self.assertIn(f"--dart-define=QUESTWELL_ENVIRONMENT={environment}", flutter_build)
             self.assertTrue(any("--config-only" in c and "--no-codesign" in c for c in calls) or failure == "import")
             self.assertFalse(any(c[:3] == ["flutter", "build", "ipa"] for c in calls))
             self.assertFalse(any("--upload-app" in c or "-allowProvisioningUpdates" in c for c in calls))
@@ -279,3 +285,4 @@ class SigningOrchestrationTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
