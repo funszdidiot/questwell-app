@@ -1,0 +1,42 @@
+name: Questwell recovery authenticated access
+on:
+  push:
+    branches: [questwell-b2-connection-check-20261010]
+    paths:
+      - '.github/workflows/questwell-recovery-access.yml'
+permissions:
+  contents: read
+concurrency:
+  group: questwell-recovery-access
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tool/backups -p 'test_recovery_access_check.py' -v
+  preflight:
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/questwell-b2-connection-check-20261010'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: questwell-backups
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install hash-locked SDK without secrets
+        run: |
+          python3 -m venv "$RUNNER_TEMP/recovery-venv"
+          "$RUNNER_TEMP/recovery-venv/bin/pip" install --require-hashes --only-binary=:all: -r tool/backups/requirements.lock
+      - name: Check authenticated owner and cross-owner access without writes
+        env:
+          SUPABASE_RECOVERY_STORAGE_ACCESS_KEY_ID: ${{ secrets.SUPABASE_RECOVERY_STORAGE_ACCESS_KEY_ID }}
+          SUPABASE_RECOVERY_STORAGE_SECRET_ACCESS_KEY: ${{ secrets.SUPABASE_RECOVERY_STORAGE_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+          SUPABASE_RECOVERY_PROBE_PASSWORD: ${{ secrets.SUPABASE_RECOVERY_PROBE_PASSWORD }}
+          SUPABASE_RECOVERY_PUBLIC_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dWJ1bWlqc2lidGdqd2VrZHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2MDE5NzEsImV4cCI6MjEwNzE3Nzk3MX0.XWGfS6Qiy_WuH_Jqz0JKXvLKnr_mZqTDZ2YeQBwweQ8'
+        run: '"$RUNNER_TEMP/recovery-venv/bin/python" tool/backups/recovery_access_check.py'
