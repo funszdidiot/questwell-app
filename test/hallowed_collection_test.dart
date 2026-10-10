@@ -86,7 +86,7 @@ void main() {
         equipment: const {},
         mantelAnchor: anchor,
       );
-      expect(trophy.left! + trophy.width! * .48, closeTo(anchor.dx, .001));
+      expect(trophy.left! + trophy.width! * .52, closeTo(anchor.dx, .001));
       expect(trophy.top! + trophy.height! * .955, closeTo(anchor.dy, .001));
       final relic = QuestwellHearthDecor.relicSurfacePositioned(
         slug: 'scholar-seal',
@@ -100,7 +100,7 @@ void main() {
     }
     final original = QuestwellHearthDecor.trophyPositioned(
         slot: 'mantel', scene: const Size(390, 260), equipment: const {});
-    expect(original.left! + original.width! * .48, closeTo(390 * .082, .001));
+    expect(original.left! + original.width! * .52, closeTo(390 * .082, .001));
     expect(original.top! + original.height! * .955,
         closeTo(390 * .340 - 130 * .52, .001));
   });
