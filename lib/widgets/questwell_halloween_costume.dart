@@ -24,23 +24,10 @@ class QuestwellHalloweenCostume extends StatelessWidget {
   };
   static const bodies = ['female', 'neutral', 'male'];
 
-  /// Surface repairs preserve each body's existing garment masks.
+  /// Versioned garment-fit repair; foundations and outfit ownership are unchanged.
   static String assetPath(String costume, String body, String layer) {
-    final repaired = costume == 'pumpkin_court' && body == 'male';
-    final familyEdges = costume == 'pumpkin_court' &&
-        const {'female', 'neutral'}.contains(body) &&
-        const {'front', 'cuffs'}.contains(layer);
-    final midnightEdges = costume == 'midnight_masquerade' &&
-        bodies.contains(body) &&
-        (const {'front', 'cuffs'}.contains(layer) ||
-            body != 'female' && layer == 'collar');
-    final version = repaired && const {'front', 'rear'}.contains(layer)
-        ? '_v3'
-        : familyEdges ||
-                midnightEdges ||
-                repaired && const {'collar', 'cuffs'}.contains(layer)
-            ? '_v2'
-            : '';
+    final fitted = const {'front', 'rear', 'cuffs', 'collar'}.contains(layer);
+    final version = fitted ? '_fit_v4' : '';
     return 'assets/images/questwell/avatar/halloween_v1/'
         '$costume/$body/$layer$version.webp';
   }

@@ -1,17 +1,19 @@
 # Questwell Production Dashboard
 
+## Halloween wrists and hip drape — October 10 follow-up
+
+**QA / independent visual review passed.** Tanya rejected the remaining female cuff joins, neutral side rectangles and hip waviness. All six source-traced garment repairs now pass independent native/enlarged light/dark review. Foundations, original hands, underlays, masks, availability and prices remain unchanged. CI and delivered runtime verification pending. No new art lock. Evidence: `../qa/HALLOWEEN_WRIST_HIP_FIT.md`.
+
 ## Midnight Masquerade edges — October 10, 2026
 
-**QA / independent visual review passed.** All three bodies: front/cuff RGB cleanup,
+**DEV DEPLOYED / fit findings superseded by the follow-up above.** PR #135 deployed `cba00be` through Preview `38031914698`; served revision, eight hashes and hosted light/dark/off-on verified. All three bodies: front/cuff RGB cleanup,
 plus neutral/male collar edge cleanup. Fixed bodies and every alpha value preserved.
-CI and delivered runtime remain pending; final revision/results belong in the PR.
+The earlier color-only review did not establish complete cuff/hip acceptance.
 Evidence: `../qa/MIDNIGHT_MASQUERADE_EDGE_REGISTRATION.md`.
 
 ## Female and neutral Pumpkin Court edges — October 10, 2026
 
-**DEV DEPLOYING.** PR #134 merged as `ccb8a85` after independent visual review
-and full combined-revision CI passed. Preview `38031093435` is running; hosted
-revision/assets/runtime verification remains pending. Exact alpha and bodies
+**DEV DEPLOYED / fit findings superseded by the follow-up above.** PR #134 deployed `ccb8a85` through Preview `38031093435`; four served hashes and hosted light/dark/off-on verified. Exact alpha and bodies
 are preserved. Female shoulder/sleeve, cuff and hem; neutral cuff/hem only.
 Evidence: `../qa/PUMPKIN_COURT_FAMILY_EDGES.md`.
 

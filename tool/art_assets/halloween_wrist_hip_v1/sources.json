@@ -1,0 +1,44 @@
+[
+  {
+    "outfit": "midnight_masquerade",
+    "body": "female",
+    "source": "tool/art_assets/halloween_wrist_hip_v1/midnight_masquerade/female/edited_source.png",
+    "reference": "midnight_masquerade_edges_v2/female/light_enlarged.png",
+    "prompt": "Use case: precise-object-edit. Edit target: this exact Questwell female Midnight Masquerade purple and charcoal gold-embroidered outfit composite. Repair only garment fit from waist through upper thighs, and both cuffs. Smooth the wavy, pinched coat facings and their gold borders at both hips into a clean, gently descending line from waist to skirt: no repeated inward-outward S-bends, no bulges beside fists, no wavering embroidery strips. Preserve motifs without stretching. Rebuild each wrist as ONE coherent attached cuff with a single continuous gold-edged opening. Remove the detached lower inner cuff flap/second rim and pale slit; finish cuffs naturally at the original wrists, keeping every original hand and finger visible. Preserve the exact existing avatar anatomy, face, mask, hair, pose, hands, trousers, boots, shoulders, garment colors, embroidery design and overall length/hem. No new pockets. Keep the original image composition, canvas aspect ratio, background and avatar scale/position exactly. Do not redesign the outfit or narrow/widen the body. This is a local garment repair, not a new character."
+  },
+  {
+    "outfit": "pumpkin_court",
+    "body": "female",
+    "source": "tool/art_assets/halloween_wrist_hip_v1/pumpkin_court/female/edited_source.png",
+    "reference": "pumpkin_court_edges_v4/female/light_enlarged.png",
+    "prompt": "Use case: precise-object-edit. Edit target: this exact Questwell female Pumpkin Court orange and green gold-embroidered outfit composite. Repair only garment fit from waist through upper thighs, and both cuffs. Smooth the wavy, pinched coat facings and their gold borders at both hips into a clean, gently descending line from waist to skirt: no repeated inward-outward S-bends, no bulges beside fists, no wavering embroidery strips. Preserve motifs without stretching. Rebuild each wrist as ONE coherent attached cuff with a single continuous gold-edged opening. Remove the detached lower inner cuff flap/second rim and pale slit; finish cuffs naturally at the original wrists, keeping every original hand and finger visible. Preserve the exact existing avatar anatomy, face, mask, hair, pose, hands, trousers, boots, shoulders, garment colors, embroidery design and overall length/hem. No new pockets. Keep the original image composition, canvas aspect ratio, background and avatar scale/position exactly. Do not redesign the outfit or narrow/widen the body. This is a local garment repair, not a new character."
+  },
+  {
+    "outfit": "midnight_masquerade",
+    "body": "neutral",
+    "source": "tool/art_assets/halloween_wrist_hip_v1/midnight_masquerade/neutral/edited_source.png",
+    "reference": "midnight_masquerade_edges_v2/neutral/light_enlarged.png",
+    "prompt": "Use case: precise-object-edit. Edit target: this exact Questwell neutral Midnight Masquerade purple and charcoal gold-embroidered outfit composite. Repair only garment fit from waist through upper thighs, and any visible rectangular cloth fragments below the hands. Smooth the wavy, pinched coat facings and their gold borders at both hips into a clean, gently descending line from waist to skirt: no repeated inward-outward S-bends, no bulges beside fists, no wavering embroidery strips. Preserve motifs without stretching. Remove the two square/rectangular patches immediately below each fist at the upper outer hips. Replace them with continuous matching main coat fabric flowing down from the waist, without horizontal seams or pale boxes. Preserve the exact existing avatar anatomy, face, mask, hair, pose, hands, trousers, boots, shoulders, garment colors, embroidery design and overall length/hem. No new pockets. Keep the original image composition, canvas aspect ratio, background and avatar scale/position exactly. Do not redesign the outfit or narrow/widen the body. This is a local garment repair, not a new character."
+  },
+  {
+    "outfit": "pumpkin_court",
+    "body": "neutral",
+    "source": "tool/art_assets/halloween_wrist_hip_v1/pumpkin_court/neutral/edited_source.png",
+    "reference": "pumpkin_court_edges_v4/neutral/light_enlarged.png",
+    "prompt": "Use case: precise-object-edit. Edit target: this exact Questwell neutral Pumpkin Court orange and green gold-embroidered outfit composite. Repair only garment fit from waist through upper thighs, and any visible rectangular cloth fragments below the hands. Smooth the wavy, pinched coat facings and their gold borders at both hips into a clean, gently descending line from waist to skirt: no repeated inward-outward S-bends, no bulges beside fists, no wavering embroidery strips. Preserve motifs without stretching. Remove the two square/rectangular patches immediately below each fist at the upper outer hips. Replace them with continuous matching main coat fabric flowing down from the waist, without horizontal seams or pale boxes. Preserve the exact existing avatar anatomy, face, mask, hair, pose, hands, trousers, boots, shoulders, garment colors, embroidery design and overall length/hem. No new pockets. Keep the original image composition, canvas aspect ratio, background and avatar scale/position exactly. Do not redesign the outfit or narrow/widen the body. This is a local garment repair, not a new character."
+  },
+  {
+    "outfit": "midnight_masquerade",
+    "body": "male",
+    "source": "tool/art_assets/halloween_wrist_hip_v1/midnight_masquerade/male/edited_source.png",
+    "reference": "midnight_masquerade_edges_v2/male/light_enlarged.png",
+    "prompt": "Use case: precise-object-edit. Edit target: this exact Questwell male Midnight Masquerade purple and charcoal gold-embroidered outfit composite. Repair only garment fit from waist through upper thighs, and any visible rectangular cloth fragments below the hands. Smooth the wavy, pinched coat facings and their gold borders at both hips into a clean, gently descending line from waist to skirt: no repeated inward-outward S-bends, no bulges beside fists, no wavering embroidery strips. Preserve motifs without stretching. Keep the already coherent cuff openings exactly as they are. Preserve the exact existing avatar anatomy, face, mask, hair, pose, hands, trousers, boots, shoulders, garment colors, embroidery design and overall length/hem. No new pockets. Keep the original image composition, canvas aspect ratio, background and avatar scale/position exactly. Do not redesign the outfit or narrow/widen the body. This is a local garment repair, not a new character."
+  },
+  {
+    "outfit": "pumpkin_court",
+    "body": "male",
+    "source": "tool/art_assets/halloween_wrist_hip_v1/pumpkin_court/male/edited_source.png",
+    "reference": "pumpkin_court_edges_v3/light_enlarged.png",
+    "prompt": "Use case: precise-object-edit. Edit target: this exact Questwell male Pumpkin Court orange and green gold-embroidered outfit composite. Repair only garment fit from waist through upper thighs, and any visible rectangular cloth fragments below the hands. Smooth the wavy, pinched coat facings and their gold borders at both hips into a clean, gently descending line from waist to skirt: no repeated inward-outward S-bends, no bulges beside fists, no wavering embroidery strips. Preserve motifs without stretching. Keep the already coherent cuff openings exactly as they are. Preserve the exact existing avatar anatomy, face, mask, hair, pose, hands, trousers, boots, shoulders, garment colors, embroidery design and overall length/hem. No new pockets. Keep the original image composition, canvas aspect ratio, background and avatar scale/position exactly. Do not redesign the outfit or narrow/widen the body. This is a local garment repair, not a new character."
+  }
+]
