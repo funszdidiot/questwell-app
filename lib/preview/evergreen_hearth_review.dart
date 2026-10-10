@@ -72,6 +72,7 @@ class _EvergreenHearthReviewState extends State<EvergreenHearthReviewApp> {
   var _avatar = false;
   var _furniture = true;
   var _phone = false;
+  var _appFraming = false;
   var _window = 'none';
 
   @override
@@ -160,6 +161,12 @@ class _EvergreenHearthReviewState extends State<EvergreenHearthReviewApp> {
                         selected: _phone,
                         onSelected: (value) => setState(() => _phone = value),
                       ),
+                      FilterChip(
+                        label: const Text('App framing'),
+                        selected: _appFraming,
+                        onSelected: (value) =>
+                            setState(() => _appFraming = value),
+                      ),
                     ],
                   ),
                   DropdownButton<String>(
@@ -189,8 +196,10 @@ class _EvergreenHearthReviewState extends State<EvergreenHearthReviewApp> {
                     constraints: BoxConstraints(maxWidth: _phone ? 358 : 960),
                     child: LayoutBuilder(
                       builder: (context, bounds) => QuestwellHearthPixelScene(
-                        height: bounds.maxWidth /
-                            (_room.usesHallowedLayout ? 1.5 : 1),
+                        height: _appFraming
+                            ? bounds.maxWidth * .68 + 8
+                            : bounds.maxWidth /
+                                (_room.usesHallowedLayout ? 1.5 : 1),
                         immersive: true,
                         setting: _room,
                         showAvatar: _avatar,

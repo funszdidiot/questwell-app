@@ -18,7 +18,10 @@ and equipped items were unchanged. Guardian eligibility remains enforced.
 Her same follow-up identified the standard-room gallery as too high. The
 placement correction lowers both companion frames and individual side textiles;
 the center envelope moves below the beam and scales proportionally to retain
-readable clearance above the avatar. Hallowed geometry and all artwork bytes
+readable clearance above the avatar. The production Home/Inventory crop
+(`width * .68 + 8`) gets viewport-aware fitting, with 320/390/760/960
+geometry checks and 24 additional actual app-framing render exports. An
+App framing control makes the same camera available in the review. Hallowed geometry and all artwork bytes
 remain unchanged. This placement follow-up is in QA; PR #144 remains the
 delivered catalog evidence.
 
