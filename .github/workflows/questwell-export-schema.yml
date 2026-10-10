@@ -21,6 +21,15 @@ jobs:
       - run: |
           node --test tool/qa/export_schema_runner_test.mjs
           node tool/deploy/export-schema.mjs --check
+      - name: Check rollout credential presence without connecting
+        env:
+          QUESTWELL_EXPORT_MIGRATION_TOKEN: ${{ secrets.QUESTWELL_EXPORT_MIGRATION_TOKEN }}
+        run: |
+          if [ -n "$QUESTWELL_EXPORT_MIGRATION_TOKEN" ]; then
+            echo 'PRESENT: export migration credential; permissions not yet verified.'
+          else
+            echo 'BLOCKED: QUESTWELL_EXPORT_MIGRATION_TOKEN is not configured.'
+          fi
   apply:
     name: Apply approved export schema only
     if: github.event_name == 'push' && github.ref == 'refs/heads/deploy/export-schema-approved'
