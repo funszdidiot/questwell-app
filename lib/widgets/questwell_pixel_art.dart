@@ -1049,6 +1049,8 @@ class _PixelCorner extends StatelessWidget {
 enum QuestwellHearthSetting {
   original('Original Hearth', 'hearth_environment_v3'),
   hallowedHearth('The Hallowed Hearth', 'hallowed_hearth_v1'),
+  madAlchemistsLab('Mad Alchemist’s Lab', 'mad_alchemists_lab_v1'),
+  guardiansKeep('Guardian’s Keep', 'guardians_keep_v1'),
   woodlandCottage('Woodland Cottage', 'woodland_cottage_v1'),
   midnightHarvest('Midnight Harvest', 'midnight_harvest_v1'),
   enchantedLibrary('Enchanted Library', 'enchanted_library_v1'),
@@ -1063,6 +1065,8 @@ enum QuestwellHearthSetting {
   final String file;
   static QuestwellHearthSetting fromSlug(String? slug) => switch (slug) {
         'hallowed-hearth' => hallowedHearth,
+        'mad-alchemists-lab' => madAlchemistsLab,
+        'guardians-keep' => guardiansKeep,
         'woodland-cottage' => woodlandCottage,
         'midnight-harvest' => midnightHarvest,
         'enchanted-library' => enchantedLibrary,
@@ -1074,6 +1078,8 @@ enum QuestwellHearthSetting {
       };
   static bool supports(String slug) =>
       slug == 'hallowed-hearth' ||
+      slug == 'mad-alchemists-lab' ||
+      slug == 'guardians-keep' ||
       slug == 'woodland-cottage' ||
       slug == 'midnight-harvest' ||
       slug == 'enchanted-library' ||
@@ -1084,6 +1090,8 @@ enum QuestwellHearthSetting {
   String get slug => switch (this) {
         original => 'original',
         hallowedHearth => 'hallowed-hearth',
+        madAlchemistsLab => 'mad-alchemists-lab',
+        guardiansKeep => 'guardians-keep',
         woodlandCottage => 'woodland-cottage',
         midnightHarvest => 'midnight-harvest',
         enchantedLibrary => 'enchanted-library',
@@ -1092,12 +1100,16 @@ enum QuestwellHearthSetting {
         astralSanctuary => 'astral-sanctuary',
         emberglassConservatory => 'emberglass-conservatory',
       };
-  String get asset => 'assets/images/questwell/hearth/$file.webp';
+  bool get usesHallowedLayout =>
+      QuestwellRoomGeometry.layoutForSetting(slug) ==
+      QuestwellRoomLayout.hallowed;
+  String get asset =>
+      'assets/images/questwell/hearth/$file.${this == madAlchemistsLab || this == guardiansKeep ? 'png' : 'webp'}';
 
   /// Source-art mantel contact point follows the same cover crop as the room.
   /// Other rooms retain their established surface anchors.
   Offset? mantelAnchor(Size scene) {
-    if (this != hallowedHearth) return null;
+    if (!usesHallowedLayout) return null;
     final scale = math.max(scene.width / 1536, scene.height / 1024);
     return Offset(
       676 * scale + (scene.width - 1536 * scale) / 2,
@@ -1182,6 +1194,12 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                       'room:setting': roomSetting.slug,
                     };
                     final floorSlug = equippedSlugs['room:floor'];
+                    final galleryWall =
+                        hearthProfileBySlug[equippedSlugs['wall_art']] ==
+                                'wall_textile' &&
+                            (equippedSlugs.containsKey('wall_art:wall_left') ||
+                                equippedSlugs
+                                    .containsKey('wall_art:wall_right'));
 
                     // Keep the authored 3:4 canvas ratio, so BoxFit.contain cannot
                     // silently shrink the character inside a narrow mobile rectangle.
@@ -1327,8 +1345,9 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                                   slug: art,
                                   side: 'wall_center',
                                   scene: Size(sceneWidth, sceneHeight),
-                                  hallowed: roomSetting ==
-                                      QuestwellHearthSetting.hallowedHearth,
+                                  hallowed: roomSetting.usesHallowedLayout,
+                                  profileKey: hearthProfileBySlug[art],
+                                  galleryWall: galleryWall,
                                   renderSpec: hearthRenderBySlug[art],
                                 ),
                             for (final side in ['wall_left', 'wall_right'])
@@ -1341,8 +1360,9 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                                     slug: art,
                                     side: side,
                                     scene: Size(sceneWidth, sceneHeight),
-                                    hallowed: roomSetting ==
-                                        QuestwellHearthSetting.hallowedHearth,
+                                    hallowed: roomSetting.usesHallowedLayout,
+                                    profileKey: hearthProfileBySlug[art],
+                                    galleryWall: galleryWall,
                                     renderSpec: hearthRenderBySlug[art],
                                   ),
                             if (equippedSlugs['room:window'] ==
@@ -1356,9 +1376,8 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                               Positioned.fill(
                                   key: ValueKey('hearth-rainy-window-bounds'),
                                   child: QuestwellRainyWindow(
-                                      hallowed: roomSetting ==
-                                          QuestwellHearthSetting
-                                              .hallowedHearth)),
+                                      hallowed:
+                                          roomSetting.usesHallowedLayout)),
                             for (final slot in QuestwellHearthDecor.backToFront(
                               equippedSlugs,
                               profileBySlug: hearthProfileBySlug,

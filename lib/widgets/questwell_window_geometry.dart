@@ -8,24 +8,29 @@ import 'questwell_room_geometry.dart';
 abstract final class QuestwellWindowGeometry {
   static const original = 'hearth_environment_v3';
   static const hallowed = 'hallowed_hearth_v1';
+  static const hallowedSkins = {
+    hallowed,
+    'mad_alchemists_lab_v1',
+    'guardians_keep_v1',
+  };
   static const library = 'enchanted_library_v1';
   static const rooms = [
     original,
-    hallowed,
+    ...hallowedSkins,
     library,
     'woodland_cottage_v1',
     'midnight_harvest_v1',
     'midnight_observatory_v1',
     'alchemists_workshop_v1',
     'astral_sanctuary_v1',
-    'emberglass_conservatory_v1'
+    'emberglass_conservatory_v1',
   ];
 
   static Size source(String room) {
     if (!rooms.contains(room)) throw ArgumentError.value(room, 'room');
     return room == original
         ? const Size(768, 768)
-        : room == hallowed
+        : hallowedSkins.contains(room)
             ? const Size(1536, 1024)
             : const Size(1254, 1254);
   }
@@ -39,8 +44,8 @@ abstract final class QuestwellWindowGeometry {
       _glassCache.putIfAbsent(room, () => _buildGlass(room));
 
   static Path _buildGlass(String room) {
-    if (room == original || room == hallowed) {
-      return QuestwellRainyWindowOverlay.panesFor(room == hallowed);
+    if (room == original || hallowedSkins.contains(room)) {
+      return QuestwellRainyWindowOverlay.panesFor(hallowedSkins.contains(room));
     }
     final polygons = _panes[room];
     if (polygons == null) throw ArgumentError.value(room, 'room');
@@ -48,7 +53,7 @@ abstract final class QuestwellWindowGeometry {
     for (final polygon in polygons) {
       path.addPolygon([
         for (var i = 0; i < polygon.length; i += 2)
-          Offset(polygon[i], polygon[i + 1])
+          Offset(polygon[i], polygon[i + 1]),
       ], true);
     }
     if (room == 'alchemists_workshop_v1') {
@@ -59,8 +64,12 @@ abstract final class QuestwellWindowGeometry {
           final b = Offset(line[i + 2], line[i + 3]);
           final delta = b - a;
           final normal = Offset(-delta.dy, delta.dx) / delta.distance * 2.4;
-          leading.addPolygon(
-              [a - normal, b - normal, b + normal, a + normal], true);
+          leading.addPolygon([
+            a - normal,
+            b - normal,
+            b + normal,
+            a + normal,
+          ], true);
           leading.addOval(Rect.fromCircle(center: a, radius: 2.8));
           leading.addOval(Rect.fromCircle(center: b, radius: 2.8));
         }
@@ -125,7 +134,7 @@ abstract final class QuestwellWindowGeometry {
         1230,
         169,
         1230,
-        361
+        361,
       ],
       [1246, 165, 1254, 161, 1254, 352, 1246, 355],
       [1161, 399, 1230, 382, 1230, 486, 1161, 493],
@@ -150,7 +159,7 @@ abstract final class QuestwellWindowGeometry {
         1219,
         150,
         1219,
-        239
+        239,
       ],
       [1235, 145, 1254, 138, 1254, 229, 1235, 234],
       [1157, 278, 1219, 260, 1219, 363, 1157, 375],

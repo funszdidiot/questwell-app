@@ -209,6 +209,7 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
                                                     .contains(choice.slot))
                                                   Positioned.fromRect(
                                                     rect: _wallBounds(
+                                                        item,
                                                         choice.slot,
                                                         equipment,
                                                         Size(
@@ -443,11 +444,17 @@ class _DecorateState extends State<QuestwellDecorateHearth> {
 
   // Wall spots are outlined in the scene. Their full-size labeled buttons
   // below the preview remain separate even on the narrow chimney layout.
-  Rect _wallBounds(String slot, Map<String, String> equipment, Size scene) =>
+  Rect _wallBounds(QuestwellCosmetic item, String slot,
+          Map<String, String> equipment, Size scene) =>
       QuestwellHearthDecor.wallArtBounds(scene, slot,
-          hallowed:
-              QuestwellHearthSetting.fromSlug(equipment['room:setting']) ==
-                  QuestwellHearthSetting.hallowedHearth);
+          profileKey: item.hearthProfileKey,
+          galleryWall: widget.snapshot.cosmetics.any((i) =>
+                  i.slug == equipment['wall_art'] &&
+                  i.hearthProfileKey == 'wall_textile') &&
+              (equipment.containsKey('wall_art:wall_left') ||
+                  equipment.containsKey('wall_art:wall_right')),
+          hallowed: QuestwellHearthSetting.fromSlug(equipment['room:setting'])
+              .usesHallowedLayout);
 
   Alignment _marker(QuestwellCosmetic item, String slot,
       Map<String, String> equipment, Size scene) {
