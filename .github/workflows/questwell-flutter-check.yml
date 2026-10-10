@@ -122,7 +122,7 @@ jobs:
           if-no-files-found: warn
 
       - name: Verify paging and account navigation in Chrome
-        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --platform chrome test/account_export_client_test.dart test/account_export_panel_test.dart test/open_task_list_test.dart test/boss_list_test.dart test/account_settings_test.dart test/chronicle_history_test.dart test/chronicle_server_totals_test.dart test/client_service_adapters_test.dart test/completion_refresh_test.dart test/feedback_account_isolation_test.dart test/auth_catalog_adapters_test.dart test/questwell_network_test.dart test/staging_navigation_test.dart test/questwell_audio_test.dart
+        run: flutter test --dart-define=QUESTWELL_ENVIRONMENT=isolated_test --platform chrome test/account_export_client_test.dart test/account_export_panel_test.dart test/open_task_list_test.dart test/boss_list_test.dart test/account_settings_test.dart test/chronicle_history_test.dart test/chronicle_server_totals_test.dart test/client_service_adapters_test.dart test/completion_refresh_test.dart test/home_task_refresh_test.dart test/feedback_account_isolation_test.dart test/auth_catalog_adapters_test.dart test/questwell_network_test.dart test/staging_navigation_test.dart test/questwell_audio_test.dart
 
       - name: Build proposed development app without deploying
         if: github.event_name == 'pull_request'
