@@ -1,11 +1,31 @@
 import assert from 'node:assert/strict';
 import {readFileSync, writeFileSync} from 'node:fs';
 import {join, resolve} from 'node:path';
+import {payload,stateQuery,manifestPath,sha256} from '../deploy/evergreen-contract.mjs';
 
 // This runs only after run.mjs verifies the disposable GitHub runner/container.
-// There is deliberately no live deployment entry point.
 export function exerciseEvergreenCandidate({source, workdir, run, runPayload}) {
-  const candidate = readFileSync(resolve(source, '../../docs/releases/evergreen-hearth/catalog-candidate.sql'), 'utf8');
+  const root = resolve(source,'../..');
+  const manifest = JSON.parse(readFileSync(join(root,manifestPath),'utf8'));
+  const candidate = readFileSync(join(root,manifest.migration_path),'utf8');
+  const catalog = readFileSync(join(source,'catalog.sql'),'utf8');
+  const queryFile = join(workdir,'evergreen-guard-state.sql');
+  writeFileSync(queryFile,stateQuery(catalog,manifest));
+  const guardState = () => JSON.parse(run(['db','query','--local','-o','json','--file',queryFile]))[0].state;
+  const beforeGuard = guardState();
+  const reviewed = {source_sha256:sha256(candidate),catalog_sql_sha256:sha256(catalog),
+    manifest_sha256:sha256(JSON.stringify(manifest)),before:beforeGuard};
+  const guarded = join(workdir,'evergreen-guarded.sql');
+  writeFileSync(guarded,payload(candidate,catalog,manifest,{...reviewed,before:{...beforeGuard,catalog_sha256:'0'.repeat(64)}}).sql);
+  runPayload(guarded,'Evergreen precondition drift');
+  assert.deepEqual(guardState(),beforeGuard);
+  writeFileSync(guarded,payload(candidate,catalog,manifest,reviewed,{activate:false}).sql);
+  runPayload(guarded,'Evergreen postcondition mismatch');
+  assert.deepEqual(guardState(),beforeGuard);
+  writeFileSync(guarded,payload(candidate,catalog,manifest,reviewed).sql+'\nrollback;\n');
+  runPayload(guarded);
+  assert.deepEqual(guardState(),beforeGuard);
+  console.log('Evergreen guarded forward: drift rejection, atomic activation and postcondition rollback passed.');
   const test = readFileSync(join(source, 'evergreen-contract.sql'), 'utf8');
   const snapshot = join(workdir, 'evergreen-snapshot.sql');
   writeFileSync(snapshot, `select jsonb_build_object(

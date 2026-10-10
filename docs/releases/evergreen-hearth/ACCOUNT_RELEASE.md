@@ -1,9 +1,11 @@
-# Evergreen Hearth account release — proposal
+# Evergreen Hearth account release — approved
 
-Status: catalog candidate prepared; pricing and activation await Tanya's decision.
-No live catalog, inventory, balances, ownership or eligibility have been changed.
+Tanya approved the exact prices below and permanent Market availability with
+**Yes** on October 10, 2026. This authorizes the scoped account rollout and
+development delivery. No free inventory grants or flutterflow promotion.
+Status: client and guarded forward change in QA; live activation not yet performed.
 
-## Proposed release
+## Approved release
 
 | Item | Coins | Eligibility | Placement |
 | --- | ---: | --- | --- |
@@ -19,37 +21,50 @@ The gallery arrangement uses independently owned items in existing wall slots;
 the companion Fern and Celestial Study frames are not bundled into these prices.
 
 Read-only live catalog inspection on October 10 found the existing standard wall
-art at 120 coins and Astral Sanctuary/Emberglass Conservatory at 300. These proposed
+art at 120 coins and Astral Sanctuary/Emberglass Conservatory at 300. These approved
 prices reuse those tiers; Guardian-only artwork carries no additional price.
 The five candidate slugs and `wall_textile` profile were absent from the live DB.
 
 ## Prepared implementation
 
-`catalog-candidate.sql` adds one wall-art profile, its three slot mappings, five
-inactive cosmetics and three generic render registrations. It is deliberately
-outside the migration chain and has no live deployment workflow. It does not
-replace functions, policies, existing catalog records, ownership or history.
-Room art uses the already delivered setting renderer. All approved images remain
-unchanged. Account client capability remains gated until the reviewed rollout.
+The historical `catalog-candidate.sql` is superseded by
+`supabase/migrations/20261010173713_evergreen_hearth_catalog.sql` and the approved
+`catalog.json`. The forward payload adds one textile profile, three wall mappings,
+five inactive records and three render registrations, then activates only those
+five records atomically. Existing metadata, schema/functions/policies and migration
+history are guarded by exact before/after hashes. No account data is written.
 
-`tool/backend_ci/evergreen-forward.mjs` rehearses the candidate only in the
-existing guarded disposable GitHub database and rolls the transaction back.
-The SQL scenarios cover inactive-item purchase rejection, exact proposed prices,
-one charge across retries, Guardian purchase/placement/save restrictions, all
-three wall slots, floor rejection, room switching and saved gallery recall,
-ownership retention, cross-user ownership rejection and complete rollback.
-CI outcome is recorded in the draft PR; source preparation alone is not a pass.
+`tool/deploy/evergreen-contract.mjs` builds the guarded payload and verifies its
+recorded source digest. `evergreen-reviewed-state.json` records the read-only live
+snapshot and input hashes. Use the connected Supabase migration operation only
+after the tested development client is served. Do not replay the root history,
+reuse a different release token or retry an ambiguous write. Reconcile history
+and postconditions before attempting recovery from any uncertain response.
 
-## Remaining release sequence
+The account client enables the five exact slugs, preserving server-owned class,
+price, ownership and slot rules. Five dedicated 32px pixel icons use the existing
+Market/Inventory painter. Market tests exercise purchase confirmation, owned-item
+placement and Guardian restrictions from the approved catalog. The existing 96
+room compositions and new icon exports provide visual evidence.
 
-1. Obtain the explicit price and Market activation decision for the table above.
-2. Promote the exact reviewed candidate to a scoped forward migration with fresh
-   live schema/catalog/history guards. Preserve the root-history hold.
-3. Finish account client capability and Market/Inventory icon routing, and verify
-   the catalog-driven purchase/equip/unequip/save flow in development.
-4. Deploy and verify the client and scoped catalog activation in their reviewed
-   order. Check actual signed-in persistence and class behavior before claiming
-   account delivery. No `flutterflow` promotion or free inventory grants implied.
+The guarded disposable harness tests precondition drift, omitted-activation
+rollback and the exact successful payload. Its account tests cover inactive
+purchase rejection, one charge across retries, actual class switching, Guardian
+purchase/placement/save restrictions, all wall slots, floor rejection, saved-room
+recall, ownership retention and another account's unowned-item rejection.
+
+## Delivery checks
+
+- Before activation: required PR checks and icon/composition review pass; merge
+  to development, verify the served revision and all five exact artwork hashes.
+- Read the current guarded state again. Any drift must be explained and reviewed.
+- Apply only the reviewed payload as `evergreen_hearth_approved_rollout` using the
+  connected migration operation. Verify one new history record, the digest, all
+  exact rows and unchanged protected hashes.
+- Inspect the hosted Market/Inventory and account persistence where available.
+  Report any signed-in/device check separately from CI and catalog activation.
+- Rollback after activation preserves ownership: deactivate only these five
+  records if needed. Never delete purchased items or rewrite migration history.
 
 ## Delivered visual review
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,8 +26,11 @@ void main() {
             child: child!),
         home: HomePageWidget(
           loadAppearance: () async => QuestwellCosmeticsSnapshot(
-              profile: QuestwellProfile.fromJson(
-                  {'onboarding_completed': true, 'total_xp': 100}),
+              profile: QuestwellProfile.fromJson({
+                'onboarding_completed': true,
+                'total_xp': 100,
+                'level_xp_offset': 215
+              }),
               cosmetics: const []),
           loadMomentum: () async => const ChronicleSnapshot(
               wins: [],
@@ -64,6 +68,7 @@ void main() {
     await tester.pumpAndSettle();
     final dialog = find.byType(QuestwellQuestCompletionDialog);
     expect(dialog, findsOneWidget);
+    expect(tester.widget<QuestwellQuestCompletionDialog>(dialog).level, 3);
     expect(
         find.descendant(
             of: dialog, matching: find.text('Make room for what matters')),
@@ -79,4 +84,120 @@ void main() {
     expect(find.text('Complete quest'), findsNothing);
     expect(tester.takeException(), isNull);
   });
+
+  for (final appearanceFails in [false, true]) {
+    for (final rejectFirst in [false, true]) {
+      testWidgets(
+        'Hearth completes with appearance ${appearanceFails ? 'failed' : 'pending'}; retry=$rejectFirst',
+        (tester) async {
+          await tester.binding.setSurfaceSize(const Size(1000, 1500));
+          addTearDown(() => tester.binding.setSurfaceSize(null));
+          final appearance = Completer<QuestwellCosmeticsSnapshot>();
+          var reply = Completer<QuestwellTaskCompletionResult>();
+          var writes = 0;
+          var committed = false;
+          await tester.pumpWidget(
+            MaterialApp(
+              theme: ThemeData.dark(),
+              builder: (context, child) => MediaQuery(
+                data: MediaQuery.of(context).copyWith(disableAnimations: true),
+                child: child!,
+              ),
+              home: HomePageWidget(
+                loadAppearance: () async {
+                  if (appearanceFails)
+                    throw StateError('private appearance error');
+                  return appearance.future;
+                },
+                loadMomentum: () async => const ChronicleSnapshot(
+                  wins: [],
+                  totalXpEarned: 0,
+                  totalCoinsEarned: 0,
+                  weekWins: 0,
+                  bossesDefeated: 0,
+                ),
+                loadTasks: () async => committed
+                    ? []
+                    : [
+                        TasksRow({
+                          'id': 'task',
+                          'title': 'Review draft',
+                          'status': 'open',
+                          'friction_level': 1,
+                          'xp_value': 999,
+                          'coin_value': 999,
+                          'created_at': '2026-01-01T00:00:00Z',
+                        }),
+                      ],
+                completeTask: (id) {
+                  expect(id, 'task');
+                  writes++;
+                  return reply.future;
+                },
+              ),
+            ),
+          );
+          // A permanently pending appearance intentionally keeps a spinner alive.
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 200));
+          final action = find.text('Complete quest');
+          await tester.ensureVisible(action);
+          await tester.tap(action);
+          await tester.tap(action);
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 200));
+          expect(writes, 1);
+          expect(find.textContaining('Quest complete.'), findsNothing);
+          expect(find.byType(QuestwellQuestCompletionDialog), findsNothing);
+
+          if (rejectFirst) {
+            reply.completeError(StateError('private completion error'));
+            await tester.pump();
+            await tester.pump(const Duration(milliseconds: 200));
+            expect(
+              find.textContaining('Completion was not confirmed.'),
+              findsOneWidget,
+            );
+            expect(find.textContaining('Quest complete.'), findsNothing);
+            expect(find.byType(QuestwellQuestCompletionDialog), findsNothing);
+            expect(writes, 1); // Reconciliation must not retry the write.
+            expect(action, findsOneWidget);
+            // Finish the entrance animation before advancing its display timer.
+            // Then explicitly retry the still-open task after the warning exits.
+            await tester.pump(const Duration(milliseconds: 300));
+            await tester.pump(const Duration(seconds: 5));
+            await tester.pump(const Duration(milliseconds: 300));
+            reply = Completer<QuestwellTaskCompletionResult>();
+            await tester.ensureVisible(action);
+            await tester.tap(action);
+            await tester.pump();
+            expect(writes, 2);
+          }
+
+          committed = true;
+          reply.complete(
+            const QuestwellTaskCompletionResult(
+              taskId: 'task',
+              xpAwarded: 17,
+              coinsAwarded: 3,
+              totalXp: 117,
+              coinBalance: 53,
+            ),
+          );
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 300));
+          expect(
+            find.text('Quest complete. +17 XP · +3 coins.'),
+            findsOneWidget,
+          );
+          expect(find.byType(QuestwellQuestCompletionDialog), findsNothing);
+          expect(action, findsNothing);
+          expect(find.textContaining('private'), findsNothing);
+          expect(writes, rejectFirst ? 2 : 1);
+          expect(tester.takeException(), isNull);
+          await tester.pumpWidget(const SizedBox());
+        },
+      );
+    }
+  }
 }

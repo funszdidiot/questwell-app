@@ -243,6 +243,11 @@ jobs:
           flutter --version
       - name: Install locked dependencies
         run: flutter pub get --enforce-lockfile
+      - name: Test native export recovery with synthetic files
+        shell: bash
+        run: |
+          swiftc ios/Runner/QuestwellExportFiles.swift tool/qa/ios_export_recovery_test.swift -o "$RUNNER_TEMP/questwell-export-recovery-test"
+          "$RUNNER_TEMP/questwell-export-recovery-test"
       - name: Compile iOS release without signing or distribution
         run: flutter build ios --release --no-codesign --target lib/main.dart --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
       - name: Preserve dependency inputs

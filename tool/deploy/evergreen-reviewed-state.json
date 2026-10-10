@@ -1,0 +1,17 @@
+{
+  "before": {
+    "records": [],
+    "new_count": 0,
+    "live_valid": false,
+    "slot_count": 0,
+    "render_count": 0,
+    "history_count": 60,
+    "profile_count": 0,
+    "schema_sha256": "5825abada7692e13bda004d63733bed1b1915f38985ffbd485cca3039aa3d90d",
+    "catalog_sha256": "bd9e3abb42d8f2345702bf78a2b5de93ff65801e87811f2939f3ea9b7cdfa1a6",
+    "history_sha256": "6f50ccb05e8383023e21f4151929efbac861669413efae263f4918faf14c91f6"
+  },
+  "source_sha256": "43bb88ef7c35efd3d889fe070f427f64e0edfa689990b5714dd202776492d99d",
+  "catalog_sql_sha256": "a9a98f3066496014fac1d403f5c0104c2deafd365602a3a2fffe787cbd2b86ef",
+  "manifest_sha256": "9639bfa54803adad9c144b2a5f38dfa300a7477b71cb32acdf36fc751c694d4d"
+}

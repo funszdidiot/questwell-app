@@ -8,9 +8,9 @@ Preview run `38067855821`, served revision, five asset hashes and phone/desktop
 live galleries were verified. The account candidate adds one textile profile,
 three wall mappings, five inactive items and three render registrations; its
 disposable tests cover purchases, class/slot checks, saved layouts and rollback.
-Proposed prices are 120 coins per hanging and 300 per room. Pricing and activation
-await Tanya; no account availability, inventory grant or production promotion is
-claimed. See `../releases/evergreen-hearth/ACCOUNT_RELEASE.md`.
+Tanya approved 120 coins per hanging, 300 per room and permanent Market availability.
+Account renderer capability, five pixel icons and guarded forward activation are
+in QA. No live account availability or inventory grant is claimed yet. See `../releases/evergreen-hearth/ACCOUNT_RELEASE.md`.
 
 ## Halloween wrists and hip drape — October 10 follow-up
 

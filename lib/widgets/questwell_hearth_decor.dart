@@ -449,14 +449,12 @@ class QuestwellHearthDecor {
         : mantelAnchor?.dy ??
             roomSide * (compassOnMantel ? .340 : .345) +
                 (scene.height - roomSide) * .52;
-    // The mantel recedes toward the left. The compass artwork's plinth
-    // recedes toward the right, so face it into the room on this surface.
+    // Keep the First Journey trophy in its authored facing. Mirroring the
+    // angled source art on the mantel made the milestone read as skewed or
+    // pointed unnaturally relative to the room. The surface anchor handles
+    // room placement; the asset itself owns its perspective.
     // Align its visible wood edge (.955), not the transparent shadow below it.
-    final baseX = compassOnMantel
-        ? .48
-        : orrery
-            ? .49
-            : .52;
+    final baseX = orrery ? .49 : .52;
     final baseY = compassOnMantel
         ? .955
         : orrery
@@ -483,10 +481,9 @@ class QuestwellHearthDecor {
           if (orrery)
             const QuestwellStarlitOrrery()
           else
-            Transform.flip(
-                key: const ValueKey('hearth-compass-facing'),
-                flipX: compassOnMantel,
-                child: const QuestwellFirstJourney()),
+            const KeyedSubtree(
+                key: ValueKey('hearth-trophy-facing'),
+                child: QuestwellFirstJourney()),
         ]));
   }
 
