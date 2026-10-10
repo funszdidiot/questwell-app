@@ -1,5 +1,6 @@
 """Read-only error classification for one approved recovery path; no writes."""
 import collections
+import re
 import hashlib
 import json
 import os
@@ -25,7 +26,7 @@ for key,meta in listing.items():
         code=response.get('Error',{}).get('Code','unknown')
         allowed={'NoSuchKey','NoSuchBucket','AccessDenied','InternalError','InvalidAccessKeyId','SignatureDoesNotMatch','404','403','500','NoSuchObject'}
         status=response.get('ResponseMetadata',{}).get('HTTPStatusCode')
-        print(json.dumps({'result':'error','code':code if code in allowed else 'other',
+        print(json.dumps({'result':'error','code':code if isinstance(code,str) and re.fullmatch(r'[A-Za-z_]{1,48}',code) else 'other',
             'http_status':status if isinstance(status,int) else None,
             'exception_type':type(exc).__name__ if type(exc).__name__ in {'ClientError','ReadTimeoutError','SSLError','EndpointConnectionError'} else 'other'}))
     break
