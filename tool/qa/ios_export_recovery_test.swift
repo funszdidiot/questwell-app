@@ -74,10 +74,12 @@ struct ExportRecoveryTest {
     try manager.createDirectory(at: documents, withIntermediateDirectories: false)
     let legacy = documents.appendingPathComponent("questwell-account-export-0123456789abcdef01234567.json")
     let lookalike = documents.appendingPathComponent("questwell-account-export-mine.json")
+    let trailingNewline = documents.appendingPathComponent(legacy.lastPathComponent + "\n")
     let link = documents.appendingPathComponent("questwell-account-export-aaaaaaaaaaaaaaaaaaaaaaaa.json")
     let directory = documents.appendingPathComponent("questwell-account-export-bbbbbbbbbbbbbbbbbbbbbbbb.json")
     try data.write(to: legacy)
     try data.write(to: lookalike)
+    try data.write(to: trailingNewline)
     try manager.createSymbolicLink(at: link, withDestinationURL: saved)
     try manager.createDirectory(at: directory, withIntermediateDirectories: false)
     let nested = directory.appendingPathComponent(legacy.lastPathComponent)
@@ -87,6 +89,7 @@ struct ExportRecoveryTest {
     try QuestwellExportFiles.recoverLegacy(documents: documents, isPrivate: true)
     guard !manager.fileExists(atPath: legacy.path),
           try Data(contentsOf: lookalike) == data,
+          try Data(contentsOf: trailingNewline) == data,
           try Data(contentsOf: nested) == data,
           try Data(contentsOf: link) == data else { fatalError("legacy cleanup boundary") }
     print("PASS: export copy, cancel, process interruption, restart, idempotency, symlinks, invalid input and legacy boundaries")

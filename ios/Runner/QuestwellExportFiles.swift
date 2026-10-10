@@ -50,7 +50,9 @@ final class QuestwellExportFiles {
     guard isPrivate else { return }
     let pattern = "^questwell-account-export-[0-9a-f]{24}\\.json$"
     for file in try manager.contentsOfDirectory(at: documents, includingPropertiesForKeys: nil) {
-      guard file.lastPathComponent.range(of: pattern, options: .regularExpression) != nil,
+      let name = file.lastPathComponent
+      guard let match = name.range(of: pattern, options: .regularExpression),
+            match.lowerBound == name.startIndex, match.upperBound == name.endIndex,
             try manager.attributesOfItem(atPath: file.path)[.type] as? FileAttributeType == .typeRegular
       else { continue }
       try manager.removeItem(at: file)
