@@ -1,5 +1,37 @@
 const marketReviewCatalog = <Map<String, dynamic>>[
   {
+    "slug": "starlight-aura",
+    "name": "Starlight Aura",
+    "category": "effect",
+    "rarity": "rare",
+    "description":
+        "Gold and lavender stars drift quietly beside your adventurer.",
+    "price": 150,
+    "premium": false,
+    "required_archetype": null,
+    "unlock_method": "shop",
+    "milestone_level": null,
+    "asset_key": "effect_starlight_aura",
+    "id": "review-starlight-aura",
+    "edition_type": "standard"
+  },
+  {
+    "slug": "enchanted-leaves",
+    "name": "Enchanted Leaves",
+    "category": "effect",
+    "rarity": "rare",
+    "description":
+        "A gentle emerald orbit brings a little woodland magic to your steps.",
+    "price": 150,
+    "premium": false,
+    "required_archetype": null,
+    "unlock_method": "shop",
+    "milestone_level": null,
+    "asset_key": "effect_enchanted_leaves",
+    "id": "review-enchanted-leaves",
+    "edition_type": "standard"
+  },
+  {
     "slug": "boston-terrier",
     "name": "Boston Terrier",
     "category": "familiar",

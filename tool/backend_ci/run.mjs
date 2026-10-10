@@ -1,3 +1,4 @@
+import {exerciseMagicForward} from './magic-forward.mjs';
 import {exerciseHouseholdForward} from './household-forward.mjs';
 import {exerciseAutumnForward} from './autumn-forward.mjs';
 import {exerciseDecorateHearthForward} from './decorate-hearth-forward.mjs';
@@ -537,6 +538,7 @@ try {
   runHardeningPayload(resolve(source, '../../supabase/migrations/20261009044431_decorate_hearth_layouts.sql'));
   exerciseAutumnForward({source, workdir, run, runPayload: runHardeningPayload});
   exerciseHouseholdForward({source, workdir, run, runPayload: runHardeningPayload});
+  exerciseMagicForward({source, workdir, run, runPayload: runHardeningPayload});
   // Fresh HTTP pool after preceding database/API resets; never retry signup writes.
   const recoveryResult = spawnSync(process.execPath, [join(source,'recovery-run.mjs')], {
     input: JSON.stringify(status), env, encoding:'utf8', timeout:300000, maxBuffer:1024*1024,
