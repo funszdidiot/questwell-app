@@ -15,14 +15,16 @@ class RoomSpatialReviewApp extends StatefulWidget {
 class _RoomSpatialReviewState extends State<RoomSpatialReviewApp> {
   final _profiles = {...AutumnHearthFixture.profiles};
   final _renders = {...AutumnHearthFixture.renders};
-  var _room = QuestwellHearthSetting.alchemistsWorkshop;
-  var _arrangement = 'Cabinet and reading corner';
+  var _room = QuestwellHearthSetting.original;
+  var _arrangement = 'Witchlight right';
   var _narrow = false;
   var _avatar = true;
   var _ready = false;
   String? _error;
 
   static const arrangements = {
+    'Witchlight left': {'room:left': 'witchlight-bookcase'},
+    'Witchlight right': {'room:right': 'witchlight-bookcase'},
     'Cabinet and reading corner': {
       'room:left': 'copper-potion-workbench',
       'room:right': 'burgundy-reading-chair',
@@ -122,15 +124,13 @@ class _RoomSpatialReviewState extends State<RoomSpatialReviewApp> {
                   const CircularProgressIndicator()
                 else
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: _narrow ? 284 : 760),
+                    constraints: BoxConstraints(maxWidth: _narrow ? 390 : 760),
                     child: LayoutBuilder(
                         builder: (context, constraints) => MediaQuery(
                               data:
                                   const MediaQueryData(disableAnimations: true),
                               child: QuestwellHearthPixelScene(
-                                height: _narrow
-                                    ? 342
-                                    : constraints.maxWidth * 526 / 760,
+                                height: constraints.maxWidth * .68 + 8,
                                 immersive: true,
                                 setting: _room,
                                 showAvatar: _avatar,

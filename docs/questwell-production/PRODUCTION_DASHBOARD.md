@@ -1,5 +1,13 @@
 # Questwell Production Dashboard
 
+## Witchlight Bookcase perspective — October 10, 2026
+
+**QA.** Tanya requested a redesign for the established room depth and camera.
+Versioned frontal artwork preserves its Halloween identity and registers the
+level plinth to the existing rear-wall contacts. Both spatial maps, historical
+art and all account/catalog state stay fixed. CI exports and delivered review
+are pending. Evidence: `../releases/witchlight-bookcase-v2/README.md`.
+
 ## Evergreen gallery wall — October 10, 2026
 
 **DEV DEPLOYED / catalog active; wall-height follow-up in QA.** PR #144
