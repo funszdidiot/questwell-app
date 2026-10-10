@@ -37,7 +37,11 @@ void main() {
       'success',
       'failure',
       'pending',
-      if (!boss) 'momentum failure'
+      if (!boss) ...[
+        'momentum failure',
+        'appearance failure',
+        'appearance pending'
+      ]
     ]) {
       final refreshFails = refreshMode == 'failure';
       testWidgets(
@@ -52,6 +56,10 @@ void main() {
         var postWriteProfiles = 0;
         Future<QuestwellCosmeticsSnapshot> loadAppearance() async {
           if (committed) postWriteProfiles++;
+          if (refreshMode == 'appearance failure') {
+            throw StateError('private appearance details');
+          }
+          if (refreshMode == 'appearance pending') await pending.future;
           return appearance;
         }
 
@@ -134,7 +142,12 @@ void main() {
           ),
           home: page,
         ));
-        await tester.pumpAndSettle();
+        if (refreshMode == 'appearance pending') {
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 200));
+        } else {
+          await tester.pumpAndSettle();
+        }
         final action = boss
             ? find.widgetWithText(FilledButton, 'Attack')
             : find.text('Complete quest');
@@ -154,13 +167,19 @@ void main() {
           expect(writes, 1);
           pending.complete();
         }
-        await tester.pumpAndSettle();
+        if (refreshMode == 'appearance pending') {
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 200));
+        } else {
+          await tester.pumpAndSettle();
+        }
         expect(writes, 1);
         expect(postWriteReads, greaterThan(0));
         expect(postWriteProfiles, greaterThan(0));
         expect(find.textContaining('Completion was not confirmed.'),
             findsOneWidget);
         expect(find.textContaining('private refresh details'), findsNothing);
+        expect(find.textContaining('Quest complete.'), findsNothing);
         expect(action, findsNothing);
         expect(tester.takeException(), isNull);
         await tester.pumpWidget(const SizedBox());

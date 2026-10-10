@@ -85,6 +85,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   bool _changingEnergyMode = false;
   bool _onboardingCompleted = true;
   QuestwellOnboardingSession? _onboardingSession;
+  QuestwellProfile? _completionProfile;
   late Future<QuestwellCosmeticsSnapshot> _homeSnapshotFuture;
   late Future<ChronicleSnapshot> _momentumFuture;
 
@@ -109,10 +110,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   }
 
   void _loadCosmetics() {
+    _completionProfile = null;
     final request = widget.loadAppearance();
     _homeSnapshotFuture = request;
     _homeSnapshotFuture.then((data) {
       if (!mounted || !identical(request, _homeSnapshotFuture)) return;
+      _completionProfile = data.profile;
       if (_campfireMode != data.profile.campfireMode ||
           _onboardingCompleted != data.profile.onboardingCompleted) {
         setState(() {
@@ -234,10 +237,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     setState(() => _completingTask = true);
 
     try {
-      final profile = (await _homeSnapshotFuture).profile;
       final reward = await widget.completeTask(taskId);
 
       if (!mounted) return;
+
+      // Appearance is optional presentation data, never a completion barrier.
+      // Only use the current successful load for legacy level offsets.
+      final profile = _completionProfile;
+      setState(_loadHomeData);
+      if (profile == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Quest complete. +${reward.xpAwarded} XP · +${reward.coinsAwarded} coins.',
+            ),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        return;
+      }
 
       final previousXp = reward.totalXp - reward.xpAwarded;
       final previousLevel = QuestwellProgression.levelForXp(previousXp,
@@ -246,8 +264,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           legacyOffset: profile.levelXpOffset);
       final leveledUp = newLevel > previousLevel;
       final firstWin = previousXp == 0 && reward.xpAwarded > 0;
-
-      setState(_loadHomeData);
 
       if (await showQuestwellMilestones(context,
           previousLevel: previousLevel,
