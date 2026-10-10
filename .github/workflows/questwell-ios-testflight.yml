@@ -1,0 +1,29 @@
+name: Questwell iOS signing preparation
+
+# Register the manual entry on the default branch. GitHub runs the workflow
+# version from the selected ref; questwell-dev owns the reviewed signing jobs.
+# This default-branch version must never build or receive signing credentials.
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact reviewed questwell-dev commit (40 lowercase hex characters)
+        required: true
+        type: string
+      build_number:
+        description: Unused Apple build number, e.g. 1.0.1 (N.N.N)
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  select-development-branch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - name: Require the reviewed development workflow
+        shell: bash
+        run: |
+          echo '::error::Select questwell-dev in Run workflow. This branch only registers the manual entry; no build or signing was performed.'
+          exit 1
