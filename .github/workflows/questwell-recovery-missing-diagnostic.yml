@@ -40,3 +40,5 @@ jobs:
         run: '"$RUNNER_TEMP/recovery-venv/bin/python" tool/backups/recovery_missing_diagnostic.py'
 
 # Capture provider 404 enum; no private content, paths or writes.
+
+# Include spaced legacy error labels in final diagnostic.
