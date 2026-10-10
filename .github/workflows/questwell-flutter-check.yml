@@ -96,7 +96,7 @@ jobs:
 
       - name: Retain Hearth composition review images
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: hearth-composition-${{ github.sha }}
           path: build/hearth-composition/
@@ -105,7 +105,7 @@ jobs:
 
       - name: Retain avatar and familiar magic review images
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: magic-review-${{ github.sha }}
           path: build/magic-review/
@@ -114,7 +114,7 @@ jobs:
 
       - name: Retain rendered Halloween review images
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: hallowed-review-${{ github.sha }}
           path: build/hallowed-review/
@@ -137,7 +137,7 @@ jobs:
         run: python3 -m unittest discover -s tool/qa -p staging_artifact_test.py -v
 
       - name: Retain staging candidate for acceptance
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: questwell-staging-${{ github.sha }}
           path: build/staging/
@@ -197,7 +197,7 @@ jobs:
           cat coverage/critical-paths.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Retain coverage evidence
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: critical-client-coverage-${{ github.sha }}
           path: |
