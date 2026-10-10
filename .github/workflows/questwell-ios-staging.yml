@@ -1,0 +1,77 @@
+name: Questwell staging iOS archive only
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact reviewed questwell-dev commit (40 lowercase hex characters)
+        required: true
+        type: string
+      build_number:
+        description: Unused Apple build number, e.g. 1.0.2 (N.N.N)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: questwell-ios-signing
+  cancel-in-progress: false
+
+jobs:
+  quality:
+    if: github.ref == 'refs/heads/questwell-dev' && inputs.source_sha == github.sha
+    uses: ./.github/workflows/questwell-flutter-check.yml
+
+  archive:
+    needs: quality
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/questwell-dev' && inputs.source_sha == github.sha
+    runs-on: macos-15
+    timeout-minutes: 45
+    environment: ios-testflight
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+      IOS_SOURCE_SHA: ${{ inputs.source_sha }}
+      IOS_BUILD_NUMBER: ${{ inputs.build_number }}
+      IOS_SIGNING_ENABLED: ${{ vars.IOS_SIGNING_ENABLED }}
+      IOS_STAGING_APPROVED_SHA: ${{ vars.IOS_STAGING_APPROVED_SHA }}
+      IOS_UPLOAD_REQUESTED: 'false'
+    steps:
+      - name: Checkout exact dispatch revision without stored credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - name: Validate dedicated staging request before exposing signing secrets
+        run: |
+          npm ci --ignore-scripts --prefix tool/ci
+          git diff --exit-code -- tool/ci/package.json tool/ci/package-lock.json
+          python3 -c 'from tool.ci.ios_testflight import validate_staging_request; import os; validate_staging_request(os.environ)'
+          python3 tool/qa/ios_staging_test.py
+      - name: Set up pinned Flutter
+        uses: ./.github/actions/flutter
+        with:
+          flutter-version: '3.44.6'
+      - name: Install locked Dart dependencies before exposing signing secrets
+        run: |
+          flutter pub get --enforce-lockfile
+          git diff --exit-code -- pubspec.yaml pubspec.lock
+      - name: Sign and validate staging archive without delivery
+        env:
+          IOS_DISTRIBUTION_P12_BASE64: ${{ secrets.IOS_DISTRIBUTION_P12_BASE64 }}
+          IOS_DISTRIBUTION_P12_PASSWORD: ${{ secrets.IOS_DISTRIBUTION_P12_PASSWORD }}
+          IOS_APP_STORE_PROFILE_BASE64: ${{ secrets.IOS_APP_STORE_PROFILE_BASE64 }}
+        run: python3 -m tool.ci.ios_staging
+      - name: Retain sanitized staging review evidence only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ios-staging-evidence-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/ios-signing-evidence/validation.json
+            build/ios-signing-evidence/Podfile.lock
+            build/ios-signing-evidence/native-review.json
+            build/ios-signing-evidence/altool-help.txt
+          if-no-files-found: warn
+          retention-days: 7

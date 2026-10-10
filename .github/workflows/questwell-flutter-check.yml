@@ -38,6 +38,9 @@ jobs:
       - name: Test Apple upload boundaries without credentials or network
         run: python3 tool/qa/ios_upload_test.py
 
+      - name: Test staging-only iOS archive boundaries without credentials
+        run: python3 tool/qa/ios_staging_test.py
+
       - name: Verify staging packaging isolation
         run: python3 tool/qa/staging_package_test.py
 
@@ -250,6 +253,8 @@ jobs:
           "$RUNNER_TEMP/questwell-export-recovery-test"
       - name: Compile iOS release without signing or distribution
         run: flutter build ios --release --no-codesign --target lib/main.dart --dart-define=QUESTWELL_ENVIRONMENT=isolated_test
+      - name: Compile staging iOS release without signing or distribution
+        run: flutter build ios --release --no-codesign --target lib/main.dart --dart-define=QUESTWELL_ENVIRONMENT=staging --dart-define=QUESTWELL_DECORATE_HEARTH=true --dart-define=QUESTWELL_BUILD="$GITHUB_SHA"
       - name: Preserve dependency inputs
         run: git diff --exit-code -- pubspec.yaml pubspec.lock
 
