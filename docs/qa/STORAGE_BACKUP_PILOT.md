@@ -1,5 +1,34 @@
 # Storage backup pilot — verified one-time live copy
 
+## Authenticated recovery isolation PASSED — 2026-10-10 04:37 UTC
+
+Run https://github.com/funszdidiot/questwell-app/actions/runs/38024605952,
+commit c98ccbb075f1698c1ff298e4979edcea3cb5acae, job 114132700623:
+- Synthetic account fresh sign-in passed.
+- Authenticated read of its owned, S3-replaced fixture passed before and after
+  all cross-owner requests.
+- All ten recovered private file downloads were denied to that account through
+  the authenticated Storage API. Only explicit denied/masked-not-found responses
+  qualified; unexpected success and provider/server failures fail the check.
+- No Storage writes; no file contents, tokens, names or signed links in logs.
+- This is actual authenticated API acceptance, superseding SQL-only evidence for
+  this synthetic-owner/cross-owner scenario. It is NOT a restored original
+  owner's fresh sign-in or positive access to their recovered files.
+
+Latest development CI observed: 67da08e966b10561a3e6de037de99a2270132c10;
+Preview 38023467056 and Backend 38023466343 passed. Preview includes successful
+web build/deploy, critical coverage, analysis, iOS unsigned compile and Android
+missing-signing-credential guard. Neither native job proves signed distribution
+or physical-device installation/upgrade acceptance.
+
+Live retention aggregate: 13 feedback reports, zero at or beyond 90 days.
+No deletion or retention enforcement was activated. Operational private export
+delivery and 90-day retention remain open, as do original-owner recovery login,
+current-candidate app/device acceptance and native signing/device checks.
+First approved scheduled backup is due October 10 at 07:23 UTC / 03:23 EDT;
+future execution is not reported as passed. Existing status automation retained.
+Full GO has not been issued.
+
 ## Hosted ten-file byte recovery PASSED — 2026-10-10 04:06 UTC
 
 Workflow https://github.com/funszdidiot/questwell-app/actions/runs/38022827804
