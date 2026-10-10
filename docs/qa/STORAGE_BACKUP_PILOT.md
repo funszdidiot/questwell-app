@@ -1,5 +1,42 @@
 # Storage backup pilot — verified one-time live copy
 
+## Recovery preflight verified — 2026-10-10 03:50 UTC
+
+Tanya approved the dedicated recovery Storage key and scoped ten-file restore
+at 03:25 UTC. Both recovery secrets were verified present in questwell-backups
+after her 03:48 UTC confirmation. Earlier copies also appeared in ios-testflight;
+no secret values were read or copied and no secrets were deleted.
+
+Read-only workflow run 38021945266, commit
+4ebfe3df5b6dfc58c1af4058fc9770c6e583337f:
+- Six synthetic preflight tests passed locally and in CI: exact subset,
+  corrupt archive, unverified marker, extra target entry, changed metadata,
+  and wrong target path. Fake clients expose no upload/delete methods.
+- Job 114124688284 PASSED at 03:50:43 UTC.
+- Pinned B2 archive SHA/size, manifest and every member checksum passed.
+- All ten recovery metadata paths match archive size and ETag.
+- The one newer archive file was excluded.
+- Safe result explicitly reports file_restore_executed=false and
+  ownership_upload_behavior_verified=false.
+
+Only B2 read credentials and recovery Storage credentials were supplied to
+the read-only step. No source Storage credential, database credential or Auth
+service-role key was supplied. No artifact containing private files was exported.
+Workflow only runs on an edit to its own file on the dedicated operations branch;
+it does not schedule or execute restoration.
+
+Remaining file-restore blocker: no authenticated synthetic owner fixture exists
+in the recovery project. A privileged S3-created object with null owner would
+not prove preservation of existing non-null ownership. Do not test a real
+private file first or directly modify storage schema metadata to fabricate proof.
+Proposed next scope: one recovery-only synthetic Auth account and one tiny
+owned fixture under its own folder, followed by S3 replacement and independent
+owner/hash checks. Use ordinary authenticated Storage access and no broader
+Auth administrator credential; account/credential creation needs the applicable
+user approval and handoff. No outbound invitation/email or cleanup deletion.
+The ten-file restoration itself is already approved; do not request it again.
+Hosted recovery and full GO remain incomplete.
+
 ## Recovery isolation and file-transfer decision — 2026-10-10 03:24 UTC
 
 Read-only SQL role simulation PASSED in the recovery target. For each of all
