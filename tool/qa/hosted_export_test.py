@@ -14,7 +14,13 @@ def request(path, token=None, payload=None):
             if len(body)>45*1024*1024: raise RuntimeError('response limit')
             return response.status,dict(response.headers),json.loads(body) if body else None
     except urllib.error.HTTPError as error:
-        return error.code,{},None
+        code=None
+        if path.startswith('/auth/v1/token?'):
+            try:
+                reported=json.loads(error.read(4096)).get('error_code')
+                if reported in {'invalid_credentials','email_not_confirmed','email_provider_disabled','over_request_rate_limit','user_banned'}:code=reported
+            except Exception:pass
+        return error.code,{}, {'safe_code':code}
 
 def run():
     email=os.environ.get('STAGING_EXPORT_TEST_EMAIL')
@@ -26,7 +32,9 @@ def run():
     step='sign-in';status=None
     try:
         status,_,auth=request('/auth/v1/token?grant_type=password',payload={'email':email,'password':password})
-        if status!=200: raise RuntimeError('staging sign-in failed')
+        if status!=200:
+            print('Auth result: '+str((auth or {}).get('safe_code') or 'unclassified'))
+            raise RuntimeError('staging sign-in failed')
         token=auth['access_token'];owner=auth['user']['id']
         step='download'
         status,headers,export=request('/functions/v1/export-account',token)
