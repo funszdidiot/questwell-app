@@ -38,3 +38,5 @@ jobs:
           SUPABASE_RECOVERY_STORAGE_SECRET_ACCESS_KEY: ${{ secrets.SUPABASE_RECOVERY_STORAGE_SECRET_ACCESS_KEY }}
           AWS_EC2_METADATA_DISABLED: 'true'
         run: '"$RUNNER_TEMP/recovery-venv/bin/python" tool/backups/recovery_missing_diagnostic.py'
+
+# Capture provider 404 enum; no private content, paths or writes.
