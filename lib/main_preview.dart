@@ -1,4 +1,5 @@
 import 'preview/autumn_hearth_review.dart';
+import 'preview/room_spatial_review.dart';
 import 'preview/audio_review.dart';
 import 'preview/hollow_harvest_review.dart';
 import 'preview/halloween_costumes_review.dart';
@@ -47,6 +48,9 @@ void main() {
   if (Uri.base.queryParameters['review'] == 'audio') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const QuestwellAudioReview());
+  } else if (Uri.base.queryParameters['review'] == 'room-spatial') {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const RoomSpatialReviewApp());
   } else if (Uri.base.queryParameters['review'] == 'autumn-hearth') {
     WidgetsFlutterBinding.ensureInitialized();
     runApp(const AutumnHearthReviewApp());

@@ -48,7 +48,7 @@ const arrangements = {
     'room:right': 'burgundy-reading-chair',
     'room:side': 'moonbrew-side-table',
     'room:floor': 'maple-hearth-rug',
-    'outfit': 'pumpkin-court',
+    'chest': 'pumpkin-court',
   },
   'cushions': {
     'room:front': 'sages-rest',
