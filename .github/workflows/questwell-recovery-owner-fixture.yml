@@ -1,0 +1,27 @@
+name: Questwell recovery synthetic owner fixture
+on:
+  push:
+    branches: [questwell-b2-connection-check-20261010]
+    paths: ['.github/workflows/questwell-recovery-owner-fixture.yml']
+permissions:
+  contents: read
+concurrency:
+  group: questwell-recovery-owner-fixture
+  cancel-in-progress: false
+jobs:
+  fixture:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/questwell-b2-connection-check-20261010'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment: questwell-backups
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Validate synthetic-only scope without secrets
+        run: python3 -m unittest discover -s tool/backups -p 'test_recovery_owner_fixture.py' -v
+      - name: Create approved owned synthetic fixture
+        env:
+          SUPABASE_RECOVERY_PROBE_PASSWORD: ${{ secrets.SUPABASE_RECOVERY_PROBE_PASSWORD }}
+          SUPABASE_RECOVERY_PUBLIC_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dWJ1bWlqc2lidGdqd2VrZHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2MDE5NzEsImV4cCI6MjEwNzE3Nzk3MX0.XWGfS6Qiy_WuH_Jqz0JKXvLKnr_mZqTDZ2YeQBwweQ8'
+        run: python3 tool/backups/recovery_owner_fixture.py
