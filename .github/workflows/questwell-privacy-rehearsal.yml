@@ -1,0 +1,25 @@
+name: Questwell privacy synthetic rehearsal
+on:
+  push:
+    branches: [questwell-privacy-workflows-20261010]
+  pull_request:
+    paths:
+      - 'tool/support/**'
+      - 'tool/qa/*privacy*'
+      - 'tool/qa/data_policy_test.mjs'
+      - 'tool/qa/export_endpoint_test.mjs'
+      - 'supabase/functions/export-account/**'
+      - 'supabase/functions/_shared/data_policy.mjs'
+      - '.github/workflows/questwell-privacy-rehearsal.yml'
+permissions:
+  contents: read
+jobs:
+  synthetic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Rehearse privacy controls without credentials or network adapters
+        run: node --test tool/qa/data_policy_test.mjs tool/qa/privacy_workflow_test.mjs tool/qa/export_endpoint_test.mjs

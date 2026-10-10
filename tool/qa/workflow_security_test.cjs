@@ -121,3 +121,16 @@ test('Household privileged job requires its exact branch and read-only check sco
   }
   assert.ok(validate(text.replace('checks: read','checks: write'),file).length>0);
 });
+
+test('Export schema job requires its exact branch and read-only check scope',()=> {
+  const file='.github/workflows/questwell-export-schema.yml';
+  const text=fs.readFileSync(path.join(root,file),'utf8');
+  const guard="github.event_name == 'push' && github.ref == 'refs/heads/deploy/export-schema-approved'";
+  assert.deepEqual(validate(text,file),[]);
+  for(const replacement of ['true',"github.event_name == 'push'","github.ref == 'refs/heads/deploy/export-schema-approved'"]) {
+    assert.ok(validate(text.replace(guard,replacement),file).some(e=>e.includes('not branch-guarded')));
+  }
+  assert.ok(validate(text.replace('checks: read','checks: write'),file).some(e=>e.includes('excess permissions')));
+  assert.ok(validate(text.replace('checks: read','checks: read\n      actions: write'),file).some(e=>e.includes('excess permissions')));
+  assert.ok(validate(text.replace(/actions\/checkout@[a-f0-9]{40}/,'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683'),file).some(e=>e.includes('unreviewed action pin')));
+});

@@ -1,3 +1,4 @@
+import {exerciseExportSchema} from './export-schema-forward.mjs';
 import {exerciseMagicForward} from './magic-forward.mjs';
 import {exerciseHouseholdForward} from './household-forward.mjs';
 import {exerciseAutumnForward} from './autumn-forward.mjs';
@@ -58,11 +59,12 @@ function expectSqlFailure(file, expectedMessage) {
 // The pinned CLI's db query intentionally accepts one extended-protocol statement.
 // Rehearse the multi-statement timeout + DO payload using psql inside ONLY the
 // already-guarded disposable container, in one transaction, without remote credentials.
-function runHardeningPayload(file, expectedMessage) {
+function runHardeningPayload(file, expectedMessage, localRole = 'postgres') {
+  assert.ok(['postgres','supabase_admin'].includes(localRole), 'Unexpected local database role');
   assertDisposableCi(process.env);
   assert.ok(!env.DOCKER_HOST && !env.DOCKER_CONTEXT,'Remote Docker targets are forbidden');
   const result=spawnSync('docker',['exec','-i','supabase_db_questwell-disposable-ci',
-    'psql','--host=/var/run/postgresql','--username=postgres','--dbname=postgres',
+    'psql','--host=/var/run/postgresql','--username='+localRole,'--dbname=postgres',
     '--no-password','-X','--single-transaction',
     '--set=ON_ERROR_STOP=1','--file=-'],{
     input:readFileSync(file,'utf8'),env,encoding:'utf8',timeout:120000,maxBuffer:1024*1024,
@@ -546,6 +548,9 @@ try {
   if (recoveryResult.stdout) console.log(redact(recoveryResult.stdout));
   if (recoveryResult.stderr) console.error(redact(recoveryResult.stderr));
   assert.equal(recoveryResult.status, 0, 'Synthetic recovery rehearsal failed');
+  // Hosted postgres owns its database/public schema; the disposable stack's
+  // equivalent migration owner is supabase_admin. No schema grants are changed.
+  exerciseExportSchema({source,workdir,run,runPayload:(file,expected)=>runHardeningPayload(file,expected,'supabase_admin')});
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();

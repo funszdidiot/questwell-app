@@ -42,7 +42,7 @@ function validate(text, name) {
           ? {contents:'read', pages:'write', 'id-token':'write'}
           : name.endsWith('/questwell-preview.yml') && id === 'build'
           ? {contents:'read', pages:'read'}
-          : (name.endsWith('/questwell-woodland-forward.yml') || name.endsWith('/questwell-hallowed-forward.yml') || name.endsWith('/questwell-content-forward.yml') || name.endsWith('/questwell-autumn-forward.yml') || name.endsWith('/questwell-household-forward.yml') || name.endsWith('/questwell-magic-forward.yml')) && id === 'apply'
+          : (name.endsWith('/questwell-woodland-forward.yml') || name.endsWith('/questwell-hallowed-forward.yml') || name.endsWith('/questwell-content-forward.yml') || name.endsWith('/questwell-autumn-forward.yml') || name.endsWith('/questwell-household-forward.yml') || name.endsWith('/questwell-magic-forward.yml') || name === '.github/workflows/questwell-export-schema.yml') && id === 'apply'
           ? {contents:'read', checks:'read'} : {contents:'read'};
         if (JSON.stringify(job.permissions) !== JSON.stringify(allowed)) errors.push(`excess permissions for ${id}`);
       }
@@ -58,6 +58,8 @@ function validate(text, name) {
           job.if !== "github.event_name == 'push' && github.ref == 'refs/heads/deploy/autumn-hearth-approved'") errors.push('Autumn deployment not branch-guarded');
       if (name.endsWith('/questwell-content-forward.yml') && id === 'apply' &&
           job.if !== "github.event_name == 'push' && github.ref == 'refs/heads/deploy/content-limits-approved'") errors.push('Content deployment not branch-guarded');
+      if (name === '.github/workflows/questwell-export-schema.yml' && id === 'apply' &&
+          job.if !== "github.event_name == 'push' && github.ref == 'refs/heads/deploy/export-schema-approved'") errors.push('Export deployment not branch-guarded');
       checkSteps(job.steps);
     }
     if (/\/(issue6-polished-assets|neutral-woodland-repair)\.yml$/.test(name)) {

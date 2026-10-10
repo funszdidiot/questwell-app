@@ -1,0 +1,49 @@
+name: Questwell export schema rollout
+on:
+  pull_request:
+    branches: [questwell-dev]
+  push:
+    branches: [questwell-privacy-workflows-20261010, questwell-dev, deploy/export-schema-approved]
+permissions:
+  contents: read
+concurrency:
+  group: questwell-export-schema-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  guards:
+    name: Export rollout guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: |
+          node --test tool/qa/export_schema_runner_test.mjs
+          node tool/deploy/export-schema.mjs --check
+      - name: Check rollout credential presence without connecting
+        env:
+          QUESTWELL_EXPORT_MIGRATION_TOKEN: ${{ secrets.QUESTWELL_EXPORT_MIGRATION_TOKEN }}
+        run: |
+          if [ -n "$QUESTWELL_EXPORT_MIGRATION_TOKEN" ]; then
+            echo 'PRESENT: export migration credential; permissions not yet verified.'
+          else
+            echo 'BLOCKED: QUESTWELL_EXPORT_MIGRATION_TOKEN is not configured.'
+          fi
+  apply:
+    name: Apply approved export schema only
+    if: github.event_name == 'push' && github.ref == 'refs/heads/deploy/export-schema-approved'
+    needs: guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      checks: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+          QUESTWELL_EXPORT_MIGRATION_TOKEN: ${{ secrets.QUESTWELL_EXPORT_MIGRATION_TOKEN }}
+        run: node tool/deploy/export-schema.mjs
