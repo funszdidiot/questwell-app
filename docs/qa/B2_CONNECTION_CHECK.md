@@ -27,3 +27,20 @@ Full account/database/file recovery and release GO remain separate.
 
 API reference: https://www.backblaze.com/apidocs/b2-authorize-account
 and the linked get-upload-url, upload-file and download-file-by-id operations.
+
+## Execution result — 2026-10-10 02:06 UTC
+
+- Seven local tests and the same seven GitHub runner tests passed.
+- Initial run 38015666561 failed HTTP 401. Diagnostic revision
+  b98aa2fa34feed538d3c9501bc153cfc4db6c0d6, run 38015718496,
+  job 114105391361, confirms rejection at `b2_authorize_account`, before
+  requesting an upload URL or writing an object.
+- Secret names exist and both values are nonempty, but B2 rejected the saved
+  credential pair. Their correctness, expiry and revoked status cannot be
+  inferred from GitHub secret-name presence. No secret values were retrieved.
+- Founder action: edit the two GitHub environment secrets using the keyID and
+  applicationKey from the same saved Backblaze application-key pair. Do not
+  substitute the bucket ID, key name, account login or S3 endpoint. Do not share
+  values in chat. Rerun the connection job after correction.
+- No object was uploaded by the diagnostic run. Destination verification and
+  scheduled source backup remain blocked; no GO is claimed.
