@@ -93,3 +93,92 @@ References verified before implementation:
 - https://supabase.com/docs/guides/storage/s3/authentication
 - https://supabase.com/docs/guides/storage/s3/compatibility
 - https://supabase.com/changelog.md
+
+## Next rollout decision — bounded daily pilot (prepared, not enabled)
+
+Recommended first recurring stage: one backup daily at 07:23 UTC (03:23 EDT /
+02:23 EST), for seven scheduled dates only. Set the exact first and last UTC
+dates when enabled; reject executions outside that window, including manual
+reruns. Do not interpret this proposal as approval to copy again.
+
+Scope remains the live-beta project's private beta-feedback files into
+questwell-backups-20261009. Preserve per-file and complete archive readback,
+before/after source inventory comparison, unique snapshot names, and existing
+1,000-object / 16 MiB per-file / 128 MiB source / 512 MiB visible-destination
+limits. Any guard failure must fail the job rather than claim a backup.
+
+Seven archives at the measured pilot size equal 69,169,569 bytes; with the
+retained pilot archive, 79,050,936 bytes (about 75.4 MiB), plus markers and the
+small synthetic connection check. This is an unchanged-data estimate, not a
+price quotation or bill limit. Source growth, hidden versions, requests and
+other clients must be considered separately. Do not purchase or upgrade a plan.
+No retention deletion during this first recurring stage.
+
+### Concrete GitHub deployment boundary
+
+Repository metadata verified October 10 UTC: default branch is flutterflow.
+GitHub schedule events execute from the default branch; adding cron only to
+the development or pilot branch cannot enable scheduled operation.
+
+Prepare a separate operations-only PR based on the current flutterflow head.
+Include only the reviewed backup scripts, hash lock, tests, documentation and
+the scheduled workflow. Do not merge the entire development branch or the
+existing PR #122 into flutterflow. Inspect all push/deployment workflows before
+creating or merging that PR so a backup commit cannot silently promote the app.
+If branch policies or deployment triggers prevent that separation, stop and
+present the concrete alternative before changing them.
+
+The scheduled workflow must:
+- remove the branch-push transfer trigger;
+- use an explicit schedule plus manual validation, with live copying allowed
+  only for schedule events during the seven-date approval window;
+- pin all actions and dependencies and use contents:read;
+- serialize jobs, use a 15-minute timeout and keep tests free of credentials;
+- require a separate scheduled-copy enable variable (the completed manual-pilot
+  enable variable remains false);
+- restrict environment access to the reviewed workflow's branch; any widened
+  credential access must be reviewed as part of the activation decision;
+- fail visibly on missing secrets, unsupported source inventory, cap exhaustion
+  or failed readback;
+- include file count, size, hash and snapshot ID in the summary, never private
+  file paths, content or secrets;
+- make failure notifications and missed-run detection concrete before activation.
+  GitHub schedules can be delayed; merely waiting for failure email does not
+  detect a schedule that never starts. Do not claim an RPO guarantee.
+
+Observe a real scheduled execution before marking scheduling verified.
+The seven-date cutoff must prevent ongoing copies without a subsequent decision.
+
+### Retention proposal for the later steady-state phase
+
+Thirty days of daily snapshots is a proposed policy, not an enabled rule.
+Do not configure B2 age-based deletion now: an age-only rule can remove the
+last good backup after a prolonged outage. The later retention implementation
+must dry-run the exact candidates, preserve at least the newest two verified
+snapshots regardless of age, refuse pruning if the newest verified snapshot is
+older than 48 hours, and pair each archive with its verification marker.
+Permanent deletion needs Tanya's explicit approval under
+docs/questwell-production/AGENT_OPERATING_RULES.md. Bucket-wide or empty-prefix
+rules are prohibited for this proposal. Retention must address hidden versions
+and legal/privacy deletion requirements before being called complete.
+
+### Full recovery proof remains separate
+
+1. Inventory the current database backup coverage and access, Auth recovery
+   coverage, migrations, roles/grants, RLS, Storage bucket/ownership metadata,
+   functions/configuration and deployed app revision without exporting secrets.
+2. Prepare an isolated recovery target and document exactly which private data
+   would be copied there. Existing staging is synthetic-only; never restore
+   live feedback or Auth data into it by inference.
+3. Obtain any necessary destination/private-data and credential authorization.
+4. Restore database/Auth and file bytes with ownership metadata; keep application
+   traffic and outbound email disabled in the recovery target.
+5. Verify counts/checksums, owner-only access and cross-user denial, sign-in,
+   quests/rewards, inventory/equipment and feedback attachment access using
+   approved test identities; measure elapsed recovery time.
+6. Record actual tested coverage, gaps and recovery-point age. A tar archive
+   round trip alone does not establish full recovery.
+
+Official references checked October 10, 2026 UTC:
+- https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows
+- https://www.backblaze.com/docs/cloud-storage-lifecycle-rules
