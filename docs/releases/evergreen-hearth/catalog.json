@@ -1,0 +1,141 @@
+{
+  "approval": "Tanya approved these exact prices and permanent Market availability with Yes on 2026-10-10.",
+  "migration_path": "supabase/migrations/20261010173713_evergreen_hearth_catalog.sql",
+  "items": [
+    {
+      "catalog": {
+        "slug": "hearthwoven-macrame",
+        "name": "Hearthwoven Macramé",
+        "category": "wall_art",
+        "rarity": "uncommon",
+        "description": "A generous woven hanging for a quiet corner or a gathered gallery wall.",
+        "price": 120,
+        "premium": false,
+        "required_archetype": null,
+        "unlock_method": "shop",
+        "collection_key": "evergreen-hearth",
+        "edition_type": "standard",
+        "active": true,
+        "hearth_profile_key": "wall_textile",
+        "asset_key": null,
+        "milestone_level": null,
+        "availability_start": null,
+        "availability_end": null
+      },
+      "asset": "assets/images/questwell/hearth/hearthwoven_macrame_v1.png",
+      "sha256": "3df4d96e9f13aff0a9af7d58a7f07fb13a7bd9228ba29a24c28529b6b0e9ead6",
+      "size": [
+        1402,
+        1122
+      ]
+    },
+    {
+      "catalog": {
+        "slug": "woodland-path-tapestry",
+        "name": "Woodland Path Tapestry",
+        "category": "wall_art",
+        "rarity": "uncommon",
+        "description": "A woven woodland path that brings the promise of adventure indoors.",
+        "price": 120,
+        "premium": false,
+        "required_archetype": null,
+        "unlock_method": "shop",
+        "collection_key": "evergreen-hearth",
+        "edition_type": "standard",
+        "active": true,
+        "hearth_profile_key": "wall_textile",
+        "asset_key": null,
+        "milestone_level": null,
+        "availability_start": null,
+        "availability_end": null
+      },
+      "asset": "assets/images/questwell/hearth/woodland_path_tapestry_v1.png",
+      "sha256": "0b41796955d99480473eb299a5f138e68c271ae8d2ed91a9969e52840e153ca2",
+      "size": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "catalog": {
+        "slug": "guardians-oath-tapestry",
+        "name": "Guardian’s Oath Tapestry",
+        "category": "wall_art",
+        "rarity": "uncommon",
+        "description": "A blue-and-gold tribute to the Guardian’s promise of shelter and protection.",
+        "price": 120,
+        "premium": false,
+        "required_archetype": "guardian",
+        "unlock_method": "shop",
+        "collection_key": "evergreen-hearth",
+        "edition_type": "standard",
+        "active": true,
+        "hearth_profile_key": "wall_textile",
+        "asset_key": null,
+        "milestone_level": null,
+        "availability_start": null,
+        "availability_end": null
+      },
+      "asset": "assets/images/questwell/hearth/guardians_oath_tapestry_v1.png",
+      "sha256": "3f306d4ea1bd8faa28a98012950813b99d46c1dd3f5f94b125981f845b4d165d",
+      "size": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "catalog": {
+        "slug": "mad-alchemists-lab",
+        "name": "Mad Alchemist’s Lab",
+        "category": "room",
+        "rarity": "rare",
+        "description": "A warm laboratory hearth for experiments, discoveries and unfinished ideas.",
+        "price": 300,
+        "premium": false,
+        "required_archetype": null,
+        "unlock_method": "shop",
+        "collection_key": "evergreen-hearth",
+        "edition_type": "standard",
+        "active": true,
+        "hearth_profile_key": "hearth_setting",
+        "asset_key": null,
+        "milestone_level": null,
+        "availability_start": null,
+        "availability_end": null
+      },
+      "asset": "assets/images/questwell/hearth/mad_alchemists_lab_v1.png",
+      "sha256": "391bcbc38fb7db5748ca251f1914385cb4da316f1878133e92c42c81d8911c89",
+      "size": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "catalog": {
+        "slug": "guardians-keep",
+        "name": "Guardian’s Keep",
+        "category": "room",
+        "rarity": "rare",
+        "description": "A sheltered stone keep with a glowing hearth and a place to rest between quests.",
+        "price": 300,
+        "premium": false,
+        "required_archetype": null,
+        "unlock_method": "shop",
+        "collection_key": "evergreen-hearth",
+        "edition_type": "standard",
+        "active": true,
+        "hearth_profile_key": "hearth_setting",
+        "asset_key": null,
+        "milestone_level": null,
+        "availability_start": null,
+        "availability_end": null
+      },
+      "asset": "assets/images/questwell/hearth/guardians_keep_v1.png",
+      "sha256": "495e87401d371c19dee4b244001ea44271f9b582fb5856e70bc249a0693f3445",
+      "size": [
+        1536,
+        1024
+      ]
+    }
+  ]
+}

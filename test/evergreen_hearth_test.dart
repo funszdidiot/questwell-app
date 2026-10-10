@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -13,15 +14,20 @@ import '../lib/widgets/questwell_pixel_art.dart';
 import '../lib/widgets/questwell_room_geometry.dart';
 import '../lib/widgets/questwell_wall_art.dart';
 import '../lib/widgets/questwell_window_geometry.dart';
+import '../lib/widgets/questwell_item_icon.dart';
+import '../lib/services/questwell_cosmetic_models.dart';
+import '../lib/widgets/questwell_market_view.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  GoogleFonts.config.allowRuntimeFetching = false;
   const additions = [
     QuestwellHearthSetting.madAlchemistsLab,
     QuestwellHearthSetting.guardiansKeep
   ];
 
-  test('evergreen skins inherit Hallowed geometry and stay account gated', () {
+  test('approved evergreen items have account renderer capability', () {
     for (final room in additions) {
       expect(QuestwellHearthSetting.fromSlug(room.slug), room);
       expect(QuestwellHearthSetting.supports(room.slug), isTrue);
@@ -34,10 +40,118 @@ void main() {
           QuestwellHearthSetting.hallowedHearth
               .mantelAnchor(const Size(960, 640)));
       expect(QuestwellWindowGeometry.source(room.file), const Size(1536, 1024));
-      expect(QuestwellEquipmentPolicy.isReady(room.slug, 'room'), isFalse);
+      expect(QuestwellEquipmentPolicy.isReady(room.slug, 'room'), isTrue);
     }
     for (final slug in EvergreenHearthFixture.names.keys) {
-      expect(QuestwellEquipmentPolicy.isReady(slug, 'wall_art'), isFalse);
+      expect(QuestwellEquipmentPolicy.isReady(slug, 'wall_art'), isTrue);
+    }
+  });
+
+  test('evergreen Market icons are distinct and export at native pixel size',
+      () async {
+    final signatures = <String>{};
+    final slugs = [
+      ...EvergreenHearthFixture.names.keys,
+      'mad-alchemists-lab',
+      'guardians-keep'
+    ];
+    final directory = Directory('build/hearth-composition')
+      ..createSync(recursive: true);
+    for (final slug in slugs) {
+      final recorder = ui.PictureRecorder();
+      QuestwellItemIconPainter(slug)
+          .paint(Canvas(recorder), const Size(32, 32));
+      final picture = recorder.endRecording();
+      final image = await picture.toImage(32, 32);
+      final raw = await image.toByteData();
+      expect(signatures.add(raw!.buffer.asUint8List().join(',')), isTrue,
+          reason: slug);
+      final png = await image.toByteData(format: ui.ImageByteFormat.png);
+      File('${directory.path}/evergreen-icon-$slug.png')
+          .writeAsBytesSync(png!.buffer.asUint8List());
+      image.dispose();
+      picture.dispose();
+    }
+  });
+
+  testWidgets(
+      'approved catalog enables purchase and placement with class guards',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(800, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final manifest = jsonDecode(
+        File('docs/releases/evergreen-hearth/catalog.json').readAsStringSync());
+    for (final entry in manifest['items']) {
+      final row = Map<String, dynamic>.from(entry['catalog']);
+      row['id'] = row['slug'];
+      final item = QuestwellCosmetic.fromJson(row,
+          hearthPlacements: [
+            for (final slot in row['category'] == 'wall_art'
+                ? ['wall_left', 'wall_center', 'wall_right']
+                : ['setting'])
+              QuestwellHearthPlacementOption(
+                  slot: slot, label: slot, sortOrder: 0)
+          ],
+          hearthRenderSpec: EvergreenHearthFixture.renders[row['slug']]);
+      for (final archetype in ['guardian', 'wanderer']) {
+        for (final owned in [false, true]) {
+          var purchases = 0, placements = 0;
+          final shown = item.copyWith(owned: owned);
+          await tester.pumpWidget(MaterialApp(
+              builder: (context, child) => MediaQuery(
+                  data:
+                      MediaQuery.of(context).copyWith(disableAnimations: true),
+                  child: child!),
+              home: Scaffold(
+                  body: QuestwellMarketView(
+                      key: ValueKey('${item.slug}-$archetype-$owned'),
+                      data: QuestwellCosmeticsSnapshot(
+                          profile: QuestwellProfile(
+                              level: 4,
+                              totalXp: 355,
+                              coinBalance: 1000,
+                              currentEnergyMode: 'normal',
+                              onboardingCompleted: true,
+                              adventurerArchetype: archetype,
+                              avatarBodyType: 'neutral'),
+                          cosmetics: [shown]),
+                      onPurchase: (_) async {
+                        purchases++;
+                      },
+                      onEquip: (_) async {
+                        placements++;
+                      },
+                      onUnequip: (_) async {},
+                      onRefresh: () async {}))));
+          await tester.pumpAndSettle();
+          final restricted = item.requiredArchetype != null &&
+              item.requiredArchetype != archetype;
+          final label = restricted
+              ? 'Guardian only'
+              : owned
+                  ? 'Place in Hearth'
+                  : 'Buy · ${item.price} coins';
+          final button = find.widgetWithText(FilledButton, label);
+          await tester.dragUntilVisible(button.hitTestable(),
+              find.byType(ListView), const Offset(0, -180),
+              maxIteration: 20);
+          await tester.pumpAndSettle();
+          expect(tester.widget<FilledButton>(button).onPressed,
+              restricted ? isNull : isNotNull);
+          if (!restricted) {
+            await tester.tap(button);
+            await tester.pumpAndSettle();
+            if (!owned) {
+              expect(find.text('Buy ${item.name}?'), findsOneWidget);
+              await tester.tap(find.widgetWithText(FilledButton, 'Buy item'));
+              await tester.pumpAndSettle();
+            }
+            expect(purchases, owned ? 0 : 1);
+            expect(placements, owned ? 1 : 0);
+          }
+          expect(tester.takeException(), isNull);
+        }
+      }
     }
   });
 

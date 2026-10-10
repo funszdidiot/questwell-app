@@ -84,7 +84,76 @@ class QuestwellItemIconPainter extends CustomPainter {
       r(x + 2, y + h - 2, w - 3, 1, dark);
     }
 
-    if (slug == 'amberfall-window') {
+    if (slug == 'hearthwoven-macrame') {
+      r(3, 3, 26, 2, woodDark);
+      r(4, 3, 24, 1, woodLight);
+      for (var x = 5; x <= 26; x += 3) {
+        r(x, 5, 1, 8, cream);
+        r(x, 13, 1, 15 - (x - 16).abs(), goldShade);
+      }
+      for (var y = 0; y < 7; y++) {
+        r(6 + y, 8 + y, 2, 2, cream);
+        r(24 - y, 8 + y, 2, 2, cream);
+        r(10 + y, 11 + y, 2, 2, cream);
+        r(20 - y, 11 + y, 2, 2, cream);
+      }
+      r(15, 20, 2, 9, cream);
+    } else if (slug == 'woodland-path-tapestry' ||
+        slug == 'guardians-oath-tapestry') {
+      final guardian = slug == 'guardians-oath-tapestry';
+      final cloth = guardian ? const Color(0xFF233B67) : greenDark;
+      r(2, 4, 28, 2, woodDark);
+      r(3, 4, 26, 1, gold);
+      panel(4, 6, 24, 20, cloth, gold, goldShade);
+      r(6, 8, 20, 16, cloth);
+      for (final x in [5, 8, 11, 14, 17, 20, 23, 26]) {
+        r(x, 26, 1, 3, gold);
+      }
+      if (guardian) {
+        r(11, 10, 10, 9, gold);
+        r(12, 11, 8, 7, cloth);
+        r(13, 19, 6, 2, gold);
+        r(15, 21, 2, 1, gold);
+        r(15, 12, 2, 8, gold);
+        r(13, 14, 6, 1, gold);
+        star(8, 11, cream);
+        star(23, 20, goldShade);
+      } else {
+        r(7, 10, 5, 7, green);
+        r(9, 9, 2, 12, wood);
+        r(20, 10, 5, 8, green);
+        r(22, 9, 1, 13, wood);
+        r(15, 13, 2, 4, cream);
+        r(13, 17, 4, 3, gold);
+        r(15, 20, 6, 3, goldShade);
+        r(16, 10, 2, 2, gold);
+      }
+    } else if (slug == 'mad-alchemists-lab' || slug == 'guardians-keep') {
+      final alchemy = slug == 'mad-alchemists-lab';
+      panel(2, 3, 28, 27, wood, woodLight, woodDark);
+      r(4, 5, 24, 20, alchemy ? purpleDark : const Color(0xFF756859));
+      panel(6, 14, 13, 10, woodDark, goldShade, ink);
+      r(8, 17, 9, 7, ink);
+      r(10, 20, 5, 4, red);
+      r(11, 18, 3, 5, gold);
+      r(12, 20, 1, 3, cream);
+      panel(21, 8, 6, 14, blue, gold, woodDark);
+      r(23, 9, 1, 12, wood);
+      r(22, 14, 4, 1, wood);
+      r(4, 26, 24, 2, woodLight);
+      if (alchemy) {
+        r(6, 10, 12, 1, goldShade);
+        r(7, 7, 3, 3, green);
+        r(8, 6, 1, 2, cream);
+        r(12, 6, 4, 4, purple);
+        r(13, 5, 2, 2, cream);
+        star(17, 7, mint);
+      } else {
+        panel(8, 6, 9, 6, const Color(0xFF233B67), gold, goldShade);
+        r(11, 7, 3, 3, gold);
+        r(12, 10, 1, 1, gold);
+      }
+    } else if (slug == 'amberfall-window') {
       panel(5, 2, 22, 28, wood, woodLight, woodDark);
       r(7, 4, 18, 23, blue);
       r(8, 6, 5, 8, goldShade);
