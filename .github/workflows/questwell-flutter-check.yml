@@ -35,6 +35,9 @@ jobs:
       - name: Test iOS signing preparation without credentials
         run: python3 tool/qa/ios_testflight_test.py
 
+      - name: Test Apple upload boundaries without credentials or network
+        run: python3 tool/qa/ios_upload_test.py
+
       - name: Verify staging packaging isolation
         run: python3 tool/qa/staging_package_test.py
 

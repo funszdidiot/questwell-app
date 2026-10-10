@@ -178,10 +178,13 @@ class SigningValidationTest(unittest.TestCase):
         self.assertIn("github.event_name == 'workflow_dispatch'", job["if"])
         self.assertEqual(job["runs-on"], "macos-15")
         exposed = [s for s in job["steps"] if any("secrets." in str(v) for v in s.get("env", {}).values())]
-        self.assertEqual(len(exposed), 1)
+        self.assertEqual(len(exposed), 2)
         self.assertEqual(exposed[0]["run"], "python3 tool/ci/ios_testflight.py")
         uploads = [s for s in job["steps"] if s.get("uses", "").startswith("actions/upload-artifact@")]
-        self.assertEqual([s["with"]["path"] for s in uploads], ["build/ios-signing-evidence/validation.json"])
+        self.assertEqual(uploads[0]["with"]["path"].split(), [
+            "build/ios-signing-evidence/validation.json", "build/ios-signing-evidence/Podfile.lock",
+            "build/ios-signing-evidence/native-review.json", "build/ios-signing-evidence/altool-help.txt",
+            "build/ios-signing-evidence/apple-delivery.json"])
         check = (ROOT / ".github/workflows/questwell-flutter-check.yml").read_text()
         self.assertIn("run: python3 tool/qa/ios_testflight_test.py", check)
 
@@ -196,6 +199,7 @@ class SigningOrchestrationTest(unittest.TestCase):
             project.parent.mkdir(parents=True)
             original = (ROOT / "ios/Runner.xcodeproj/project.pbxproj").read_bytes()
             project.write_bytes(original)
+            (root / "ios/Podfile.lock").write_text("PODS:\n  - Flutter (1.0.0)\n")
             calls = []
             def fake_run(args, **kwargs):
                 args = [str(a) for a in args]
