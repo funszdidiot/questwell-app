@@ -1,5 +1,38 @@
 # Storage backup pilot — verified one-time live copy
 
+## Synthetic ownership proof and guarded restore attempt — 2026-10-10 04:00 UTC
+
+Synthetic account and ownership probe:
+- Account cced3e06-f196-4b32-a16f-69e661240cda confirmed; no invitation sent.
+- Fixture workflow 38022327803 authenticated sign-in/upload/readback passed.
+- 69-byte PNG initial SHA256 631d1f7b564a454c4c4a227a016a502b7ba47027c23bd591bfd9529991ddc41a.
+- Independent SQL confirmed both owner and owner_id non-null and equal to the synthetic account.
+- S3 replacement workflow 38022367840 passed readback; new SHA256
+  e0c3e96797cb480f12cec2c1b5304329146a5b4b4dc330407bd39ea2d203fb1c.
+- Independent SQL confirmed id a2b203ca-40e4-42a8-8ba7-9c69df831295,
+  owner and owner_id unchanged after replacement.
+- No direct Storage schema writes, synthetic cleanup, or policy modifications.
+- Sixteen focused recovery tests passed locally and in CI.
+
+
+Approved ten-file restore workflow 38022453745 at commit
+16614199d6331e50dc521475b680c27ca12329e7 stopped BEFORE PRIVATE WRITES:
+target absence not established. The runner checks all ten files before any
+upload; only exact NoSuchKey is currently accepted as absence. No broad error
+fallback was used. Independent SQL after the stop confirms ten private records,
+zero missing owners, and unchanged id/bucket/path/owner digest
+4a2a946c035a747501f88af3ad968677.
+
+Read-only diagnostic 38022556599 classified the selected request as HTTP 404
+with a provider-specific error code outside the initial diagnostic allowlist.
+A bounded error-enum diagnostic is in progress; private names/messages remain
+withheld. Do not classify generic errors as absence or mark restoration complete.
+
+The recovery target now intentionally includes one synthetic Auth user and one
+synthetic 69-byte Storage fixture in addition to the restored data. This does not
+alter the ten-private-file scope or authorize deleting fixtures. Full application
+recovery, recovered real-owner sign-in/API checks and final GO remain open.
+
 ## Recovery preflight verified — 2026-10-10 03:50 UTC
 
 Tanya approved the dedicated recovery Storage key and scoped ten-file restore
