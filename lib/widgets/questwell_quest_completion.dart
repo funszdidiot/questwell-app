@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'questwell_account_dialog_flow.dart';
 import 'questwell_app_style.dart';
 import 'questwell_hearth_icon.dart';
 import 'questwell_hearth_material.dart';
@@ -111,7 +112,8 @@ class QuestwellQuestCompletionDialog extends StatelessWidget {
                 const SizedBox(height: 22),
                 FilledButton(
                     style: QuestwellHearthMaterial.primaryButton(),
-                    onPressed: () => Navigator.pop(context, 'continue'),
+                    onPressed: () =>
+                        QuestwellAccountDialogFlow.pop(context, 'continue'),
                     child: Text(leveledUp ? 'Continue Adventure' : 'Keep Going',
                         textAlign: TextAlign.center)),
                 const SizedBox(height: 8),
@@ -121,14 +123,16 @@ class QuestwellQuestCompletionDialog extends StatelessWidget {
                           minimumSize: const Size(48, 48),
                           foregroundColor: QuestwellHearthMaterial.ink,
                           textStyle: QuestwellTypography.control()),
-                      onPressed: () => Navigator.pop(context, 'chronicle'),
+                      onPressed: () =>
+                          QuestwellAccountDialogFlow.pop(context, 'chronicle'),
                       child: const Text('See Chronicle')),
                   TextButton(
                       style: TextButton.styleFrom(
                           minimumSize: const Size(48, 48),
                           foregroundColor: QuestwellHearthMaterial.ink,
                           textStyle: QuestwellTypography.control()),
-                      onPressed: () => Navigator.pop(context, 'add'),
+                      onPressed: () =>
+                          QuestwellAccountDialogFlow.pop(context, 'add'),
                       child: const Text('Add Next Quest')),
                 ]),
               ]),

@@ -175,6 +175,7 @@ void main() {
         }
         expect(writes, 1);
         expect(postWriteReads, greaterThan(0));
+        if (!boss) expect(postWriteReads, 1);
         expect(postWriteProfiles, greaterThan(0));
         expect(find.textContaining('Completion was not confirmed.'),
             findsOneWidget);
