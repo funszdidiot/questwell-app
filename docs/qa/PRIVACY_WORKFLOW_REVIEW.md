@@ -155,3 +155,26 @@ Run: `node --test tool/qa/data_policy_test.mjs tool/qa/privacy_workflow_test.mjs
   reported 18 passing tests. This is not a hosted-success claim.
 - Rollback: revert the runner commit on this branch. The synthetic staging report
   remains for the next approved retry; no live export or retention activation.
+
+
+## Hosted replacement-account verification PASSED — 2026-10-10 06:03 UTC
+
+The corrected repository credentials resolved the previous sign-in blocker.
+Run https://github.com/funszdidiot/questwell-app/actions/runs/38029351167,
+latest attempt, job `114147598856`, passed on runner commit
+`2548f0e4624b9914010af16a6aeff192f400c273`.
+
+Verified through the hosted staging HTTP endpoint:
+- Password sign-in and authenticated export succeeded.
+- All eight account-data groups were present and returned rows belonged to the requester.
+- The expected nonempty synthetic attachment passed byte-length and SHA256 checks.
+- Response included Cache-Control no-store.
+- An immediate repeated export returned HTTP 429.
+- Local test-session logout succeeded; reuse of its token returned HTTP 401/403.
+- Independent database read confirmed the 68-byte fixture's owner and private bucket.
+
+No export payloads, passwords or session tokens were printed or saved as artifacts.
+Production export and retention deletion remain disabled. This proves one synthetic
+account's hosted golden path; hosted two-account negative tests, concurrent-load
+and mutation-during-export tests remain before production acceptance. The staging
+fixture remains available for repeat tests. No production data changed.
