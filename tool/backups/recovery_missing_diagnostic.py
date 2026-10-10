@@ -26,7 +26,7 @@ for key,meta in listing.items():
         code=response.get('Error',{}).get('Code','unknown')
         allowed={'NoSuchKey','NoSuchBucket','AccessDenied','InternalError','InvalidAccessKeyId','SignatureDoesNotMatch','404','403','500','NoSuchObject'}
         status=response.get('ResponseMetadata',{}).get('HTTPStatusCode')
-        print(json.dumps({'result':'error','code':code if isinstance(code,str) and re.fullmatch(r'[A-Za-z_]{1,48}',code) else 'other',
+        print(json.dumps({'result':'error','code':code if isinstance(code,str) and re.fullmatch(r'[A-Za-z0-9_ .-]{1,80}',code) else 'other',
             'http_status':status if isinstance(status,int) else None,
             'exception_type':type(exc).__name__ if type(exc).__name__ in {'ClientError','ReadTimeoutError','SSLError','EndpointConnectionError'} else 'other'}))
     break
