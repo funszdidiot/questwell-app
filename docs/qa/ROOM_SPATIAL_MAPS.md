@@ -52,3 +52,19 @@ dashboard text conflicted, and both entries were retained. Furniture code/art
 is unchanged. Fresh combined CI and hosted review are still required. PR #126
 is the delivery record for the final head, deploy run and hosted verification;
 this snapshot does not claim physical iPhone or signed-in acceptance.
+
+## Combined-revision verification and delivery tracking
+
+Head `90ee607` passed Flutter Check `38022161500` and backend `38022161204`,
+including 1,075 regressions, 27 decorator checks and 418 Chrome checks. All 306
+PNG files in artifact `11658593656` are byte-identical to the independent review.
+Reported Alchemist 760px scene SHA256:
+`2904f651155ac67f53818171bec65951cce6b74c6d43f4a971112717c4de8548`.
+
+The approved iOS signing preparation subsequently merged as `ee9295e`; it is
+preserved without changing any room renderer or image. A burst of Dependabot
+runs displaced the next revision's queued global deployment-guard jobs before
+execution. Those cancelled runs had no jobs and GitHub declined a failed-job
+retry. This delivery record update starts a fresh normal PR check run after
+that queue cleared. Repository rules and serialized live-deployment guards
+are unchanged. PR #126 records final required-check, merge and hosted results.
