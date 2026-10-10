@@ -2,15 +2,16 @@
 
 ## Evergreen gallery wall — October 10, 2026
 
-**DEV DEPLOYED (visual review) / QA (account candidate).** PR #139 delivered all
-five unchanged artworks and corrected gallery/window placement at `c97bd48`.
-Preview run `38067855821`, served revision, five asset hashes and phone/desktop
-live galleries were verified. The account candidate adds one textile profile,
-three wall mappings, five inactive items and three render registrations; its
-disposable tests cover purchases, class/slot checks, saved layouts and rollback.
-Tanya approved 120 coins per hanging, 300 per room and permanent Market availability.
-Account renderer capability, five pixel icons and guarded forward activation are
-in QA. No live account availability or inventory grant is claimed yet. See `../releases/evergreen-hearth/ACCOUNT_RELEASE.md`.
+**DEV DEPLOYED / catalog active; wall-height follow-up in QA.** PR #144
+merged `e9a4726`, Preview `38073413501`; served revision and all five artwork
+hashes verified. Migration `20261010180351` activated the three 120-coin hangings
+and two 300-coin rooms permanently; only Guardian’s Oath is Guardian-only.
+Protected schema, catalog and 60 earlier migration records are unchanged.
+Tanya subsequently requested and received all five as verified founder grants,
+with no coin/profile/equipment changes. Her standard-room height correction is
+in QA: lower companions/side textiles and a proportionally fitted center below
+the beam; Hallowed stays unchanged. Account manual/device QA remains separate.
+Evidence: `../releases/evergreen-hearth/ACCOUNT_RELEASE.md`.
 
 ## Halloween wrists and hip drape — October 10 follow-up
 
