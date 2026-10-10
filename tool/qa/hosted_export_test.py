@@ -23,12 +23,15 @@ def run():
         print('BLOCKED: configure STAGING_EXPORT_TEST_EMAIL and STAGING_EXPORT_TEST_PASSWORD for an existing synthetic staging account.')
         return 2
     token=None
+    step='sign-in';status=None
     try:
         status,_,auth=request('/auth/v1/token?grant_type=password',payload={'email':email,'password':password})
         if status!=200: raise RuntimeError('staging sign-in failed')
         token=auth['access_token'];owner=auth['user']['id']
+        step='download'
         status,headers,export=request('/functions/v1/export-account',token)
         if status!=200: raise RuntimeError('authenticated export failed (check rate interval and fixture)')
+        step='validate-export'
         if export['format']!='questwell-account-export': raise RuntimeError('unexpected format')
         if len(export['tables'])!=8: raise RuntimeError('missing record group')
         for table,rows in export['tables'].items():
@@ -38,10 +41,13 @@ def run():
             raw=base64.b64decode(item['data'],validate=True)
             if not item['path'].startswith(owner+'/') or len(raw)!=item['size'] or hashlib.sha256(raw).hexdigest()!=item['sha256']:raise RuntimeError('attachment integrity failed')
         if 'no-store' not in {k.lower():v for k,v in headers.items()}.get('cache-control',''):raise RuntimeError('private cache policy missing')
+        step='rate-limit'
         status,_,_=request('/functions/v1/export-account',token)
         if status!=429:raise RuntimeError('repeat request not throttled')
+        step='logout'
         status,_,_=request('/auth/v1/logout?scope=local',token)
         if status not in (200,204):raise RuntimeError('test-session logout failed')
+        step='revoked-session'
         status,_,_=request('/functions/v1/export-account',token)
         if status not in (401,403):raise RuntimeError('old-token denial not verified')
         token=None
@@ -49,7 +55,7 @@ def run():
         return 0
     except Exception as error:
         # Never emit HTTP bodies, account identifiers, tokens, paths or export data.
-        print('FAIL: hosted export checks did not complete. No private response logged.')
+        print(f'FAIL: stage={step}; HTTP={status if isinstance(status,int) else "none"}. No private response logged.')
         return 1
     finally:
         if token:
