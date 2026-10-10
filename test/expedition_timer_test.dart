@@ -116,10 +116,13 @@ void main() {
     now = now.subtract(const Duration(minutes: 10));
     await tester.pump(const Duration(seconds: 1));
     expect(find.text('25:00'), findsOneWidget);
+    now = now.add(const Duration(seconds: 1));
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('24:59'), findsOneWidget);
     await resumeApp(tester);
-    expect(find.text('25:00'), findsOneWidget);
+    expect(find.text('24:59'), findsOneWidget);
     await tapControl(tester, 'Pause');
-    expect(find.text('25:00'), findsOneWidget);
+    expect(find.text('24:59'), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
   });
 

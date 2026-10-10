@@ -108,7 +108,15 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget>
   }
 
   int _remainingSeconds() {
-    final milliseconds = _deadline!.difference(_now()).inMilliseconds;
+    final now = _now();
+    final duration = Duration(seconds: _sessionSeconds);
+    final remaining = _deadline!.difference(now);
+    // Rebase as well as cap after a clock rollback so the countdown keeps moving.
+    if (remaining > duration) {
+      _deadline = now.add(duration);
+      return _sessionSeconds;
+    }
+    final milliseconds = remaining.inMilliseconds;
     return (milliseconds / 1000).ceil().clamp(0, _sessionSeconds).toInt();
   }
 
