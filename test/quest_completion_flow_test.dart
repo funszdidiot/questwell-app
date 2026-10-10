@@ -162,7 +162,9 @@ void main() {
             expect(find.byType(QuestwellQuestCompletionDialog), findsNothing);
             expect(writes, 1); // Reconciliation must not retry the write.
             expect(action, findsOneWidget);
-            // Let the warning expire, then explicitly retry the still-open task.
+            // Finish the entrance animation before advancing its display timer.
+            // Then explicitly retry the still-open task after the warning exits.
+            await tester.pump(const Duration(milliseconds: 300));
             await tester.pump(const Duration(seconds: 5));
             await tester.pump(const Duration(milliseconds: 300));
             reply = Completer<QuestwellTaskCompletionResult>();
