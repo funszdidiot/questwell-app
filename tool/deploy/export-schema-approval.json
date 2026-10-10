@@ -1,0 +1,19 @@
+{
+  "status": "pending",
+  "project": "bdzcazkyypopbanbjnud",
+  "sources": [
+    {
+      "path": "supabase/migrations/20261010052031_account_export_guard.sql",
+      "sha256": "3343c5bcad29f6794f5d53b8f1e78cd0a5f1868017d9d232889ad1c5ef85329d"
+    },
+    {
+      "path": "supabase/migrations/20261010052354_account_export_snapshot.sql",
+      "sha256": "20724228fe509a7fe2b2c829392beda133abd990452f2d2a0a2b7fd590967e89"
+    }
+  ],
+  "approval_ref": null,
+  "backup_evidence_ref": null,
+  "backup_verified_at": null,
+  "valid_until": null,
+  "payload_sha256": "a187afbecf80bd8c5bf9a31426e5ece61a44a85cb008b168a244c2deb7633d10"
+}
