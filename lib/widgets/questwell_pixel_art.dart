@@ -48,6 +48,7 @@ import 'questwell_starlit_orrery.dart';
 import 'questwell_catalog_equipment.dart';
 import 'questwell_amberfall_window.dart';
 import 'questwell_room_geometry.dart';
+import 'questwell_window_geometry.dart';
 import 'questwell_hearth_catalog_sprite.dart';
 import '../services/questwell_cosmetic_models.dart';
 import 'questwell_familiar.dart';
@@ -1376,8 +1377,15 @@ class QuestwellHearthPixelScene extends StatelessWidget {
                               Positioned.fill(
                                   key: ValueKey('hearth-rainy-window-bounds'),
                                   child: QuestwellRainyWindow(
-                                      hallowed:
-                                          roomSetting.usesHallowedLayout)),
+                                      hallowed: roomSetting.usesHallowedLayout,
+                                      glassMask:
+                                          roomSetting.usesHallowedLayout &&
+                                                  roomSetting !=
+                                                      QuestwellHearthSetting
+                                                          .hallowedHearth
+                                              ? QuestwellWindowGeometry.glass(
+                                                  roomSetting.file)
+                                              : null)),
                             for (final slot in QuestwellHearthDecor.backToFront(
                               equippedSlugs,
                               profileBySlug: hearthProfileBySlug,

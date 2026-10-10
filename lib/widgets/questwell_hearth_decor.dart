@@ -136,10 +136,10 @@ class QuestwellHearthDecor {
                   ? const Rect.fromLTWH(393, 110, 44, 86)
                   : const Rect.fromLTWH(699, 110, 44, 86))
           : (slot == 'wall_center'
-              ? const Rect.fromLTWH(392, 76, 240, 180)
+              ? const Rect.fromLTWH(392, 16, 240, 160)
               : slot == 'wall_left'
-                  ? const Rect.fromLTWH(310, 108, 70, 120)
-                  : const Rect.fromLTWH(644, 108, 70, 120));
+                  ? const Rect.fromLTWH(310, 50, 70, 120)
+                  : const Rect.fromLTWH(644, 50, 70, 120));
       return Rect.fromLTWH(
           geometry.point(rect.topLeft).dx,
           geometry.point(rect.topLeft).dy,
@@ -157,9 +157,9 @@ class QuestwellHearthDecor {
               ? const Rect.fromLTWH(418, 42, 300, 216)
               : slot == 'wall_left'
                   ? const Rect.fromLTWH(170, 320, 140, 110)
-                  : const Rect.fromLTWH(1294, 340, 112, 90))
+                  : const Rect.fromLTWH(1294, 210, 112, 90))
           : (center
-              ? const Rect.fromLTWH(392, 76, 240, 180)
+              ? const Rect.fromLTWH(392, 16, 240, 160)
               : slot == 'wall_left'
                   ? const Rect.fromLTWH(300, 142, 100, 80)
                   : const Rect.fromLTWH(624, 142, 100, 80));

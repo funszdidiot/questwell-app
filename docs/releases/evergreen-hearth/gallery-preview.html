@@ -20,8 +20,8 @@
 const images=/* ASSET_DATA */ {};
 const room=document.getElementById('room'),art=document.getElementById('art'),arrangement=document.getElementById('arrangement');
 const plate=document.getElementById('plate'),hero=document.getElementById('hero'),left=document.getElementById('left'),right=document.getElementById('right');
-const gallery={standard:[[392,76,240,180],[310,108,70,120],[644,108,70,120]],hallowed:[[444,66,248,186],[393,110,44,86],[699,110,44,86]]};
-const solo={standard:{center:[392,76,240,180],left:[300,142,100,80],right:[624,142,100,80]},hallowed:{center:[418,42,300,216],left:[170,320,140,110],right:[1294,340,112,90]}};
+const gallery={standard:[[392,16,240,160],[310,50,70,120],[644,50,70,120]],hallowed:[[444,66,248,186],[393,110,44,86],[699,110,44,86]]};
+const solo={standard:{center:[392,16,240,160],left:[300,142,100,80],right:[624,142,100,80]},hallowed:{center:[418,42,300,216],left:[170,320,140,110],right:[1294,210,112,90]}};
 function place(element,rect,w,h){const [x,y,width,height]=rect;Object.assign(element.style,{left:x/w*100+'%',top:y/h*100+'%',width:width/w*100+'%',height:height/h*100+'%'});}
 function update(){const wide=room.value!=='original',map=wide?'hallowed':'standard',w=wide?1536:1024,h=1024,isGallery=arrangement.value==='gallery';plate.src=images[room.value];plate.alt=room.selectedOptions[0].text;hero.src=images[art.value];hero.alt=art.selectedOptions[0].text;left.src=images.fern;right.src=images.celestial;left.hidden=right.hidden=!isGallery;place(hero,isGallery?gallery[map][0]:solo[map][arrangement.value],w,h);if(isGallery){place(left,gallery[map][1],w,h);place(right,gallery[map][2],w,h);}document.getElementById('detail').textContent=isGallery?'A larger focal piece with two smaller companions, fitted to this room’s architecture.':'The textile uses the available wall space and retains its original proportions.';}
 for(const input of [room,art,arrangement])input.addEventListener('change',update);update();

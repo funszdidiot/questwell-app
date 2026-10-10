@@ -2,16 +2,16 @@
 
 ## Evergreen gallery wall — October 10, 2026
 
-**QA / public branch push authorized.** Five approved artworks are ingested unchanged:
-three textiles and two non-seasonal Hallowed-layout skins. Tanya’s gallery-wall
-direction adds a statement textile with two companion framed works, reusing the
-existing wall slot identities. Local preview and source checks are prepared;
-Flutter build/tests, delivered runtime, Market and account persistence are pending.
-Tanya’s “Let’s push it” explicitly authorizes feature-branch publication and a PR.
-Local Flutter dependency setup remains blocked by automatic review; GitHub CI
-is the next verification gate. No delivered-runtime acceptance is claimed.
-See `../releases/evergreen-hearth/CONTRACT.md`. Art approval is retained separately
-from placement acceptance, pricing, class eligibility and activation.
+**QA / PR #139.** All five approved artworks are ingested unchanged: three
+textiles and two non-seasonal Hallowed-layout skins. Gallery compositions reuse
+the existing wall slots and two architectural maps. Initial CI passed all six
+new Hearth tests with 72 renderer captures; an existing room-list test omission
+was corrected. Visual review found avatar/bookcase occlusion and distinct window
+mullions; placement and per-art glass corrections are under fresh CI and capture
+review. Tanya’s “Send it” authorizes the development review delivery after checks.
+Market activation, pricing, account persistence and Guardian eligibility remain
+pending. No live-account availability is claimed.
+See `../releases/evergreen-hearth/CONTRACT.md`.
 
 ## Halloween wrists and hip drape — October 10 follow-up
 

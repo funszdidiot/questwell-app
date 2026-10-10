@@ -25,7 +25,8 @@ large textiles and Hallowed side-wall placement; existing framed art retains
 its unchanged profile and coordinates. All three textiles share geometry.
 
 The two new room slugs map to the existing Hallowed architectural map, source
-size 1536 × 1024. Furniture, mantel, rain and window overlays inherit that map.
+size 1536 × 1024. Furniture and mantel inherit that map. Window effects use individually traced
+glass outlines for the two new artworks.
 Spiders remain exclusive to Hallowed Hearth. No third room layout is added.
 
 No database/API schema or typed response contract changes are included in this
@@ -60,14 +61,22 @@ room with the macramé, Fern Study and Celestial Study.
 
 ## Current verification boundary
 
-Local Dart parsing/formatting and asset provenance are checked. Flutter tests and
-build remain unrun: automatic review rejected a local Flutter dependency command
-for contacting a cloud instance-metadata endpoint. That dependency setup remains
-blocked. Tanya subsequently authorized public feature-branch publication and a PR
-with “Let’s push it”; GitHub CI is the next gate. The local HTML composition preview
-is not evidence of a running Flutter build or account persistence.
+PR #139 publishes the approved artwork and review implementation. Tanya’s
+“Send it” authorizes completing QA and delivering this review to the development
+app. Market pricing, catalog activation and account grants remain separate.
 
-Verified locally: all five original artwork hashes/dimensions, transparent alpha
-on all three textiles, JavaScript syntax, and Dart 3.0-language formatting for
-all nine changed/new Dart files. Browser rendering also remains unverified: the
-pinned Playwright browser download returned invalid/truncated archives.
+The initial GitHub run passed all six new Hearth tests and produced 72 real
+renderer captures. It found one existing room-list test omission, corrected in
+`6183bb4`. Source review and captured compositions then identified avatar overlap,
+a bookshelf hiding the right textile, and the Keep’s distinct wide window pane.
+The follow-up raises the standard statement textile, raises Hallowed-family right
+hangings, traces each new window’s glass and adds gallery-with-avatar captures.
+The new masks apply to rain and Amberfall while existing room masks remain fixed.
+Fresh CI and visual captures must pass before merge; delivered revision, route and
+asset hashes must then be checked before reporting development delivery.
+
+Local Flutter dependency setup remains blocked by automatic review after the
+setup command contacted an instance-metadata endpoint. It has not been retried.
+GitHub CI provides the Flutter analyzer, tests, web and native build gates.
+All five source artworks remain byte-for-byte unchanged. Local checks cover Dart
+formatting, JavaScript syntax, asset provenance and diff whitespace.

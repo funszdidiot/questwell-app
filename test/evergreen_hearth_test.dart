@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../lib/preview/evergreen_hearth_review.dart';
 import '../lib/services/questwell_equipment_policy.dart';
 import '../lib/widgets/questwell_hallowed_spiders.dart';
+import '../lib/widgets/questwell_catalog_equipment.dart';
 import '../lib/widgets/questwell_hearth_decor.dart';
 import '../lib/widgets/questwell_hearth_room_plan.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
@@ -33,15 +34,39 @@ void main() {
           QuestwellHearthSetting.hallowedHearth
               .mantelAnchor(const Size(960, 640)));
       expect(QuestwellWindowGeometry.source(room.file), const Size(1536, 1024));
-      expect(
-          QuestwellWindowGeometry.glass(room.file).getBounds(),
-          QuestwellWindowGeometry.glass(QuestwellWindowGeometry.hallowed)
-              .getBounds());
       expect(QuestwellEquipmentPolicy.isReady(room.slug, 'room'), isFalse);
     }
     for (final slug in EvergreenHearthFixture.names.keys) {
       expect(QuestwellEquipmentPolicy.isReady(slug, 'wall_art'), isFalse);
     }
+  });
+
+  test('new window masks follow their own painted mullions', () {
+    final keep = QuestwellWindowGeometry.glass('guardians_keep_v1');
+    final lab = QuestwellWindowGeometry.glass('mad_alchemists_lab_v1');
+    for (final glass in [keep, lab]) {
+      for (final point in [
+        const Offset(1000, 270),
+        const Offset(1075, 270),
+        const Offset(1160, 300),
+        const Offset(1105, 158)
+      ]) {
+        expect(glass.contains(point), isTrue);
+      }
+      for (final point in [
+        const Offset(1043, 280),
+        const Offset(1105, 280),
+        const Offset(1000, 322),
+        const Offset(1250, 300)
+      ]) {
+        expect(glass.contains(point), isFalse);
+      }
+    }
+    // The Keep's wide pane has no invented vertical or horizontal bar.
+    expect(keep.contains(const Offset(1205, 350)), isTrue);
+    expect(keep.contains(const Offset(1220, 322)), isTrue);
+    expect(lab.contains(const Offset(1205, 350)), isFalse);
+    expect(lab.contains(const Offset(1220, 322)), isFalse);
   });
 
   test('textiles stay above the mantel and within the side wall bays', () {
@@ -64,6 +89,22 @@ void main() {
       expect(bounds.overlaps(const Rect.fromLTWH(945, 90, 345, 400)), isFalse);
       expect(bounds.overlaps(const Rect.fromLTWH(410, 395, 325, 170)), isFalse);
     }
+  });
+
+  test('textile bounds clear the standard avatar and Hallowed bookshelf', () {
+    const size = Size(1024, 1024);
+    for (final gallery in [false, true]) {
+      expect(
+          QuestwellHearthDecor.wallArtBounds(size, 'wall_center',
+                  profileKey: 'wall_textile', galleryWall: gallery)
+              .bottom,
+          lessThan(180));
+    }
+    expect(
+        QuestwellHearthDecor.wallArtBounds(const Size(1536, 1024), 'wall_right',
+                hallowed: true, profileKey: 'wall_textile')
+            .bottom,
+        lessThan(350));
   });
 
   test('gallery groups keep visible gaps and the established wall slots', () {
@@ -103,7 +144,14 @@ void main() {
       await tester.binding.setSurfaceSize(Size(width, width));
       for (final room in EvergreenHearthFixture.rooms) {
         for (final art in EvergreenHearthFixture.names.keys) {
-          for (final slot in ['wall_center', 'wall_left', 'wall_right']) {
+          for (final slot in [
+            'wall_center',
+            'wall_left',
+            'wall_right',
+            'gallery'
+          ]) {
+            final gallery = slot == 'gallery';
+            final wallSlot = gallery ? 'wall_center' : slot;
             final height = width / (room.usesHallowedLayout ? 1.5 : 1);
             await tester.pumpWidget(MaterialApp(
                 home: Scaffold(
@@ -122,9 +170,13 @@ void main() {
                               hearthRenderBySlug:
                                   EvergreenHearthFixture.renders,
                               equippedSlugs: {
-                                (slot == 'wall_center'
+                                (wallSlot == 'wall_center'
                                     ? 'wall_art'
-                                    : 'wall_art:$slot'): art,
+                                    : 'wall_art:$wallSlot'): art,
+                                if (gallery) ...{
+                                  'wall_art:wall_left': 'fern-study',
+                                  'wall_art:wall_right': 'celestial-study',
+                                },
                                 'room:right': 'walnut-bookshelf',
                                 'room:front': 'burgundy-reading-chair',
                                 'room:side': 'walnut-reading-table',
@@ -140,23 +192,27 @@ void main() {
             });
             await tester.pump();
             expect(tester.takeException(), isNull);
-            expect(find.byType(QuestwellWallArt), findsOneWidget);
-            final wall =
-                tester.widget<QuestwellWallArt>(find.byType(QuestwellWallArt));
+            expect(
+                find.byType(QuestwellWallArt), findsNWidgets(gallery ? 3 : 1));
+            final wall = tester
+                .widgetList<QuestwellWallArt>(find.byType(QuestwellWallArt))
+                .firstWhere((w) => w.artSlug == art);
             expect(wall.artSlug, art);
-            expect(wall.wallSlot, slot);
+            expect(wall.wallSlot, wallSlot);
             expect(
                 find.byType(QuestwellHallowedSpiders),
                 room == QuestwellHearthSetting.hallowedHearth
                     ? findsOneWidget
                     : findsNothing);
             final rect = tester.getRect(find.byKey(ValueKey(
-                slot == 'wall_center'
+                wallSlot == 'wall_center'
                     ? 'hearth-wall-art-bounds'
-                    : 'hearth-$slot-art-bounds')));
+                    : 'hearth-$wallSlot-art-bounds')));
             final expected = QuestwellHearthDecor.wallArtBounds(
-                Size(width, height), slot,
-                hallowed: room.usesHallowedLayout, profileKey: 'wall_textile');
+                Size(width, height), wallSlot,
+                hallowed: room.usesHallowedLayout,
+                profileKey: 'wall_textile',
+                galleryWall: gallery);
             expect(rect, expected);
             // The same screenshots test the actual renderer, not a reconstruction.
             await tester.runAsync(() async {
@@ -175,6 +231,26 @@ void main() {
         }
       }
     }
+  });
+
+  testWidgets('rain uses the selected evergreen glass registration',
+      (tester) async {
+    for (final room in additions) {
+      await tester.pumpWidget(MaterialApp(
+          home: TickerMode(
+              enabled: false,
+              child: QuestwellHearthPixelScene(
+                  height: 400,
+                  immersive: true,
+                  showAvatar: false,
+                  setting: room,
+                  equippedSlugs: const {'room:window': 'rainy-window'}))));
+      final rain = tester
+          .widget<QuestwellRainyWindow>(find.byType(QuestwellRainyWindow));
+      expect(rain.glassMask, same(QuestwellWindowGeometry.glass(room.file)));
+      expect(tester.takeException(), isNull);
+    }
+    await tester.pumpWidget(const SizedBox());
   });
 
   testWidgets('room switch keeps the selected textile and saved slot semantics',
