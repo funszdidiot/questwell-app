@@ -1,10 +1,16 @@
 # Internal iOS TestFlight preparation
 
-Status: registered identity merged in PR #119 (`13230d5488b1af28996dad134d6f658c01f64836`).
-Postmerge Preview run `38014960131` passed identity, regression, coverage, unsigned
-iOS compile, build and deployment; Backend Harness `38014959611` also passed.
-Signing preparation is proposed below. No signed archive, TestFlight upload or
-iPhone acceptance is established. Overall release GO remains unchanged.
+Status (October 10, 2026): first real signed archive and IPA passed verification
+in run `38025532262`, job `114136922666`, source
+`67da08e966b10561a3e6de037de99a2270132c10`, version `1.0.0`, build `1.0.1`.
+PR #123 delivered signing; PR #129 registered its manual workflow on the default
+branch. Tanya approved the protected environment run. The signing profile UUID
+was `06e8e0c1-6c24-41b5-96f2-0176a1fbd0fd`; certificate SHA-1 was
+`E6C2751AC59A0FA7AAF3A9B9DF2271780C2D14BC`. IPA SHA-256:
+`8bb25188f72e73cb181fd90e3bd787dbde4d1ba277a517bf09cef1d75e4d6b42`.
+The IPA was disposable and was not uploaded. Apple processing, native auth,
+privacy/API review and iPhone acceptance remain open. Overall release GO is unchanged.
+Earlier preparation-only statements below describe the historical increments.
 
 ## First increment: Apple upload-compatible compiler
 
@@ -240,3 +246,91 @@ merged Apple identity and registered app; no distributed build is affected.
   https://developer.apple.com/documentation/xcode-release-notes/xcode-16-release-notes
 - Runner toolchain inventory:
   https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md
+
+## Fourth increment: optional Apple upload and native review evidence
+
+Tanya requested continuation after saving the Apple API key. This increment
+prepares the upload path; it does not activate it or claim an Apple delivery.
+The protected `ios-testflight` environment now has `ASC_API_PRIVATE_KEY` (full
+PEM, entered by Tanya), plus non-secret `ASC_API_KEY_ID` and `ASC_API_ISSUER_ID`
+variables. Their presence was verified; the key has not been authenticated by
+this workflow. Required founder review, development-only branch restriction and
+no administrator bypass remain in place.
+
+### Default archive and review
+
+`upload_to_testflight` defaults to false. The existing local signing/export
+procedure remains unchanged. After verifying the exported bundle, archive runs
+also retain the generated `Podfile.lock`, `native-review.json` and pinned
+`altool-help.txt`, with the existing validation report. The inventory includes
+embedded privacy manifest declarations/hashes, framework names, actual permission
+descriptions, URL schemes, deep-link switch and encryption declaration. It does
+not establish required-reason API coverage, SDK compliance, permission behavior
+or functional native authentication. No app data, private key, profile, IPA or
+archive is retained as a GitHub artifact.
+
+The first successful archive did not retain these files. Run a fresh archive-only
+build after this change is reviewed and merged. Review and commit its native
+dependency lockfile through a subsequent PR, reconcile any resolution drift,
+inspect privacy/API usage and the pinned altool interface, and resolve the native
+authentication return contract with the separately required approval. Device
+acceptance follows delivery to the founder; it is not falsely marked complete here.
+
+### Upload activation and delivery contract
+
+Before enabling upload, finish the native reviews above, record their evidence
+and required CI/reviews on the final source revision, verify Apple agreements and
+an unused build number, and obtain founder approval for that specific upload.
+Then set environment variable `IOS_UPLOAD_APPROVED_SHA` to that exact 40-character
+source SHA. It is deliberately unset during preparation. A new source revision
+requires a new review/approval; do not set it merely to get a workflow past a gate.
+The default-branch registration stub needs the same new boolean input before
+the optional upload can be selected in GitHub's manual-dispatch UI. Updating that
+stub is a separate small PR; it must retain its unconditional fail-closed behavior
+and must not promote the app to `flutterflow`.
+
+Select `questwell-dev`, the exact source SHA, an unused build number and
+`upload_to_testflight: true`. Preflight requires the approved SHA, first run
+attempt, pinned Xcode and a committed, unchanged `ios/Podfile.lock` before signing.
+The upload step runs only after signing succeeds in the same hosted macOS job.
+Only that step receives the API private key; build tools never receive it.
+
+`python3 -m tool.ci.ios_upload` verifies run/source/app/build provenance, native
+lock/review hashes and the exact IPA hash, checks the pinned altool interface and
+validates the PEM key without logging it. The key exists only in a private
+temporary directory with file mode 0600 and is removed on success/failure.
+GitHub-hosted VM disposal covers hard termination. Apple validation must return
+positive structured success before a single upload to app `6821206348` is attempted.
+No retries, tester notifications, group assignments, export-compliance answers,
+external beta review or public release are automated.
+
+The response parser fails closed on unknown JSON shapes, Apple errors (including
+errors with exit code zero), timeouts and ambiguous results. Its fixtures are
+synthetic; the pinned runner's real response format still needs confirmation.
+An ambiguous upload may already have reached Apple: inspect App Store Connect
+before any new dispatch. Never treat a failed job as proof nothing was uploaded.
+
+`apple-delivery.json` records attempted/confirmed delivery separately from Apple
+processing. Sanitized evidence is retained even after upload failure, for seven
+days. `validation.json` remains the earlier archive-only snapshot with
+`uploaded: false`; the delivery report is authoritative for the later upload step.
+No command output or private material is included in delivery errors/artifacts.
+After confirmed upload, independently verify Apple's matching app/version/build,
+processing result and export compliance before founder internal tester access.
+
+### Verification and rollback
+
+Local credential-free coverage: 18 signing tests, 12 upload tests, five identity
+tests and 18 workflow security tests. Upload tests exercise hash/run/source drift,
+explicit approval and opt-in, lockfile requirements, key cleanup, validation
+failure, post-validation IPA changes, zero-exit errors and uncertain timeouts.
+Fresh remote CI and independent final-diff review remain required before merge.
+Linux tests do not establish real Apple authentication, validation or processing.
+
+Rollback: clear `IOS_UPLOAD_APPROVED_SHA` to disable delivery, or revert this
+increment through review while preserving the registered identity and signing
+secrets. Neither action removes a build already delivered to Apple.
+
+Official upload references checked October 10, 2026:
+- https://docs.flutter.dev/deployment/ios
+- https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds/
