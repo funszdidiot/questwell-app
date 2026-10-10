@@ -88,6 +88,11 @@ void main() {
     now = now.add(const Duration(seconds: 30));
     await tapControl(tester, 'Pause');
     expect(find.text('24:30'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.textContaining('Your timer is paused here.'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.textContaining('Your timer is paused here.'), findsOneWidget);
     expect(find.textContaining('Your progress is safe'), findsNothing);
     now = now.add(const Duration(hours: 2));
