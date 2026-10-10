@@ -1,4 +1,5 @@
 import {exerciseExportSchema} from './export-schema-forward.mjs';
+import {exerciseEvergreenCandidate} from './evergreen-forward.mjs';
 import {exerciseMagicForward} from './magic-forward.mjs';
 import {exerciseHouseholdForward} from './household-forward.mjs';
 import {exerciseAutumnForward} from './autumn-forward.mjs';
@@ -539,6 +540,7 @@ try {
   // Keep the candidate schema in this disposable database for full backup/restore coverage.
   runHardeningPayload(resolve(source, '../../supabase/migrations/20261009044431_decorate_hearth_layouts.sql'));
   exerciseAutumnForward({source, workdir, run, runPayload: runHardeningPayload});
+  exerciseEvergreenCandidate({source, workdir, run, runPayload: runHardeningPayload});
   exerciseHouseholdForward({source, workdir, run, runPayload: runHardeningPayload});
   exerciseMagicForward({source, workdir, run, runPayload: runHardeningPayload});
   // Fresh HTTP pool after preceding database/API resets; never retry signup writes.

@@ -2,16 +2,15 @@
 
 ## Evergreen gallery wall — October 10, 2026
 
-**QA / PR #139.** All five approved artworks are ingested unchanged: three
-textiles and two non-seasonal Hallowed-layout skins. Gallery compositions reuse
-the existing wall slots and two architectural maps. Initial CI passed all six
-new Hearth tests with 72 renderer captures; an existing room-list test omission
-was corrected. Visual review found avatar/bookcase occlusion and distinct window
-mullions; placement and per-art glass corrections are under fresh CI and capture
-review. Tanya’s “Send it” authorizes the development review delivery after checks.
-Market activation, pricing, account persistence and Guardian eligibility remain
-pending. No live-account availability is claimed.
-See `../releases/evergreen-hearth/CONTRACT.md`.
+**DEV DEPLOYED (visual review) / QA (account candidate).** PR #139 delivered all
+five unchanged artworks and corrected gallery/window placement at `c97bd48`.
+Preview run `38067855821`, served revision, five asset hashes and phone/desktop
+live galleries were verified. The account candidate adds one textile profile,
+three wall mappings, five inactive items and three render registrations; its
+disposable tests cover purchases, class/slot checks, saved layouts and rollback.
+Proposed prices are 120 coins per hanging and 300 per room. Pricing and activation
+await Tanya; no account availability, inventory grant or production promotion is
+claimed. See `../releases/evergreen-hearth/ACCOUNT_RELEASE.md`.
 
 ## Halloween wrists and hip drape — October 10 follow-up
 
