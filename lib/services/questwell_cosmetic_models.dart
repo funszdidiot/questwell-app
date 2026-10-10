@@ -103,11 +103,11 @@ class QuestwellHearthRenderSpec {
       json = {
         ...json,
         'asset_path':
-            'assets/images/questwell/hearth/witchlight_bookcase_front_v2.webp',
-        'canvas_width': 1024,
-        'canvas_height': 1536,
-        'visible_base': 1507 / 1536,
-        'asset_revision': 2,
+            'assets/images/questwell/hearth/witchlight_bookcase_front_v3.webp',
+        'canvas_width': 1182,
+        'canvas_height': 1330,
+        'visible_base': 1279 / 1330,
+        'asset_revision': 3,
       };
     }
     return QuestwellHearthRenderSpec(

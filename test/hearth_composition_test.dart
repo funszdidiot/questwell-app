@@ -286,8 +286,8 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     final spec = renders['witchlight-bookcase']!;
-    expect(spec.assetRevision, 2);
-    expect(spec.assetPath, endsWith('witchlight_bookcase_front_v2.webp'));
+    expect(spec.assetRevision, 3);
+    expect(spec.assetPath, endsWith('witchlight_bookcase_front_v3.webp'));
     for (final room in [
       'original',
       'hallowed-hearth',

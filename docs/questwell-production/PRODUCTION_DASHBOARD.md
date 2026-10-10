@@ -4,7 +4,7 @@
 
 **QA.** Tanya requested a redesign for the established room depth and camera.
 Versioned frontal artwork preserves its Halloween identity and registers the
-level plinth to the existing rear-wall contacts. Both spatial maps, historical
+level plinth and wider three-tier silhouette to the existing rear-wall contacts. Both spatial maps, historical
 art and all account/catalog state stay fixed. CI exports and delivered review
 are pending. Evidence: `../releases/witchlight-bookcase-v2/README.md`.
 

@@ -15,10 +15,10 @@ void main() {
   };
   test('old catalog bookcase resolves artwork and floor contact together', () {
     final spec = QuestwellHearthRenderSpec.fromJson(old);
-    expect(spec.assetPath, endsWith('witchlight_bookcase_front_v2.webp'));
-    expect(spec.assetRevision, 2);
-    expect(spec.aspectRatio, 1024 / 1536);
-    expect(spec.visibleBase, 1507 / 1536);
+    expect(spec.assetPath, endsWith('witchlight_bookcase_front_v3.webp'));
+    expect(spec.assetRevision, 3);
+    expect(spec.aspectRatio, 1182 / 1330);
+    expect(spec.visibleBase, 1279 / 1330);
     expect(spec.shadowProfile, 'wide_plinth');
     expect(spec.renderKind, 'static_sprite');
     expect(spec.pixelated, isTrue);
