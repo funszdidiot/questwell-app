@@ -41,3 +41,5 @@ jobs:
           AWS_EC2_METADATA_DISABLED: 'true'
           QUESTWELL_RECOVERY_TEN_FILES_APPROVED: 'true'
         run: '"$RUNNER_TEMP/recovery-venv/bin/python" tool/backups/recovery_restore.py'
+
+# Legacy 404s require successful same-key private fixture reads before and after.
