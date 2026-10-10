@@ -1,0 +1,72 @@
+name: Questwell seven-day Storage backup
+
+on:
+  schedule:
+    - cron: '23 7 10-16 10 *'
+  workflow_dispatch:
+  push:
+    branches: [questwell-backup-schedule-20261010]
+  pull_request:
+    branches: [flutterflow]
+    paths:
+      - '.github/workflows/questwell-storage-seven-day.yml'
+      - 'tool/backups/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: questwell-storage-backup
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      copy: ${{ steps.window.outputs.copy }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Test with synthetic files and no secrets
+        run: python3 -m unittest discover -s tool/backups -p 'test_*.py' -v
+      - name: Check approved seven-date event window
+        id: window
+        env:
+          QUESTWELL_SCHEDULED_BACKUP_APPROVED: 'true'
+        run: |
+          python3 - <<'PY'
+          import datetime as dt, os, sys
+          sys.path.insert(0, 'tool/backups')
+          from scheduled_backup import permitted_snapshot
+          permitted = permitted_snapshot(os.environ, dt.datetime.now(dt.timezone.utc)) is not None
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('copy=' + str(permitted).lower() + '\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as output:
+              output.write('Seven-date schedule eligible: ' + str(permitted) + '\n')
+          PY
+
+  backup:
+    needs: validate
+    if: needs.validate.outputs.copy == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: questwell-backups
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install hash-locked SDK without secrets
+        run: |
+          python3 -m venv "$RUNNER_TEMP/backup-venv"
+          "$RUNNER_TEMP/backup-venv/bin/pip" install --require-hashes --only-binary=:all: -r tool/backups/requirements.lock
+      - name: Copy and verify approved daily snapshot
+        env:
+          QUESTWELL_SCHEDULED_BACKUP_APPROVED: ${{ vars.QUESTWELL_SCHEDULED_BACKUP_APPROVED }}
+          SUPABASE_STORAGE_ACCESS_KEY_ID: ${{ secrets.SUPABASE_STORAGE_ACCESS_KEY_ID }}
+          SUPABASE_STORAGE_SECRET_ACCESS_KEY: ${{ secrets.SUPABASE_STORAGE_SECRET_ACCESS_KEY }}
+          B2_KEY_ID: ${{ secrets.B2_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+        run: '"$RUNNER_TEMP/backup-venv/bin/python" tool/backups/scheduled_backup.py'
