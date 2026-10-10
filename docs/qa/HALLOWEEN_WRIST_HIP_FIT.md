@@ -8,6 +8,8 @@ Source images, prompts, source-traced masks, final native/enlarged light/dark co
 
 Independent visual review: PASS all six. Initial extraction attempts were rejected for seams, fringe and shoulder clipping; only the final reviewed set is integrated. Export asserts locked input hashes and unobscured original hand components. Existing tests cover all 30 body/class/costume routes, decoding and same-body equip/unequip/reload at narrow/wide widths. Historical RGB-preservation tests continue checking historical assets explicitly.
 
+PR #136 review identified thin neutral rear-side hem fragments missed in the initial visual pass. Full-height cleanup removes them; an independent follow-up passed all eight revised neutral composites with continuous center lining and no new wrist, hip or hem holes. Other four variants remain unchanged.
+
 Development CI and hosted verification are pending; final revision, served hashes and runtime checks belong in the PR delivery comment. No pricing, availability, inventory/account or database changes. No production promotion, physical-device acceptance or new founder art lock is claimed.
 
 Rollback: restore prior `assetPath` version selection; historical assets remain intact.

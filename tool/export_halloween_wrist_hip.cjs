@@ -51,7 +51,7 @@ for(const spec of specs){
   if(body==='female'&&y<86)previous.copy(front,i,i,i+4);
   if(y<103)front.copy(collar,i,i,i+4);
   // Remove inherited side rectangles as a continuous full rear-side region.
-  if(body==='neutral'&&y<238&&(x<105||x>139))rear[i+3]=0;
+  if(body==='neutral'&&(x<105||x>139))rear[i+3]=0;
   // Source side cloth belongs behind the whole original hand, including outline.
   if(handMask.has(y*240+x)){
    // Garment pixels beneath the hand are hidden by the unchanged full body.

@@ -66,7 +66,7 @@
         },
         "rear": {
           "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/rear_fit_v4.webp",
-          "sha256": "b010a3c2f1c381d7b5e0b38478bb6da15e90c12c2402b6df877c6ebcb4e40206"
+          "sha256": "5ac9aa4c21668bbed0f86bb8298c64132cf757941bc2a17aec88bca43091d9c3"
         },
         "cuffs": {
           "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/cuffs_fit_v4.webp",
@@ -93,7 +93,7 @@
         },
         "rear": {
           "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/rear_fit_v4.webp",
-          "sha256": "22db233de7d20cc47ef169c400fe1792626e36a9b3ea0a022a2e9e7aa8001bc1"
+          "sha256": "2c69f4936b59e96d060fb7534b32ab6046c45d5d9d5d79538e17d48766742cac"
         },
         "cuffs": {
           "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/cuffs_fit_v4.webp",
@@ -159,5 +159,6 @@
         }
       }
     }
-  ]
+  ],
+  "followup": "PR136 identified neutral rear-side hem fragments missed in the initial PASS. Full-height rear-side cleanup removes them. Independent follow-up inspected all eight regenerated neutral composites: PASS; fragments gone, continuous center lining, no new wrist/hip/hem holes or body clipping. Other four variants unchanged."
 }
