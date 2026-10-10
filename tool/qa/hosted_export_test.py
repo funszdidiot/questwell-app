@@ -2,12 +2,13 @@
 import os, json, urllib.request, urllib.error, hashlib, base64, sys
 BASE='https://hpjzfytwivlpsdhiupyd.supabase.co'
 KEY='sb_publishable_XhQBsZ28qqCnZkLzo4WMOg_948v9PIz'
-def request(path, token=None, payload=None):
+def request(path, token=None, payload=None, raw=None, method="POST"):
     headers={'apikey':KEY}
     if token: headers['Authorization']='Bearer '+token
     if payload is not None: headers['Content-Type']='application/json'
-    data=json.dumps(payload).encode() if payload is not None else b''
-    req=urllib.request.Request(BASE+path,data=data,headers=headers,method='POST')
+    if raw is not None: headers['Content-Type']='image/png'
+    data=raw if raw is not None else (json.dumps(payload).encode() if payload is not None else (None if method=='GET' else b''))
+    req=urllib.request.Request(BASE+path,data=data,headers=headers,method=method)
     try:
         with urllib.request.urlopen(req,timeout=35) as response:
             body=response.read(45*1024*1024+1)
@@ -36,7 +37,13 @@ def run():
             print('Auth result: '+str((auth or {}).get('safe_code') or 'unclassified'))
             raise RuntimeError('staging sign-in failed')
         token=auth['access_token'];owner=auth['user']['id']
-        step='download'
+        step='fixture-upload'
+        if owner!='2e0c217b-950b-4122-8fc5-9e37fced985e':raise RuntimeError('unexpected fixture account')
+        png=base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jG2kAAAAASUVORK5CYII=')
+        status,_,_=request('/storage/v1/object/beta-feedback/'+owner+'/export-probe-20261010.png',token,raw=png)
+        if status not in (200,201,400,409):raise RuntimeError('fixture upload failed')
+        # Existing objects are never overwritten. Export validates the exact fixture hash below.
+        step='download' 
         status,headers,export=request('/functions/v1/export-account',token)
         if status!=200: raise RuntimeError('authenticated export failed (check rate interval and fixture)')
         step='validate-export'
@@ -48,6 +55,7 @@ def run():
         for item in export['attachments']:
             raw=base64.b64decode(item['data'],validate=True)
             if not item['path'].startswith(owner+'/') or len(raw)!=item['size'] or hashlib.sha256(raw).hexdigest()!=item['sha256']:raise RuntimeError('attachment integrity failed')
+        if not any(item['path']==owner+'/export-probe-20261010.png' and item['sha256']==hashlib.sha256(png).hexdigest() for item in export['attachments']):raise RuntimeError('fixture missing or changed')
         if 'no-store' not in {k.lower():v for k,v in headers.items()}.get('cache-control',''):raise RuntimeError('private cache policy missing')
         step='rate-limit'
         status,_,_=request('/functions/v1/export-account',token)
