@@ -214,6 +214,21 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('late read recovers a silently changed account', (tester) async {
+    final old = Completer<List<TasksRow>>();
+    final h = _HomeHarness()..tasks = () => old.future;
+    await _mount(tester, h.app());
+    h.owner = 'B';
+    h.tasks = () async => [_task('B')];
+    old.complete([_task('A')]);
+    await _frames(tester);
+    await _frames(tester);
+    expect(find.text('A quest'), findsNothing);
+    expect(find.text('B quest'), findsOneWidget);
+    expect(h.reads, 2);
+    expect(tester.takeException(), isNull);
+  });
+
   for (final rejected in [false, true]) {
     testWidgets(
         'old account ${rejected ? 'error' : 'success'} cannot release a new completion',

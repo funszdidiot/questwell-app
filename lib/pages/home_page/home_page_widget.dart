@@ -627,6 +627,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     final generation = _accountGeneration;
                     final request = _tasksFuture;
                     if (owner != widget.currentOwner()) {
+                      _scheduleAccountReconciliation();
                       return const SizedBox.shrink();
                     }
                     if (snapshot.hasError) {
