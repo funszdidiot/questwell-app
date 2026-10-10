@@ -1,5 +1,23 @@
 {
   "status": "independent_visual_review_pending",
+  "smoothEnlargementEvidence": {
+    "light_smooth_enlarged.png": {
+      "sha256": "048a79b533259a17b5ddf7fd2372945a46d0092ae5595f62c83a02097635450f",
+      "size": [
+        720,
+        960
+      ],
+      "filter": "BICUBIC per RGBA layer before depth-ordered composition"
+    },
+    "dark_smooth_enlarged.png": {
+      "sha256": "e76b310890bad22aaffd97b9df3ded9e92a33e57538fcda51ae4e6097280a6b5",
+      "size": [
+        720,
+        960
+      ],
+      "filter": "BICUBIC per RGBA layer before depth-ordered composition"
+    }
+  },
   "canvas": [
     240,
     320

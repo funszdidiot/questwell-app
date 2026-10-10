@@ -82,9 +82,17 @@ def main():
         canvas.alpha_composite(composite)
         canvas.convert('RGB').save(ART/f'{name}_native.png')
         canvas.resize((720, 960), Image.Resampling.NEAREST).convert('RGB').save(ART/f'{name}_enlarged.png')
+        # Runtime scales each RGBA layer separately with a smooth filter. Do
+        # the same before compositing to expose filtered alpha/seam defects,
+        # rather than merely smoothing the already-flattened native composite.
+        smooth = Image.new('RGBA', (720, 960), color)
+        for layer in layers:
+            smooth.alpha_composite(layer.resize((720, 960), Image.Resampling.BICUBIC))
+        smooth.convert('RGB').save(ART/f'{name}_smooth_enlarged.png')
     for path, expected in original_files.items():
         assert sha(ROOT/path) == expected, f'Existing asset changed: {path}'
-    (ART/'exports.json').write_text(json.dumps({'status': 'independent_visual_review_pending', 'canvas': [240, 320], 'sourceSha256': sha(ART/'surface_source.png'), 'layers': output, 'existingAssetCount': len(original_files), 'existingAssetsUnchanged': True, 'bodySha256': sha(ROOT/locked['body']), 'identitySha256': sha(ROOT/locked['identity'])}, indent=2)+'\n')
+    visual_evidence = {name: {'sha256': sha(ART/name), 'size': [720, 960], 'filter': 'BICUBIC per RGBA layer before depth-ordered composition'} for name in ['light_smooth_enlarged.png', 'dark_smooth_enlarged.png']}
+    (ART/'exports.json').write_text(json.dumps({'status': 'independent_visual_review_pending', 'smoothEnlargementEvidence': visual_evidence, 'canvas': [240, 320], 'sourceSha256': sha(ART/'surface_source.png'), 'layers': output, 'existingAssetCount': len(original_files), 'existingAssetsUnchanged': True, 'bodySha256': sha(ROOT/locked['body']), 'identitySha256': sha(ROOT/locked['identity'])}, indent=2)+'\n')
     print(f'Exported 3 versioned robe surface layers; all {len(original_files)} existing avatar assets unchanged; alpha exact.')
 
 

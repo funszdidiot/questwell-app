@@ -19,7 +19,11 @@ The built-in imagegen edit used `male_locked_clothes.png` as the geometry target
 and the previous Pumpkin Court male surface as the palette/ornament reference.
 The generated PNG is preserved in `tool/art_assets/male_pumpkin_court_fit_v2/`.
 Its complete prompt, export hashes, independent review, pinned Python dependency
-versions and native/enlarged light/dark composites are in that folder.
+versions and native/enlarged light/dark composites are in that folder. Smooth
+enlargements resize each RGBA layer with bicubic interpolation before composition,
+following the runtime layer order; nearest-neighbor views remain for pixel QA.
+These deterministic diagnostics approximate the high-quality runtime filtering
+behavior without claiming to be a Flutter engine capture.
 
 ## Verification
 
@@ -30,10 +34,15 @@ versions and native/enlarged light/dark composites are in that folder.
   at native and enlarged sizes, on light and dark backgrounds. Lapels are more
   even, cuffs join coherently, and full hands/thumbs remain exposed. Existing
   small elbow contour steps and dark shoulder caps are inherited, not new gaps.
+- Independent smooth-enlargement QA also passed both per-layer bicubic
+  light/dark views: no filtering halos, alpha seams or disconnected collar joins;
+  cuffs and lapels remained continuous. Exact reviewed PNG hashes are recorded.
 - Added Flutter tests for decoded versioned bundles, exact alpha preservation,
   narrow body/costume selection across all classes, and unchanged male foundation
   across equip/unequip/rebuild. Flutter runtime tests require existing CI; no
-  local Flutter execution is claimed.
+  local Flutter execution is claimed. PR #121 CI initially stopped on the
+  unnecessary `dart:typed_data` test import; that import is removed. The CI rerun
+  and delivered runtime remain pending at this record.
 - Backend contract, RLS and rewards are unchanged; no migration is involved.
 
 Not verified at this record: delivered hosted runtime, physical iPhone, and
@@ -50,5 +59,5 @@ all original assets remain available.
 Official API references checked: Pillow Image module
 (https://pillow.readthedocs.io/en/stable/reference/Image.html), SciPy
 `map_coordinates` and `distance_transform_edt` reference pages, NumPy `interp`
-reference page, and Flutter `Image.toByteData` documentation. No app dependency
+reference page, and Flutter `Image.toByteData` / `FilterQuality.high` documentation. No app dependency
 or Flutter SDK version changed.
