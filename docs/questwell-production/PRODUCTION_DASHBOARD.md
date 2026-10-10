@@ -1,5 +1,13 @@
 # Questwell Production Dashboard
 
+## Male Pumpkin Court dark bands — October 10, 2026
+
+**QA / independent export visual review passed.** Scoped front/rear RGB cleanup
+preserves exact garment alpha and every locked body/identity asset. Other outfits
+and account policy unchanged. CI, merge and hosted verification pending; local
+Flutter was safety-blocked and no local runtime pass is claimed.
+Evidence: `../qa/PUMPKIN_COURT_DARK_BANDS.md`.
+
 ## Two architectural furniture maps — October 9 follow-up
 
 **QA / independent visual review passed.** Tanya clarified shared placement across skins in each of two structural
