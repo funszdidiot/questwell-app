@@ -44,21 +44,19 @@ void main() {
               final offset = (y * 240 + x) * 4;
               expect(after.getUint8(offset + 3), before.getUint8(offset + 3));
               final allowed = switch (layer) {
-                'cuffs' =>
-                  body == 'female'
-                      ? y >= 163 && y <= 174
-                      : body == 'neutral'
-                      ? y >= 165 && y <= 185
-                      : y >= 163 && y <= 176,
+                'cuffs' => body == 'female'
+                    ? y >= 163 && y <= 174
+                    : body == 'neutral'
+                        ? y >= 165 && y <= 185
+                        : y >= 163 && y <= 176,
                 'collar' => y >= 74 && y <= 92 && (x < 98 || x > 143),
-                _ =>
-                  (y >= 77 && y <= 151 && (x < 96 || x > 145)) ||
-                      (body == 'female'
-                          ? y >= 151 && y <= 162
-                          : body == 'neutral'
-                          ? y >= 163 && y <= 168
-                          : y >= 152 && y <= 163) ||
-                      (y >= 254 && y <= 294),
+                _ => (y >= 77 && y <= 151 && (x < 96 || x > 145)) ||
+                    (body == 'female'
+                        ? y >= 151 && y <= 162
+                        : body == 'neutral'
+                            ? y >= 163 && y <= 168
+                            : y >= 152 && y <= 163) ||
+                    (y >= 254 && y <= 294),
               };
               for (var channel = 0; channel < 3; channel++) {
                 if (before.getUint8(offset + channel) !=
@@ -115,16 +113,16 @@ void main() {
               expect(after.getUint8(offset + 3), before.getUint8(offset + 3));
               final allowed = layer == 'cuffs'
                   ? (body == 'female'
-                        ? y >= 163 && y <= 174
-                        : y >= 165 && y <= 185)
+                      ? y >= 163 && y <= 174
+                      : y >= 165 && y <= 185)
                   : (body == 'female' &&
-                            y >= 78 &&
-                            y <= 151 &&
-                            (x < 96 || x > 143)) ||
-                        (body == 'female'
-                            ? y >= 151 && y <= 162
-                            : y >= 163 && y <= 168) ||
-                        (y >= 260 && y <= 294);
+                          y >= 78 &&
+                          y <= 151 &&
+                          (x < 96 || x > 143)) ||
+                      (body == 'female'
+                          ? y >= 151 && y <= 162
+                          : y >= 163 && y <= 168) ||
+                      (y >= 260 && y <= 294);
               for (var channel = 0; channel < 3; channel++) {
                 if (before.getUint8(offset + channel) !=
                     after.getUint8(offset + channel)) {
@@ -173,7 +171,7 @@ void main() {
             expect(after.getUint8(offset + 3), before.getUint8(offset + 3));
             final allowed = layer == 'front'
                 ? (y >= 77 && y <= 151 && (x < 96 || x > 145)) ||
-                      (y >= 254 && y <= 282)
+                    (y >= 254 && y <= 282)
                 : y >= 262 && y <= 274;
             for (var channel = 0; channel < 3; channel++) {
               if (!allowed) {
@@ -225,7 +223,10 @@ void main() {
         );
         final repaired = await pixels(
           'assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/'
-          '$layer${const {'front', 'rear'}.contains(layer) ? '_v3' : '_v2'}.webp',
+          '$layer${const {
+            'front',
+            'rear'
+          }.contains(layer) ? '_v3' : '_v2'}.webp',
         );
         expect(repaired.lengthInBytes, original.lengthInBytes);
         for (var offset = 3; offset < original.lengthInBytes; offset += 4) {
