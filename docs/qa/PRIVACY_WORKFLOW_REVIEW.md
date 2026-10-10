@@ -1,6 +1,6 @@
 # Private export and feedback retention — review package
 
-Status: synthetic rehearsal complete; live adapters and activation pending.
+Status: synthetic rehearsal and authenticated HTTP adapter implemented; hosted verification and activation pending.
 No live data exported, delivered, deleted or scheduled by this change.
 
 ## What is implemented
@@ -50,17 +50,34 @@ performs deletion, even when a plan has no blockers.
 
 ## Remaining deployment work
 
-- Audit the existing export allowlist against the current schema. It currently
-  contains eight record groups; newer Hearth configuration tables are not yet
-  included. Do not call it a complete account export until reconciled.
-- Implement a server-side consistent/paginated owner-scoped collector and
-  conditional attachment reads; derive requester identity from a verified
-  server session, never a supplied owner ID or email address.
-- Implement durable private encrypted delivery storage and atomic redemption,
-  authenticated download, expiry cleanup, and audit records without payloads
-  or ticket values. Test recovery, concurrent redemption and delivery failure.
-- Test a hosted synthetic request through collection, package creation,
-  authenticated delivery and expiry before delivering any real user's data.
+- Read-only live schema audit on 2026-10-10 reconciled all 13 public tables:
+  eight account-owned groups are covered. The five remaining tables are shared
+  cosmetics/Hearth definitions, not missing user-owned record groups. Auth
+  records, orphaned uploads and device-local settings remain outside this scope.
+- The new `supabase/functions/export-account` adapter verifies identity via
+  Auth `/auth/v1/user`, reads only allowlisted fields under the caller's JWT/RLS,
+  requires exact page counts, bounds streamed responses, and returns JSON directly
+  to that requester with no-store/attachment headers. It never uses service-role
+  credentials, emails data, writes files or creates a public download URL.
+- Direct authenticated response is the candidate delivery approach; the earlier
+  15-minute ticket model remains a separate synthetic experiment. This endpoint
+  does not claim single-use ticket redemption or store a copy requiring expiry.
+- Deployment defaults OFF (`QUESTWELL_EXPORT_ENABLED`). Explicit exact origins
+  are configured through `QUESTWELL_EXPORT_ORIGINS`; requests without Origin
+  still require a valid bearer token. No deployment or secret change performed.
+- Before enabling: add verified active-session/deletion-fence enforcement,
+  durable request rate limits, and hosted two-account/revoked-session/load tests.
+  Auth user verification alone is not evidence of immediate logout revocation.
+- Re-reading all record groups detects visible drift but is NOT a transactional
+  database snapshot. Referenced attachments are fetched under Storage RLS and
+  hashed on receipt; the adapter does NOT yet prove immutable-version consistency.
+  Establish that guarantee before treating it as a complete point-in-time export.
+- Limits: 10,000 rows/group, 250-row exact-count pages, 2 MiB/page, 8 MiB serialized
+  record characters, 100 referenced attachments, 5 MiB/file and 25 MiB total
+  attachment bytes, 25-second upstream request deadline. Over-limit requests fail
+  without returning a partial export; larger-account handling remains pending.
+- Shared catalog labels may improve readability of cosmetic IDs later; neither
+  passwords/tokens nor internal feedback triage notes belong in this export.
 - Build the reviewed retention executor with a durable journal and conditional
   rechecks; rehearse failures and retries on disposable synthetic fixtures.
 - Apply no live purge, credential expansion, lifecycle policy or schedule until
@@ -74,4 +91,9 @@ incomplete inventories, changed bytes/version, 90-day boundary, backup blocking,
 shared retained references, changed plan and unresolved attachment references.
 The existing data-policy tests remain unchanged and run alongside these in CI.
 
-Run: `node --test tool/qa/data_policy_test.mjs tool/qa/privacy_workflow_test.mjs`
+The HTTP adapter tests cover identity injection, disabled mode, anonymous users,
+origin rejection, private attachment round trips, cross-owner references, changed
+records/authentication, streaming caps, user-scoped REST requests and exact-count
+pagination failures. These use synthetic transports, not live credentials.
+
+Run: `node --test tool/qa/data_policy_test.mjs tool/qa/privacy_workflow_test.mjs tool/qa/export_endpoint_test.mjs`

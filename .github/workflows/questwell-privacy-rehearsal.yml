@@ -7,6 +7,9 @@ on:
       - 'tool/support/**'
       - 'tool/qa/*privacy*'
       - 'tool/qa/data_policy_test.mjs'
+      - 'tool/qa/export_endpoint_test.mjs'
+      - 'supabase/functions/export-account/**'
+      - 'supabase/functions/_shared/data_policy.mjs'
       - '.github/workflows/questwell-privacy-rehearsal.yml'
 permissions:
   contents: read
@@ -19,4 +22,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Rehearse privacy controls without credentials or network adapters
-        run: node --test tool/qa/data_policy_test.mjs tool/qa/privacy_workflow_test.mjs
+        run: node --test tool/qa/data_policy_test.mjs tool/qa/privacy_workflow_test.mjs tool/qa/export_endpoint_test.mjs
