@@ -250,7 +250,7 @@ class QuestwellHearthDecor {
         math.min(scene.height * .76, scene.width * .62 * 4 / 3);
     final headTop = scene.height * .88 - avatarHeight * (310 - 9) / 320;
     final top = math.max(projected.top, scene.height * .035);
-    final height = math.min(projected.height, math.max(1, headTop - 3 - top));
+    final height = math.min(projected.height, math.max(1.0, headTop - 3 - top));
     final width = projected.width * height / projected.height;
     return Rect.fromLTWH(projected.center.dx - width / 2, top, width, height);
   }
