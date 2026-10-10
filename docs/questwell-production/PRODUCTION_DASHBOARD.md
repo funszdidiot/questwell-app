@@ -2,7 +2,7 @@
 
 ## Halloween wrists and hip drape — October 10 follow-up
 
-**QA / independent visual review passed.** Tanya rejected the remaining female cuff joins, neutral side rectangles and hip waviness. All six source-traced garment repairs now pass independent native/enlarged light/dark review. Foundations, original hands, underlays, masks, availability and prices remain unchanged. CI and delivered runtime verification pending. No new art lock. Evidence: `../qa/HALLOWEEN_WRIST_HIP_FIT.md`.
+**LOCKED / founder approved.** Tanya approved all six corrected Halloween costumes on October 10, 2026 after the final wrist, side-panel and hip-drape repair. Midnight Masquerade and Pumpkin Court are now locked for female, neutral and male avatars at the delivered PR #136 revision. Foundations, original hands, underlays, masks, availability and prices remain unchanged. This approval closes the prior male-only Pumpkin Court review and the superseding family-wide follow-up; do not reopen these exact fits without a new founder instruction. Evidence: `../qa/HALLOWEEN_WRIST_HIP_FIT.md` and PR #136.
 
 ## Midnight Masquerade edges — October 10, 2026
 
@@ -19,7 +19,7 @@ Evidence: `../qa/PUMPKIN_COURT_FAMILY_EDGES.md`.
 
 ## Male Pumpkin Court dark bands — October 10, 2026
 
-**DEV DEPLOYED / TANYA REVIEW.** PR #130 deployed `f7d6576` through Preview
+**LOCKED / superseded by family-wide founder approval.** PR #130 deployed `f7d6576` through Preview
 `38028925416`. Served revision and both repaired hashes match. Hosted light/dark
 inspection and outfit off/on passed. PR CI passed 1,076 regression, 27 decorator
 and 418 Chrome tests plus native/backend gates. Signed-in/device acceptance
