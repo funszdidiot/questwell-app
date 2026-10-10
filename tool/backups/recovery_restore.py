@@ -26,6 +26,9 @@ def restore_files(target, payload, manifest, expected):
     selected=[f for f in manifest['files'] if hashlib.sha256(f['key'].encode()).hexdigest() in expected]
     if len(selected)!=10 or len({f['key'] for f in selected})!=10:
         raise BackupError('unexpected restoration scope')
+    # Positive control with the same privileged key and private bucket.
+    if read_bounded(target.get_object(Bucket=p.BUCKET,Key=FIXTURE_KEY),len(REPLACEMENT)) != REPLACEMENT:
+        raise BackupError('recovery access control probe failed')
     pending=[]
     # Prove absence or exact existing bytes for every selected file before writes.
     for item in selected:
@@ -33,11 +36,18 @@ def restore_files(target, payload, manifest, expected):
             value=read_bounded(target.get_object(Bucket=p.BUCKET,Key=item['key']),item['size'])
         except Exception as exc:
             code=getattr(exc,'response',{}).get('Error',{}).get('Code')
-            if code!='NoSuchKey': raise BackupError('target absence not established') from None
+            status=getattr(exc,'response',{}).get('ResponseMetadata',{}).get('HTTPStatusCode')
+            # A metadata-only restored object can return a legacy/unparsed 404.
+            # Exact inventory was verified by run(); the same full-access S3 key
+            # must read the owned private fixture both before and after these reads.
+            if code!='NoSuchKey' and status!=404:
+                raise BackupError('target absence not established') from None
             pending.append(item)
         else:
             if len(value)!=item['size'] or hashlib.sha256(value).hexdigest()!=item['sha256']:
                 raise BackupError('existing target bytes differ')
+    if read_bounded(target.get_object(Bucket=p.BUCKET,Key=FIXTURE_KEY),len(REPLACEMENT)) != REPLACEMENT:
+        raise BackupError('recovery access control probe failed')
     with tarfile.open(fileobj=io.BytesIO(payload),mode='r:gz') as archive:
         for item in pending:
             value=archive.extractfile(item['member']).read(item['size']+1)
