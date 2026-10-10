@@ -1,0 +1,43 @@
+name: Questwell approved ten-file recovery
+on:
+  push:
+    branches: [questwell-b2-connection-check-20261010]
+    paths:
+      - '.github/workflows/questwell-recovery-restore.yml'
+permissions:
+  contents: read
+concurrency:
+  group: questwell-recovery-restore
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tool/backups -p 'test_recovery*.py' -v
+  preflight:
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/questwell-b2-connection-check-20261010'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: questwell-backups
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install hash-locked SDK without secrets
+        run: |
+          python3 -m venv "$RUNNER_TEMP/recovery-venv"
+          "$RUNNER_TEMP/recovery-venv/bin/pip" install --require-hashes --only-binary=:all: -r tool/backups/requirements.lock
+      - name: Restore approved ten files and verify every checksum
+        env:
+          B2_KEY_ID: ${{ secrets.B2_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
+          SUPABASE_RECOVERY_STORAGE_ACCESS_KEY_ID: ${{ secrets.SUPABASE_RECOVERY_STORAGE_ACCESS_KEY_ID }}
+          SUPABASE_RECOVERY_STORAGE_SECRET_ACCESS_KEY: ${{ secrets.SUPABASE_RECOVERY_STORAGE_SECRET_ACCESS_KEY }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+          QUESTWELL_RECOVERY_TEN_FILES_APPROVED: 'true'
+        run: '"$RUNNER_TEMP/recovery-venv/bin/python" tool/backups/recovery_restore.py'
