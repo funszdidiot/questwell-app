@@ -198,3 +198,31 @@ four-way concurrency, not broad load/stress certification. Deterministic hosted
 mutation-during-collection testing remains open. No production deployment,
 retention deletion, auth-policy change or additional account creation occurred.
 Rollback: revert runner commit `28b30cb14d64210a6b223c8009efd39773edbaa2`.
+
+
+## Deterministic live-data mutation integration PASSED — 2026-10-10
+
+Run https://github.com/funszdidiot/questwell-app/actions/runs/38029978905
+on commit `9993427d2d58701f8e7f8fca26ea33f5cb8ef72f` passed both hosted
+HTTP tests and the new `hosted_export_mutation_test.mjs` integration.
+
+The integration runs the unchanged handler in Node against the real hosted
+staging backend with the synthetic user's JWT. Instrumentation pauses after the
+first snapshot, changes only that user's display_name using the normal RLS-scoped
+REST API, and resumes. An actual attachment read completes; the second database
+snapshot observes the changed field. The handler returns exactly the generic
+HTTP 503 error and no export payload. Cleanup restores the original value via
+a conditional update, rereads it and logs out. A separate MCP database fingerprint
+comparison independently confirmed that the original profile value was restored.
+
+This is a deterministic handler/backend integration with hosted services, NOT a
+race injected into the deployed Edge Function's HTTP request. No deployed test
+hook or production code change was introduced. The deployed HTTP golden path,
+isolation, four-way concurrency and logout tests passed separately in the same
+run. Actual hosted file replacement during reads and broader load tests remain
+unverified; synthetic ETag/version/size rejection tests cover those logic paths.
+Production activation and retention deletion remain disabled.
+
+Rollback: revert `9993427d2d58701f8e7f8fca26ea33f5cb8ef72f` to remove the test
+and workflow step. No schema or auth-policy rollback is needed; the synthetic
+profile was restored.
