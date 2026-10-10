@@ -95,6 +95,8 @@ void main() {
     final slugs = <QuestwellHearthSetting, String>{
       QuestwellHearthSetting.original: 'original-hearth',
       QuestwellHearthSetting.hallowedHearth: 'hallowed-hearth',
+      QuestwellHearthSetting.madAlchemistsLab: 'mad-alchemists-lab',
+      QuestwellHearthSetting.guardiansKeep: 'guardians-keep',
       QuestwellHearthSetting.enchantedLibrary: 'enchanted-library',
       QuestwellHearthSetting.woodlandCottage: 'woodland-cottage',
       QuestwellHearthSetting.midnightHarvest: 'midnight-harvest',

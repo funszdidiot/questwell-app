@@ -1,5 +1,18 @@
 # Questwell Production Dashboard
 
+## Evergreen gallery wall — October 10, 2026
+
+**QA / PR #139.** All five approved artworks are ingested unchanged: three
+textiles and two non-seasonal Hallowed-layout skins. Gallery compositions reuse
+the existing wall slots and two architectural maps. Initial CI passed all six
+new Hearth tests with 72 renderer captures; an existing room-list test omission
+was corrected. Visual review found avatar/bookcase occlusion and distinct window
+mullions; placement and per-art glass corrections are under fresh CI and capture
+review. Tanya’s “Send it” authorizes the development review delivery after checks.
+Market activation, pricing, account persistence and Guardian eligibility remain
+pending. No live-account availability is claimed.
+See `../releases/evergreen-hearth/CONTRACT.md`.
+
 ## Halloween wrists and hip drape — October 10 follow-up
 
 **QA / independent visual review passed.** Tanya rejected the remaining female cuff joins, neutral side rectangles and hip waviness. All six source-traced garment repairs now pass independent native/enlarged light/dark review. Foundations, original hands, underlays, masks, availability and prices remain unchanged. CI and delivered runtime verification pending. No new art lock. Evidence: `../qa/HALLOWEEN_WRIST_HIP_FIT.md`.

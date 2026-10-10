@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'questwell_room_geometry.dart';
 import 'questwell_mastery_relic.dart';
 import 'package:flutter/material.dart';
 import 'questwell_bookshelf.dart';
@@ -121,7 +122,55 @@ class QuestwellHearthDecor {
 
   /// Two founder-selected architectural standards, in source-art coordinates.
   /// Both use the background's cover crop and preserve each frame aspect ratio.
-  static Rect wallArtBounds(Size scene, String slot, {bool hallowed = false}) {
+  static Rect wallArtBounds(Size scene, String slot,
+      {bool hallowed = false, String? profileKey, bool galleryWall = false}) {
+    if (galleryWall) {
+      // A statement textile and two companion frames form one gallery.
+      // Fit the whole group to the available wall, not each item in isolation.
+      final source = hallowed ? const Size(1536, 1024) : const Size(1024, 1024);
+      final geometry = QuestwellRoomGeometry(source, scene);
+      final rect = hallowed
+          ? (slot == 'wall_center'
+              ? const Rect.fromLTWH(444, 66, 248, 186)
+              : slot == 'wall_left'
+                  ? const Rect.fromLTWH(393, 110, 44, 86)
+                  : const Rect.fromLTWH(699, 110, 44, 86))
+          : (slot == 'wall_center'
+              ? const Rect.fromLTWH(392, 16, 240, 160)
+              : slot == 'wall_left'
+                  ? const Rect.fromLTWH(310, 50, 70, 120)
+                  : const Rect.fromLTWH(644, 50, 70, 120));
+      return Rect.fromLTWH(
+          geometry.point(rect.topLeft).dx,
+          geometry.point(rect.topLeft).dy,
+          rect.width * geometry.scale,
+          rect.height * geometry.scale);
+    }
+    if (profileKey == 'wall_textile') {
+      // One textile envelope per architectural map. Artwork is contained,
+      // never stretched; legacy framed-art envelopes remain unchanged.
+      final source = hallowed ? const Size(1536, 1024) : const Size(1024, 1024);
+      final geometry = QuestwellRoomGeometry(source, scene);
+      final center = slot == 'wall_center';
+      final rect = hallowed
+          ? (center
+              ? const Rect.fromLTWH(418, 42, 300, 216)
+              : slot == 'wall_left'
+                  ? const Rect.fromLTWH(170, 320, 140, 110)
+                  : const Rect.fromLTWH(1294, 210, 112, 90))
+          : (center
+              ? const Rect.fromLTWH(392, 16, 240, 160)
+              : slot == 'wall_left'
+                  ? const Rect.fromLTWH(300, 142, 100, 80)
+                  : const Rect.fromLTWH(624, 142, 100, 80));
+      return Rect.fromLTWH(
+        geometry.point(rect.topLeft).dx,
+        geometry.point(rect.topLeft).dy,
+        rect.width * geometry.scale,
+        rect.height * geometry.scale,
+      );
+    }
+
     final center = slot == 'wall_center';
     final source = hallowed ? const Size(1536, 1024) : const Size(1024, 1024);
     final scale = math.max(
@@ -186,9 +235,12 @@ class QuestwellHearthDecor {
     required String side,
     required Size scene,
     bool hallowed = false,
+    String? profileKey,
+    bool galleryWall = false,
     QuestwellHearthRenderSpec? renderSpec,
   }) {
-    final rect = wallArtBounds(scene, side, hallowed: hallowed);
+    final rect = wallArtBounds(scene, side,
+        hallowed: hallowed, profileKey: profileKey, galleryWall: galleryWall);
     return Positioned(
       key: ValueKey(side == 'wall_center'
           ? 'hearth-wall-art-bounds'

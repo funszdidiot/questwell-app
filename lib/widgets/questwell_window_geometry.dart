@@ -8,24 +8,29 @@ import 'questwell_room_geometry.dart';
 abstract final class QuestwellWindowGeometry {
   static const original = 'hearth_environment_v3';
   static const hallowed = 'hallowed_hearth_v1';
+  static const hallowedSkins = {
+    hallowed,
+    'mad_alchemists_lab_v1',
+    'guardians_keep_v1',
+  };
   static const library = 'enchanted_library_v1';
   static const rooms = [
     original,
-    hallowed,
+    ...hallowedSkins,
     library,
     'woodland_cottage_v1',
     'midnight_harvest_v1',
     'midnight_observatory_v1',
     'alchemists_workshop_v1',
     'astral_sanctuary_v1',
-    'emberglass_conservatory_v1'
+    'emberglass_conservatory_v1',
   ];
 
   static Size source(String room) {
     if (!rooms.contains(room)) throw ArgumentError.value(room, 'room');
     return room == original
         ? const Size(768, 768)
-        : room == hallowed
+        : hallowedSkins.contains(room)
             ? const Size(1536, 1024)
             : const Size(1254, 1254);
   }
@@ -40,7 +45,10 @@ abstract final class QuestwellWindowGeometry {
 
   static Path _buildGlass(String room) {
     if (room == original || room == hallowed) {
-      return QuestwellRainyWindowOverlay.panesFor(room == hallowed);
+      return QuestwellRainyWindowOverlay.panesFor(hallowedSkins.contains(room));
+    }
+    if (room == 'mad_alchemists_lab_v1' || room == 'guardians_keep_v1') {
+      return _evergreenGlass(keep: room == 'guardians_keep_v1');
     }
     final polygons = _panes[room];
     if (polygons == null) throw ArgumentError.value(room, 'room');
@@ -48,7 +56,7 @@ abstract final class QuestwellWindowGeometry {
     for (final polygon in polygons) {
       path.addPolygon([
         for (var i = 0; i < polygon.length; i += 2)
-          Offset(polygon[i], polygon[i + 1])
+          Offset(polygon[i], polygon[i + 1]),
       ], true);
     }
     if (room == 'alchemists_workshop_v1') {
@@ -59,8 +67,12 @@ abstract final class QuestwellWindowGeometry {
           final b = Offset(line[i + 2], line[i + 3]);
           final delta = b - a;
           final normal = Offset(-delta.dy, delta.dx) / delta.distance * 2.4;
-          leading.addPolygon(
-              [a - normal, b - normal, b + normal, a + normal], true);
+          leading.addPolygon([
+            a - normal,
+            b - normal,
+            b + normal,
+            a + normal,
+          ], true);
           leading.addOval(Rect.fromCircle(center: a, radius: 2.8));
           leading.addOval(Rect.fromCircle(center: b, radius: 2.8));
         }
@@ -68,6 +80,93 @@ abstract final class QuestwellWindowGeometry {
       path = Path.combine(PathOperation.difference, path, leading);
     }
     return path;
+  }
+
+  /// Source-art tracing: the Keep has no right-hand vertical mullion.
+  /// Room/furniture geometry stays shared; glass follows each painted frame.
+  static Path _evergreenGlass({required bool keep}) {
+    final glass = Path();
+    void polygon(List<Offset> points) => glass.addPolygon(points, true);
+    glass.addPath(
+      Path()
+        ..moveTo(979, 265)
+        ..quadraticBezierTo(982, 226, 1011, 189)
+        ..lineTo(1026, 207)
+        ..quadraticBezierTo(1034, 216, 1032, 227)
+        ..lineTo(1032, 315)
+        ..lineTo(979, 315)
+        ..close(),
+      Offset.zero,
+    );
+    polygon(const [Offset(1020, 181), Offset(1032, 169), Offset(1032, 209)]);
+    polygon(const [Offset(1053, 157), Offset(1066, 166), Offset(1053, 189)]);
+    glass.addPath(
+      Path()
+        ..moveTo(1053, 225)
+        ..quadraticBezierTo(1054, 201, 1074, 176)
+        ..quadraticBezierTo(1090, 190, 1091, 201)
+        ..quadraticBezierTo(1093, 207, 1089, 211)
+        ..quadraticBezierTo(1098, 213, 1098, 229)
+        ..lineTo(1098, 315)
+        ..lineTo(1053, 315)
+        ..close(),
+      Offset.zero,
+    );
+    glass.addPath(
+      Path()
+        ..moveTo(1114, 226)
+        ..quadraticBezierTo(1115, 185, 1163, 155)
+        ..quadraticBezierTo(keep ? 1238 : 1187, keep ? 203 : 170,
+            keep ? 1238 : 1199, keep ? 268 : 188)
+        ..lineTo(keep ? 1238 : 1199, 450)
+        ..lineTo(1114, 450)
+        ..close(),
+      Offset.zero,
+    );
+    if (!keep) {
+      glass.addPath(
+        Path()
+          ..moveTo(1212, 207)
+          ..quadraticBezierTo(1234, 238, 1234, 267)
+          ..lineTo(1234, 314)
+          ..lineTo(1212, 317)
+          ..close(),
+        Offset.zero,
+      );
+      polygon(const [
+        Offset(1212, 329),
+        Offset(1234, 326),
+        Offset(1234, 444),
+        Offset(1212, 440)
+      ]);
+    }
+    polygon(const [
+      Offset(979, 328),
+      Offset(1032, 328),
+      Offset(1032, 444),
+      Offset(979, 444)
+    ]);
+    polygon(const [
+      Offset(1053, 328),
+      Offset(1098, 328),
+      Offset(1098, 445),
+      Offset(1053, 445)
+    ]);
+    polygon(const [Offset(1067, 145), Offset(1084, 136), Offset(1079, 153)]);
+    polygon(const [Offset(1125, 136), Offset(1142, 145), Offset(1131, 152)]);
+    glass.addPath(
+      Path()
+        ..moveTo(1105, 132)
+        ..quadraticBezierTo(1118, 143, 1112, 151)
+        ..cubicTo(1126, 148, 1128, 165, 1112, 163)
+        ..quadraticBezierTo(1117, 172, 1106, keep ? 176 : 180)
+        ..quadraticBezierTo(1096, 172, 1100, 163)
+        ..cubicTo(1084, 167, 1084, 148, 1099, 151)
+        ..quadraticBezierTo(1094, 141, 1105, 132)
+        ..close(),
+      Offset.zero,
+    );
+    return glass;
   }
 
   static const _panes = <String, List<List<double>>>{
@@ -125,7 +224,7 @@ abstract final class QuestwellWindowGeometry {
         1230,
         169,
         1230,
-        361
+        361,
       ],
       [1246, 165, 1254, 161, 1254, 352, 1246, 355],
       [1161, 399, 1230, 382, 1230, 486, 1161, 493],
@@ -150,7 +249,7 @@ abstract final class QuestwellWindowGeometry {
         1219,
         150,
         1219,
-        239
+        239,
       ],
       [1235, 145, 1254, 138, 1254, 229, 1235, 234],
       [1157, 278, 1219, 260, 1219, 363, 1157, 375],

@@ -103,8 +103,10 @@ class _RoomArt extends CustomPainter {
 
 /// Only the glass layer repaints; room art and wooden framing remain cached.
 class QuestwellRainyWindow extends StatefulWidget {
-  const QuestwellRainyWindow({super.key, this.hallowed = false});
+  const QuestwellRainyWindow(
+      {super.key, this.hallowed = false, this.glassMask});
   final bool hallowed;
+  final Path? glassMask;
   @override
   State<QuestwellRainyWindow> createState() => _QuestwellRainyWindowState();
 }
@@ -137,15 +139,20 @@ class _QuestwellRainyWindowState extends State<QuestwellRainyWindow>
               animation: _rain,
               builder: (context, _) => CustomPaint(
                   painter: QuestwellRainyWindowOverlay(
-                      phase: _rain.value, hallowed: widget.hallowed)))));
+                      phase: _rain.value,
+                      hallowed: widget.hallowed,
+                      glassMask: widget.glassMask)))));
 }
 
 /// Glass coordinates are registered to hearth_environment_v2's 768px canvas.
 /// Match its cover crop exactly, leaving every wooden mullion unobscured.
 class QuestwellRainyWindowOverlay extends CustomPainter {
-  const QuestwellRainyWindowOverlay({this.phase = 0, this.hallowed = false});
+  const QuestwellRainyWindowOverlay(
+      {this.phase = 0, this.hallowed = false, this.glassMask});
   final double phase;
   final bool hallowed;
+
+  final Path? glassMask;
 
   /// Authored glass only; shared by rain and preview-only autumn effects.
   static Path panesFor(bool hallowed) {
@@ -299,12 +306,13 @@ class QuestwellRainyWindowOverlay extends CustomPainter {
     canvas.translate((size.width - source.width * scale) / 2,
         (size.height - source.height * scale) * .52);
     canvas.scale(scale);
-    canvas.clipPath(panesFor(hallowed));
+    canvas.clipPath(glassMask ?? panesFor(hallowed));
     final p = Paint()..color = const Color(0x99435762);
     canvas.drawRect(
-        hallowed
-            ? const Rect.fromLTWH(970, 170, 270, 280)
-            : const Rect.fromLTWH(720, 60, 50, 320),
+        glassMask?.getBounds() ??
+            (hallowed
+                ? const Rect.fromLTWH(970, 170, 270, 280)
+                : const Rect.fromLTWH(720, 60, 50, 320)),
         p);
     p.isAntiAlias = true;
     for (var i = 0; i < (hallowed ? 100 : 40); i++) {
@@ -335,5 +343,7 @@ class QuestwellRainyWindowOverlay extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant QuestwellRainyWindowOverlay oldDelegate) =>
-      oldDelegate.phase != phase || oldDelegate.hallowed != hallowed;
+      oldDelegate.phase != phase ||
+      oldDelegate.hallowed != hallowed ||
+      oldDelegate.glassMask != glassMask;
 }
