@@ -1,0 +1,35 @@
+name: Questwell B2 connection check
+
+on:
+  push:
+    branches: [questwell-b2-connection-check-20261010]
+    paths:
+      - '.github/workflows/questwell-b2-connection-check.yml'
+      - 'tool/backups/b2_connection_check.py'
+      - 'tool/backups/test_b2_connection_check.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: questwell-b2-connection-check
+  cancel-in-progress: false
+
+jobs:
+  synthetic-round-trip:
+    if: github.repository == 'funszdidiot/questwell-app' && github.ref == 'refs/heads/questwell-b2-connection-check-20261010'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment: questwell-backups
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify fail-closed behavior without credentials
+        run: python3 -m unittest discover -s tool/backups -p 'test_b2_connection_check.py' -v
+      - name: Upload and independently download one synthetic object
+        env:
+          B2_KEY_ID: ${{ secrets.B2_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
+        run: python3 tool/backups/b2_connection_check.py

@@ -1,0 +1,48 @@
+name: Questwell Storage backup (manual pilot)
+
+on:
+  push:
+    branches: [questwell-b2-connection-check-20261010]
+    paths:
+      - '.github/workflows/questwell-storage-backup.yml'
+      - 'tool/backups/storage_backup.py'
+      - 'tool/backups/test_storage_backup.py'
+      - 'tool/backups/requirements.lock'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: questwell-storage-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    if: github.repository == 'funszdidiot/questwell-app' && github.ref == 'refs/heads/questwell-b2-connection-check-20261010'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: questwell-backups
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install hash-locked SDK without source credentials
+        run: |
+          python3 -m venv "$RUNNER_TEMP/backup-venv"
+          "$RUNNER_TEMP/backup-venv/bin/pip" install --require-hashes --only-binary=:all: -r tool/backups/requirements.lock
+      - name: Verify backup failure handling with synthetic fixtures
+        run: '"$RUNNER_TEMP/backup-venv/bin/python" -m unittest discover -s tool/backups -p "test_*.py" -v'
+      - name: Report source-access gate
+        if: vars.QUESTWELL_LIVE_BACKUP_APPROVED != 'true'
+        run: echo 'Pilot code validated. Live transfer is disabled pending source-access approval; no files backed up.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Back up private source files and verify archive readback
+        if: vars.QUESTWELL_LIVE_BACKUP_APPROVED == 'true'
+        env:
+          QUESTWELL_LIVE_BACKUP_APPROVED: ${{ vars.QUESTWELL_LIVE_BACKUP_APPROVED }}
+          SUPABASE_STORAGE_ACCESS_KEY_ID: ${{ secrets.SUPABASE_STORAGE_ACCESS_KEY_ID }}
+          SUPABASE_STORAGE_SECRET_ACCESS_KEY: ${{ secrets.SUPABASE_STORAGE_SECRET_ACCESS_KEY }}
+          B2_KEY_ID: ${{ secrets.B2_KEY_ID }}
+          B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
+          AWS_EC2_METADATA_DISABLED: 'true'
+        run: '"$RUNNER_TEMP/backup-venv/bin/python" tool/backups/storage_backup.py'
