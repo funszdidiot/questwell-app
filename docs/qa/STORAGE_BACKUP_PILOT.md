@@ -1,5 +1,44 @@
 # Storage backup pilot — verified one-time live copy
 
+## Recovery isolation and file-transfer decision — 2026-10-10 03:24 UTC
+
+Read-only SQL role simulation PASSED in the recovery target. For each of all
+five restored Auth users, transaction-local JWT claims and authenticated role
+could not see other owners' rows in users, tasks, boss_battles, user_cosmetics,
+or beta_feedback. Storage SELECT returned zero without a session claim.
+All session settings rolled back. No credentials, account data, or session
+tokens were returned. This is SQL/RLS simulation, not actual Auth sign-in,
+owner-positive API access or complete grant/security audit.
+
+All ten restored file records have a single non-null owner; folder prefix
+matches owner_id in every case. Actual source bytes are not yet recovered.
+
+Prepared transfer scope for founder decision:
+- Read only the verified B2 snapshot 20261010T024417Z-9129f3e518c846bbb307b3588b94c56b.
+- Destination only czubumijsibtgjwekdpt / private beta-feedback.
+- Reconcile exactly ten pre-backup metadata paths against the archive, with
+  size and checksum checks; exclude the one post-backup file.
+- Before private-file writes, validate privileged upsert ownership behavior on
+  a separate synthetic probe in this recovery project. Current upstream
+  supabase/storage src/storage/database/pg.ts writeCurrentVersion omits
+  undefined owner fields from update clauses; this is not proof of the deployed
+  version. Stop on owner/version ambiguity; do not SQL-edit Storage metadata.
+- Recheck target metadata, require missing file bytes, preserve owner IDs and
+  paths, upload via supported Storage API, read back and hash every restored
+  file, then independently verify ownership/policies.
+- New dedicated recovery-project S3 key pair would grant full Storage access
+  to that target (not read-only). Proposed GitHub environment secret names:
+  SUPABASE_RECOVERY_STORAGE_ACCESS_KEY_ID and
+  SUPABASE_RECOVERY_STORAGE_SECRET_ACCESS_KEY in questwell-backups.
+  No source key expansion or database/Auth service-role key is proposed.
+- Runner implementation/validation and exact reviewed execution approval must
+  precede any real-file upload. No runnable restore job or target key has been
+  created at this checkpoint. B2 copy destination is a new private-data scope
+  relative to the earlier backup approval.
+- No permanent cleanup/deletion, source writes, migration replay, public access,
+  or production traffic switch. Auth sign-in and owner/cross-user API acceptance
+  remain separate work after byte restoration.
+
 ## Hosted database recovery checkpoint — 2026-10-10 03:20 UTC
 
 Tanya approved the displayed additional $9.68/month recovery project and the
