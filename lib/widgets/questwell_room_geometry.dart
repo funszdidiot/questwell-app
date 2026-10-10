@@ -19,8 +19,11 @@ class QuestwellRoomGeometry {
   final double scale;
   final Size _source, _scene;
 
-  static QuestwellRoomLayout layoutForSetting(String? setting) =>
-      setting == 'hallowed-hearth'
+  static QuestwellRoomLayout layoutForSetting(String? setting) => const {
+        'hallowed-hearth',
+        'mad-alchemists-lab',
+        'guardians-keep',
+      }.contains(setting)
           ? QuestwellRoomLayout.hallowed
           : QuestwellRoomLayout.standard;
 

@@ -40,6 +40,31 @@ void main() {
     expect(observatory.contains(const Offset(1210, 148)), isFalse);
     expect(observatory.contains(const Offset(1210, 120)), isTrue);
   });
+  testWidgets('Hallowed reskins retain the original leaf scale and density',
+      (tester) async {
+    Future<int> paintedArea(String room) async {
+      var area = 0;
+      for (final phase in [.13, .51, .87]) {
+        final pixels = await tester
+            .runAsync(() => frame(phase, const Size(960, 640), room));
+        for (var i = 3; i < pixels!.length; i += 4) {
+          if (pixels[i] != 0) area++;
+        }
+      }
+      return area;
+    }
+
+    final original = await paintedArea(QuestwellWindowGeometry.hallowed);
+    for (final room in ['mad_alchemists_lab_v1', 'guardians_keep_v1']) {
+      expect(QuestwellAmberfallWindow(roomFile: room).hallowed, isTrue);
+      final area = await paintedArea(room);
+      // Pane shapes differ, but neither skin should double leaf pixel size.
+      // Compare actual painted coverage across phases, allowing frame clipping.
+      expect(area, inInclusiveRange(original * .75, original * 1.4),
+          reason: '$room must preserve Hallowed-scale leaves');
+    }
+  });
+
   test(
     'Hallowed glass follows tall central pane and excludes real mullions',
     () {

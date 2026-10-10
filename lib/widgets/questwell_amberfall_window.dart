@@ -7,7 +7,7 @@ class QuestwellAmberfallWindow extends StatefulWidget {
   const QuestwellAmberfallWindow(
       {super.key, this.roomFile = QuestwellWindowGeometry.original});
   final String roomFile;
-  bool get hallowed => roomFile == QuestwellWindowGeometry.hallowed;
+  bool get hallowed => QuestwellWindowGeometry.hallowedSkins.contains(roomFile);
   bool get enchantedLibrary => roomFile == QuestwellWindowGeometry.library;
   static const asset =
       'assets/images/questwell/hearth/amberfall_scenery_candidate_v1.png';
@@ -120,7 +120,7 @@ class AmberfallLeafPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final hallowed = roomFile == QuestwellWindowGeometry.hallowed;
+    final hallowed = QuestwellWindowGeometry.hallowedSkins.contains(roomFile);
     final authored = QuestwellWindowGeometry.source(roomFile);
     canvas.save();
     canvas.clipRect(Offset.zero & size);

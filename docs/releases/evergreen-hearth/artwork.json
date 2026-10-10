@@ -1,0 +1,52 @@
+[
+  {
+    "asset": "assets/images/questwell/hearth/hearthwoven_macrame_v1.png",
+    "sha256": "3df4d96e9f13aff0a9af7d58a7f07fb13a7bd9228ba29a24c28529b6b0e9ead6",
+    "size": [
+      1402,
+      1122
+    ],
+    "mode": "RGBA",
+    "source": "exec-a3599497-1a4d-49af-bc9f-55da3b084099.png"
+  },
+  {
+    "asset": "assets/images/questwell/hearth/woodland_path_tapestry_v1.png",
+    "sha256": "0b41796955d99480473eb299a5f138e68c271ae8d2ed91a9969e52840e153ca2",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "source": "exec-7b8ea52a-9bcf-4fa9-96c4-07923f2b9c45.png"
+  },
+  {
+    "asset": "assets/images/questwell/hearth/guardians_oath_tapestry_v1.png",
+    "sha256": "3f306d4ea1bd8faa28a98012950813b99d46c1dd3f5f94b125981f845b4d165d",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "source": "exec-d06c3103-dd7d-46e3-94f1-1ef4f4dd261c.png"
+  },
+  {
+    "asset": "assets/images/questwell/hearth/mad_alchemists_lab_v1.png",
+    "sha256": "391bcbc38fb7db5748ca251f1914385cb4da316f1878133e92c42c81d8911c89",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "source": "exec-4b162575-2b7b-4588-81c0-1dbf59942037.png"
+  },
+  {
+    "asset": "assets/images/questwell/hearth/guardians_keep_v1.png",
+    "sha256": "495e87401d371c19dee4b244001ea44271f9b582fb5856e70bc249a0693f3445",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "source": "exec-c37c83e7-abef-4fe6-91e7-d6d7d237a746.png"
+  }
+]

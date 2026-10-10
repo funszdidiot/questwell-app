@@ -110,7 +110,7 @@ void main() {
               reason: 'Boots retain their authored floor contact');
           // Wide Hallowed now keeps its side walls by using a shorter frame.
           // Square rooms still share identical avatar and gallery anchors.
-          if (setting != QuestwellHearthSetting.hallowedHearth) {
+          if (!setting.usesHallowedLayout) {
             if (avatar != null) expect(a, avatar);
             if (wall != null) expect(w, wall);
             avatar = a;

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Questwell · Gallery wall</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#201813;color:#f0e5cc;font:16px/1.5 system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:24px}h1{font:38px/1.2 Georgia,serif;margin:0 0 8px}p{margin:0 0 20px;color:#d5c7af}.controls{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:20px}label{display:flex;flex-direction:column;gap:6px;flex:1;min-width:160px}select{font:inherit;color:#f0e5cc;background:#1d2a32;border:1px solid #a3895c;padding:10px;width:100%;min-height:48px}select:focus-visible{outline:3px solid #f2d58a;outline-offset:3px}.room{position:relative;width:100%;overflow:hidden;isolation:isolate}.room>img.plate{display:block;width:100%}.piece{position:absolute;object-fit:contain;filter:drop-shadow(1px 2px 1px #160c0788);pointer-events:none}.detail{padding-top:16px}small{color:#c7c0b0}button{font:inherit;padding:8px 16px;background:#31473a;color:#f0e5cc;border:1px solid #a3895c;min-height:44px}footer{margin-top:20px}@media(max-width:500px){main{padding:14px}h1{font-size:30px}}
+</style>
+<main>
+<h1>A gallery gathered around you</h1>
+<p>One statement textile, smaller framed treasures, and space for each piece to breathe.</p>
+<div class="controls">
+<label>Room<select id="room"><option value="original">Standard Hearth</option><option value="hallowed">Hallowed Hearth</option><option value="lab">Mad Alchemist’s Lab</option><option value="keep">Guardian’s Keep</option></select></label>
+<label>Statement piece<select id="art"><option value="macrame">Hearthwoven Macramé</option><option value="woodland">Woodland Path Tapestry</option><option value="guardian">Guardian’s Oath Tapestry</option></select></label>
+<label>Arrangement<select id="arrangement"><option value="gallery">Gallery wall</option><option value="center">Statement piece alone</option><option value="left">Left wall</option><option value="right">Right wall</option></select></label>
+</div>
+<div class="room" id="scene"><img class="plate" id="plate" alt="Questwell room"><img class="piece" id="hero" alt="Statement textile"><img class="piece" id="left" alt="Fern Study companion print"><img class="piece" id="right" alt="Celestial Study companion print"></div>
+<p class="detail" id="detail" aria-live="polite"></p>
+<footer><small>Composition preview using the approved artwork. This is not a running app or a saved account layout. Guardian eligibility and Market release remain pending.</small></footer>
+</main>
+<script>
+const images=/* ASSET_DATA */ {};
+const room=document.getElementById('room'),art=document.getElementById('art'),arrangement=document.getElementById('arrangement');
+const plate=document.getElementById('plate'),hero=document.getElementById('hero'),left=document.getElementById('left'),right=document.getElementById('right');
+const gallery={standard:[[392,16,240,160],[310,50,70,120],[644,50,70,120]],hallowed:[[444,66,248,186],[393,110,44,86],[699,110,44,86]]};
+const solo={standard:{center:[392,16,240,160],left:[300,142,100,80],right:[624,142,100,80]},hallowed:{center:[418,42,300,216],left:[170,320,140,110],right:[1294,210,112,90]}};
+function place(element,rect,w,h){const [x,y,width,height]=rect;Object.assign(element.style,{left:x/w*100+'%',top:y/h*100+'%',width:width/w*100+'%',height:height/h*100+'%'});}
+function update(){const wide=room.value!=='original',map=wide?'hallowed':'standard',w=wide?1536:1024,h=1024,isGallery=arrangement.value==='gallery';plate.src=images[room.value];plate.alt=room.selectedOptions[0].text;hero.src=images[art.value];hero.alt=art.selectedOptions[0].text;left.src=images.fern;right.src=images.celestial;left.hidden=right.hidden=!isGallery;place(hero,isGallery?gallery[map][0]:solo[map][arrangement.value],w,h);if(isGallery){place(left,gallery[map][1],w,h);place(right,gallery[map][2],w,h);}document.getElementById('detail').textContent=isGallery?'A larger focal piece with two smaller companions, fitted to this room’s architecture.':'The textile uses the available wall space and retains its original proportions.';}
+for(const input of [room,art,arrangement])input.addEventListener('change',update);update();
+</script></html>

@@ -4,6 +4,8 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/auth_page/auth_page_widget.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/services/questwell_account_service.dart';
+import '/services/questwell_account_export.dart';
+import '/config/questwell_environment.dart';
 import '/widgets/questwell_account_settings.dart';
 import '/widgets/questwell_app_navigation.dart';
 
@@ -48,7 +50,8 @@ class _AccountSettingsPageWidgetState extends State<AccountSettingsPageWidget> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text('Could not sign out. Please try again.')),
+            content: Text('Could not sign out. Please try again.'),
+          ),
         );
       }
     } finally {
@@ -79,6 +82,9 @@ class _AccountSettingsPageWidgetState extends State<AccountSettingsPageWidget> {
             context.goNamed(QuestwellDestination.adventurer.routeName);
           }
         },
+        onPrepareExport: QuestwellEnvironment.current.isStaging
+            ? QuestwellAccountExport.prepare
+            : null,
         onSignOut: _signOut,
         onDelete: _deleteAccount,
         // The confirmed operation above already owns cleanup and navigation.
