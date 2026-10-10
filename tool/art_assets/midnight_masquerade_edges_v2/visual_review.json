@@ -1,0 +1,98 @@
+{
+  "reviewer": "/root/pumpkin_edge_review",
+  "result": "PASS",
+  "scope": "All three actual exported composites, native/3x light/dark, masks, exports and script",
+  "observations": [
+    "Shoulder bands corrected; cuffs and lower hems retain coherent charcoal/gold detailing.",
+    "Hands, identities, embroidery, silhouettes and joins unchanged.",
+    "No new colored blocks or hand occlusion.",
+    "Neutral pre-existing rear-panel exposure remains unchanged."
+  ],
+  "outputs": {
+    "female": {
+      "sourceSha256": "d7cc3222813b8d5dd7a31b7d704ec02d56d58bb94a6560661b4f796bd4dcca42",
+      "bodySha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a",
+      "identitySha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e",
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/front_v2.webp",
+          "sha256": "f25db1ae31c5569b1def0695db26439f3b4d62deb2a14870768eb1e12e82fec2",
+          "inputSha256": "de618ad68499235f5c77750df24869dc3507e55b2cea1e783a1e537fc1f25859",
+          "changedPixels": 750,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/female/cuffs_v2.webp",
+          "sha256": "e66a37b45b857da70852608ef215cc5f03bc65d91feff445754ec3b9375526a7",
+          "inputSha256": "740e9d15fc361463a6bf19822b254762b8ab1504fee9c6e7011a5e9e134aee6c",
+          "changedPixels": 218,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        }
+      }
+    },
+    "neutral": {
+      "sourceSha256": "f4b6a83a4c082ca55d1e2b5f63e8d02ffc41efbb2be18dfe51ca88d53257fac9",
+      "bodySha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "identitySha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/front_v2.webp",
+          "sha256": "692a6bee4ca0705d27e0129c596f28573206e8d3040dbd07ce8f8d1ec36e9f4a",
+          "inputSha256": "edb65714fafe2783b5272114e16c9b5facb50fa1b7ff0c409862536a0afd78b5",
+          "changedPixels": 626,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/cuffs_v2.webp",
+          "sha256": "5c6d40c7f2966b13e36ba2244cfcc07620334a08a5dd6d5bf970b7be4473efec",
+          "inputSha256": "ca43d121efde757c6189717bbcaf444d0584ec1b207ebc2665002a1c295f0a55",
+          "changedPixels": 537,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        },
+        "collar": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/neutral/collar_v2.webp",
+          "sha256": "3dff70cb6ca2156753c66a4a6b349ac7042596f134bbaf1c84ca1481b7e650d5",
+          "inputSha256": "53134b59736312ac453923ed2244a3b659235dbb8b14693d9a7ef60588301214",
+          "changedPixels": 135,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        }
+      }
+    },
+    "male": {
+      "sourceSha256": "fb8212f756113d87fb4cf78e906b774738e8543962707ef68cdbdccf255bfef3",
+      "bodySha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+      "identitySha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/front_v2.webp",
+          "sha256": "3babd57b7ea7d0fb3336c3649d07eab2a4713d12b9b939ffa19c6428f6b40e2e",
+          "inputSha256": "08589d0566fdb94cd1fac309da16bd31b82d7ccf05063c6cf5edb48ebd4ada96",
+          "changedPixels": 871,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/cuffs_v2.webp",
+          "sha256": "f2fb5b7f3c8749f25631fa338e50f676de3cf809288155b97bd0e856e12a6c2e",
+          "inputSha256": "0105ed8d616e8bcba4b1174acde54c8ce084df3c69f021ccf94e6e71f0adb2cf",
+          "changedPixels": 203,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        },
+        "collar": {
+          "path": "assets/images/questwell/avatar/halloween_v1/midnight_masquerade/male/collar_v2.webp",
+          "sha256": "e12295252611d914c4fe64fac776a641a7b97578062cd561b039a35415067ad6",
+          "inputSha256": "cfac8aef329f64948335999f96f0e43e11c1bed8e445576629a7b4317ebef8ea",
+          "changedPixels": 47,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        }
+      }
+    }
+  }
+}
