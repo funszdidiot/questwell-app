@@ -4,6 +4,7 @@ on:
     branches: [questwell-privacy-workflows-20261010]
     paths:
       - 'tool/qa/hosted_export_test.py'
+      - 'tool/qa/hosted_export_mutation_test.mjs'
       - '.github/workflows/questwell-hosted-export.yml'
 permissions:
   contents: read
@@ -20,3 +21,9 @@ jobs:
           STAGING_EXPORT_TEST_EMAIL: ${{ secrets.STAGING_EXPORT_TEST_EMAIL }}
           STAGING_EXPORT_TEST_PASSWORD: ${{ secrets.STAGING_EXPORT_TEST_PASSWORD }}
         run: python tool/qa/hosted_export_test.py
+
+      - name: Verify deterministic mutation rejection against hosted staging
+        env:
+          STAGING_EXPORT_TEST_EMAIL: ${{ secrets.STAGING_EXPORT_TEST_EMAIL }}
+          STAGING_EXPORT_TEST_PASSWORD: ${{ secrets.STAGING_EXPORT_TEST_PASSWORD }}
+        run: node tool/qa/hosted_export_mutation_test.mjs
