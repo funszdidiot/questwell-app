@@ -1,0 +1,14 @@
+{
+  "reviewer": "/root/pumpkin_edge_review",
+  "result": "PASS",
+  "scope": "Actual depth-ordered exports at native and 3x sizes on light and dark backgrounds",
+  "findings": [
+    "Thick shoulder, outer-sleeve and hem bands removed",
+    "Gold trim, embroidery, rear green panel, cuffs and exposed hands remain coherent",
+    "No blocking seam or fit regression"
+  ],
+  "nonblocking": "Isolated dark edge pixels at 3x; no heavy band at native size",
+  "notVerified": ["Flutter runtime", "hosted app", "physical device"],
+  "frontSha256": "059a47210853e7fda626f5d22d5f36e2dbb0c910c1ee8bbff9bf4d7b7d739b34",
+  "rearSha256": "8db518f556a4cc14d709156f857e8b7358942361e8246cd5504bf58166bdbba3"
+}

@@ -27,11 +27,14 @@ class QuestwellHalloweenCostume extends StatelessWidget {
   /// Only the reported male Pumpkin Court surface uses the repaired exports.
   /// All other garment fits and the complete paper-doll foundations stay fixed.
   static String assetPath(String costume, String body, String layer) {
-    final repaired = costume == 'pumpkin_court' &&
-        body == 'male' &&
-        const {'front', 'collar', 'cuffs'}.contains(layer);
+    final repaired = costume == 'pumpkin_court' && body == 'male';
+    final version = repaired && const {'front', 'rear'}.contains(layer)
+        ? '_v3'
+        : repaired && const {'collar', 'cuffs'}.contains(layer)
+            ? '_v2'
+            : '';
     return 'assets/images/questwell/avatar/halloween_v1/'
-        '$costume/$body/$layer${repaired ? '_v2' : ''}.webp';
+        '$costume/$body/$layer$version.webp';
   }
 
   @override
@@ -49,9 +52,8 @@ class QuestwellHalloweenCostume extends StatelessWidget {
       'male' => QuestwellMalePaperDoll.identityAsset,
       _ => QuestwellNeutralPaperDoll.identityAsset,
     };
-    Widget layer(String name) => QuestwellScoutWardrobeFoundation.image(
-          assetPath(outfit, fit, name),
-        );
+    Widget layer(String name) =>
+        QuestwellScoutWardrobeFoundation.image(assetPath(outfit, fit, name));
     return Stack(
       fit: StackFit.expand,
       children: [

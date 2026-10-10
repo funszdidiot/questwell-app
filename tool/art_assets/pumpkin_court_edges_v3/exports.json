@@ -1,0 +1,24 @@
+{
+  "version": "Version: ImageMagick 6.9.12-98 Q16 x86_64 18038 https://legacy.imagemagick.org",
+  "sourceSha256": "d71859e65fd95f049184ec98b8560d12e23139ea2efba600f4d43f801623993d",
+  "bodySha256": "9e35a6ebdda22719851fa37f33c81f2b6c1340719453bf50d9ac4acf9156ebda",
+  "identitySha256": "efe243c89320352e61f858dd0c5335f99f61ee91788e2b37efdb3ff58b631a1a",
+  "outputs": {
+    "front": {
+      "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/front_v3.webp",
+      "sha256": "059a47210853e7fda626f5d22d5f36e2dbb0c910c1ee8bbff9bf4d7b7d739b34",
+      "inputSha256": "568fc5d87f68f0101b46182eac2e163473e2c5e3eb124d8b7194f64cce0058cf",
+      "changedPixels": 2168,
+      "alphaUnchanged": true,
+      "unselectedVisibleRgbUnchanged": true
+    },
+    "rear": {
+      "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/male/rear_v3.webp",
+      "sha256": "8db518f556a4cc14d709156f857e8b7358942361e8246cd5504bf58166bdbba3",
+      "inputSha256": "742640f31a008b3917da7f4c9c8197a550d667beac236378bef3606e717cc42e",
+      "changedPixels": 455,
+      "alphaUnchanged": true,
+      "unselectedVisibleRgbUnchanged": true
+    }
+  }
+}

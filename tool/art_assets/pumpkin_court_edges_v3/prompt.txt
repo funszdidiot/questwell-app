@@ -1,0 +1,8 @@
+Built-in imagegen edit of the actual light-background runtime-layer composite.
+Preserve exact 3:4 framing, locked body, face, hands, pose, garment geometry,
+embroidery, shirt, trousers, boots and background. Replace only broad dark
+shoulder caps and outer sleeve strips with matching orange fabric; replace
+excessive black hem strips with matching gold trim and soften the dark green
+rear hem edge. Keep a thin natural contour; no redesign or new ornaments.
+Generated full character is reference-only. Import only the scoped garment RGB
+into the unchanged production alpha masks; never import generated body pixels.
