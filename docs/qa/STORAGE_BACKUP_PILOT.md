@@ -1,5 +1,59 @@
 # Storage backup pilot — verified one-time live copy
 
+## Hosted database recovery checkpoint — 2026-10-10 03:20 UTC
+
+Tanya approved the displayed additional $9.68/month recovery project and the
+copy of database/account data into the same Momentum Labs organization and
+us-east-2 region. She completed the required new database-password step and
+reported creation. Target: Questwell Recovery 20261010
+(`czubumijsibtgjwekdpt`), created 03:12:51 UTC. Provider status progressed
+COMING_UP -> RESTORING -> ACTIVE_HEALTHY. Source remains
+`bdzcazkyypopbanbjnud`; existing synthetic-only staging is untouched.
+
+Selected provider physical backup: 2026-10-09 07:57:57 UTC.
+Read-only post-restore checks:
+- 5 Auth users and 5 identities; sorted account-ID digest matches live.
+  This does not verify password sign-in or session behavior.
+- All 13 public application tables present, all with RLS enabled.
+- 24 public/Storage policies; policy-definition digest matches live.
+- Public function-definition digest matches live.
+- One private bucket; 10 restored Storage metadata records, zero orphaned owners.
+- All 10 pre-backup file metadata entries match live by ordered
+  id/bucket/path/owner digest. Live has one additional post-backup file.
+- Target has 56 migrations; live has 59. The three additional live versions
+  (20261009161902 autumn_hearth_2026, 20261009190534 household_familiars_2026,
+  20261010023800 avatar_magic_2026) postdate the selected backup.
+  Do not replay them automatically or test a newer client as though this target
+  represented the latest live state.
+- Neither target nor source has pg_cron, pg_net, wrappers or http extensions
+  installed at inspection. This is a narrow inventory, not comprehensive
+  outbound-network isolation verification.
+
+This establishes hosted database restoration and selected catalog/ownership
+checks only. File bytes have NOT been restored into the target; metadata is
+not byte recovery. Auth configuration, fresh sign-ins, authenticated owner and
+cross-owner file access, app flows, full data integrity and RTO remain open.
+No account credentials, private content, or password hashes were returned.
+No target credential was created by the agent. No source changes, migration
+replay, file transfer, deletion, deployment or production traffic switch occurred.
+
+Next file-recovery preparation must reconcile the newer B2 snapshot (11 files)
+with this older database backup (10 metadata records), preflight the exact
+existing target, verify missing bytes, preserve ownership, and obtain scoped
+authorization for private-file transfer/new credentials if required. Never
+silently invent the missing post-backup application records or mutate source.
+The new project's recurring cost remains active until explicitly managed.
+
+### Superseding schedule status
+
+PR124 is merged as bd24484fd304f89940c0a639c215b3fd44d4c8ae.
+The seven-day Oct10-16 pilot is enabled at 07:23 UTC; first scheduled transfer
+has not yet occurred as of this checkpoint. Four existing secrets remain in
+questwell-backups; branch access now includes flutterflow and the original
+pilot branch. Manual approval variable remains false; scheduled approval true.
+See docs/qa/STORAGE_SEVEN_DAY_PILOT.md on flutterflow. Earlier statements below
+that no schedule is configured are historical. No retention deletion enabled.
+
 ## Verified pilot result
 
 Tanya explicitly approved the dedicated Storage source credential, its GitHub
