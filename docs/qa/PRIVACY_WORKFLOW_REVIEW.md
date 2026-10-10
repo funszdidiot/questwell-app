@@ -316,3 +316,34 @@ Before executing live, complete the disposable bundle rehearsal and refresh the
 backup evidence. Production Edge deployment and client download remain separate.
 Schema-only authorization must not be represented as consent to retention purge
 or to enable the endpoint. Keep approval pending until founder confirmation.
+
+
+## Exact bundle database rehearsal PASSED — 2026-10-10
+
+Run https://github.com/funszdidiot/questwell-app/actions/runs/38031306991
+on `8f67ab247298c66171bf6ec8702e640f639ddee8` passed the complete backend
+harness including the exact combined export schema payload. A forced error after
+schema creation rolled back every export object. Successful application matched
+the five hosted-staging definition fingerprints. Limits-table RLS, absence of
+anonymous access, authenticated wrapper grants and sessionless denial passed.
+A repeat attempt was refused without changing the schema. The disposable stack
+and synthetic data were removed by the existing harness cleanup.
+
+The first rehearsal failed on CREATE in public under the disposable postgres role.
+Read-only production verification confirmed its postgres role owns the database
+through pg_database_owner and CAN create there. The corrected disposable rehearsal
+uses its migration-owner role, supabase_admin, rather than granting extra schema
+permissions. No production role, grant or policy was altered.
+
+The safe GitHub presence check independently reports that
+`QUESTWELL_EXPORT_MIGRATION_TOKEN` is missing. The scoped PAT should be restricted
+to Project Momentum (`bdzcazkyypopbanbjnud`), with Database Read and Migrations
+Read-write only, and a short expiry. These capabilities are distinct in the current
+Supabase scoped-PAT documentation. Store it as a repository Actions secret, never
+in source/chat. Presence alone is not proof of permission; verify a read-only
+preflight before the approved migration request.
+
+Production schema application still needs explicit founder approval for the
+session safeguards, credential setup, current required checks and refreshed backup
+evidence. The endpoint stays disabled in this schema-only step. No retention
+purge, endpoint activation or app release is included.
