@@ -178,3 +178,23 @@ Production export and retention deletion remain disabled. This proves one synthe
 account's hosted golden path; hosted two-account negative tests, concurrent-load
 and mutation-during-export tests remain before production acceptance. The staging
 fixture remains available for repeat tests. No production data changed.
+
+
+## Hosted isolation and concurrency PASSED — 2026-10-10
+
+Run https://github.com/funszdidiot/questwell-app/actions/runs/38029714512
+on commit `28b30cb14d64210a6b223c8009efd39773edbaa2` passed.
+The synthetic requester received no rows when explicitly selecting the second
+QA account's profile and feedback. Its request for the second account's known
+private file was denied, and an export body injecting that account's ID returned
+HTTP 400. Independent database reads confirmed those target rows/object actually
+exist and belong to the existing QA account; this was not an absent-data test.
+Four barrier-synchronized export requests produced exactly one HTTP 200 and three
+HTTP 429 responses. The successful response passed owner, attachment checksum
+and no-store checks; immediate repeat denial and post-logout denial also passed.
+
+This is one-direction cross-account testing with a real signed-in requester and
+four-way concurrency, not broad load/stress certification. Deterministic hosted
+mutation-during-collection testing remains open. No production deployment,
+retention deletion, auth-policy change or additional account creation occurred.
+Rollback: revert runner commit `28b30cb14d64210a6b223c8009efd39773edbaa2`.
