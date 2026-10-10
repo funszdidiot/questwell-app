@@ -1,5 +1,12 @@
 # Questwell Production Dashboard
 
+## Room perspective and window alignment — October 9, 2026
+
+**QA.** PR #120 follows source-art wall/floor geometry across room aspect ratios
+and corrects Hallowed window clipping. Saved slots and artwork are unchanged.
+CI and actual rendered-scene review are pending; not deployed.
+Evidence: `../qa/ROOM_PERSPECTIVE_REGISTRATION.md`.
+
 ## Hearth audio and automatic resume — October 9, 2026
 
 **QA.** Tanya reported enabled sound remaining silent in the Hearth menu.

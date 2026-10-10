@@ -48,7 +48,7 @@ const arrangements = {
 
 void main() {
   test(
-    'every room preserves family sizes and keeps paired seating out of center',
+    'room depth preserves family scale and keeps paired seating out of center',
     () {
       for (final room in rooms) {
         final plan = QuestwellHearthRoomPlan.forSetting(room);
@@ -73,11 +73,14 @@ void main() {
             scene: const Size(390, 280),
             equipment: {'room:setting': room},
           );
-          expect(
-            themed.size,
-            base.size,
-            reason: 'Scale changed in $room/$profile',
-          );
+          if (QuestwellHearthRoomPlan.enabled &&
+              profile == 'large_furniture' &&
+              room == 'hallowed-hearth') {
+            expect(themed.height / base.height, closeTo(280 / 390, 1e-9));
+          } else {
+            expect(themed.size, base.size,
+                reason: '$room/$profile family scale');
+          }
         }
       }
     },

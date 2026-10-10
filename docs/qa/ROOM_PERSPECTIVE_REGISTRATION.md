@@ -9,8 +9,8 @@ plate used a cover crop. A wide Hallowed source was also grouped with square
 Midnight Harvest. Rear contacts therefore drifted from the wall in portrait
 previews. Furniture now uses source-space contacts through the same cover
 transform as windows/backgrounds. Cropped side contacts clamp horizontally to
-the visible wall zone. Rear families uniformly recede to 82% of their prior
-avatar-relative envelope; foreground seating/table retain their scale and use
+the visible wall zone. Rear families use a room-relative envelope with a common 82% depth factor;
+foreground seating/table retain their scale and use
 the visible floor. Artwork aspect ratios and visible contact rows remain intact.
 
 The Hallowed glass tracing now includes the continuous central pane, curved

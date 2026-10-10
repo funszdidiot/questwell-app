@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../services/questwell_cosmetic_models.dart';
 import 'questwell_hearth_room_plan.dart';
+import 'questwell_room_geometry.dart';
 
 /// Visual geometry for backend-defined Hearth layout profiles.
 ///
@@ -148,12 +149,17 @@ abstract final class QuestwellHearthLayout {
     // Artwork must be authored to the family's envelope instead of forcing the
     // room to compensate for an oversized sprite.
     final plan = QuestwellHearthRoomPlan.forSetting(equipment['room:setting']);
-    // Rear furniture recedes together; foreground seating retains adult scale.
-    final depthScale =
-        QuestwellHearthRoomPlan.enabled && plan.isRear(profileKey, slot)
-            ? .82
-            : 1.0;
-    final height = avatarHeight * heightFactor * depthScale;
+    // Rear family envelopes are authored relative to the room, not the
+    // avatar's viewport-dependent fit. One cover scale preserves perspective.
+    final rear =
+        QuestwellHearthRoomPlan.enabled && plan.isRear(profileKey, slot);
+    final geometry =
+        QuestwellRoomGeometry.forSetting(equipment['room:setting'], scene);
+    final source =
+        QuestwellRoomGeometry.sourceForSetting(equipment['room:setting']);
+    final height = rear
+        ? source.height * geometry.scale * .62 * heightFactor * .82
+        : avatarHeight * heightFactor;
     final width = height * aspectRatio;
 
     String? profileAt(String slot) {
