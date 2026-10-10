@@ -1,5 +1,7 @@
 """Staging only; private exports and tokens stay in runner memory, never logs/artifacts."""
 import os, json, urllib.request, urllib.error, hashlib, base64, sys
+from concurrent.futures import ThreadPoolExecutor
+from threading import Barrier
 BASE='https://hpjzfytwivlpsdhiupyd.supabase.co'
 KEY='sb_publishable_XhQBsZ28qqCnZkLzo4WMOg_948v9PIz'
 def request(path, token=None, payload=None, raw=None, method="POST"):
@@ -43,9 +45,27 @@ def run():
         status,_,_=request('/storage/v1/object/beta-feedback/'+owner+'/export-probe-20261010.png',token,raw=png)
         if status not in (200,201,400,409):raise RuntimeError('fixture upload failed')
         # Existing objects are never overwritten. Export validates the exact fixture hash below.
-        step='download' 
-        status,headers,export=request('/functions/v1/export-account',token)
-        if status!=200: raise RuntimeError('authenticated export failed (check rate interval and fixture)')
+        step='cross-account-records'
+        other='76f2234e-4c3d-482c-bc9f-8d55cc0e4d2c'
+        for table,column in [('users','id'),('beta_feedback','user_id')]:
+            status,_,rows=request('/rest/v1/'+table+'?select=id&'+column+'=eq.'+other,token,method='GET')
+            if status!=200 or rows!=[]:raise RuntimeError('foreign records not denied')
+        step='cross-account-file'
+        status,_,_=request('/storage/v1/object/authenticated/beta-feedback/'+other+'/768c1306-ac81-4444-b96e-137308f729b8-0.jpg',token,method='GET')
+        if status not in (400,403,404):raise RuntimeError('foreign file not denied')
+        step='injected-owner'
+        status,_,_=request('/functions/v1/export-account',token,payload={'user_id':other})
+        if status!=400:raise RuntimeError('injected owner not rejected')
+        step='concurrent-download'
+        barrier=Barrier(4)
+        def simultaneous_export(_):
+            barrier.wait(timeout=10)
+            return request('/functions/v1/export-account',token)
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            results=list(pool.map(simultaneous_export,range(4)))
+        if sorted(result[0] for result in results)!=[200,429,429,429]:
+            raise RuntimeError('concurrent requests did not produce exactly one export')
+        status,headers,export=next(result for result in results if result[0]==200)
         step='validate-export'
         if export['format']!='questwell-account-export': raise RuntimeError('unexpected format')
         if len(export['tables'])!=8: raise RuntimeError('missing record group')
@@ -67,7 +87,7 @@ def run():
         status,_,_=request('/functions/v1/export-account',token)
         if status not in (401,403):raise RuntimeError('old-token denial not verified')
         token=None
-        print('PASS: authenticated export, eight owner-scoped groups, nonempty attachment checksums, no-store, rate denial, old-token denial.')
+        print('PASS: foreign records and file denied; injected owner rejected; four concurrent requests produced one export and three rate denials; eight owner-scoped groups; attachment checksums; no-store; repeat denial; old-token denial.')
         return 0
     except Exception as error:
         # Never emit HTTP bodies, account identifiers, tokens, paths or export data.
