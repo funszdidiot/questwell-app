@@ -40,3 +40,22 @@ saved-slot rewrite. The decorator's marker canvas uses the same effective
 height. Explicit `setting` previews now pass the resolved setting to furniture
 and dependent surfaces, addressing the PR review's override mismatch. Actual
 updated CI scenes and regression checks are required before delivery.
+
+
+## Combined release verification
+
+Room CI 38016131935 rendered the revised framing and window overlays, but the
+full suite reported 1,062 passing tests and one obsolete cross-room avatar Rect
+equality assertion. Different source aspect ratios now deliberately produce
+different frame heights. The replacement verifies 3:4 avatar proportions,
+horizontal centering, complete containment and shared boot/shadow contact for
+every body and room; square-room anchor equality remains enforced. The gated
+decorator stage did not run in that failed build, so those furniture images
+are not placement acceptance evidence. Independent review passed framing and
+sampled window registration only.
+
+PR #120 incorporates the exact reviewed robe repair from PR #121 and current
+development base 13230d5. This allows required checks to cover the single
+combined release. Both review findings are implemented: resolved room settings
+feed all placement paths, and robe QA includes per-layer smooth enlargements.
+Final feature-enabled renders, combined CI and hosted delivery remain gates.

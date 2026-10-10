@@ -2,9 +2,12 @@
 
 ## Room perspective and window alignment — October 9, 2026
 
-**QA.** PR #120 follows source-art wall/floor geometry across room aspect ratios
-and corrects Hallowed window clipping. Saved slots and artwork are unchanged.
-CI and actual rendered-scene review are pending; not deployed.
+**QA / combined development delivery.** PR #120 follows source-art wall/floor
+geometry across both room designs and corrects Hallowed window clipping. It also
+includes the independently reviewed male Pumpkin Court surface repair from
+PR #121. Robe CI passed; combined CI and feature-enabled placement review are
+required before merge. The PR records the final delivery revision and checks.
+Saved slots, ownership, locked bodies and other outfits are preserved.
 Evidence: `../qa/ROOM_PERSPECTIVE_REGISTRATION.md`.
 
 ## Hearth audio and automatic resume — October 9, 2026

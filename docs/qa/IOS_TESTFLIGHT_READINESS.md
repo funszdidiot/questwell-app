@@ -1,7 +1,7 @@
 # Internal iOS TestFlight preparation
 
-Status: toolchain change proposed; no signed archive, TestFlight upload or iPhone
-acceptance is established. Overall release GO remains unchanged.
+Status: registered identity alignment proposed; no signed archive, TestFlight
+upload or iPhone acceptance is established. Overall release GO remains unchanged.
 
 ## First increment: Apple upload-compatible compiler
 
@@ -18,13 +18,41 @@ eligibility of the app itself. The isolated_test profile has no working backend
 and must never be distributed to testers. Existing six required checks and
 independent review apply; preserve concurrent feedback changes when integrating.
 
+## Second increment: registered Apple identity
+
+Founder screenshots confirm active account access, a registered explicit App ID
+and the App Store Connect record below. The founder approved this identity-only
+source alignment; this is not approval to sign, upload, merge or publish.
+
+| Field | Approved value |
+| --- | --- |
+| App Store name | Questwell: Cozy Quests |
+| Installed display name | Questwell |
+| Bundle ID | `com.alreyva.questwell` |
+| Development team | `W5779VXQYR` |
+| App Store numeric ID | `6821206348` |
+| SKU | `questwell-ios-001` |
+
+Runner Debug, Profile and Release use the registered bundle ID and team.
+`Info.plist` uses Questwell for both name fields and retains its build-setting
+identifier/version substitutions. The existing `projectmomentum` URL scheme,
+URL name and Flutter deep-link switch remain unchanged: renaming the app does
+not establish functional native authentication. Entitlements, backend profiles,
+dependencies and the unsigned compile command remain unchanged. No signing
+credential or provisioning profile is added. App Store name availability does
+not establish trademark clearance; public-launch name review remains separate.
+
+`python3 tool/qa/ios_identity_test.py` checks all three Runner configurations,
+plist identity and the preserved link contract, with deliberate drift fixtures.
+The shared analyze job runs this standard-library-only guard. Source checks
+cannot establish the final archive's effective settings or signing validity.
+
 ## Remaining stages and evidence
 
-1. Verify Apple Developer Program enrollment is active and App Store Connect
-   access is available. Account creation alone does not prove enrollment.
-2. Confirm the intended signing team and registered app identity. Source currently
-   uses `com.mycompany.projectmomentum` and the display name `Project Momentum`.
-   Do not rename either or choose a team without the founder's scoped decision.
+1. Account approval and App Store Connect record creation are confirmed by the
+   founder's screenshots. Recheck agreements and account access before signing.
+2. Review and merge this scoped identity PR only with founder approval. Confirm
+   effective bundle/team settings again when creating the first signed archive.
 3. Prepare a separately reviewed signed archive workflow using approved private
    signing credentials and an explicit functional beta backend profile. Do not
    put signing material into repository files or untrusted pull-request jobs.
@@ -45,20 +73,21 @@ independent review apply; preserve concurrent feedback changes when integrating.
 8. Before external testing, complete the TestFlight beta information and first
    external-build review. Public App Store release remains a separate decision.
 
-No account, credential, auth policy, identity, entitlement, backend, economy or
-locked artwork is changed by this first increment. Existing feedback attachment
-and release-hardening work remains tracked separately.
+The second increment changes source identity only, not account configuration,
+credentials, auth policy, entitlements, backend, economy or locked artwork.
+Existing feedback attachment and release-hardening work remains separate.
 
 ## Review and validation
 
 Independent AI review is required on the exact final change. CI must exercise
 the pinned Xcode/SDK preflight and unsigned compile, plus existing required
-checks. At proposal creation these checks have not yet run. Record the actual
-run/head evidence in the PR; never carry forward Xcode 16.4 success as 26.3 proof.
+checks. Record the exact reviewed head, local guard results and new CI evidence
+in the PR. Earlier toolchain success is not evidence for this identity change.
 
-Rollback: revert this two-file change through a reviewed PR. Doing so restores
-the prior compile gate but reopens the Apple upload-toolchain gap; it does not
-make the prior compiler eligible for TestFlight. No distributed build is affected.
+Rollback: revert the five-file identity increment through a reviewed PR. That
+restores legacy source identity and removes its guard, without deleting the
+registered Apple record or changing the pinned compiler. Do not upload a build
+with the restored legacy identity. No distributed build is affected.
 
 ## Official references checked October 6, 2026
 
