@@ -1,3 +1,4 @@
+import {exerciseExportSchema} from './export-schema-forward.mjs';
 import {exerciseMagicForward} from './magic-forward.mjs';
 import {exerciseHouseholdForward} from './household-forward.mjs';
 import {exerciseAutumnForward} from './autumn-forward.mjs';
@@ -546,6 +547,7 @@ try {
   if (recoveryResult.stdout) console.log(redact(recoveryResult.stdout));
   if (recoveryResult.stderr) console.error(redact(recoveryResult.stderr));
   assert.equal(recoveryResult.status, 0, 'Synthetic recovery rehearsal failed');
+  exerciseExportSchema({source,workdir,run,runPayload:runHardeningPayload});
   console.log('LEGACY ROOT MIGRATION CHAIN: STILL BLOCKED. No live baseline/history repair performed.');
 } finally {
   edge?.kill();
