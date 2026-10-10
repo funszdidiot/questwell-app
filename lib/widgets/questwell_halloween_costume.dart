@@ -24,13 +24,15 @@ class QuestwellHalloweenCostume extends StatelessWidget {
   };
   static const bodies = ['female', 'neutral', 'male'];
 
-  /// Only the reported male Pumpkin Court surface uses the repaired exports.
-  /// All other garment fits and the complete paper-doll foundations stay fixed.
+  /// Pumpkin Court edge repairs preserve each body's existing garment masks.
   static String assetPath(String costume, String body, String layer) {
     final repaired = costume == 'pumpkin_court' && body == 'male';
+    final familyEdges = costume == 'pumpkin_court' &&
+        const {'female', 'neutral'}.contains(body) &&
+        const {'front', 'cuffs'}.contains(layer);
     final version = repaired && const {'front', 'rear'}.contains(layer)
         ? '_v3'
-        : repaired && const {'collar', 'cuffs'}.contains(layer)
+        : familyEdges || repaired && const {'collar', 'cuffs'}.contains(layer)
             ? '_v2'
             : '';
     return 'assets/images/questwell/avatar/halloween_v1/'

@@ -11,6 +11,62 @@ import '../lib/widgets/questwell_halloween_costume.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  for (final body in ['female', 'neutral']) {
+    test('$body Pumpkin Court cleanup preserves masks and protected surfaces',
+        () async {
+      Future<ByteData> pixels(String layer) async {
+        final data = await rootBundle.load(
+          'assets/images/questwell/avatar/halloween_v1/pumpkin_court/$body/$layer.webp',
+        );
+        final codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
+        final frame = await codec.getNextFrame();
+        final rgba =
+            (await frame.image.toByteData(format: ui.ImageByteFormat.rawRgba))!;
+        frame.image.dispose();
+        codec.dispose();
+        return rgba;
+      }
+
+      for (final layer in ['front', 'cuffs']) {
+        final before = await pixels(layer);
+        final after = await pixels('${layer}_v2');
+        var changed = 0;
+        for (var y = 0; y < 320; y++) {
+          for (var x = 0; x < 240; x++) {
+            final offset = (y * 240 + x) * 4;
+            expect(after.getUint8(offset + 3), before.getUint8(offset + 3));
+            final allowed = layer == 'cuffs'
+                ? (body == 'female'
+                    ? y >= 163 && y <= 174
+                    : y >= 165 && y <= 185)
+                : (body == 'female' &&
+                        y >= 78 &&
+                        y <= 151 &&
+                        (x < 96 || x > 143)) ||
+                    (body == 'female'
+                        ? y >= 151 && y <= 162
+                        : y >= 163 && y <= 168) ||
+                    (y >= 260 && y <= 294);
+            for (var channel = 0; channel < 3; channel++) {
+              if (before.getUint8(offset + channel) !=
+                  after.getUint8(offset + channel)) {
+                expect(allowed, isTrue, reason: '$body $layer pixel $x,$y');
+                changed++;
+              }
+            }
+          }
+        }
+        expect(changed, greaterThan(0));
+      }
+      for (final layer in ['rear', 'underlay', 'mask', 'collar']) {
+        expect(
+          QuestwellHalloweenCostume.assetPath('pumpkin_court', body, layer),
+          endsWith('/$body/$layer.webp'),
+        );
+      }
+    });
+  }
+
   test('Pumpkin Court edge cleanup changes only scoped garment regions',
       () async {
     Future<ByteData> pixels(String file) async {
@@ -165,7 +221,7 @@ void main() {
             final repaired = body == 'male' && costume == 'pumpkin_court';
             expect(
               images.where((name) => name.endsWith('_v2.webp')),
-              hasLength(repaired ? 2 : 0),
+              hasLength(costume == 'pumpkin_court' ? 2 : 0),
             );
             expect(
               images.where(
