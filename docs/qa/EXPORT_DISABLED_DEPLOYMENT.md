@@ -19,4 +19,10 @@ Activation and app download/save acceptance remain separate work. Rollback:
 redeploy this fixed-disabled entrypoint with gateway JWT verification enabled.
 Retain additive database schema; no deletion or history repair.
 
-Deployment result: pending.
+Deployment verified 2026-10-10: production version 1, verify_jwt=true; all four
+retrieved files match tested source. Missing/malformed bearer returned 401;
+public-anon request returned generic disabled 503 with no-store; unlisted origin
+returned 403. All PR #138 checks passed; merged at b7143ea72e4e6d93ac23ba8ecad7f6cd4e46be55.
+Artifact SHA256: d4a433a809ebd141ea33de9c8484546dd1e17e6abbed6f2b69adbb0dfd229f2d.
+These probes did not export private data or establish authenticated download acceptance.
+

@@ -1,0 +1,31 @@
+name: Questwell staging export client
+on:
+  push:
+    branches: [questwell-export-client-20261010]
+    paths:
+      - 'lib/services/questwell*export*.dart'
+      - 'tool/qa/hosted_export_client.dart'
+      - '.github/workflows/questwell-export-client.yml'
+permissions:
+  contents: read
+jobs:
+  staging:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Set up pinned Flutter
+        uses: ./.github/actions/flutter
+        with:
+          flutter-version: '3.44.6'
+      - name: Install locked dependencies
+        run: flutter pub get --enforce-lockfile
+      - name: Verify authenticated Dart client against synthetic staging
+        env:
+          STAGING_EXPORT_TEST_EMAIL: ${{ secrets.STAGING_EXPORT_TEST_EMAIL }}
+          STAGING_EXPORT_TEST_PASSWORD: ${{ secrets.STAGING_EXPORT_TEST_PASSWORD }}
+        run: dart run tool/qa/hosted_export_client.dart
+      - name: Preserve dependency inputs
+        run: git diff --exit-code -- pubspec.yaml pubspec.lock
