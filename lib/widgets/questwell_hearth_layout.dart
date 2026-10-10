@@ -144,21 +144,15 @@ abstract final class QuestwellHearthLayout {
       _ => .40,
     };
 
-    // Family scale is height-based and never shrinks because one asset is
-    // wider. That guarantees a stable visual scale when users swap items.
-    // Artwork must be authored to the family's envelope instead of forcing the
-    // room to compensate for an oversized sprite.
+    // Family envelopes are fixed in each architectural map; swapping an
+    // artistic skin or same-family item cannot change the room composition.
     final plan = QuestwellHearthRoomPlan.forSetting(equipment['room:setting']);
-    // Rear family envelopes are authored relative to the room, not the
-    // avatar's viewport-dependent fit. One cover scale preserves perspective.
-    final rear =
-        QuestwellHearthRoomPlan.enabled && plan.isRear(profileKey, slot);
     final geometry =
         QuestwellRoomGeometry.forSetting(equipment['room:setting'], scene);
     final source =
         QuestwellRoomGeometry.sourceForSetting(equipment['room:setting']);
-    final height = rear
-        ? source.height * geometry.scale * .62 * heightFactor * .82
+    final height = QuestwellHearthRoomPlan.enabled
+        ? source.height * geometry.scale * plan.height(profileKey, slot)
         : avatarHeight * heightFactor;
     final width = height * aspectRatio;
 

@@ -135,3 +135,19 @@ room family is square. Midnight Harvest belongs to the square standard.
 Back-row family envelopes recede uniformly; perspective may change by depth,
 never by individual item. Foreground seating/table use the visible floor span.
 Canonical saved slot IDs carry between rooms and are never rewritten for layout.
+
+
+## Two architectural maps — October 9 follow-up
+
+Tanya clarified that each structural layout owns one furniture map, shared by all
+its artistic versions. `QuestwellRoomLayout.standard` covers Original and all
+square skins; `hallowed` covers the wide Hallowed layout. Do not add skin-specific
+furniture coordinates. Large furniture uses suitable flat wall/bay envelopes;
+seating (including cushions), side tables and small floor objects use their own
+floor positions/depth. All source-space envelopes follow one room-camera
+transform. Partial occlusion behind the foreground adventurer is natural and
+must not be solved by moving cabinets into the hearth or walkway.
+
+This supersedes the former generic .25/.78 rear centers and viewport-relative
+foreground sizes. Saved slot IDs and backend placement compatibility are intact.
+Implementation/review evidence: `../qa/ROOM_SPATIAL_MAPS.md`.

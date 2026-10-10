@@ -1,79 +1,63 @@
 import 'package:flutter/material.dart';
 import 'questwell_room_geometry.dart';
 
-/// Normalized source-art anchors, before the room cover crop.
-/// Family scale and contact metadata remain independent of item artwork.
+/// Two architectural maps. Artistic room skins never override their geometry.
+/// Positions, floor contacts and family heights are in source-art coordinates;
+/// the entire arrangement follows the room camera as one spatial composition.
 class QuestwellHearthRoomPlan {
-  const QuestwellHearthRoomPlan(
-    this.left,
-    this.right,
-    this.seatLeft,
-    this.seatRight,
-    this.rearLeftFloor,
-    this.rearRightFloor,
-  );
-  final double left, right, seatLeft, seatRight;
-  final double rearLeftFloor, rearRightFloor;
+  const QuestwellHearthRoomPlan._({
+    required this.layout,
+    required this.left,
+    required this.right,
+    required this.rearFloor,
+    required this.rearRightFloor,
+    required this.seatFloor,
+    required this.seatHeight,
+    required this.tableHeight,
+  });
 
-  static QuestwellHearthRoomPlan forSetting(String? slug) => switch (slug) {
-        'astral-sanctuary' => const QuestwellHearthRoomPlan(
-            .25,
-            .78,
-            .25,
-            .75,
-            .64,
-            .65,
-          ),
-        'enchanted-library' => const QuestwellHearthRoomPlan(
-            .25,
-            .78,
-            .25,
-            .75,
-            .64,
-            .65,
-          ),
-        'emberglass-conservatory' => const QuestwellHearthRoomPlan(
-            .25,
-            .78,
-            .25,
-            .75,
-            .64,
-            .65,
-          ),
-        'hallowed-hearth' => const QuestwellHearthRoomPlan(
-            .18,
-            .77,
-            .25,
-            .75,
-            .63,
-            .63,
-          ),
-        'woodland-cottage' => const QuestwellHearthRoomPlan(
-            .25,
-            .78,
-            .25,
-            .75,
-            .64,
-            .65,
-          ),
-        'alchemists-workshop' => const QuestwellHearthRoomPlan(
-            .25,
-            .78,
-            .25,
-            .75,
-            .64,
-            .65,
-          ),
-        'midnight-observatory' => const QuestwellHearthRoomPlan(
-            .25,
-            .78,
-            .25,
-            .75,
-            .64,
-            .65,
-          ),
-        _ => const QuestwellHearthRoomPlan(.25, .78, .25, .75, .64, .65),
-      };
+  final QuestwellRoomLayout layout;
+  final double left,
+      right,
+      rearFloor,
+      rearRightFloor,
+      seatFloor,
+      seatHeight,
+      tableHeight;
+  double get seatLeft => .285;
+  double get seatRight => .715;
+
+  // Standard: the flat rear wall begins beyond the fireplace/post at x=.245.
+  // A wide cabinet must start there, not straddle that post or the hearth.
+  static const standard = QuestwellHearthRoomPlan._(
+    layout: QuestwellRoomLayout.standard,
+    left: .38,
+    right: .68,
+    rearFloor: .615,
+    rearRightFloor: .615,
+    seatFloor: .78,
+    seatHeight: .28,
+    tableHeight: .16,
+  );
+
+  // Hallowed: the chimney occupies the middle-left rear wall. Keep cabinets
+  // in the left alcove and right window bay, clear of the fire opening.
+  static const hallowed = QuestwellHearthRoomPlan._(
+    layout: QuestwellRoomLayout.hallowed,
+    left: .145,
+    right: .775,
+    rearFloor: .60,
+    rearRightFloor: .59,
+    seatFloor: .82,
+    seatHeight: .42,
+    tableHeight: .24,
+  );
+
+  static QuestwellHearthRoomPlan forSetting(String? slug) =>
+      QuestwellRoomGeometry.layoutForSetting(slug) ==
+              QuestwellRoomLayout.hallowed
+          ? hallowed
+          : standard;
 
   double center(
     String profile,
@@ -83,21 +67,17 @@ class QuestwellHearthRoomPlan {
     bool largeOnRight = false,
   }) =>
       switch (profile) {
+        'large_furniture' => slot == 'right' ? right : left,
         'seating' => slot == 'right' ? seatRight : seatLeft,
-        // The table belongs beside its chair. Without a chair, use the
-        // foreground opposite the right-hand cabinet instead of stacking them.
-        'side_table' => chairOnLeft
-            ? seatLeft - .13
-            : chairOnRight
-                ? seatRight + .13
-                : largeOnRight
-                    ? seatLeft - .13
-                    : seatRight + .13,
+        // A compact table sits outside its chair, with a small arm-edge
+        // overlap only. It must not cover the chair's sitting surface.
+        'side_table' =>
+          chairOnLeft || (!chairOnRight && largeOnRight) ? .075 : .925,
         _ => slot == 'front'
             ? .18
             : slot == 'right'
-                ? right
-                : left,
+                ? (layout == QuestwellRoomLayout.hallowed ? .86 : .79)
+                : (layout == QuestwellRoomLayout.hallowed ? .16 : .29),
       };
 
   bool isRear(String profile, String slot) =>
@@ -105,14 +85,26 @@ class QuestwellHearthRoomPlan {
       profile == 'pedestal_light' ||
       ((profile == 'plant' || profile == 'relic_display') && slot != 'front');
 
-  double floor(String profile, String slot) => isRear(profile, slot)
-      ? (slot == 'right' ? rearRightFloor : rearLeftFloor)
-      : profile == 'side_table'
-          ? .91
-          : .88;
+  /// Relative to source height, not avatar or viewport height. Cabinet backs
+  /// meet the wall; lower objects can occupy the floor beside the hearth.
+  double height(String profile, String slot) => switch (profile) {
+        'large_furniture' => .235,
+        'pedestal_light' => .264,
+        'seating' => seatHeight,
+        'side_table' => tableHeight,
+        'plant' => slot == 'front' ? seatHeight * .72 : .203,
+        'relic_display' => slot == 'front' ? seatHeight * .78 : .203,
+        _ => .203,
+      };
 
-  /// Wall fixtures follow the room's actual source crop. Floor seating is
-  /// composed inside the visible floor, so portrait crops cannot lose a chair.
+  double floor(String profile, String slot) => switch (profile) {
+        'large_furniture' => slot == 'right' ? rearRightFloor : rearFloor,
+        'pedestal_light' => rearFloor + .015,
+        'plant' || 'relic_display' when slot != 'front' => rearFloor + .02,
+        'side_table' => seatFloor + .015,
+        _ => seatFloor,
+      };
+
   Offset anchor(
     String profile,
     String slot,
@@ -122,15 +114,9 @@ class QuestwellHearthRoomPlan {
   }) {
     final geometry = QuestwellRoomGeometry.forSetting(setting, scene);
     final source = QuestwellRoomGeometry.sourceForSetting(setting);
-    if (isRear(profile, slot)) {
-      return geometry.point(
-        Offset(centerX * source.width, floor(profile, slot) * source.height),
-      );
-    }
-    final wall = geometry.point(Offset(0, .60 * source.height)).dy;
-    final contact =
-        wall + (scene.height - wall) * (profile == 'side_table' ? .79 : .70);
-    return Offset(scene.width * centerX, contact);
+    return geometry.point(
+      Offset(centerX * source.width, floor(profile, slot) * source.height),
+    );
   }
 
   static const enabled = bool.fromEnvironment('QUESTWELL_DECORATE_HEARTH');

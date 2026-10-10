@@ -1,5 +1,15 @@
 # Questwell Production Dashboard
 
+## Two architectural furniture maps — October 9 follow-up
+
+**QA.** Tanya clarified shared placement across skins in each of two structural
+layouts. Cabinets move onto suitable wall space; tables leave seating clear;
+all source-space geometry now follows the room camera. No artwork, accounts,
+slot IDs or economy changes. Prior perspective-registration acceptance did not
+establish natural room arrangement. Independent source review informed the maps;
+288 actual scene renders and hosted verification remain required.
+Evidence: `../qa/ROOM_SPATIAL_MAPS.md`.
+
 ## Room perspective and window alignment — October 9, 2026
 
 **QA / visual review passed.** PR #120 follows source-art wall/floor
