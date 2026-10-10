@@ -1,5 +1,15 @@
 # Questwell Production Dashboard
 
+## Familiar magic visibility — October 9, 2026
+
+**QA.** Tanya approved persistent pet magic after reporting the accents were
+not visible. Boston Terrier now retains gold sparkles and Hearth Cat retains
+a moon and silver motes throughout their idle loops, with action-linked shimmer.
+Reduced motion remains static. Renderer, pixel regression tests and light/dark
+all-body captures updated; CI and delivered-runtime verification pending.
+No artwork, catalog, account, pricing or database change.
+Evidence: `../qa/FAMILIAR_MAGIC_VISIBILITY.md`.
+
 ## Room perspective and window alignment — October 9, 2026
 
 **QA / visual review passed.** PR #120 follows source-art wall/floor
