@@ -23,10 +23,10 @@ All 15 synthetic tests passed, and the actual live transfer step passed.
   prefix `questwell/file-backups/live/`; SSE-B2 AES256 requested and checked.
 - No source deletion, scheduled backup, or full application recovery performed.
 
-Follow-up: resetting `QUESTWELL_LIVE_BACKUP_APPROVED` from true to false
-encountered GitHub's Confirm access dialog. The reset is NOT yet verified.
-Complete account verification and verify the saved false value before any
-further workflow-changing push. No additional live backup is authorized.
+Cleanup completed: after GitHub Mobile verification, the environment variable
+`QUESTWELL_LIVE_BACKUP_APPROVED=false` was visibly verified on October 9,
+2026 at 10:49 PM EDT. Further live transfers are disabled. No schedule is
+configured; no additional live backup is authorized.
 
 Evidence: https://github.com/funszdidiot/questwell-app/actions/runs/38016744265
 
