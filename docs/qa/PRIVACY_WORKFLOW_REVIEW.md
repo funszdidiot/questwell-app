@@ -282,3 +282,37 @@ Independent policy inspection found no permissive UPDATE policy; the session
 policy is restrictive, not an alternate grant. No policies were changed to make
 a replacement test possible. Hosted isolation/concurrency/logout checks and the
 live-profile mutation/cleanup integration also passed in that run.
+
+
+## Schema rollout runner prepared — 2026-10-10
+
+`tool/deploy/export-schema.mjs`, `export-schema-approval.json`,
+`tool/qa/export_schema_runner_test.mjs` and
+`.github/workflows/questwell-export-schema.yml` now implement the schema-only CI
+rollout that was missing above. Approval remains pending; no live request ran.
+Nine local and GitHub guard tests passed:
+https://github.com/funszdidiot/questwell-app/actions/runs/38030736552
+
+The workflow executes live only on `deploy/export-schema-approved`, at the
+current questwell-dev revision, with required checks passing, a matching payload
+hash, recorded approval/backup evidence and expiry within 24 hours of backup
+verification. It requires a dedicated `QUESTWELL_EXPORT_MIGRATION_TOKEN` secret;
+its presence/permissions have not been verified. No existing content-rollout
+credential was reused or expanded.
+
+Two pinned versioned SQL sources are bundled into one migration-recording API
+request named `reviewed_account_export_schema`. The bundle strips the standalone
+BEGIN/COMMIT wrappers, uses a single guarded DO block, checks absence beforehand
+and compares all five function-definition fingerprints plus limits-table RLS
+afterwards. A stable idempotency key and exact recorded-payload verification
+allow a verified no-write rerun. Ambiguous writes stop without automatic retry.
+The Management API route/body/idempotency header were checked against its current
+OpenAPI specification. No new package dependency or CLI was introduced.
+
+Validation limits: guard tests use mocked transports; the new bundled SQL wrapper
+has not been applied to production or rehearsed in a fresh disposable database.
+The underlying migrations were applied and tested in hosted staging earlier.
+Before executing live, complete the disposable bundle rehearsal and refresh the
+backup evidence. Production Edge deployment and client download remain separate.
+Schema-only authorization must not be represented as consent to retention purge
+or to enable the endpoint. Keep approval pending until founder confirmation.
