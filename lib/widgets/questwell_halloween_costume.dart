@@ -24,15 +24,21 @@ class QuestwellHalloweenCostume extends StatelessWidget {
   };
   static const bodies = ['female', 'neutral', 'male'];
 
-  /// Pumpkin Court edge repairs preserve each body's existing garment masks.
+  /// Surface repairs preserve each body's existing garment masks.
   static String assetPath(String costume, String body, String layer) {
     final repaired = costume == 'pumpkin_court' && body == 'male';
     final familyEdges = costume == 'pumpkin_court' &&
         const {'female', 'neutral'}.contains(body) &&
         const {'front', 'cuffs'}.contains(layer);
+    final midnightEdges = costume == 'midnight_masquerade' &&
+        bodies.contains(body) &&
+        (const {'front', 'cuffs'}.contains(layer) ||
+            body != 'female' && layer == 'collar');
     final version = repaired && const {'front', 'rear'}.contains(layer)
         ? '_v3'
-        : familyEdges || repaired && const {'collar', 'cuffs'}.contains(layer)
+        : familyEdges ||
+                midnightEdges ||
+                repaired && const {'collar', 'cuffs'}.contains(layer)
             ? '_v2'
             : '';
     return 'assets/images/questwell/avatar/halloween_v1/'
