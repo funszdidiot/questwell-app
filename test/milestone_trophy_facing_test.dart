@@ -8,6 +8,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   GoogleFonts.config.allowRuntimeFetching = false;
 
+  // Issue #127: keep the authored trophy perspective stable across both room maps.
   testWidgets('milestone facing is stable in both room maps', (tester) async {
     for (final setting in <String?>[null, 'hallowed-hearth']) {
       await tester.pumpWidget(
