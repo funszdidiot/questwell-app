@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../lib/widgets/questwell_hearth_layout.dart';
 import '../lib/widgets/questwell_hearth_room_plan.dart';
 import '../lib/widgets/questwell_pixel_art.dart';
+import '../lib/widgets/questwell_room_geometry.dart';
 
 const rooms = [
   'original',
@@ -19,6 +20,10 @@ const rooms = [
   'emberglass-conservatory',
 ];
 const arrangements = {
+  'autumn-window': {
+    'room:window': 'amberfall-window',
+    'room:right': 'copper-potion-workbench',
+  },
   'wall-standards': {
     'wall_art': 'moonlit-woodland',
     'wall_art:wall_left': 'celestial-study',
@@ -103,6 +108,54 @@ void main() {
       }
     },
   );
+  test(
+    'rear floor contact follows source wall under wide and portrait crops',
+    () {
+      if (!QuestwellHearthRoomPlan.enabled) return;
+      for (final room in rooms) {
+        for (final size in [
+          const Size(390, 280),
+          const Size(284, 342),
+          const Size(600, 416),
+        ]) {
+          final plan = QuestwellHearthRoomPlan.forSetting(room);
+          final geometry = QuestwellRoomGeometry.forSetting(room, size);
+          final source = QuestwellRoomGeometry.sourceForSetting(room);
+          final rect = QuestwellHearthLayout.bounds(
+            slug: 'copper-potion-workbench',
+            profileKey: 'large_furniture',
+            slot: 'right',
+            scene: size,
+            equipment: {'room:setting': room},
+          );
+          final contact = rect.top + rect.height * 1119 / 1173;
+          final wall = geometry.point(Offset(0, source.height * .60)).dy;
+          // A rear cabinet must sit just in front of the wall, not on the
+          // foreground floor. The previous .75 * viewport height fails this.
+          expect(
+            contact - wall,
+            inInclusiveRange(0, source.height * geometry.scale * .065),
+          );
+          expect(rect.left, greaterThanOrEqualTo(0));
+          expect(rect.right, lessThanOrEqualTo(size.width));
+          expect(rect.width / rect.height, closeTo(1341 / 1173, 1e-9));
+          expect(plan.isRear('seating', 'right'), isFalse);
+        }
+      }
+    },
+  );
+  test('room cover transform retains the measured Hallowed back wall', () {
+    final square = QuestwellRoomGeometry.forSetting(
+      'hallowed-hearth',
+      const Size(390, 390),
+    );
+    expect(square.point(const Offset(768, 614.4)), const Offset(195, 234));
+    final wide = QuestwellRoomGeometry.forSetting(
+      'hallowed-hearth',
+      const Size(600, 400),
+    );
+    expect(wide.point(const Offset(768, 614.4)), const Offset(300, 240));
+  });
   testWidgets('capture complete room compositions for visual review', (
     tester,
   ) async {
@@ -113,15 +166,11 @@ void main() {
     final key = GlobalKey();
     for (final room in rooms) {
       for (final arrangement in arrangements.entries) {
-        for (final size in arrangement.key == 'wall-standards'
-            ? [
-                const Size(272, 192.96),
-                const Size(390, 280),
-                const Size(284, 342),
-                const Size(354, 342),
-                const Size(600, 416)
-              ]
-            : [const Size(390, 280)]) {
+        for (final size in [
+          const Size(390, 280),
+          const Size(284, 342),
+          const Size(600, 416),
+        ]) {
           tester.view.physicalSize = size;
           await tester.pumpWidget(
             MaterialApp(

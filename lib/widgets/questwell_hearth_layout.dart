@@ -147,7 +147,13 @@ abstract final class QuestwellHearthLayout {
     // wider. That guarantees a stable visual scale when users swap items.
     // Artwork must be authored to the family's envelope instead of forcing the
     // room to compensate for an oversized sprite.
-    final height = avatarHeight * heightFactor;
+    final plan = QuestwellHearthRoomPlan.forSetting(equipment['room:setting']);
+    // Rear furniture recedes together; foreground seating retains adult scale.
+    final depthScale =
+        QuestwellHearthRoomPlan.enabled && plan.isRear(profileKey, slot)
+            ? .82
+            : 1.0;
+    final height = avatarHeight * heightFactor * depthScale;
     final width = height * aspectRatio;
 
     String? profileAt(String slot) {
@@ -161,7 +167,6 @@ abstract final class QuestwellHearthLayout {
     final chairOnLeft =
         profileAt('front') == 'seating' || profileAt('left') == 'seating';
 
-    final plan = QuestwellHearthRoomPlan.forSetting(equipment['room:setting']);
     final center = QuestwellHearthRoomPlan.enabled
         ? scene.width *
             plan.center(
@@ -196,14 +201,31 @@ abstract final class QuestwellHearthLayout {
             _ => scene.width * .50,
           };
 
+    if (QuestwellHearthRoomPlan.enabled) {
+      final anchor = plan.anchor(
+        profileKey,
+        slot,
+        scene,
+        equipment['room:setting'],
+        centerX: center / scene.width,
+      );
+      // Cropping may remove a side wall. Keep the whole family envelope inside
+      // the nearest visible wall zone, without stretching or rescaling it.
+      final safeCenter = anchor.dx.clamp(
+        width / 2 + 3,
+        scene.width - width / 2 - 3,
+      );
+      return Rect.fromLTWH(
+        safeCenter - width / 2,
+        anchor.dy - height * visibleBase,
+        width,
+        height,
+      );
+    }
     final roomSide = math.max(scene.width, scene.height);
-    final plannedFloor =
-        QuestwellHearthRoomPlan.enabled ? plan.floor(profileKey, slot) : null;
-    final floor = plannedFloor != null
-        ? scene.height * plannedFloor
-        : profileKey == 'relic_display' && slot != 'front'
-            ? roomSide * .68 + (scene.height - roomSide) * .52
-            : scene.height * floorDepthFor(profileKey, slot);
+    final floor = profileKey == 'relic_display' && slot != 'front'
+        ? roomSide * .68 + (scene.height - roomSide) * .52
+        : scene.height * floorDepthFor(profileKey, slot);
 
     return Rect.fromLTWH(
       center - width / 2,
