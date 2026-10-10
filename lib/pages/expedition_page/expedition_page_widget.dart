@@ -29,7 +29,8 @@ class ExpeditionPageWidget extends StatefulWidget {
   State<ExpeditionPageWidget> createState() => _ExpeditionPageWidgetState();
 }
 
-class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
+class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget>
+    with WidgetsBindingObserver {
   Timer? _timer;
   int _selectedMinutes = 25;
   late final ValueNotifier<int> _secondsRemaining;
@@ -48,6 +49,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _sessionSeconds = widget.initialDuration.inSeconds;
     if (_sessionSeconds < 1) _sessionSeconds = 1;
     _selectedMinutes = _sessionSeconds % 60 == 0 ? _sessionSeconds ~/ 60 : 0;
@@ -67,6 +69,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
     _secondsRemaining.dispose();
     super.dispose();
@@ -95,35 +98,51 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
       _finished = false;
     });
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) {
-        timer.cancel();
-        return;
-      }
+    _timer =
+        Timer.periodic(const Duration(seconds: 1), (_) => _reconcileTimer());
+  }
 
-      final remaining = _deadline!.difference(_now()).inMilliseconds;
-      if (remaining <= 0) {
-        timer.cancel();
-        _deadline = null;
-        setState(() {
-          _secondsRemaining.value = 0;
-          _running = false;
-          _finished = true;
-        });
-        return;
-      }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _reconcileTimer();
+  }
 
-      _secondsRemaining.value = (remaining / 1000).ceil();
-    });
+  int _remainingSeconds() {
+    final now = _now();
+    final duration = Duration(seconds: _sessionSeconds);
+    final remaining = _deadline!.difference(now);
+    // Rebase as well as cap after a clock rollback so the countdown keeps moving.
+    if (remaining > duration) {
+      _deadline = now.add(duration);
+      return _sessionSeconds;
+    }
+    final milliseconds = remaining.inMilliseconds;
+    return (milliseconds / 1000).ceil().clamp(0, _sessionSeconds).toInt();
+  }
+
+  void _reconcileTimer() {
+    if (!mounted || !_running || _deadline == null) return;
+    final remaining = _remainingSeconds();
+    if (remaining == 0) {
+      _timer?.cancel();
+      _deadline = null;
+      setState(() {
+        _secondsRemaining.value = 0;
+        _running = false;
+        _finished = true;
+      });
+    } else {
+      _secondsRemaining.value = remaining;
+    }
   }
 
   void _pause() {
     _timer?.cancel();
-    final remaining = _deadline?.difference(_now()).inMilliseconds ?? 0;
+    if (!_running || _deadline == null) return;
+    final remaining = _remainingSeconds();
     _deadline = null;
     setState(() {
-      _secondsRemaining.value =
-          (remaining / 1000).ceil().clamp(0, _sessionSeconds).toInt();
+      _secondsRemaining.value = remaining;
       _running = false;
       _finished = _secondsRemaining.value == 0;
     });
@@ -142,6 +161,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
 
   Future<void> _navigate(QuestwellDestination destination) async {
     if (_exitPending) return;
+    _reconcileTimer();
     _exitPending = true;
     try {
       if (_hasUnfinishedSession) {
@@ -318,6 +338,15 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                     ),
                                 ],
                               ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'This timer is not saved. Leaving this page, reloading, or closing the app ends the session.',
+                                textAlign: TextAlign.center,
+                                style: QuestwellTypography.body(
+                                  color: const Color(0xFFD8C7A3),
+                                  fontSize: 12,
+                                ),
+                              ),
                               const SizedBox(height: 22),
                               Row(
                                 children: [
@@ -412,7 +441,7 @@ class _ExpeditionPageWidgetState extends State<ExpeditionPageWidget> {
                                       : _running
                                           ? 'Steady onward, adventurer. One task, one stretch of trail. Every small step is a little victory.'
                                           : _started
-                                              ? 'Take a breath, adventurer. Your progress is safe, and the path will be here when you’re ready.'
+                                              ? 'Take a breath, adventurer. Your timer is paused here. Resume when you’re ready.'
                                               : 'You don’t need to see the whole path to take the first step. Choose one small task, adventurer. Your journey begins here.',
                                   style: QuestwellTypography.body(
                                     color: const Color(0xFFF2E7CE),
