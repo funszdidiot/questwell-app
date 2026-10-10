@@ -1,5 +1,40 @@
 # Storage backup pilot — verified one-time live copy
 
+## Hosted ten-file byte recovery PASSED — 2026-10-10 04:06 UTC
+
+Workflow https://github.com/funszdidiot/questwell-app/actions/runs/38022827804
+at commit 836cdc6f415ad0f753f607f8290add53c48aae9b completed successfully.
+Job 114127363139 reports 10 selected / 10 uploaded / 0 pre-existing verified,
+all file checksums passed, and one newer archive file excluded.
+Destination only: recovery czubumijsibtgjwekdpt / private beta-feedback.
+
+After transfer, independent read-only SQL confirmed:
+- Ten private file records, zero missing owners.
+- The ordered id/bucket/path/owner digest remains
+  4a2a946c035a747501f88af3ad968677, exactly equal to the pre-write baseline.
+- Bucket public=false.
+- The approved synthetic fixture remains separate; no permanent cleanup occurred.
+
+The earlier zero-write stop is resolved. Missing-byte detection now combines:
+exact pinned archive and metadata inventory, the full-access recovery S3 key,
+and successful byte-identical reads of the known private synthetic fixture
+BEFORE and AFTER checking all ten paths. Under those controls, HTTP 404 is
+accepted for the restored metadata-only files. Permission/server errors and
+unexpected existing bytes still fail closed. No RLS/policy was relaxed.
+Nineteen recovery tests passed locally and in CI, including generic errors,
+access denial, failed positive control, corruption, scope and inventory drift.
+
+The one-time restore workflow has been closed (job condition false and approval
+gate false). This does not modify the separate seven-day backup schedule.
+No source changes, migrations, deletion, new paid service or traffic switch.
+
+This completes the scoped hosted database + ten-file byte recovery checkpoint.
+It is NOT full application recovery or overall GO: recovered real-owner login
+and positive/cross-owner file API acceptance, Auth configuration/callbacks,
+app-flow acceptance and scheduled backup observation remain outstanding.
+Synthetic Auth sign-in and fixture readback passed separately; do not substitute
+that result for a restored real-account acceptance test.
+
 ## Synthetic ownership proof and guarded restore attempt — 2026-10-10 04:00 UTC
 
 Synthetic account and ownership probe:
