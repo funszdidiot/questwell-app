@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
+import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -205,14 +206,19 @@ void main() {
     }
   });
 
-  test('textile bounds clear the standard avatar and Hallowed bookshelf', () {
+  test('textiles leave the ceiling beam and preserve room clearances', () {
     const size = Size(1024, 1024);
     for (final gallery in [false, true]) {
-      expect(
-          QuestwellHearthDecor.wallArtBounds(size, 'wall_center',
-                  profileKey: 'wall_textile', galleryWall: gallery)
-              .bottom,
-          lessThan(180));
+      final center = QuestwellHearthDecor.wallArtBounds(size, 'wall_center',
+          profileKey: 'wall_textile', galleryWall: gallery);
+      expect(center.top, greaterThanOrEqualTo(54));
+      expect(center.bottom, lessThan(184));
+      for (final slot in ['wall_left', 'wall_right']) {
+        final side = QuestwellHearthDecor.wallArtBounds(size, slot,
+            profileKey: 'wall_textile', galleryWall: gallery);
+        expect(side.center.dy, greaterThan(190));
+        expect(side.bottom, lessThan(300));
+      }
     }
     expect(
         QuestwellHearthDecor.wallArtBounds(const Size(1536, 1024), 'wall_right',
@@ -230,7 +236,30 @@ void main() {
       expect(bounds('wall_left').right, lessThan(center.left));
       expect(bounds('wall_right').left, greaterThan(center.right));
       expect(center.bottom, lessThan(hallowed ? 280 : 300));
-      expect(center.width, greaterThan(bounds('wall_left').width * 3));
+      expect(center.width,
+          greaterThan(bounds('wall_left').width * (hallowed ? 3 : 2)));
+    }
+  });
+
+  test('standard textiles remain visible in the actual Home and Inventory crop',
+      () {
+    for (final width in [320.0, 390.0, 760.0, 960.0]) {
+      final scene = Size(width, width * .68 + 8);
+      final avatarHeight = math.min(scene.height * .76, width * .62 * 4 / 3);
+      final headTop = scene.height * .88 - avatarHeight * (310 - 9) / 320;
+      for (final gallery in [false, true]) {
+        for (final slot in ['wall_center', 'wall_left', 'wall_right']) {
+          final rect = QuestwellHearthDecor.wallArtBounds(scene, slot,
+              profileKey: 'wall_textile', galleryWall: gallery);
+          expect(rect.top, greaterThanOrEqualTo(6));
+          expect((Offset.zero & scene).contains(rect.topLeft), isTrue);
+          expect((Offset.zero & scene).contains(rect.bottomRight), isTrue);
+          if (slot == 'wall_center') {
+            expect(rect.bottom, lessThanOrEqualTo(headTop - 2.99));
+            expect(rect.height, greaterThan(24));
+          }
+        }
+      }
     }
   });
 
@@ -254,9 +283,16 @@ void main() {
       (tester) async {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     final capture = GlobalKey();
-    for (final width in [390.0, 960.0]) {
+    for (final viewport in [
+      (390.0, false),
+      (960.0, false),
+      (390.0, true),
+      (760.0, true)
+    ]) {
+      final (width, appFraming) = viewport;
       await tester.binding.setSurfaceSize(Size(width, width));
       for (final room in EvergreenHearthFixture.rooms) {
+        if (appFraming && room != QuestwellHearthSetting.original) continue;
         for (final art in EvergreenHearthFixture.names.keys) {
           for (final slot in [
             'wall_center',
@@ -266,7 +302,9 @@ void main() {
           ]) {
             final gallery = slot == 'gallery';
             final wallSlot = gallery ? 'wall_center' : slot;
-            final height = width / (room.usesHallowedLayout ? 1.5 : 1);
+            final height = appFraming
+                ? width * .68 + 8
+                : width / (room.usesHallowedLayout ? 1.5 : 1);
             await tester.pumpWidget(MaterialApp(
                 home: Scaffold(
                     body: RepaintBoundary(
@@ -336,7 +374,7 @@ void main() {
               final bytes =
                   await image.toByteData(format: ui.ImageByteFormat.png);
               final file = File(
-                  'build/hearth-composition/evergreen-${room.slug}-$art-$slot-${width.toInt()}.png');
+                  'build/hearth-composition/evergreen-${room.slug}-$art-$slot-${width.toInt()}${appFraming ? '-app' : ''}.png');
               await file.parent.create(recursive: true);
               await file.writeAsBytes(bytes!.buffer.asUint8List());
               image.dispose();

@@ -127,6 +127,8 @@ class QuestwellHearthDecor {
     if (galleryWall) {
       // A statement textile and two companion frames form one gallery.
       // Fit the whole group to the available wall, not each item in isolation.
+      // Standard-room companions sit beside the avatar, below the beam; the
+      // statement textile uses the smaller clear space immediately above it.
       final source = hallowed ? const Size(1536, 1024) : const Size(1024, 1024);
       final geometry = QuestwellRoomGeometry(source, scene);
       final rect = hallowed
@@ -136,15 +138,18 @@ class QuestwellHearthDecor {
                   ? const Rect.fromLTWH(393, 110, 44, 86)
                   : const Rect.fromLTWH(699, 110, 44, 86))
           : (slot == 'wall_center'
-              ? const Rect.fromLTWH(392, 16, 240, 160)
+              ? const Rect.fromLTWH(416, 54, 192, 128)
               : slot == 'wall_left'
-                  ? const Rect.fromLTWH(310, 50, 70, 120)
-                  : const Rect.fromLTWH(644, 50, 70, 120));
-      return Rect.fromLTWH(
+                  ? const Rect.fromLTWH(310, 134, 70, 120)
+                  : const Rect.fromLTWH(644, 134, 70, 120));
+      final projected = Rect.fromLTWH(
           geometry.point(rect.topLeft).dx,
           geometry.point(rect.topLeft).dy,
           rect.width * geometry.scale,
           rect.height * geometry.scale);
+      return hallowed
+          ? projected
+          : _visibleStandardWallArt(projected, scene, slot);
     }
     if (profileKey == 'wall_textile') {
       // One textile envelope per architectural map. Artwork is contained,
@@ -159,16 +164,19 @@ class QuestwellHearthDecor {
                   ? const Rect.fromLTWH(170, 320, 140, 110)
                   : const Rect.fromLTWH(1294, 210, 112, 90))
           : (center
-              ? const Rect.fromLTWH(392, 16, 240, 160)
+              ? const Rect.fromLTWH(416, 54, 192, 128)
               : slot == 'wall_left'
-                  ? const Rect.fromLTWH(300, 142, 100, 80)
-                  : const Rect.fromLTWH(624, 142, 100, 80));
-      return Rect.fromLTWH(
+                  ? const Rect.fromLTWH(300, 210, 100, 80)
+                  : const Rect.fromLTWH(624, 210, 100, 80));
+      final projected = Rect.fromLTWH(
         geometry.point(rect.topLeft).dx,
         geometry.point(rect.topLeft).dy,
         rect.width * geometry.scale,
         rect.height * geometry.scale,
       );
+      return hallowed
+          ? projected
+          : _visibleStandardWallArt(projected, scene, slot);
     }
 
     final center = slot == 'wall_center';
@@ -228,6 +236,23 @@ class QuestwellHearthDecor {
     }
     return Rect.fromCenter(
         center: frameCenter, width: frameWidth, height: frameHeight);
+  }
+
+  // Home and Inventory use a shorter camera than the full-room review. Keep
+  // wall hangings on screen after the cover crop, with the center above the
+  // earliest locked avatar silhouette. Scale uniformly; never stretch artwork.
+  static Rect _visibleStandardWallArt(Rect projected, Size scene, String slot) {
+    if (slot != 'wall_center') {
+      return projected
+          .shift(Offset(0, math.max(0, scene.height * .12 - projected.top)));
+    }
+    final avatarHeight =
+        math.min(scene.height * .76, scene.width * .62 * 4 / 3);
+    final headTop = scene.height * .88 - avatarHeight * (310 - 9) / 320;
+    final top = math.max(projected.top, scene.height * .035);
+    final height = math.min(projected.height, math.max(1.0, headTop - 3 - top));
+    final width = projected.width * height / projected.height;
+    return Rect.fromLTWH(projected.center.dx - width / 2, top, width, height);
   }
 
   static Positioned wallArtPositioned({

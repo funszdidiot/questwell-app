@@ -3,7 +3,27 @@
 Tanya approved the exact prices below and permanent Market availability with
 **Yes** on October 10, 2026. This authorizes the scoped account rollout and
 development delivery. No free inventory grants or flutterflow promotion.
-Status: client and guarded forward change in QA; live activation not yet performed.
+Status: **DEV DEPLOYED / catalog active**. PR #144 delivered `e9a4726` through
+Preview `38073413501`; five served artwork hashes were verified. Migration
+`20261010180351` activated exactly the five approved items, preserving the prior
+60 migration rows and all protected schema/catalog hashes. CI passed 1,126
+Flutter, 27 decorator and 440 Chrome tests, native builds and backend checks.
+Signed-in manual and physical-device acceptance remain unclaimed.
+
+On October 10 Tanya separately requested all five items in her inventory.
+Five idempotent `founder_grant` ownership inserts were verified against her
+previously confirmed founder account. Coin balance, profile, prior ownership
+and equipped items were unchanged. Guardian eligibility remains enforced.
+
+Her same follow-up identified the standard-room gallery as too high. The
+placement correction lowers both companion frames and individual side textiles;
+the center envelope moves below the beam and scales proportionally to retain
+readable clearance above the avatar. The production Home/Inventory crop
+(`width * .68 + 8`) gets viewport-aware fitting, with 320/390/760/960
+geometry checks and 24 additional actual app-framing render exports. An
+App framing control makes the same camera available in the review. Hallowed geometry and all artwork bytes
+remain unchanged. This placement follow-up is in QA; PR #144 remains the
+delivered catalog evidence.
 
 ## Approved release
 
