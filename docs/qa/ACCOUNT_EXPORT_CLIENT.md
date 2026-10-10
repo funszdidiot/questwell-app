@@ -10,9 +10,9 @@ dependency. It supplies no owner, destination or durable token URL and never
 retries automatically. It validates the eight record groups, owner isolation,
 referenced attachment completeness and SHA256 hashes before enabling Save.
 Accepted responses are limited to 40 MiB; attachments retain the server's 5 MiB
-per-file, 25 MiB total and 100-file limits. HTTP's web client can buffer the
-transport response before this application limit runs; this is not a strict
-browser network-memory bound. Larger exports fail without a partial download.
+per-file, 25 MiB total and 100-file limits. HTTP 1.4.0 streams browser responses
+using Fetch and cancels the reader when the bound is exceeded. Larger exports
+fail without a partial download.
 
 Prepared bytes expire after two minutes. Closing the screen, discarding, saving,
 cancelling or a failed operation clears the held buffer. Session identity is
