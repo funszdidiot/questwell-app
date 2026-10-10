@@ -127,6 +127,8 @@ class QuestwellHearthDecor {
     if (galleryWall) {
       // A statement textile and two companion frames form one gallery.
       // Fit the whole group to the available wall, not each item in isolation.
+      // Standard-room companions sit beside the avatar, below the beam; the
+      // statement textile uses the smaller clear space immediately above it.
       final source = hallowed ? const Size(1536, 1024) : const Size(1024, 1024);
       final geometry = QuestwellRoomGeometry(source, scene);
       final rect = hallowed
@@ -136,10 +138,10 @@ class QuestwellHearthDecor {
                   ? const Rect.fromLTWH(393, 110, 44, 86)
                   : const Rect.fromLTWH(699, 110, 44, 86))
           : (slot == 'wall_center'
-              ? const Rect.fromLTWH(392, 16, 240, 160)
+              ? const Rect.fromLTWH(416, 54, 192, 128)
               : slot == 'wall_left'
-                  ? const Rect.fromLTWH(310, 50, 70, 120)
-                  : const Rect.fromLTWH(644, 50, 70, 120));
+                  ? const Rect.fromLTWH(310, 134, 70, 120)
+                  : const Rect.fromLTWH(644, 134, 70, 120));
       return Rect.fromLTWH(
           geometry.point(rect.topLeft).dx,
           geometry.point(rect.topLeft).dy,
@@ -159,10 +161,10 @@ class QuestwellHearthDecor {
                   ? const Rect.fromLTWH(170, 320, 140, 110)
                   : const Rect.fromLTWH(1294, 210, 112, 90))
           : (center
-              ? const Rect.fromLTWH(392, 16, 240, 160)
+              ? const Rect.fromLTWH(416, 54, 192, 128)
               : slot == 'wall_left'
-                  ? const Rect.fromLTWH(300, 142, 100, 80)
-                  : const Rect.fromLTWH(624, 142, 100, 80));
+                  ? const Rect.fromLTWH(300, 210, 100, 80)
+                  : const Rect.fromLTWH(624, 210, 100, 80));
       return Rect.fromLTWH(
         geometry.point(rect.topLeft).dx,
         geometry.point(rect.topLeft).dy,

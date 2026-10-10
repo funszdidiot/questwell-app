@@ -205,14 +205,19 @@ void main() {
     }
   });
 
-  test('textile bounds clear the standard avatar and Hallowed bookshelf', () {
+  test('textiles leave the ceiling beam and preserve room clearances', () {
     const size = Size(1024, 1024);
     for (final gallery in [false, true]) {
-      expect(
-          QuestwellHearthDecor.wallArtBounds(size, 'wall_center',
-                  profileKey: 'wall_textile', galleryWall: gallery)
-              .bottom,
-          lessThan(180));
+      final center = QuestwellHearthDecor.wallArtBounds(size, 'wall_center',
+          profileKey: 'wall_textile', galleryWall: gallery);
+      expect(center.top, greaterThanOrEqualTo(54));
+      expect(center.bottom, lessThan(184));
+      for (final slot in ['wall_left', 'wall_right']) {
+        final side = QuestwellHearthDecor.wallArtBounds(size, slot,
+            profileKey: 'wall_textile', galleryWall: gallery);
+        expect(side.center.dy, greaterThan(190));
+        expect(side.bottom, lessThan(300));
+      }
     }
     expect(
         QuestwellHearthDecor.wallArtBounds(const Size(1536, 1024), 'wall_right',
@@ -230,7 +235,8 @@ void main() {
       expect(bounds('wall_left').right, lessThan(center.left));
       expect(bounds('wall_right').left, greaterThan(center.right));
       expect(center.bottom, lessThan(hallowed ? 280 : 300));
-      expect(center.width, greaterThan(bounds('wall_left').width * 3));
+      expect(center.width,
+          greaterThan(bounds('wall_left').width * (hallowed ? 3 : 2.5)));
     }
   });
 
