@@ -1000,6 +1000,26 @@ class QuestwellItemIconPainter extends CustomPainter {
       r(16, 17, 3, 2, purple);
       r(14, 23, 4, 3, goldShade);
       star(6, 10, cream);
+    } else if (slug == 'starlight-aura') {
+      star(10, 11, gold);
+      star(23, 20, const Color(0xFFC7B8F3));
+      star(9, 25, cream);
+      star(25, 6, purple);
+      r(15, 16, 2, 2, cream);
+      r(19, 9, 1, 1, cream);
+    } else if (slug == 'enchanted-leaves') {
+      for (final pos in [
+        const Offset(7, 10),
+        const Offset(18, 5),
+        const Offset(17, 21)
+      ]) {
+        r(pos.dx, pos.dy + 2, 7, 3, greenDark);
+        r(pos.dx + 2, pos.dy, 5, 5, green);
+        r(pos.dx + 4, pos.dy + 1, 2, 3, mint);
+        r(pos.dx + 1, pos.dy + 5, 2, 3, goldShade);
+      }
+      star(8, 24, mint);
+      star(25, 16, cream);
     } else if (slug == 'victory-sparkle' || slug == 'guardian-crest') {
       star(15, 14, gold);
       r(14, 9, 3, 11, gold);

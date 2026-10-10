@@ -1,0 +1,49 @@
+name: Reviewed Avatar magic forward migration
+
+on:
+  pull_request:
+    branches: [questwell-dev]
+  push:
+    branches: [deploy/avatar-magic-approved]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: questwell-reviewed-magic-forward
+  cancel-in-progress: false
+
+jobs:
+  guards:
+    name: Avatar magic deployment guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout without stored credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Validate exact release sources and failure paths without credentials
+        run: |
+          node --test tool/qa/magic_forward_test.mjs
+          node tool/deploy/avatar-magic.mjs --check
+
+  apply:
+    name: Activate only the reviewed Avatar magic collection
+    if: github.event_name == 'push' && github.ref == 'refs/heads/deploy/avatar-magic-approved'
+    needs: guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      checks: read
+    steps:
+      - name: Checkout the reviewed revision without stored credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Verify served client and atomically activate the exact release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          QUESTWELL_MAGIC_MIGRATION_TOKEN: ${{ secrets.QUESTWELL_MAGIC_MIGRATION_TOKEN }}
+        run: node tool/deploy/avatar-magic.mjs

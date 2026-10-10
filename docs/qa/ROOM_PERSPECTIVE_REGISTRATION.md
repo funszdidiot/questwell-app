@@ -59,3 +59,25 @@ development base 13230d5. This allows required checks to cover the single
 combined release. Both review findings are implemented: resolved room settings
 feed all placement paths, and robe QA includes per-layer smooth enlargements.
 Final feature-enabled renders, combined CI and hosted delivery remain gates.
+
+
+## Independent feature-enabled review — PASS
+
+Run 38016686201, head 48af378, merge-test 5c800b9, artifact 11655923932
+completed both the full regression suite and the feature-enabled decorator
+tests. Independent review inspected all 135 actual fixtures and native detail
+views. The Hallowed bookshelf clears the entire fire opening, rear furnishings
+meet the wall/floor, chairs and tables form side groupings, and autumn scenery
+stays inside the glass without covering mullions. No blocking scale, placement
+or window defect remained. Portrait fixture whitespace is outside the shortened
+room's widget, not letterboxing inside the room.
+
+Evidence SHA256: Hallowed display 600x416
+`c41bb15c3cf92c02d558a59333fc5a76192c20d508689000718d2d11abc9766b`;
+Hallowed reading-right 284x342
+`299a562526e42a7eaefe6d1b159efee918d476866a6ace9d320735488282a33f`.
+
+The concurrently merged magic release 1b79008 is preserved in the final
+integration. Only the dashboard addition conflicted; both entries remain.
+Its familiar/effect changes are preserved. Fresh combined checks and delivered
+revision verification are required; no physical iPhone acceptance is inferred.

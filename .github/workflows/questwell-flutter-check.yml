@@ -97,6 +97,15 @@ jobs:
           retention-days: 7
           if-no-files-found: warn
 
+      - name: Retain avatar and familiar magic review images
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: magic-review-${{ github.sha }}
+          path: build/magic-review/
+          retention-days: 7
+          if-no-files-found: warn
+
       - name: Retain rendered Halloween review images
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

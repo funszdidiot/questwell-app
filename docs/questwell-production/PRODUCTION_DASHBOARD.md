@@ -2,13 +2,28 @@
 
 ## Room perspective and window alignment — October 9, 2026
 
-**QA / combined development delivery.** PR #120 follows source-art wall/floor
+**QA / visual review passed.** PR #120 follows source-art wall/floor
 geometry across both room designs and corrects Hallowed window clipping. It also
 includes the independently reviewed male Pumpkin Court surface repair from
-PR #121. Robe CI passed; combined CI and feature-enabled placement review are
-required before merge. The PR records the final delivery revision and checks.
+PR #121. All 135 feature-enabled scene fixtures passed independent review
+(nine rooms, five arrangements, three viewports). Checks passed through full
+regression, decorator, Chrome, Android/iOS and backend on 48af378; final web
+packaging and integration with the concurrent magic release remain required.
+The PR records final delivery revision, hosted verification and check results.
 Saved slots, ownership, locked bodies and other outfits are preserved.
 Evidence: `../qa/ROOM_PERSPECTIVE_REGISTRATION.md`.
+
+## Avatar and familiar magic — October 9
+
+**QA / visual preview approved.** Tanya approved Starlight Aura, Enchanted Leaves,
+Stardust Wiggle for Boston Terrier, and Moonlit Purr for Hearth Cat. Reuses the
+effect slot and pet animation clocks; fixed avatar/sprite artwork is unchanged.
+Tanya approved both avatar effects at 150 coins and release after checks pass.
+Catalog integration and guarded activation are in QA; dedicated 24-hour access
+is installed. Tanya supplied the review ZIP; all 12 light/dark native/enlarged
+composites passed visual inspection. Refreshing CI with the latest iOS identity change.
+No live delivery is claimed.
+See `docs/qa/AVATAR_FAMILIAR_MAGIC.md` for scope and verification.
 
 ## Hearth audio and automatic resume — October 9, 2026
 

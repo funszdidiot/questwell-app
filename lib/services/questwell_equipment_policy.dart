@@ -32,6 +32,8 @@ abstract final class QuestwellEquipmentPolicy {
     'brass-lantern',
     'annotated-grimoire',
     'moonstone-brooch',
+    'starlight-aura',
+    'enchanted-leaves',
     'victory-sparkle',
     'focus-tonic',
     'pumpkin-sprite',

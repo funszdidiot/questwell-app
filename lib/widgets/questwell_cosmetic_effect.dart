@@ -5,31 +5,50 @@ import 'package:flutter/material.dart';
 class QuestwellCosmeticEffect extends StatefulWidget {
   const QuestwellCosmeticEffect({super.key, required this.slug});
   final String slug;
+  static const names = <String, String>{
+    'victory-sparkle': 'Victory Sparkle',
+    'focus-tonic': 'Focus Tonic',
+    'starlight-aura': 'Starlight Aura',
+    'enchanted-leaves': 'Enchanted Leaves',
+  };
   @override
-  State<QuestwellCosmeticEffect> createState() => _QuestwellCosmeticEffectState();
+  State<QuestwellCosmeticEffect> createState() =>
+      _QuestwellCosmeticEffectState();
 }
 
 class _QuestwellCosmeticEffectState extends State<QuestwellCosmeticEffect>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _clock = AnimationController(
-    vsync: this, duration: const Duration(seconds: 6));
+  late final AnimationController _clock =
+      AnimationController(vsync: this, duration: const Duration(seconds: 6));
   bool _still = false;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _still = MediaQuery.disableAnimationsOf(context) || !TickerMode.of(context);
-    if (_still) { _clock.stop(); } else if (!_clock.isAnimating) { _clock.repeat(); }
+    if (_still) {
+      _clock.stop();
+    } else if (!_clock.isAnimating) {
+      _clock.repeat();
+    }
   }
+
   @override
-  void dispose() { _clock.dispose(); super.dispose(); }
+  void dispose() {
+    _clock.dispose();
+    super.dispose();
+  }
+
   @override
-  Widget build(BuildContext context) => IgnorePointer(child: RepaintBoundary(
-    child: CustomPaint(painter: QuestwellCosmeticEffectPainter(
-      slug: widget.slug, clock: _clock, still: _still))));
+  Widget build(BuildContext context) => IgnorePointer(
+      child: RepaintBoundary(
+          child: CustomPaint(
+              painter: QuestwellCosmeticEffectPainter(
+                  slug: widget.slug, clock: _clock, still: _still))));
 }
 
 class QuestwellCosmeticEffectPainter extends CustomPainter {
-  QuestwellCosmeticEffectPainter({required this.slug, required this.clock, this.still = false})
+  QuestwellCosmeticEffectPainter(
+      {required this.slug, required this.clock, this.still = false})
       : super(repaint: clock);
   final String slug;
   final Animation<double> clock;
@@ -43,27 +62,73 @@ class QuestwellCosmeticEffectPainter extends CustomPainter {
     canvas.scale(scale);
     final phase = still ? .16 : clock.value;
     final paint = Paint()..isAntiAlias = true;
-    void star(Offset at, double radius, double opacity) {
+    void star(Offset at, double radius, double opacity,
+        {Color color = const Color(0xFFF7C65E)}) {
       if (opacity <= 0) return;
       final glow = Rect.fromCircle(center: at, radius: radius * 2.4);
       paint.shader = RadialGradient(colors: [
-        Color.fromRGBO(255, 196, 77, opacity * .32), const Color(0x00FFC44D),
+        color.withValues(alpha: opacity * .32),
+        color.withValues(alpha: 0),
       ]).createShader(glow);
-      canvas.drawOval(glow, paint); paint.shader = null;
+      canvas.drawOval(glow, paint);
+      paint.shader = null;
       final path = Path();
       for (var i = 0; i < 8; i++) {
         final angle = -math.pi / 2 + i * math.pi / 4;
         final r = i.isEven ? radius : radius * .26;
         final p = at + Offset(math.cos(angle), math.sin(angle)) * r;
-        if (i == 0) { path.moveTo(p.dx, p.dy); } else { path.lineTo(p.dx, p.dy); }
+        if (i == 0) {
+          path.moveTo(p.dx, p.dy);
+        } else {
+          path.lineTo(p.dx, p.dy);
+        }
       }
       path.close();
-      paint.color = Color.fromRGBO(247, 198, 94, opacity);
+      paint.color = color.withValues(alpha: opacity);
       canvas.drawPath(path, paint);
       paint.color = Color.fromRGBO(255, 247, 206, opacity);
       canvas.drawCircle(at, math.max(.65, radius * .18), paint);
     }
-    if (slug == 'victory-sparkle') {
+
+    if (slug == 'starlight-aura') {
+      // A slow constellation on the margins, not across the face or clothing.
+      for (var i = 0; i < 12; i++) {
+        final t = (phase + i / 12) % 1;
+        final side = i.isEven ? -1.0 : 1.0;
+        final at = Offset(
+            120 + side * (73 + (i % 3) * 7) + math.sin(t * math.pi * 2) * 3,
+            285 - t * 188);
+        final alpha = math.sin(math.pi * t) * .72;
+        star(at, i % 3 == 0 ? 4.3 : 2.6, alpha,
+            color:
+                i.isEven ? const Color(0xFFF3D78E) : const Color(0xFFC7B8F3));
+      }
+    } else if (slug == 'enchanted-leaves') {
+      // Low orbit stays beneath the garments and away from companion space.
+      for (var i = 0; i < 7; i++) {
+        final angle = (phase + i / 7) * math.pi * 2;
+        final at =
+            Offset(120 + math.cos(angle) * 45, 307 + math.sin(angle) * 6);
+        canvas.save();
+        canvas.translate(at.dx, at.dy);
+        canvas.rotate(math.sin(angle) * .45 - .35);
+        paint.color = const Color(0xFF78DDB1).withValues(alpha: .12);
+        canvas.drawOval(const Rect.fromLTWH(-7, -4, 14, 8), paint);
+        final leaf = Path()
+          ..moveTo(-5, 0)
+          ..quadraticBezierTo(0, -6, 5, 0)
+          ..quadraticBezierTo(0, 5, -5, 0)
+          ..close();
+        paint.color = Color.lerp(
+                const Color(0xFF3DAB83), const Color(0xFFB9EFB5), (i % 3) / 2)!
+            .withValues(alpha: .65 + math.sin(angle) * .15);
+        canvas.drawPath(leaf, paint);
+        paint.color = const Color(0xFFDBF4C0).withValues(alpha: .7);
+        paint.strokeWidth = .65;
+        canvas.drawLine(const Offset(-3, 0), const Offset(3, 0), paint);
+        canvas.restore();
+      }
+    } else if (slug == 'victory-sparkle') {
       // Two short staggered flourishes, followed by a quiet interval.
       for (var i = 0; i < 18; i++) {
         final delay = (i % 6) * .023 + (i >= 9 ? .19 : 0);
@@ -73,9 +138,13 @@ class QuestwellCosmeticEffectPainter extends CustomPainter {
         final side = i.isEven ? -1.0 : 1.0;
         final x = 120 + side * (61 + (i % 3) * 8 + t * 10);
         final y = 89.0 + (i % 9) * 21 + t * 19;
-        star(Offset(x, y), (i % 4 == 0 ? 8.5 : 4.0) * (.65 + alpha * .35), alpha);
+        star(Offset(x, y), (i % 4 == 0 ? 8.5 : 4.0) * (.65 + alpha * .35),
+            alpha);
         paint.color = Color.fromRGBO(245, 190, 78, alpha * .65);
-        canvas.drawRect(Rect.fromCenter(center: Offset(x - side * 4, y - 8), width: 1.7, height: 1.7), paint);
+        canvas.drawRect(
+            Rect.fromCenter(
+                center: Offset(x - side * 4, y - 8), width: 1.7, height: 1.7),
+            paint);
       }
     } else if (slug == 'focus-tonic') {
       // Slow rising sage bubbles stay outside the face and garment silhouette.
@@ -83,13 +152,15 @@ class QuestwellCosmeticEffectPainter extends CustomPainter {
         final t = (phase + i / 15) % 1;
         final alpha = math.sin(math.pi * t) * .85;
         final side = i.isEven ? -1.0 : 1.0;
-        final x = 120 + side * (65 + (i % 3) * 7) + math.sin(t * math.pi * 2 + i) * 3;
+        final x =
+            120 + side * (65 + (i % 3) * 7) + math.sin(t * math.pi * 2 + i) * 3;
         final y = 287 - t * 215;
         final radius = 2.0 + i % 4;
         paint.style = PaintingStyle.fill;
         paint.color = Color.fromRGBO(132, 208, 162, alpha * .18);
         canvas.drawCircle(Offset(x, y), radius + 1, paint);
-        paint.style = PaintingStyle.stroke; paint.strokeWidth = .85;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = .85;
         paint.color = Color.fromRGBO(173, 228, 183, alpha);
         canvas.drawCircle(Offset(x, y), radius, paint);
         paint.style = PaintingStyle.fill;
@@ -100,7 +171,10 @@ class QuestwellCosmeticEffectPainter extends CustomPainter {
     }
     canvas.restore();
   }
+
   @override
   bool shouldRepaint(covariant QuestwellCosmeticEffectPainter oldDelegate) =>
-      oldDelegate.slug != slug || oldDelegate.still != still || oldDelegate.clock != clock;
+      oldDelegate.slug != slug ||
+      oldDelegate.still != still ||
+      oldDelegate.clock != clock;
 }
