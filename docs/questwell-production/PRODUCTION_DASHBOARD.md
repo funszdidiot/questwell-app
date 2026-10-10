@@ -1,5 +1,18 @@
 # Questwell Production Dashboard
 
+## Two architectural furniture maps — October 9 follow-up
+
+**QA / independent visual review passed.** Tanya clarified shared placement across skins in each of two structural
+layouts. Cabinets move onto suitable wall space; tables leave seating clear;
+all source-space geometry now follows the room camera. No artwork, accounts,
+slot IDs or economy changes. Prior perspective-registration acceptance did not
+establish natural room arrangement. All 288 room compositions and 18 window
+captures passed independent review on 8e5751a; 1,075 regression, 27 decorator
+and 418 Chrome tests plus all native/web/backend checks passed. The concurrent
+familiar update is preserved. Fresh combined checks and hosted verification
+are required; PR #126 records the final delivered revision and result.
+Evidence: `../qa/ROOM_SPATIAL_MAPS.md`.
+
 ## Familiar magic visibility — October 9, 2026
 
 **QA.** Tanya approved persistent pet magic after reporting the accents were
