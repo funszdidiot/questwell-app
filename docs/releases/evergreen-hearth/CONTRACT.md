@@ -80,3 +80,11 @@ setup command contacted an instance-metadata endpoint. It has not been retried.
 GitHub CI provides the Flutter analyzer, tests, web and native build gates.
 All five source artworks remain byte-for-byte unchanged. Local checks cover Dart
 formatting, JavaScript syntax, asset provenance and diff whitespace.
+
+## Approved account continuation — October 10, 2026
+
+Tanya's **Yes** approves 120 coins per textile, 300 coins per room and permanent
+Market availability. This supersedes the earlier price/activation hold for these
+five items only. Guardian's Oath remains Guardian-only; all other items support
+all classes. The scoped account rollout is defined in `ACCOUNT_RELEASE.md`.
+No free inventory grants, root-history replay or flutterflow promotion.

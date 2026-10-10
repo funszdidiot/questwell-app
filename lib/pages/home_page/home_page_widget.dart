@@ -1,4 +1,5 @@
 import 'dart:async';
+import '/widgets/questwell_account_dialog_flow.dart';
 import '/widgets/questwell_quest_completion.dart';
 import '/widgets/questwell_decorate_hearth.dart';
 import '../../widgets/questwell_hearth_material.dart';
@@ -76,7 +77,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   QuestwellCosmeticService.saveHearthLayout(layouts, layout)));
     } catch (_) {
       if (mounted)
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        _showHomeFeedback(const SnackBar(
             content: Text('Could not open your room. Please try again.')));
     } finally {
       if (mounted) setState(() => _openingDecorator = false);
@@ -86,6 +87,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   late HomePageModel _model;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   bool _completingTask = false;
+  QuestwellAccountDialogFlow? _completionFlow;
+  var _homeMessenger = GlobalKey<ScaffoldMessengerState>();
   bool _campfireMode = false;
   bool _changingEnergyMode = false;
   bool _onboardingCompleted = true;
@@ -123,6 +126,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   void _accountChanged() {
     if (!mounted || _owner == widget.currentOwner()) return;
+    _completionFlow?.cancel();
+    _completionFlow = null;
+    _homeMessenger = GlobalKey<ScaffoldMessengerState>();
     setState(() {
       _owner = widget.currentOwner();
       _accountGeneration++;
@@ -207,7 +213,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       _onboardingCompleted = true;
       _refreshTasksAndHome();
     });
-    ScaffoldMessenger.of(context).showSnackBar(
+    _showHomeFeedback(
       const SnackBar(
         content: Text('Setup complete. Your quest board is ready.'),
         behavior: SnackBarBehavior.floating,
@@ -230,7 +236,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       });
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      _showHomeFeedback(
         const SnackBar(
           content: Text('Could not change energy mode. Please try again.'),
           behavior: SnackBarBehavior.floating,
@@ -243,6 +249,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   void dispose() {
+    _completionFlow?.cancel();
     _accountChanges.removeListener(_accountChanged);
     QuestwellCosmeticService.changes.removeListener(_cosmeticsChanged);
     _model.dispose();
@@ -294,16 +301,29 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     }
   }
 
+  void _showHomeFeedback(SnackBar snackBar) {
+    _homeMessenger.currentState?.showSnackBar(snackBar);
+  }
+
   Future<void> _completeTask(
       TasksRow task, String? owner, int generation) async {
-    bool isCurrentAccount() =>
-        mounted &&
-        owner == widget.currentOwner() &&
-        generation == _accountGeneration;
+    bool isCurrentAccount() {
+      final current = mounted &&
+          owner == widget.currentOwner() &&
+          generation == _accountGeneration;
+      if (mounted && !current && _owner != widget.currentOwner()) {
+        _scheduleAccountReconciliation();
+      }
+      return current;
+    }
+
     if (!isCurrentAccount()) return;
     final taskId = task.id;
     if (taskId == null || _completingTask) return;
 
+    final flow = QuestwellAccountDialogFlow(
+        isCurrent: isCurrentAccount, accountChanges: _accountChanges);
+    _completionFlow = flow;
     setState(() => _completingTask = true);
 
     try {
@@ -316,7 +336,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       final profile = _completionProfile;
       setState(_refreshTasksAndHome);
       if (profile == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
+        _showHomeFeedback(
           SnackBar(
             content: Text(
               'Quest complete. +${reward.xpAwarded} XP · +${reward.coinsAwarded} coins.',
@@ -336,6 +356,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       final firstWin = previousXp == 0 && reward.xpAwarded > 0;
 
       if (await showQuestwellMilestones(context,
+          flow: flow,
+          showFeedback: _showHomeFeedback,
           previousLevel: previousLevel,
           level: newLevel,
           xpAwarded: reward.xpAwarded,
@@ -345,8 +367,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       }
 
       if (!isCurrentAccount()) return;
-      final nextAction = await showDialog<String>(
+      final nextAction = await QuestwellAccountDialogFlow.show<String>(
         context: context,
+        flow: flow,
         builder: (dialogContext) => QuestwellQuestCompletionDialog(
           questTitle: task.title ?? 'Your quest',
           xpAwarded: reward.xpAwarded,
@@ -372,7 +395,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       // A rejected/lost reply can follow a committed completion. Reconcile
       // server state and totals without sending the completion again.
       setState(_refreshTasksAndHome);
-      ScaffoldMessenger.of(context).showSnackBar(
+      _showHomeFeedback(
         const SnackBar(
           content: Text(
             'Completion was not confirmed. Check the refreshed board before trying again.',
@@ -381,6 +404,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         ),
       );
     } finally {
+      flow.cancel();
+      if (identical(_completionFlow, flow)) _completionFlow = null;
       if (isCurrentAccount()) {
         setState(() => _completingTask = false);
       }
@@ -541,7 +566,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           },
         );
 
-    return GestureDetector(
+    final content = GestureDetector(
       key: ValueKey(_accountGeneration),
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -736,6 +761,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         ),
       ),
     );
+    return ScaffoldMessenger(key: _homeMessenger, child: content);
   }
 }
 

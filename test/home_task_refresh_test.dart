@@ -217,6 +217,75 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  for (final notify in [false, true]) {
+    testWidgets(
+        'account change dismisses visible completion; notification=$notify',
+        (tester) async {
+      final h = _HomeHarness();
+      await _mount(tester, h.app());
+      h.tasks = () async => [];
+      tester
+          .widget<QuestwellHomeQuestCard>(find.byType(QuestwellHomeQuestCard))
+          .onComplete();
+      await tester.pumpAndSettle();
+      expect(find.byType(QuestwellQuestCompletionDialog), findsOneWidget);
+      final staleAction = tester
+          .widget<TextButton>(find.widgetWithText(TextButton, 'See Chronicle'))
+          .onPressed!;
+      h.owner = 'B';
+      h.tasks = () async => [_task('B')];
+      if (notify) h.accounts.change();
+      staleAction();
+      await tester.pumpAndSettle();
+      expect(find.byType(QuestwellQuestCompletionDialog), findsNothing);
+      expect(find.text('B quest'), findsOneWidget);
+      expect(h.writes, 1);
+      expect(h.reads, 3);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
+  for (final queued in [false, true]) {
+    testWidgets(
+        'account change clears ${queued ? 'queued' : 'expired'} feedback',
+        (tester) async {
+      final h = _HomeHarness()
+        ..appearance = () => Completer<QuestwellCosmeticsSnapshot>().future;
+      h.completion = (_) async => throw StateError('uncertain reply');
+      await _mount(tester, h.app());
+      tester
+          .widget<QuestwellHomeQuestCard>(find.byType(QuestwellHomeQuestCard))
+          .onComplete();
+      await _frames(tester);
+      expect(
+          find.textContaining('Completion was not confirmed.'), findsOneWidget);
+      if (queued) {
+        h.completion = (_) async => _reward;
+        h.tasks = () async => [];
+        tester
+            .widget<QuestwellHomeQuestCard>(find.byType(QuestwellHomeQuestCard))
+            .onComplete();
+        await _frames(tester);
+        expect(h.writes, 2);
+      } else {
+        await tester.pump(const Duration(milliseconds: 300));
+        await tester.pump(const Duration(seconds: 5));
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(find.byType(SnackBar), findsNothing);
+      }
+      h.owner = 'B';
+      h.tasks = () async => [_task('B')];
+      h.accounts.change();
+      await _frames(tester);
+      await tester.pump(const Duration(seconds: 5));
+      await _frames(tester);
+      expect(find.text('B quest'), findsOneWidget);
+      expect(find.byType(SnackBar), findsNothing);
+      expect(find.textContaining('Quest complete.'), findsNothing);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   testWidgets('late read recovers a silently changed account', (tester) async {
     final old = Completer<List<TasksRow>>();
     final h = _HomeHarness()..tasks = () => old.future;
