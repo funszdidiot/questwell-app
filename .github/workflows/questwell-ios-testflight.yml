@@ -1,4 +1,4 @@
-name: Questwell iOS signing preparation
+name: Questwell iOS signing and optional TestFlight upload
 
 # Register the manual entry on the default branch. GitHub runs the workflow
 # version from the selected ref; questwell-dev owns the reviewed signing jobs.
@@ -14,6 +14,11 @@ on:
         description: Unused Apple build number, e.g. 1.0.1 (N.N.N)
         required: true
         type: string
+      upload_to_testflight:
+        description: Upload to Apple only after native review and exact-source approval
+        required: true
+        type: boolean
+        default: false
 
 permissions: {}
 
