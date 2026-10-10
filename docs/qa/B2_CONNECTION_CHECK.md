@@ -44,3 +44,19 @@ and the linked get-upload-url, upload-file and download-file-by-id operations.
   values in chat. Rerun the connection job after correction.
 - No object was uploaded by the diagnostic run. Destination verification and
   scheduled source backup remain blocked; no GO is claimed.
+
+## Credential correction and round trip PASSED — 2026-10-10 02:17 UTC
+
+Tanya requested a retry after the credential correction instructions. Run
+38015718496, retry job 114107451875, completed successfully. The seven runner
+tests passed and the real B2 round trip passed at 02:17:04 UTC.
+
+- Saved credential authentication and single-bucket/questwell-prefix checks passed.
+- Uploaded and downloaded 104 synthetic bytes; exact byte equality passed.
+- Encryption confirmed: SSE-B2 AES256.
+- Object retained: questwell/connection-checks/edb7763e35124e598f3e3f03c1ac1d85.json.
+- SHA256: ea0f823c6b6dd78f2ff535dfc572cfb54ea23e10b3a7d6513c5cdfc08ca32915.
+
+This supersedes the credential blocker above. No secret values were read.
+The backup destination is verified; scheduled source backup and complete
+application recovery remain unverified. No production data was transferred.
