@@ -1,0 +1,59 @@
+{
+  "reviewer": "/root/pumpkin_edge_review",
+  "result": "PASS",
+  "scope": "Final actual exported native and 3x light/dark composites, change masks and exporter",
+  "observations": [
+    "Heavy cuff/hem bands corrected; female sleeve edges improved.",
+    "Embroidery, hands, identity, geometry, neutral shoulders and rear panels preserved.",
+    "No introduced colored blocks or hand occlusion.",
+    "Neutral green rear-panel exposure below hands is pre-existing, outside this color-only scope."
+  ],
+  "outputs": {
+    "female": {
+      "sourceSha256": "5e6a2ba66ae3839a2268ad1e79f3623407d070766720ea4d74f57a3400dc06ff",
+      "bodySha256": "00a7fcaefb8bba3e8e528e8ee2cd1dea6650c61cf6b8f0f877eadd505a47938a",
+      "identitySha256": "4f2a7fa8c41ff7373821177977a067cf98004863805f89d7317fd14ccf0ed27e",
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/front_v2.webp",
+          "sha256": "cbbf004072a8c8599e59048c14a157a42c87727b8f7b5fe239544949373fd099",
+          "inputSha256": "fc788c03d4b1f286520492a75a31b9958105b2e2b0d12cdb7c5ecd0c62f0fa45",
+          "changedPixels": 716,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/female/cuffs_v2.webp",
+          "sha256": "62de8ada8dc4c4612bce95633cfd1dcbe28102397b718f3ebc1ee04fa5a1e6af",
+          "inputSha256": "c70e398a01fff8a009ef09fd3d2e65ae2d602e751299657159e9cd82421d6b94",
+          "changedPixels": 220,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        }
+      }
+    },
+    "neutral": {
+      "sourceSha256": "e2a5f20960b546259c37d8d962bd1f2f458443a6fb05bc3994c0fb389f3a1344",
+      "bodySha256": "bad2b39c90793b937308eff3de32550fd9ecf06c90140e1233902442fcc7fc24",
+      "identitySha256": "29c6d9fe613fe76c4b924bcb4d8c155ec89ffd55de1e41e56fd999eb9f3b0f78",
+      "outputs": {
+        "front": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/front_v2.webp",
+          "sha256": "0b5a204b052af036ac0bf3a6f0444fbaf69f0c698687f4c3fe1fb46c9fa69c9a",
+          "inputSha256": "35fb746e20bc80e9817a4bce8aa00b84ea1546e6a75b40c1dd1c3554e4418ce8",
+          "changedPixels": 264,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        },
+        "cuffs": {
+          "path": "assets/images/questwell/avatar/halloween_v1/pumpkin_court/neutral/cuffs_v2.webp",
+          "sha256": "674418c00ee33b39ab73811d4106d9bd81df965cbd27c690d448b9c9941ff286",
+          "inputSha256": "e7c819c30d24c4840d49599105040c6cd1c34264e2f00460e5012623631ebb5a",
+          "changedPixels": 373,
+          "alphaUnchanged": true,
+          "unselectedVisibleRgbUnchanged": true
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,19 @@
 # Questwell Production Dashboard
 
+## Female and neutral Pumpkin Court edges — October 10, 2026
+
+**QA.** Female shoulder/sleeve, cuff and hem cleanup; neutral cuff/hem cleanup.
+Exact alpha, bodies and protected artwork preserved. Independent review and CI
+are recorded in the follow-up PR; merge and hosted delivery remain pending.
+Evidence: `../qa/PUMPKIN_COURT_FAMILY_EDGES.md`.
+
 ## Male Pumpkin Court dark bands — October 10, 2026
 
-**QA / independent export visual review passed.** Scoped front/rear RGB cleanup
-preserves exact garment alpha and every locked body/identity asset. Other outfits
-and account policy unchanged. CI, merge and hosted verification pending; local
-Flutter was safety-blocked and no local runtime pass is claimed.
+**DEV DEPLOYED / TANYA REVIEW.** PR #130 deployed `f7d6576` through Preview
+`38028925416`. Served revision and both repaired hashes match. Hosted light/dark
+inspection and outfit off/on passed. PR CI passed 1,076 regression, 27 decorator
+and 418 Chrome tests plus native/backend gates. Signed-in/device acceptance
+remains unclaimed. Exact garment alpha and locked bodies are preserved.
 Evidence: `../qa/PUMPKIN_COURT_DARK_BANDS.md`.
 
 ## Two architectural furniture maps — October 9 follow-up
