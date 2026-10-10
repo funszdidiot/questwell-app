@@ -46,7 +46,7 @@ begin
   select id into guardian_id from public.cosmetics where slug='guardians-oath-tapestry';
   select id into lab_id from public.cosmetics where slug='mad-alchemists-lab';
   select id into keep_id from public.cosmetics where slug='guardians-keep';
-  update public.users set adventurer_archetype='wanderer' where id=owner_id;
+  perform public.set_adventurer_archetype('wanderer');
   denied := false;
   begin perform public.purchase_cosmetic(guardian_id);
   exception when others then
@@ -54,7 +54,7 @@ begin
     denied := true;
   end;
   if not denied then raise exception 'Non-Guardian purchase succeeded'; end if;
-  update public.users set adventurer_archetype='guardian' where id=owner_id;
+  perform public.set_adventurer_archetype('guardian');
   for item in select * from public.cosmetics where collection_key='evergreen-hearth' order by slug loop
     select * into strict bought from public.purchase_cosmetic(item.id);
     if bought.already_owned then raise exception 'Unexpected initial ownership'; end if;
@@ -96,8 +96,13 @@ begin
   if saved->'current' <> (gallery || jsonb_build_object('setting',lab_id::text)) then
     raise exception 'Lab gallery recall differs';
   end if;
-  -- Class change must not allow either placement API to re-equip Guardian art.
-  update public.users set adventurer_archetype='wanderer' where id=owner_id;
+  -- Use the real account RPC: it unequips restricted art while retaining ownership.
+  -- Direct administrator updates bypass that behavior and are not a class switch.
+  perform public.set_adventurer_archetype('wanderer');
+  if exists(select 1 from public.user_cosmetics where user_id=owner_id
+      and cosmetic_id=guardian_id and equipped) then
+    raise exception 'Class switch left Guardian tapestry equipped';
+  end if;
   state := public.read_hearth_layouts();
   denied := false;
   begin perform public.place_hearth_cosmetic(guardian_id,'wall_center',guardian_id);
