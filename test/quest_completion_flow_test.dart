@@ -19,6 +19,7 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     var writes = 0;
+    var taskReads = 0;
     await tester.pumpWidget(MaterialApp(
         theme: ThemeData.dark(),
         builder: (context, child) => MediaQuery(
@@ -38,19 +39,22 @@ void main() {
               totalCoinsEarned: 0,
               weekWins: 0,
               bossesDefeated: 0),
-          loadTasks: () async => writes > 0
-              ? []
-              : [
-                  TasksRow({
-                    'id': 'task',
-                    'title': 'Make room for what matters',
-                    'status': 'open',
-                    'friction_level': 1,
-                    'xp_value': 999,
-                    'coin_value': 999,
-                    'created_at': '2026-01-01T00:00:00Z'
-                  })
-                ],
+          loadTasks: () async {
+            taskReads++;
+            return writes > 0
+                ? []
+                : [
+                    TasksRow({
+                      'id': 'task',
+                      'title': 'Make room for what matters',
+                      'status': 'open',
+                      'friction_level': 1,
+                      'xp_value': 999,
+                      'coin_value': 999,
+                      'created_at': '2026-01-01T00:00:00Z'
+                    })
+                  ];
+          },
           completeTask: (id) async {
             expect(id, 'task');
             writes++;
@@ -81,6 +85,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(dialog, findsNothing);
     expect(writes, 1);
+    expect(taskReads, 2); // Initial load plus one post-completion refresh.
     expect(find.text('Complete quest'), findsNothing);
     expect(tester.takeException(), isNull);
   });

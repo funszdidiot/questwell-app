@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'questwell_account_dialog_flow.dart';
 import 'questwell_pixel_art.dart';
 import 'questwell_hearth_decor.dart';
 import 'questwell_wall_art.dart';
@@ -29,9 +30,11 @@ Future<RoomPlacement?> showRoomPicker(
   String? hearthProfileKey,
   QuestwellHearthRenderSpec? hearthRenderSpec,
   String? currentSlot,
+  QuestwellAccountDialogFlow? flow,
 }) =>
-    showDialog<RoomPlacement>(
+    QuestwellAccountDialogFlow.show<RoomPlacement>(
       context: context,
+      flow: flow,
       builder: (_) => _RoomPicker(
         name: name,
         id: id,
@@ -100,10 +103,14 @@ class _RoomPickerState extends State<_RoomPicker> {
               orElse: () => labels.keys.first);
   bool get _legacyPlacement =>
       widget.currentSlot != null && !labels.containsKey(widget.currentSlot);
+  bool get _active =>
+      mounted && (QuestwellAccountDialogFlow.of(context)?.active ?? true);
+
   Future<void> _save() async {
+    if (!_active) return;
     final occupant = widget.occupants[_slot];
     if (occupant != null && occupant.id != widget.id) {
-      final confirmed = await showDialog<bool>(
+      final confirmed = await QuestwellAccountDialogFlow.show<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
                   backgroundColor: const Color(0xFF19232D),
@@ -112,15 +119,19 @@ class _RoomPickerState extends State<_RoomPicker> {
                       '${occupant.name} will return to your inventory. You will still own it.'),
                   actions: [
                     TextButton(
-                        onPressed: () => Navigator.pop(ctx, false),
+                        onPressed: () =>
+                            QuestwellAccountDialogFlow.pop(ctx, false),
                         child: const Text('Keep current item')),
                     FilledButton(
-                        onPressed: () => Navigator.pop(ctx, true),
+                        onPressed: () =>
+                            QuestwellAccountDialogFlow.pop(ctx, true),
                         child: const Text('Replace item'))
                   ]));
-      if (confirmed != true || !mounted) return;
+      if (confirmed != true || !_active) return;
     }
-    if (mounted) Navigator.pop(context, RoomPlacement(_slot, occupant?.id));
+    if (_active)
+      QuestwellAccountDialogFlow.pop(
+          context, RoomPlacement(_slot, occupant?.id));
   }
 
   @override
@@ -262,7 +273,8 @@ class _RoomPickerState extends State<_RoomPicker> {
                                   onPressed: _save,
                                   child: const Text('Save placement')),
                               TextButton(
-                                  onPressed: () => Navigator.pop(context),
+                                  onPressed: () =>
+                                      QuestwellAccountDialogFlow.pop(context),
                                   child: const Text('Cancel')),
                             ]))),
               ),
